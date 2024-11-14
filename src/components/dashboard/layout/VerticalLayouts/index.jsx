@@ -10,19 +10,15 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
-import GuardianNavdata from '../sidebarLayoutData/GuardianSidebarData';
-import ManagerSidebarData from '../sidebarLayoutData/ManagerSidebarData';
 import PlayerSidebarData from '../sidebarLayoutData/PlayerSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
-import TrainerSidebarData from '../sidebarLayoutData/TrainerSidebarData';
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
   const navData = navdata().props.children;
-  const guardianNavData = GuardianNavdata().props.children;
+
   const playerSidebarData = PlayerSidebarData().props.children;
-  const managerSidebarData = ManagerSidebarData().props.children;
-  const trainerSidebarData = TrainerSidebarData().props.children;
+
   const superAdminSidebarData = SuperAdminSidebarData().props.children;
   const router = useRouter();
 
@@ -38,9 +34,11 @@ const VerticalLayout = (props) => {
     })
   );
   // Inside your component
-  const { leftsidbarSizeType, sidebarVisibilitytype, layoutType } = useSelector(
-    selectLayoutProperties
-  );
+  const {
+    leftsidbarSizeType = 'defaultSize',
+    sidebarVisibilitytype = 'defaultVisibility',
+    layoutType = 'defaultLayout',
+  } = useSelector((state) => selectLayoutProperties(state) || {});
 
   //vertical and semibox resize events
   const resizeSidebarMenu = useCallback(() => {

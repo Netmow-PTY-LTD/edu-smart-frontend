@@ -9,12 +9,11 @@ import {
 } from 'reactstrap';
 
 //import images
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const ProfileDropdown = ({ totalCharges, data, steps }) => {
+const ProfileDropdown = () => {
   const [domain, setDomain] = useState('');
   const router = useRouter();
   const [subdomain, setSubdomain] = useState('');
@@ -24,16 +23,6 @@ const ProfileDropdown = ({ totalCharges, data, steps }) => {
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);
   };
-
-  // useEffect(() => {
-  //   if (userInfoData?.role === 'super_admin') {
-  //     setDomain(window?.location?.hostname);
-  //     setSubdomain('');
-  //   } else {
-  //     setDomain(window?.location?.hostname.split('.')[1]);
-  //     setSubdomain(window?.location?.hostname.split('.')[0]);
-  //   }
-  // }, [userInfoData?.role]);
 
   const handlelogOut = () => {
     if (userInfoData?.role === 'super_admin') {
@@ -69,50 +58,27 @@ const ProfileDropdown = ({ totalCharges, data, steps }) => {
             <Image
               priority={true}
               className="rounded-circle header-profile-user"
-              src={
-                data &&
-                data?.profile_image &&
-                data?.profile_image?.uploadedImage
-                  ? data?.profile_image?.uploadedImage
-                  : `${'/favicon.png'}`
-              }
+              src={`/favicon.png`}
               width={50}
               height={30}
               alt="Header Avatar"
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-uppercase">
-                {data?.first_name + data?.last_name || 'Jhon Doe'}
+                {'Jhon Doe'}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">
-                {data?.role || 'super admin'}
+                {'Super admin'}
               </span>
             </span>
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end ">
           <h6 className="dropdown-header text-uppercase fs-3">
-            Welcome {`${data?.first_name || ''} ${data?.last_name || ''}`}!
+            Welcome ! {'Jhon Doe'}
           </h6>
           <DropdownItem className="p-0">
-            <Link
-              href={
-                data?.role === 'admin'
-                  ? '/admin/admin-profile-settings'
-                  : data?.role === 'guardian'
-                    ? '/guardian/guardian-settings'
-                    : data?.role === 'player'
-                      ? '/player/player-settings'
-                      : data?.role === 'manager'
-                        ? '/manager/manager-settings'
-                        : data?.role === 'trainer'
-                          ? '/trainer/trainer-settings'
-                          : data?.role === 'super_admin'
-                            ? '/super_admin/settings/profile-settings'
-                            : '/'
-              }
-              className="dropdown-item"
-            >
+            <Link href={'/'} className="dropdown-item">
               <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-2"></i>
               <span className="align-middle">Profile</span>
             </Link>
@@ -140,23 +106,23 @@ const ProfileDropdown = ({ totalCharges, data, steps }) => {
             </Link>
           </DropdownItem> */}
 
-          {data?.role === 'admin' ? (
+          {/* {data?.role === 'admin' ? (
             <div>
-              {/* <DropdownItem className="p-0">
+              <DropdownItem className="p-0">
                 <Link href={''} className="dropdown-item">
                   <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{' '}
                   <span className="align-middle">Help</span>
                 </Link>
-              </DropdownItem> */}
+              </DropdownItem>
               <div className="dropdown-divider"></div>
-              {/* <DropdownItem className="p-0">
+              <DropdownItem className="p-0">
                 <Link href="/admin/charges" className="dropdown-item">
                   <i className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>{' '}
                   <span className="align-middle">
                     Charges :$<b>{totalCharges?.data?.total_charges}</b>
                   </span>
                 </Link>
-              </DropdownItem> */}
+              </DropdownItem>
               <DropdownItem className="p-0">
                 <Link href="/admin/settings" className="dropdown-item">
                   <i className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
@@ -169,24 +135,25 @@ const ProfileDropdown = ({ totalCharges, data, steps }) => {
             </div>
           ) : (
             ''
-          )}
+          )} */}
 
           <DropdownItem className="p-0">
-            {data?.first_name && data?.last_name ? (
+            {/* {'data' ? (
               <div onClick={() => handlelogOut()} className="dropdown-item">
                 <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
                 <span>LogOut</span>
               </div>
-            ) : (
-              <div className="dropdown-item">
-                <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
-                <Link href={'/auth/login'} className="text-black">
-                  <span className=" align-middle" data-key="t-logout">
-                    SignIn
-                  </span>
-                </Link>
-              </div>
-            )}
+            ) : */}
+
+            <div className="dropdown-item">
+              <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
+              <Link href={'/auth/login'} className="text-black">
+                <span className=" align-middle" data-key="t-logout">
+                  SignIn
+                </span>
+              </Link>
+            </div>
+            {/* } */}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

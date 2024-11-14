@@ -1,20 +1,18 @@
-require("dotenv").config();
+require('dotenv').config();
 
-import MainHome from "@/components/templates/default/MainHome";
-import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
   const router = useRouter();
 
-  const {
-    data: themeData,
-    isLoading: themeIsLoading,
-    error: themeError,
-  } = useSelector((state) => state.Home.theme);
+  useEffect(() => {
+    router.push('/super-admin');
+  }, [router]);
 
   // useEffect(() => {
   //   if (typeof window !== "undefined") {
@@ -81,19 +79,8 @@ const HomePage = () => {
 
   return (
     <>
-      {/* {["squaddeck.app", "www.squaddeck.app"].includes(
-        window.location.hostname
-      ) ? (
-        window.location.replace("https://www.squaddeck.com")
-      ) : themeIsLoading ? (
-        <LoaderSpiner />
-      ) : ( */}
-      <>
-        {/* {!themeData?.theme ?  */}
-        <MainHome />
-        {/* : <ClientHome />} */}
-      </>
-      {/* )} */}
+      {/* <MainHome /> */}
+      {/* <ClientHome /> */}
     </>
   );
 };
