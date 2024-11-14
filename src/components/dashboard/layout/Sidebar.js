@@ -9,8 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { Container } from 'reactstrap';
-import HorizontalLayout from './HorizontalLayout';
-import TwoColumnLayout from './TwoColumnLayout';
+
 import VerticalLayout from './VerticalLayouts';
 
 const Sidebar = ({ layoutType }) => {
@@ -74,21 +73,7 @@ const Sidebar = ({ layoutType }) => {
             </span>
           </Link>
         </div>
-        {layoutType === 'horizontal' ? (
-          <div id="scrollbar">
-            <Container fluid>
-              <div id="two-column-menu"></div>
-              <ul className="navbar-nav" id="navbar-nav">
-                <HorizontalLayout />
-              </ul>
-            </Container>
-          </div>
-        ) : layoutType === 'twocolumn' ? (
-          <React.Fragment>
-            <TwoColumnLayout layoutType={layoutType} />
-            <div className="sidebar-background"></div>
-          </React.Fragment>
-        ) : (
+        {
           <React.Fragment>
             <SimpleBar id="scrollbar" className="h-100">
               <Container fluid>
@@ -100,7 +85,7 @@ const Sidebar = ({ layoutType }) => {
             </SimpleBar>
             <div className="sidebar-background"></div>
           </React.Fragment>
-        )}
+        }
       </div>
       <div className="vertical-overlay"></div>
     </>

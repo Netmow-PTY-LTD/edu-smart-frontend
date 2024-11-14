@@ -34,6 +34,22 @@ body {
   background-color: var(--third-color);
 }
 
+.pagination-no {
+  position: relative;
+  display: block;
+  padding: var(--vz-pagination-padding-y) var(--vz-pagination-padding-x);
+  font-size: var(--vz-pagination-font-size);
+  color: var(--color--gray);
+  background-color: var(--app-primary);
+  border: var(--vz-pagination-border-width) solid
+    var(--vz-pagination-border-color);
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
 #demo {
   background-color: #ffffff;
   padding: 4px;

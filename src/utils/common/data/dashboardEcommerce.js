@@ -711,7 +711,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-school-fill',
     link: 'View all',
-    pathName: '/super_admin/registered-clients',
+    pathName: '/super-admin',
   },
 
   {
@@ -721,7 +721,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-group-2-fill',
     link: 'View all',
-    pathName: '/super_admin/billing/paid-charges-list',
+    pathName: '/super-admin',
   },
   {
     id: 3,
@@ -730,7 +730,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-group-fill',
     link: 'View  all',
-    pathName: '/super_admin/billing/pending-charges-list ',
+    pathName: '/super-admin',
   },
   {
     id: 4,
@@ -739,7 +739,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-wallet-3-fill',
     link: 'All Charges',
-    pathName: '/super_admin/billing/pending-charges-list ',
+    pathName: '/super-admin',
   },
 ];
 

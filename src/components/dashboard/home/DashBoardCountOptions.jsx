@@ -29,9 +29,7 @@ const DashBoardCountOptions = ({
               ? playerProfileData
               : userInfoData?.role === 'super-admin'
                 ? supperAdminWidgetsData
-                : allEarningManagementCommonData
-                  ? allEarningManagementCommonData
-                  : []
+                : []
           ).map(
             (item, key) => (
               console.log(item?.bgcolor),

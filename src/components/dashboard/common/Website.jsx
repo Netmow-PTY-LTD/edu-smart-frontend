@@ -8,13 +8,13 @@ const Website = () => {
         <Link
           href={'/'}
           target="_blank"
-          type="button text-black"
-          className="button d-flex align-items-center p-3 fs-4 "
+          type="button"
+          className="button d-flex align-items-center p-3 fs-4 text-black"
           id="visitwebsite"
         >
-          <i className="ri-external-link-line pe-2 text-black"></i>
-          <span className="flex-grow-1 me-2 text-black">Visit </span>
-          <span className="flex-grow-1 me-2 text-black">Website </span>
+          <i className="ri-external-link-line pe-2"></i>
+          <span className="flex-grow-1 me-2">Visit </span>
+          <span className="flex-grow-1 me-2">Website </span>
         </Link>
       </div>
     </>

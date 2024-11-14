@@ -54,12 +54,12 @@ const Pagination = ({ data, currentPage, setCurrentPage, perPageData }) => {
             )}
             {pageNumbers.map((item, key) => (
               <React.Fragment key={key}>
-                <li className="page-item me-1" role={'button'}>
+                <li className="page-item mx-2 ">
                   <span
                     className={
                       currentPage === item - 1
-                        ? 'page-link fs-2 '
-                        : 'page-link fs-2 '
+                        ? 'pagination-no active fs-2'
+                        : 'pagination-no fs-2'
                     }
                     onClick={() => handleClick(item - 1)}
                   >
@@ -68,32 +68,7 @@ const Pagination = ({ data, currentPage, setCurrentPage, perPageData }) => {
                 </li>
               </React.Fragment>
             ))}
-            {/* {<span> </span>}
-            {'...'}
-            {currentPage >= pageNumbers.length - 1 ? (
-              <span
-                style={{ cursor: 'pointer' }}
-                className="page-item pagination-next disabled"
-              >
-                Next
-              </span>
-            ) : (
-              <li
-                role={currentPage <= 0 ? 'button' : ''}
-                className={
-                  currentPage >= 0 ? 'page-item' : 'page-item disabled'
-                }
-              >
-                <span
-                  style={{ cursor: 'pointer' }}
-                  className="page-link fs-2"
-                  onClick={handlenextPage}
-                >
-                  Next
-                </span>
-              </li>
-            )} */}
-            {/*  */}
+
             {currentPage >= pageNumbers.length - 1 ? (
               <span
                 style={{ cursor: 'pointer' }}
