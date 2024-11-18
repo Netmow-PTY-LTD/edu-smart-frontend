@@ -1,38 +1,14 @@
-import DashBoardCountOptions from '@/components/dashboard/home/DashBoardCountOptions';
-import LatestRegisteredPlayer from '@/components/dashboard/home/LatestRegisteredPlayer';
-import LatestTeams from '@/components/dashboard/home/LatestTeams';
-import WelcomingMessage from '@/components/dashboard/home/WelcomingMessage';
-import Layout from '@/components/dashboard/layout';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import DashBoardCountOptions from '@/components/common/allDashboardHome/DashBoardCountOptions';
+import LatestRegisteredPlayer from '@/components/common/allDashboardHome/LatestRegisteredPlayer';
+import LatestTeams from '@/components/common/allDashboardHome/LatestTeams';
+import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
+import Layout from '@/components/layout';
+import React from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const AdminDashboard = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [totalSum, setTotalSum] = useState(0);
-  const [paidSum, setPaidSum] = useState(0);
-  const [unPaidSum, setUnpaidSum] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
-  const [talkToExpertOpenModal, setTalkToExpertOpenModal] = useState(false);
-  const maxEffectRuns = 3;
-
-  useEffect(() => {
-    const storedCount =
-      parseInt(localStorage.getItem('effectRunCount'), 10) || 0;
-
-    if (storedCount <= maxEffectRuns) {
-      if (Object.keys(router.query).length === 0) {
-        setOpenModal(true);
-      } else {
-        setOpenModal(false);
-      }
-      localStorage.setItem('effectRunCount', storedCount + 1);
-    }
-  }, [router.query]);
 
   // useEffect(() => {
   //   if (router?.query?.token) {

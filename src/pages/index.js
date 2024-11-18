@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   useEffect(() => {
@@ -79,8 +78,6 @@ const HomePage = () => {
 
   return (
     <>
-      {/* <MainHome /> */}
-      {/* <ClientHome /> */}
     </>
   );
 };
