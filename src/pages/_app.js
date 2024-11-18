@@ -1,16 +1,13 @@
-import rootReducer from '@/slices/index';
+import { store } from '@/slice/store/store';
 import '@/styles/clienttheme.scss';
 import '@/styles/globals.css';
 import '@/styles/themes.scss';
-import { configureStore } from '@reduxjs/toolkit';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import 'remixicon/fonts/remixicon.css';
-
-const store = configureStore({ reducer: rootReducer, devTools: true });
 
 export default function MyApp({ Component, pageProps }) {
   // const [checked, setChecked] = useState(false);
