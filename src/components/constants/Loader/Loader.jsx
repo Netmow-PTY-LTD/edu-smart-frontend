@@ -1,26 +1,22 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { Spinner } from 'reactstrap';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const LoaderSpiner = () => {
-  const {
-    data: themeData,
-    isLoading: themeIsLoading,
-    error: themeError,
-  } = useSelector((state) => state.Home.theme);
-
+const Loader = (props) => {
   return (
-    <div className="loader-spiner-container">
-      <style>
-        {`
-          .loader-spiner::after{
-            background-color: ${themeData?.branding?.primary_color?.trim() || '#9344E8'}
-          }
-          
-          `}
-      </style>
-      <span className="loader-spiner"></span>
-    </div>
+    <>
+      <div className="btn button text-light d-flex justify-content-center mx-2 mt-2">
+        <Spinner> Loading... </Spinner>
+      </div>
+      {toast.error(props.error, {
+        position: 'top-right',
+        hideProgressBar: false,
+        progress: undefined,
+        toastId: '',
+      })}
+    </>
   );
 };
 
-export default LoaderSpiner;
+export default Loader;

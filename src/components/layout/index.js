@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 //redux
 import withRouter from '@/components/common/withRoutes';
-import LoaderSpiner from '@/components/constants/Loader/Loader';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';

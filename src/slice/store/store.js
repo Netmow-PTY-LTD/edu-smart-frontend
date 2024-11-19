@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authService } from '../services/authService';
 import LayoutReducer from '../services/dashboardSidebarService';
+import { universityService } from '../services/universityService';
 
 export const store = configureStore({
   reducer: {
@@ -10,10 +11,12 @@ export const store = configureStore({
 
     // api reducers here
     [authService.reducerPath]: authService.reducer,
+    [universityService.reducerPath]: universityService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([authService.middleware]),
-  // devTools: process.env.NEXT_PUBLIC_NODE_ENV !== "production",
+    getDefaultMiddleware()
+      .concat(authService.middleware)
+      .concat(universityService.middleware),
 });
 
 setupListeners(store.dispatch);
