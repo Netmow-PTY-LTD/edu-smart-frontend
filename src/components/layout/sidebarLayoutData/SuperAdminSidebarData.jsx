@@ -76,7 +76,7 @@ const SuperAdminSidebarData = () => {
               id: 'alluniversity',
               label: 'All University',
               icon: '',
-              link: '/super-admin',
+              link: '/super-admin/university-management/all-university',
               parentId: 'uni-management',
             },
             {

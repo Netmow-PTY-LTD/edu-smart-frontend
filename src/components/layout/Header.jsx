@@ -25,7 +25,9 @@ const Header = () => {
 
   const selectDashboardData = createSelector(
     (state) => state.Layout.sidebarVisibilitytype,
-    (sidebarVisibilitytype) => sidebarVisibilitytype
+    (sidebarVisibilitytype) => {
+      return sidebarVisibilitytype ? 'show' : 'hidden';
+    }
   );
 
   // Inside your component

@@ -39,8 +39,8 @@ body {
   display: block;
   padding: var(--vz-pagination-padding-y) var(--vz-pagination-padding-x);
   font-size: var(--vz-pagination-font-size);
-  color: var(--color--gray);
-  background-color: var(--app-primary);
+  color: black;
+  background-color: white;
   border: var(--vz-pagination-border-width) solid
     var(--vz-pagination-border-color);
   transition:
@@ -48,6 +48,14 @@ body {
     background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
+}
+
+.pagination-no.active,
+.active > .pagination-no {
+  z-index: 3;
+  color: var(--color--gray);
+  background-color: var(--app-primary);
+  border-color: var(--vz-pagination-active-border-color);
 }
 
 #demo {

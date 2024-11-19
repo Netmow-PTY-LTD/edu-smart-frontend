@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const authService = createApi({
   reducerPath: "authService",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://baker-street-library-24-7-server.onrender.com/api",
+    baseUrl: "https://edu-smart-backend-3n7b.onrender.com/api/v1/super",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
