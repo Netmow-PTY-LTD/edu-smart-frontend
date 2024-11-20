@@ -1,3 +1,4 @@
+import Loader from '@/components/constants/Loader/Loader';
 import React from 'react';
 
 const SubmitButton = ({
@@ -8,16 +9,18 @@ const SubmitButton = ({
   ...props
 }) => {
   return (
-    <div className="mt-4">
+    <div className="hstack gap-2 justify-content-center mx-auto mt-5 mb-2">
       <button
         type="submit"
-        className={`hstack d-flex align-items-center justify-content-center mx-auto button p-2 ${className}`}
+        className={`button px-3 py-2`}
         disabled={isSubmitting}
-        {...props} // Spread other props like `onClick`, `type`, etc.
+        {...props}
       >
-        {isSubmitting
-          ? 'Submitting...'
-          : children || `${formSubmit ? formSubmit : ''}`}{' '}
+        {isSubmitting ? (
+          <Loader />
+        ) : (
+          children || `${formSubmit ? formSubmit : ''}`
+        )}{' '}
       </button>
     </div>
   );

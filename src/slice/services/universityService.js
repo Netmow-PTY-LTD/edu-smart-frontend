@@ -31,8 +31,36 @@ export const universityService = createApi({
         method: 'GET',
       }),
     }),
+    getSingleUniversity: builder.query({
+      query: (id) => ({
+        url: `/university/${id}`,
+        method: 'GET',
+      }),
+    }),
+    updateUniversity: builder.mutation({
+      query: (body) => {
+        const id = body instanceof FormData ? body.get('id') : body.id;
+
+        return {
+          url: `/university/${id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+    }),
+    deleteUniversity: builder.mutation({
+      query: (id) => ({
+        url: `/university/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAddUniversityMutation, useGetUniversityQuery } =
-  universityService;
+export const {
+  useAddUniversityMutation,
+  useGetUniversityQuery,
+  useUpdateUniversityMutation,
+  useGetSingleUniversityQuery,
+  useDeleteUniversityMutation,
+} = universityService;

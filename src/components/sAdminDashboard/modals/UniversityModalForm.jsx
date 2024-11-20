@@ -18,8 +18,11 @@ const UniversityModalForm = ({
   validationSchema,
   onSubmit,
   formSubmit,
+  imagePreview,
+  setImagePreview,
 }) => {
   const options = useMemo(() => countryList().getData(), []);
+
   return (
     <Modal isOpen={isOpen} centered size="xl">
       <ModalHeader toggle={onClose}>
@@ -66,7 +69,12 @@ const UniversityModalForm = ({
                   <TextArea name="description" label="Description" />
                 </Col>
                 <Col xl={6}>
-                  <ImageField name="logo" label="Logo" />
+                  <ImageField
+                    name="logo"
+                    label="Logo"
+                    imagePreview={imagePreview}
+                    setImagePreview={setImagePreview}
+                  />
                 </Col>
               </Row>
 

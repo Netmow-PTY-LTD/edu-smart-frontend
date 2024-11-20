@@ -2,19 +2,15 @@ import { ErrorMessage, Field } from 'formik';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-const ImageField = ({ name, label, ...props }) => {
-  const [imagePreview, setImagePreview] = useState(null);
+const ImageField = ({ name, label,imagePreview,setImagePreview, ...props }) => {
 
   // Handle image file change
   const handleImageChange = (e, setFieldValue) => {
-    console.log(e);
-    console.log(setFieldValue);
+
+
     const file = e.target.files[0];
     if (file) {
-      // Set the file in Formik field value
       setFieldValue(name, file);
-
-      // Create an image preview URL
       const imageUrl = URL.createObjectURL(file);
       setImagePreview(imageUrl);
     }
