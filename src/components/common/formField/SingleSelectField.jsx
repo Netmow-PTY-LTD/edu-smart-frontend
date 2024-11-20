@@ -11,11 +11,17 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
 
       <Field name={name}>
         {({ field, form }) => {
-          console.log(field);
-          console.log(form);
+
+
           const selectedOption = options
-            ? options.find((option) => option.value === field.value)
+            ? options.find((option) =>
+                option.label === field.label
+                  ? option.label === field.label
+                  : option.label === field.value
+              )
             : null;
+
+
 
           const handleChange = (selectedOption) => {
             form.setFieldValue(

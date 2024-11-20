@@ -1,12 +1,12 @@
 import React from 'react';
-import { Spinner } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Spinner } from 'reactstrap';
 
 const Loader = (props) => {
   return (
     <>
-      <div className="btn button text-light d-flex justify-content-center mx-2 mt-2">
+      <div className="button px-3 py-2 text-light d-flex justify-content-center m-2">
         <Spinner> Loading... </Spinner>
       </div>
       {toast.error(props.error, {

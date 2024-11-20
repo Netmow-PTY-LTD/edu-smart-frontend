@@ -54,7 +54,7 @@ const Pagination = ({ data, currentPage, setCurrentPage, perPageData }) => {
             )}
             {pageNumbers.map((item, key) => (
               <React.Fragment key={key}>
-                <li className="page-item px-2 ">
+                <li style={{ cursor: 'pointer' }} className="page-item px-2 ">
                   <span
                     className={
                       currentPage === item - 1
