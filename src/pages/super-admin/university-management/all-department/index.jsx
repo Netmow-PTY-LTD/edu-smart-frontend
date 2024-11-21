@@ -1,19 +1,16 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
-import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import UniversityModalForm from '@/components/sAdminDashboard/modals/UniversityModalForm';
+import DepartmentModalForm from '@/components/sAdminDashboard/modals/DepartmentModalForm';
+
 import {
-  useAddUniversityMutation,
-  useDeleteUniversityMutation,
-  useGetUniversityQuery,
-  useUpdateUniversityMutation,
-} from '@/slice/services/universityService';
-import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
-import Image from 'next/image';
-import Link from 'next/link';
+  useAddDepartmentMutation,
+  useDeleteDepartmentMutation,
+  useGetDepartmentQuery,
+  useUpdateDepartmentMutation,
+} from '@/slice/services/departmentService';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -27,97 +24,75 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllUniversityForSuperAdmin = () => {
+const AllDepartmentForSuperAdmin = () => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [universityId, setUniversityId] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [departmentId, setDepartmentId] = useState(null);
 
   const perPageData = 10;
 
   // Define initial form values
   const [initialValues, setInitialValues] = useState({
     name: '',
-    address_line_1: '',
-    address_line_2: '',
-    city: '',
-    state: '',
-    country: '',
-    zip: '',
-    code: '',
     description: '',
-    logo: '',
   });
 
   const [
-    addUniversity,
+    addDepartment,
     {
-      data: addUniversityData,
-      error: addUniversityError,
-      isLoading: addUniversityIsLoading,
-      isSuccess: addUniversityIsSuccess,
+      data: addDepartmentData,
+      error: addDepartmentError,
+      isLoading: addDepartmentIsLoading,
+      isSuccess: addDepartmentIsSuccess,
     },
-  ] = useAddUniversityMutation();
+  ] = useAddDepartmentMutation();
 
   const {
-    data: getUniversityData,
-    error: getUniversityError,
-    isLoading: getUniversityIsLoading,
-    refetch: getUniversityRefetch,
-  } = useGetUniversityQuery();
+    data: getDepartmentData,
+    error: getDepartmentError,
+    isLoading: getDepartmentIsLoading,
+    refetch: getDepartmentRefetch,
+  } = useGetDepartmentQuery();
 
-  // const { data: getSingleUniversityData, refetch: getSingleUniversityRefetch } =
-  //   useGetSingleUniversityQuery(universityId, {
-  //     skip: !universityId,
+  // const { data: getSingleDepartmentData, refetch: getSingleDepartmentRefetch } =
+  //   useGetSingleDepartmentQuery(departmentId, {
+  //     skip: !departmentId,
   //   });
 
   const [
-    updateUniversity,
+    updateDepartment,
     {
-      data: editUniversityData,
-      error: editUniversityError,
-      isLoading: editUniversityIsLoading,
-      isSuccess: editUniversityIsSuccess,
+      data: editDepartmentData,
+      error: editDepartmentError,
+      isLoading: editDepartmentIsLoading,
+      isSuccess: editDepartmentIsSuccess,
     },
-  ] = useUpdateUniversityMutation();
+  ] = useUpdateDepartmentMutation();
 
   const [
-    deleteUniversity,
+    deleteDepartment,
     {
-      data: deleteUniversityData,
-      error: deleteUniversityError,
-      isLoading: deleteUniversityIsLoading,
+      data: deleteDepartmentData,
+      error: deleteDepartmentError,
+      isLoading: deleteDepartmentIsLoading,
     },
-  ] = useDeleteUniversityMutation();
+  ] = useDeleteDepartmentMutation();
 
   useEffect(() => {
-    if (getUniversityData?.data && universityId) {
-      const getSingleUniversityData =
-        getUniversityData?.data?.length > 0 &&
-        getUniversityData?.data.find((item) => item?._id === universityId);
+    if (getDepartmentData?.data && departmentId) {
+      const getSingleDepartmentData =
+        getDepartmentData?.data?.length > 0 &&
+        getDepartmentData?.data.find((item) => item?._id === departmentId);
 
       const fetchData = async () => {
         try {
-          const file = await convertImageUrlToFile(
-            getSingleUniversityData?.logo?.url
-          );
-
           setInitialValues({
-            name: getSingleUniversityData?.name || '',
-            address_line_1: getSingleUniversityData?.address_line_1 || '',
-            address_line_2: getSingleUniversityData?.address_line_2 || '',
-            city: getSingleUniversityData?.city || '',
-            state: getSingleUniversityData?.state || '',
-            country: getSingleUniversityData?.country || '',
-            zip: getSingleUniversityData?.zip || '',
-            code: getSingleUniversityData?.code || '',
-            description: getSingleUniversityData?.description || '',
-            logo: file,
+            name: getSingleDepartmentData?.name || '',
+            description: getSingleDepartmentData?.description || '',
           });
-          setImagePreview(URL.createObjectURL(file));
           setEditModalIsOpen(true);
         } catch (error) {
           console.error('Error loading data:', error);
@@ -126,22 +101,14 @@ const AllUniversityForSuperAdmin = () => {
 
       fetchData();
     }
-  }, [getUniversityData?.data, universityId]);
+  }, [getDepartmentData?.data, departmentId]);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
     name: Yup.string()
       .max(30, 'maximum use 30 letters')
       .required('Name is required'),
-    address_line_1: Yup.string().required('address_line_1 is required'),
-    address_line_2: Yup.string().required('address_line_2 is required'),
-    city: Yup.string().required('city is required'),
-    state: Yup.string().required('state is required'),
-    country: Yup.string().required('country is required'),
-    zip: Yup.string().required('zip is required'),
-    code: Yup.string().required('code is required'),
     description: Yup.string().required('description is required'),
-    logo: Yup.string().required('logo is required'),
   });
 
   // Handle form submission
@@ -152,11 +119,10 @@ const AllUniversityForSuperAdmin = () => {
       Object.entries(values).forEach(([key, value]) => {
         finalData.append(key, value);
       });
-      const result = await addUniversity(finalData).unwrap();
+      const result = await addDepartment(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getUniversityRefetch();
-        setImagePreview(null);
+        getDepartmentRefetch();
         setAddModalIsOpen(!addModalIsOpen);
       }
     } catch (error) {
@@ -168,34 +134,25 @@ const AllUniversityForSuperAdmin = () => {
   };
 
   const handleEditButtonClick = (itemId) => {
-    setUniversityId(itemId);
+    setDepartmentId(itemId);
   };
 
   const handleEditModalClose = () => {
-    // getSingleUniversityRefetch();
-    setImagePreview(null);
-    setUniversityId(null);
+    // getSingleDepartmentRefetch();
+    setDepartmentId(null);
     setInitialValues({
       name: '',
-      address_line_1: '',
-      address_line_2: '',
-      city: '',
-      state: '',
-      country: '',
-      zip: '',
-      code: '',
       description: '',
-      logo: '',
     });
     setEditModalIsOpen(false);
   };
 
-  const handleUpdateUniversity = async (values, { setSubmitting }) => {
+  const handleUpdateDepartment = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
     const finalData = {
       ...values,
-      id: universityId,
+      id: departmentId,
     };
 
     try {
@@ -203,10 +160,10 @@ const AllUniversityForSuperAdmin = () => {
       Object.entries(finalData).forEach(([key, value]) => {
         editedData.append(key, value);
       });
-      const result = await updateUniversity(editedData).unwrap();
+      const result = await updateDepartment(editedData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getUniversityRefetch();
+        getDepartmentRefetch();
         handleEditModalClose();
       }
     } catch (error) {
@@ -218,16 +175,16 @@ const AllUniversityForSuperAdmin = () => {
   };
 
   const handleDeleteButtonClick = (itemId) => {
-    setUniversityId(itemId);
+    setDepartmentId(itemId);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
-  const handleDeleteUniversity = async (id) => {
+  const handleDeleteDepartment = async (id) => {
     try {
-      const result = await deleteUniversity(id).unwrap();
+      const result = await deleteDepartment(id).unwrap();
       if (result) {
         toast.success(result?.message);
-        getUniversityRefetch();
+        getDepartmentRefetch();
         handleDeleteButtonClick();
       }
     } catch (error) {
@@ -243,59 +200,24 @@ const AllUniversityForSuperAdmin = () => {
 
   // Filter data for search option
   const isfilteredData =
-    getUniversityData?.data?.length > 0 &&
-    getUniversityData?.data.filter((item) =>
+    getDepartmentData?.data?.length > 0 &&
+    getDepartmentData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   // Define table headers with custom render functions
   const headers = [
     {
-      title: 'Logo',
-      key: 'logo',
+      title: 'SN',
+      key: 'key',
       render: (item) => (
-        <div className="d-flex align-items-center">
-          <div className="flex-shrink-0 me-1">
-            <Link
-              href={`/super-admin/university-management/single-university-profile/${item?._id}`}
-              className="text-reset"
-            >
-              <Image
-                src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
-                alt="User"
-                height={60}
-                width={60}
-                className="avatar-md p-1 me-3 align-middle rounded-circle"
-              />
-            </Link>
-          </div>
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
-              <Link href={''} className="text-reset">
-                {`${item.name} `}
-              </Link>
-            </h5>
-          </div>
-        </div>
+        <span className="d-flex flex-column text-capitalize">{item + 1}</span>
       ),
     },
 
+    { title: 'Department Name', key: 'name' },
     { title: 'Description', key: 'description' },
-    { title: 'Code', key: 'code' },
-    {
-      title: 'Address',
-      key: 'address',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.address_line_1 ? <span>{item.address_line_1}</span> : '-'}
-          {item?.address_line_2 ? <span>{item.address_line_2}</span> : '-'}
-          {item?.city ? <span>{item.city}</span> : '-'}
-          {item?.state ? <span>{item.state}</span> : '-'}
-          {item?.zip ? <span>{item.zip}</span> : '-'}
-          {item?.country ? <span>{item.country}</span> : '-'}
-        </span>
-      ),
-    },
+    
     {
       title: 'Action',
       key: 'actions',
@@ -341,7 +263,7 @@ const AllUniversityForSuperAdmin = () => {
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
-            {getUniversityIsLoading ? (
+            {getDepartmentIsLoading ? (
               <LoaderSpiner />
             ) : (
               <Card>
@@ -352,18 +274,16 @@ const AllUniversityForSuperAdmin = () => {
                   >
                     Add New
                   </button>
-                  <UniversityModalForm
+                  <DepartmentModalForm
                     formHeader={'Add New'}
                     isOpen={addModalIsOpen}
                     onClose={() => {
-                      setImagePreview(null), setAddModalIsOpen(!addModalIsOpen);
+                      setAddModalIsOpen(!addModalIsOpen);
                     }}
                     onSubmit={handleSubmit}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     formSubmit={'Submit'}
-                    imagePreview={imagePreview}
-                    setImagePreview={setImagePreview}
                   />
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -386,25 +306,23 @@ const AllUniversityForSuperAdmin = () => {
               </Card>
             )}
 
-            {/* for update university */}
-            <UniversityModalForm
+            {/* for update department */}
+            <DepartmentModalForm
               formHeader="Update Data"
               isOpen={editModalIsOpen}
               onClose={handleEditModalClose}
-              onSubmit={handleUpdateUniversity}
+              onSubmit={handleUpdateDepartment}
               initialValues={initialValues}
               formSubmit="Update"
-              imagePreview={imagePreview}
-              setImagePreview={setImagePreview}
             />
 
-            {/* Delete University */}
+            {/* Delete Department */}
             <DeleteModal
               Open={deleteModalIsOpen}
               close={handleDeleteButtonClick}
-              id={universityId}
-              handleDelete={handleDeleteUniversity}
-              isloading={deleteUniversityIsLoading}
+              id={departmentId}
+              handleDelete={handleDeleteDepartment}
+              isloading={deleteDepartmentIsLoading}
             />
           </div>
         </div>
@@ -413,4 +331,4 @@ const AllUniversityForSuperAdmin = () => {
   );
 };
 
-export default AllUniversityForSuperAdmin;
+export default AllDepartmentForSuperAdmin;
