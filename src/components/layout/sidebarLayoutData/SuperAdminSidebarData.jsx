@@ -90,7 +90,7 @@ const SuperAdminSidebarData = () => {
               id: 'allcategory',
               label: 'All Category',
               icon: '',
-              link: '/super-admin',
+              link: '/super-admin/university-management/course-categories',
               parentId: 'uni-management',
             },
           ],

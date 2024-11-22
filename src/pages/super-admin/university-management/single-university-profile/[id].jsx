@@ -1,5 +1,6 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
+import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
 import classnames from 'classnames';
@@ -228,7 +229,7 @@ const SingleUniversityProfile = () => {
                     <UniversityProfileOverview headers={headers} />
                   )}
                   {activeTab === '2' && ''}
-                  {activeTab === '3' && ''}
+                  {activeTab === '3' && <CourseCategories headers={headers} />}
                   {activeTab === '4' && ''}
                   {activeTab === '5' && ''}
                 </div>
