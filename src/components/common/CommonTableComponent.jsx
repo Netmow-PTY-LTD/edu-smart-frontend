@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { CardFooter } from 'reactstrap';
 import Pagination from './Pagination';
 
@@ -24,8 +23,8 @@ const CommonTableComponent = ({
           <thead className="fs-2 bg-light">
             <tr>
               {headers?.length > 0 &&
-                headers.map((header, idx) => (
-                  <th key={idx} scope="col">
+                headers.map((header) => (
+                  <th key={header.key || header.title} scope="col">
                     {header.title}
                   </th>
                 ))}
@@ -35,12 +34,12 @@ const CommonTableComponent = ({
           {/* Table Data */}
           <tbody>
             {paginatedData.length > 0 ? (
-              paginatedData.map((item, key) => (
-                <tr key={key}>
-                  {headers.map((header, idx) => (
-                    <td key={idx}>
+              paginatedData.map((item, rowIndex) => (
+                <tr key={item._id || rowIndex}>
+                  {headers.map((header) => (
+                    <td key={header.key}>
                       {header.render
-                        ? header.render(item)
+                        ? header.render(item, rowIndex)
                         : item[header.key] || '-'}
                     </td>
                   ))}

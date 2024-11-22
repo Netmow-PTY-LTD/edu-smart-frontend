@@ -1,10 +1,12 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
+import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
 import classnames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
   Col,
@@ -20,7 +22,10 @@ import {
 } from 'reactstrap';
 
 const SingleUniversityProfile = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('1');
+
+  const university_id = router.query.id;
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -112,6 +117,8 @@ const SingleUniversityProfile = () => {
       ),
     },
   ];
+
+  console.log(university_id);
 
   return (
     <>
@@ -227,7 +234,9 @@ const SingleUniversityProfile = () => {
                   {activeTab === '1' && (
                     <UniversityProfileOverview headers={headers} />
                   )}
-                  {activeTab === '2' && ''}
+                  {activeTab === '2' && (
+                    <AllDepartmentForSuperAdmin university_id={university_id} />
+                  )}
                   {activeTab === '3' && ''}
                   {activeTab === '4' && ''}
                   {activeTab === '5' && ''}
