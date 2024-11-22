@@ -18,7 +18,7 @@ const TextArea = ({ name, label, ...props }) => {
         rows="12"
       />
 
-      <ErrorMessage name={name} component="div" className="text-danger" />
+      <ErrorMessage name={name} component="div" style={{ color: 'red' }} />
     </div>
   );
 };

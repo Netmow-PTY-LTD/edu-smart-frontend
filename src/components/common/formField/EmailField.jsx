@@ -17,7 +17,7 @@ const EmailField = ({ name, label, ...props }) => {
         placeholder="Enter your email"
       />
       {/* Show validation error if it exists */}
-      <ErrorMessage name={name} component="div" className="text-danger" />
+      <ErrorMessage name={name} component="div" style={{ color: 'red' }} />
     </div>
   );
 };
