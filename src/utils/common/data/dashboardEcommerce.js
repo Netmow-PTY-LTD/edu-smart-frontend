@@ -19,6 +19,10 @@ import avatar3 from '../../../../public/assets/images/users/avatar-3.jpg';
 import avatar4 from '../../../../public/assets/images/users/avatar-4.jpg';
 import avatar6 from '../../../../public/assets/images/users/avatar-6.jpg';
 
+const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
+const teamDummyImage = '/assets/images/users/multi-user.jpg';
+const profileBg = '/assets/images/profile_bg.jpg';
+
 const ecomWidgets = [
   {
     id: 1,
@@ -302,9 +306,6 @@ const guardianProfileData = [
     pathName: '/guardian/invoices-for-guardian',
   },
 ];
-
-const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
-const teamDummyImage = '/assets/images/users/multi-user.jpg';
 
 const faqOptionsData = [
   {

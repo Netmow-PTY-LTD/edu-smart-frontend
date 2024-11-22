@@ -13,11 +13,6 @@ export const universityService = createApi({
     },
   }),
   endpoints: (builder) => ({
-    healthCheck: builder.query({
-      query: () => ({
-        url: '/',
-      }),
-    }),
     addUniversity: builder.mutation({
       query: (body) => ({
         url: '/university',

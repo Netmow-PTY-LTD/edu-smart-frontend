@@ -15,7 +15,7 @@ const TextArea = ({ name, label, ...props }) => {
         name={name}
         className="form-control"
         placeholder={`Enter your ${name}`}
-        rows="8"
+        rows="12"
       />
 
       <ErrorMessage name={name} component="div" className="text-danger" />
