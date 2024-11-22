@@ -1,50 +1,73 @@
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
-import CountableCard from '@/components/common/alldashboardCommon/CountableCard';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 const UniversityProfileOverview = ({
-  data,
-  seasonalGamesNumber,
-  specialEventsNUmber,
-  invoicesNumber,
+  profileData,
   headers,
+  allDepartmentData,
 }) => {
+  const [currentPage, setCurrentPage] = useState(0);
   return (
-    <Row className="grid g-5 ">
-      <Col xxl={3}>
-        <AllOverviewInfoCard data={data} />
-      </Col>
-      <Col xl={9}>
-        <CountableCard
-          data={data}
-          userInfoData={'userInfoData'}
-          seasonalGamesNumber={seasonalGamesNumber}
-          specialEventsNUmber={specialEventsNUmber}
-          invoicesNumber={invoicesNumber}
-        />
-
-        <div className="mt-5">
-          <Card>
-            <CardHeader></CardHeader>
-            <CardBody>
-              {/* {userInfoData?.role === 'admin' ? ( */}
-              <CommonTableComponent
-                headers={headers}
-                emptyMessage="No Data found yet."
-              />
-              {/* ) : (
-          ''
-        )} */}
-            </CardBody>
-          </Card>
-        </div>
-        <Row xxl={12} className="g-5">
-          <Col xxl={12}>{'userInfoData'?.role === 'player' ? '' : ''}</Col>
-        </Row>
-      </Col>
-    </Row>
+    <>
+      <Row className="grid g-5 pb-2">
+        <Col xxl={3}>
+          <AllOverviewInfoCard data={profileData} />
+        </Col>
+        <Col xl={9} className="">
+          <Row className="g-5">
+            <Col xl={12}>
+              <div>
+                <Card>
+                  <CardHeader className="fs-2 fw-semibold">
+                    All Department
+                  </CardHeader>
+                  <CardBody>
+                    <CommonTableComponent
+                      headers={headers}
+                      data={allDepartmentData ? allDepartmentData : []}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      perPageData={5}
+                      emptyMessage="No Data found yet."
+                    />
+                  </CardBody>
+                </Card>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row className="g-5">
+        <Col xl={6}>
+          <div>
+            <Card>
+              <CardHeader></CardHeader>
+              <CardBody>
+                <CommonTableComponent
+                  headers={headers}
+                  emptyMessage="No Data found yet."
+                />
+              </CardBody>
+            </Card>
+          </div>
+        </Col>
+        <Col xl={6}>
+          <div>
+            <Card>
+              <CardHeader></CardHeader>
+              <CardBody>
+                <CommonTableComponent
+                  headers={headers}
+                  emptyMessage="No Data found yet."
+                />
+              </CardBody>
+            </Card>
+          </div>
+        </Col>
+      </Row>
+    </>
   );
 };
 

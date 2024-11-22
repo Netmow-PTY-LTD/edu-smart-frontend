@@ -33,7 +33,8 @@ const AllUniversityForSuperAdmin = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [universityId, setUniversityId] = useState(null);
+  const [universityIdForEdit, setUniversityIdForEdit] = useState(null);
+  const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   const perPageData = 10;
@@ -94,10 +95,12 @@ const AllUniversityForSuperAdmin = () => {
   ] = useDeleteUniversityMutation();
 
   useEffect(() => {
-    if (getUniversityData?.data && universityId) {
+    if (getUniversityData?.data && universityIdForEdit) {
       const getSingleUniversityData =
         getUniversityData?.data?.length > 0 &&
-        getUniversityData?.data.find((item) => item?._id === universityId);
+        getUniversityData?.data.find(
+          (item) => item?._id === universityIdForEdit
+        );
 
       const fetchData = async () => {
         try {
@@ -126,7 +129,7 @@ const AllUniversityForSuperAdmin = () => {
 
       fetchData();
     }
-  }, [getUniversityData?.data, universityId]);
+  }, [getUniversityData?.data, universityIdForEdit]);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -168,13 +171,13 @@ const AllUniversityForSuperAdmin = () => {
   };
 
   const handleEditButtonClick = (itemId) => {
-    setUniversityId(itemId);
+    setUniversityIdForEdit(itemId);
   };
 
   const handleEditModalClose = () => {
     // getSingleUniversityRefetch();
     setImagePreview(null);
-    setUniversityId(null);
+    setUniversityIdForEdit(null);
     setInitialValues({
       name: '',
       address_line_1: '',
@@ -195,7 +198,7 @@ const AllUniversityForSuperAdmin = () => {
 
     const finalData = {
       ...values,
-      id: universityId,
+      id: universityIdForEdit,
     };
 
     try {
@@ -218,7 +221,7 @@ const AllUniversityForSuperAdmin = () => {
   };
 
   const handleDeleteButtonClick = (itemId) => {
-    setUniversityId(itemId);
+    setUniversityIdForDelete(itemId);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
@@ -315,6 +318,15 @@ const AllUniversityForSuperAdmin = () => {
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu dropdown-menu-end">
             <DropdownItem>
+              <Link
+                href={`/super-admin/university-management/single-university-profile/${item?._id}`}
+                className="text-primary"
+              >
+                <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
+                Manage
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
               <div
                 onClick={() => handleEditButtonClick(item?._id)}
                 className="text-primary"
@@ -405,7 +417,7 @@ const AllUniversityForSuperAdmin = () => {
             <DeleteModal
               Open={deleteModalIsOpen}
               close={handleDeleteButtonClick}
-              id={universityId}
+              id={universityIdForDelete}
               handleDelete={handleDeleteUniversity}
               isloading={deleteUniversityIsLoading}
             />

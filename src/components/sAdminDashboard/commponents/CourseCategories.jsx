@@ -36,6 +36,8 @@ const AllCategoriesForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [categoryId, setCategoryId] = useState(null);
+  const [universityId, setUniversityId] = useState(null);
+  const [departmentId, setDepartmentId] = useState(null);
 
   const perPageData = 10;
 

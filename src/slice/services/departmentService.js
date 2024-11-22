@@ -17,7 +17,9 @@ export const departmentService = createApi({
     addDepartment: builder.mutation({
       query: (body) => {
         const id =
-          body instanceof FormData ? body.get('university_id') : body.id;
+          body instanceof FormData
+            ? body.get('university_id')
+            : body.university_id;
         return {
           url: `/${id}/department`,
           method: 'POST',
