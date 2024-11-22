@@ -32,7 +32,7 @@ const SingleUniversityProfile = () => {
     error: getDepartmentError,
     isLoading: getDepartmentIsLoading,
     refetch: getDepartmentRefetch,
-  } = useGetDepartmentQuery();
+  } = useGetDepartmentQuery(university_id, { skip: !university_id });
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {

@@ -55,7 +55,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
     error: getDepartmentError,
     isLoading: getDepartmentIsLoading,
     refetch: getDepartmentRefetch,
-  } = useGetDepartmentQuery();
+  } = useGetDepartmentQuery(university_id, { skip: !university_id });
 
   // const { data: getSingleDepartmentData, refetch: getSingleDepartmentRefetch } =
   //   useGetSingleDepartmentQuery(departmentIdForEdit, {
