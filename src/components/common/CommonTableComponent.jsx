@@ -13,8 +13,8 @@ const CommonTableComponent = ({
 }) => {
   // Pagination logic
   const startIdx = currentPage * perPageData;
-  const endIdx = Math.min((currentPage + 1) * perPageData, data.length);
-  const paginatedData = data.slice(startIdx, endIdx);
+  const endIdx = Math.min((currentPage + 1) * perPageData, data?.length);
+  const paginatedData = data?.length > 0 && data.slice(startIdx, endIdx);
 
   return (
     <div>
@@ -23,11 +23,12 @@ const CommonTableComponent = ({
           {/* Table Headers */}
           <thead className="fs-2 bg-light">
             <tr>
-              {headers.map((header, idx) => (
-                <th key={idx} scope="col">
-                  {header.title}
-                </th>
-              ))}
+              {headers?.length > 0 &&
+                headers.map((header, idx) => (
+                  <th key={idx} scope="col">
+                    {header.title}
+                  </th>
+                ))}
             </tr>
           </thead>
 
@@ -47,7 +48,7 @@ const CommonTableComponent = ({
               ))
             ) : (
               <tr>
-                <td colSpan={headers.length} className="text-center">
+                <td colSpan={headers?.length} className="text-center">
                   {emptyMessage}
                 </td>
               </tr>

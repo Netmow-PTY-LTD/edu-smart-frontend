@@ -80,10 +80,10 @@ const SuperAdminSidebarData = () => {
               parentId: 'uni-management',
             },
             {
-              id: 'allcourse',
-              label: 'All Course',
+              id: 'alldepartment',
+              label: 'All Department',
               icon: '',
-              link: '/super-admin',
+              link: '/super-admin/university-management/all-department',
               parentId: 'uni-management',
             },
             {
