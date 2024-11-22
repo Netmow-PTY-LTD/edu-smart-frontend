@@ -248,6 +248,7 @@ const SingleUniversityProfile = () => {
                     )}
                     {activeTab === '4' && (
                       <AllCourseForSuperAdmin
+                        university_id={university_id}
                         allDepartmentData={getDepartmentData?.data}
                       />
                     )}

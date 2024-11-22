@@ -27,12 +27,9 @@ export const courseService = createApi({
       },
     }),
     getCourse: builder.query({
-      query: (idObj) => {
-        const university_id = idObj?.university_id;
-        const department_id = idObj?.department_id;
-        const category_id = idObj?.category_id;
+      query: (university_id) => {
         return {
-          url: `/${university_id}/department/${department_id}/cactegory/${category_id}/course`,
+          url: `/${university_id}/course`,
           method: 'GET',
         };
       },
