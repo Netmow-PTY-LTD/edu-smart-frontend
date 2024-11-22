@@ -63,7 +63,7 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
     error: getCourseError,
     isLoading: getCourseIsLoading,
     refetch: getCourseRefetch,
-  } = useGetCourseQuery();
+  } = useGetCourseQuery(university_id, { skip: !university_id });
 
   // const { data: getSingleCourseData, refetch: getSingleCourseRefetch } =
   //   useGetSingleCourseQuery(courseIdForEdit, {
@@ -88,8 +88,6 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
       isLoading: deleteCourseIsLoading,
     },
   ] = useDeleteCourseMutation();
-
-  console.log(getCourseData);
 
   useEffect(() => {
     const allDept =
@@ -240,6 +238,8 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
     getCourseData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  console.log(isfilteredData);
 
   // Define table headers with custom render functions
   const headers = [
