@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const courseCategoriesService = createApi({
-  reducerPath: 'departmentService',
+  reducerPath: 'courseCategoriesService',
   baseQuery: fetchBaseQuery({
     baseUrl:
       'https://edu-smart-backend-3n7b.onrender.com/api/v1/super/university',
