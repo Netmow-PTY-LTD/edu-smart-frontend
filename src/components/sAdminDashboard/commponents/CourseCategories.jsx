@@ -2,20 +2,14 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import Layout from '@/components/layout';
 import CourseCategoryModalForm from '@/components/sAdminDashboard/modals/CourseCategoriesModalForm';
-import DepartmentModalForm from '@/components/sAdminDashboard/modals/DepartmentModalForm';
 import {
   useAddCourseCategoryMutation,
+  useDeleteCourseCategoryMutation,
   useGetAllCourseCategoriesQuery,
+  useUpdateCourseCategoryMutation,
 } from '@/slice/services/courseCategoriesService';
 
-import {
-  useAddDepartmentMutation,
-  useDeleteDepartmentMutation,
-  useGetDepartmentQuery,
-  useUpdateDepartmentMutation,
-} from '@/slice/services/departmentService';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -29,15 +23,15 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllCategoriesForSuperAdmin = () => {
+const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [categoryId, setCategoryId] = useState(null);
-  const [universityId, setUniversityId] = useState(null);
-  const [departmentId, setDepartmentId] = useState(null);
+  const [categoryIdForEdit, setCategoryIdForEdit] = useState(null);
+  const [categoryIdForDelete, setCategoryIdForDelete] = useState(null);
+  const [allDepartmentName, setAllDepartmentName] = useState(null);
 
   const perPageData = 10;
 
@@ -45,6 +39,7 @@ const AllCategoriesForSuperAdmin = () => {
   const [initialValues, setInitialValues] = useState({
     name: '',
     description: '',
+    department: '',
   });
 
   const [
@@ -62,43 +57,67 @@ const AllCategoriesForSuperAdmin = () => {
     error: getAllCategoriesError,
     isLoading: getAllCategoriesIsLoading,
     refetch: getAllCategoriesRefetch,
-  } = useGetAllCourseCategoriesQuery();
+  } = useGetAllCourseCategoriesQuery(university_id, { skip: !university_id });
 
-  // const { data: getSingleDepartmentData, refetch: getSingleDepartmentRefetch } =
-  //   useGetSingleDepartmentQuery(departmentId, {
+  // const { data: getSingleCategoryData, refetch: getSingleCategoryRefetch } =
+  //   useGetSingleCategoryQuery(departmentId, {
   //     skip: !departmentId,
   //   });
 
   const [
-    updateDepartment,
+    updateCategory,
     {
-      data: editDepartmentData,
-      error: editDepartmentError,
-      isLoading: editDepartmentIsLoading,
-      isSuccess: editDepartmentIsSuccess,
+      data: editCategoryData,
+      error: editCategoryError,
+      isLoading: editCategoryIsLoading,
+      isSuccess: editCategoryIsSuccess,
     },
-  ] = useUpdateDepartmentMutation();
+  ] = useUpdateCourseCategoryMutation();
 
   const [
-    deleteDepartment,
+    deleteCategory,
     {
-      data: deleteDepartmentData,
-      error: deleteDepartmentError,
-      isLoading: deleteDepartmentIsLoading,
+      data: deleteCategoryData,
+      error: deleteCategoryError,
+      isLoading: deleteCategoryIsLoading,
     },
-  ] = useDeleteDepartmentMutation();
+  ] = useDeleteCourseCategoryMutation();
 
   useEffect(() => {
-    if (getAllCategoriesData?.data && categoryId) {
+    const allDept =
+      allDepartmentData?.length > 0 &&
+      allDepartmentData.map((dept) => ({
+        label: dept?.name,
+        value: dept?._id,
+      }));
+    console.log(allDept);
+    setAllDepartmentName(allDept);
+  }, [allDepartmentData]);
+
+  console.log(allDepartmentName);
+
+  useEffect(() => {
+    if (getAllCategoriesData?.data && categoryIdForEdit) {
       const getSingleCategoryData =
         getAllCategoriesData?.data?.length > 0 &&
-        getAllCategoriesData?.data.find((item) => item?._id === categoryId);
+        getAllCategoriesData?.data.find(
+          (item) => item?._id === categoryIdForEdit
+        );
+
+      console.log(getSingleCategoryData);
 
       const fetchData = async () => {
         try {
           setInitialValues({
             name: getSingleCategoryData?.name || '',
             description: getSingleCategoryData?.description || '',
+            department: getSingleCategoryData?.department?._id
+              ? {
+                  label: getSingleCategoryData?.department?.name,
+                  value: getSingleCategoryData?.department?._id,
+                }
+              : // getSingleCategoryData?.department?._id
+                '' || '',
           });
           setEditModalIsOpen(true);
         } catch (error) {
@@ -108,7 +127,9 @@ const AllCategoriesForSuperAdmin = () => {
 
       fetchData();
     }
-  }, [getAllCategoriesData?.data, categoryId]);
+  }, [getAllCategoriesData?.data, categoryIdForEdit]);
+
+  console.log(initialValues);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -116,6 +137,7 @@ const AllCategoriesForSuperAdmin = () => {
       .max(50, 'maximum use 50 letters')
       .required('Name is required'),
     description: Yup.string().required('description is required'),
+    department: Yup.string().required('department is required'),
   });
 
   // Handle form submission
@@ -123,13 +145,12 @@ const AllCategoriesForSuperAdmin = () => {
     setSubmitting(true);
 
     console.log(values);
+
     try {
-      const finalData = new FormData();
-      Object.entries(values).forEach(([key, value]) => {
-        finalData.append(key, value);
-      });
-      //console.log(finalData);
-      const result = await addCourseCategory(finalData).unwrap();
+      const result = await addCourseCategory({
+        ...values,
+        university_id: university_id,
+      }).unwrap();
       if (result) {
         toast.success(result?.message);
         getAllCategoriesRefetch();
@@ -144,15 +165,16 @@ const AllCategoriesForSuperAdmin = () => {
   };
 
   const handleEditButtonClick = (itemId) => {
-    setCategoryId(itemId);
+    setCategoryIdForEdit(itemId);
   };
 
   const handleEditModalClose = () => {
-    // getSingleDepartmentRefetch();
-    setCategoryId(null);
+    // getSingleCategoryRefetch();
+    setCategoryIdForEdit(null);
     setInitialValues({
       name: '',
       description: '',
+      department: '',
     });
     setEditModalIsOpen(false);
   };
@@ -162,19 +184,16 @@ const AllCategoriesForSuperAdmin = () => {
 
     const finalData = {
       ...values,
-      id: categoryId,
+      id: categoryIdForEdit,
     };
 
     try {
-      const editedData = new FormData();
-      Object.entries(finalData).forEach(([key, value]) => {
-        editedData.append(key, value);
-      });
-      const result = await updateDepartment(editedData).unwrap();
+      const result = await updateCategory(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
         getAllCategoriesRefetch();
         handleEditModalClose();
+        setCategoryIdForEdit(null);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -185,13 +204,13 @@ const AllCategoriesForSuperAdmin = () => {
   };
 
   const handleDeleteButtonClick = (itemId) => {
-    setCategoryId(itemId);
+    setCategoryIdForDelete(itemId);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
   const handleDeleteCategory = async (id) => {
     try {
-      const result = await deleteDepartment(id).unwrap();
+      const result = await deleteCategory(id).unwrap();
       if (result) {
         toast.success(result?.message);
         getAllCategoriesRefetch();
@@ -220,8 +239,8 @@ const AllCategoriesForSuperAdmin = () => {
     {
       title: 'SN',
       key: 'key',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">{item + 1}</span>
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
 
@@ -232,7 +251,7 @@ const AllCategoriesForSuperAdmin = () => {
       title: 'Action',
       key: 'actions',
       render: (item) => (
-        <UncontrolledDropdown className="card-header-dropdown">
+        <UncontrolledDropdown direction="end">
           <DropdownToggle
             tag="a"
             className="text-reset dropdown-btn"
@@ -242,7 +261,7 @@ const AllCategoriesForSuperAdmin = () => {
               <i className="ri-more-fill align-middle"></i>
             </span>
           </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+          <DropdownMenu className="ms-2">
             <DropdownItem>
               <div
                 onClick={() => handleEditButtonClick(item?._id)}
@@ -278,7 +297,7 @@ const AllCategoriesForSuperAdmin = () => {
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
                 <button
-                  className="button px-3 py-2 text-white"
+                  className="button px-3 py-2 "
                   onClick={() => setAddModalIsOpen(!addModalIsOpen)}
                 >
                   Add New
@@ -293,18 +312,8 @@ const AllCategoriesForSuperAdmin = () => {
                   initialValues={initialValues}
                   validationSchema={validationSchema}
                   formSubmit={'Submit'}
+                  allDepartmentName={allDepartmentName}
                 />
-                {/* <DepartmentModalForm
-                    formHeader={'Add New'}
-                    isOpen={addModalIsOpen}
-                    onClose={() => {
-                      setAddModalIsOpen(!addModalIsOpen);
-                    }}
-                    onSubmit={handleSubmit}
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    formSubmit={'Submit'}
-                  /> */}
                 <SearchComponent
                   searchTerm={searchTerm}
                   handleSearchChange={handleSearchChange}
@@ -314,7 +323,7 @@ const AllCategoriesForSuperAdmin = () => {
               <CardBody>
                 <CommonTableComponent
                   headers={headers}
-                  data={[]}
+                  data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
@@ -332,27 +341,19 @@ const AllCategoriesForSuperAdmin = () => {
             formHeader={'Update Data'}
             isOpen={editModalIsOpen}
             onClose={handleEditModalClose}
-            onSubmit={handleSubmit}
+            onSubmit={handleUpdateCategory}
             initialValues={initialValues}
-            validationSchema={validationSchema}
             formSubmit={'Update'}
+            allDepartmentName={allDepartmentName}
           />
-          {/* <DepartmentModalForm
-              formHeader="Update Data"
-              isOpen={editModalIsOpen}
-              onClose={handleEditModalClose}
-              onSubmit={handleUpdateCategory}
-              initialValues={initialValues}
-              formSubmit="Update"
-            /> */}
 
-          {/* Delete Department */}
+          {/* Delete Category */}
           <DeleteModal
             Open={deleteModalIsOpen}
             close={handleDeleteButtonClick}
-            id={categoryId}
+            id={categoryIdForDelete}
             handleDelete={handleDeleteCategory}
-            isloading={deleteDepartmentIsLoading}
+            isloading={deleteCategoryIsLoading}
           />
         </div>
       </div>

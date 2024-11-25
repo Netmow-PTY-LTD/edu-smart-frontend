@@ -2,8 +2,7 @@ import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import Select from 'react-select';
 
-const SingleSelectField = ({ name, label, options, ...props }) => {
-  console.log(options);
+const CountrySelectField = ({ name, label, options, ...props }) => {
   return (
     <div>
       <label htmlFor={name} className="form-label">
@@ -13,11 +12,11 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
       <Field name={name}>
         {({ field, form }) => {
           const selectedOption = options
-            ? options?.find((option) => {
-                option.value === field.value.value
-                  ? option.value
-                  : option.value === field.value.label;
-              })
+            ? options.find((option) =>
+                option.label === field.label
+                  ? option.label === field.label
+                  : option.label === field.value
+              )
             : null;
 
           console.log(selectedOption);
@@ -25,7 +24,7 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
           const handleChange = (selectedOption) => {
             form.setFieldValue(
               name,
-              selectedOption ? selectedOption.value : null
+              selectedOption ? selectedOption.label : null
             );
           };
 
@@ -49,4 +48,4 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
   );
 };
 
-export default SingleSelectField;
+export default CountrySelectField;

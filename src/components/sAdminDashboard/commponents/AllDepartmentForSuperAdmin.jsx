@@ -221,7 +221,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       key: 'categories',
       render: (item, index) =>
         item?.categories?.length > 0
-          ? item.map((category) => {
+          ? item?.categories?.map((category) => {
               <span className="d-flex flex-column text-capitalize">
                 {category}
               </span>;

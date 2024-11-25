@@ -1,9 +1,9 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
+import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { useGetDepartmentQuery } from '@/slice/services/departmentService';
 import { useGetSingleUniversityQuery } from '@/slice/services/universityService';
@@ -55,7 +55,7 @@ const SingleUniversityProfile = () => {
       key: 'categories',
       render: (item, index) =>
         item?.categories?.length > 0
-          ? item.map((category) => {
+          ? item?.categories?.map((category) => {
               <span className="d-flex flex-column text-capitalize">
                 {category}
               </span>;
@@ -129,7 +129,7 @@ const SingleUniversityProfile = () => {
               <Row className="mt-5 px-3">
                 <Col lg={12} className="mt-5">
                   <div>
-                    <div className="d-flex">
+                    <div className="d-flex mb-5">
                       <Nav
                         pills
                         className="animation-nav profile-nav gap-4 gap-lg-4 flex-grow-1"
@@ -217,7 +217,7 @@ const SingleUniversityProfile = () => {
                           </NavLink>
                         </NavItem>
                       </Nav>
-                      <div className="d-flex gap-3 flex-shrink-1 pb-5">
+                      {/* <div className="d-flex gap-3 flex-shrink-1 pb-5 me-3">
                         <div
                           type="button"
                           // onClick={() => togEditModal(mainId)}
@@ -226,7 +226,7 @@ const SingleUniversityProfile = () => {
                           <i className="ri-edit-box-line align-bottom"></i> Edit
                           Profile
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     {activeTab === '1' && (
                       <UniversityProfileOverview
@@ -244,6 +244,7 @@ const SingleUniversityProfile = () => {
                       <CourseCategories
                         headers={headers}
                         university_id={university_id}
+                        allDepartmentData={getDepartmentData?.data}
                       />
                     )}
                     {activeTab === '4' && (

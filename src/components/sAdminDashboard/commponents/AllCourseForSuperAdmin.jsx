@@ -176,6 +176,7 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
     setInitialValues({
       name: '',
       description: '',
+      department: '',
     });
     setEditModalIsOpen(false);
   };
