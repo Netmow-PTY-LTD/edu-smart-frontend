@@ -1,6 +1,7 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
@@ -239,7 +240,12 @@ const SingleUniversityProfile = () => {
                         university_id={university_id}
                       />
                     )}
-                    {activeTab === '3' && ''}
+                    {activeTab === '3' && (
+                      <CourseCategories
+                        headers={headers}
+                        university_id={university_id}
+                      />
+                    )}
                     {activeTab === '4' && (
                       <AllCourseForSuperAdmin
                         university_id={university_id}
