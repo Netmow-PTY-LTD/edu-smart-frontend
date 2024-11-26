@@ -6,7 +6,9 @@ import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 const UniversityProfileOverview = ({
   profileData,
   headers,
+  categoryHeaders,
   allDepartmentData,
+  allCategoryData,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   return (
@@ -46,7 +48,11 @@ const UniversityProfileOverview = ({
               <CardHeader></CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={headers}
+                  headers={categoryHeaders}
+                  data={allCategoryData ? allCategoryData : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={5}
                   emptyMessage="No Data found yet."
                 />
               </CardBody>

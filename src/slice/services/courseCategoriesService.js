@@ -53,27 +53,25 @@ export const courseCategoriesService = createApi({
       },
     }),
     updateCourseCategory: builder.mutation({
-      query: (data) => {
-        const id = data.id;
-        const university_id =
-          data instanceof FormData ? data.get('university_id') : data.id;
-        const department_id =
-          data instanceof FormData ? data.get('department_id') : data.id;
+      query: (body) => {
+        const category_id = body.category_id;
+        const university_id = body.university_id;
+        const department_id = body.department_id;
 
         return {
-          url: `/${university_id}/department/${department_id}/category/${id}`,
+          url: `/${university_id}/department/${department_id}/category/${category_id}`,
           method: 'PATCH',
-          data,
+          body,
         };
       },
     }),
     deleteCourseCategory: builder.mutation({
       query: (data) => {
-        const id = data?.id;
+        const category_id = data?.category_id;
         const university_id = data?.university_id;
-        const department_id = data?.department_id;
+
         return {
-          url: `/${university_id}/department/${department_id}/category/${id}`,
+          url: `/${university_id}/category/${category_id}`,
           method: 'DELETE',
         };
       },

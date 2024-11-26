@@ -3,7 +3,6 @@ import React from 'react';
 import Select from 'react-select';
 
 const SingleSelectField = ({ name, label, options, ...props }) => {
-  console.log(options);
   return (
     <div>
       <label htmlFor={name} className="form-label">
@@ -12,17 +11,19 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
 
       <Field name={name}>
         {({ field, form }) => {
-          const selectedOption = options
-            ? options?.find((option) => {
-                option.value === field.value.value
-                  ? option.value
-                  : option.value === field.value.label;
-              })
-            : null;
+          const selectedOption =
+            options?.length > 0
+              ? options?.find((option) =>
+                  option.value === field.value.value
+                    ? option.value === field.value.value
+                    : option.value === field.value.label
+                )
+              : null;
 
           console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
+            console.log(selectedOption);
             form.setFieldValue(
               name,
               selectedOption ? selectedOption.value : null

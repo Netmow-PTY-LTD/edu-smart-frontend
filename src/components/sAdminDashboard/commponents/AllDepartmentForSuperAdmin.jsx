@@ -221,11 +221,11 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       key: 'categories',
       render: (item, index) =>
         item?.categories?.length > 0
-          ? item?.categories?.map((category) => {
-              <span className="d-flex flex-column text-capitalize">
-                {category}
-              </span>;
-            })
+          ? item?.categories?.map((category) => (
+              <span key={index} className="d-flex flex-column text-capitalize">
+                {category?.name}
+              </span>
+            ))
           : '-',
     },
     {
@@ -233,11 +233,11 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       key: 'courses',
       render: (item, index) =>
         item?.courses?.length > 0
-          ? item.map((course) => {
-              <span className="d-flex flex-column text-capitalize">
+          ? item.map((course) => (
+              <span key={index} className="d-flex flex-column text-capitalize">
                 {course}
-              </span>;
-            })
+              </span>
+            ))
           : '-',
     },
 

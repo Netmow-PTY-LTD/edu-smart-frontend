@@ -65,7 +65,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
   //   });
 
   const [
-    updateCategory,
+    updateCourseCategory,
     {
       data: editCategoryData,
       error: editCategoryError,
@@ -75,7 +75,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
   ] = useUpdateCourseCategoryMutation();
 
   const [
-    deleteCategory,
+    deleteCourseCategory,
     {
       data: deleteCategoryData,
       error: deleteCategoryError,
@@ -86,25 +86,24 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
   useEffect(() => {
     const allDept =
       allDepartmentData?.length > 0 &&
-      allDepartmentData.map((dept) => ({
-        label: dept?.name,
-        value: dept?._id,
-      }));
-    console.log(allDept);
-    setAllDepartmentName(allDept);
-  }, [allDepartmentData]);
+      allDepartmentData.map((dept) => {
+        return {
+          label: dept?.name,
+          value: dept?._id,
+        };
+      });
 
-  console.log(allDepartmentName);
+    setAllDepartmentName(allDept ? allDept : []);
+  }, [allDepartmentData]);
 
   useEffect(() => {
     if (getAllCategoriesData?.data && categoryIdForEdit) {
       const getSingleCategoryData =
-        getAllCategoriesData?.data?.length > 0 &&
-        getAllCategoriesData?.data.find(
-          (item) => item?._id === categoryIdForEdit
-        );
-
-      console.log(getSingleCategoryData);
+        getAllCategoriesData?.data?.length > 0
+          ? getAllCategoriesData?.data.find(
+              (item) => item?._id === categoryIdForEdit
+            )
+          : [];
 
       const fetchData = async () => {
         try {
@@ -116,8 +115,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
                   label: getSingleCategoryData?.department?.name,
                   value: getSingleCategoryData?.department?._id,
                 }
-              : // getSingleCategoryData?.department?._id
-                '' || '',
+              : '' || '',
           });
           setEditModalIsOpen(true);
         } catch (error) {
@@ -128,8 +126,6 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
       fetchData();
     }
   }, [getAllCategoriesData?.data, categoryIdForEdit]);
-
-  console.log(initialValues);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -143,8 +139,6 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-    console.log(values);
 
     try {
       const result = await addCourseCategory({
@@ -183,12 +177,17 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
     setSubmitting(true);
 
     const finalData = {
-      ...values,
-      id: categoryIdForEdit,
+      name: values?.name,
+      description: values?.description,
+      department_id: values?.department?.value
+        ? values?.department?.value
+        : values?.department,
+      category_id: categoryIdForEdit,
+      university_id: university_id,
     };
 
     try {
-      const result = await updateCategory(finalData).unwrap();
+      const result = await updateCourseCategory(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
         getAllCategoriesRefetch();
@@ -210,7 +209,10 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
 
   const handleDeleteCategory = async (id) => {
     try {
-      const result = await deleteCategory(id).unwrap();
+      const result = await deleteCourseCategory({
+        university_id: university_id,
+        category_id: id,
+      }).unwrap();
       if (result) {
         toast.success(result?.message);
         getAllCategoriesRefetch();
@@ -218,7 +220,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
+      toast.error(errorMessage || 'An Error Occured');
     } finally {
       //
     }
@@ -244,7 +246,16 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
       ),
     },
 
-    { title: 'Course Category Name', key: 'name' },
+    { title: 'Course Category ', key: 'name' },
+    {
+      title: 'Department ',
+      key: 'department',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.department?.name}
+        </span>
+      ),
+    },
     { title: 'Description', key: 'description' },
 
     {

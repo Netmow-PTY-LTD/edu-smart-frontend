@@ -37,22 +37,11 @@ const CourseCategoryModalForm = ({
                   <TextField name="name" label="Course Category Name" />
                 </Col>
                 <Col xl={6}>
-                  {formSubmit === 'Update' ? (
-                    (console.log('check'),
-                    (
-                      <SingleSelectField
-                        name="department"
-                        label="Select Department"
-                        options={[initialValues?.department]}
-                      />
-                    ))
-                  ) : (
-                    <SingleSelectField
-                      name="department"
-                      label="Select Department"
-                      options={allDepartmentName}
-                    />
-                  )}
+                  <SingleSelectField
+                    name="department"
+                    label="Select Department"
+                    options={allDepartmentName}
+                  />
                 </Col>
                 <TextArea name="description" label="Description" />
               </Row>
