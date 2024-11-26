@@ -9438,7 +9438,10 @@ input.search-input::placeholder {
 
 .form-control,
 .form-select {
-  height: 48px;
+  border: 1px solid var(--color--secondary) !important;
+  border-radius: 1.2rem !important;
+  height: 4.8rem;
+  background-color: transparent !important;
 }
 
 @media (max-width: 1024px) {
@@ -9592,4 +9595,28 @@ input.search-input::placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.auth-page-content .card {
+  background-color: #e9f1fa;
+  border: 1px solid var(--color--secondary);
+  border-radius: 1rem;
+}
+
+.auth-page-content .form-check-input {
+  background-color: #e9f1fa;
+}
+
+.bg-primary-alt {
+  background-color: var(--color--primary) !important;
+}
+
+.text-secondary-alt {
+  color: var(--color--secondary) !important;
+}
+
+@media (max-width: 991px) {
+  .auth-one-bg {
+    display: none;
+  }
 }
