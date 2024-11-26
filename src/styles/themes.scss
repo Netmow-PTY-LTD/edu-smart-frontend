@@ -1,9 +1,9 @@
-@import "../../public/assets/scss/icons.scss";
-@import "../../public/assets/scss/config/default/bootstrap.scss";
-@import "../../public/assets/scss/config/default/app.scss";
-@import "../../public/assets/scss/config/default/custom.scss";
-@import "../../public/assets/scss/shepherd.css";
-@import "../../public/assets/scss/mermaid.min.css";
+@import '../../public/assets/scss/icons.scss';
+@import '../../public/assets/scss/config/default/bootstrap.scss';
+@import '../../public/assets/scss/config/default/app.scss';
+@import '../../public/assets/scss/config/default/custom.scss';
+@import '../../public/assets/scss/shepherd.css';
+@import '../../public/assets/scss/mermaid.min.css';
 
 .hover-black:hover {
   color: black;
@@ -52,7 +52,7 @@
 }
 .button:hover {
   background-color: var(--color--secondary);
-  color: var(--color--primary);
+  color: var(--color--primary) !important;
 }
 .qoute_color {
   color: var(--color--primary);
@@ -215,7 +215,7 @@ body.modal-open {
   height: 250px !important;
 }
 
-[data-layout="horizontal"] .chat-conversation {
+[data-layout='horizontal'] .chat-conversation {
   &.chatwidgets {
     height: 250px !important;
   }

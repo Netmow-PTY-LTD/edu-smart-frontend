@@ -30,12 +30,12 @@
 }
 
 .auth-one-bg {
-  // background-image: url('../../images/auth-one-bg.jpg');
+  background-image: url('../../images/bg-cover.png');
   background-position: center;
   background-size: cover;
 
   .bg-overlay-login {
-    background: linear-gradient(to right, #364574, #162a73);
+    //background: linear-gradient(to right, #364574, #162a73);
     opacity: 0.9;
     position: absolute;
     height: 100%;
@@ -44,7 +44,6 @@
     bottom: 0;
     left: 0;
     top: 0;
-  
   }
 }
 
@@ -103,10 +102,10 @@
 // Auth cover
 
 .auth-bg-cover {
-  background: $auth-bg-cover;
+  //background: $auth-bg-cover;
 
   > .bg-overlay {
-    background-image: url('../../images/cover-pattern.png');
+    //background-image: url('../../images/cover-pattern.png');
     background-position: center;
     background-size: cover;
     opacity: 1;
