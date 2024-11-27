@@ -1,6 +1,6 @@
+import CountrySelectField from '@/components/common/formField/CountrySelectField';
 import ImageField from '@/components/common/formField/ImageField';
 import NumberField from '@/components/common/formField/NumberField';
-import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
@@ -53,7 +53,7 @@ const UniversityModalForm = ({
                   <TextField name="state" label="State " />
                 </Col>
                 <Col xl={6}>
-                  <SingleSelectField
+                  <CountrySelectField
                     name="country"
                     label="Country"
                     options={options}

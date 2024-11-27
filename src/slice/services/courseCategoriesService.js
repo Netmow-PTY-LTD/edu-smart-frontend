@@ -15,26 +15,27 @@ export const courseCategoriesService = createApi({
   }),
   endpoints: (builder) => ({
     addCourseCategory: builder.mutation({
-      query: (data) => {
+      query: (body) => {
         const university_id =
-          data instanceof FormData ? data.get('university_id') : data.id;
+          body instanceof FormData
+            ? body.get('university_id')
+            : body.university_id;
         const department_id =
-          data instanceof FormData ? data.get('department_id') : data.id;
+          body instanceof FormData
+            ? body.get('department_id')
+            : body.department;
 
         return {
           url: `/${university_id}/department/${department_id}/category`,
           method: 'POST',
-          data,
+          body,
         };
       },
     }),
     getAllCourseCategories: builder.query({
-      query: (data) => {
-        const university_id = data?.university_id || '';
-        const department_id = data?.department_id || '';
-
+      query: (university_id) => {
         return {
-          url: `/${university_id}/department/${department_id}/category`,
+          url: `/${university_id}/category`,
           method: 'GET',
         };
       },
@@ -52,27 +53,25 @@ export const courseCategoriesService = createApi({
       },
     }),
     updateCourseCategory: builder.mutation({
-      query: (data) => {
-        const id = data.id;
-        const university_id =
-          data instanceof FormData ? data.get('university_id') : data.id;
-        const department_id =
-          data instanceof FormData ? data.get('department_id') : data.id;
+      query: (body) => {
+        const category_id = body.category_id;
+        const university_id = body.university_id;
+        const department_id = body.department_id;
 
         return {
-          url: `/${university_id}/department/${department_id}/category/${id}`,
+          url: `/${university_id}/department/${department_id}/category/${category_id}`,
           method: 'PATCH',
-          data,
+          body,
         };
       },
     }),
     deleteCourseCategory: builder.mutation({
       query: (data) => {
-        const id = data?.id;
+        const category_id = data?.category_id;
         const university_id = data?.university_id;
-        const department_id = data?.department_id;
+
         return {
-          url: `/${university_id}/department/${department_id}/category/${id}`,
+          url: `/${university_id}/category/${category_id}`,
           method: 'DELETE',
         };
       },

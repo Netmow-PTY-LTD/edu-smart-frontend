@@ -1,10 +1,12 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
+import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
+import { useGetAllCourseCategoriesQuery } from '@/slice/services/courseCategoriesService';
+import { useGetCourseQuery } from '@/slice/services/courseService';
 import { useGetDepartmentQuery } from '@/slice/services/departmentService';
 import { useGetSingleUniversityQuery } from '@/slice/services/universityService';
 import classnames from 'classnames';
@@ -34,6 +36,20 @@ const SingleUniversityProfile = () => {
     refetch: getDepartmentRefetch,
   } = useGetDepartmentQuery(university_id, { skip: !university_id });
 
+  const {
+    data: getAllCategoriesData,
+    error: getAllCategoriesError,
+    isLoading: getAllCategoriesIsLoading,
+    refetch: getAllCategoriesRefetch,
+  } = useGetAllCourseCategoriesQuery(university_id, { skip: !university_id });
+
+  const {
+    data: getCourseData,
+    error: getCourseError,
+    isLoading: getCourseIsLoading,
+    refetch: getCourseRefetch,
+  } = useGetCourseQuery(university_id, { skip: !university_id });
+
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
@@ -55,11 +71,11 @@ const SingleUniversityProfile = () => {
       key: 'categories',
       render: (item, index) =>
         item?.categories?.length > 0
-          ? item.map((category) => {
-              <span className="d-flex flex-column text-capitalize">
-                {category}
-              </span>;
-            })
+          ? item?.categories?.map((category) => (
+              <span key={index} className="d-flex flex-column text-capitalize">
+                {category?.name}
+              </span>
+            ))
           : '-',
     },
     {
@@ -67,55 +83,38 @@ const SingleUniversityProfile = () => {
       key: 'courses',
       render: (item, index) =>
         item?.courses?.length > 0
-          ? item.map((course) => {
-              <span className="d-flex flex-column text-capitalize">
+          ? item.map((course) => (
+              <span key={index} className="d-flex flex-column text-capitalize">
                 {course}
-              </span>;
-            })
+              </span>
+            ))
           : '-',
     },
 
     { title: 'Description', key: 'description' },
-
-    // {
-    //   title: 'Action',
-    //   key: 'actions',
-    //   render: (item) => (
-    //     <UncontrolledDropdown className="card-header-dropdown">
-    //       <DropdownToggle
-    //         tag="a"
-    //         className="text-reset dropdown-btn"
-    //         role="button"
-    //       >
-    //         <span className="button px-3">
-    //           <i className="ri-more-fill align-middle"></i>
-    //         </span>
-    //       </DropdownToggle>
-    //       <DropdownMenu className="dropdown-menu dropdown-menu-end">
-    //         <DropdownItem>
-    //           <div
-    //             onClick={() => handleEditButtonClick(item?._id)}
-    //             className="text-primary"
-    //           >
-    //             <i className="ri-pencil-fill align-start me-2 text-muted"></i>
-    //             Edit
-    //           </div>
-    //         </DropdownItem>
-    //         <DropdownItem>
-    //           <div
-    //             onClick={() => handleDeleteButtonClick(item._id)}
-    //             className="text-primary"
-    //           >
-    //             <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-    //             Delete
-    //           </div>
-    //         </DropdownItem>
-    //       </DropdownMenu>
-    //     </UncontrolledDropdown>
-    //   ),
-    // },
   ];
-  console.log(getDepartmentData);
+
+  const categoryHeaders = [
+    {
+      title: 'SN',
+      key: 'key',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    { title: 'Course Category ', key: 'name' },
+    {
+      title: 'Department ',
+      key: 'department',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.department?.name}
+        </span>
+      ),
+    },
+    { title: 'Description', key: 'description' },
+  ];
 
   return (
     <>
@@ -129,7 +128,7 @@ const SingleUniversityProfile = () => {
               <Row className="mt-5 px-3">
                 <Col lg={12} className="mt-5">
                   <div>
-                    <div className="d-flex">
+                    <div className="d-flex mb-5">
                       <Nav
                         pills
                         className="animation-nav profile-nav gap-4 gap-lg-4 flex-grow-1"
@@ -217,7 +216,7 @@ const SingleUniversityProfile = () => {
                           </NavLink>
                         </NavItem>
                       </Nav>
-                      <div className="d-flex gap-3 flex-shrink-1 pb-5">
+                      {/* <div className="d-flex gap-3 flex-shrink-1 pb-5 me-3">
                         <div
                           type="button"
                           // onClick={() => togEditModal(mainId)}
@@ -226,13 +225,15 @@ const SingleUniversityProfile = () => {
                           <i className="ri-edit-box-line align-bottom"></i> Edit
                           Profile
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     {activeTab === '1' && (
                       <UniversityProfileOverview
                         headers={headers}
+                        categoryHeaders={categoryHeaders}
                         profileData={getSingleUniversityData?.data}
                         allDepartmentData={getDepartmentData?.data}
+                        allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
                     {activeTab === '2' && (
@@ -242,14 +243,15 @@ const SingleUniversityProfile = () => {
                     )}
                     {activeTab === '3' && (
                       <CourseCategories
-                        headers={headers}
                         university_id={university_id}
+                        allDepartmentData={getDepartmentData?.data}
                       />
                     )}
                     {activeTab === '4' && (
                       <AllCourseForSuperAdmin
                         university_id={university_id}
                         allDepartmentData={getDepartmentData?.data}
+                        allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
                     {activeTab === '5' && ''}
