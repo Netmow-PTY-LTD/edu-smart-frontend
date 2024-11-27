@@ -38,7 +38,7 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
 
   return (
     <div>
-      <label htmlFor={field.name} className="form-label">
+      <label htmlFor={field.name} className="form-label fs-2">
         {label || 'Upload Images'}
       </label>
       <input

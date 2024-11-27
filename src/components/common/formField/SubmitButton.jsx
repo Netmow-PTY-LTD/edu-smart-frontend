@@ -9,20 +9,18 @@ const SubmitButton = ({
   ...props
 }) => {
   return (
-    <div className="hstack gap-2 justify-content-center mx-auto mt-5 mb-2">
-      <button
-        type="submit"
-        className={`button px-3 py-2 `}
-        disabled={isSubmitting}
-        {...props}
-      >
-        {isSubmitting ? (
-          <Loader />
-        ) : (
-          children || `${formSubmit ? formSubmit : ''}`
-        )}{' '}
-      </button>
-    </div>
+    <button
+      type="submit"
+      className={`button px-3 py-2 ${className}`}
+      disabled={isSubmitting}
+      {...props}
+    >
+      {isSubmitting ? (
+        <Loader />
+      ) : (
+        children || `${formSubmit ? formSubmit : ''}`
+      )}
+    </button>
   );
 };
 
