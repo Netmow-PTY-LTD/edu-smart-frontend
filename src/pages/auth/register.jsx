@@ -10,7 +10,10 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 
-import { useGenerateOtpMutation } from '@/slice/services/authService';
+import {
+  useAgentRegisterMutation,
+  useGenerateOtpMutation,
+} from '@/slice/services/authService';
 import { toast, ToastContainer } from 'react-toastify';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
@@ -26,6 +29,7 @@ const Register = () => {
     first_name: '',
     last_name: '',
     secondary_email: '',
+    organization_name: '',
     subdomain: '',
     phone: '',
     address_line_1: '',
@@ -38,6 +42,7 @@ const Register = () => {
   });
 
   const [generateOtp] = useGenerateOtpMutation();
+  const [agentRegister] = useAgentRegisterMutation();
 
   const initialStepValidationSchema = Yup.object({
     user_role: Yup.string().required('Please Select User First'),
@@ -85,11 +90,12 @@ const Register = () => {
     console.log(values);
 
     try {
-      const res = await generateOtp({ email: values?.email }).unwrap();
+      const res = await agentRegister({
+        ...values,
+        confirm_password: values?.password,
+      }).unwrap();
       if (res) {
-        setInitialValues(values);
         toast.success(res?.message);
-        setStep(step + 1);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;

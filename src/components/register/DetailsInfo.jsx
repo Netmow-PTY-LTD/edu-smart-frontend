@@ -50,13 +50,13 @@ const DetailsInfo = ({
                       <TextField name={'last_name'} label={'Last Name'} />
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={6}>
                       <EmailField
                         name={'secondary_email'}
                         label={'Secondary Email'}
                       />
                     </Col>
-                    <Col md={4}>
+                    <Col md={6}>
                       <TextField
                         name={'subdomain'}
                         label={
@@ -64,7 +64,13 @@ const DetailsInfo = ({
                         }
                       />
                     </Col>
-                    <Col md={4}>
+                    <Col md={6}>
+                      <TextField
+                        name={'organization_name'}
+                        label={'Organization Name )'}
+                      />
+                    </Col>
+                    <Col md={6}>
                       <CountrySelectField
                         name={'country'}
                         label={'Select Country'}
