@@ -18,17 +18,8 @@ const AllOverviewInfoCard = ({ data }) => {
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block">
-                      {data?.first_name + ' ' + data?.last_name}
+                      {data?.name ? data?.name : ''}
                     </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="ps-0" scope="row">
-                    Gender
-                  </th>
-                  <td className="text-muted text-wrap d-flex">
-                    <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">{data?.gender}</span>
                   </td>
                 </tr>
                 <tr>
@@ -40,12 +31,7 @@ const AllOverviewInfoCard = ({ data }) => {
                     <span className="d-inline-block">{data?.phone}</span>
                   </td>
                 </tr>
-                {/* <tr>
-                  <th className="ps-0" scope="row">
-                    Age
-                  </th>
-                  <td className="text-muted">{data?.age}</td>
-                </tr> */}
+
                 <tr>
                   <th className="ps-0" scope="row">
                     E-mail
@@ -115,46 +101,16 @@ const AllOverviewInfoCard = ({ data }) => {
                     </span>
                   </td>
                 </tr>
-                <tr>
-                  <th className="ps-0" scope="row">
-                    Height
-                  </th>
-                  <td className="text-muted text-wrap d-flex">
-                    <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">
-                      {data?.height === ' CM' ? '' : data?.height}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="ps-0" scope="row">
-                    Weight
-                  </th>
-                  <td className="text-muted text-wrap d-flex">
-                    <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">
-                      {data?.weight === ' KG' ? '' : data?.weight}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="ps-0" scope="row">
-                    Joining Date
-                  </th>
-                  <td className="text-muted text-wrap d-flex">
-                    <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">
-                      {new Date(data?.joining_date).toLocaleDateString()}
-                    </span>
-                  </td>
-                </tr>
+
                 <tr>
                   <th className="ps-0" scope="row">
                     Short Description
                   </th>
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">{data?.description}</span>
+                    <span className="d-inline-block">
+                      {data?.description ? data?.description : ''}
+                    </span>
                   </td>
                 </tr>
               </tbody>

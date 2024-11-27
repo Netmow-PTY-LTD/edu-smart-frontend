@@ -5,7 +5,7 @@ import React from 'react';
 const NumberField = ({ name, form, label, ...props }) => {
   return (
     <div>
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className="form-label fs-2">
         {label || 'Number'}
       </label>
       <Field

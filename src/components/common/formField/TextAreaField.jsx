@@ -4,7 +4,7 @@ import React from 'react';
 const TextArea = ({ name, label, ...props }) => {
   return (
     <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className="form-label fs-2">
         {label || 'Description'}
       </label>
 
@@ -18,7 +18,7 @@ const TextArea = ({ name, label, ...props }) => {
         rows="12"
       />
 
-      <ErrorMessage name={name} component="div" className="text-danger" />
+      <ErrorMessage name={name} component="div" style={{ color: 'red' }} />
     </div>
   );
 };

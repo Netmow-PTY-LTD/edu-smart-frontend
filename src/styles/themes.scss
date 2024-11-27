@@ -1,9 +1,9 @@
-@import "../../public/assets/scss/icons.scss";
-@import "../../public/assets/scss/config/default/bootstrap.scss";
-@import "../../public/assets/scss/config/default/app.scss";
-@import "../../public/assets/scss/config/default/custom.scss";
-@import "../../public/assets/scss/shepherd.css";
-@import "../../public/assets/scss/mermaid.min.css";
+@import '../../public/assets/scss/icons.scss';
+@import '../../public/assets/scss/config/default/bootstrap.scss';
+@import '../../public/assets/scss/config/default/app.scss';
+@import '../../public/assets/scss/config/default/custom.scss';
+@import '../../public/assets/scss/shepherd.css';
+@import '../../public/assets/scss/mermaid.min.css';
 
 .hover-black:hover {
   color: black;
@@ -52,7 +52,7 @@
 }
 .button:hover {
   background-color: var(--color--secondary);
-  color: var(--color--primary);
+  color: var(--color--primary) !important;
 }
 .qoute_color {
   color: var(--color--primary);
@@ -215,7 +215,7 @@ body.modal-open {
   height: 250px !important;
 }
 
-[data-layout="horizontal"] .chat-conversation {
+[data-layout='horizontal'] .chat-conversation {
   &.chatwidgets {
     height: 250px !important;
   }
@@ -332,24 +332,28 @@ body.modal-open {
 //react select
 .css-b62m3t-container {
   .css-13cymwt-control {
-    background-color: var(--#{$prefix}secondary-bg);
+    //background-color: var(--#{$prefix}secondary-bg);
     color: var(--#{$prefix}body-color);
-    border-color: var(--#{$prefix}border-color);
+    //border-color: var(--#{$prefix}border-color);
+    background-color: #e9f1fa;
+    border: 1px solid var(--color--secondary);
+    border-radius: 1rem;
     height: 48px;
     &:hover,
     &:focus {
-      border-color: var(--#{$prefix}primary);
+      // border-color: var(--#{$prefix}primary);
+      border-color: var(--color--primary);
     }
 
     .css-1p3m7a8-multiValue {
       color: var(--#{$prefix}white);
-      background-color: var(--#{$prefix}primary);
+      background-color: #e9f1fa;
       .css-wsp0cs-MultiValueGeneric {
         color: var(--#{$prefix}white);
       }
 
       .css-1u9des2-indicatorSeparator {
-        border-color: var(--#{$prefix}border-color);
+        border-color: var(--color--primary);
       }
     }
   }
@@ -359,28 +363,36 @@ body.modal-open {
   }
 
   .css-t3ipsp-control {
-    background-color: var(--#{$prefix}secondary-bg);
+    background-color: #e9f1fa;
     color: var(--#{$prefix}body-color);
-    border-color: var(--#{$prefix}border-color);
+    border-color: var(--color--primary);
     height: 48px;
 
     .css-1p3m7a8-multiValue {
       color: var(--#{$prefix}white);
-      background-color: var(--#{$prefix}primary);
+      background-color: #e9f1fa;
       .css-wsp0cs-MultiValueGeneric {
         color: var(--#{$prefix}white);
       }
 
       .css-1u9des2-indicatorSeparator {
-        border-color: var(--#{$prefix}border-color);
+        border-color: var(--color--primary);
       }
     }
   }
 
+  .css-t3ipsp-control:hover {
+    border-color: var(--color--primary) !important;
+  }
+
+  .css-t3ipsp-control {
+    box-shadow: 0 0 0 0px transparent !important;
+  }
+
   .css-1nmdiq5-menu {
-    background-color: var(--#{$prefix}secondary-bg);
+    background-color: #e9f1fa;
     color: var(--#{$prefix}body-color);
-    border-color: var(--#{$prefix}border-color);
+    border-color: var(--color--primary);
     .css-d7l1ni-option {
       color: var(--#{$prefix}white);
       // color: $white;

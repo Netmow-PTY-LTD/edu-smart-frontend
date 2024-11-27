@@ -7,7 +7,7 @@ import {
 import Image from 'next/image';
 import { Col, Row } from 'reactstrap';
 
-const ProfileBgCover = ({ singlePlayerData }) => {
+const ProfileBgCover = ({ profileData }) => {
   return (
     <>
       <div className="profile-foreground position-relative mx-n5 mt-n5 pt-5">
@@ -21,8 +21,8 @@ const ProfileBgCover = ({ singlePlayerData }) => {
             <div>
               <Image
                 src={
-                  singlePlayerData?.profile_image?.uploadedImage
-                    ? singlePlayerData?.profile_image?.uploadedImage
+                  profileData?.logo?.url
+                    ? profileData?.logo?.url
                     : `${userDummyImage}`
                 }
                 height={40}
@@ -36,13 +36,12 @@ const ProfileBgCover = ({ singlePlayerData }) => {
           <Col>
             <div className="p-2">
               <h1 className="text-white text-uppercase fs-1 mb-1">
-                {singlePlayerData?.first_name +
-                  ' ' +
-                  singlePlayerData?.last_name}
+                {profileData?.name ? profileData?.name : ''}
               </h1>
               <div className="me-2 text-light text-capitalize">
-                <i className="ri-user-line me-2 align-middle"></i>
-                {singlePlayerData?.role}
+                <i className="ri-map-pin-fill me-2 align-middle"></i>
+                {profileData?.city ? profileData?.city + ',' : ''}{' '}
+                {profileData?.country ? profileData?.country : ''}
               </div>
             </div>
           </Col>

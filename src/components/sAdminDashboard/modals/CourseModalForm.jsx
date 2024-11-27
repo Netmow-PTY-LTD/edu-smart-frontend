@@ -1,16 +1,14 @@
-import CountrySelectField from '@/components/common/formField/CountrySelectField';
-import ImageField from '@/components/common/formField/ImageField';
 import NumberField from '@/components/common/formField/NumberField';
+import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
 import { Form, Formik } from 'formik';
-import React, { useMemo } from 'react';
-import countryList from 'react-select-country-list';
+import React from 'react';
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
 // ModalForm Component
-const UniversityModalForm = ({
+const CourseModalForm = ({
   formHeader,
   isOpen,
   onClose,
@@ -18,11 +16,9 @@ const UniversityModalForm = ({
   validationSchema,
   onSubmit,
   formSubmit,
-  imagePreview,
-  setImagePreview,
+  allDepartmentName,
+  allCategoryName,
 }) => {
-  const options = useMemo(() => countryList().getData(), []);
-
   return (
     <Modal isOpen={isOpen} centered size="xl">
       <ModalHeader toggle={onClose}>
@@ -38,43 +34,43 @@ const UniversityModalForm = ({
             <Form>
               <Row>
                 <Col xl={6}>
-                  <TextField name="name" label="University Name" />
+                  <TextField name="name" label="Course Name" />
                 </Col>
                 <Col xl={6}>
-                  <TextField name="address_line_1" label="Address Line 1 " />
+                  <NumberField name="available_seats" label="Available Seats" />
                 </Col>
                 <Col xl={6}>
-                  <TextField name="address_line_2" label="Address Line 2 " />
-                </Col>
-                <Col xl={6}>
-                  <TextField name="city" label="City " />
-                </Col>
-                <Col xl={6}>
-                  <TextField name="state" label="State " />
-                </Col>
-                <Col xl={6}>
-                  <CountrySelectField
-                    name="country"
-                    label="Country"
-                    options={options}
+                  <SingleSelectField
+                    name="department"
+                    label="Select Department"
+                    options={allDepartmentName}
                   />
                 </Col>
                 <Col xl={6}>
-                  <NumberField name="zip" label="Zip Code" />
-                </Col>
-                <Col xl={6}>
-                  <TextField name="code" label="Code " />
-                </Col>
-                <Col xl={6}>
-                  <TextArea name="description" label="Description" />
-                </Col>
-                <Col xl={6}>
-                  <ImageField
-                    name="logo"
-                    label="Logo"
-                    imagePreview={imagePreview}
-                    setImagePreview={setImagePreview}
+                  <SingleSelectField
+                    name="category"
+                    label="Select Course Category"
+                    options={allCategoryName}
                   />
+                </Col>
+
+                <Col xl={6}>
+                  <NumberField
+                    name="price_for_student"
+                    label="Price For Student"
+                  />
+                </Col>
+                <Col xl={6}>
+                  <NumberField name="gst_for_student" label="GST For Student" />
+                </Col>
+                <Col xl={6}>
+                  <NumberField name="price_for_agent" label="Price For Agent" />
+                </Col>
+                <Col xl={6}>
+                  <NumberField name="gst_for_agent" label="GST For Agent" />
+                </Col>
+                <Col xl={12}>
+                  <TextArea name="description" label="Course Description" />
                 </Col>
               </Row>
 
@@ -89,4 +85,4 @@ const UniversityModalForm = ({
   );
 };
 
-export default UniversityModalForm;
+export default CourseModalForm;

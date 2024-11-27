@@ -18,7 +18,7 @@ const ImageField = ({ name, label,imagePreview,setImagePreview, ...props }) => {
 
   return (
     <div>
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className="form-label fs-2">
         {label || 'Upload Image'}
       </label>
 

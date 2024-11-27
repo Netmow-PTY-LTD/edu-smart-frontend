@@ -2,14 +2,13 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import DepartmentModalForm from '@/components/sAdminDashboard/modals/DepartmentModalForm';
 
 import {
-  useAddDepartmentMutation,
-  useDeleteDepartmentMutation,
-  useGetDepartmentQuery,
-  useUpdateDepartmentMutation,
-} from '@/slice/services/departmentService';
+  useAddCourseMutation,
+  useDeleteCourseMutation,
+  useGetCourseQuery,
+  useUpdateCourseMutation,
+} from '@/slice/services/courseService';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -22,78 +21,109 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 import * as Yup from 'yup';
+import CourseModalForm from '../modals/CourseModalForm';
 
-const AllDepartmentForSuperAdmin = ({ university_id }) => {
+const AllCourseForSuperAdmin = ({
+  university_id,
+  allDepartmentData,
+  allCategoryData,
+}) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [departmentIdForEdit, setDepartmentIdForEdit] = useState(null);
-  const [departmentIdForDelete, setDepartmentIdForDelete] = useState(null);
+  const [courseIdForEdit, setCourseIdForEdit] = useState(null);
+  const [courseIdForDelete, setCourseIdForDelete] = useState(null);
+  const [allDepartmentName, setAllDepartmentName] = useState(null);
+  const [allCategoryName, setAllCategoryName] = useState(null);
 
   const perPageData = 10;
 
   // Define initial form values
   const [initialValues, setInitialValues] = useState({
     name: '',
+    available_seats: '',
+    price_for_student: '',
+    gst_for_student: '',
+    price_for_agent: '',
+    gst_for_agent: '',
     description: '',
+    department: '',
+    category: '',
   });
 
   const [
-    addDepartment,
+    addCourse,
     {
-      data: addDepartmentData,
-      error: addDepartmentError,
-      isLoading: addDepartmentIsLoading,
-      isSuccess: addDepartmentIsSuccess,
+      data: addCourseData,
+      error: addCourseError,
+      isLoading: addCourseIsLoading,
+      isSuccess: addCourseIsSuccess,
     },
-  ] = useAddDepartmentMutation();
+  ] = useAddCourseMutation();
 
   const {
-    data: getDepartmentData,
-    error: getDepartmentError,
-    isLoading: getDepartmentIsLoading,
-    refetch: getDepartmentRefetch,
-  } = useGetDepartmentQuery(university_id, { skip: !university_id });
+    data: getCourseData,
+    error: getCourseError,
+    isLoading: getCourseIsLoading,
+    refetch: getCourseRefetch,
+  } = useGetCourseQuery(university_id, { skip: !university_id });
 
-  // const { data: getSingleDepartmentData, refetch: getSingleDepartmentRefetch } =
-  //   useGetSingleDepartmentQuery(departmentIdForEdit, {
-  //     skip: !departmentIdForEdit,
+  // const { data: getSingleCourseData, refetch: getSingleCourseRefetch } =
+  //   useGetSingleCourseQuery(courseIdForEdit, {
+  //     skip: !courseIdForEdit,
   //   });
 
   const [
-    updateDepartment,
+    updateCourse,
     {
-      data: editDepartmentData,
-      error: editDepartmentError,
-      isLoading: editDepartmentIsLoading,
-      isSuccess: editDepartmentIsSuccess,
+      data: editCourseData,
+      error: editCourseError,
+      isLoading: editCourseIsLoading,
+      isSuccess: editCourseIsSuccess,
     },
-  ] = useUpdateDepartmentMutation();
+  ] = useUpdateCourseMutation();
 
   const [
-    deleteDepartment,
+    deleteCourse,
     {
-      data: deleteDepartmentData,
-      error: deleteDepartmentError,
-      isLoading: deleteDepartmentIsLoading,
+      data: deleteCourseData,
+      error: deleteCourseError,
+      isLoading: deleteCourseIsLoading,
     },
-  ] = useDeleteDepartmentMutation();
+  ] = useDeleteCourseMutation();
 
   useEffect(() => {
-    if (getDepartmentData?.data && departmentIdForEdit) {
-      const getSingleDepartmentData =
-        getDepartmentData?.data?.length > 0 &&
-        getDepartmentData?.data.find(
-          (item) => item?._id === departmentIdForEdit
-        );
+    const allDept =
+      allDepartmentData?.length > 0 &&
+      allDepartmentData.map((dept) => ({
+        label: dept?.name,
+        value: dept?._id,
+      }));
+
+    const allCategory =
+      allCategoryData?.length > 0 &&
+      allCategoryData.map((dept) => ({
+        label: dept?.name,
+        value: dept?._id,
+      }));
+
+    setAllCategoryName(allCategory ? allCategory : []);
+    setAllDepartmentName(allDept ? allDept : []);
+  }, [allDepartmentData, allCategoryData]);
+
+  useEffect(() => {
+    if (getCourseData?.data && courseIdForEdit) {
+      const getSingleCourseData =
+        getCourseData?.data?.length > 0 &&
+        getCourseData?.data.find((item) => item?._id === courseIdForEdit);
 
       const fetchData = async () => {
         try {
           setInitialValues({
-            name: getSingleDepartmentData?.name || '',
-            description: getSingleDepartmentData?.description || '',
+            name: getSingleCourseData?.name || '',
+            description: getSingleCourseData?.description || '',
           });
           setEditModalIsOpen(true);
         } catch (error) {
@@ -103,13 +133,30 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
 
       fetchData();
     }
-  }, [getDepartmentData?.data, departmentIdForEdit]);
+  }, [getCourseData?.data, courseIdForEdit]);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
     name: Yup.string()
-      .max(30, 'maximum use 30 letters')
+      .max(12, 'maximum use 12 letters')
       .required('Name is required'),
+    department: Yup.string().required('department is required'),
+    category: Yup.string().required('category is required'),
+    available_seats: Yup.string()
+      .max(12, 'maximum use 12 letters')
+      .required('available_seats is required'),
+    price_for_student: Yup.string()
+      .max(12, 'maximum use 12 letters')
+      .required('price_for_student is required'),
+    gst_for_student: Yup.string()
+      .max(12, 'maximum use 12 letters')
+      .required('gst_for_student is required'),
+    price_for_agent: Yup.string()
+      .max(12, 'maximum use 12 letters')
+      .required('price_for_agent is required'),
+    gst_for_agent: Yup.string()
+      .max(12, 'maximum use 12 letters')
+      .required('gst_for_agent is required'),
     description: Yup.string().required('description is required'),
   });
 
@@ -118,10 +165,10 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
     setSubmitting(true);
     try {
       const finalData = { ...values, university_id: university_id };
-      const result = await addDepartment(finalData).unwrap();
+      const result = await addCourse(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getDepartmentRefetch();
+        getCourseRefetch();
         setAddModalIsOpen(!addModalIsOpen);
       }
     } catch (error) {
@@ -133,34 +180,35 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   };
 
   const handleEditButtonClick = (itemId) => {
-    setDepartmentIdForEdit(itemId);
+    setCourseIdForEdit(itemId);
   };
 
   const handleEditModalClose = () => {
-    // getSingleDepartmentRefetch();
-    setDepartmentIdForEdit(null);
+    // getSingleCourseRefetch();
+    setCourseIdForEdit(null);
     setInitialValues({
       name: '',
       description: '',
+      department: '',
     });
     setEditModalIsOpen(false);
   };
 
-  const handleUpdateDepartment = async (values, { setSubmitting }) => {
+  const handleUpdateCourse = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
     const finalData = {
       ...values,
-      id: departmentIdForEdit,
+      id: courseIdForEdit,
     };
 
     try {
-      const result = await updateDepartment(finalData).unwrap();
+      const result = await updateCourse(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getDepartmentRefetch();
+        getCourseRefetch();
         handleEditModalClose();
-        setDepartmentIdForEdit(null);
+        setCourseIdForEdit(null);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -171,20 +219,20 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   };
 
   const handleDeleteButtonClick = (itemId) => {
-    setDepartmentIdForDelete(itemId);
+    setCourseIdForDelete(itemId);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
-  const handleDeleteDepartment = async (id) => {
+  const handleDeleteCourse = async (id) => {
     console.log(id);
     try {
-      const result = await deleteDepartment({
+      const result = await deleteCourse({
         university_id: university_id,
-        department_id: id,
+        course_id: id,
       }).unwrap();
       if (result) {
         toast.success(result?.message);
-        getDepartmentRefetch();
+        getCourseRefetch();
         handleDeleteButtonClick();
       }
     } catch (error) {
@@ -200,10 +248,12 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
 
   // Filter data for search option
   const isfilteredData =
-    getDepartmentData?.data?.length > 0 &&
-    getDepartmentData?.data.filter((item) =>
+    getCourseData?.data?.length > 0 &&
+    getCourseData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  console.log(isfilteredData);
 
   // Define table headers with custom render functions
   const headers = [
@@ -215,30 +265,51 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       ),
     },
 
-    { title: 'Department Name', key: 'name' },
+    { title: 'Course Name', key: 'name' },
     {
-      title: 'Course Category',
-      key: 'categories',
-      render: (item, index) =>
-        item?.categories?.length > 0
-          ? item?.categories?.map((category) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
-                {category?.name}
-              </span>
-            ))
-          : '-',
+      title: 'Available Seats',
+      key: 'available_seats',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.available_seats}
+        </span>
+      ),
     },
     {
-      title: 'Courses',
-      key: 'courses',
-      render: (item, index) =>
-        item?.courses?.length > 0
-          ? item.map((course) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
-                {course}
-              </span>
-            ))
-          : '-',
+      title: 'Price For Student',
+      key: 'price_for_student',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.price_for_student}
+        </span>
+      ),
+    },
+    {
+      title: 'GST For Student',
+      key: 'gst_for_student',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.gst_for_student}
+        </span>
+      ),
+    },
+    {
+      title: 'Price For Agent',
+      key: 'price_for_agent',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.price_for_agent}
+        </span>
+      ),
+    },
+    {
+      title: 'GST For Agent',
+      key: 'gst_for_agent',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.gst_for_agent}
+        </span>
+      ),
     },
 
     { title: 'Description', key: 'description' },
@@ -285,7 +356,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   return (
     <div className="h-100">
       <ToastContainer />
-      {getDepartmentIsLoading ? (
+      {getCourseIsLoading ? (
         <LoaderSpiner />
       ) : (
         <Card>
@@ -296,7 +367,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
             >
               Add New
             </button>
-            <DepartmentModalForm
+            <CourseModalForm
               formHeader={'Add New'}
               isOpen={addModalIsOpen}
               onClose={() => {
@@ -306,6 +377,8 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               formSubmit={'Submit'}
+              allDepartmentName={allDepartmentName}
+              allCategoryName={allCategoryName}
             />
             <SearchComponent
               searchTerm={searchTerm}
@@ -328,26 +401,26 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
         </Card>
       )}
 
-      {/* for update department */}
-      <DepartmentModalForm
+      {/* for update Course */}
+      <CourseModalForm
         formHeader="Update Data"
         isOpen={editModalIsOpen}
         onClose={handleEditModalClose}
-        onSubmit={handleUpdateDepartment}
+        onSubmit={handleUpdateCourse}
         initialValues={initialValues}
         formSubmit="Update"
       />
 
-      {/* Delete Department */}
+      {/* Delete Course */}
       <DeleteModal
         Open={deleteModalIsOpen}
         close={handleDeleteButtonClick}
-        id={departmentIdForDelete}
-        handleDelete={handleDeleteDepartment}
-        isloading={deleteDepartmentIsLoading}
+        id={courseIdForDelete}
+        handleDelete={handleDeleteCourse}
+        isloading={deleteCourseIsLoading}
       />
     </div>
   );
 };
 
-export default AllDepartmentForSuperAdmin;
+export default AllCourseForSuperAdmin;
