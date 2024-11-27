@@ -14,26 +14,9 @@ const MultipleSelectField = ({ field, form, label, options, ...props }) => {
 
   return (
     <div>
-      <label htmlFor={field.name} className="form-label">
+      <label htmlFor={field.name} className="form-label fs-2">
         {label || 'Select'}
       </label>
-      {/* without custom style */}
-      {/* <Select
-        {...props}
-        id={field.name}
-        name={field.name}
-        value={
-          options
-            ? options.filter((option) => field.value.includes(option.value))
-            : []
-        }
-        onChange={handleChange}
-        options={options}
-        className="form-control"
-        classNamePrefix="select"
-        isMulti // Enable multi-select
-        isClearable={true} // Allow clearing the selection
-      /> */}
 
       {/* with custom style */}
       <Select

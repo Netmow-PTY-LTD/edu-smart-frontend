@@ -2,10 +2,10 @@ import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import Select from 'react-select';
 
-const SingleSelectField = ({ name, label, options, ...props }) => {
+const SingleSelectField = ({ name, label, options, fieldClass, ...props }) => {
   return (
     <div>
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className="form-label fs-2">
         {label || 'Select'}
       </label>
 
@@ -14,19 +14,17 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
           const selectedOption =
             options?.length > 0
               ? options?.find((option) =>
-                  option.value === field.value.value
-                    ? option.value === field.value.value
-                    : option.value === field.value.label
+                  option?.value === field?.value?.value
+                    ? option?.value === field?.value?.value
+                    : option?.value === field?.value?.label
                 )
               : null;
-
-          console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
             console.log(selectedOption);
             form.setFieldValue(
               name,
-              selectedOption ? selectedOption.value : null
+              selectedOption ? selectedOption?.value : null
             );
           };
 
@@ -39,6 +37,7 @@ const SingleSelectField = ({ name, label, options, ...props }) => {
               onChange={handleChange}
               options={options}
               classNamePrefix="select"
+              className={fieldClass}
               isClearable={true}
             />
           );

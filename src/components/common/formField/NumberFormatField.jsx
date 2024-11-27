@@ -4,7 +4,7 @@ import NumberFormat from 'react-number-format';
 
 const CustomNumberField = ({ field, form, label, ...props }) => (
   <div>
-    <label htmlFor={field.name} className="form-label">
+    <label htmlFor={field.name} className="form-label fs-2">
       {label || 'Number'}
     </label>
     <Field

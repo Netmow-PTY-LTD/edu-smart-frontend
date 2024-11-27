@@ -5,7 +5,7 @@ import Select from 'react-select';
 const CountrySelectField = ({ name, label, options, ...props }) => {
   return (
     <div>
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className="form-label fs-2">
         {label || 'Select'}
       </label>
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import Loader from '../constants/Loader/Loader';
 //import Loader from './Loader';
 
 const EmailOtpComponent = ({
@@ -84,7 +85,7 @@ const EmailOtpComponent = ({
                   Verify Your Email
                 </h4>
                 <p>
-                  Please enter the 4 digit code sent to{' '}
+                  Please enter the 6 digit code sent to{' '}
                   <span className="fw-semibold">{userEmail}</span>
                 </p>
               </div>
@@ -118,13 +119,8 @@ const EmailOtpComponent = ({
                   </div>
 
                   <div className="mt-4">
-                    {/* {error && (
-                  <div className=" text-danger fs-2 mb-4 text-center">
-                    {error}
-                  </div>
-                )} */}
                     {isLoading ? (
-                      ''
+                      <Loader />
                     ) : (
                       <button
                         disabled={isLoading}
@@ -138,7 +134,7 @@ const EmailOtpComponent = ({
                 </div>
               </div>
 
-              <div className="mt-4 text-center fs-2">
+              {/* <div className="mt-4 text-center fs-2">
                 <p className="mb-0">
                   Didn't receive a code ?{' '}
                   <button
@@ -148,7 +144,7 @@ const EmailOtpComponent = ({
                     Resend
                   </button>
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
