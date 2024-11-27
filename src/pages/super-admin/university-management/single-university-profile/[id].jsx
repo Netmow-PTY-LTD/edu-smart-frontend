@@ -6,6 +6,7 @@ import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { useGetAllCourseCategoriesQuery } from '@/slice/services/courseCategoriesService';
+import { useGetCourseQuery } from '@/slice/services/courseService';
 import { useGetDepartmentQuery } from '@/slice/services/departmentService';
 import { useGetSingleUniversityQuery } from '@/slice/services/universityService';
 import classnames from 'classnames';
@@ -41,6 +42,13 @@ const SingleUniversityProfile = () => {
     isLoading: getAllCategoriesIsLoading,
     refetch: getAllCategoriesRefetch,
   } = useGetAllCourseCategoriesQuery(university_id, { skip: !university_id });
+
+  const {
+    data: getCourseData,
+    error: getCourseError,
+    isLoading: getCourseIsLoading,
+    refetch: getCourseRefetch,
+  } = useGetCourseQuery(university_id, { skip: !university_id });
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -243,6 +251,7 @@ const SingleUniversityProfile = () => {
                       <AllCourseForSuperAdmin
                         university_id={university_id}
                         allDepartmentData={getDepartmentData?.data}
+                        allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
                     {activeTab === '5' && ''}

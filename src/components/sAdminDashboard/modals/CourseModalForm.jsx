@@ -17,6 +17,7 @@ const CourseModalForm = ({
   onSubmit,
   formSubmit,
   allDepartmentName,
+  allCategoryName,
 }) => {
   return (
     <Modal isOpen={isOpen} centered size="xl">
@@ -49,7 +50,7 @@ const CourseModalForm = ({
                   <SingleSelectField
                     name="category"
                     label="Select Course Category"
-                    options={allDepartmentName}
+                    options={allCategoryName}
                   />
                 </Col>
 

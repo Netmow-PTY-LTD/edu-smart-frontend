@@ -23,7 +23,11 @@ import {
 import * as Yup from 'yup';
 import CourseModalForm from '../modals/CourseModalForm';
 
-const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
+const AllCourseForSuperAdmin = ({
+  university_id,
+  allDepartmentData,
+  allCategoryData,
+}) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -32,6 +36,7 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
   const [courseIdForEdit, setCourseIdForEdit] = useState(null);
   const [courseIdForDelete, setCourseIdForDelete] = useState(null);
   const [allDepartmentName, setAllDepartmentName] = useState(null);
+  const [allCategoryName, setAllCategoryName] = useState(null);
 
   const perPageData = 10;
 
@@ -96,9 +101,17 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
         label: dept?.name,
         value: dept?._id,
       }));
-    console.log(allDept);
-    setAllDepartmentName(allDept);
-  }, [allDepartmentData]);
+
+    const allCategory =
+      allCategoryData?.length > 0 &&
+      allCategoryData.map((dept) => ({
+        label: dept?.name,
+        value: dept?._id,
+      }));
+
+    setAllCategoryName(allCategory ? allCategory : []);
+    setAllDepartmentName(allDept ? allDept : []);
+  }, [allDepartmentData, allCategoryData]);
 
   useEffect(() => {
     if (getCourseData?.data && courseIdForEdit) {
@@ -365,6 +378,7 @@ const AllCourseForSuperAdmin = ({ university_id, allDepartmentData }) => {
               validationSchema={validationSchema}
               formSubmit={'Submit'}
               allDepartmentName={allDepartmentName}
+              allCategoryName={allCategoryName}
             />
             <SearchComponent
               searchTerm={searchTerm}
