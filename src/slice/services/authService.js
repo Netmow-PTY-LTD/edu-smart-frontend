@@ -1,46 +1,81 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const authService = createApi({
-  reducerPath: "authService",
+  reducerPath: 'authService',
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://edu-smart-backend-3n7b.onrender.com/api/v1/super",
+    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/public',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
+      const cookies = document.cookie.split(';');
+      const token = cookies.find((cookie) =>
+        cookie.trim().startsWith('token=')
+      );
       if (token) {
-        headers.set("authorization", `Bearer ${token}`);
+        headers.set('authorization', `Bearer ${token}`);
       }
       return headers;
     },
   }),
   endpoints: (builder) => ({
-    healthCheck: builder.query({
-      query: () => ({
-        url: "/",
-      }),
-    }),
-    login: builder.mutation({
+    verifyExistingUser: builder.mutation({
       query: (body) => ({
-        url: "/auth/login",
-        method: "POST",
+        url: '/verify/user',
+        method: 'POST',
         body,
       }),
     }),
-    register: builder.mutation({
+    generateOtp: builder.mutation({
       query: (body) => ({
-        url: "/register",
-        method: "POST",
+        url: '/otp',
+        method: 'POST',
         body,
       }),
     }),
-    loggedInUser: builder.query({
-      query: () => "/auth/user",
+    verifyOtp: builder.mutation({
+      query: (body) => ({
+        url: '/otp/verify',
+        method: 'POST',
+        body,
+      }),
+    }),
+    agentRegister: builder.mutation({
+      query: (body) => ({
+        url: '/register/agent',
+        method: 'POST',
+        body,
+      }),
+    }),
+    studentRegister: builder.mutation({
+      query: (body) => ({
+        url: '/register/student',
+        method: 'POST',
+        body,
+      }),
+    }),
+    universityRegister: builder.mutation({
+      query: (body) => ({
+        url: '/register/university-administrator',
+        method: 'POST',
+        body,
+      }),
+    }),
+    logIn: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/login`,
+          method: 'POST',
+          body,
+        };
+      },
     }),
   }),
 });
 
 export const {
-  useLoginMutation,
-  useRegisterMutation,
-  useLoggedInUserQuery,
-  useHealthCheckQuery,
+  useVerifyExistingUserMutation,
+  useGenerateOtpMutation,
+  useVerifyOtpMutation,
+  useAgentRegisterMutation,
+  useStudentRegisterMutation,
+  useUniversityRegisterMutation,
+  useLogInMutation,
 } = authService;

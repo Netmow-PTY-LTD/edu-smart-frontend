@@ -4,7 +4,7 @@ import React from 'react';
 const TextArea = ({ name, label, ...props }) => {
   return (
     <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+      <label htmlFor={name} className="form-label fs-2">
         {label || 'Description'}
       </label>
 

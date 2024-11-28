@@ -2,24 +2,30 @@ import DashBoardCountOptions from '@/components/common/allDashboardHome/DashBoar
 import LatestRegisteredPlayer from '@/components/common/allDashboardHome/LatestRegisteredPlayer';
 import LatestTeams from '@/components/common/allDashboardHome/LatestTeams';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import React from 'react';
+import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const AdminDashboard = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // useEffect(() => {
-  //   if (router?.query?.token) {
-  //     localStorage.setItem('token', router.query.token);
-  //   }
-  //   if (localStorage.getItem('token') && router.query.token) {
-  //     window?.location?.assign(
-  //       window?.location?.origin + window?.location?.pathname
-  //     );
-  //   }
-  // }, [router?.query?.token]);
+  useEffect(() => {
+    const token = Cookies.get('token');
+
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      window.location.href = '/auth/login';
+    }
+  }, []);
+
+  if (!isAuthenticated) {
+    return <LoaderSpiner />;
+  }
 
   return (
     <Layout>

@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 export const courseCategoriesService = createApi({
-  reducerPath: 'departmentService',
+  reducerPath: 'courseCategoriesService',
   baseQuery: fetchBaseQuery({
     baseUrl:
       'https://edu-smart-backend-3n7b.onrender.com/api/v1/super/university',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -15,26 +16,27 @@ export const courseCategoriesService = createApi({
   }),
   endpoints: (builder) => ({
     addCourseCategory: builder.mutation({
-      query: (data) => {
+      query: (body) => {
         const university_id =
-          data instanceof FormData ? data.get('university_id') : data.id;
+          body instanceof FormData
+            ? body.get('university_id')
+            : body.university_id;
         const department_id =
-          data instanceof FormData ? data.get('department_id') : data.id;
+          body instanceof FormData
+            ? body.get('department_id')
+            : body.department;
 
         return {
           url: `/${university_id}/department/${department_id}/category`,
           method: 'POST',
-          data,
+          body,
         };
       },
     }),
     getAllCourseCategories: builder.query({
-      query: (data) => {
-        const university_id = data?.university_id || '';
-        const department_id = data?.department_id || '';
-
+      query: (university_id) => {
         return {
-          url: `/${university_id}/department/${department_id}/category`,
+          url: `/${university_id}/category`,
           method: 'GET',
         };
       },
@@ -52,27 +54,25 @@ export const courseCategoriesService = createApi({
       },
     }),
     updateCourseCategory: builder.mutation({
-      query: (data) => {
-        const id = data.id;
-        const university_id =
-          data instanceof FormData ? data.get('university_id') : data.id;
-        const department_id =
-          data instanceof FormData ? data.get('department_id') : data.id;
+      query: (body) => {
+        const category_id = body.category_id;
+        const university_id = body.university_id;
+        const department_id = body.department_id;
 
         return {
-          url: `/${university_id}/department/${department_id}/category/${id}`,
+          url: `/${university_id}/department/${department_id}/category/${category_id}`,
           method: 'PATCH',
-          data,
+          body,
         };
       },
     }),
     deleteCourseCategory: builder.mutation({
       query: (data) => {
-        const id = data?.id;
+        const category_id = data?.category_id;
         const university_id = data?.university_id;
-        const department_id = data?.department_id;
+
         return {
-          url: `/${university_id}/department/${department_id}/category/${id}`,
+          url: `/${university_id}/category/${category_id}`,
           method: 'DELETE',
         };
       },

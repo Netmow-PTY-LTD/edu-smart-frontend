@@ -35,27 +35,9 @@ const TimeField = ({ field, form, label, ...props }) => {
 
   return (
     <div>
-      <label htmlFor={field.name} className="form-label">
+      <label htmlFor={field.name} className="form-label fs-2">
         {label || 'Time'}
       </label>
-
-      {/* without custom style */}
-
-      {/* <Flatpickr
-        ref={flatpickrRef}
-        {...props}
-        id={field.name}
-        name={field.name}
-        value={field.value || ''}
-        onChange={handleChange}
-        options={{
-          enableTime: true,
-          noCalendar: true,
-          dateFormat: 'H:i', // Set the time format (HH:mm)
-          time_24hr: true, // Use 24-hour format
-        }}
-        className="form-control"
-      /> */}
 
       {/* with custom style */}
       <Flatpickr
@@ -68,11 +50,11 @@ const TimeField = ({ field, form, label, ...props }) => {
         options={{
           enableTime: true,
           noCalendar: true,
-          dateFormat: 'H:i', // 24-hour time format
+          dateFormat: 'H:i',
           time_24hr: true,
-          minDate: 'today', // Prevent selecting past time
-          hourIncrement: 1, // Set increment for hours
-          minuteIncrement: 5, // Set increment for minutes
+          minDate: 'today',
+          hourIncrement: 1,
+          minuteIncrement: 5,
         }}
         className="form-control"
         style={{ borderRadius: '5px', padding: '8px', fontSize: '14px' }}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import Cookies from 'js-cookie';
 import Head from 'next/head';
 
 export default function Header() {
@@ -23,8 +24,6 @@ export default function Header() {
   useEffect(() => {
     dispatch(menuAction());
   }, [dispatch]);
-
-  // const tokenData = localStorage.getItem('token');
 
   const toggleMobileNav = () => {
     setShowMobileNav(!showMobileNav);
@@ -60,39 +59,14 @@ export default function Header() {
   }, []);
 
   const handleLogOut = () => {
-    localStorage.removeItem('token');
-    window.location.assign(
-      `${window.location.protocol}//${domain === 'localhost' ? `${domain}:3000` : domain}/auth/login`
-    );
-    if (window.innerWidth <= 1024) {
-      window.location.assign(`${window.location.protocol}//squaddeck.app`);
-    }
+    Cookies.remove('token');
+    // window.location.assign(
+    //   `${window.location.protocol}//${domain === 'localhost' ? `${domain}:3000` : domain}/auth/login`
+    // );
+    // if (window.innerWidth <= 1024) {
+    //   window.location.assign(`${window.location.protocol}//squaddeck.app`);
+    // }
   };
-
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     if (tokenData) {
-  //       try {
-  //         const res = await axios.get(
-  //           `${process.env.NEXT_PUBLIC_BASE_URL_PROD}/api/v1/userinfo`,
-  //           {
-  //             headers: {
-  //               authorization: tokenData,
-  //             },
-  //           }
-  //         );
-
-  //         setUserInfo(res.data);
-  //         // Handle the response data as needed
-  //       } catch (error) {
-  //         console.error('Error fetching user info:', error);
-  //         // Handle the error as needed
-  //       }
-  //     }
-  //   };
-
-  //   fetchUserInfo();
-  // }, [tokenData]);
 
   return (
     <>

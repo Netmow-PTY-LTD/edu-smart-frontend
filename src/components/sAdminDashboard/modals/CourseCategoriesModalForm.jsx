@@ -1,3 +1,4 @@
+import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
@@ -14,9 +15,12 @@ const CourseCategoryModalForm = ({
   validationSchema,
   onSubmit,
   formSubmit,
+  allDepartmentName,
 }) => {
+  console.log(initialValues);
+  console.log(allDepartmentName);
   return (
-    <Modal isOpen={isOpen} centered size="md">
+    <Modal isOpen={isOpen} centered size="lg">
       <ModalHeader toggle={onClose}>
         <h2>{formHeader}</h2>
       </ModalHeader>
@@ -29,10 +33,17 @@ const CourseCategoryModalForm = ({
           {({ isSubmitting }) => (
             <Form>
               <Row>
-                <Col xl={12}>
+                <Col xl={6}>
                   <TextField name="name" label="Course Category Name" />
-                  <TextArea name="description" label="Description" />
                 </Col>
+                <Col xl={6}>
+                  <SingleSelectField
+                    name="department"
+                    label="Select Department"
+                    options={allDepartmentName}
+                  />
+                </Col>
+                <TextArea name="description" label="Description" />
               </Row>
 
               <SubmitButton isSubmitting={isSubmitting} formSubmit={formSubmit}>
