@@ -17,7 +17,7 @@ const PasswordField = ({ label, name, placeholder = 'Enter password' }) => {
         <Field
           type={passwordShow ? 'text' : 'password'}
           name={name}
-          className="form-control password-input fs-3 p-3 mb-2"
+          className="form-control password-input fs-3 p-3"
           placeholder={placeholder}
         />
         <button

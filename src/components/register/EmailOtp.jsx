@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useVerifyOtpMutation } from '@/slice/services/authService';
+import { useVerifyOtpMutation } from '@/slice/services/public/auth/authService';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import EmailOtpComponent from '../common/EmailOtpComponent';

@@ -8,7 +8,7 @@ import {
   useDeleteCourseMutation,
   useGetCourseQuery,
   useUpdateCourseMutation,
-} from '@/slice/services/courseService';
+} from '@/slice/services/super admin/courseService';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -123,6 +123,23 @@ const AllCourseForSuperAdmin = ({
         try {
           setInitialValues({
             name: getSingleCourseData?.name || '',
+            available_seats: getSingleCourseData?.available_seats || '',
+            price_for_student: getSingleCourseData?.price_for_student || '',
+            gst_for_student: getSingleCourseData?.gst_for_student || '',
+            price_for_agent: getSingleCourseData?.price_for_agent || '',
+            gst_for_agent: getSingleCourseData?.gst_for_agent || '',
+            department: getSingleCourseData?.department?._id
+              ? {
+                  label: getSingleCourseData?.department?.name,
+                  value: getSingleCourseData?.department?._id,
+                }
+              : '' || '',
+            category: getSingleCourseData?.category?._id
+              ? {
+                  label: getSingleCourseData?.category?.name,
+                  value: getSingleCourseData?.category?._id,
+                }
+              : '' || '',
             description: getSingleCourseData?.description || '',
           });
           setEditModalIsOpen(true);
@@ -164,7 +181,12 @@ const AllCourseForSuperAdmin = ({
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
     try {
-      const finalData = { ...values, university_id: university_id };
+      const finalData = {
+        ...values,
+        university_id: university_id,
+        department_id: values?.department,
+        category_id: values?.category,
+      };
       const result = await addCourse(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
@@ -173,7 +195,7 @@ const AllCourseForSuperAdmin = ({
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
+      toast.error(errorMessage || 'An Error Occured');
     } finally {
       setSubmitting(false);
     }
@@ -188,8 +210,14 @@ const AllCourseForSuperAdmin = ({
     setCourseIdForEdit(null);
     setInitialValues({
       name: '',
+      available_seats: '',
+      price_for_student: '',
+      gst_for_student: '',
+      price_for_agent: '',
+      gst_for_agent: '',
       description: '',
       department: '',
+      category: '',
     });
     setEditModalIsOpen(false);
   };
@@ -198,8 +226,17 @@ const AllCourseForSuperAdmin = ({
     setSubmitting(true);
 
     const finalData = {
-      ...values,
-      id: courseIdForEdit,
+      name: values?.name,
+      available_seats: values?.available_seats,
+      price_for_student: values?.price_for_student,
+      gst_for_student: values?.gst_for_student,
+      price_for_agent: values?.price_for_agent,
+      gst_for_agent: values?.gst_for_agent,
+      description: values?.description,
+      course_id: courseIdForEdit,
+      university_id: university_id,
+      department_id: values?.department,
+      category_id: values?.category,
     };
 
     try {
@@ -224,7 +261,6 @@ const AllCourseForSuperAdmin = ({
   };
 
   const handleDeleteCourse = async (id) => {
-    console.log(id);
     try {
       const result = await deleteCourse({
         university_id: university_id,
@@ -318,7 +354,7 @@ const AllCourseForSuperAdmin = ({
       title: 'Action',
       key: 'actions',
       render: (item) => (
-        <UncontrolledDropdown className="card-header-dropdown">
+        <UncontrolledDropdown direction="end">
           <DropdownToggle
             tag="a"
             className="text-reset dropdown-btn"
@@ -409,6 +445,8 @@ const AllCourseForSuperAdmin = ({
         onSubmit={handleUpdateCourse}
         initialValues={initialValues}
         formSubmit="Update"
+        allCategoryName={allCategoryName}
+        allDepartmentName={allDepartmentName}
       />
 
       {/* Delete Course */}

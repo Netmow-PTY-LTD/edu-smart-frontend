@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 export const courseService = createApi({
   reducerPath: 'courseService',
@@ -6,7 +7,7 @@ export const courseService = createApi({
     baseUrl:
       'https://edu-smart-backend-3n7b.onrender.com/api/v1/super/university',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -20,7 +21,7 @@ export const courseService = createApi({
         const department_id = body?.department_id;
         const category_id = body?.category_id;
         return {
-          url: `/${university_id}/department/${department_id}/cactegory/${category_id}/course`,
+          url: `/${university_id}/department/${department_id}/category/${category_id}/course`,
           method: 'POST',
           body,
         };
@@ -42,7 +43,7 @@ export const courseService = createApi({
         const course_id = idObj?.course_id;
 
         return {
-          url: `/${university_id}/department/${department_id}/cactegory/${category_id}/course/${course_id}`,
+          url: `/${university_id}/department/${department_id}/category/${category_id}/course/${course_id}`,
           method: 'GET',
         };
       },
@@ -55,7 +56,7 @@ export const courseService = createApi({
         const course_id = body?.course_id;
 
         return {
-          url: `/${university_id}/department/${department_id}/cactegory/${category_id}/course/${course_id}`,
+          url: `/${university_id}/department/${department_id}/category/${category_id}/course/${course_id}`,
           method: 'PATCH',
           body,
         };

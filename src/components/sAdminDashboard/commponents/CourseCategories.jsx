@@ -8,7 +8,7 @@ import {
   useDeleteCourseCategoryMutation,
   useGetAllCourseCategoriesQuery,
   useUpdateCourseCategoryMutation,
-} from '@/slice/services/courseCategoriesService';
+} from '@/slice/services/super admin/courseCategoriesService';
 
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';

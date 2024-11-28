@@ -3,7 +3,7 @@ import React from 'react';
 
 const EmailField = ({ name, label, ...props }) => {
   return (
-    <div className="mb-3">
+    <div className="mb-3 pb-3">
       <label htmlFor={name} className="form-label fs-2">
         {label || 'Email'}
       </label>

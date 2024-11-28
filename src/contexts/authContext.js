@@ -11,14 +11,14 @@
 //     const handleAuth = () => {
 //       const tokenFromQuery = router.query.token;
 //       if (tokenFromQuery) {
-//         localStorage.setItem('token', tokenFromQuery);
+//         Cookies.set('token', tokenFromQuery);
 //         window.location.assign(
 //           window.location.origin + window.location.pathname
 //         );
 //         return;
 //       }
 
-//       const storedToken = localStorage.getItem('token');
+//       const storedToken = Cookies.get('token');
 //       if (!storedToken) {
 //         const restrictedPaths = [
 //           'super_admin',

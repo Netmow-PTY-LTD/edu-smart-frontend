@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 export const authService = createApi({
   reducerPath: 'authService',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/public',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -55,8 +56,14 @@ export const authService = createApi({
         body,
       }),
     }),
-    loggedInUser: builder.query({
-      query: () => '/auth/user',
+    logIn: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/login`,
+          method: 'POST',
+          body,
+        };
+      },
     }),
   }),
 });
@@ -68,5 +75,5 @@ export const {
   useAgentRegisterMutation,
   useStudentRegisterMutation,
   useUniversityRegisterMutation,
-  useLoggedInUserQuery,
+  useLogInMutation,
 } = authService;
