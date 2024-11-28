@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 export const departmentService = createApi({
   reducerPath: 'departmentService',
@@ -6,7 +7,7 @@ export const departmentService = createApi({
     baseUrl:
       'https://edu-smart-backend-3n7b.onrender.com/api/v1/super/university',
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }

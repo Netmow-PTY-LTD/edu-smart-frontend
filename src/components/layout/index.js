@@ -145,49 +145,8 @@ const DashBoardLayout = (props) => {
     }
   }, [sidebarVisibilitytype, layoutType]);
 
-  // useEffect(() => {
-  //   if (route?.query?.token) {
-  //     localStorage.setItem('token', route.query.token);
-  //   }
-  //   if (localStorage.getItem('token') && route.query.token) {
-  //     window?.location?.assign(
-  //       window?.location?.origin + window?.location?.pathname
-  //     );
-  //   }
-  //   setIsLoading(false);
-  // }, [route?.query?.token]);
-
-  // useEffect(() => {
-  //   const path = window.location?.pathname?.split('/');
-  //   if (path.length > 1 && userInfo?.role) {
-  //     if (path[1] !== userInfo?.role) {
-  //       window.location.assign(window?.location?.origin + '/' + userInfo?.role);
-  //     }
-  //   }
-  // }, [userInfo]);
-
-  // if (
-  //   typeof window !== 'undefined' &&
-  //   window.location.href.split('?')[0] !==
-  //     window?.location?.origin + window?.location?.pathname
-  // ) {
-  //   return <LoaderSpiner />;
-  // }
-
   return (
     <>
-      {/* <Script id="tawk" strategy="lazyOnload">
-        {`var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-            (function(){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/6401cce031ebfa0fe7f071a9/1gqjggjll';
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
-            })();
-          `}
-      </Script> */}
       {isLoading ? (
         <LoaderSpiner />
       ) : (

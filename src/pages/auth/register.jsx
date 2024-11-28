@@ -87,8 +87,6 @@ const Register = () => {
   const handleRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log(values);
-
     try {
       const res = await agentRegister({
         ...values,
@@ -104,8 +102,6 @@ const Register = () => {
       setSubmitting(false);
     }
   };
-
-  console.log(initialValues);
 
   return (
     <>

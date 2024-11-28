@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import Pusher from 'pusher-js';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-
 
 const Chatbox = ({ type, data, onClose }) => {
   const [message, setMessage] = useState('');
@@ -22,7 +23,7 @@ const Chatbox = ({ type, data, onClose }) => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `${localStorage.getItem('token')}`,
+            Authorization: `${Cookies.get('token')}`,
           },
         }
       );
@@ -34,14 +35,14 @@ const Chatbox = ({ type, data, onClose }) => {
   }, [data?._id]);
 
   useEffect(() => {
-    const channel = pusher.subscribe(`chat_${data?._id}`);
+    const channel = Pusher.subscribe(`chat_${data?._id}`);
     channel.bind('message', (data) => {
       setPusherMessages((prevComments) => [...prevComments, data]);
     });
 
     return () => {
       channel.unbind();
-      pusher.unsubscribe('message');
+      Pusher.unsubscribe('message');
     };
   }, [data?._id, pusherMessages]);
 
@@ -59,7 +60,7 @@ const Chatbox = ({ type, data, onClose }) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `${localStorage.getItem('token')}`,
+          Authorization: `${Cookies.get('token')}`,
         },
       }
     );
