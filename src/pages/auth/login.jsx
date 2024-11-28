@@ -2,7 +2,7 @@ import CheckboxField from '@/components/common/formField/CheckBoxField';
 import EmailField from '@/components/common/formField/EmailField';
 import PasswordField from '@/components/common/formField/PasswordField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
-import { useLogInMutation } from '@/slice/services/authService';
+import { useLogInMutation } from '@/slice/services/public/auth/authService';
 import { Form, Formik } from 'formik';
 
 import Cookies from 'js-cookie';

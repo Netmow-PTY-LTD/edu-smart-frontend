@@ -87,13 +87,13 @@ const SuperAdminSidebarData = () => {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
-      link: '/super-admin',
+      link: '/super-admin/',
     },
     {
       id: 'agents',
       label: 'Agents',
       icon: 'ri-group-2-fill',
-      link: '/super-admin',
+      link: '/super-admin/agents',
     },
     {
       id: 'students',

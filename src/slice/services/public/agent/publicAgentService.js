@@ -1,10 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 
-export const userInfoService = createApi({
-  reducerPath: 'userInfoService',
+export const publicAgentService = createApi({
+  reducerPath: 'publicAgentService',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1',
+    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/public',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -14,13 +14,13 @@ export const userInfoService = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getUserInfo: builder.query({
+    getAllAgent: builder.query({
       query: () => ({
-        url: '/user',
+        url: '/agent',
         method: 'GET',
       }),
     }),
   }),
 });
 
-export const { useGetUserInfoQuery } = userInfoService;
+export const { useGetAllAgentQuery } = publicAgentService;

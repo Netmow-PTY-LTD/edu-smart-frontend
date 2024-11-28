@@ -11,7 +11,6 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { useGetUserInfoQuery } from '../../../slice/services/common/userInfoService';
 
 const ProfileDropdown = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
@@ -78,17 +77,26 @@ const ProfileDropdown = () => {
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-uppercase">
-                {'Jhon Doe'}
+                {userInfodata?.data?.first_name
+                  ? userInfodata?.data?.first_name +
+                    ' ' +
+                    userInfodata?.data?.first_name
+                  : ''}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">
-                {'Super admin'}
+                {userInfodata?.data?.role ? userInfodata?.data?.role : '' || ''}
               </span>
             </span>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu-end ">
+        <DropdownMenu className="dropdown-menu-end">
           <h6 className="dropdown-header text-uppercase fs-3">
-            Welcome ! {'Jhon Doe'}
+            Welcome!{' '}
+            {userInfodata?.data?.first_name
+              ? userInfodata?.data?.first_name +
+                ' ' +
+                userInfodata?.data?.first_name
+              : ''}
           </h6>
           <DropdownItem className="p-0">
             <Link href={'/'} className="dropdown-item">

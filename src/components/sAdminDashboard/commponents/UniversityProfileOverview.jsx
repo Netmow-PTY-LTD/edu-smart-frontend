@@ -7,10 +7,14 @@ const UniversityProfileOverview = ({
   profileData,
   headers,
   categoryHeaders,
+  courseHeaders,
   allDepartmentData,
   allCategoryData,
+  allCourseData,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
+
+  console.log(allCourseData);
   return (
     <>
       <Row className="grid g-5 pb-2">
@@ -65,7 +69,11 @@ const UniversityProfileOverview = ({
               <CardHeader></CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={headers}
+                  headers={courseHeaders}
+                  data={allCourseData ? allCourseData : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={5}
                   emptyMessage="No Data found yet."
                 />
               </CardBody>

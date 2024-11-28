@@ -15,7 +15,7 @@ const LatestTeams = () => {
       <Card>
         <CardHeader className="align-items-center d-flex ps-4 mb-1 py-5">
           <h4 className="card-title mb-0 flex-grow-1">
-            Latest Registered Agents
+            Latest Registered Students
           </h4>
         </CardHeader>
 
