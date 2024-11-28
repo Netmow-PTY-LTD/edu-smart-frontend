@@ -70,7 +70,7 @@ const InitialInfo = ({
                         />
                       </Col>
                     </Row>
-                    <div className="hstack gap-2 justify-content-center mx-auto mt-5 mb-2">
+                    <div className="hstack gap-2 justify-content-start mx-auto mt-5 mb-2">
                       <SubmitButton
                         isSubmitting={isSubmitting}
                         formSubmit={formSubmit}

@@ -10,7 +10,7 @@ import {
   changeSidebarThemeAction,
   changeSidebarVisibilityAction,
   changeTopbarThemeAction,
-} from '@/slice/services/dashboardSidebarService';
+} from '@/slice/services/super admin/dashboardSidebarService';
 
 const changeHTMLAttribute = (attribute, value) => {
   if (document.documentElement)

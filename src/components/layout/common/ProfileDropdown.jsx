@@ -1,6 +1,4 @@
-/* eslint-disable no-undef */
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dropdown,
   DropdownItem,
@@ -9,36 +7,50 @@ import {
 } from 'reactstrap';
 
 //import images
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 const ProfileDropdown = () => {
-  const [domain, setDomain] = useState('');
-  const router = useRouter();
-  const [subdomain, setSubdomain] = useState('');
-
-  //Dropdown Toggle
+  const [isAuthenticated, setIsAuthenticated] = useState('');
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
+
+  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      window.location.href = '/auth/login';
+    }
+  }, []);
+
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);
   };
 
   const handlelogOut = () => {
-    if (userInfoData?.role === 'super_admin') {
-      localStorage.removeItem('token');
-      window.location.assign(
-        `${window.location.protocol}//${domain === 'localhost' ? `localhost:3000` : domain}/auth/login`
-      );
-    } else {
-      localStorage.removeItem('token');
-      window.location.assign(
-        `${window.location.protocol}//${subdomain}.${domain === 'localhost' ? 'localhost:3000' : `${domain}.app`}/auth/login`
-      );
-    }
-    if (window.innerWidth <= 1024) {
-      window.location.assign(`${window.location.protocol}//squaddeck.app`);
-    }
+    // if (userInfoData?.role === 'super_admin') {
+    Cookies.remove('token');
+    // window.location.assign(
+    //   `${window.location.protocol}//${domain === 'localhost' ? `localhost:3005` : domain}/auth/login`
+    // );
+    window.location.assign(
+      `${window.location.protocol}//${`localhost:3005`}/auth/login`
+    );
+    // } else {
+    //   document.cookie = 'token=; max-age=0; path=/';
+
+    //   window.location.assign(
+    //     `${window.location.protocol}//${subdomain}.${domain === 'localhost' ? 'localhost:3005' : `${domain}.app`}/auth/login`
+    //   );
+    // }
+    // if (window.innerWidth <= 1024) {
+    //   window.location.assign(`${window.location.protocol}//squaddeck.app`);
+    // }
   };
 
   return (
@@ -65,17 +77,26 @@ const ProfileDropdown = () => {
             />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-uppercase">
-                {'Jhon Doe'}
+                {userInfodata?.data?.first_name
+                  ? userInfodata?.data?.first_name +
+                    ' ' +
+                    userInfodata?.data?.first_name
+                  : ''}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">
-                {'Super admin'}
+                {userInfodata?.data?.role ? userInfodata?.data?.role : '' || ''}
               </span>
             </span>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu-end ">
+        <DropdownMenu className="dropdown-menu-end">
           <h6 className="dropdown-header text-uppercase fs-3">
-            Welcome ! {'Jhon Doe'}
+            Welcome!{' '}
+            {userInfodata?.data?.first_name
+              ? userInfodata?.data?.first_name +
+                ' ' +
+                userInfodata?.data?.first_name
+              : ''}
           </h6>
           <DropdownItem className="p-0">
             <Link href={'/'} className="dropdown-item">
@@ -84,76 +105,22 @@ const ProfileDropdown = () => {
             </Link>
           </DropdownItem>
 
-          {/* <DropdownItem className="p-0">
-            <Link
-              href={
-                data?.role === 'admin'
-                  ? '/admin/chat'
-                  : data?.role === 'guardian'
-                  ? '/guardian/chat-for-guardian'
-                  : data?.role === 'player'
-                  ? '/player/playerChatForPlayer'
-                  : data?.role === 'manager'
-                  ? '/manager/chatForManager'
-                  : data?.role === 'trainer'
-                  ? '/trainer/chatForTrainer'
-                  : '/'
-              }
-              className="dropdown-item"
-            >
-              <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>{' '}
-              <span className="align-middle">Messages</span>
-            </Link>
-          </DropdownItem> */}
-
-          {/* {data?.role === 'admin' ? (
-            <div>
-              <DropdownItem className="p-0">
-                <Link href={''} className="dropdown-item">
-                  <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{' '}
-                  <span className="align-middle">Help</span>
-                </Link>
-              </DropdownItem>
-              <div className="dropdown-divider"></div>
-              <DropdownItem className="p-0">
-                <Link href="/admin/charges" className="dropdown-item">
-                  <i className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>{' '}
-                  <span className="align-middle">
-                    Charges :$<b>{totalCharges?.data?.total_charges}</b>
-                  </span>
-                </Link>
-              </DropdownItem>
-              <DropdownItem className="p-0">
-                <Link href="/admin/settings" className="dropdown-item">
-                  <i className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>
-                  <span className="align-middle me-2">Settings</span>
-                  <span className="badge bg-success-subtle text-success mt-2">
-                    New
-                  </span>
-                </Link>
-              </DropdownItem>
-            </div>
-          ) : (
-            ''
-          )} */}
-
           <DropdownItem className="p-0">
-            {/* {'data' ? (
+            {isAuthenticated ? (
               <div onClick={() => handlelogOut()} className="dropdown-item">
                 <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
                 <span>LogOut</span>
               </div>
-            ) : */}
-
-            <div className="dropdown-item">
-              <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
-              <Link href={'/auth/login'} className="text-black">
-                <span className=" align-middle" data-key="t-logout">
-                  SignIn
-                </span>
-              </Link>
-            </div>
-            {/* } */}
+            ) : (
+              <div className="dropdown-item">
+                <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>{' '}
+                <Link href={'/auth/login'} className="text-black">
+                  <span className=" align-middle" data-key="t-logout">
+                    SignIn
+                  </span>
+                </Link>
+              </div>
+            )}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

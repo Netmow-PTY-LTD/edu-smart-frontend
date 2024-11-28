@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import Chatbox from './Chatbox';
 
 const Chat = ({ userID }) => {
@@ -30,7 +30,7 @@ const Chat = ({ userID }) => {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `${localStorage.getItem('token')}`,
+              Authorization: `${Cookies.get('token')}`,
             },
           }
         );

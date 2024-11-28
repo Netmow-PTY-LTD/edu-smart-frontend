@@ -7,7 +7,7 @@ const CheckboxField = ({ label, name, termsLink, termsText }) => {
     <div className="mb-3 form-check">
       <Field
         type="checkbox"
-        className="form-check-input"
+        className="form-check-input border-2"
         id={name}
         name={name}
       />

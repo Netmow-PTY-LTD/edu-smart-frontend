@@ -9,7 +9,7 @@ import {
   useDeleteDepartmentMutation,
   useGetDepartmentQuery,
   useUpdateDepartmentMutation,
-} from '@/slice/services/departmentService';
+} from '@/slice/services/super admin/departmentService';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -233,9 +233,9 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       key: 'courses',
       render: (item, index) =>
         item?.courses?.length > 0
-          ? item.map((course) => (
+          ? item?.courses.map((course) => (
               <span key={index} className="d-flex flex-column text-capitalize">
-                {course}
+                {course?.name}
               </span>
             ))
           : '-',

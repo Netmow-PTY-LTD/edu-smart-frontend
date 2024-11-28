@@ -5,13 +5,14 @@ import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/All
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
-import { useGetAllCourseCategoriesQuery } from '@/slice/services/courseCategoriesService';
-import { useGetCourseQuery } from '@/slice/services/courseService';
-import { useGetDepartmentQuery } from '@/slice/services/departmentService';
-import { useGetSingleUniversityQuery } from '@/slice/services/universityService';
+import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
+import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
+import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
+import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
 const SingleUniversityProfile = () => {
@@ -83,9 +84,9 @@ const SingleUniversityProfile = () => {
       key: 'courses',
       render: (item, index) =>
         item?.courses?.length > 0
-          ? item.map((course) => (
+          ? item?.courses.map((course) => (
               <span key={index} className="d-flex flex-column text-capitalize">
-                {course}
+                {course?.name}
               </span>
             ))
           : '-',
@@ -115,11 +116,41 @@ const SingleUniversityProfile = () => {
     },
     { title: 'Description', key: 'description' },
   ];
+  const courseHeaders = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    { title: 'Course Name', key: 'name' },
+    {
+      title: 'Department ',
+      key: 'department',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.department?.name}
+        </span>
+      ),
+    },
+    {
+      title: 'Course Category',
+      key: 'category',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.category?.name}
+        </span>
+      ),
+    },
+  ];
 
   return (
     <>
       <Layout>
         <div className="page-content ">
+          <ToastContainer />
           {getSingleUniversityIsLoading ? (
             <LoaderSpiner />
           ) : (
@@ -231,9 +262,11 @@ const SingleUniversityProfile = () => {
                       <UniversityProfileOverview
                         headers={headers}
                         categoryHeaders={categoryHeaders}
+                        courseHeaders={courseHeaders}
                         profileData={getSingleUniversityData?.data}
                         allDepartmentData={getDepartmentData?.data}
                         allCategoryData={getAllCategoriesData?.data}
+                        allCourseData={getCourseData?.data}
                       />
                     )}
                     {activeTab === '2' && (

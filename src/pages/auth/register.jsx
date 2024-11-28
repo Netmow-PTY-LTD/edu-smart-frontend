@@ -13,7 +13,7 @@ import * as Yup from 'yup';
 import {
   useAgentRegisterMutation,
   useGenerateOtpMutation,
-} from '@/slice/services/authService';
+} from '@/slice/services/public/auth/authService';
 import { toast, ToastContainer } from 'react-toastify';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
@@ -87,8 +87,6 @@ const Register = () => {
   const handleRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log(values);
-
     try {
       const res = await agentRegister({
         ...values,
@@ -104,8 +102,6 @@ const Register = () => {
       setSubmitting(false);
     }
   };
-
-  console.log(initialValues);
 
   return (
     <>

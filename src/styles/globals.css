@@ -7,6 +7,7 @@
   --app-primary: #273043;
   --app-secondary: #b5d336;
   --third-color: #bed45e;
+  --fourth-color: #df2121;
 }
 
 * {
@@ -31,8 +32,16 @@ body {
 .third-color {
   color: var(--third-color);
 }
+
+.text-primary {
+  color: var(--app-primary);
+}
+
 .bg-third-color {
   background-color: var(--third-color);
+}
+.bg-fourth-color {
+  background-color: var(--fourth-color);
 }
 
 .pagination-no {
