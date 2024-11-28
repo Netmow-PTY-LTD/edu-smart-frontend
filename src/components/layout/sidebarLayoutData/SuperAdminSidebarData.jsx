@@ -59,27 +59,11 @@ const SuperAdminSidebarData = () => {
       stateVariables: isUniversities,
       subItems: [
         {
-          id: 'uni-management',
-          label: 'University Management',
+          id: 'alluniversity',
+          label: 'All University',
           icon: '',
-          link: '/#',
-          parentId: 'universities',
-          isChildItem: true,
-          click: function (e) {
-            e.preventDefault();
-            setIsUniManagement(!isUniManagement);
-            updateIconSidebar(e);
-          },
-          stateVariables: isUniManagement,
-          childItems: [
-            {
-              id: 'alluniversity',
-              label: 'All University',
-              icon: '',
-              link: '/super-admin/university-management/all-university',
-              parentId: 'uni-management',
-            },
-          ],
+          link: '/super-admin/university-management/all-university',
+          parentId: 'uni-management',
         },
       ],
     },
