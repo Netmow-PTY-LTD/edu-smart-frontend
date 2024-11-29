@@ -61,9 +61,16 @@ const SuperAdminSidebarData = () => {
         {
           id: 'alluniversity',
           label: 'All University',
-          icon: '',
+          icon: 'ri-school-fill',
           link: '/super-admin/university-management/all-university',
-          parentId: 'uni-management',
+          parentId: 'universities',
+        },
+        {
+          id: 'adduniversity',
+          label: 'Add University',
+          icon: 'ri-school-fill',
+          link: '/super-admin/university-management/add-university',
+          parentId: 'universities',
         },
       ],
     },
