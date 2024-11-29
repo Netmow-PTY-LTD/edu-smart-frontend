@@ -13,6 +13,7 @@ const InitialInfo = ({
   validationSchema,
   onSubmit,
   formSubmit,
+  setInitialValues,
 }) => {
   const roleOptions = [
     {
@@ -51,6 +52,7 @@ const InitialInfo = ({
                             name="user_role"
                             label="Select User"
                             options={roleOptions}
+                            setInitialValues={setInitialValues}
                           />
                         </div>
                       </Col>

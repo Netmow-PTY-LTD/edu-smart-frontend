@@ -16,7 +16,7 @@ import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
-const SuperAdminDashboard = () => {
+const AgentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
@@ -89,4 +89,4 @@ const SuperAdminDashboard = () => {
 };
 
 // export default ProtectedRoute(AdminDashboard);
-export default SuperAdminDashboard;
+export default AgentDashboard;

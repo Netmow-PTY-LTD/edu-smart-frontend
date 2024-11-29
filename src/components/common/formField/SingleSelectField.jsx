@@ -2,7 +2,14 @@ import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import Select from 'react-select';
 
-const SingleSelectField = ({ name, label, options, fieldClass, ...props }) => {
+const SingleSelectField = ({
+  name,
+  label,
+  options,
+  fieldClass,
+  setInitialValues,
+  ...props
+}) => {
   return (
     <div>
       <label htmlFor={name} className="form-label fs-2">
@@ -21,10 +28,13 @@ const SingleSelectField = ({ name, label, options, fieldClass, ...props }) => {
               : null;
 
           const handleChange = (selectedOption) => {
-            console.log(selectedOption);
+            setInitialValues((prev) => ({
+              ...prev,
+              user_role: selectedOption?.label,
+            }));
             form.setFieldValue(
               name,
-              selectedOption ? selectedOption?.value : null
+              selectedOption ? selectedOption?.label : null
             );
           };
 
