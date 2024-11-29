@@ -10,7 +10,7 @@ import {
   useDeleteUniversityMutation,
   useGetUniversityQuery,
   useUpdateUniversityMutation,
-} from '@/slice/services/universityService';
+} from '@/slice/services/super admin/universityService';
 import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -292,14 +292,43 @@ const AllUniversityForSuperAdmin = () => {
       title: 'Address',
       key: 'address',
       render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.address_line_1 ? <span>{item.address_line_1}</span> : '-'}
-          {item?.address_line_2 ? <span>{item.address_line_2}</span> : '-'}
-          {item?.city ? <span>{item.city}</span> : '-'}
-          {item?.state ? <span>{item.state}</span> : '-'}
-          {item?.zip ? <span>{item.zip}</span> : '-'}
-          {item?.country ? <span>{item.country}</span> : '-'}
-        </span>
+        <div className="d-flex gap-2">
+          <div className="text-capitalize">
+            <span className="me-2">
+              {item?.address_line_1 ? item?.address_line_1 + ',' : '' || '-'}
+            </span>
+            <span className="me-2">
+              {item?.address_line_2 ? item?.address_line_2 + ',' : '' || '-'}
+            </span>
+          </div>
+          <div className="text-capitalize">
+            <span className="me-2">
+              {item?.city ? item?.city + ',' : '' || '-'}
+            </span>
+            <span className="me-2">
+              {item?.state ? item?.state + ',' : '' || '-'}
+            </span>
+          </div>
+          <div className="text-capitalize">
+            <span className="me-2">
+              {item?.zip ? item?.zip + ',' : '' || '-'}
+            </span>
+            <span className="me-2">{item?.country || '-'}</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-2 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
       ),
     },
     {

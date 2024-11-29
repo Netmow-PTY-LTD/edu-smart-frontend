@@ -1,14 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import Cookies from 'js-cookie';
 
 export const authService = createApi({
   reducerPath: 'authService',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/public',
     prepareHeaders: (headers) => {
-      const cookies = document.cookie.split(';');
-      const token = cookies.find((cookie) =>
-        cookie.trim().startsWith('token=')
-      );
+      const token = Cookies.get('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }

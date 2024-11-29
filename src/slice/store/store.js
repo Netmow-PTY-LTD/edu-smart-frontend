@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { authService } from '../services/authService';
-
+import { authService } from '../services/public/auth/authService';
 import { userInfoService } from '../services/common/userInfoService';
-import { courseCategoriesService } from '../services/courseCategoriesService';
-import { courseService } from '../services/courseService';
-import LayoutReducer from '../services/dashboardSidebarService';
-import { departmentService } from '../services/departmentService';
-import { universityService } from '../services/universityService';
+import { publicAgentService } from '../services/public/agent/publicAgentService';
+import { courseCategoriesService } from '../services/super admin/courseCategoriesService';
+import { courseService } from '../services/super admin/courseService';
+import LayoutReducer from '../services/super admin/dashboardSidebarService';
+import { departmentService } from '../services/super admin/departmentService';
+import { universityService } from '../services/super admin/universityService';
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +21,7 @@ export const store = configureStore({
     [courseCategoriesService.reducerPath]: courseCategoriesService.reducer,
     [courseService.reducerPath]: courseService.reducer,
     [userInfoService.reducerPath]: userInfoService.reducer,
+    [publicAgentService.reducerPath]: publicAgentService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -29,7 +30,8 @@ export const store = configureStore({
       .concat(departmentService.middleware)
       .concat(courseCategoriesService.middleware)
       .concat(courseService.middleware)
-      .concat(userInfoService.middleware),
+      .concat(userInfoService.middleware)
+      .concat(publicAgentService.middleware),
 });
 
 setupListeners(store.dispatch);

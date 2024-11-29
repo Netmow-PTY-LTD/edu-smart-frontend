@@ -34,46 +34,73 @@ const CourseModalForm = ({
             <Form>
               <Row>
                 <Col xl={6}>
-                  <TextField name="name" label="Course Name" />
+                  <div className="mb-3">
+                    <TextField name="name" label="Course Name" />
+                  </div>
                 </Col>
                 <Col xl={6}>
-                  <NumberField name="available_seats" label="Available Seats" />
+                  <div className="mb-3">
+                    <NumberField
+                      name="available_seats"
+                      label="Available Seats"
+                    />
+                  </div>
                 </Col>
                 <Col xl={6}>
-                  <SingleSelectField
-                    name="department"
-                    label="Select Department"
-                    options={allDepartmentName}
-                  />
+                  <div className="mb-3">
+                    <SingleSelectField
+                      name="department"
+                      label="Select Department"
+                      options={allDepartmentName}
+                    />
+                  </div>
                 </Col>
                 <Col xl={6}>
-                  <SingleSelectField
-                    name="category"
-                    label="Select Course Category"
-                    options={allCategoryName}
-                  />
+                  <div className="mb-3">
+                    <SingleSelectField
+                      name="category"
+                      label="Select Course Category"
+                      options={allCategoryName}
+                    />
+                  </div>
                 </Col>
 
                 <Col xl={6}>
-                  <NumberField
-                    name="price_for_student"
-                    label="Price For Student"
-                  />
+                  <div className="mb-3">
+                    <NumberField
+                      name="price_for_student"
+                      label="Price For Student"
+                    />
+                  </div>
                 </Col>
                 <Col xl={6}>
-                  <NumberField name="gst_for_student" label="GST For Student" />
+                  <div className="mb-3">
+                    <NumberField
+                      name="gst_for_student"
+                      label="GST For Student"
+                    />
+                  </div>
                 </Col>
                 <Col xl={6}>
-                  <NumberField name="price_for_agent" label="Price For Agent" />
+                  <div className="mb-3">
+                    <NumberField
+                      name="price_for_agent"
+                      label="Price For Agent"
+                    />
+                  </div>
                 </Col>
                 <Col xl={6}>
-                  <NumberField name="gst_for_agent" label="GST For Agent" />
+                  <div className="mb-3">
+                    <NumberField name="gst_for_agent" label="GST For Agent" />
+                  </div>
                 </Col>
                 <Col xl={12}>
-                  <TextArea name="description" label="Course Description" />
+                  <div className="mb-3">
+                    <TextArea name="description" label="Course Description" />
+                  </div>
                 </Col>
               </Row>
-
+              <div className="hstack d-flex mx-auto justify-content-start mt-4"></div>
               <SubmitButton isSubmitting={isSubmitting} formSubmit={formSubmit}>
                 {formSubmit}
               </SubmitButton>
