@@ -15,7 +15,7 @@ const CourseCategoryModalForm = ({
   validationSchema,
   onSubmit,
   formSubmit,
-  allDepartmentName,
+  allDepartmentName,setInitialValues
 }) => {
   console.log(initialValues);
   console.log(allDepartmentName);
@@ -41,6 +41,7 @@ const CourseCategoryModalForm = ({
                     name="department"
                     label="Select Department"
                     options={allDepartmentName}
+                    setInitialValues={setInitialValues}
                   />
                 </Col>
                 <TextArea name="description" label="Description" />

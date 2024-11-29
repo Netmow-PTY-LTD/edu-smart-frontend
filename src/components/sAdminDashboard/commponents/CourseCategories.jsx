@@ -324,6 +324,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
                   validationSchema={validationSchema}
                   formSubmit={'Submit'}
                   allDepartmentName={allDepartmentName}
+                  setInitialValues={setInitialValues}
                 />
                 <SearchComponent
                   searchTerm={searchTerm}
@@ -356,6 +357,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
             initialValues={initialValues}
             formSubmit={'Update'}
             allDepartmentName={allDepartmentName}
+            setInitialValues={setInitialValues}
           />
 
           {/* Delete Category */}
