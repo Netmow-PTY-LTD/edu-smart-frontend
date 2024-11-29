@@ -6,24 +6,59 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 
 import {
   useAgentRegisterMutation,
   useGenerateOtpMutation,
+  useLogInMutation,
+  useStudentRegisterMutation,
 } from '@/slice/services/public/auth/authService';
+import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
+
+const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
 const Register = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [step, setStep] = useState(1);
 
+  const [logIn, { data: LoginData }] = useLogInMutation();
+  const [generateOtp] = useGenerateOtpMutation();
+  const [agentRegister] = useAgentRegisterMutation();
+  const [studentRegister] = useStudentRegisterMutation();
+
+  useEffect(() => {
+    if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//localhost:3005/agent`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
+        );
+      }
+    } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//localhost:3005/student`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
+        );
+      }
+    }
+  }, [LoginData]);
+
   const [initialValues, setInitialValues] = useState({
-    user_role: '',
     email: '',
     password: '',
     first_name: '',
@@ -40,9 +75,6 @@ const Register = () => {
     zip: '',
     terms_and_conditions: '',
   });
-
-  const [generateOtp] = useGenerateOtpMutation();
-  const [agentRegister] = useAgentRegisterMutation();
 
   const initialStepValidationSchema = Yup.object({
     user_role: Yup.string().required('Please Select User First'),
@@ -87,13 +119,25 @@ const Register = () => {
   const handleRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
+    console.log('agent', values);
+
     try {
-      const res = await agentRegister({
+      const resRegister = await agentRegister({
         ...values,
         confirm_password: values?.password,
       }).unwrap();
-      if (res) {
-        toast.success(res?.message);
+
+      if (resRegister) {
+        toast.success(resRegister?.message);
+
+        const resLogin = await logIn({
+          email: values?.email,
+          password: values?.password,
+        }).unwrap();
+
+        if (resLogin) {
+          toast.success(resLogin?.message);
+        }
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -102,6 +146,39 @@ const Register = () => {
       setSubmitting(false);
     }
   };
+
+  const handleStudentRegistrationSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    console.log('student', values);
+
+    try {
+      const resRegister = await studentRegister({
+        ...values,
+        confirm_password: values?.password,
+      }).unwrap();
+
+      if (resRegister) {
+        toast.success(resRegister?.message);
+
+        const resLogin = await logIn({
+          email: values?.email,
+          password: values?.password,
+        }).unwrap();
+
+        if (resLogin) {
+          toast.success(resLogin?.message);
+        }
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  console.log(initialValues?.user_role);
 
   return (
     <>
@@ -134,6 +211,7 @@ const Register = () => {
                         initialValues={initialValues}
                         validationSchema={initialStepValidationSchema}
                         formSubmit={'Continue To Register'}
+                        setInitialValues={setInitialValues}
                       />
                     </>
                   )}
@@ -153,7 +231,11 @@ const Register = () => {
                         agentRegistrationValidationSchema={
                           agentRegistrationValidationSchema
                         }
-                        handleRegistrationSubmit={handleRegistrationSubmit}
+                        handleRegistrationSubmit={
+                          initialValues?.user_role === 'Student'
+                            ? handleStudentRegistrationSubmit
+                            : handleRegistrationSubmit
+                        }
                       />
                     </>
                   )}
