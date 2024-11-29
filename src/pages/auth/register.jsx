@@ -40,8 +40,12 @@ const Register = () => {
           `${window.location.protocol}//localhost:3005/agent`
         );
       } else {
+        // window.location.assign(
+        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
+        // );
+
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
+          `${window.location.protocol}//${'edusmartmy.netlify.app'}/agent`
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
@@ -51,8 +55,12 @@ const Register = () => {
           `${window.location.protocol}//localhost:3005/student`
         );
       } else {
+        // window.location.assign(
+        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
+        // );
+
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
+          `${window.location.protocol}//${'edusmartmy.netlify.app'}/student`
         );
       }
     }
