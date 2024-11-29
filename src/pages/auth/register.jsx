@@ -21,7 +21,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
 // const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
-const appEnvironment = 'development';
+const appEnvironment = 'production';
 
 const Register = () => {
   const dispatch = useDispatch();
