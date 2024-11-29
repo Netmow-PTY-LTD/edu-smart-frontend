@@ -65,6 +65,14 @@ export const authService = createApi({
         };
       },
     }),
+    subdomain: builder.query({
+      query: () => {
+        return {
+          url: `/subdomain`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -76,4 +84,5 @@ export const {
   useStudentRegisterMutation,
   useUniversityRegisterMutation,
   useLogInMutation,
+  useSubdomainQuery,
 } = authService;

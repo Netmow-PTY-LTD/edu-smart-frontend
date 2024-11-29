@@ -80,7 +80,7 @@ const ProfileDropdown = () => {
                 {userInfodata?.data?.first_name
                   ? userInfodata?.data?.first_name +
                     ' ' +
-                    userInfodata?.data?.first_name
+                    userInfodata?.data?.last_name
                   : ''}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">

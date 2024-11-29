@@ -15,9 +15,88 @@ import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
+const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
+
 const Login = () => {
   const [logIn, { data: LoginData }] = useLogInMutation();
 
+  //  for authenticating
+  useEffect(() => {
+    if (LoginData?.data?.token && LoginData?.data?.role === 'super_admin') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//localhost:3005/super-admin`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/super-admin`
+        );
+      }
+    }
+  }, [LoginData]);
+
+  // temporary agent login
+  useEffect(() => {
+    if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//localhost:3005/agent`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
+        );
+      }
+    } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//localhost:3005/student`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
+        );
+      }
+    }
+  }, [LoginData]);
+
+  // useEffect(() => {
+  //   if (
+  //     // subdomainData?.subdomain &&
+  //     typeof window !== 'undefined' &&
+  //     loginData?.token
+  //   ) {
+  //     if (loginData?.token) {
+  //       localStorage.setItem('token', loginData?.token);
+  //     }
+  //     if (appEnvironment === 'development') {
+  //       if (loginData.role && loginData?.role === 'admin') {
+  //         window.location.assign(
+  //           `${window.location.protocol}//${subdomainData?.subdomain}.localhost:3000/admin?token=${loginData.token}`
+  //         );
+  //       } else if (loginData.role && loginData?.role === 'guardian') {
+  //         window.location.assign(
+  //           `${window.location.protocol}//${subdomainData?.subdomain}.localhost:3000/guardian?token=${loginData.token}`
+  //         );
+  //       }
+  //     } else {
+  //       if (loginData.role && loginData?.role === 'admin') {
+  //         window.location.assign(
+  //           `${window.location.protocol}//${subdomainData?.subdomain}.${process.env.NEXT_PUBLIC_REDIRECT_URL}/admin?token=${loginData.token}`
+  //         );
+  //       } else if (loginData.role && loginData?.role === 'guardian') {
+  //         window.location.assign(
+  //           `${window.location.protocol}//${subdomainData?.subdomain}.${process.env.NEXT_PUBLIC_REDIRECT_URL}/guardian?token=${loginData.token}`
+  //         );
+  //       }
+  //     }
+  //   }
+  // }, []);
+
+  //  for login
   const [initialValues, setInitialValues] = useState({
     email: '',
     password: '',
@@ -27,15 +106,6 @@ const Login = () => {
     email: Yup.string().required('Email is required'),
     password: Yup.string().required('Password is required'),
   });
-
-  useEffect(() => {
-    if (LoginData?.data?.token) {
-      const token = LoginData?.data?.token;
-      Cookies.set('token', token, { expires: 7 });
-
-      window.location.href = '/super-admin';
-    }
-  }, [LoginData]);
 
   const handleLogin = async (values, { setSubmitting }) => {
     setSubmitting(true);
