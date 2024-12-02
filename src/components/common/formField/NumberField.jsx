@@ -4,8 +4,8 @@ import React from 'react';
 // Custom NumberField component for Formik
 const NumberField = ({ name, form, label, ...props }) => {
   return (
-    <div>
-      <label htmlFor={name} className="form-label fs-2">
+    <div className="mb-4">
+      <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Number'}
       </label>
       <Field

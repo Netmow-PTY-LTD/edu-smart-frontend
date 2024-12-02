@@ -54,7 +54,7 @@ const ProfileDropdown = () => {
     // }
   };
 
-  console.log(userInfodata);
+  // console.log(userInfodata);
 
   return (
     <>
