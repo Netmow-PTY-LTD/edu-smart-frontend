@@ -6,7 +6,7 @@ import { Spinner } from 'reactstrap';
 const Loader = (props) => {
   return (
     <>
-      <div className="button px-3 py-2 text-light d-flex justify-content-center m-2">
+      <div className=" px-3 text-light d-flex justify-content-center">
         <Spinner> Loading... </Spinner>
       </div>
       {toast.error(props.error, {

@@ -1,4 +1,5 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
   --color--primary: #b5d336;
@@ -15,6 +16,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   position: relative;
   overflow-x: hidden;
@@ -22,9 +24,10 @@ html {
   margin: 0;
   height: 100%;
 }
+
 body {
   position: relative;
-  font-family: 'Lora', Georgia, serif !important;
+  font-family: 'Lora', serif !important;
   overflow-x: hidden;
   font-size: 1.5rem !important;
 }
@@ -9454,6 +9457,10 @@ input.search-input::placeholder {
   background-color: transparent !important;
 }
 
+textarea.form-control {
+  height: auto !important;
+}
+
 @media (max-width: 1024px) {
   .navbar-menu .navbar-nav .nav-sm .nav-link {
     padding: 1.3rem 1.5rem !important;
@@ -9625,8 +9632,69 @@ input.search-input::placeholder {
   color: var(--color--secondary) !important;
 }
 
+.add-university-card {
+  background: #e9f1fa !important;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+
 @media (max-width: 991px) {
   .auth-one-bg {
     display: none;
   }
+}
+
+.custom-input-file {
+  display: none;
+}
+
+.custom-input-label {
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.203164px;
+  color: var(--color--secondary);
+  border: 1px dashed var(--color--secondary);
+  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 0;
+  bottom: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-university-card h4 {
+  /* color: var(--Dark-Blue, #092a67); */
+  color: var(--color--secondary);
+  font-family: Lora;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 10px;
+}
+
+.profile-img {
+  padding: 20px;
+  border: 1px solid var(--color--secondary);
+  border-radius: 10px;
+}
+
+.img-preview {
+  text-align: center;
+}
+
+.img-preview img {
+  max-width: 242px;
+  width: 100%;
+  aspect-ratio: 1/0.6;
+  object-fit: contain;
+}
+
+.form-label {
+  color: var(--color--secondary);
+  font-weight: 600;
+}
+
+.textarea.form-control {
+  min-height: auto !important;
 }
