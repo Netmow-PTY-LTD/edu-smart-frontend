@@ -13,15 +13,16 @@ const InitialInfo = ({
   validationSchema,
   onSubmit,
   formSubmit,
+  setInitialValues,
 }) => {
   const roleOptions = [
     {
       label: 'Agent',
-      value: 'agent1234',
+      value: 'Agent',
     },
     {
       label: 'Student',
-      value: 'student1234',
+      value: 'Student',
     },
   ];
 
@@ -51,6 +52,7 @@ const InitialInfo = ({
                             name="user_role"
                             label="Select User"
                             options={roleOptions}
+                            setInitialValues={setInitialValues}
                           />
                         </div>
                       </Col>

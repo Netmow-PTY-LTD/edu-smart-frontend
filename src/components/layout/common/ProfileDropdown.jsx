@@ -40,7 +40,7 @@ const ProfileDropdown = () => {
     //   `${window.location.protocol}//${domain === 'localhost' ? `localhost:3005` : domain}/auth/login`
     // );
     window.location.assign(
-      `${window.location.protocol}//${`localhost:3005`}/auth/login`
+      `${window.location.protocol}//${`edusmartmy.netlify.app`}/auth/login`
     );
     // } else {
     //   document.cookie = 'token=; max-age=0; path=/';
@@ -87,7 +87,7 @@ const ProfileDropdown = () => {
                 {userInfodata?.data?.first_name
                   ? userInfodata?.data?.first_name +
                     ' ' +
-                    userInfodata?.data?.first_name
+                    userInfodata?.data?.last_name
                   : ''}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">
