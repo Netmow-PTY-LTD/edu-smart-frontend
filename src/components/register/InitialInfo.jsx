@@ -18,11 +18,11 @@ const InitialInfo = ({
   const roleOptions = [
     {
       label: 'Agent',
-      value: 'agent1234',
+      value: 'Agent',
     },
     {
       label: 'Student',
-      value: 'student1234',
+      value: 'Student',
     },
   ];
 

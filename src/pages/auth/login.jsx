@@ -15,7 +15,8 @@ import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
-const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
+// const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
+const appEnvironment = 'production';
 
 const Login = () => {
   const [logIn, { data: LoginData }] = useLogInMutation();
@@ -29,8 +30,11 @@ const Login = () => {
           `${window.location.protocol}//localhost:3005/super-admin`
         );
       } else {
+        // window.location.assign(
+        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/super-admin`
+        // );
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/super-admin`
+          `${window.location.protocol}//${'edusmartmy.netlify.app'}/super-admin`
         );
       }
     }
@@ -45,8 +49,12 @@ const Login = () => {
           `${window.location.protocol}//localhost:3005/agent`
         );
       } else {
+        // window.location.assign(
+        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
+        // );
+
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
+          `${window.location.protocol}//${'edusmartmy.netlify.app'}/agent`
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
@@ -56,8 +64,11 @@ const Login = () => {
           `${window.location.protocol}//localhost:3005/student`
         );
       } else {
+        // window.location.assign(
+        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
+        // );
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
+          `${window.location.protocol}//${'edusmartmy.netlify.app'}/student`
         );
       }
     }
