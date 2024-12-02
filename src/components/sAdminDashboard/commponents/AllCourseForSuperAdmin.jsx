@@ -415,6 +415,7 @@ const AllCourseForSuperAdmin = ({
               formSubmit={'Submit'}
               allDepartmentName={allDepartmentName}
               allCategoryName={allCategoryName}
+              setInitialValues={setInitialValues}
             />
             <SearchComponent
               searchTerm={searchTerm}
@@ -447,6 +448,7 @@ const AllCourseForSuperAdmin = ({
         formSubmit="Update"
         allCategoryName={allCategoryName}
         allDepartmentName={allDepartmentName}
+        setInitialValues={setInitialValues}
       />
 
       {/* Delete Course */}

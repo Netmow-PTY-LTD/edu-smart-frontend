@@ -18,6 +18,7 @@ const CourseModalForm = ({
   formSubmit,
   allDepartmentName,
   allCategoryName,
+  setInitialValues,
 }) => {
   return (
     <Modal isOpen={isOpen} centered size="xl">
@@ -52,6 +53,7 @@ const CourseModalForm = ({
                       name="department"
                       label="Select Department"
                       options={allDepartmentName}
+                      setInitialValues={setInitialValues}
                     />
                   </div>
                 </Col>
@@ -61,6 +63,7 @@ const CourseModalForm = ({
                       name="category"
                       label="Select Course Category"
                       options={allCategoryName}
+                      setInitialValues={setInitialValues}
                     />
                   </div>
                 </Col>
