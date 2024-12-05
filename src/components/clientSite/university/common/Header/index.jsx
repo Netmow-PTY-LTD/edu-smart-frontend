@@ -7,8 +7,13 @@ import { useDispatch } from 'react-redux';
 
 import Cookies from 'js-cookie';
 import Head from 'next/head';
+import MobileNav from '../mobileNav';
 
 export default function Header() {
+  const [showMobileNav, setShowMobileNav] = useState(false);
+  const toggleMobileNav = () => {
+    setShowMobileNav(!showMobileNav);
+  };
   return (
     <>
       <header className="header">
@@ -82,17 +87,22 @@ export default function Header() {
               <Link href="/" className="logo">
                 <Image
                   priority={true}
-                  src="/images/home/logo.png"
-                  width={500}
-                  height={500}
+                  src="/assets/images/logo_alt.png"
+                  width={75}
+                  height={40}
                   alt="SquadDeck Logo"
                 />
               </Link>
               <nav className="main-nav">
                 <ul className="nav-list">
+                  <li>
+                    <Link href="#">
+                      <span>Home</span>
+                    </Link>
+                  </li>
                   <li className=" menu-item-has-children">
-                    <Link href="/features" className="nav-link">
-                      <span>Features</span>
+                    <Link href="/faculties" className="nav-link">
+                      <span>Faculties</span>
                       <svg
                         width="11"
                         height="6"
@@ -111,13 +121,16 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href={`#`}>Universities</Link>
+                        <Link href={`#`}>Science</Link>
+                      </li>
+                      <li>
+                        <Link href={`#`}>Law</Link>
                       </li>
                     </ul>
                   </li>
                   <li className=" menu-item-has-children">
-                    <Link href="/sports" className="nav-link">
-                      <span>Sports</span>
+                    <Link href="/programs" className="nav-link">
+                      <span>Programs</span>
                       <svg
                         width="11"
                         height="6"
@@ -136,12 +149,15 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href={`#`}>Sports</Link>
+                        <Link href={`#`}>Graduate</Link>
+                      </li>
+                      <li>
+                        <Link href={`#`}>Undergraduate</Link>
                       </li>
                     </ul>
                   </li>
                   <li>
-                    <Link href="/pricing">Pricing</Link>
+                    <Link href="/about">About</Link>
                   </li>
                   <li>
                     <Link href="/blog" className="nav-link">
@@ -156,10 +172,13 @@ export default function Header() {
                 </ul>
               </nav>
               <div className="d-flex">
-                <nav className="main-nav">
-                  <ul className="nav-list"></ul>
-                </nav>
-                <div className="hamburger-menu">
+                <Link
+                  href={`/auth/login`}
+                  className={`button text-secondary-alt fs-20 fw-semibold py-2 px-5 d-none d-md-block`}
+                >
+                  Login
+                </Link>
+                <div className="hamburger-menu" onClick={toggleMobileNav}>
                   <div className="line line1"></div>
                   <div className="line line2"></div>
                   <div className="line line3"></div>
@@ -168,34 +187,10 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <section className={`mobile-nav-area-main`}>
-          <div className="mobile-nav-header">
-            <Link href="/" className="logo-container">
-              <Image
-                width={60}
-                height={30}
-                src="/images/templates/main_logo.png"
-                alt="Logo"
-              />
-            </Link>
-            <div className="close-btn-main">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                role="img"
-                width="30px"
-                height="30px"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 32 32"
-              >
-                <path
-                  fill="currentColor"
-                  d="M24 9.4L22.6 8L16 14.6L9.4 8L8 9.4l6.6 6.6L8 22.6L9.4 24l6.6-6.6l6.6 6.6l1.4-1.4l-6.6-6.6L24 9.4z"
-                />
-              </svg>
-            </div>
-          </div>
-        </section>
+        <MobileNav
+          showMobileNav={showMobileNav}
+          setShowMobileNav={setShowMobileNav}
+        />
       </header>
     </>
   );

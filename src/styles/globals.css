@@ -471,7 +471,7 @@ table td {
 }
 
 .container {
-  max-width: 1320px !important;
+  max-width: 1600px !important;
 }
 
 .logo {
@@ -577,7 +577,6 @@ table td {
 
 .nav-list {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-bottom: 0;
@@ -592,7 +591,7 @@ table td {
 }
 
 .main-nav ul li a {
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1.4rem;
   line-height: 2rem;
   color: var(--color--secondary);
@@ -852,6 +851,7 @@ table td {
   max-height: calc(100vh - 100px);
   height: 100%;
   overflow-y: auto;
+  margin-top: 20px;
 }
 
 .mobile-nav-area-main li {
