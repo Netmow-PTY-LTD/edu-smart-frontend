@@ -7426,3 +7426,17 @@ img.staff-img {
 }
 
 /* join wait list styles: ends */
+
+.university-about-container {
+  height: 700px;
+  background-color: white;
+
+  @media (min-width: 992px) {
+    height: 600px;
+  }
+
+  h3 {
+    color: #1c1c1c;
+    font-weight: 700;
+  }
+}
