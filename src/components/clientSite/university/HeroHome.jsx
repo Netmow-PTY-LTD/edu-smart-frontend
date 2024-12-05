@@ -20,9 +20,10 @@ export default function HeroHome() {
       </figure>
       {/* heroSection-info-header */}
       <div className="container">
-        <div className="d-flex align-items-center container-row rounded-4">
-          {/* info */}
-          <div className="d-flex align-items-center w-75 ">
+        <div className="container-row ">
+         <div className='row-content  d-flex align-items-center rounded-4 '>
+           {/* info */}
+           <div className="d-flex align-items-center w-75 ">
             <figure className="me-2">
               <Image alt="logoMmu" src={logoMmu} width={153} height={44} />
             </figure>
@@ -65,6 +66,7 @@ export default function HeroHome() {
               </select>
             </div>
           </div>
+         </div>
         </div>
       </div>
     </section>
