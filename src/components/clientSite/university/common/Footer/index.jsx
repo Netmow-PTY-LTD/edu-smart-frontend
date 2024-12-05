@@ -1,62 +1,14 @@
-import { menuAction } from '@/slices/main_home/action/mainHomeAction';
+// import { menuAction } from '@/slices/main_home/action/mainHomeAction';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import footer_shape from '../../../public/assets/images/layouts/horizontal.png';
 
 export default function Footer() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(menuAction());
-  }, [dispatch]);
-
-  const {
-    data: menuData,
-    isLoading: menuLoading,
-    error: menuError,
-  } = useSelector((state) => state.MainHome.menuSperAdmin);
-
-  useEffect(() => {
-    // Show button when user scrolls down 20px from top
-    const toggleVisibility = () => {
-      if (window.scrollY > 20) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility);
-
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility);
-    };
-  }, []);
-
-  const scrollToTop = (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth', // Smooth scroll to top
-    });
-  };
-
   return (
     <footer className="footer">
-      {/* <style>{`
-        .footer {
-          background-image: url('/images/home/footer_bg.png');
-        }
-      `}</style> */}
-      <div className="footer-shape">
-        <Image priority={true} src={footer_shape} alt="" />
-      </div>
       <div className="container">
-        <div className="footer-cta wow animate__animated animate__zoomIn">
+        <div className="footer-cta">
           <div className="footer-cta-left">
             <div className="icon-wrapper">
               <Image
@@ -84,7 +36,7 @@ export default function Footer() {
               className="footer-top-about-info wow animate__animated animate__fadeIn"
               data-wow-delay="0.1s"
             >
-              <Link href="/" className="footer-logo">
+              <Link href="#" className="footer-logo">
                 <Image
                   priority={true}
                   src="/images/home/footer_logo.png"
@@ -93,7 +45,7 @@ export default function Footer() {
                   alt="footer logo"
                 />
               </Link>
-              <div className="footer-about-text wow animate__animated animate__fadeIn">
+              <div className="footer-about-text">
                 <p>
                   SquadDeck - The ultimate sports team organisation and squad
                   management system. Easily manage your team, coaches, staff,
@@ -103,17 +55,17 @@ export default function Footer() {
               </div>
             </div>
             <div
-              className="footer-top-single-widget footer-top-widget-1 wow animate__animated animate__fadeIn"
+              className="footer-top-single-widget footer-top-widget-1"
               data-wow-delay="0.5s"
             >
               <h3 className="wow animate__animated animate__fadeIn">
                 <span>QUICK LINKS</span>
               </h3>
               <div className="footer-menu">
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
-                      href="/features"
+                      href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
                       Features
@@ -121,99 +73,59 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="/sports"
+                      href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
                       Sports
                     </Link>
                   </li>
                   <li>
-                    <Link href="/about">About Us</Link>
+                    <Link href="#">About Us</Link>
                   </li>
                   <li>
                     <Link
-                      href="/pricing"
+                      href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
                       Pricing
                     </Link>
                   </li>
                   <li>
-                    <Link href="/blog">Blog</Link>
+                    <Link href="#">Blog</Link>
                   </li>
                   <li>
-                    <Link href="/contact">Contact</Link>
+                    <Link href="#">Contact</Link>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
             <div
-              className="footer-top-single-widget footer-top-widget-2 wow animate__animated animate__fadeIn"
+              className="footer-top-single-widget footer-top-widget-2"
               data-wow-delay="1s"
             >
-              <h3 className="wow animate__animated animate__fadeIn">
+              <h3>
                 <span>Key features</span>
               </h3>
               <div className="footer-menu">
-                <ul>
-                  {menuData?.features?.length > 0 &&
-                    menuData?.features?.map((feature, key) => {
-                      let feature_link = '';
-                      switch (feature?.name) {
-                        case 'Team Management':
-                          feature_link =
-                            'https://squaddeck.com/features/team-and-player-management/';
-                          break;
-                        case 'Sports Events Management':
-                          feature_link =
-                            'https://squaddeck.com/features/sports-event-management-and-scheduling/';
-                          break;
-                        case 'Live Chat':
-                          feature_link =
-                            'https://squaddeck.com/features/real-time-chat-notification-system/';
-                          break;
-                        case 'Custom Website':
-                          feature_link =
-                            'https://squaddeck.com/sports/soccer-club-management-software/';
-                          break;
-                        case 'Mobile App':
-                          feature_link =
-                            'https://squaddeck.com/features/android-ios-supported-smart-app/';
-                          break;
-                        case 'Sports Management':
-                          feature_link =
-                            'https://squaddeck.com/sports/cricket-club-management-software/';
-                          break;
-                        default:
-                          break; // Optionally handle unknown sports
-                      }
-
-                      return (
-                        // <li key={key}>
-                        //   <Link href={`/features/${feature?.slug}`}>
-                        //     {feature?.name}
-                        //   </Link>
-                        // </li>
-                        <li key={key}>
-                          <Link href={feature_link}>{feature?.name}</Link>
-                        </li>
-                      );
-                    })}
-                </ul>
+                {/* <ul>
+                  <li>
+                    <a href="#"></a>
+                  </li>
+                </ul> */}
               </div>
             </div>
             <div
-              className="footer-top-single-widget footer-top-widget-3 wow animate__animated animate__fadeIn"
+              className="footer-top-single-widget footer-top-widget-3"
               data-wow-delay="1.5s"
             >
               <h3 className="wow animate__animated animate__fadeIn">
                 <span>Help</span>
               </h3>
               <div className="footer-menu">
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
-                      href="https://squaddeck.com/faq/"
+                      href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
                       FAQs
@@ -221,7 +133,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="https://squaddeck.com/contact-us/"
+                      href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
                       Contact us
@@ -229,7 +141,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="https://squaddeck.com/refund-policy/"
+                      href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
                       Refund Policy
@@ -237,13 +149,13 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="https://squaddeck.com/terms-conditions/"
+                      href="#"
                       className="wow animate__animated animate__fadeIn text-nowrap"
                     >
                       Terms & Conditions
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
           </div>
@@ -256,59 +168,15 @@ export default function Footer() {
           <div className="footer-middle-row">
             <div className="footer-game-list">
               <ul>
-                {menuData?.sports?.length > 0 &&
-                  menuData?.sports?.map((sport, key) => {
-                    let sport_link = '';
-                    if (sport?.name === 'Basketball') {
-                      sport_link =
-                        'https://squaddeck.com/sports/basketball-club-management-software/';
-                    } else if (sport?.name === 'Baseball') {
-                      sport_link =
-                        'https://squaddeck.com/sports/baseball-club-management-software/';
-                    } else if (sport?.name === 'Football') {
-                      sport_link =
-                        'https://squaddeck.com/sports/football-club-management-software/';
-                    } else if (sport?.name === 'Soccer') {
-                      sport_link =
-                        'https://squaddeck.com/sports/soccer-club-management-software/';
-                    } else if (sport?.name === 'Volleyball') {
-                      sport_link =
-                        'https://squaddeck.com/sports/volleyball-club-management-software/';
-                    } else if (sport?.name === 'Cricket') {
-                      sport_link =
-                        'https://squaddeck.com/sports/cricket-club-management-software/';
-                    } else if (sport?.name === 'Hockey') {
-                      sport_link =
-                        'https://squaddeck.com/sports/hockey-club-management-software/';
-                    } else if (sport?.name === 'Netball') {
-                      sport_link =
-                        'https://squaddeck.com/sports/netball-club-management-software/';
-                    } else if (sport?.name === 'Rugby') {
-                      sport_link =
-                        'https://squaddeck.com/sports/rugby-club-management-software/';
-                    }
-                    return (
-                      // <li key={key}>
-                      //   <Link href={`/sports/${sport.slug}`}>{sport.name}</Link>
-                      // </li>
-                      <li key={key}>
-                        <Link href={sport_link}>{sport.name}</Link>
-                      </li>
-                    );
-                  })}
+                <li>
+                  <Link>Universities</Link>
+                </li>
               </ul>
             </div>
           </div>
           <div className="footer-middle-row">
-            <div
-              className="footer-social-links wow animate__animated animate__fadeIn"
-              data-wow-delay="0.1s"
-            >
-              <Link
-                href="https://www.facebook.com/squaddeck"
-                className="fb"
-                target="_blank"
-              >
+            <div className="footer-social-links" data-wow-delay="0.1s">
+              <Link href="#" className="fb" target="_blank">
                 <svg
                   width="15"
                   height="28"
@@ -322,11 +190,7 @@ export default function Footer() {
                   />
                 </svg>
               </Link>
-              <Link
-                href="https://www.linkedin.com/company/squaddeck/"
-                className="linkedin"
-                target="_blank"
-              >
+              <Link href="#" className="linkedin" target="_blank">
                 <svg
                   width="28"
                   height="27"
@@ -344,11 +208,7 @@ export default function Footer() {
                   />
                 </svg>
               </Link>
-              <Link
-                href="https://twitter.com/SquadDeckAU"
-                className="twitter"
-                target="_blank"
-              >
+              <Link href="#" className="twitter" target="_blank">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -361,11 +221,7 @@ export default function Footer() {
                   ></path>
                 </svg>
               </Link>
-              <Link
-                href="https://instagram.com/squaddeck"
-                className="insta"
-                target="_blank"
-              >
+              <Link href="#" className="insta" target="_blank">
                 <svg
                   width="28"
                   height="28"
@@ -381,11 +237,7 @@ export default function Footer() {
                   />
                 </svg>
               </Link>
-              <Link
-                href="https://www.youtube.com/channel/UCuyvvb07D9F13ewydzJELNA?sub_confirmation=1"
-                className="yt"
-                target="_blank"
-              >
+              <Link href="#" className="yt" target="_blank">
                 <svg
                   width="39"
                   height="28"
@@ -400,15 +252,9 @@ export default function Footer() {
                 </svg>
               </Link>
             </div>
-            <div
-              className="footer-app-links wow animate__animated animate__fadeIn"
-              data-wow-delay=".3s"
-            >
+            <div className="footer-app-links" data-wow-delay=".3s">
               <h5>Connect with apps:</h5>
-              <Link
-                href="https://play.google.com/store/apps/details?id=com.sports.squaddeck"
-                target="_blank"
-              >
+              <Link href="#" target="_blank">
                 <Image
                   priority={true}
                   src="/images/home/google-play.png"
@@ -417,10 +263,7 @@ export default function Footer() {
                   alt="Google Playstore"
                 />
               </Link>
-              <Link
-                href="https://apps.apple.com/pl/app/squaddeck/id6475808392"
-                target="_blank"
-              >
+              <Link href="#" target="_blank">
                 <Image
                   priority={true}
                   src="/images/home/appstore.png"
@@ -435,35 +278,23 @@ export default function Footer() {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <div
-              className="footer-bottom-left footer-copyright wow animate__animated animate__fadeIn"
+              className="footer-bottom-left footer-copyright"
               data-wow-delay="1s"
             >
               <p>All Rights Reserved ® SquadDeck</p>
             </div>
             <div className="footer-bottom-right">
-              <div
-                className="footer-bottom-right-nav wow animate__animated animate__fadeIn"
-                data-wow-delay="1.5s"
-              >
-                <Link href="https://squaddeck.com/privacy-policy/">
-                  Privacy Policy
-                </Link>
-                <Link href="https://squaddeck.com/refund-policy/">
-                  Refund Policy
-                </Link>
+              <div className="footer-bottom-right-nav" data-wow-delay="1.5s">
+                <Link href="#">Privacy Policy</Link>
+                <Link href="#">Refund Policy</Link>
                 {/* <Link href="/cookies">Cookies</Link> */}
-                <Link href="/sitemap.xml">Sitemap</Link>
+                <Link href="#">Sitemap</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <a
-        href="#"
-        className={`scrolltop-btn ${isVisible ? 'show' : ''}`}
-        id="scrollToTop"
-        onClick={scrollToTop}
-      >
+      <a href="#" className={`scrolltop-btn`} id="scrollToTop">
         <svg
           aria-hidden="true"
           role="img"
