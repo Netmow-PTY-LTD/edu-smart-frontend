@@ -7200,21 +7200,6 @@ img.staff-img {
   transition: all 0.4s ease;
 }
 
-.footer-bottom-right-nav a:not(:last-child):after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0.2rem;
-  height: 100%;
-  background-color: #fff;
-}
-
-// .footer-bottom-right-nav a:hover{
-//   color: var(--color--secondary);
-//   transition: all 0.4s ease;
-// }
-
 @media (max-width: 991px) {
   .footer-top-about-info,
   .footer-top-single-widget {

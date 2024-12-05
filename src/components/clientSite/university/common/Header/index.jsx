@@ -1,12 +1,7 @@
-/* eslint-disable @next/next/next-script-for-ga */
-// import { menuAction } from '@/slices/main_home/action/mainHomeAction';
+import { edulogo } from '@/utils/common/data/dashboardEcommerce';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import Cookies from 'js-cookie';
-import Head from 'next/head';
+import React from 'react';
 
 export default function Header() {
   return (
@@ -82,17 +77,20 @@ export default function Header() {
               <Link href="/" className="logo">
                 <Image
                   priority={true}
-                  src="/images/home/logo.png"
-                  width={500}
-                  height={500}
+                  src={edulogo}
+                  width={50}
+                  height={50}
                   alt="SquadDeck Logo"
                 />
               </Link>
               <nav className="main-nav">
                 <ul className="nav-list">
+                  <li>
+                    <Link href="/university">Home</Link>
+                  </li>
                   <li className=" menu-item-has-children">
-                    <Link href="/features" className="nav-link">
-                      <span>Features</span>
+                    <Link href="#" className="nav-link">
+                      <span>Packages</span>
                       <svg
                         width="11"
                         height="6"
@@ -111,13 +109,13 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href={`#`}>Universities</Link>
+                        <Link href="#">Universities</Link>
                       </li>
                     </ul>
                   </li>
                   <li className=" menu-item-has-children">
-                    <Link href="/sports" className="nav-link">
-                      <span>Sports</span>
+                    <Link href="#" className="nav-link">
+                      <span>Universities</span>
                       <svg
                         width="11"
                         height="6"
@@ -127,7 +125,7 @@ export default function Header() {
                       >
                         <path
                           d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
-                          stroke="#162A73"
+                          stroke="var(--color--secondary)"
                           strokeWidth="1.10198"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -136,22 +134,13 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href={`#`}>Sports</Link>
+                        <Link href="#">Universities</Link>
                       </li>
                     </ul>
                   </li>
+
                   <li>
-                    <Link href="/pricing">Pricing</Link>
-                  </li>
-                  <li>
-                    <Link href="/blog" className="nav-link">
-                      Blog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/contact" className="nav-link">
-                      Contact
-                    </Link>
+                    <Link href="#">About</Link>
                   </li>
                 </ul>
               </nav>
