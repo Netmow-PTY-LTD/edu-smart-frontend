@@ -205,11 +205,11 @@ const VerticalLayout = (props) => {
             ) : item.subItems ? (
               <li
                 id={`${item?.id === 'players' ? 'addplayer' : item?.id === 'teams' ? 'addteam' : item?.id === 'events' ? 'createevents' : item?.id === 'settings' ? 'systemsettings' : item?.id === 'website' ? 'websiteinfo' : item?.id === 'ecommerce' ? 'ecommercesystem' : ''}`}
-                className="nav-item"
+                className="nav-item fs-2"
               >
                 <p
                   onClick={item?.click}
-                  className="nav-link menu-link fs-2"
+                  className="nav-link menu-link "
                   data-bs-toggle="collapse"
                 >
                   <i className={`pe-3 ${item.icon}`}></i>
@@ -236,7 +236,7 @@ const VerticalLayout = (props) => {
                       (item.subItems || []).map((subItem, key) => (
                         <React.Fragment key={key}>
                           {!subItem.isChildItem ? (
-                            <li className="nav-item ">
+                            <li className="nav-item d-flex align-items-center">
                               <Link
                                 href={
                                   subItem.link
@@ -253,7 +253,7 @@ const VerticalLayout = (props) => {
                                     className="badge badge-pill bg-danger"
                                     data-key="t-hot"
                                   >
-                                    {/* <i className={subItem.badge}></i> */}
+                                    <i className={subItem.badge}></i>
                                   </span>
                                 ) : null}
                                 {subItem.badgeName ? (
@@ -373,7 +373,7 @@ const VerticalLayout = (props) => {
                 </Collapse>
               </li>
             ) : (
-              <li className="nav-item">
+              <li className="nav-item fs-2">
                 <Link
                   className="nav-link menu-link"
                   href={item.link ? item.link : '/#'}

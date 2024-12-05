@@ -161,9 +161,10 @@ $footer-height: 60px;
         position: relative;
         // font-size: $vertical-menu-sub-item-font-size;
         font-family: $vertical-menu-sub-item-font-family;
+        display: flex;
+        align-items: center;
 
         &:before {
-          content: '';
           width: 6px;
           height: 1.5px;
           background-color: var(--#{$prefix}vertical-menu-sub-item-color);
