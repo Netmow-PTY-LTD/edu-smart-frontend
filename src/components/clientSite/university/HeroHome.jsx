@@ -10,29 +10,19 @@ export default function HeroHome() {
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
-
   };
 
   return (
     <section className="hero-section">
       {/* hero image section */}
       <figure style={{ display: 'flex', flexDirection: 'column' }}>
-        <Image
-          alt="hero"
-          src={heroImage}
-          sizes="100vw"
-          // Make the image display full width
-          style={{
-            width: '100%',
-            height: 'auto',
-          }}
-        />
+        <Image alt="hero" src={heroImage} sizes="100vw" />
       </figure>
       {/* heroSection-info-header */}
       <div className="container">
-        <div className="d-flex align-items-center container-row">
+        <div className="d-flex align-items-center container-row rounded-4">
           {/* info */}
-          <div className=" d-flex w-75 ">
+          <div className="d-flex align-items-center w-75 ">
             <figure className="me-2">
               <Image alt="logoMmu" src={logoMmu} width={153} height={44} />
             </figure>
@@ -62,17 +52,18 @@ export default function HeroHome() {
             </div>
 
             {/* dropdwon */}
-            <div className='dropdownContainer'>
-                <select
-                className='select'
-                  value={selectedValue}
-                  onChange={handleChange} >
-                  <option value="">Browse Programs</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                </select>
-              </div>
+            <div className="dropdownContainer">
+              <select
+                className="select"
+                value={selectedValue}
+                onChange={handleChange}
+              >
+                <option value="">Browse Programs</option>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
