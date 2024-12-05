@@ -62,7 +62,7 @@ export default function Footer() {
                 <span>QUICK LINKS</span>
               </h3>
               <div className="footer-menu">
-                {/* <ul>
+                <ul>
                   <li>
                     <Link
                       href="#"
@@ -96,7 +96,7 @@ export default function Footer() {
                   <li>
                     <Link href="#">Contact</Link>
                   </li>
-                </ul> */}
+                </ul>
               </div>
             </div>
             <div
@@ -107,11 +107,11 @@ export default function Footer() {
                 <span>Key features</span>
               </h3>
               <div className="footer-menu">
-                {/* <ul>
+                <ul>
                   <li>
                     <a href="#"></a>
                   </li>
-                </ul> */}
+                </ul>
               </div>
             </div>
             <div
@@ -122,7 +122,7 @@ export default function Footer() {
                 <span>Help</span>
               </h3>
               <div className="footer-menu">
-                {/* <ul>
+                <ul>
                   <li>
                     <Link
                       href="#"
@@ -155,7 +155,7 @@ export default function Footer() {
                       Terms & Conditions
                     </Link>
                   </li>
-                </ul> */}
+                </ul>
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function Footer() {
             <div className="footer-game-list">
               <ul>
                 <li>
-                  <Link>Universities</Link>
+                  <Link href={'#'}>Universities</Link>
                 </li>
               </ul>
             </div>
