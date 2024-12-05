@@ -4593,7 +4593,7 @@ textarea::placeholder {
   font-weight: 400;
   font-size: 1.6rem;
   line-height: 3.3rem;
-  color: #d0daff;
+  color: #405189;
 }
 
 .footer-top-widget-1 {
@@ -4614,7 +4614,7 @@ textarea::placeholder {
   line-height: 4.6rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #092a67;
   margin-bottom: 3rem;
 }
 
@@ -4626,7 +4626,6 @@ textarea::placeholder {
   font-weight: 400;
   font-size: 1.6rem;
   line-height: 3.5rem;
-  color: #d0daff;
   transition: all 0.4s ease;
 }
 
@@ -4737,11 +4736,6 @@ textarea::placeholder {
   height: 100%;
 }
 
-.footer-bottom {
-  padding: 4rem 0;
-  border-top: 0.1rem solid #2c47ab;
-}
-
 .footer-bottom-content {
   display: flex;
   flex-wrap: wrap;
@@ -4754,7 +4748,7 @@ textarea::placeholder {
   font-size: 2rem;
   line-height: 2.5rem;
   letter-spacing: 0.03em;
-  color: #ffffff;
+  color: #405189;
 }
 
 .footer-bottom-right-nav a {
@@ -4765,18 +4759,8 @@ textarea::placeholder {
   font-size: 2rem;
   line-height: 2.5rem;
   letter-spacing: 0.03em;
-  color: #ffffff;
+  color: #405189;
   transition: all 0.4s ease;
-}
-
-.footer-bottom-right-nav a:not(:last-child):after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0.2rem;
-  height: 100%;
-  background-color: #fff;
 }
 
 .footer-bottom-right-nav a:hover {
