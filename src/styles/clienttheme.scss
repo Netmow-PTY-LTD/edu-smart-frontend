@@ -312,14 +312,23 @@ p {
 .sec-heading {
   margin-bottom: 5.2rem;
 }
-
-.sec-heading h2 {
-  font-weight: 800;
-  font-size: 4rem;
+.sec-heading h3 {
+  font-family: 'Lora', sans-serif;
+  font-weight: 600;
+  font-size: 3rem;
   line-height: 5.1rem;
   letter-spacing: -0.02em;
   text-transform: capitalize;
   text-align: center;
+  color: #092a67;
+}
+.sec-heading p {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 3.1rem;
+  text-align: center;
+  color: #092a67;
 }
 
 @media (max-width: 991px) {
@@ -327,7 +336,7 @@ p {
     margin-bottom: 3rem;
   }
 
-  .sec-heading h2 {
+  .sec-heading h3 {
     font-size: 3rem;
     line-height: 4.1rem;
   }
@@ -7601,8 +7610,6 @@ img.staff-img {
   align-items: center;
 }
 
-.hero-section .container .searchIcon-conatiner {
-}
 
 .hero-section .container .search-input {
   // margin: 0.09375rem 0rem;
@@ -7641,21 +7648,6 @@ img.staff-img {
   transition: border-color 0.3s ease;
 }
 
-/* Hover effect for the select */
-.hero-section .container .select:hover {
-}
-
-/* Focus effect for the select */
-.hero-section .container .dropdownContainer .select:focus {
-}
-
-/* Styling the custom arrow */
-.hero-section .container .dropdownContainer .arrow {
-}
-
-/* Styling the selected option message */
-.hero-section .container .dropdownContainer p {
-}
 
 .university-about-container {
   height: 700px;
