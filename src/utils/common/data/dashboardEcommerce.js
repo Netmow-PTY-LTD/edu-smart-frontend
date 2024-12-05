@@ -23,7 +23,7 @@ import avatar6 from '../../../../public/assets/images/users/avatar-6.jpg';
 
 const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 const teamDummyImage = '/assets/images/users/multi-user.jpg';
-const profileBg = '/assets/images/profile_bg.jpg';
+const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 
 const universityHeadersWithoutAction = [
@@ -1366,6 +1366,7 @@ export {
   brandlogo,
   ecomWidgets,
   ecommerceReports,
+  edulogo,
   faqOptionsData,
   formBuilderAdvancedWidgets,
   formBuilderBasicWidgets,
