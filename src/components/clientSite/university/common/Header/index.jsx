@@ -1,13 +1,9 @@
-/* eslint-disable @next/next/next-script-for-ga */
-// import { menuAction } from '@/slices/main_home/action/mainHomeAction';
+import { edulogo } from '@/utils/common/data/dashboardEcommerce';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import Cookies from 'js-cookie';
-import Head from 'next/head';
+import React from 'react';
 import MobileNav from '../mobileNav';
+import { useState } from 'react';
 
 export default function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
@@ -87,22 +83,20 @@ export default function Header() {
               <Link href="/" className="logo">
                 <Image
                   priority={true}
-                  src="/assets/images/logo_alt.png"
-                  width={75}
-                  height={40}
+                  src={edulogo}
+                  width={50}
+                  height={50}
                   alt="SquadDeck Logo"
                 />
               </Link>
               <nav className="main-nav">
                 <ul className="nav-list">
                   <li>
-                    <Link href="#">
-                      <span>Home</span>
-                    </Link>
+                    <Link href="/university">Home</Link>
                   </li>
                   <li className=" menu-item-has-children">
-                    <Link href="/faculties" className="nav-link">
-                      <span>Faculties</span>
+                    <Link href="#" className="nav-link">
+                      <span>Packages</span>
                       <svg
                         width="11"
                         height="6"
@@ -121,16 +115,13 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href={`#`}>Science</Link>
-                      </li>
-                      <li>
-                        <Link href={`#`}>Law</Link>
+                        <Link href="#">Universities</Link>
                       </li>
                     </ul>
                   </li>
                   <li className=" menu-item-has-children">
-                    <Link href="/programs" className="nav-link">
-                      <span>Programs</span>
+                    <Link href="#" className="nav-link">
+                      <span>Universities</span>
                       <svg
                         width="11"
                         height="6"
@@ -140,7 +131,7 @@ export default function Header() {
                       >
                         <path
                           d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
-                          stroke="#162A73"
+                          stroke="var(--color--secondary)"
                           strokeWidth="1.10198"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -149,25 +140,13 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href={`#`}>Graduate</Link>
-                      </li>
-                      <li>
-                        <Link href={`#`}>Undergraduate</Link>
+                        <Link href="#">Universities</Link>
                       </li>
                     </ul>
                   </li>
+
                   <li>
-                    <Link href="/about">About</Link>
-                  </li>
-                  <li>
-                    <Link href="/blog" className="nav-link">
-                      Blog
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/contact" className="nav-link">
-                      Contact
-                    </Link>
+                    <Link href="#">About</Link>
                   </li>
                 </ul>
               </nav>
