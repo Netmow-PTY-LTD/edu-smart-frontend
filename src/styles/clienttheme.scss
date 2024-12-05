@@ -287,13 +287,23 @@ p {
 .sec-heading {
   margin-bottom: 5.2rem;
 }
-.sec-heading h2 {
-  font-weight: 800;
-  font-size: 4rem;
+.sec-heading h3 {
+  font-family: 'Lora', sans-serif;
+  font-weight: 600;
+  font-size: 3rem;
   line-height: 5.1rem;
   letter-spacing: -0.02em;
   text-transform: capitalize;
   text-align: center;
+  color: #092a67;
+}
+.sec-heading p {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 3.1rem;
+  text-align: center;
+  color: #092a67;
 }
 
 @media (max-width: 991px) {
@@ -301,7 +311,7 @@ p {
     margin-bottom: 3rem;
   }
 
-  .sec-heading h2 {
+  .sec-heading h3 {
     font-size: 3rem;
     line-height: 4.1rem;
   }
