@@ -108,7 +108,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   // Validation schema using Yup
   const validationSchema = Yup.object({
     name: Yup.string()
-      .max(30, 'maximum use 30 letters')
+      .max(60, 'maximum use 60 letters')
       .required('Name is required'),
     description: Yup.string().required('description is required'),
   });
@@ -211,7 +211,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       title: 'SN',
       key: 'sn',
       render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+        <span className="d-flex flex-column text-capitalize ">{index + 1}</span>
       ),
     },
 
@@ -222,7 +222,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       render: (item, index) =>
         item?.categories?.length > 0
           ? item?.categories?.map((category) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
+              <span key={index} className="d-flex flex-column text-capitalize me-5">
                 {category?.name}
               </span>
             ))
@@ -234,14 +234,22 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       render: (item, index) =>
         item?.courses?.length > 0
           ? item?.courses.map((course) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
+              <span key={index} className="d-flex flex-column text-capitalize me-5">
                 {course?.name}
               </span>
             ))
           : '-',
     },
 
-    { title: 'Description', key: 'description' },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <p className="text-wrap me-5">
+          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+        </p>
+      ),
+    },
 
     {
       title: 'Action',

@@ -805,13 +805,17 @@ table td {
 }
 
 .university_gallery {
-  column-count: 3;
-  columns: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 16px;
 }
-
-.university_gallery img {
-  width: 100%;
-  margin-bottom: 2rem;
+.gallery-first-column-img {
+  border-radius: 14px;
+}
+.gallery-second-column-img {
+  border-radius: 14px;
+  object-fit: cover;
 }
 
 .mobile-nav-area-main {
@@ -4489,6 +4493,7 @@ textarea::placeholder {
   background-position: center;
   padding-top: 15rem;
   position: relative;
+  background-color: #fff;
 }
 
 .footer-shape {
@@ -4870,6 +4875,15 @@ textarea::placeholder {
   .footer-bottom-right-nav a {
     font-size: 1.4rem;
   }
+}
+
+.faq-container {
+  width: 100%;
+  max-width: 1050px;
+  max-height: 490px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 a.scrolltop-btn {

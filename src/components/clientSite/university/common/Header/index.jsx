@@ -1,3 +1,4 @@
+import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import { edulogo } from '@/utils/common/data/dashboardEcommerce';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,6 +11,7 @@ export default function Header() {
   const toggleMobileNav = () => {
     setShowMobileNav(!showMobileNav);
   };
+  const { data: universityData } = useGetAllUniversityQuery();
   return (
     <>
       <header className="header">
@@ -142,12 +144,17 @@ export default function Header() {
                       </svg>
                     </Link>
                     <ul className="sub-menu">
-                      <li>
-                        <Link href="#">Graduate</Link>
-                      </li>
-                      <li>
-                        <Link href="#">Undergraduate</Link>
-                      </li>
+                      {/* <li>
+                        <Link href="#">Universities</Link>
+                      </li> */}
+                      {universityData?.data?.length > 0 &&
+                        universityData?.data?.map((item, index) => (
+                          <li key={index}>
+                            <Link href={`/university/${item?._id}`}>
+                              {item.name}
+                            </Link>
+                          </li>
+                        ))}
                     </ul>
                   </li>
 
@@ -168,6 +175,11 @@ export default function Header() {
                   <div className="line line2"></div>
                   <div className="line line3"></div>
                 </div>
+              </div>
+              <div className="d-flex">
+                <Link href={'/auth/login'} className="button px-4 py-2">
+                  login
+                </Link>
               </div>
             </div>
           </div>
