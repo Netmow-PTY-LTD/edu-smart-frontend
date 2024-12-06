@@ -6512,9 +6512,10 @@ img.staff-img {
   }
 }
 
-.sponsors-area {
+.gellary-area {
   padding: 0 0 8rem 0;
   position: relative;
+  background-color: #fff;
 }
 
 .sponsor-items {
@@ -6553,7 +6554,7 @@ img.staff-img {
   height: 80px;
 }
 
-.sponsors-area .slick-dots {
+.gellary-area .slick-dots {
   bottom: -5rem;
 }
 
@@ -7577,7 +7578,6 @@ img.staff-img {
   bottom: -50px;
   left: 0;
   right: 0;
- 
 }
 .hero-section .container .container-row {
   display: flex;
@@ -7587,7 +7587,7 @@ img.staff-img {
   width: 100%;
   margin: 0 auto;
 }
-.hero-section .container .container-row .row-content  {
+.hero-section .container .container-row .row-content {
   background-color: #b5d336;
   padding: 2.25rem 2.375rem 2.3125rem 2.25rem;
 }
@@ -7609,7 +7609,6 @@ img.staff-img {
   display: flex;
   align-items: center;
 }
-
 
 .hero-section .container .search-input {
   // margin: 0.09375rem 0rem;
@@ -7647,7 +7646,6 @@ img.staff-img {
   outline: none;
   transition: border-color 0.3s ease;
 }
-
 
 .university-about-container {
   height: 700px;
