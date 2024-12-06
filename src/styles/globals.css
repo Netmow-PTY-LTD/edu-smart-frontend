@@ -804,6 +804,16 @@ table td {
   }
 }
 
+.university_gallery {
+  column-count: 3;
+  columns: 300px;
+}
+
+.university_gallery img {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
 .mobile-nav-area-main {
   position: fixed;
   top: 0;
