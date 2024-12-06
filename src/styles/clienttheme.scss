@@ -276,6 +276,27 @@ p {
   height: 15px;
 }
 
+@media (max-width: 991px) {
+  .topbar-address {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .topbar-socials {
+    display: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .topbar-content {
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 15px;
+    row-gap: 5px;
+  }
+}
+
 .logo {
   display: flex;
   max-width: 19rem;

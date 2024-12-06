@@ -133,7 +133,7 @@ const MobileNav = ({ showMobileNav, setShowMobileNav }) => {
           <li className="px-3">
             <Link
               href={`/auth/login`}
-              className={`button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5`}
+              className={`button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5 justify-content-center`}
             >
               Login
             </Link>

@@ -96,7 +96,7 @@ export default function Header() {
                   </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
-                      <span>Packages</span>
+                      <span>Faculties</span>
                       <svg
                         width="11"
                         height="6"
@@ -115,13 +115,16 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href="#">Universities</Link>
+                        <Link href="/programs">Arts</Link>
+                      </li>
+                      <li>
+                        <Link href="/programs">Science</Link>
                       </li>
                     </ul>
                   </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
-                      <span>Universities</span>
+                      <span>Programs</span>
                       <svg
                         width="11"
                         height="6"
@@ -140,7 +143,10 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href="#">Universities</Link>
+                        <Link href="#">Graduate</Link>
+                      </li>
+                      <li>
+                        <Link href="#">Undergraduate</Link>
                       </li>
                     </ul>
                   </li>
@@ -153,7 +159,7 @@ export default function Header() {
               <div className="d-flex">
                 <Link
                   href={`/auth/login`}
-                  className={`button text-secondary-alt fs-20 fw-semibold py-2 px-5 d-none d-md-block`}
+                  className={`button text-secondary-alt fs-20 fw-semibold py-2 px-5 d-none d-lg-block`}
                 >
                   Login
                 </Link>
