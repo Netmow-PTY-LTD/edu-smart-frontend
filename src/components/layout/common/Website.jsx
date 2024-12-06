@@ -6,7 +6,7 @@ const Website = () => {
     <>
       <div className=" header-item ">
         <Link
-          href={'/'}
+          href={'/university'}
           target="_blank"
           type="button"
           className="button d-flex align-items-center p-3 "
@@ -14,7 +14,7 @@ const Website = () => {
         >
           <i className="ri-external-link-line pe-2 "></i>
           <span className="flex-grow-1 me-2 ">Visit </span>
-          <span className="flex-grow-1 me-2 ">Website </span>
+          <span className="flex-grow-1 me-2 ">University </span>
         </Link>
       </div>
     </>
