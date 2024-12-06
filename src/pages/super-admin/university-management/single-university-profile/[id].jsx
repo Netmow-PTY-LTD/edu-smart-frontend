@@ -92,7 +92,15 @@ const SingleUniversityProfile = () => {
           : '-',
     },
 
-    { title: 'Description', key: 'description' },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <p className="text-wrap me-5">
+          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+        </p>
+      ),
+    },
   ];
 
   const categoryHeaders = [
@@ -114,7 +122,15 @@ const SingleUniversityProfile = () => {
         </span>
       ),
     },
-    { title: 'Description', key: 'description' },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <p className="text-wrap me-5">
+          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+        </p>
+      ),
+    },
   ];
   const courseHeaders = [
     {
@@ -230,7 +246,7 @@ const SingleUniversityProfile = () => {
                             </span>
                           </NavLink>
                         </NavItem>
-                        <NavItem className="fs-14">
+                        {/* <NavItem className="fs-14">
                           <NavLink
                             style={{ cursor: 'pointer' }}
                             className={classnames({
@@ -245,7 +261,7 @@ const SingleUniversityProfile = () => {
                               Applications
                             </span>
                           </NavLink>
-                        </NavItem>
+                        </NavItem> */}
                       </Nav>
                       {/* <div className="d-flex gap-3 flex-shrink-1 pb-5 me-3">
                         <div
@@ -287,7 +303,7 @@ const SingleUniversityProfile = () => {
                         allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
-                    {activeTab === '5' && ''}
+                    {/* {activeTab === '5' && ''} */}
                   </div>
                 </Col>
               </Row>

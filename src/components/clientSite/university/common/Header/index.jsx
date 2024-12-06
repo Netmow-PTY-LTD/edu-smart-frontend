@@ -3,8 +3,14 @@ import { edulogo } from '@/utils/common/data/dashboardEcommerce';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import MobileNav from '../mobileNav';
+import { useState } from 'react';
 
 export default function Header() {
+  const [showMobileNav, setShowMobileNav] = useState(false);
+  const toggleMobileNav = () => {
+    setShowMobileNav(!showMobileNav);
+  };
   const { data: universityData } = useGetAllUniversityQuery();
   return (
     <>
@@ -92,7 +98,7 @@ export default function Header() {
                   </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
-                      <span>Packages</span>
+                      <span>Faculties</span>
                       <svg
                         width="11"
                         height="6"
@@ -111,13 +117,16 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       <li>
-                        <Link href="#">Universities</Link>
+                        <Link href="/programs">Arts</Link>
+                      </li>
+                      <li>
+                        <Link href="/programs">Science</Link>
                       </li>
                     </ul>
                   </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
-                      <span>Universities</span>
+                      <span>Programs</span>
                       <svg
                         width="11"
                         height="6"
@@ -155,46 +164,30 @@ export default function Header() {
                 </ul>
               </nav>
               <div className="d-flex">
-                <nav className="main-nav">
-                  <ul className="nav-list"></ul>
-                </nav>
-                <div className="hamburger-menu">
+                <Link
+                  href={`/auth/login`}
+                  className={`button text-secondary-alt fs-20 fw-semibold py-2 px-5 d-none d-lg-block`}
+                >
+                  Login
+                </Link>
+                <div className="hamburger-menu" onClick={toggleMobileNav}>
                   <div className="line line1"></div>
                   <div className="line line2"></div>
                   <div className="line line3"></div>
                 </div>
               </div>
+              <div className="d-flex">
+                <Link href={'/auth/login'} className="button px-4 py-2">
+                  login
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-        <section className={`mobile-nav-area-main`}>
-          <div className="mobile-nav-header">
-            <Link href="/" className="logo-container">
-              <Image
-                width={60}
-                height={30}
-                src="/images/templates/main_logo.png"
-                alt="Logo"
-              />
-            </Link>
-            <div className="close-btn-main">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-                role="img"
-                width="30px"
-                height="30px"
-                preserveAspectRatio="xMidYMid meet"
-                viewBox="0 0 32 32"
-              >
-                <path
-                  fill="currentColor"
-                  d="M24 9.4L22.6 8L16 14.6L9.4 8L8 9.4l6.6 6.6L8 22.6L9.4 24l6.6-6.6l6.6 6.6l1.4-1.4l-6.6-6.6L24 9.4z"
-                />
-              </svg>
-            </div>
-          </div>
-        </section>
+        <MobileNav
+          showMobileNav={showMobileNav}
+          setShowMobileNav={setShowMobileNav}
+        />
       </header>
     </>
   );

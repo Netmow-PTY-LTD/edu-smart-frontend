@@ -143,7 +143,7 @@ const Login = () => {
         <div className="branding-area">
           <div className="container">
             <div className="brand-logo">
-              <Link href="/">
+              <Link href="/university">
                 <Image src={eduSmartLogo ? eduSmartLogo : ''} alt="Logo" />
               </Link>
             </div>

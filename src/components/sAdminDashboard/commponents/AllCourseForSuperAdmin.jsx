@@ -155,7 +155,7 @@ const AllCourseForSuperAdmin = ({
   // Validation schema using Yup
   const validationSchema = Yup.object({
     name: Yup.string()
-      .max(12, 'maximum use 12 letters')
+      .max(50, 'maximum use 50 letters')
       .required('Name is required'),
     department: Yup.string().required('department is required'),
     category: Yup.string().required('category is required'),
@@ -348,7 +348,15 @@ const AllCourseForSuperAdmin = ({
       ),
     },
 
-    { title: 'Description', key: 'description' },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <p className="text-wrap me-5">
+          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+        </p>
+      ),
+    },
 
     {
       title: 'Action',
