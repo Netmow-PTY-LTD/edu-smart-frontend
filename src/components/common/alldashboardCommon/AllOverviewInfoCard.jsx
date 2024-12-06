@@ -109,7 +109,11 @@ const AllOverviewInfoCard = ({ data }) => {
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block">
-                      {data?.description ? data?.description : ''}
+                      {
+                        <p className="text-wrap">
+                          {`${data?.description.split(' ').slice(0, 20).join(' ')}...`}
+                        </p>
+                      }
                     </span>
                   </td>
                 </tr>
