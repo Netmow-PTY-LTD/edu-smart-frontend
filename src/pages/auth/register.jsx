@@ -19,6 +19,7 @@ import {
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
+import Header from '@/components/clientSite/university/common/Header';
 
 // const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 const appEnvironment = 'production';
@@ -192,6 +193,7 @@ const Register = () => {
   return (
     <>
       <ToastContainer />
+      <Header />
       <div
         className={`auth-page-wrapper auth-bg-cover d-flex flex-column justify-content-center align-items-center min-vh-100 `}
       >

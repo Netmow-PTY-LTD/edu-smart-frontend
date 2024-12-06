@@ -14,6 +14,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
+import Header from '@/components/clientSite/university/common/Header';
 
 // const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 const appEnvironment = 'production';
@@ -137,6 +138,7 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
+      <Header />
       <div className="auth-page-wrapper auth-bg-cover pt-5 pb-2 d-flex flex-column justify-content-center align-items-center min-vh-100">
         <div className="bg-overlay "></div>
         {/* <!-- auth-page content --> */}
