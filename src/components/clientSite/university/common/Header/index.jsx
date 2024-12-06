@@ -164,6 +164,11 @@ export default function Header() {
                   <div className="line line3"></div>
                 </div>
               </div>
+              <div className="d-flex">
+                <Link href={'/auth/login'} className="button px-4 py-2">
+                  login
+                </Link>
+              </div>
             </div>
           </div>
         </div>
