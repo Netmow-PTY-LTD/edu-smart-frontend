@@ -23,14 +23,15 @@ import avatar6 from '../../../../public/assets/images/users/avatar-6.jpg';
 
 const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 const teamDummyImage = '/assets/images/users/multi-user.jpg';
-const profileBg = '/assets/images/profile_bg.jpg';
+const edulogo = '/favicon.png';
+const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 
 const universityHeadersWithoutAction = [
   {
-    title: 'Logo',
+    title: 'Logo - Name',
     key: 'logo',
     render: (item) => (
-      <div className="d-flex align-items-center">
+      <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
             href={`/super-admin/university-management/single-university-profile/${item?._id}`}
@@ -59,7 +60,15 @@ const universityHeadersWithoutAction = [
     ),
   },
 
-  { title: 'Description', key: 'description' },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <p className="text-wrap me-5">
+        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+      </p>
+    ),
+  },
   { title: 'Code', key: 'code' },
   {
     title: 'Address',
@@ -1362,8 +1371,10 @@ export {
   agentsHeadersWithoutAction,
   allRevenueData,
   bestSellingProducts,
+  brandlogo,
   ecomWidgets,
   ecommerceReports,
+  edulogo,
   faqOptionsData,
   formBuilderAdvancedWidgets,
   formBuilderBasicWidgets,

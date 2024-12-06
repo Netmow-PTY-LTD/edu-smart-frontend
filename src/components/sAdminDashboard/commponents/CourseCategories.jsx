@@ -256,7 +256,15 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
         </span>
       ),
     },
-    { title: 'Description', key: 'description' },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <p className="text-wrap me-5">
+          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+        </p>
+      ),
+    },
 
     {
       title: 'Action',

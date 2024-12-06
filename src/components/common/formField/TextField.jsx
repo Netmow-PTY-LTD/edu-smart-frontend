@@ -3,8 +3,8 @@ import React from 'react';
 
 const TextField = ({ name, label, ...props }) => {
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label fs-2">
+    <div className="mb-4">
+      <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Name'}
       </label>
       {/* Use Formik's Field component */}

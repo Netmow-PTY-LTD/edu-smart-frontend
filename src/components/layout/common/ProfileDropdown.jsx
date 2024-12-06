@@ -8,6 +8,7 @@ import {
 
 //import images
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -53,6 +54,8 @@ const ProfileDropdown = () => {
     // }
   };
 
+  // console.log(userInfodata);
+
   return (
     <>
       <Dropdown
@@ -70,7 +73,11 @@ const ProfileDropdown = () => {
             <Image
               priority={true}
               className="rounded-circle header-profile-user"
-              src={`/favicon.png`}
+              src={
+                userInfodata?.data?.profile_image?.url
+                  ? userInfodata?.data?.profile_image?.url
+                  : `${userInfodata?.data?.role === 'super_admin' ? '/favicon.png' : userDummyImage}`
+              }
               width={50}
               height={30}
               alt="Header Avatar"

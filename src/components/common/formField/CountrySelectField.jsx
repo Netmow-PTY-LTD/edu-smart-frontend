@@ -11,13 +11,14 @@ const CountrySelectField = ({ name, label, options, ...props }) => {
 
       <Field name={name}>
         {({ field, form }) => {
-          const selectedOption = options
-            ? options.find((option) =>
-                option.label === field.label
-                  ? option.label === field.label
-                  : option.label === field.value
-              )
-            : null;
+          const selectedOption =
+            options?.length > 0
+              ? options?.find((option) =>
+                  option.label === field.label
+                    ? option.label === field.label
+                    : option.label === field.value
+                )
+              : null;
 
           console.log(selectedOption);
 

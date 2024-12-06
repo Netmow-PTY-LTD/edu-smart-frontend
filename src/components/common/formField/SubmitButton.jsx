@@ -11,7 +11,7 @@ const SubmitButton = ({
   return (
     <button
       type="submit"
-      className={`button px-3 py-2 ${className}`}
+      className={`button px-3 py-2 fw-semibold ${className}`}
       disabled={isSubmitting}
       {...props}
     >
