@@ -14,22 +14,20 @@ export default function Footer() {
               className="footer-top-about-info wow animate__animated animate__fadeIn"
               data-wow-delay="0.1s"
             >
-              <Link href="#" className="footer-logo">
+              <Link href="#" className="footer-logo-temp">
                 <Image
                   priority={true}
                   src={brandlogo}
-                  width={500}
-                  height={500}
+                  width={200}
+                  height={100}
                   alt="footer logo"
                 />
               </Link>
               <div className="footer-about-text">
-                <p>
-                  SquadDeck - The ultimate sports team organisation and squad
-                  management system. Easily manage your team, coaches, staff,
-                  guardians and players, while driving sales to your merchandise
-                  store with one intelligent software platform.
-                </p>
+                Malaysia started focusing on the development of
+                telecommunication, Telekom Malaysia Berhad (TM) took a leap of
+                faith by establishing the first private-owned higher learning
+                institute.
               </div>
               <div className="d-flex gap-3 align-items-center footer-about-text">
                 <p>-Follow on</p>
@@ -140,7 +138,7 @@ export default function Footer() {
         </div>
 
         <div className="pb-5">
-          <div className="footer-bottom-content">
+          <div className="footer-bottom-content-temp">
             <div
               className="footer-bottom-left footer-copyright"
               data-wow-delay="1s"

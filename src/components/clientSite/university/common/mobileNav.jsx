@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
+import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 
 const MobileNav = ({ showMobileNav, setShowMobileNav }) => {
   const [showSubmenu, setShowSubmenu] = useState(false);
@@ -27,11 +28,13 @@ const MobileNav = ({ showMobileNav, setShowMobileNav }) => {
     };
   }, [navRef, setShowMobileNav]);
 
+  const { data: universityData } = useGetAllUniversityQuery();
+
   return (
     <section className={`mobile-nav-area ${showMobileNav ? 'active' : ''}`}>
       <div className="mobile-nav-header-temp">
         <Link href="/" className="logo-container">
-          <img src="assets/images/logo_alt.png" alt="Logo" />
+          <img src="/assets/images/logo_alt.png" alt="Logo" />
         </Link>
         <button
           className="close-btn-temp"
@@ -56,14 +59,13 @@ const MobileNav = ({ showMobileNav, setShowMobileNav }) => {
 
       <nav className="mobile-nav">
         <ul className="nav-list-temp">
-          <li>
-            <Link href="#">
-              <span>Home</span>
-            </Link>
-          </li>
-          <li className=" menu-item-has-children">
-            <Link href="/faculties" className="nav-link">
-              <span>Faculties</span>
+          <li className={`menu-item-has-children`}>
+            <Link
+              href="#"
+              className="nav-link"
+              onClick={() => toggleSubmenu('universities')}
+            >
+              <span>Universities</span>
               <svg
                 width="11"
                 height="6"
@@ -73,64 +75,35 @@ const MobileNav = ({ showMobileNav, setShowMobileNav }) => {
               >
                 <path
                   d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
-                  stroke="var(--color--secondary)"
+                  stroke="#fff"
                   strokeWidth="1.10198"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
               </svg>
             </Link>
-            <ul className="sub-menu">
-              <li>
-                <Link href={`#`}>Science</Link>
-              </li>
-              <li>
-                <Link href={`#`}>Law</Link>
-              </li>
-            </ul>
+            {showSubmenu && activeMenuItem === 'universities' && (
+              <ul className={`sub-menu ${showSubmenu ? 'open' : ''}`}>
+                {universityData?.data?.length > 0 ? (
+                  universityData?.data?.map((item, index) => (
+                    <li key={index}>
+                      <Link href={`/university/${item?._id}`}>{item.name}</Link>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li>
+                      <Link href="#">Graduate</Link>
+                    </li>
+                    <li>
+                      <Link href="#">Undergraduate</Link>
+                    </li>
+                  </>
+                )}
+              </ul>
+            )}
           </li>
-          <li className=" menu-item-has-children">
-            <Link href="/programs" className="nav-link">
-              <span>Programs</span>
-              <svg
-                width="11"
-                height="6"
-                viewBox="0 0 11 6"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
-                  stroke="#162A73"
-                  strokeWidth="1.10198"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
-            <ul className="sub-menu">
-              <li>
-                <Link href={`#`}>Graduate</Link>
-              </li>
-              <li>
-                <Link href={`#`}>Undergraduate</Link>
-              </li>
-            </ul>
-          </li>
-          <li>
-            <Link href="/about">About</Link>
-          </li>
-          <li>
-            <Link href="/blog" className="nav-link">
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="nav-link">
-              Contact
-            </Link>
-          </li>
-          <li className="px-3">
+          <li className="px-3 mt-4">
             <Link
               href={`/auth/login`}
               className={`button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5 justify-content-center`}

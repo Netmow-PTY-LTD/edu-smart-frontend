@@ -38,7 +38,7 @@ export default function HeroHome({ university }) {
             </div>
 
             {/* intraction section */}
-            <div className="d-flex align-items-center justify-content-sm-center justify-content-md-end w-75 w-sm-75 w-md-50">
+            <div className="d-flex flex-wrap align-items-center justify-content-sm-center justify-content-md-end gap-4 w-75 w-sm-75 w-md-50">
               {/* search-input */}
 
               <div class="search-container w-sm-100 w-md-50">

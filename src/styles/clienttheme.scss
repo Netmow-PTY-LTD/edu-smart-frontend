@@ -718,6 +718,7 @@ p {
 .mobile-nav-area li a {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 14px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   width: 100%;
@@ -733,6 +734,7 @@ p {
 
 .mobile-nav-area .menu-item-has-children a {
   position: relative;
+  color: #fff;
 }
 
 .mobile-nav-area .menu-item-has-children.active a {
@@ -7194,8 +7196,9 @@ img.staff-img {
 }
 
 .footer-logo-temp img {
-  max-width: 15rem;
-  max-height: 8rem;
+  max-width: 20rem;
+  max-height: 10rem;
+  object-fit: cover;
 }
 
 .footer-about-text-temp p {
@@ -7347,11 +7350,13 @@ img.staff-img {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.footer-bottom-content {
+.footer-bottom-content-temp {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  border-top: 1px solid rgba(187, 187, 187, 0.1294117647);
+  padding-top: 2.2rem;
 }
 
 .footer-copyright p {
@@ -7618,7 +7623,7 @@ img.staff-img {
       .row-content {
         width: 100%;
         background-color: #b5d336;
-        padding: 1rem;
+        padding: 1.5rem;
 
         @media (min-width: 992px) {
           padding: 2.25rem 2.375rem 2.3125rem 2.25rem;
@@ -7672,11 +7677,12 @@ img.staff-img {
 }
 
 .university-about-container {
-  height: 700px;
-  background-color: white;
+  /* height: 700px; */
+  background-color: #fff;
+  padding: 100px 0 50px;
 
-  @media (min-width: 992px) {
-    height: 600px;
+  @media (max-width: 991px) {
+    padding: 80px 0 50px;
   }
 
   h3 {
@@ -7826,5 +7832,100 @@ img.staff-img {
 @media (max-width: 575px) {
   .faculty-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+// contact section
+
+.contact-section {
+  padding: 5rem 0;
+  background: #fff;
+}
+
+.contact-section h2 {
+  color: var(--color--secondary);
+  font-family: Lora;
+  font-size: clamp(30px, 2vw, 50px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.univ-info-single {
+  color: var(--color--secondary);
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%;
+}
+
+.univ-info {
+  margin-bottom: 20px;
+}
+
+.university-details {
+  padding: 2rem;
+  border-radius: 14.679px;
+  border: 1.223px solid var(--Dark-Blue, #092a67);
+  background: #e9f1fa;
+  margin-top: 2rem;
+}
+
+.contact-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+.univ-contact {
+  padding: 2rem;
+  background: var(--color--primary);
+  border-radius: 1rem;
+  margin-top: 2.4rem;
+}
+
+.contact-info-single {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-info-single span {
+  color: var(--color--secondary);
+  font-family: Lora;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.contact-info-single a {
+  color: var(--Dark-Blue, #092a67);
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%; /* 30.6px */
+}
+
+.university-details h5 {
+  color: var(--color--secondary);
+  font-family: Lora;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.address-details {
+  color: var(--color--secondary);
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%;
+}
+
+@media (max-width: 991px) {
+  .univ-contact-main {
+    margin-top: 30px;
   }
 }

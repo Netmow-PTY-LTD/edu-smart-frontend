@@ -93,40 +93,9 @@ export default function Header() {
               </Link>
               <nav className="main-nav">
                 <ul className="nav-list">
-                  <li>
-                    <Link href="/university">Home</Link>
-                  </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
-                      <span>Faculties</span>
-                      <svg
-                        width="11"
-                        height="6"
-                        viewBox="0 0 11 6"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
-                          stroke="var(--color--secondary)"
-                          strokeWidth="1.10198"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-                    <ul className="sub-menu">
-                      <li>
-                        <Link href="/programs">Arts</Link>
-                      </li>
-                      <li>
-                        <Link href="/programs">Science</Link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className=" menu-item-has-children">
-                    <Link href="#" className="nav-link">
-                      <span>Programs</span>
+                      <span>Universities</span>
                       <svg
                         width="11"
                         height="6"
@@ -157,10 +126,6 @@ export default function Header() {
                         ))}
                     </ul>
                   </li>
-
-                  <li>
-                    <Link href="#">About</Link>
-                  </li>
                 </ul>
               </nav>
               <div className="d-flex">
@@ -175,11 +140,6 @@ export default function Header() {
                   <div className="line line2"></div>
                   <div className="line line3"></div>
                 </div>
-              </div>
-              <div className="d-flex">
-                <Link href={'/auth/login'} className="button px-4 py-2">
-                  login
-                </Link>
               </div>
             </div>
           </div>
