@@ -1,4 +1,6 @@
 import AboutUniversity from '@/components/clientSite/university/AboutUniversity';
+import UniversityContact from '@/components/clientSite/university/Contact';
+import UniversityFaculties from '@/components/clientSite/university/Faculties';
 import HeroHome from '@/components/clientSite/university/HeroHome';
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
 import Image from 'next/image';
@@ -9,6 +11,7 @@ export default function UniversityHome() {
     <UniversityLayout>
       <HeroHome />
       <AboutUniversity />
+      <UniversityFaculties />
       <section className="sponsors-area  mt-5">
         <div className="container">
           <div className="sec-heading">
@@ -66,6 +69,7 @@ export default function UniversityHome() {
           </div>
         </div>
       </section>
+      <UniversityContact />
     </UniversityLayout>
   );
 }

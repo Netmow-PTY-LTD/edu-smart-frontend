@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 :root {
   --color--primary: #b5d336;
-  --color--secondary: #273043;
+  --color--secondary: #092a67;
   --color--secondary--rgb: 22, 42, 115;
 }
 
@@ -228,6 +230,30 @@ p {
   color: #f7d9d9;
 }
 
+.sec-heading {
+  max-width: 105.5rem;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 4.2rem;
+}
+
+.sec-heading h2 {
+  font-weight: 700;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--color--secondary);
+  margin-bottom: 2rem;
+}
+
+.sec-heading p {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 3.1rem;
+  text-align: center;
+  color: var(--color--secondary);
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 0.7rem;
@@ -262,7 +288,7 @@ p {
 .topbar-content {
   display: flex;
   justify-content: space-between;
-  color: var(--Dark-Blue, #092a67);
+  color: var(--Dark-Blue, var(--color--secondary));
   font-family: Poppins;
   font-size: 14px;
   font-style: normal;
@@ -288,7 +314,7 @@ p {
 }
 
 .topbar-content a {
-  color: var(--Dark-Blue, #092a67);
+  color: var(--Dark-Blue, var(--color--secondary));
 }
 
 .topbar-socials span {
@@ -341,15 +367,7 @@ p {
   letter-spacing: -0.02em;
   text-transform: capitalize;
   text-align: center;
-  color: #092a67;
-}
-.sec-heading p {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 3.1rem;
-  text-align: center;
-  color: #092a67;
+  color: var(--color--secondary);
 }
 
 @media (max-width: 991px) {
@@ -433,6 +451,7 @@ p {
   flex-direction: column;
   width: 100%;
   margin-bottom: 0;
+  padding-left: 0;
 }
 
 .main-nav-temp ul li {
@@ -2827,21 +2846,6 @@ p {
 
 .sd-shop {
   padding: 8.5rem 0 8.5rem;
-}
-
-.sec-heading {
-  max-width: 62.7rem;
-  margin: 0 auto;
-  text-align: center;
-  margin-bottom: 4.2rem;
-}
-
-.sec-heading h2 {
-  font-weight: 700;
-  font-size: 3.6rem;
-  line-height: 1;
-  color: var(--color--secondary);
-  margin-bottom: 3rem;
 }
 
 .home-shop-heading {
@@ -7599,7 +7603,6 @@ img.staff-img {
   bottom: -50px;
   left: 0;
   right: 0;
- 
 }
 .hero-section .container .container-row {
   display: flex;
@@ -7609,7 +7612,7 @@ img.staff-img {
   width: 100%;
   margin: 0 auto;
 }
-.hero-section .container .container-row .row-content  {
+.hero-section .container .container-row .row-content {
   background-color: #b5d336;
   padding: 2.25rem 2.375rem 2.3125rem 2.25rem;
 }
@@ -7617,14 +7620,14 @@ img.staff-img {
 .hero-section .container h4 {
   font-size: 2.5rem;
   font-weight: 700px;
-  color: #092a67;
+  color: var(--color--secondary);
 }
 
 // hero section serch input
 .hero-section .container .search-container {
   padding: 0.625rem 1.25rem;
   border-radius: 0.5rem;
-  border: 2px solid #092a67;
+  border: 2px solid var(--color--secondary);
   width: 21.875rem;
   height: 3.75rem;
   position: relative;
@@ -7632,13 +7635,12 @@ img.staff-img {
   align-items: center;
 }
 
-
 .hero-section .container .search-input {
   // margin: 0.09375rem 0rem;
   margin-top: 1.5px;
   margin-bottom: 1.5px;
 
-  color: #092a67;
+  color: var(--color--secondary);
   font-size: 1.375rem;
   font-weight: 31.25rem;
   border: none;
@@ -7646,7 +7648,7 @@ img.staff-img {
 }
 
 .hero-section .container .search-input::placeholder {
-  color: #092a67;
+  color: var(--color--secondary);
   font-size: 1.375rem;
   font-weight: 31.25rem;
 }
@@ -7670,7 +7672,6 @@ img.staff-img {
   transition: border-color 0.3s ease;
 }
 
-
 .university-about-container {
   height: 700px;
   background-color: white;
@@ -7682,5 +7683,149 @@ img.staff-img {
   h3 {
     color: #1c1c1c;
     font-weight: 700;
+  }
+}
+
+// University Faculites
+
+.university-faculties {
+  padding: 8.6rem 0 5.6rem;
+  background-color: var(--color--secondary);
+}
+
+.university-faculties .sec-heading h2 {
+  color: #fff;
+}
+
+.university-faculties .sec-heading p {
+  color: #fff;
+}
+
+.faculty-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2.2rem;
+}
+
+.faculty-content-left {
+  max-width: 37.8rem;
+  width: 100%;
+  background-color: var(--primary-color);
+}
+
+.faculty-content-right {
+  width: calc(100% - 40rem);
+}
+
+.faculty-tab-navs {
+  background: var(--color--primary);
+  border-radius: 10px;
+  padding: 22px;
+}
+
+.faculty-tab-navs h5 {
+  font-family: 'Lora', serif;
+  color: var(--color--secondary);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  padding-bottom: 20px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #fff;
+}
+
+.faculty-tab-navs .inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faculty-tab-navs a {
+  padding: 15px 20px;
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color--secondary);
+  font-family: Lora;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.faculty-tab-navs a.active {
+  background-color: var(--color--secondary);
+  color: #fff;
+}
+
+.faculty-tab-navs a.active svg path {
+  rotate: 90deg;
+}
+
+.faculty-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 30px;
+  row-gap: 70px;
+}
+
+.faculty-item img {
+  width: 100%;
+  aspect-ratio: 1/0.6;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.faculty-item h3 {
+  color: #fff;
+  font-family: Lora;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  margin: 16px 0;
+}
+
+.faculty-item .fc-desc {
+  color: #fff;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.faculty-item a:hover {
+  background-color: #fff;
+  color: var(--color--primary);
+}
+
+.faculty-content .page-link {
+  font-size: 20px;
+  padding: 10px 20px;
+}
+
+@media (max-width: 1199px) {
+  .faculty-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .university-faculties {
+    padding: 5rem 0;
+  }
+  .faculty-content-left {
+    max-width: 100%;
+  }
+  .faculty-content-right {
+    width: 100%;
+  }
+}
+
+@media (max-width: 575px) {
+  .faculty-grid {
+    grid-template-columns: 1fr;
   }
 }
