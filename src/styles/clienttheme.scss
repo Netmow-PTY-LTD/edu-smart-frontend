@@ -7738,8 +7738,8 @@ img.staff-img {
 
 .testimonial-section .testimonal-section-content .testimonial-title {
   font-weight: 700;
-  font-size: 50px;
-  line-height: 64px;
+  font-size: 3.125rem;
+line-height: 4rem;
   text-align: center;
   color: #092A67;
 }
@@ -7747,29 +7747,32 @@ img.staff-img {
 
 .testimonial-section .testimonal-section-content .testimonial-description {
   font-weight: 400;
-  font-size: 18px;
-  line-height: 36.6px;
+  font-size: 1.125rem;
+line-height: 2.2875rem;
+margin-top: 1.75rem;
+
   text-align: center;
   color: #092A67;
-  margin: 28px auto 49px auto;
+ 
 }
 
 .testimonial-section .testimonal-section-content .testimonial-feedback {
- display: flex;
+  margin-top: 3.063rem;
  align-items: center;
  justify-content: space-between;
- gap: 29px;
+
 }
 
 .testimonial-section .testimonal-section-content .feedback-card {
- border-radius:14.68px;
- border: 1.22px solid #092A67;
- width: 513.76px;
- padding: 19.57px 31.8px 19.57px 31.8px;
+  border-radius: 0.9175rem;
+  border: 0.07625rem solid #092A67;
+  width: 32.11rem;
+  padding: 1.223125rem 1.9875rem;
  background-color: #E9F1FA;
  
  
 }
+
 .testimonial-section .testimonal-section-content .feedback-card:hover {
  background-color: #B5D336;
  transition: 3ms ease-in-out ;
@@ -7777,46 +7780,49 @@ img.staff-img {
  
 }
 
+
+
 .testimonial-section .testimonal-section-content .feedback-card .feedback-card__header {
  display: flex;
- padding: 6.31px 0;
  align-items: center;
- gap: 4.89px;
+ padding: 0.394375rem 0;
+ gap: 0.305625rem;
  
+
  
 }
 
 .testimonial-section .testimonal-section-content .feedback-card .feedback-card__header .feedback-card__info {
-
+margin-left: 0.313rem;
 
  
 }
 
 .testimonial-section .testimonal-section-content .feedback-card .feedback-card__header .feedback-card__info .feedback-card__user-name {
 
- font-weight: 700;
- font-size: 24px;
- line-height: 30.72px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.92rem;  
  color: #092A67;
  
 }
 
 .testimonial-section .testimonal-section-content .feedback-card .feedback-card__header .feedback-card__info .feedback-card__user-designation {
 
- font-weight: 400;
- font-size: 18px;
- line-height: 30.6px;
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.9125rem;
  color: #092A67;
  
 }
 
+
 .testimonial-section .testimonal-section-content .feedback-card .feedback-card__feedback {
- margin-top: 24.47px;
+  margin-top: 1.529375rem;
   font-weight: 400;
-  font-size: 18px;
-  line-height: 30.6px;
+  font-size: 1.125rem;
+  line-height: 1.9125rem;
   color: #092A67;
 
- 
 }
 
