@@ -15,58 +15,56 @@ export default function HeroHome() {
   return (
     <section className="hero-section">
       {/* hero image section */}
-      <figure style={{ display: 'flex', flexDirection: 'column' }}>
+      <figure>
         <Image alt="hero" src={heroImage} sizes="100vw" />
       </figure>
       {/* heroSection-info-header */}
       <div className="container">
-        <div className="container-row ">
-         <div className='row-content  d-flex align-items-center rounded-4 '>
-           {/* info */}
-           <div className="d-flex align-items-center w-75 ">
-            <figure className="me-2">
-              <Image alt="logoMmu" src={logoMmu} width={153} height={44} />
-            </figure>
-            <h4>Malaysia Multimedia University</h4>
-          </div>
-
-          {/* intraction section */}
-          <div className=" d-flex w-25  ">
-            {/* search-input */}
-
-            <div class="me-4  search-container">
-              <figure className="searchIcon-conatiner">
+        <div className="container-row">
+          <div className="row-content d-flex align-items-center justify-content-center justify-content-sm-center justify-md-content-between rounded-4 ">
+            {/* info */}
+            <div className="d-none d-sm-none d-md-flex align-items-center">
+              <figure>
                 <Image
-                  src={searchIcon}
-                  alt="searchIcon"
-                  width={24}
-                  height={25}
-                  class="search-icon"
+                  className="university-logo"
+                  alt="logoMmu"
+                  src={logoMmu}
                 />
               </figure>
-
-              <input
-                type="text"
-                className="search-input"
-                placeholder="Search a program"
-              />
+              <h4 className="">Malaysia Multimedia University</h4>
             </div>
 
-            {/* dropdwon */}
-            <div className="dropdownContainer">
-              <select
-                className="select"
-                value={selectedValue}
-                onChange={handleChange}
-              >
-                <option value="">Browse Programs</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-              </select>
+            {/* intraction section */}
+            <div className="d-flex align-items-center justify-content-sm-center justify-content-md-end w-75 w-sm-75 w-md-50">
+              {/* search-input */}
+
+              <div class="search-container w-sm-100 w-md-50">
+                <label htmlFor="search" className="searchIcon-conatiner">
+                  <i class="ri-search-line fs-1 search-icon"></i>
+                </label>
+                <input
+                  id="search"
+                  type="text"
+                  className="search-input w-100"
+                  placeholder="Search a program"
+                />
+              </div>
+
+              {/* dropdwon */}
+              <div className="dropdownContainer">
+                <select
+                  className="select"
+                  value={selectedValue}
+                  onChange={handleChange}
+                >
+                  <option value="">Browse Programs</option>
+                  <option value="option1">Option 1</option>
+                  <option value="option2">Option 2</option>
+                  <option value="option3">Option 3</option>
+                </select>
+              </div>
             </div>
           </div>
-         </div>
         </div>
       </div>
     </section>
