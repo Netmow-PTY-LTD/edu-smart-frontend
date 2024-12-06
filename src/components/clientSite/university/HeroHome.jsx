@@ -5,12 +5,13 @@ import logoMmu from '../../../../public/assets/images/landing/hero/logo-mmu.png'
 import searchIcon from '../../../../public/assets/images/landing/hero/search.png';
 import Image from 'next/image';
 
-export default function HeroHome() {
+export default function HeroHome({ university }) {
   const [selectedValue, setSelectedValue] = useState('');
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
   };
+  console.log(university);
 
   return (
     <section className="hero-section">
@@ -28,10 +29,12 @@ export default function HeroHome() {
                 <Image
                   className="university-logo"
                   alt="logoMmu"
-                  src={logoMmu}
+                  src={university?.logo?.url || logoMmu}
+                  width={50}
+                  height={50}
                 />
               </figure>
-              <h4 className="">Malaysia Multimedia University</h4>
+              <h4 className="ms-4">{university?.name}</h4>
             </div>
 
             {/* intraction section */}
