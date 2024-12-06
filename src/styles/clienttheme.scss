@@ -7575,8 +7575,19 @@ img.staff-img {
 .hero-section .container {
   position: absolute;
   bottom: -50px;
+  left: 0;
+  right: 0;
+ 
 }
 .hero-section .container .container-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  margin: 0 auto;
+}
+.hero-section .container .container-row .row-content  {
   background-color: #b5d336;
   padding: 2.25rem 2.375rem 2.3125rem 2.25rem;
 }
