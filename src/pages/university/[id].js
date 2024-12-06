@@ -6,7 +6,6 @@ import UniversityFAQ from '@/components/clientSite/university/UniversityFAQ';
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
 import UniversityPictureGallery from '@/components/clientSite/university/UniversityPictureGallery';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,7 +25,7 @@ export default function SingleUniversityHome() {
     <UniversityLayout>
       <HeroHome university={university} />
       <AboutUniversity university={university} />
-      <UniversityFaculties />
+      <UniversityFaculties university={university} />
       <UniversityPictureGallery />
       <UniversityFAQ />
       <UniversityContact />

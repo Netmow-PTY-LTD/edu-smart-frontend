@@ -1,66 +1,26 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
-export default function UniversityFaculties() {
+export default function UniversityFaculties({ university }) {
+  const [data, setData] = useState({
+    'all-courses': [],
+    departments: [],
+    courseCategories: [],
+  });
   const [activeTab, setActiveTab] = useState('all-courses');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-  const data = {
-    'all-courses': [
-      {
-        title: 'Faculty of Information Technology',
-        desc: 'A degree from SCIENCE AND IT will transform your life for the better. We are inviting you to prepare yourself for the.',
-        img: '/assets/university-gallery/1st-element.jpeg',
-      },
-      {
-        title: 'Business & Entrepreneurship',
-        desc: 'Do you want to pursue your career in the business industry as a leader? A degree from BUSINESS AND ENTREPRENEURSHIP...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-
-      {
-        title: 'Graduate Studies',
-        desc: 'This faculty’s primary mission is to provide support for the overall research and publications of the faculty, researchers...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-      {
-        title: 'Graduate Studies',
-        desc: 'This faculty’s primary mission is to provide support for the overall research and publications of the faculty, researchers...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-      {
-        title: 'Graduate Studies',
-        desc: 'This faculty’s primary mission is to provide support for the overall research and publications of the faculty, researchers...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-    ],
-    faculty: [
-      {
-        title: 'Faculty of Information Technology',
-        desc: 'A degree from SCIENCE AND IT will transform your life for the better. We are inviting you to prepare yourself for the future.',
-        img: '/assets/university-gallery/1st-element.jpeg',
-      },
-      {
-        title: 'Humanities & Social Sciences',
-        desc: 'Studying HUMANITIES AND SOCIAL SCIENCE will help you excel in thinking, judgment, communication...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-    ],
-    campus: [
-      {
-        title: 'Business & Entrepreneurship - Main Campus',
-        desc: 'Do you want to pursue your career in the business industry as a leader? A degree from BUSINESS AND ENTREPRENEURSHIP...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-      {
-        title: 'Health and Life Sciences',
-        desc: 'An exclusive faculty with global demand dedicated to producing an impact on health and human life...',
-        img: '/assets/university-gallery/second-element.png',
-      },
-    ],
-  };
+  useEffect(() => {
+    if (university?.courses) {
+      setData({
+        'all-courses': university.courses,
+        departments: university.courses,
+        courseCategories: university.courses,
+      });
+    }
+  }, [university?.courses]);
 
   const handleTabClick = (e, tab) => {
     e.preventDefault();
@@ -73,12 +33,12 @@ export default function UniversityFaculties() {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const selectedData = data[activeTab].slice(
+  const selectedData = data[activeTab]?.slice(
     startIndex,
     startIndex + itemsPerPage
   );
 
-  const totalPages = Math.ceil(data[activeTab].length / itemsPerPage);
+  const totalPages = Math.ceil(data[activeTab]?.length / itemsPerPage);
 
   return (
     <section className="university-faculties">
@@ -94,7 +54,7 @@ export default function UniversityFaculties() {
         <div className="faculty-content">
           <div className="faculty-content-left">
             <div className="faculty-tab-navs">
-              <h5>Programs By Categories</h5>
+              <h5>Courses By Categories</h5>
               <div className="inner">
                 <Link
                   href="#"
@@ -120,10 +80,10 @@ export default function UniversityFaculties() {
                 </Link>
                 <Link
                   href="#"
-                  className={`tab ${activeTab === 'faculty' ? 'active' : ''}`}
-                  onClick={(e) => handleTabClick(e, 'faculty')}
+                  className={`tab ${activeTab === 'departments' ? 'active' : ''}`}
+                  onClick={(e) => handleTabClick(e, 'departments')}
                 >
-                  <span>By Faculty</span>
+                  <span>By Course Categories</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="9"
@@ -142,10 +102,10 @@ export default function UniversityFaculties() {
                 </Link>
                 <Link
                   href="#"
-                  className={`tab ${activeTab === 'campus' ? 'active' : ''}`}
-                  onClick={(e) => handleTabClick(e, 'campus')}
+                  className={`tab ${activeTab === 'courseCategories' ? 'active' : ''}`}
+                  onClick={(e) => handleTabClick(e, 'courseCategories')}
                 >
-                  <span>By Campus</span>
+                  <span>By Departments</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="9"
@@ -167,21 +127,22 @@ export default function UniversityFaculties() {
           </div>
           <div className="faculty-content-right">
             <div className="faculty-grid">
-              {data[activeTab]
-                .slice(startIndex, startIndex + itemsPerPage)
-                .map((item, index) => (
-                  <div className="faculty-item" key={index}>
-                    <img src={item.img} alt={item.title} />
-                    <h3>{item.title}</h3>
-                    <div className="fc-desc">{item.desc}</div>
-                    <Link
-                      href="#"
-                      className="button py-3 px-5 fw-semibold d-inline-block mt-4"
-                    >
-                      Apply Now
-                    </Link>
-                  </div>
-                ))}
+              {data[activeTab] &&
+                data[activeTab]
+                  .slice(startIndex, startIndex + itemsPerPage)
+                  .map((item, index) => (
+                    <div className="faculty-item" key={index}>
+                      <img src={university?.logo?.url} alt={item.name} />
+                      <h3>{item.name}</h3>
+                      <div className="fc-desc">{item.description}</div>
+                      <Link
+                        href="#"
+                        className="button py-3 px-5 fw-semibold d-inline-block mt-4"
+                      >
+                        Apply Now
+                      </Link>
+                    </div>
+                  ))}
             </div>
             <Pagination className="mt-5">
               <PaginationItem disabled={currentPage === 1}>
