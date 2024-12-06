@@ -4877,6 +4877,15 @@ textarea::placeholder {
   }
 }
 
+.faq-container {
+  width: 100%;
+  max-width: 1050px;
+  max-height: 490px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 a.scrolltop-btn {
   position: fixed;
   bottom: 10rem;
