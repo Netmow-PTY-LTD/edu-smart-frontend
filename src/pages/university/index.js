@@ -1,4 +1,5 @@
 import AboutUniversity from '@/components/clientSite/university/AboutUniversity';
+import UniversityTestimonials from '@/components/clientSite/university/common/UniversityTestimonials';
 import HeroHome from '@/components/clientSite/university/HeroHome';
 import SponsorHome from '@/components/clientSite/university/SponsorHome';
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
@@ -68,6 +69,7 @@ export default function UniversityHome() {
         </div>
       </section>
       <SponsorHome/>
+      <UniversityTestimonials/>
     </UniversityLayout>
   );
 }

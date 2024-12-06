@@ -7657,6 +7657,7 @@ img.staff-img {
 /* SPONSOR-SECTION */
 
 .sponsor-section {
+  box-sizing: border-box;
   background-color: #B5D336;
   display: flex;
   justify-content: center;
@@ -7718,3 +7719,103 @@ img.staff-img {
 
 
 }
+
+/* Univerity Testimonial  */
+
+.testimonial-section {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.testimonial-section .testimonal-section-content {
+  // margin: 7.5rem 10rem;
+  
+}
+
+.testimonial-section .testimonal-section-content .testimonial-title {
+  font-weight: 700;
+  font-size: 50px;
+  line-height: 64px;
+  text-align: center;
+  color: #092A67;
+}
+
+
+.testimonial-section .testimonal-section-content .testimonial-description {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 36.6px;
+  text-align: center;
+  color: #092A67;
+  margin: 28px auto 49px auto;
+}
+
+.testimonial-section .testimonal-section-content .testimonial-feedback {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 29px;
+}
+
+.testimonial-section .testimonal-section-content .feedback-card {
+ border-radius:14.68px;
+ border: 1.22px solid #092A67;
+ width: 513.76px;
+ padding: 19.57px 31.8px 19.57px 31.8px;
+ background-color: #E9F1FA;
+ 
+ 
+}
+.testimonial-section .testimonal-section-content .feedback-card:hover {
+ background-color: #B5D336;
+ transition: 3ms ease-in-out ;
+ 
+ 
+}
+
+.testimonial-section .testimonal-section-content .feedback-card .feedback-card__header {
+ display: flex;
+ padding: 6.31px 0;
+ align-items: center;
+ gap: 4.89px;
+ 
+ 
+}
+
+.testimonial-section .testimonal-section-content .feedback-card .feedback-card__header .feedback-card__info {
+
+
+ 
+}
+
+.testimonial-section .testimonal-section-content .feedback-card .feedback-card__header .feedback-card__info .feedback-card__user-name {
+
+ font-weight: 700;
+ font-size: 24px;
+ line-height: 30.72px;
+ color: #092A67;
+ 
+}
+
+.testimonial-section .testimonal-section-content .feedback-card .feedback-card__header .feedback-card__info .feedback-card__user-designation {
+
+ font-weight: 400;
+ font-size: 18px;
+ line-height: 30.6px;
+ color: #092A67;
+ 
+}
+
+.testimonial-section .testimonal-section-content .feedback-card .feedback-card__feedback {
+ margin-top: 24.47px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30.6px;
+  color: #092A67;
+
+ 
+}
+
