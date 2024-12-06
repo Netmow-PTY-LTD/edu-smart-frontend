@@ -293,7 +293,8 @@ p {
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 150%; /* 30.6px */
+  line-height: 150%;
+  /* 30.6px */
 }
 
 .topbar-socials {
@@ -359,6 +360,7 @@ p {
 .sec-heading {
   margin-bottom: 5.2rem;
 }
+
 .sec-heading h3 {
   font-family: 'Lora', sans-serif;
   font-weight: 600;
@@ -598,7 +600,7 @@ p {
 //   transition: 0.4s;
 // }
 
-.hamburger-menu-temp > :is(.line1, .line2, .line3) {
+.hamburger-menu-temp> :is(.line1, .line2, .line3) {
   width: 100%;
   height: 2px;
   transition: all 0.4s ease;
@@ -625,6 +627,7 @@ p {
 }
 
 @media (max-width: 991px) {
+
   .main-nav-temp,
   .nav-right-temp .login-btn,
   .get-started-btn {
@@ -1487,16 +1490,14 @@ p {
   height: 17.7rem;
   padding: 1rem 4.2rem 1rem 1rem;
   border-radius: 1rem;
-  clip-path: polygon(
-    0 0,
-    94% 0,
-    100% 17%,
-    100% 70%,
-    100% 100%,
-    0 100%,
-    0% 70%,
-    0% 30%
-  );
+  clip-path: polygon(0 0,
+      94% 0,
+      100% 17%,
+      100% 70%,
+      100% 100%,
+      0 100%,
+      0% 70%,
+      0% 30%);
   margin-bottom: 1rem;
 }
 
@@ -1703,7 +1704,7 @@ p {
   content: '';
 }
 
-.home-players .slick-slide > div {
+.home-players .slick-slide>div {
   margin-right: 1rem;
 }
 
@@ -1711,16 +1712,14 @@ p {
   width: 100%;
   height: 34.5rem;
   object-fit: cover;
-  clip-path: polygon(
-    0 0,
-    89% 0,
-    100% 11%,
-    100% 70%,
-    100% 100%,
-    0 100%,
-    0% 70%,
-    0% 30%
-  );
+  clip-path: polygon(0 0,
+      89% 0,
+      100% 11%,
+      100% 70%,
+      100% 100%,
+      0 100%,
+      0% 70%,
+      0% 30%);
 }
 
 .player-single h4 {
@@ -1789,8 +1788,8 @@ p {
 
 /* only displaying the active bullets and the 2 bullets next to it */
 .players .slick-dots li.slick-active,
-.players .slick-dots li.slick-active + li,
-.players .slick-dots li.slick-active + li + li {
+.players .slick-dots li.slick-active+li,
+.players .slick-dots li.slick-active+li+li {
   display: block;
 }
 
@@ -1802,19 +1801,19 @@ p {
 }
 
 /* hiding the last three bullets if slick-active exist before them */
-.players .slick-dots li.slick-active ~ li:nth-last-child(1),
-.players .slick-dots li.slick-active ~ li:nth-last-child(2),
-.players .slick-dots li.slick-active ~ li:nth-last-child(3) {
+.players .slick-dots li.slick-active~li:nth-last-child(1),
+.players .slick-dots li.slick-active~li:nth-last-child(2),
+.players .slick-dots li.slick-active~li:nth-last-child(3) {
   display: none;
 }
 
 /* specific conditions to always display the last three bullets */
-.players .slick-dots li.slick-active + li + li:nth-last-child(3),
-.players .slick-dots li.slick-active + li + li:nth-last-child(2),
-.players .slick-dots li.slick-active + li + li:nth-last-child(1),
-.players .slick-dots li.slick-active + li:nth-last-child(3),
-.players .slick-dots li.slick-active + li:nth-last-child(2),
-.players .slick-dots li.slick-active + li:nth-last-child(1) {
+.players .slick-dots li.slick-active+li+li:nth-last-child(3),
+.players .slick-dots li.slick-active+li+li:nth-last-child(2),
+.players .slick-dots li.slick-active+li+li:nth-last-child(1),
+.players .slick-dots li.slick-active+li:nth-last-child(3),
+.players .slick-dots li.slick-active+li:nth-last-child(2),
+.players .slick-dots li.slick-active+li:nth-last-child(1) {
   display: block;
 }
 
@@ -4163,16 +4162,14 @@ p {
   width: 100%;
   height: 27.5rem;
   object-fit: cover;
-  clip-path: polygon(
-    0 0,
-    89% 0,
-    100% 11%,
-    100% 70%,
-    100% 100%,
-    0 100%,
-    0% 70%,
-    0% 30%
-  );
+  clip-path: polygon(0 0,
+      89% 0,
+      100% 11%,
+      100% 70%,
+      100% 100%,
+      0 100%,
+      0% 70%,
+      0% 30%);
   border-radius: 1rem;
 }
 
@@ -4461,11 +4458,9 @@ img.staff-img {
   right: 0;
   width: 16.4rem;
   height: 23.2rem;
-  background: linear-gradient(
-    360deg,
-    #eef5ff 25.6%,
-    rgba(238, 245, 255, 0) 99.68%
-  );
+  background: linear-gradient(360deg,
+      #eef5ff 25.6%,
+      rgba(238, 245, 255, 0) 99.68%);
   transform: translateY(-50%) rotate(-90deg);
 }
 
@@ -4530,12 +4525,10 @@ img.staff-img {
   max-width: 50rem;
   width: 100%;
   height: 16rem;
-  background: linear-gradient(
-    360deg,
-    #eef5ff 7.96%,
-    #eef5ff 51.4%,
-    rgba(238, 245, 255, 0) 88.86%
-  );
+  background: linear-gradient(360deg,
+      #eef5ff 7.96%,
+      #eef5ff 51.4%,
+      rgba(238, 245, 255, 0) 88.86%);
   z-index: 1;
 }
 
@@ -4561,16 +4554,14 @@ img.staff-img {
   background-color: #fff;
   padding: 0 2rem 0 1rem;
   border-radius: 1rem;
-  clip-path: polygon(
-    0 0,
-    94% 0,
-    100% 17%,
-    100% 70%,
-    100% 100%,
-    0 100%,
-    0% 70%,
-    0% 30%
-  );
+  clip-path: polygon(0 0,
+      94% 0,
+      100% 17%,
+      100% 70%,
+      100% 100%,
+      0 100%,
+      0% 70%,
+      0% 30%);
   margin-bottom: 1.6rem;
   position: relative;
   cursor: pointer;
@@ -6002,6 +5993,7 @@ img.staff-img {
   display: flex;
   align-items: center;
 }
+
 .checkbox-wrapper input[type='checkbox'] {
   display: table-cell;
   accent-color: var(--color--secondary);
@@ -6250,6 +6242,7 @@ img.staff-img {
 }
 
 @media (max-width: 767px) {
+
   .col-50,
   .col-25 {
     width: 100%;
@@ -6330,7 +6323,7 @@ img.staff-img {
   border-radius: 50%;
 }
 
-.custom-control-input:checked ~ .custom-control-label::before {
+.custom-control-input:checked~.custom-control-label::before {
   color: #fff;
   border-color: var(--color--secondary);
   background-color: var(--color--secondary);
@@ -6736,7 +6729,7 @@ img.staff-img {
   position: relative;
 }
 
-.sponsor-img > img {
+.sponsor-img>img {
   width: 84%;
 }
 
@@ -7375,6 +7368,7 @@ img.staff-img {
 }
 
 @media (max-width: 991px) {
+
   .footer-top-about-info,
   .footer-top-single-widget {
     width: 100%;
