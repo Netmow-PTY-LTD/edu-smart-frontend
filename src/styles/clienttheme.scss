@@ -293,7 +293,8 @@ p {
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 150%; /* 30.6px */
+  line-height: 150%;
+  /* 30.6px */
 }
 
 .topbar-socials {
@@ -359,6 +360,7 @@ p {
 .sec-heading {
   margin-bottom: 5.2rem;
 }
+
 .sec-heading h3 {
   font-family: 'Lora', sans-serif;
   font-weight: 600;
@@ -6004,6 +6006,7 @@ img.staff-img {
   display: flex;
   align-items: center;
 }
+
 .checkbox-wrapper input[type='checkbox'] {
   display: table-cell;
   accent-color: var(--color--secondary);
@@ -7928,4 +7931,157 @@ img.staff-img {
   .univ-contact-main {
     margin-top: 30px;
   }
+}
+/* SPONSOR-SECTION */
+
+.sponsor-section {
+  box-sizing: border-box;
+  background-color: #b5d336;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sponsor-section .sponsor-container {
+  margin: 5.313rem 22rem 5.313rem 20.438rem;
+}
+
+.sponsor-section .sponsor-container .sponsor {
+  max-width: 77.533rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.sponsor-section .sponsor-container .sponsor-title {
+  margin: 0;
+  padding: 0;
+  color: #092a67;
+  font-weight: 700;
+  font-size: 3.125rem;
+  line-height: 4rem;
+}
+
+.sponsor-section .sponsor-container .sponsor .sponsor-content {
+  width: 100%;
+  display: flex;
+  gap: 2.5rem;
+  padding: 0.5rem 0;
+  max-width: 77.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sponsor-section .sponsor-container .sponsor .image-container {
+  margin: 0 0;
+  padding: 0 0;
+  max-width: 9.625rem;
+  min-width: 7.5rem;
+  max-height: 3.5rem;
+  min-height: 2.25rem;
+}
+
+/* Univerity Testimonial  */
+
+.testimonial-section {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.testimonial-section .testimonal-section-content {
+  margin: 7.5rem 10rem;
+}
+
+.testimonial-section .testimonal-section-content .testimonial-title {
+  font-weight: 700;
+  font-size: 3.125rem;
+  line-height: 4rem;
+  text-align: center;
+  color: #092a67;
+}
+
+.testimonial-section .testimonal-section-content .testimonial-description {
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 2.2875rem;
+  margin-top: 1.75rem;
+  text-align: center;
+  color: #092a67;
+}
+
+.testimonial-section .testimonal-section-content .testimonial-feedback {
+  margin-top: 3.063rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.testimonial-section .testimonal-section-content .feedback-card {
+  border-radius: 0.9175rem;
+  border: 0.07625rem solid #092a67;
+  width: 32.11rem;
+  padding: 1.223125rem 1.9875rem;
+  background-color: #e9f1fa;
+}
+.testimonial-section .testimonal-section-content .feedback-card:hover {
+  background-color: #b5d336;
+  transition: 3ms ease-in-out;
+}
+
+.testimonial-section
+  .testimonal-section-content
+  .feedback-card
+  .feedback-card__header {
+  display: flex;
+  align-items: center;
+  padding: 0.394375rem 0;
+  gap: 0.305625rem;
+}
+
+.testimonial-section
+  .testimonal-section-content
+  .feedback-card
+  .feedback-card__header
+  .feedback-card__info {
+  margin-left: 0.313rem;
+}
+
+.testimonial-section
+  .testimonal-section-content
+  .feedback-card
+  .feedback-card__header
+  .feedback-card__info
+  .feedback-card__user-name {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.92rem;
+  color: #092a67;
+}
+
+.testimonial-section
+  .testimonal-section-content
+  .feedback-card
+  .feedback-card__header
+  .feedback-card__info
+  .feedback-card__user-designation {
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.9125rem;
+  color: #092a67;
+}
+
+.testimonial-section
+  .testimonal-section-content
+  .feedback-card
+  .feedback-card__feedback {
+  margin-top: 1.529375rem;
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.9125rem;
+  color: #092a67;
 }
