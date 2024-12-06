@@ -1,24 +1,10 @@
-import AboutUniversity from '@/components/clientSite/university/AboutUniversity';
-import UniversityTestimonials from '@/components/clientSite/university/common/UniversityTestimonials';
-import HeroHome from '@/components/clientSite/university/HeroHome';
-<<<<<<< HEAD
-import SponsorHome from '@/components/clientSite/university/SponsorHome';
-=======
-import UniversityFAQ from '@/components/clientSite/university/UniversityFAQ';
->>>>>>> dev
-import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
-import UniversityPictureGallery from '@/components/clientSite/university/UniversityPictureGallery';
-import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import Image from 'next/image';
 import React from 'react';
 
-export default function UniversityHome() {
-  const { data: universityData } = useGetAllUniversityQuery();
+const UniversityPictureGallery = () => {
   return (
-    <UniversityLayout>
-      <HeroHome />
-      <AboutUniversity />
-<<<<<<< HEAD
-      <section className="sponsors-area  mt-5">
+    <>
+      <section className="gellary-area py-5">
         <div className="container">
           <div className="sec-heading">
             <h3>Our Picture Gallery</h3>
@@ -27,45 +13,57 @@ export default function UniversityHome() {
               Telekom Malaysia Berhad (TM) took a leap of faith by establishing
               the first private-owned higher learning institute.
             </p>
-
-            <div className="my-5 university_gallery">
+          </div>
+          <div className="my-5 university_gallery">
+            <div className="d-flex flex-column gap-4 align-items-center justify-content-center ">
               <Image
+                className="gallery-first-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/1st-element.jpeg'}
                 alt=""
               />
               <Image
+                className="gallery-first-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/second-element.png'}
                 alt=""
               />
+            </div>
+            <div className="d-flex flex-column gap-4 align-items-center justify-content-center ">
               <Image
+                className="gallery-second-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/third-element.jpeg'}
                 alt=""
               />
               <Image
+                className="gallery-second-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/fourth-element.png'}
                 alt=""
               />
               <Image
+                className="gallery-second-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/fivth-element.png'}
                 alt=""
               />
+            </div>
+            <div className="d-flex flex-column gap-4 align-items-center justify-content-center ">
               <Image
+                className="gallery-first-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/sixth-element.jpeg'}
                 alt=""
               />
               <Image
+                className="gallery-first-column-img"
                 width={500}
                 height={500}
                 src={'/assets/university-gallery/seventh-element.png'}
@@ -75,10 +73,8 @@ export default function UniversityHome() {
           </div>
         </div>
       </section>
-      <SponsorHome/>
-      <UniversityTestimonials/>
-=======
->>>>>>> dev
-    </UniversityLayout>
+    </>
   );
-}
+};
+
+export default UniversityPictureGallery;

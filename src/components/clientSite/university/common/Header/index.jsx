@@ -1,9 +1,11 @@
+import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import { edulogo } from '@/utils/common/data/dashboardEcommerce';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 export default function Header() {
+  const { data: universityData } = useGetAllUniversityQuery();
   return (
     <>
       <header className="header">
@@ -133,9 +135,17 @@ export default function Header() {
                       </svg>
                     </Link>
                     <ul className="sub-menu">
-                      <li>
+                      {/* <li>
                         <Link href="#">Universities</Link>
-                      </li>
+                      </li> */}
+                      {universityData?.data?.length > 0 &&
+                        universityData?.data?.map((item, index) => (
+                          <li key={index}>
+                            <Link href={`/university/${item?._id}`}>
+                              {item.name}
+                            </Link>
+                          </li>
+                        ))}
                     </ul>
                   </li>
 

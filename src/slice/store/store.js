@@ -8,6 +8,7 @@ import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
 import { departmentService } from '../services/super admin/departmentService';
 import { universityService } from '../services/super admin/universityService';
+import { publicUniversityService } from '../services/public/university/publicUniveristyService';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     [courseService.reducerPath]: courseService.reducer,
     [userInfoService.reducerPath]: userInfoService.reducer,
     [publicAgentService.reducerPath]: publicAgentService.reducer,
+    [publicUniversityService.reducerPath]: publicUniversityService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -31,7 +33,8 @@ export const store = configureStore({
       .concat(courseCategoriesService.middleware)
       .concat(courseService.middleware)
       .concat(userInfoService.middleware)
-      .concat(publicAgentService.middleware),
+      .concat(publicAgentService.middleware)
+      .concat(publicUniversityService.middleware),
 });
 
 setupListeners(store.dispatch);
