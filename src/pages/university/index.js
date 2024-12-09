@@ -1,11 +1,6 @@
-import AboutUniversity from '@/components/clientSite/university/AboutUniversity';
-import UniversityContact from '@/components/clientSite/university/Contact';
-import UniversityFaculties from '@/components/clientSite/university/Faculties';
-import HeroHome from '@/components/clientSite/university/HeroHome';
-import SponsorHome from '@/components/clientSite/university/SponsorHome';
-import UniversityFAQ from '@/components/clientSite/university/UniversityFAQ';
+import UniversityLayoutBanner from '@/components/clientSite/university/common/UniversityLayoutBanner';
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
-import UniversityPictureGallery from '@/components/clientSite/university/UniversityPictureGallery';
+import UniversityList from '@/components/clientSite/university/UniversityList';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import Image from 'next/image';
 import React from 'react';
@@ -14,12 +9,11 @@ export default function UniversityHome() {
   const { data: universityData } = useGetAllUniversityQuery();
   return (
     <UniversityLayout>
-      <HeroHome />
-      <AboutUniversity />
-      <UniversityFaculties />
-      <UniversityPictureGallery />
-      <UniversityFAQ />
-      <UniversityContact />
+      <UniversityLayoutBanner
+        title="List of Universities"
+        bgImage={'/assets/images/landing/hero/hero-image.png'}
+      />
+      <UniversityList universityData={universityData} />
     </UniversityLayout>
   );
 }

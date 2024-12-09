@@ -623,7 +623,7 @@ table td {
 
 .main-nav ul.sub-menu {
   position: absolute;
-  width: 20rem;
+  width: 30rem;
   background-color: #fff;
   left: -8.2rem;
   top: 5rem;
@@ -816,6 +816,12 @@ table td {
 .gallery-second-column-img {
   border-radius: 14px;
   object-fit: cover;
+}
+
+@media (max-width: 575px) {
+  .university_gallery {
+    grid-template-columns: 1fr;
+  }
 }
 
 .mobile-nav-area-main {
@@ -4491,16 +4497,9 @@ textarea::placeholder {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  padding-top: 15rem;
+  padding-top: 8rem;
   position: relative;
   background-color: #fff;
-}
-
-.footer-shape {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: -1;
 }
 
 .footer-cta {
@@ -4579,8 +4578,7 @@ textarea::placeholder {
 }
 
 .footer-top {
-  margin-top: 7.4rem;
-  margin-bottom: 4.5rem;
+  margin-bottom: 2.5rem;
 }
 
 .footer-top-content {
@@ -4761,7 +4759,7 @@ textarea::placeholder {
 
 .footer-copyright p {
   font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: 2.5rem;
   letter-spacing: 0.03em;
   color: #405189;
@@ -4772,7 +4770,7 @@ textarea::placeholder {
   display: inline-block;
   position: relative;
   font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: 2.5rem;
   letter-spacing: 0.03em;
   color: #405189;
@@ -4785,6 +4783,9 @@ textarea::placeholder {
 }
 
 @media (max-width: 991.98px) {
+  .footer {
+    padding-top: 5rem;
+  }
   .footer-shape {
     display: none;
   }
