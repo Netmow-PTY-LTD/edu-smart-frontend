@@ -18,6 +18,9 @@ const UniversityAllDescriptions = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
+        <div className='text-center my-5'>
+       <h1 className='fs-1 fw-bold lh-lg'>Added All Description Here</h1>
+       </div>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
