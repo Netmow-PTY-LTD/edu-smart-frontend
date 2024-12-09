@@ -13,6 +13,7 @@ import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
 import PlayerSidebarData from '../sidebarLayoutData/PlayerSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
+import AdministrationSidebarData from '../sidebarLayoutData/AdministrationSidebarData';
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ const VerticalLayout = (props) => {
 
   const playerSidebarData = PlayerSidebarData().props.children;
   const superAdminSidebarData = SuperAdminSidebarData().props.children;
+  const administrationSidebarData = AdministrationSidebarData().props.children;
   const router = useRouter();
 
-  const userInfoData = { role: 'super-admin' };
+  // const userInfoData = { role: 'super-admin' };
+  const userInfoData = { role: 'administration' };
 
   const selectLayoutState = (state) => state.Layout;
   const selectLayoutProperties = createSelector(
@@ -195,7 +198,8 @@ const VerticalLayout = (props) => {
           ? playerSidebarData
           : userInfoData?.role === 'super-admin'
             ? superAdminSidebarData
-            : []
+            : userInfoData?.role === 'administration'
+            ? administrationSidebarData: []
       ).map((item, key) => {
         return (
           <React.Fragment key={key}>
@@ -372,6 +376,7 @@ const VerticalLayout = (props) => {
                   </ul>
                 </Collapse>
               </li>
+             
             ) : (
               <li className="nav-item fs-2">
                 <Link
