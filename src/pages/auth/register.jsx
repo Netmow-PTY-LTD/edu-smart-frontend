@@ -91,6 +91,7 @@ const Register = () => {
     state: '',
     zip: '',
     terms_and_conditions: '',
+    user_role: '',
   });
 
   const initialStepValidationSchema = Yup.object({
