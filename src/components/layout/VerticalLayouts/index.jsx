@@ -3,26 +3,24 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect } from 'react';
 import { Collapse } from 'reactstrap';
 
-import navdata from '../sidebarLayoutData/LayoutMenuData';
-
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
-import PlayerSidebarData from '../sidebarLayoutData/PlayerSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
+import UniversityAdministratorSidebarData from '../sidebarLayoutData/UniversitySidebardata';
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
-  const navData = navdata().props.children;
-
-  const playerSidebarData = PlayerSidebarData().props.children;
   const superAdminSidebarData = SuperAdminSidebarData().props.children;
+  const universitySidebarData =
+    UniversityAdministratorSidebarData().props.children;
   const router = useRouter();
 
-  const userInfoData = { role: 'super-admin' };
+  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
 
   const selectLayoutState = (state) => state.Layout;
   const selectLayoutProperties = createSelector(
@@ -189,13 +187,11 @@ const VerticalLayout = (props) => {
   return (
     <>
       {/* menu Items */}
-      {(userInfoData?.role === 'admin'
-        ? navData
-        : userInfoData?.role === 'player'
-          ? playerSidebarData
-          : userInfoData?.role === 'super-admin'
-            ? superAdminSidebarData
-            : []
+      {(userInfodata?.data?.role === 'super_admin'
+        ? superAdminSidebarData
+        : userInfodata?.data?.role === 'university_administrator'
+          ? universitySidebarData
+          : []
       ).map((item, key) => {
         return (
           <React.Fragment key={key}>
