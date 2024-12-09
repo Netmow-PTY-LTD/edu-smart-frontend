@@ -260,7 +260,7 @@ const AllUniversityForSuperAdmin = () => {
         <div className="d-flex align-items-center me-5">
           <div className="flex-shrink-0 me-1">
             <Link
-              href={`/super-admin/university-management/single-university-profile/${item?._id}`}
+              href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
               className="text-reset"
             >
               <Image
@@ -275,7 +275,7 @@ const AllUniversityForSuperAdmin = () => {
           <div>
             <h5 className="fs-14 fw-medium text-capitalize">
               <Link
-                href={`/super-admin/university-management/single-university-profile/${item?._id}`}
+                href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
                 className="text-reset"
               >
                 {`${item.name} `}
@@ -355,7 +355,7 @@ const AllUniversityForSuperAdmin = () => {
           <DropdownMenu className="dropdown-menu dropdown-menu-end">
             <DropdownItem>
               <Link
-                href={`/super-admin/university-management/single-university-profile/${item?._id}`}
+                href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
                 className="text-primary"
               >
                 <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
