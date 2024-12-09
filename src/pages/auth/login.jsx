@@ -5,6 +5,7 @@ import SubmitButton from '@/components/common/formField/SubmitButton';
 import { useLogInMutation } from '@/slice/services/public/auth/authService';
 import { Form, Formik } from 'formik';
 
+import Header from '@/components/clientSite/university/common/Header';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,10 +15,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
-import Header from '@/components/clientSite/university/common/Header';
 
-// const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
-const appEnvironment = 'production';
+const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
 const Login = () => {
   const [logIn, { data: LoginData }] = useLogInMutation();
@@ -28,14 +27,11 @@ const Login = () => {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//localhost:3005/super-admin`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/super-admin`
         );
       } else {
-        // window.location.assign(
-        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/super-admin`
-        // );
         window.location.assign(
-          `${window.location.protocol}//${'edusmartmy.netlify.app'}/super-admin`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/super-admin`
         );
       }
     }
@@ -47,29 +43,36 @@ const Login = () => {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//localhost:3005/agent`
+          `${window.location.protocol}//${'localhost:3005'}dashboard/agent`
         );
       } else {
-        // window.location.assign(
-        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
-        // );
-
         window.location.assign(
-          `${window.location.protocol}//${'edusmartmy.netlify.app'}/agent`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}dashboard/agent`
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//localhost:3005/student`
+          `${window.location.protocol}//${'localhost:3005'}dashboard/student`
         );
       } else {
-        // window.location.assign(
-        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
-        // );
         window.location.assign(
-          `${window.location.protocol}//${'edusmartmy.netlify.app'}/student`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}dashboard/student`
+        );
+      }
+    } else if (
+      LoginData?.data?.token &&
+      LoginData?.data?.role === 'university_administrator'
+    ) {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//${'localhost:3005'}dashboard/university_administrator`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}dashboard/university_administrator`
         );
       }
     }

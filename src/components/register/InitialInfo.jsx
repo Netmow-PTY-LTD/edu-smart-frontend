@@ -24,6 +24,10 @@ const InitialInfo = ({
       label: 'Student',
       value: 'Student',
     },
+    {
+      label: 'University',
+      value: 'University',
+    },
   ];
 
   return (
