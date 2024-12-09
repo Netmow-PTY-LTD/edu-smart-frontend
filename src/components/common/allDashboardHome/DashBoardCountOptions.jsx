@@ -1,4 +1,5 @@
 import {
+  administrationWidgetsData,
   ecomWidgets,
   playerProfileData,
   supperAdminWidgetsData,
@@ -29,7 +30,8 @@ const DashBoardCountOptions = ({
               ? playerProfileData
               : userInfoData?.role === 'super_admin'
                 ? supperAdminWidgetsData
-                : []
+                : userInfoData?.role === 'administration'
+                ? administrationWidgetsData: []
           ).map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">

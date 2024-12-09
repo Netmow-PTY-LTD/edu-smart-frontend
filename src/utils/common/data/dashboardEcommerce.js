@@ -924,6 +924,45 @@ const supperAdminWidgetsData = [
     pathName: '/super-admin',
   },
 ];
+const administrationWidgetsData = [
+  {
+    id: 1,
+    label: 'Registered UNIVERSITIES',
+    counter: '4',
+    bgcolor: 'info',
+    icon: 'ri-school-fill',
+    link: 'View all',
+    pathName: '/administration/university-management/all-university',
+  },
+
+  {
+    id: 2,
+    label: 'registered agents',
+    counter: '25',
+    bgcolor: 'info',
+    icon: 'ri-group-2-fill',
+    link: 'View all',
+    pathName: '/administration/agents',
+  },
+  {
+    id: 3,
+    label: 'registered students',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-group-fill',
+    link: 'View  all',
+    pathName: '/administration',
+  },
+  {
+    id: 4,
+    label: 'total income',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-wallet-3-fill',
+    link: 'All Charges',
+    pathName: '/administration',
+  },
+];
 
 const orderSummary = [
   {
@@ -1396,4 +1435,5 @@ export {
   universityHeadersWithoutAction,
   userDummyImage,
   yearRevenueData,
+  administrationWidgetsData
 };
