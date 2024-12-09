@@ -1,10 +1,11 @@
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
-import { edulogo } from '@/utils/common/data/dashboardEcommerce';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import MobileNav from '../mobileNav';
 import { useState } from 'react';
+import { edulogo } from '@/utils/common/data';
 
 export default function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);

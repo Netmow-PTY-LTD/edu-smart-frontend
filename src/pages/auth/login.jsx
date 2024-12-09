@@ -5,7 +5,6 @@ import SubmitButton from '@/components/common/formField/SubmitButton';
 import { useLogInMutation } from '@/slice/services/public/auth/authService';
 import { Form, Formik } from 'formik';
 
-import Header from '@/components/clientSite/university/common/Header';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -43,22 +42,22 @@ const Login = () => {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}dashboard/agent`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/agent`
         );
       } else {
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}dashboard/agent`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent`
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}dashboard/student`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/student`
         );
       } else {
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}dashboard/student`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student`
         );
       }
     } else if (
@@ -68,11 +67,11 @@ const Login = () => {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}dashboard/university_administrator`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/university-administrator`
         );
       } else {
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}dashboard/university_administrator`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/university-administrator`
         );
       }
     }
@@ -141,7 +140,6 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
-      <Header />
       <div className="auth-page-wrapper auth-bg-cover pt-5 pb-2 d-flex flex-column justify-content-center align-items-center min-vh-100">
         <div className="bg-overlay "></div>
         {/* <!-- auth-page content --> */}
