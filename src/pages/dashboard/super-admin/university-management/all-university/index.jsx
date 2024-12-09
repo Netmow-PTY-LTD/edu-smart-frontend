@@ -11,7 +11,8 @@ import {
   useGetUniversityQuery,
   useUpdateUniversityMutation,
 } from '@/slice/services/super admin/universityService';
-import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
+import { userDummyImage } from '@/utils/common/data';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';

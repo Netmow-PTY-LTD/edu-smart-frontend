@@ -1,11 +1,9 @@
 import React from 'react';
 
-import {
-  profileBg,
-  userDummyImage,
-} from '@/utils/common/data/dashboardEcommerce';
+
 import Image from 'next/image';
 import { Col, Row } from 'reactstrap';
+import { profileBg, userDummyImage } from '@/utils/common/data';
 
 const ProfileBgCover = ({ profileData }) => {
   return (

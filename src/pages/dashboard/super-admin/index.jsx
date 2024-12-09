@@ -5,11 +5,8 @@ import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import {
-  agentsHeadersWithoutAction,
-  studentsHeadersWithoutAction,
-  universityHeadersWithoutAction,
-} from '@/utils/common/data/dashboardEcommerce';
+import { agentsHeadersWithoutAction, studentsHeadersWithoutAction, universityHeadersWithoutAction } from '@/utils/common/data';
+
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';

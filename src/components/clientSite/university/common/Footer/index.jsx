@@ -1,5 +1,6 @@
-// import { menuAction } from '@/slices/main_home/action/mainHomeAction';
-import { brandlogo } from '@/utils/common/data/dashboardEcommerce';
+
+
+import { brandlogo } from '@/utils/common/data';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';

@@ -8,10 +8,11 @@ import {
 
 //import images
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
+
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
+import { userDummyImage } from '@/utils/common/data';
 
 const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
