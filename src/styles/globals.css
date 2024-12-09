@@ -3,7 +3,7 @@
 
 :root {
   --color--primary: #b5d336;
-  --color--secondary: #273043;
+  --color--secondary: #092a67;
   --color--gray: #f1f2f4;
   --app-primary: #273043;
   --app-secondary: #b5d336;
@@ -471,7 +471,7 @@ table td {
 }
 
 .container {
-  max-width: 1320px !important;
+  max-width: 1600px !important;
 }
 
 .logo {
@@ -577,7 +577,6 @@ table td {
 
 .nav-list {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-bottom: 0;
@@ -594,9 +593,9 @@ table td {
 .main-nav ul li a {
   font-family: 'Lora', sans-serif;
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   line-height: 2rem;
-  color: #092a67;
+  color: var(--color--secondary);
   display: flex;
   align-items: center;
   column-gap: 7px;
@@ -867,6 +866,7 @@ table td {
   max-height: calc(100vh - 100px);
   height: 100%;
   overflow-y: auto;
+  margin-top: 20px;
 }
 
 .mobile-nav-area-main li {
@@ -4590,7 +4590,7 @@ textarea::placeholder {
 }
 
 .footer-top-about-info {
-  width: calc(100% - 70rem);
+  width: calc(100% - 100rem);
 }
 
 .footer-logo {
@@ -4605,7 +4605,7 @@ textarea::placeholder {
   height: 100%;
 }
 
-.footer-about-text p {
+.footer-about-text {
   font-weight: 400;
   font-size: 1.6rem;
   line-height: 3.3rem;
@@ -4613,7 +4613,7 @@ textarea::placeholder {
 }
 
 .footer-top-widget-1 {
-  width: 15.1rem;
+  width: 30.1rem;
 }
 
 .footer-top-widget-2 {
@@ -4621,7 +4621,7 @@ textarea::placeholder {
 }
 
 .footer-top-widget-3 {
-  width: 12rem;
+  width: 45rem;
 }
 
 .footer-top-single-widget h3 {
@@ -4630,8 +4630,8 @@ textarea::placeholder {
   line-height: 4.6rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #092a67;
-  margin-bottom: 3rem;
+  color: var(--color--secondary);
+  margin-bottom: 2rem;
 }
 
 .footer-menu ul {
@@ -4880,7 +4880,6 @@ textarea::placeholder {
 .faq-container {
   width: 100%;
   max-width: 1050px;
-  max-height: 490px;
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
@@ -9672,7 +9671,7 @@ textarea.form-control {
 }
 
 .add-university-card h4 {
-  /* color: var(--Dark-Blue, #092a67); */
+  /* color: var(--Dark-Blue, var(--color--secondary)); */
   color: var(--color--secondary);
   font-family: Lora;
   font-size: 16px;

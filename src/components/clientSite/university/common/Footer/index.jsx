@@ -14,22 +14,20 @@ export default function Footer() {
               className="footer-top-about-info wow animate__animated animate__fadeIn"
               data-wow-delay="0.1s"
             >
-              <Link href="#" className="footer-logo">
+              <Link href="#" className="footer-logo-temp">
                 <Image
                   priority={true}
                   src={brandlogo}
-                  width={500}
-                  height={500}
+                  width={200}
+                  height={100}
                   alt="footer logo"
                 />
               </Link>
               <div className="footer-about-text">
-                <p>
-                  SquadDeck - The ultimate sports team organisation and squad
-                  management system. Easily manage your team, coaches, staff,
-                  guardians and players, while driving sales to your merchandise
-                  store with one intelligent software platform.
-                </p>
+                Malaysia started focusing on the development of
+                telecommunication, Telekom Malaysia Berhad (TM) took a leap of
+                faith by establishing the first private-owned higher learning
+                institute.
               </div>
               <div className="d-flex gap-3 align-items-center footer-about-text">
                 <p>-Follow on</p>
@@ -37,13 +35,13 @@ export default function Footer() {
                   <i className="ri-facebook-fill third-color fw-bold fs-2"></i>
                 </p>
                 <p>
-                  <i class="ri-twitter-x-fill third-color fw-bold fs-2"></i>
+                  <i className="ri-twitter-x-fill third-color fw-bold fs-2"></i>
                 </p>
                 <p>
-                  <i class="ri-linkedin-fill third-color fw-bold fs-2"></i>
+                  <i className="ri-linkedin-fill third-color fw-bold fs-2"></i>
                 </p>
                 <p>
-                  <i class="ri-youtube-fill third-color fw-bold fs-2"></i>
+                  <i className="ri-youtube-fill third-color fw-bold fs-2"></i>
                 </p>
               </div>
             </div>
@@ -61,7 +59,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-arrow-right-double-fill"></i>
+                      <i className="ri-arrow-right-double-fill"></i>
                       Home
                     </Link>
                   </li>
@@ -70,7 +68,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-arrow-right-double-fill"></i>
+                      <i className="ri-arrow-right-double-fill"></i>
                       Universities
                     </Link>
                   </li>
@@ -79,7 +77,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-arrow-right-double-fill"></i>
+                      <i className="ri-arrow-right-double-fill"></i>
                       Programs
                     </Link>
                   </li>
@@ -88,7 +86,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-arrow-right-double-fill"></i>
+                      <i className="ri-arrow-right-double-fill"></i>
                       About Us
                     </Link>
                   </li>
@@ -110,7 +108,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-map-pin-fill third-color fs-1 fw-bold me-2"></i>
+                      <i className="ri-map-pin-fill third-color fs-1 fw-bold me-2"></i>
                       Multimedia University, Persiaran Multimedia, 63100
                       Cyberjaya, Selangor, Malaysia
                     </Link>
@@ -120,7 +118,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-phone-line third-color fs-1 fw-bold me-2"></i>
+                      <i className="ri-phone-line third-color fs-1 fw-bold me-2"></i>
                       +1300-800-668
                     </Link>
                   </li>
@@ -129,7 +127,7 @@ export default function Footer() {
                       href="#"
                       className="wow animate__animated animate__fadeIn"
                     >
-                      <i class="ri-mail-line third-color fs-1 fw-bold me-2"></i>
+                      <i className="ri-mail-line third-color fs-1 fw-bold me-2"></i>
                       hello@example.com.my
                     </Link>
                   </li>
@@ -140,7 +138,7 @@ export default function Footer() {
         </div>
 
         <div className="pb-5">
-          <div className="footer-bottom-content">
+          <div className="footer-bottom-content-temp">
             <div
               className="footer-bottom-left footer-copyright"
               data-wow-delay="1s"
