@@ -1,4 +1,5 @@
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
+import FAQCardForm from '@/components/common/FAQCardForm';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
 import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponent';
 import classnames from 'classnames';
@@ -160,6 +161,11 @@ const ManageUniversityForSuperAdmin = () => {
                 )}
                 {customverticalTab === 3 && (
                   <GalleryFormCard className="m-5 p-4 p-md-5" cardTitle="Gallerys" />
+                )}
+                {customverticalTab === 4 && (
+                 <Col>
+                 <FAQCardForm className="m-5 p-4 p-md-5"/>
+                 </Col>
                 )}
                 {customverticalTab === 7 && (
                   <SocialLinksCardForm

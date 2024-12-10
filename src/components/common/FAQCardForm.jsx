@@ -16,9 +16,10 @@ const FAQCardForm = ({
   onSubmit = (values) => console.log('Submitted FAQs:', values.faqs),
   questionPlaceholder = 'Enter your question here',
   answerPlaceholder = 'Provide a detailed answer',
+  className
 }) => {
   return (
-    <Card>
+    <Card className={className?className:''} >
       <CardHeader>Manage FAQs</CardHeader>
       <CardBody>
         <Formik
