@@ -42,25 +42,6 @@ const UniversityAdministratorSidebarData = () => {
       link: '/dashboard/university-administrator',
     },
     {
-      id: 'departments',
-      label: 'University Departments',
-      icon: 'ri-school-fill',
-      link: '/dashboard/university-administrator/university-management/university-departments',
-    },
-    {
-      id: 'programs',
-      label: 'University Programs',
-      icon: 'ri-building-4-fill',
-      link: '/dashboard/university-administrator/university-management/university-programs',
-    },
-    {
-      id: 'courses',
-      label: 'University Courses',
-      icon: 'ri-building-fill',
-      link: '/dashboard/university-administrator/university-management/university-courses',
-    },
-
-    {
       id: 'manageuniversitysite',
       label: 'Manage University Site',
       icon: 'ri-settings-2-fill',
@@ -124,6 +105,26 @@ const UniversityAdministratorSidebarData = () => {
         },
       ],
     },
+    {
+      id: 'departments',
+      label: 'University Departments',
+      icon: 'ri-school-fill',
+      link: '/dashboard/university-administrator/university-management/university-departments',
+    },
+    {
+      id: 'programs',
+      label: 'University Programs',
+      icon: 'ri-building-4-fill',
+      link: '/dashboard/university-administrator/university-management/university-programs',
+    },
+    {
+      id: 'courses',
+      label: 'University Courses',
+      icon: 'ri-building-fill',
+      link: '/dashboard/university-administrator/university-management/university-courses',
+    },
+
+ 
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

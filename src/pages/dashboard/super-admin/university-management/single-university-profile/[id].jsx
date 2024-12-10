@@ -9,6 +9,11 @@ import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/cou
 import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
 import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
 import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
+import {
+  categoryHeaders,
+  courseHeaders,
+  departmentHeaders,
+} from '@/utils/common/data';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -56,111 +61,6 @@ const SingleUniversityProfile = () => {
       setActiveTab(tab);
     }
   };
-
-  const headers = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Department Name', key: 'name' },
-    {
-      title: 'Course Category',
-      key: 'categories',
-      render: (item, index) =>
-        item?.categories?.length > 0
-          ? item?.categories?.map((category) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
-                {category?.name}
-              </span>
-            ))
-          : '-',
-    },
-    {
-      title: 'Courses',
-      key: 'courses',
-      render: (item, index) =>
-        item?.courses?.length > 0
-          ? item?.courses.map((course) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
-                {course?.name}
-              </span>
-            ))
-          : '-',
-    },
-
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-  ];
-
-  const categoryHeaders = [
-    {
-      title: 'SN',
-      key: 'key',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Course Category ', key: 'name' },
-    {
-      title: 'Department ',
-      key: 'department',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.department?.name}
-        </span>
-      ),
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-  ];
-  const courseHeaders = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Course Name', key: 'name' },
-    {
-      title: 'Department ',
-      key: 'department',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.department?.name}
-        </span>
-      ),
-    },
-    {
-      title: 'Course Category',
-      key: 'category',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.category?.name}
-        </span>
-      ),
-    },
-  ];
 
   return (
     <>
@@ -276,7 +176,7 @@ const SingleUniversityProfile = () => {
                     </div>
                     {activeTab === '1' && (
                       <UniversityProfileOverview
-                        headers={headers}
+                        headers={departmentHeaders}
                         categoryHeaders={categoryHeaders}
                         courseHeaders={courseHeaders}
                         profileData={getSingleUniversityData?.data}
