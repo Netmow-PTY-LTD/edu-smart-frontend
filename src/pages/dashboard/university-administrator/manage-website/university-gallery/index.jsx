@@ -1,10 +1,8 @@
-import SubmitButton from '@/components/common/formField/SubmitButton';
+
 import Layout from '@/components/layout';
-import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
-import MultipleImageField from '@/components/common/formField/MultipleImagesField';
+import GalleryFormCard from './GalleryFormCard';
 
 const UniversityGallery = () => {
   const [initialValues, setInitialValues] = useState({
@@ -27,39 +25,14 @@ const UniversityGallery = () => {
       <div className="page-content">
         <div className="h-100">
 
-        <Card className='p-4 p-md-5 '>
-        <CardHeader>Added Gallery Image Here</CardHeader>
-        <CardBody>
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting ,setFieldValue}) => (
-              <Form>
-                <Row>
-                 <Col>
-                 <MultipleImageField form={{setFieldValue}} label={'Image Gallery *'} field={{name:"images"}}/>
-
-                 </Col>
-                 
-                  <Col md={12} xl={12}>
-                    <div className="my-4">
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={'formSubmit'}
-                      >
-                        {'Add Gallery'}
-                      </SubmitButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            )}
-          </Formik>
-        </CardBody>
-       </Card>
-
+       <GalleryFormCard 
+       buttonLabel='Add Gallery' 
+       cardTitle='Added Gallery Image Here'
+       onSubmit={onSubmit}
+       initialValues={initialValues}
+       validationSchema={validationSchema}
+       inputLabel='Image Gallery *'
+       />
        
         </div>
       </div>
