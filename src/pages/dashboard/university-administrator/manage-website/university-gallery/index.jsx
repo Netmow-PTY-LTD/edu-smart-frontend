@@ -39,7 +39,7 @@ const UniversityGallery = () => {
               <Form>
                 <Row>
                  <Col>
-                 <MultipleImageField form={{setFieldValue}} label={'Image Gallery'} field={{name:"images"}}/>
+                 <MultipleImageField form={{setFieldValue}} label={'Image Gallery *'} field={{name:"images"}}/>
 
                  </Col>
                  
