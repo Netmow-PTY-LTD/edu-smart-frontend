@@ -239,7 +239,7 @@ p {
 
 .sec-heading h2 {
   font-weight: 700;
-  font-size: 5rem;
+  font-size: clamp(3rem, 2vw, 5rem);
   line-height: 1;
   color: var(--color--secondary);
   margin-bottom: 2rem;
@@ -1488,20 +1488,8 @@ p {
 
 .team-single {
   background-color: #fff;
-  height: 17.7rem;
-  padding: 1rem 4.2rem 1rem 1rem;
+  padding: 2rem 4.2rem 2rem 2rem;
   border-radius: 1rem;
-  clip-path: polygon(
-    0 0,
-    94% 0,
-    100% 17%,
-    100% 70%,
-    100% 100%,
-    0 100%,
-    0% 70%,
-    0% 30%
-  );
-  margin-bottom: 1rem;
 }
 
 .team-single-inner {
@@ -1510,17 +1498,16 @@ p {
 }
 
 .team-img {
-  width: 15.6rem;
-  height: 15.6rem;
+  width: 10.6rem;
+  height: 10.6rem;
   flex-shrink: 0;
-  object-fit: cover;
   margin-right: 2.4rem;
 }
 
 .team-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 0.5rem;
 }
 
@@ -1531,7 +1518,7 @@ p {
 .team-info h4 {
   font-weight: 800;
   font-size: 2.4rem;
-  line-height: 4.1rem;
+  line-height: 3.1rem;
   letter-spacing: -0.02em;
 }
 
@@ -1644,28 +1631,6 @@ p {
   padding: 10rem 0;
   position: relative;
 }
-
-// .home-players::before{
-//   content:"";
-//   position: absolute;
-//   bottom: 0;
-//   left: -3rem;
-//   width: 80rem;
-//   height: 12.3rem;
-//   transform: skew(15deg);
-// }
-
-// .home-players::after{
-//   content:"";
-//   position: absolute;
-//   bottom: -.9rem;
-//   right: -3rem;
-//   max-width: 115.7rem;
-//   width: 100%;
-//   height: 1rem;
-//   transform: skew(15deg);
-//   z-index: 9;
-// }
 
 .players-overlay {
   position: absolute;
@@ -2866,13 +2831,6 @@ p {
   color: var(--color--secondary);
 }
 
-.sec-heading p {
-  font-weight: 400;
-  font-size: 1.6rem;
-  line-height: 3rem;
-  color: var(--color--secondary);
-}
-
 // .product-shop {
 //   display: flex;
 //   flex-wrap: wrap;
@@ -3904,8 +3862,8 @@ p {
   max-width: 100%;
 }
 
-.sqdk-teams {
-  padding: 10rem 0;
+.university-list {
+  padding: 8rem 0;
   background-color: #eef5ff;
 
   .team-search {
@@ -3977,7 +3935,7 @@ p {
 }
 
 @media (max-width: 991px) {
-  .sqdk-teams {
+  .university-list {
     padding: 5rem 0;
 
     .teams-row {
@@ -3988,6 +3946,37 @@ p {
       }
     }
   }
+}
+
+.university-search {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.es-form-group {
+  display: flex;
+  width: 100%;
+  background: transparent;
+  height: 48px;
+  border-radius: 10px;
+  padding: 0 14px;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--color--secondary);
+}
+
+.es-form-input {
+  border: none;
+  outline: none;
+  width: calc(100% - 40px);
+  background: transparent;
+}
+
+button.search-btn {
+  border: none;
+  background: none;
+  outline: none;
 }
 
 /* ============== Teams End ============== */
@@ -7607,6 +7596,10 @@ img.staff-img {
   position: relative;
   figure {
     margin: 0;
+
+    img {
+      width: 100%;
+    }
   }
   .container {
     position: absolute;
@@ -7679,7 +7672,7 @@ img.staff-img {
   border: none;
 }
 
-.university-about-container {
+.university-about {
   /* height: 700px; */
   background-color: #fff;
   padding: 100px 0 50px;
@@ -7691,6 +7684,13 @@ img.staff-img {
   h3 {
     color: #1c1c1c;
     font-weight: 700;
+    font-size: clamp(20px, 2vw, 30px);
+  }
+
+  .univ-desc {
+    font-size: clamp(14px, 2vw, 16px);
+    line-height: 1.8;
+    margin: 25px 0;
   }
 }
 
@@ -7768,8 +7768,12 @@ img.staff-img {
   color: #fff;
 }
 
+// .faculty-tab-navs a.active svg {
+//   rotate: 90deg;
+// }
+
 .faculty-tab-navs a.active svg path {
-  rotate: 90deg;
+  stroke: #fff;
 }
 
 .faculty-grid {
@@ -7927,6 +7931,12 @@ img.staff-img {
   line-height: 170%;
 }
 
+.contact-social-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 @media (max-width: 991px) {
   .univ-contact-main {
     margin-top: 30px;
@@ -7992,6 +8002,7 @@ img.staff-img {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #fff;
 }
 
 .testimonial-section .testimonal-section-content {

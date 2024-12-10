@@ -125,6 +125,9 @@ export default function Header() {
                             </Link>
                           </li>
                         ))}
+                      <li>
+                        <Link href={`/university`}>View All Universities</Link>
+                      </li>
                     </ul>
                   </li>
                 </ul>

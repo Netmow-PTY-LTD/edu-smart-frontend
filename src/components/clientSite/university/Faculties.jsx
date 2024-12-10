@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
@@ -40,11 +41,18 @@ export default function UniversityFaculties({ university }) {
 
   const totalPages = Math.ceil(data[activeTab]?.length / itemsPerPage);
 
+  const truncateText = (text, maxLength) => {
+    const textContent = DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
+    return textContent.length > maxLength
+      ? textContent.substring(0, maxLength) + '...'
+      : textContent;
+  };
+
   return (
     <section className="university-faculties">
       <div className="container">
         <div className="sec-heading">
-          <h2>Our Faculties</h2>
+          <h2>Our Courses</h2>
           <p>
             Malaysia started focusing on the development of telecommunication,
             Telekom Malaysia Berhad (TM) took a leap of faith by establishing
@@ -73,7 +81,7 @@ export default function UniversityFaculties({ university }) {
                       d="M1 15.5L8 8.5L0.999999 1.5"
                       stroke="var(--color--secondary)"
                       strokeWidth="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
@@ -95,7 +103,7 @@ export default function UniversityFaculties({ university }) {
                       d="M1 15.5L8 8.5L0.999999 1.5"
                       stroke="var(--color--secondary)"
                       strokeWidth="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
@@ -117,7 +125,7 @@ export default function UniversityFaculties({ university }) {
                       d="M1 15.5L8 8.5L0.999999 1.5"
                       stroke="var(--color--secondary)"
                       strokeWidth="2"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
@@ -134,7 +142,9 @@ export default function UniversityFaculties({ university }) {
                     <div className="faculty-item" key={index}>
                       <img src={university?.logo?.url} alt={item.name} />
                       <h3>{item.name}</h3>
-                      <div className="fc-desc">{item.description}</div>
+                      <div className="fc-desc">
+                        {truncateText(item.description, 100)}
+                      </div>
                       <Link
                         href="#"
                         className="button py-3 px-5 fw-semibold d-inline-block mt-4"

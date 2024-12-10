@@ -1,51 +1,18 @@
-import SubmitButton from '@/components/common/formField/SubmitButton';
-import TextArea from '@/components/common/formField/TextAreaField';
+import UniversitySponsorsForm from '@/components/common/alldashboardCommon/UniversitySponsorsForm';
 import Layout from '@/components/layout';
-import { Form, Formik } from 'formik';
-import React, { useState } from 'react';
-import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
+import React from 'react';
+import { Col, Row } from 'reactstrap';
 
-const UniversitySponsors = () => {
-  const [initialValues, setInitialValues] = useState({});
-  const validationSchema = Yup.object({});
-
-  const onSubmit = (e) => {
-    console.log(e);
-  };
-
+export default function UniversitySponsors() {
   return (
     <Layout>
       <div className="page-content">
-        <div className="h-100">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Row>
-                 
-                 
-                  <Col md={12} xl={12}>
-                    <div className="my-4">
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={'formSubmit'}
-                      >
-                        {'Add Sponsor'}
-                      </SubmitButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            )}
-          </Formik>
-        </div>
+        <Row>
+          <Col lg={9}>
+            <UniversitySponsorsForm />
+          </Col>
+        </Row>
       </div>
     </Layout>
   );
-};
-
-export default UniversitySponsors;
+}

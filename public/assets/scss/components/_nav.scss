@@ -5,7 +5,8 @@
 :is(.nav-tabs, .nav-pills) {
   > li {
     > a {
-      color: var(--#{$prefix}body-color);
+      // color: var(--#{$prefix}body-color);
+      color: var(--color--secondary);
       font-weight: $font-weight-medium;
     }
   }
@@ -13,7 +14,8 @@
 
 .nav-pills {
   > a {
-    color: var(--#{$prefix}body-color);
+    // color: var(--#{$prefix}body-color);
+    color: var(--color--secondary);
     font-weight: $font-weight-medium;
   }
 }
@@ -22,6 +24,7 @@
   :is(.nav-link.active, .show > .nav-link) {
     box-shadow: $element-shadow;
     background-color: var(--color--primary);
+    color: var(--color--secondary);
   }
 }
 
@@ -180,6 +183,7 @@
 .custom-verti-nav-pills {
   .nav-link {
     background-color: var(--color--gray);
+
 
     margin-top: 7px;
     position: relative;

@@ -1,24 +1,55 @@
-import DashBoardCountOptions from '@/components/common/allDashboardHome/DashBoardCountOptions';
-import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
+import CommonTableComponent from '@/components/common/CommonTableComponent';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import { agentsHeadersWithoutAction, studentsHeadersWithoutAction, universityHeadersWithoutAction } from '@/utils/common/data';
+import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
+import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
+import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
+import {
+  categoryHeaders,
+  courseHeaders,
+  departmentHeaders,
+} from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const UniversityAdministratorDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
   const { data: userInfodata } = useGetUserInfoQuery();
-  const { data: getUniversityData } = useGetUniversityQuery();
-  const { data: allAgentsData } = useGetAllAgentQuery();
+  const perPageData = 10;
+
+  const {
+    data: getDepartmentData,
+    error: getDepartmentError,
+    isLoading: getDepartmentIsLoading,
+    refetch: getDepartmentRefetch,
+  } = useGetDepartmentQuery(userInfodata?.data?._id, {
+    skip: !userInfodata?.data?._id,
+  });
+
+  const {
+    data: getAllCategoriesData,
+    error: getAllCategoriesError,
+    isLoading: getAllCategoriesIsLoading,
+    refetch: getAllCategoriesRefetch,
+  } = useGetAllCourseCategoriesQuery(userInfodata?.data?._id, {
+    skip: !userInfodata?.data?._id,
+  });
+
+  const {
+    data: getCourseData,
+    error: getCourseError,
+    isLoading: getCourseIsLoading,
+    refetch: getCourseRefetch,
+  } = useGetCourseQuery(userInfodata?.data?._id, {
+    skip: !userInfodata?.data?._id,
+  });
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -38,42 +69,61 @@ const UniversityAdministratorDashboard = () => {
             <Col>
               <div className="h-100">
                 <WelcomingMessage data={userInfodata?.data} />
-                <Row>
-                  <DashBoardCountOptions
-                    userInfoData={userInfodata?.data}
-                    firstElementData={getUniversityData?.data?.length}
-                    secondElementData={allAgentsData?.data?.length}
-                    thirdElementData={''}
-                    gstAndCurrencyData={''}
-                    fourthElementData={''}
-                    paidSum={''}
-                    unPaidSum={''}
-                  />
-                </Row>
+                <Row></Row>
 
                 <Row xxl={12} className="g-5">
                   <Col xxl={12}>
-                    <LatestRegistered
-                      tableHead={'Latest Registered University'}
-                      headers={universityHeadersWithoutAction}
-                      data={
-                        getUniversityData?.data ? getUniversityData?.data : []
-                      }
-                    />
+                    <Card>
+                      <CardHeader>Latest Departments</CardHeader>
+                      <CardBody>
+                        <CommonTableComponent
+                          headers={departmentHeaders}
+                          data={
+                            getDepartmentData?.data
+                              ? getDepartmentData?.data
+                              : []
+                          }
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          perPageData={perPageData}
+                          emptyMessage="No Data found yet."
+                        />
+                      </CardBody>
+                    </Card>
                   </Col>
                   <Col xxl={6}>
-                    <LatestRegistered
-                      tableHead={'Latest Registered Agents'}
-                      headers={agentsHeadersWithoutAction}
-                      data={allAgentsData?.data ? allAgentsData?.data : []}
-                    />
+                    <Card>
+                      <CardHeader>Latest Programs</CardHeader>
+                      <CardBody>
+                        <CommonTableComponent
+                          headers={categoryHeaders}
+                          data={
+                            getAllCategoriesData?.data
+                              ? getAllCategoriesData?.data
+                              : []
+                          }
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          perPageData={perPageData}
+                          emptyMessage="No Data found yet."
+                        />
+                      </CardBody>
+                    </Card>
                   </Col>
                   <Col xxl={6}>
-                    <LatestRegistered
-                      tableHead={'Latest Registered Students'}
-                      headers={studentsHeadersWithoutAction}
-                      // data={allAgentsData?.data ? allAgentsData?.data : []}
-                    />
+                    <Card>
+                      <CardHeader>Latest Courses</CardHeader>
+                      <CardBody>
+                        <CommonTableComponent
+                          headers={courseHeaders}
+                          data={getCourseData?.data ? getCourseData?.data : []}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          perPageData={perPageData}
+                          emptyMessage="No Data found yet."
+                        />
+                      </CardBody>
+                    </Card>
                   </Col>
                 </Row>
               </div>

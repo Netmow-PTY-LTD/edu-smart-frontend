@@ -7,6 +7,7 @@ const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
 
+// all univeresity header
 const universityHeadersWithoutAction = [
   {
     title: 'Logo - Name',
@@ -95,7 +96,7 @@ const universityHeadersWithoutAction = [
     ),
   },
 ];
-
+// all agent header
 const agentsHeadersWithoutAction = [
   {
     title: 'Name',
@@ -140,6 +141,7 @@ const agentsHeadersWithoutAction = [
     ),
   },
 ];
+// all student header
 const studentsHeadersWithoutAction = [
   {
     title: 'Name',
@@ -185,6 +187,157 @@ const studentsHeadersWithoutAction = [
   },
 ];
 
+// university department header
+const allDepartmentsWithoutAction = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize ">{index + 1}</span>
+    ),
+  },
+
+  { title: 'Department Name', key: 'name' },
+  {
+    title: 'Course Category',
+    key: 'categories',
+    render: (item, index) =>
+      item?.categories?.length > 0
+        ? item?.categories?.map((category) => (
+            <span
+              key={index}
+              className="d-flex flex-column text-capitalize me-5"
+            >
+              {category?.name}
+            </span>
+          ))
+        : '-',
+  },
+  {
+    title: 'Courses',
+    key: 'courses',
+    render: (item, index) =>
+      item?.courses?.length > 0
+        ? item?.courses.map((course) => (
+            <span
+              key={index}
+              className="d-flex flex-column text-capitalize me-5"
+            >
+              {course?.name}
+            </span>
+          ))
+        : '-',
+  },
+
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <p className="text-wrap me-5">
+        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+      </p>
+    ),
+  },
+];
+
+// all course header
+const allCourseCategoryWithoutAction = [
+  {
+    title: 'SN',
+    key: 'key',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+
+  { title: 'Course Category ', key: 'name' },
+  {
+    title: 'Department ',
+    key: 'department',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.department?.name}
+      </span>
+    ),
+  },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <p className="text-wrap me-5">
+        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+      </p>
+    ),
+  },
+];
+
+const allCoursesWithoutAction = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+
+  { title: 'Course Name', key: 'name' },
+  {
+    title: 'Available Seats',
+    key: 'available_seats',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.available_seats}
+      </span>
+    ),
+  },
+  {
+    title: 'Price For Student',
+    key: 'price_for_student',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.price_for_student}
+      </span>
+    ),
+  },
+  {
+    title: 'GST For Student',
+    key: 'gst_for_student',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.gst_for_student}
+      </span>
+    ),
+  },
+  {
+    title: 'Price For Agent',
+    key: 'price_for_agent',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.price_for_agent}
+      </span>
+    ),
+  },
+  {
+    title: 'GST For Agent',
+    key: 'gst_for_agent',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.gst_for_agent}
+      </span>
+    ),
+  },
+
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <p className="text-wrap me-5">
+        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+      </p>
+    ),
+  },
+];
+
 const supperAdminWidgetsData = [
   {
     id: 1,
@@ -225,9 +378,121 @@ const supperAdminWidgetsData = [
   },
 ];
 
+const courseHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+
+  { title: 'Course Name', key: 'name' },
+  {
+    title: 'Department ',
+    key: 'department',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.department?.name}
+      </span>
+    ),
+  },
+  {
+    title: 'Course Category',
+    key: 'category',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.category?.name}
+      </span>
+    ),
+  },
+];
+
+const categoryHeaders = [
+  {
+    title: 'SN',
+    key: 'key',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+
+  { title: 'Course Category ', key: 'name' },
+  {
+    title: 'Department ',
+    key: 'department',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.department?.name}
+      </span>
+    ),
+  },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <p className="text-wrap me-5">
+        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+      </p>
+    ),
+  },
+];
+
+const departmentHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+
+  { title: 'Department Name', key: 'name' },
+  {
+    title: 'Course Category',
+    key: 'categories',
+    render: (item, index) =>
+      item?.categories?.length > 0
+        ? item?.categories?.map((category) => (
+            <span key={index} className="d-flex flex-column text-capitalize">
+              {category?.name}
+            </span>
+          ))
+        : '-',
+  },
+  {
+    title: 'Courses',
+    key: 'courses',
+    render: (item, index) =>
+      item?.courses?.length > 0
+        ? item?.courses.map((course) => (
+            <span key={index} className="d-flex flex-column text-capitalize">
+              {course?.name}
+            </span>
+          ))
+        : '-',
+  },
+
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <p className="text-wrap me-5">
+        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+      </p>
+    ),
+  },
+];
+
 export {
   agentsHeadersWithoutAction,
+  allCourseCategoryWithoutAction,
+  allCoursesWithoutAction,
+  allDepartmentsWithoutAction,
   brandlogo,
+  categoryHeaders,
+  courseHeaders,
+  departmentHeaders,
   edulogo,
   profileBg,
   studentsHeadersWithoutAction,
