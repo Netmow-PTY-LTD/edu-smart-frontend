@@ -4,6 +4,7 @@ import Layout from '@/components/layout';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
+import ManageUniversityForSuperAdmin from '@/components/sAdminDashboard/commponents/ManageUniversityForSuperAdmin';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
 import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
@@ -146,7 +147,7 @@ const SingleUniversityProfile = () => {
                             </span>
                           </NavLink>
                         </NavItem>
-                        {/* <NavItem className="fs-14">
+                        <NavItem className="fs-14">
                           <NavLink
                             style={{ cursor: 'pointer' }}
                             className={classnames({
@@ -158,10 +159,10 @@ const SingleUniversityProfile = () => {
                           >
                             <i className="ri-list-unordered d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Applications
+                              Manage University
                             </span>
                           </NavLink>
-                        </NavItem> */}
+                        </NavItem>
                       </Nav>
                       {/* <div className="d-flex gap-3 flex-shrink-1 pb-5 me-3">
                         <div
@@ -203,7 +204,7 @@ const SingleUniversityProfile = () => {
                         allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
-                    {/* {activeTab === '5' && ''} */}
+                    {activeTab === '5' && <ManageUniversityForSuperAdmin />}
                   </div>
                 </Col>
               </Row>
