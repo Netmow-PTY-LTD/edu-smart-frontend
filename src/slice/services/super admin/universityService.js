@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 export const universityService = createApi({
   reducerPath: 'universityService',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/super',
+    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/university/admin',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {

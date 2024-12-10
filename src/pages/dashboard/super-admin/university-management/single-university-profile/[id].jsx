@@ -4,6 +4,7 @@ import Layout from '@/components/layout';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
+import ManageUniversityForSuperAdmin from '@/components/sAdminDashboard/commponents/ManageUniversityForSuperAdmin';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
 import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
@@ -15,6 +16,7 @@ import {
   departmentHeaders,
 } from '@/utils/common/data';
 import classnames from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -146,7 +148,7 @@ const SingleUniversityProfile = () => {
                             </span>
                           </NavLink>
                         </NavItem>
-                        {/* <NavItem className="fs-14">
+                        <NavItem className="fs-14">
                           <NavLink
                             style={{ cursor: 'pointer' }}
                             className={classnames({
@@ -158,21 +160,21 @@ const SingleUniversityProfile = () => {
                           >
                             <i className="ri-list-unordered d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Applications
+                              Manage University
                             </span>
                           </NavLink>
-                        </NavItem> */}
+                        </NavItem>
                       </Nav>
-                      {/* <div className="d-flex gap-3 flex-shrink-1 pb-5 me-3">
-                        <div
-                          type="button"
-                          // onClick={() => togEditModal(mainId)}
+                      <div className="d-flex gap-3 flex-shrink-1 ">
+                        <Link
+                          href={`/university/${university_id}`}
+                          target="_blank"
                           className="button px-3 py-2"
                         >
-                          <i className="ri-edit-box-line align-bottom"></i> Edit
-                          Profile
-                        </div>
-                      </div> */}
+                          <i className="ri-links-fill align-bottom"></i> visit
+                          University Pages
+                        </Link>
+                      </div>
                     </div>
                     {activeTab === '1' && (
                       <UniversityProfileOverview
@@ -203,7 +205,7 @@ const SingleUniversityProfile = () => {
                         allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
-                    {/* {activeTab === '5' && ''} */}
+                    {activeTab === '5' && <ManageUniversityForSuperAdmin />}
                   </div>
                 </Col>
               </Row>

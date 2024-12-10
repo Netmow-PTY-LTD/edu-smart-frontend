@@ -5,7 +5,7 @@ export const courseService = createApi({
   reducerPath: 'courseService',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      'https://edu-smart-backend-3n7b.onrender.com/api/v1/super/university',
+      'https://edu-smart-backend-3n7b.onrender.com/api/v1/university/admin/university',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
