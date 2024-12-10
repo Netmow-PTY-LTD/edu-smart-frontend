@@ -4,7 +4,7 @@ import Layout from '@/components/layout';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import TextField from '@/components/common/formField/TextField';
 
 const UniversitySocailLinks = () => {
@@ -19,9 +19,10 @@ const UniversitySocailLinks = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
-       <div className='text-center my-5'>
-       <h1 className='fs-1 fw-bold lh-lg'>Added Social Link Here</h1>
-       </div>
+       
+       <Card className='p-4 p-md-5 '>
+        <CardHeader>Added Social Link Here</CardHeader>
+        <CardBody>
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -69,6 +70,11 @@ const UniversitySocailLinks = () => {
               </Form>
             )}
           </Formik>
+         
+        </CardBody>
+       </Card>
+
+       
         </div>
       </div>
     </Layout>

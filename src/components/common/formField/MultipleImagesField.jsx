@@ -10,8 +10,8 @@ const isValidImage = (file) => {
 
 const MultipleImageField = ({ field, form, label, ...props }) => {
   const [previewImages, setPreviewImages] = useState([]);
-
-  const handleFileChange = (event) => {
+ 
+  const handleFileChange = async (event) => {
     const files = event.target.files;
     const validFiles = [];
     const previews = [];
@@ -34,6 +34,7 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
 
     // Update Formik field value with the valid files
     form.setFieldValue(field.name, validFiles);
+    
   };
 
   return (
@@ -45,14 +46,14 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
         {...props}
         {...field}
         type="file"
-        id={field.name}
+        id={field.name+1}
         name={field.name}
         accept="image/*"
-        multiple
+        multiple     
         onChange={handleFileChange}
         className="form-control"
       />
-      <div className="mt-2">
+      <div className="mt-4">
         {previewImages.length > 0 && (
           <div className="d-flex flex-wrap">
             {previewImages.map((src, index) => (
@@ -60,7 +61,10 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
                 <Image
                   src={src}
                   alt={`preview-${index}`}
+                  width={100}
+                  height={100}
                   style={{
+                    borderRadius: '4px',
                     width: '100px',
                     height: '100px',
                     objectFit: 'cover',
