@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 import CheckboxField from '../common/formField/CheckBoxField';
-import EmailField from '../common/formField/EmailField';
+import EmailFieldWithVerification from '../common/formField/EmailFieldWithVerification';
 import PasswordField from '../common/formField/PasswordField';
 import SingleSelectField from '../common/formField/SingleSelectField';
 import SubmitButton from '../common/formField/SubmitButton';
@@ -62,7 +62,10 @@ const InitialInfo = ({
                       </Col>
                       <Col xl={12}>
                         <div className="mb-3">
-                          <EmailField name="email" label="Email" />
+                          <EmailFieldWithVerification
+                            name="email"
+                            label="Email"
+                          />
                         </div>
                       </Col>
 
