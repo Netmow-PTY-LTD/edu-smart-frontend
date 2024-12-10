@@ -15,6 +15,8 @@ const GalleryFormCard = ({
   inputLabel,
 }) => {
   return (
+    <Col lg={9}>
+    
     <Card className="p-4 p-md-5">
       <CardHeader>{cardTitle}</CardHeader>
       <CardBody>
@@ -52,6 +54,7 @@ const GalleryFormCard = ({
         </Formik>
       </CardBody>
     </Card>
+    </Col>
   );
 };
 

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import MultipleImageField from '@/components/common/formField/MultipleImagesField';
-import GalleryFormCard from '../university-gallery/GalleryFormCard';
+import GalleryFormCard from '../../../../../components/common/GalleryFormCard';
 
 const UniversitySlider = () => {
   const [initialValues, setInitialValues] = useState({

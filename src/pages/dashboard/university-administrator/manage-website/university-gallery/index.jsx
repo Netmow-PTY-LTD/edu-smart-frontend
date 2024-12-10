@@ -2,7 +2,7 @@
 import Layout from '@/components/layout';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import GalleryFormCard from './GalleryFormCard';
+import GalleryFormCard from '../../../../../components/common/GalleryFormCard';
 
 const UniversityGallery = () => {
   const [initialValues, setInitialValues] = useState({

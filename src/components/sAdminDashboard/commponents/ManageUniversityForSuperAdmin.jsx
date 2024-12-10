@@ -1,3 +1,4 @@
+import GalleryFormCard from '@/components/common/GalleryFormCard';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
@@ -9,6 +10,8 @@ const ManageUniversityForSuperAdmin = () => {
       setcustomverticalTab(tab);
     }
   };
+
+  console.log(customverticalTab)
   return (
     <>
       <Row>
@@ -128,7 +131,8 @@ const ManageUniversityForSuperAdmin = () => {
                     </NavItem>
                   </Nav>
                 </Col>
-                {/* {customverticalTab === 1 && <BusinessSettings />} */}
+                {customverticalTab === 2 && <GalleryFormCard cardTitle='Sliders' />}
+                {customverticalTab === 3 && <GalleryFormCard cardTitle='Gallerys' />}
               </Row>
             </CardBody>
           </Card>
