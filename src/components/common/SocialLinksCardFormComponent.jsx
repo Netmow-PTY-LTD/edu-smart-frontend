@@ -14,6 +14,7 @@ const SocialLinksCardForm = ({
   submitButtonText,
   className,
 }) => (
+ <Col>
   <Card className={className}>
     <CardHeader>{title}</CardHeader>
     <CardBody>
@@ -43,6 +44,8 @@ const SocialLinksCardForm = ({
       </Formik>
     </CardBody>
   </Card>
+ 
+ </Col>
 );
 
 export default SocialLinksCardForm;

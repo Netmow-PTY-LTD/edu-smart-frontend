@@ -1,4 +1,6 @@
+import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
+import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponent';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
@@ -11,7 +13,21 @@ const ManageUniversityForSuperAdmin = () => {
     }
   };
 
-  console.log(customverticalTab)
+  console.log(customverticalTab);
+  const descriptionFields = [
+    { name: 'faculty_description', label: 'Faculty Description *' },
+    { name: 'gallery_description', label: 'Gallery Description *' },
+    { name: 'faq_description', label: 'FAQ Description *' },
+    { name: 'testimonial_description', label: 'Testimonial Description *' },
+  ];
+
+  const socialLinkFields = [
+    { name: 'facebook', label: 'Facebook:' },
+    { name: 'twitter', label: 'Twitter:' },
+    { name: 'instagram', label: 'Instagram:' },
+    { name: 'youtube', label: 'Youtube:' },
+  ];
+
   return (
     <>
       <Row>
@@ -131,8 +147,28 @@ const ManageUniversityForSuperAdmin = () => {
                     </NavItem>
                   </Nav>
                 </Col>
-                {customverticalTab === 2 && <GalleryFormCard cardTitle='Sliders' />}
-                {customverticalTab === 3 && <GalleryFormCard cardTitle='Gallerys' />}
+                {customverticalTab === 1 && (
+                  <DescriptionCardForm
+                    title="Added All Description Here"
+                    fields={descriptionFields}
+                    submitButtonText="Add Description"
+                    className="p-4 p-md-5"
+                  />
+                )}
+                {customverticalTab === 2 && (
+                  <GalleryFormCard cardTitle="Sliders" />
+                )}
+                {customverticalTab === 3 && (
+                  <GalleryFormCard cardTitle="Gallerys" />
+                )}
+                {customverticalTab === 7 && (
+                  <SocialLinksCardForm
+                  title="Add Social Links Here"
+                  fields={socialLinkFields}
+                  submitButtonText="Add Social Links"
+                  className="p-4 p-md-5"
+                />
+                )}
               </Row>
             </CardBody>
           </Card>
