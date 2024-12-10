@@ -13,11 +13,12 @@ const GalleryFormCard = ({
   onSubmit,
   buttonLabel,
   inputLabel,
+  className
 }) => {
   return (
     <Col lg={9}>
     
-    <Card className="p-4 p-md-5">
+    <Card className={className} >
       <CardHeader>{cardTitle}</CardHeader>
       <CardBody>
         <Formik

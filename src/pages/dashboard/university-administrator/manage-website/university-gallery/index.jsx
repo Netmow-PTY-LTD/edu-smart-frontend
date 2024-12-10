@@ -32,6 +32,7 @@ const UniversityGallery = () => {
        initialValues={initialValues}
        validationSchema={validationSchema}
        inputLabel='Image Gallery *'
+       className='p-4 p-md-5'
        />
        
         </div>

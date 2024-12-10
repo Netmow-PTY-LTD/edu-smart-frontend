@@ -152,21 +152,21 @@ const ManageUniversityForSuperAdmin = () => {
                     title="Added All Description Here"
                     fields={descriptionFields}
                     submitButtonText="Add Description"
-                    className="p-4 p-md-5"
+                    className="m-5 p-4 p-md-5"
                   />
                 )}
                 {customverticalTab === 2 && (
-                  <GalleryFormCard cardTitle="Sliders" />
+                  <GalleryFormCard className="m-5 p-4 p-md-5" cardTitle="Sliders" />
                 )}
                 {customverticalTab === 3 && (
-                  <GalleryFormCard cardTitle="Gallerys" />
+                  <GalleryFormCard className="m-5 p-4 p-md-5" cardTitle="Gallerys" />
                 )}
                 {customverticalTab === 7 && (
                   <SocialLinksCardForm
                   title="Add Social Links Here"
                   fields={socialLinkFields}
                   submitButtonText="Add Social Links"
-                  className="p-4 p-md-5"
+                  className="m-5 p-4 p-md-5"
                 />
                 )}
               </Row>

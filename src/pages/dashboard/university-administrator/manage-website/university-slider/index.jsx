@@ -34,6 +34,7 @@ const UniversitySlider = () => {
        initialValues={initialValues}
        validationSchema={validationSchema}
        inputLabel='Slider Image *'
+       className='p-4 p-md-5'
        />
         </div>
       </div>
