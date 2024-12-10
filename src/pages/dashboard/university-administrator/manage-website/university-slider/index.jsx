@@ -1,10 +1,7 @@
-import SubmitButton from '@/components/common/formField/SubmitButton';
+
 import Layout from '@/components/layout';
-import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
-import MultipleImageField from '@/components/common/formField/MultipleImagesField';
 import GalleryFormCard from '../../../../../components/common/GalleryFormCard';
 
 const UniversitySlider = () => {
