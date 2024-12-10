@@ -19,7 +19,8 @@ const Sidebar = ({ layoutType }) => {
   //   (state) => state.AdminDashboard.userInfo
   // );
 
-  const userInfoData = { role: 'super-admin' };
+  // const userInfoData = { role: 'super-admin' };
+  const userInfoData = { role: 'administration' };
 
   useEffect(() => {
     var verticalOverlay = document.getElementsByClassName('vertical-overlay');
@@ -42,7 +43,8 @@ const Sidebar = ({ layoutType }) => {
                   ? '/player'
                   : userInfoData?.role === 'super-admin'
                     ? '/super-admin'
-                    : '/'
+                    : userInfoData?.role === 'administration'
+                    ? '/administration' : '/'
             }
             className="logo logo-light "
           >

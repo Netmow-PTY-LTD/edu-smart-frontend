@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-const SuperAdminSidebarData = () => {
+const AdministrationSidebarData = () => {
   const history = useRouter();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
@@ -43,7 +43,7 @@ const SuperAdminSidebarData = () => {
       id: 'dashboard',
       label: 'Dashboard',
       icon: 'ri-dashboard-2-line',
-      link: '/dashboard/super-admin',
+      link: '/administration',
     },
     {
       id: 'universities',
@@ -62,14 +62,14 @@ const SuperAdminSidebarData = () => {
           id: 'alluniversity',
           label: 'All University',
           icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/all-university',
+          link: '/administration/university-management/all-university',
           parentId: 'universities',
         },
         {
           id: 'adduniversity',
           label: 'Add University',
           icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/add-university',
+          link: '/administration/university-management/add-university',
           parentId: 'universities',
         },
       ],
@@ -78,27 +78,27 @@ const SuperAdminSidebarData = () => {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
-      link: '/dashboard/super-admin/',
+      link: '/administration/',
     },
     {
       id: 'agents',
       label: 'Agents',
       icon: 'ri-group-2-fill',
-      link: '/dashboard/super-admin/agents',
+      link: '/administration/agents',
     },
     {
       id: 'students',
       label: 'Self Registered Students',
       icon: 'ri-group-fill',
-      link: '/dashboard/super-admin',
+      link: '/administration',
     },
     {
       id: 'students',
       label: 'By Agent Students',
       icon: 'ri-group-fill',
-      link: '/dashboard/super-admin',
+      link: '/administration',
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };
-export default SuperAdminSidebarData;
+export default AdministrationSidebarData;

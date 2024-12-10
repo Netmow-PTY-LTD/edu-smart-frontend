@@ -1,8 +1,4 @@
-import {
-  ecomWidgets,
-  playerProfileData,
-  supperAdminWidgetsData,
-} from '@/utils/common/data/dashboardEcommerce';
+import { supperAdminWidgetsData } from '@/utils/common/data';
 import Link from 'next/link';
 import React from 'react';
 import CountUp from 'react-countup';
@@ -23,13 +19,9 @@ const DashBoardCountOptions = ({
     <>
       <Col id="countcart" md={12}>
         <Row className="grid g-5">
-          {(userInfoData?.role === 'admin'
-            ? ecomWidgets
-            : userInfoData?.role === 'player'
-              ? playerProfileData
-              : userInfoData?.role === 'super_admin'
-                ? supperAdminWidgetsData
-                : []
+          {(userInfoData?.role === 'super_admin'
+            ? supperAdminWidgetsData
+            : []
           ).map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">

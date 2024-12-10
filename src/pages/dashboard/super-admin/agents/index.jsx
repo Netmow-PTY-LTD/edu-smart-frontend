@@ -2,7 +2,8 @@ import LatestRegistered from '@/components/common/allDashboardHome/LatestRegiste
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
+import { userDummyImage } from '@/utils/common/data';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
