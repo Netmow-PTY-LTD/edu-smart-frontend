@@ -2,12 +2,11 @@
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import { useUpdateUniversityDescriptionMutation } from '@/slice/services/university-administration/api/universityAdministrationDescriptionService';
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Col } from 'reactstrap';
 import * as Yup from 'yup';
 const DescriptionFormHandler = ({ className ,apiData}) => {
     const [updateDescription,{data}]=useUpdateUniversityDescriptionMutation();
-
-    console.log('description update mutation data ==>', data);
     const [initialValues, setInitialValues] = useState({});
     const validationSchema = Yup.object({});
 
@@ -19,12 +18,21 @@ const DescriptionFormHandler = ({ className ,apiData}) => {
       ];
 
    
-  const onSubmit = (value,{ setSubmitting }) => {
-    console.log(value);
-    setTimeout(() => {
-        updateDescription({data:value ,university_id:apiData})
+  const onSubmit = async(value,{ setSubmitting }) => {
+      setSubmitting(true);
+      try {
+        const result = await updateDescription({data:value ,university_id:apiData}).unwrap();
+        console.log(result)
+        if (result) {
+          toast.success(result?.message);
+        }
+      } catch (error) {
+        const errorMessage = error?.data?.message;
+        toast.error(errorMessage);
+      } finally {
         setSubmitting(false);
-      }, 1000);
+      }
+
     
   };
 
@@ -33,6 +41,7 @@ const DescriptionFormHandler = ({ className ,apiData}) => {
 
     return (
         <Col>
+          <ToastContainer/>
              <DescriptionCardForm
                     title="Added All Description Here"
                     fields={descriptionFields}

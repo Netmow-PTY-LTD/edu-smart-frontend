@@ -19,12 +19,11 @@ export const universityAdministrationSocialLinkService = createApi({
 
   endpoints: (builder) => ({
     updateUniversitySocialLink: builder.mutation({
-      query: (body) => {
-        const university_id = body?.university_id;
+      query: ({data,university_id}) => {
         return {
           url: `/${university_id}/website/social-links`,
           method: 'PUT',
-          body,
+          body:data,
         };
       },
     }),

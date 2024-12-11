@@ -16,16 +16,16 @@ export const universityAdministrationFaqService = createApi({
   }),
 
   
+
   // -------------------------------------- Endpoints -------------------------------
   endpoints: (builder) => ({
 
     updateUniversityFaq: builder.mutation({
-      query: (body) => {
-        const university_id = body?.university_id;
+      query: ({data,university_id}) => {
         return {
           url: `/${university_id}/website/faq`,
           method: 'PUT',
-          body,
+          body:data,
         };
       },
     }),

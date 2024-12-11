@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import DescriptionFormHandler from '../administrationApiComponent/DescriptionFormHandler';
+import SocialLinkFormHandler from '../administrationApiComponent/SocialLinkFormHandler';
 
 const ManageUniversityForSuperAdmin = ({university_id}) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -17,12 +18,7 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
 
 
  
-  const socialLinkFields = [
-    { name: 'facebook', label: 'Facebook:' },
-    { name: 'twitter', label: 'Twitter:' },
-    { name: 'instagram', label: 'Instagram:' },
-    { name: 'youtube', label: 'Youtube:' },
-  ];
+
 
   return (
     <>
@@ -165,12 +161,7 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
                   </Col>
                 )}
                 {customverticalTab === 7 && (
-                  <SocialLinksCardForm
-                    title="Add Social Links Here"
-                    fields={socialLinkFields}
-                    submitButtonText="Add Social Links"
-                    className="m-5 p-4 p-md-5"
-                  />
+                  <SocialLinkFormHandler className="p-4 p-md-5" apiData={university_id} />
                 )}
               </Row>
             </CardBody>
