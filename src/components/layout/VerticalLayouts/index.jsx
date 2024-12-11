@@ -368,6 +368,7 @@ const VerticalLayout = (props) => {
                   </ul>
                 </Collapse>
               </li>
+             
             ) : (
               <li className="nav-item fs-2">
                 <Link
