@@ -1,22 +1,12 @@
-import { Formik } from 'formik';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import {
-  Card,
-  CardBody,
-  CardHeader,
   Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Form,
-  Row,
   UncontrolledDropdown,
 } from 'reactstrap';
-import ImageField from '../formField/ImageField';
-import TextField from '../formField/TextField';
-import TextArea from '../formField/TextAreaField';
-import SubmitButton from '../formField/SubmitButton';
 import * as Yup from 'yup';
 import CommonTableComponent from '../CommonTableComponent';
 
@@ -51,7 +41,9 @@ export default function UniversitySponsorsForm() {
     {
       title: 'Sponsor Logo',
       key: 'logo',
-      render: (item) => <Image src={item?.link} width={80} height={80} />,
+      render: (item) => (
+        <Image src={item?.link} width={80} height={80} alt="" />
+      ),
     },
 
     {
