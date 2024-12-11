@@ -8,9 +8,7 @@ export default function UniversitySponsors() {
     <Layout>
       <div className="page-content">
         <Row>
-          <Col lg={9}>
-            <UniversitySponsorsForm />
-          </Col>
+          <UniversitySponsorsForm />
         </Row>
       </div>
     </Layout>

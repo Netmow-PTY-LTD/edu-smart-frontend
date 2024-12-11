@@ -1,8 +1,10 @@
+import UniversitySponsorsForm from '@/components/common/alldashboardCommon/UniversitySponsorsForm';
+import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const ManageUniversityForSuperAdmin = () => {
+const ManageUniversityForSuperAdmin = ({ university_id }) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -129,6 +131,9 @@ const ManageUniversityForSuperAdmin = () => {
                   </Nav>
                 </Col>
                 {/* {customverticalTab === 1 && <BusinessSettings />} */}
+                {customverticalTab === 5 && (
+                  <UniversitySponsorsList university_id={university_id} />
+                )}
               </Row>
             </CardBody>
           </Card>
