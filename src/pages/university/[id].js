@@ -23,16 +23,19 @@ export default function SingleUniversityHome() {
       setUniversity(university);
     }
   }, [universityData, id]);
+
+  console.log(university);
+
   return (
     <UniversityLayout>
       <HeroHome university={university} />
       <AboutUniversity university={university} />
       <UniversityFaculties university={university} />
-      <UniversityPictureGallery />
-      <UniversityFAQ />
-      <SponsorHome />
-      <UniversityTestimonials />
-      <UniversityContact />
+      <UniversityPictureGallery university={university?.gallery} />
+      <UniversityFAQ university={university?.faqs} />
+      <SponsorHome sponsorData={university?.sponsors} />
+      <UniversityTestimonials university={university} />
+      <UniversityContact university={university} />
     </UniversityLayout>
   );
 }

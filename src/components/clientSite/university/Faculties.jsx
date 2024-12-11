@@ -1,4 +1,5 @@
 import DOMPurify from 'dompurify';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
@@ -140,7 +141,12 @@ export default function UniversityFaculties({ university }) {
                   .slice(startIndex, startIndex + itemsPerPage)
                   .map((item, index) => (
                     <div className="faculty-item" key={index}>
-                      <img src={university?.logo?.url} alt={item.name} />
+                      <Image
+                        src={university?.logo?.url}
+                        width={500}
+                        height={500}
+                        alt={item.name}
+                      />
                       <h3>{item.name}</h3>
                       <div className="fc-desc">
                         {truncateText(item.description, 100)}
@@ -154,7 +160,7 @@ export default function UniversityFaculties({ university }) {
                     </div>
                   ))}
             </div>
-            <Pagination className="mt-5">
+            <Pagination size='sm' className="mt-5">
               <PaginationItem disabled={currentPage === 1}>
                 <PaginationLink
                   first
