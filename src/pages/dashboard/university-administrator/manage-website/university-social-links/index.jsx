@@ -5,8 +5,9 @@ import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Card, Col, Row } from 'reactstrap';
+import TextField from '@/components/common/formField/TextField';
 
-const UniversityTestimonials = () => {
+const UniversitySocailLinks = () => {
   const [initialValues, setInitialValues] = useState({});
   const validationSchema = Yup.object({});
 
@@ -18,7 +19,10 @@ const UniversityTestimonials = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          <Formik
+       <div className='text-center my-5'>
+       <h1 className='fs-1 fw-bold lh-lg'>Added Social Link Here</h1>
+       </div>
+        <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
@@ -26,13 +30,38 @@ const UniversityTestimonials = () => {
             {({ isSubmitting }) => (
               <Form>
                 <Row>
+                <Col lg={6}>
+                    <TextField
+                      name={'facebook'}
+                      label={'Facebook:'}
+                    />
+                  </Col>
+                <Col lg={6}>
+                    <TextField
+                      name={'twitter'}
+                      label={'Twitter:'}
+                    />
+                  </Col>
+                <Col lg={6}>
+                    <TextField
+                      name={'instagram'}
+                      label={'Instagram:'}
+                    />
+                  </Col>
+                <Col lg={6}>
+                    <TextField
+                      name={'youtube'}
+                      label={'Youtube:'}
+                    />
+                  </Col>
+                 
                   <Col md={12} xl={12}>
                     <div className="my-4">
                       <SubmitButton
                         isSubmitting={isSubmitting}
                         formSubmit={'formSubmit'}
                       >
-                        {'Add Testimonals'}
+                        {'Add Social Links'}
                       </SubmitButton>
                     </div>
                   </Col>
@@ -46,4 +75,4 @@ const UniversityTestimonials = () => {
   );
 };
 
-export default UniversityTestimonials;
+export default UniversitySocailLinks;

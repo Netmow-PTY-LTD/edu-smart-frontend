@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Card, Col, Row } from 'reactstrap';
 
-const UniversityTestimonials = () => {
+const UniversitySlider = () => {
   const [initialValues, setInitialValues] = useState({});
   const validationSchema = Yup.object({});
 
@@ -26,13 +26,15 @@ const UniversityTestimonials = () => {
             {({ isSubmitting }) => (
               <Form>
                 <Row>
+                 
+                 
                   <Col md={12} xl={12}>
                     <div className="my-4">
                       <SubmitButton
                         isSubmitting={isSubmitting}
                         formSubmit={'formSubmit'}
                       >
-                        {'Add Testimonals'}
+                        {'Add Slider'}
                       </SubmitButton>
                     </div>
                   </Col>
@@ -46,4 +48,4 @@ const UniversityTestimonials = () => {
   );
 };
 
-export default UniversityTestimonials;
+export default UniversitySlider;
