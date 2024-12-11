@@ -1,15 +1,24 @@
 import { Formik } from 'formik';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { Card, CardHeader, Col, Form, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Form,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 import ImageField from '../formField/ImageField';
 import TextField from '../formField/TextField';
 import TextArea from '../formField/TextAreaField';
-import NumberField from '../formField/NumberField';
-import EmailField from '../formField/EmailField';
-import CountrySelectField from '../formField/CountrySelectField';
 import SubmitButton from '../formField/SubmitButton';
 import * as Yup from 'yup';
+import CommonTableComponent from '../CommonTableComponent';
 
 export default function UniversitySponsorsForm() {
   const [initialValues, setInitialValues] = useState({
@@ -20,72 +29,67 @@ export default function UniversitySponsorsForm() {
     logo: Yup.string().required('Logo is required'),
   });
 
+  const sponsorsHeaders = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    { title: 'Sponsor Name', key: 'name' },
+    {
+      title: 'Website',
+      key: 'link',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.available_seats}
+        </span>
+      ),
+    },
+    {
+      title: 'Sponsor Logo',
+      key: 'logo',
+      render: (item) => <Image src={item?.link} width={80} height={80} />,
+    },
+
+    {
+      title: 'Action',
+      key: 'actions',
+      render: (item) => (
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <div className="text-primary">
+                <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+                Edit
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div className="text-primary">
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Delete
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      ),
+    },
+  ];
+
   return (
-    <div className="">
-      <Card className="p-4 p-md-5 add-university-card">
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={'onSubmit'}
-        >
-          {({ isSubmitting, setFieldValue }) => (
-            <Form>
-              <Row>
-                <Col lg={12}>
-                  <div className="ps-0">
-                    <Row>
-                      <Col md={12} xl={12}>
-                        <div className="">
-                          <TextField name="name" label="Sponsor Name *" />
-                        </div>
-                      </Col>
-                      <Col md={12} xl={12}>
-                        <div className="">
-                          <TextArea name="description" label="Description *" />
-                        </div>
-                      </Col>
-                      <Col md={12} xl={12}>
-                        <div className="">
-                          {' '}
-                          <TextField name="website" label="Website *" />
-                        </div>
-                      </Col>
-                      <Col md={12} xl={12}>
-                        <h4>Sponsor Logo</h4>
-                        <div className="mb-5 profile-img">
-                          <ImageField
-                            name="logo"
-                            label="Upload Logo"
-                            setFieldValue={setFieldValue}
-                          />
-                        </div>
-                        <div className="img-preview mb-3">
-                          <Image
-                            src={''}
-                            alt="Brand Logo"
-                            width={200}
-                            height={200}
-                          />
-                        </div>
-                      </Col>
-                      <Col md={12} xl={12}>
-                        <div className="my-4">
-                          <SubmitButton
-                            isSubmitting={isSubmitting}
-                            formSubmit={'formSubmit'}
-                          >
-                            {'Add Sponsor'}
-                          </SubmitButton>
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </Col>
-              </Row>
-            </Form>
-          )}
-        </Formik>
-      </Card>
-    </div>
+    <Col lg={10}>
+      <CommonTableComponent headers={sponsorsHeaders} />
+    </Col>
   );
 }

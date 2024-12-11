@@ -1,7 +1,7 @@
+import FAQCardForm from '@/components/common/FAQCardForm';
+import Layout from '@/components/layout';
 import React from 'react';
 import * as Yup from 'yup';
-import Layout from '@/components/layout';
-import FAQCardForm from '@/components/common/FAQCardForm';
 
 const FAQForm = () => {
   const initialValues = {
@@ -24,7 +24,11 @@ const FAQForm = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
-                <FAQCardForm onSubmit={onSubmit}  initialValues={initialValues} validationSchema={validationSchema}/>
+          <FAQCardForm
+            onSubmit={onSubmit}
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+          />
         </div>
       </div>
     </Layout>

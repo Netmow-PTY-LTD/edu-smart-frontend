@@ -1,7 +1,6 @@
-import UniversitySponsorsForm from '@/components/common/alldashboardCommon/UniversitySponsorsForm';
-import Layout from '@/components/layout';
-import React from 'react';
-import { Col, Row } from 'reactstrap';
+import UniversitySponsorsForm from "@/components/common/alldashboardCommon/UniversitySponsorsForm";
+import Layout from "@/components/layout";
+import { Col, Row } from "reactstrap";
 
 export default function UniversitySponsors() {
   return (

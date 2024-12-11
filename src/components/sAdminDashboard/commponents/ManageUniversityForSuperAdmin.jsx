@@ -2,11 +2,12 @@ import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import FAQCardForm from '@/components/common/FAQCardForm';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
 import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponent';
+import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const ManageUniversityForSuperAdmin = () => {
+const ManageUniversityForSuperAdmin = ({ university_id }) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -171,6 +172,9 @@ const ManageUniversityForSuperAdmin = () => {
                   <Col>
                     <FAQCardForm className="m-5 p-4 p-md-5" />
                   </Col>
+                )}
+                {customverticalTab === 5 && (
+                  <UniversitySponsorsList university_id={university_id} />
                 )}
                 {customverticalTab === 7 && (
                   <SocialLinksCardForm
