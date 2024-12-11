@@ -5,8 +5,9 @@ import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponen
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import DescriptionFormHandler from '../administrationApiComponent/DescriptionFormHandler';
 
-const ManageUniversityForSuperAdmin = () => {
+const ManageUniversityForSuperAdmin = ({university_id}) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -14,13 +15,8 @@ const ManageUniversityForSuperAdmin = () => {
     }
   };
 
-  const descriptionFields = [
-    { name: 'faculty_description', label: 'Faculty Description *' },
-    { name: 'gallery_description', label: 'Gallery Description *' },
-    { name: 'faq_description', label: 'FAQ Description *' },
-    { name: 'testimonial_description', label: 'Testimonial Description *' },
-  ];
 
+ 
   const socialLinkFields = [
     { name: 'facebook', label: 'Facebook:' },
     { name: 'twitter', label: 'Twitter:' },
@@ -148,12 +144,8 @@ const ManageUniversityForSuperAdmin = () => {
                   </Nav>
                 </Col>
                 {customverticalTab === 1 && (
-                  <DescriptionCardForm
-                    title="Added All Description Here"
-                    fields={descriptionFields}
-                    submitButtonText="Add Description"
-                    className="m-5 p-4 p-md-5"
-                  />
+                  <DescriptionFormHandler className="m-5 p-4 p-md-5" apiData={university_id} />
+            
                 )}
                 {customverticalTab === 2 && (
                   <GalleryFormCard

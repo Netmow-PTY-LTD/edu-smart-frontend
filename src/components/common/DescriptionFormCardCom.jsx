@@ -15,7 +15,6 @@ const DescriptionCardForm = ({
   className,
 }) => {
   return (
-   <Col>
     <Card className={className}>
       <CardHeader>{title}</CardHeader>
       <CardBody>
@@ -45,7 +44,7 @@ const DescriptionCardForm = ({
         </Formik>
       </CardBody>
     </Card>
-   </Col>
+ 
   );
 };
 

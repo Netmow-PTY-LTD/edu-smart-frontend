@@ -20,12 +20,12 @@ export const universityAdministrationDescriptionService = createApi({
   // -------------------------------------- Endpoints -------------------------------
   endpoints: (builder) => ({
     updateUniversityDescription: builder.mutation({
-      query: (body) => {
-        const university_id = body?.university_id;
+      query: ({data,university_id}) => {
+        console.log(data)
         return {
           url: `/${university_id}/website/section-description`,
-          method: 'PUT',
-          body,
+          method: 'PUT', 
+          body:data
         };
       },
     }),

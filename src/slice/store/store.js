@@ -28,6 +28,10 @@ export const store = configureStore({
     [userInfoService.reducerPath]: userInfoService.reducer,
     [publicAgentService.reducerPath]: publicAgentService.reducer,
     [publicUniversityService.reducerPath]: publicUniversityService.reducer,
+    [universityAdministrationDescriptionService.reducerPath]: universityAdministrationDescriptionService.reducer,
+    [universityAdministrationFaqService.reducerPath]: universityAdministrationFaqService.reducer,
+    [universityAdministrationSocialLinkService.reducerPath]: universityAdministrationSocialLinkService.reducer,
+    [universityAdministrationGalleryService.reducerPath]: universityAdministrationGalleryService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

@@ -37,6 +37,9 @@ const SingleUniversityProfile = () => {
     skip: !university_id,
   });
 
+
+  console.log('get single university data from single university route==>', getSingleUniversityData)
+  
   const {
     data: getDepartmentData,
     error: getDepartmentError,
@@ -205,7 +208,7 @@ const SingleUniversityProfile = () => {
                         allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
-                    {activeTab === '5' && <ManageUniversityForSuperAdmin />}
+                    {activeTab === '5' && <ManageUniversityForSuperAdmin university_id={university_id}  />}
                   </div>
                 </Col>
               </Row>
