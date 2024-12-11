@@ -7,8 +7,12 @@ import { Col } from 'reactstrap';
 import * as Yup from 'yup';
 const DescriptionFormHandler = ({ className ,apiData}) => {
     const [updateDescription,{data}]=useUpdateUniversityDescriptionMutation();
-    const [initialValues, setInitialValues] = useState({});
+    // const [initialValues, setInitialValues] = useState({});
+   
+
     const validationSchema = Yup.object({});
+
+    console.log(apiData);
 
     
     const descriptionFields = [
@@ -17,11 +21,17 @@ const DescriptionFormHandler = ({ className ,apiData}) => {
         { name: 'review_section_description', label: 'Review Section Description *' },
       ];
 
+      const initialValues = {
+        course_section_description: 'Default description for field 1',
+        faq_section_description: 'Default description for field 2',
+        review_section_description: 'Default description for field 3',
+      };
+  
    
   const onSubmit = async(value,{ setSubmitting }) => {
       setSubmitting(true);
       try {
-        const result = await updateDescription({data:value ,university_id:apiData}).unwrap();
+        const result = await updateDescription({data:value ,university_id:apiData._id}).unwrap();
         console.log(result)
         if (result) {
           toast.success(result?.message);

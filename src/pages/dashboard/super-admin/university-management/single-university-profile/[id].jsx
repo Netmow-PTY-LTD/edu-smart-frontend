@@ -38,7 +38,7 @@ const SingleUniversityProfile = () => {
   });
 
 
-  console.log('get single university data from single university route==>', getSingleUniversityData)
+  
   
   const {
     data: getDepartmentData,

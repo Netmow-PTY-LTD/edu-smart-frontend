@@ -7,6 +7,8 @@ import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import DescriptionFormHandler from '../administrationApiComponent/DescriptionFormHandler';
 import SocialLinkFormHandler from '../administrationApiComponent/SocialLinkFormHandler';
+import FaqFormHandler from '../administrationApiComponent/FaqFormHandler';
+import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 
 const ManageUniversityForSuperAdmin = ({university_id}) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -15,6 +17,18 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
       setcustomverticalTab(tab);
     }
   };
+
+  const {
+    data: getSingleUniversityData,
+    isLoading: getSingleUniversityIsLoading,
+    refetch: getSingleUniversityRefetch,
+  } = useGetSingleUniversityQuery(university_id, {
+    skip: !university_id,
+  });
+
+
+  console.log(university_id);
+  console.log('get single university data from single university route==>', getSingleUniversityData)
 
 
  
@@ -140,7 +154,7 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
                   </Nav>
                 </Col>
                 {customverticalTab === 1 && (
-                  <DescriptionFormHandler className="m-5 p-4 p-md-5" apiData={university_id} />
+                  <DescriptionFormHandler className="m-5 p-4 p-md-5" apiData={getSingleUniversityData?.data} />
             
                 )}
                 {customverticalTab === 2 && (
@@ -156,9 +170,7 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
                   />
                 )}
                 {customverticalTab === 4 && (
-                  <Col>
-                    <FAQCardForm className="m-5 p-4 p-md-5" />
-                  </Col>
+                  <FaqFormHandler className="p-4 p-md-5" apiData={university_id}/>
                 )}
                 {customverticalTab === 7 && (
                   <SocialLinkFormHandler className="p-4 p-md-5" apiData={university_id} />
