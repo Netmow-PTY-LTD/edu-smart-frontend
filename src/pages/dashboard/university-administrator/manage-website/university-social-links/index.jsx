@@ -4,8 +4,9 @@ import Layout from '@/components/layout';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import TextField from '@/components/common/formField/TextField';
+import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponent';
 
 const UniversitySocailLinks = () => {
   const [initialValues, setInitialValues] = useState({});
@@ -15,60 +16,32 @@ const UniversitySocailLinks = () => {
     console.log(e);
   };
 
+  const fields = [
+    { name: 'facebook', label: 'Facebook:' },
+    { name: 'twitter', label: 'Twitter:' },
+    { name: 'instagram', label: 'Instagram:' },
+    { name: 'youtube', label: 'Youtube:' },
+  ];
+
+
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-       <div className='text-center my-5'>
-       <h1 className='fs-1 fw-bold lh-lg'>Added Social Link Here</h1>
-       </div>
-        <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Row>
-                <Col lg={6}>
-                    <TextField
-                      name={'facebook'}
-                      label={'Facebook:'}
-                    />
-                  </Col>
-                <Col lg={6}>
-                    <TextField
-                      name={'twitter'}
-                      label={'Twitter:'}
-                    />
-                  </Col>
-                <Col lg={6}>
-                    <TextField
-                      name={'instagram'}
-                      label={'Instagram:'}
-                    />
-                  </Col>
-                <Col lg={6}>
-                    <TextField
-                      name={'youtube'}
-                      label={'Youtube:'}
-                    />
-                  </Col>
-                 
-                  <Col md={12} xl={12}>
-                    <div className="my-4">
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={'formSubmit'}
-                      >
-                        {'Add Social Links'}
-                      </SubmitButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            )}
-          </Formik>
+       
+       
+
+       <SocialLinksCardForm
+      title="Add Social Links Here"
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      fields={fields}
+      submitButtonText="Add Social Links"
+      className="p-4 p-md-5"
+    />
+
+       
         </div>
       </div>
     </Layout>

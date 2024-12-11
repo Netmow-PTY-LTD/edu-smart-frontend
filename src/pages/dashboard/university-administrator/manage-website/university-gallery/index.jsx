@@ -1,47 +1,40 @@
-import SubmitButton from '@/components/common/formField/SubmitButton';
-import TextArea from '@/components/common/formField/TextAreaField';
+
 import Layout from '@/components/layout';
-import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
+import GalleryFormCard from '../../../../../components/common/GalleryFormCard';
 
 const UniversityGallery = () => {
-  const [initialValues, setInitialValues] = useState({});
-  const validationSchema = Yup.object({});
+  const [initialValues, setInitialValues] = useState({
+    images: [], 
+  });
 
-  const onSubmit = (e) => {
-    console.log(e);
+ const validationSchema = Yup.object({
+  images: Yup.array()
+    .min(1, 'At least one image is required')
+    .required('Image gallery is required'),
+});
+
+
+  const onSubmit = (value) => {
+    console.log(value);
   };
 
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Row>
-                 
-                 
-                  <Col md={12} xl={12}>
-                    <div className="my-4">
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={'formSubmit'}
-                      >
-                        {'Add Gallery'}
-                      </SubmitButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            )}
-          </Formik>
+
+       <GalleryFormCard 
+       buttonLabel='Add Gallery' 
+       cardTitle='Added Gallery Image Here'
+       onSubmit={onSubmit}
+       initialValues={initialValues}
+       validationSchema={validationSchema}
+       inputLabel='Image Gallery *'
+       className='p-4 p-md-5'
+       />
+       
         </div>
       </div>
     </Layout>
