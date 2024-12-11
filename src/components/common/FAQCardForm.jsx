@@ -1,7 +1,7 @@
+import { Field, FieldArray, Form, Formik } from 'formik';
 import React from 'react';
-import { Formik, Form, FieldArray, Field } from 'formik';
+import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
-import { Row, Col, Button, Card, CardBody, CardHeader } from 'reactstrap';
 
 const FAQCardForm = ({
   initialValues = { faqs: [{ question: '', answer: '' }] },
@@ -14,12 +14,15 @@ const FAQCardForm = ({
     ),
   }),
   onSubmit = (values) => console.log('Submitted FAQs:', values.faqs),
+
   questionPlaceholder = 'Enter your question here',
+
   answerPlaceholder = 'Provide a detailed answer',
-  className
+
+  className,
 }) => {
   return (
-    <Card className={className?className:''} >
+    <Card className={className ? className : ''}>
       <CardHeader>Manage FAQs</CardHeader>
       <CardBody>
         <Formik
@@ -54,10 +57,9 @@ const FAQCardForm = ({
                             </Col>
                             <Col md={2}>
                               <Button
-                                color="danger"
                                 type="button"
                                 onClick={() => remove(index)}
-                                className="mt-2"
+                                className="button"
                               >
                                 Delete
                               </Button>
@@ -68,18 +70,19 @@ const FAQCardForm = ({
                     ))}
                     <div className="text-center mb-4">
                       <Button
-                        color="primary"
+                        className="button d-flex "
                         type="button"
                         onClick={() => push({ question: '', answer: '' })}
                       >
-                        + Add Another FAQ
+                        <i class="ri-add-line fw-bold fs-1"></i>{' '}
+                        <span>Add Another FAQ</span>
                       </Button>
                     </div>
                   </div>
                 )}
               </FieldArray>
               <div className="text-center">
-                <Button type="submit" color="success">
+                <Button className="button fs-2" type="submit" color="success">
                   Submit FAQs
                 </Button>
               </div>

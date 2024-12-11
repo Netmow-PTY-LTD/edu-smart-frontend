@@ -14,7 +14,6 @@ const ManageUniversityForSuperAdmin = () => {
     }
   };
 
-  console.log(customverticalTab);
   const descriptionFields = [
     { name: 'faculty_description', label: 'Faculty Description *' },
     { name: 'gallery_description', label: 'Gallery Description *' },
@@ -157,23 +156,29 @@ const ManageUniversityForSuperAdmin = () => {
                   />
                 )}
                 {customverticalTab === 2 && (
-                  <GalleryFormCard className="m-5 p-4 p-md-5" cardTitle="Sliders" />
+                  <GalleryFormCard
+                    className="m-5 p-4 p-md-5"
+                    cardTitle="Sliders"
+                  />
                 )}
                 {customverticalTab === 3 && (
-                  <GalleryFormCard className="m-5 p-4 p-md-5" cardTitle="Gallerys" />
+                  <GalleryFormCard
+                    className="m-5 p-4 p-md-5"
+                    cardTitle="Gallerys"
+                  />
                 )}
                 {customverticalTab === 4 && (
-                 <Col>
-                 <FAQCardForm className="m-5 p-4 p-md-5"/>
-                 </Col>
+                  <Col>
+                    <FAQCardForm className="m-5 p-4 p-md-5" />
+                  </Col>
                 )}
                 {customverticalTab === 7 && (
                   <SocialLinksCardForm
-                  title="Add Social Links Here"
-                  fields={socialLinkFields}
-                  submitButtonText="Add Social Links"
-                  className="m-5 p-4 p-md-5"
-                />
+                    title="Add Social Links Here"
+                    fields={socialLinkFields}
+                    submitButtonText="Add Social Links"
+                    className="m-5 p-4 p-md-5"
+                  />
                 )}
               </Row>
             </CardBody>
