@@ -1,6 +1,6 @@
 import { ErrorMessage } from 'formik';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Helper function to validate file types
 const isValidImage = (file) => {
@@ -10,6 +10,28 @@ const isValidImage = (file) => {
 
 const MultipleImageField = ({ field, form, label, ...props }) => {
   const [previewImages, setPreviewImages] = useState([]);
+
+  // Populate previews if default values exist
+  useEffect(() => {
+    const validFiles = [];
+    const previews = [];
+
+    const files = form.values[field.name] || [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (isValidImage(file)) {
+        validFiles.push(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          previews.push(reader.result);
+          if (previews.length === validFiles.length) {
+            setPreviewImages(previews);
+          }
+        };
+      }
+    }
+  }, [form.values, field.name]);
 
   const handleFileChange = async (event) => {
     const files = event.target.files;

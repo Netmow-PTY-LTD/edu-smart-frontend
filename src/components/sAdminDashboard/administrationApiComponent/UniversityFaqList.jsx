@@ -95,6 +95,7 @@ export default function UniversityFaqList({ university_id }) {
     } finally {
       setSubmitting(false);
     }
+    
   };
 
   
