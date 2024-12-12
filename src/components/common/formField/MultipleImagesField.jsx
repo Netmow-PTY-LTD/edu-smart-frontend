@@ -11,7 +11,6 @@ const isValidImage = (file) => {
 const MultipleImageField = ({ field, form, label, ...props }) => {
   const [previewImages, setPreviewImages] = useState([]);
 
-  // Populate previews if default values exist
   useEffect(() => {
     const validFiles = [];
     const previews = [];
@@ -28,32 +27,14 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
           console.log(reader.result);
           previews.push(reader.result);
 
-          // Check if all files have been processed
           if (previews.length === validFiles.length) {
             setPreviewImages(previews);
           }
         };
 
-        // Trigger the file reading process
         reader.readAsDataURL(file);
       }
     }
-
-    // for (let i = 0; i < files.length; i++) {
-    //   const file = files[i];
-    //   if (isValidImage(file)) {
-    //     validFiles.push(file);
-    //     const reader = new FileReader();
-    //     reader.onloadend = () => {
-    //       console.log('object');
-    //       console.log(reader.result);
-    //       previews.push(reader.result);
-    //       if (previews.length === validFiles.length) {
-    //         setPreviewImages(previews);
-    //       }
-    //     };
-    //   }
-    // }
   }, [form.values, field.name]);
 
   const handleFileChange = async (event) => {
@@ -61,7 +42,6 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
     const validFiles = [];
     const previews = [];
 
-    // Filter and prepare previews of valid image files
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (isValidImage(file)) {
