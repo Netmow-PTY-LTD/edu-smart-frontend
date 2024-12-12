@@ -1,3 +1,5 @@
+
+import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import FAQCardForm from '@/components/common/FAQCardForm';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
@@ -5,12 +7,8 @@ import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponen
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
-import DescriptionFormHandler from '../administrationApiComponent/DescriptionFormHandler';
-import SocialLinkFormHandler from '../administrationApiComponent/SocialLinkFormHandler';
-import FaqFormHandler from '../administrationApiComponent/FaqFormHandler';
-import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 
-const ManageUniversityForSuperAdmin = ({university_id}) => {
+const ManageUniversityForSuperAdmin = ({ university_id }) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -18,21 +16,19 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
     }
   };
 
-  const {
-    data: getSingleUniversityData,
-    isLoading: getSingleUniversityIsLoading,
-    refetch: getSingleUniversityRefetch,
-  } = useGetSingleUniversityQuery(university_id, {
-    skip: !university_id,
-  });
+  const descriptionFields = [
+    { name: 'faculty_description', label: 'Faculty Description *' },
+    { name: 'gallery_description', label: 'Gallery Description *' },
+    { name: 'faq_description', label: 'FAQ Description *' },
+    { name: 'testimonial_description', label: 'Testimonial Description *' },
+  ];
 
-
-  console.log(university_id);
-  console.log('get single university data from single university route==>', getSingleUniversityData)
-
-
- 
-
+  const socialLinkFields = [
+    { name: 'facebook', label: 'Facebook:' },
+    { name: 'twitter', label: 'Twitter:' },
+    { name: 'instagram', label: 'Instagram:' },
+    { name: 'youtube', label: 'Youtube:' },
+  ];
 
   return (
     <>
@@ -153,9 +149,17 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
                     </NavItem>
                   </Nav>
                 </Col>
+                {/* {customverticalTab === 1 && <BusinessSettings />} */}
+                {customverticalTab === 5 && (
+                  <UniversitySponsorsList university_id={university_id} />
+                )}
                 {customverticalTab === 1 && (
-                  <DescriptionFormHandler className="m-5 p-4 p-md-5" apiData={getSingleUniversityData?.data} />
-            
+                  <DescriptionCardForm
+                    title="Added All Description Here"
+                    fields={descriptionFields}
+                    submitButtonText="Add Description"
+                    className="m-5 p-4 p-md-5"
+                  />
                 )}
                 {customverticalTab === 2 && (
                   <GalleryFormCard
@@ -170,10 +174,17 @@ const ManageUniversityForSuperAdmin = ({university_id}) => {
                   />
                 )}
                 {customverticalTab === 4 && (
-                  <FaqFormHandler className="p-4 p-md-5" apiData={university_id}/>
+                  <Col>
+                    <FAQCardForm className="m-5 p-4 p-md-5" />
+                  </Col>
                 )}
                 {customverticalTab === 7 && (
-                  <SocialLinkFormHandler className="p-4 p-md-5" apiData={university_id} />
+                  <SocialLinksCardForm
+                    title="Add Social Links Here"
+                    fields={socialLinkFields}
+                    submitButtonText="Add Social Links"
+                    className="m-5 p-4 p-md-5"
+                  />
                 )}
               </Row>
             </CardBody>
