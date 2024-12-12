@@ -20,7 +20,7 @@ const CountrySelectField = ({ name, label, options, ...props }) => {
                 )
               : null;
 
-          console.log(selectedOption);
+          // console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
             form.setFieldValue(

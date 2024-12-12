@@ -4,12 +4,12 @@ import { Button, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
 const FAQCardForm = ({
-  initialValues = { faqs: [{ question: '', answer: '' }] },
+  initialValues = { faqs: [{ title: '', description: '' }] },
   validationSchema = Yup.object().shape({
     faqs: Yup.array().of(
       Yup.object().shape({
-        question: Yup.string().required('Question is required'),
-        answer: Yup.string().required('Answer is required'),
+        title: Yup.string().required('Question is required'),
+        description: Yup.string().required('Answer is required'),
       })
     ),
   }),
@@ -42,14 +42,14 @@ const FAQCardForm = ({
                             <Col md={10}>
                               <div className="mb-3">
                                 <Field
-                                  name={`faqs.${index}.question`}
+                                  name={`faqs.${index}.title`}
                                   placeholder={questionPlaceholder}
                                   className="form-control"
                                 />
                               </div>
                               <Field
                                 as="textarea"
-                                name={`faqs.${index}.answer`}
+                                name={`faqs.${index}.description`}
                                 placeholder={answerPlaceholder}
                                 className="form-control"
                                 rows="3"
@@ -72,7 +72,7 @@ const FAQCardForm = ({
                       <Button
                         className="button d-flex "
                         type="button"
-                        onClick={() => push({ question: '', answer: '' })}
+                        onClick={() => push({ title: '', description: '' })}
                       >
                         <i class="ri-add-line fw-bold fs-1"></i>{' '}
                         <span>Add Another FAQ</span>

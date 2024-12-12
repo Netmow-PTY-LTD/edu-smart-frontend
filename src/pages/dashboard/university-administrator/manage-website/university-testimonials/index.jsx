@@ -1,10 +1,9 @@
 import SubmitButton from '@/components/common/formField/SubmitButton';
-import TextArea from '@/components/common/formField/TextAreaField';
 import Layout from '@/components/layout';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
 
 const UniversityTestimonials = () => {
   const [initialValues, setInitialValues] = useState({});
