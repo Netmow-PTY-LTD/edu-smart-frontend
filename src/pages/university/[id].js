@@ -1,5 +1,4 @@
 import AboutUniversity from '@/components/clientSite/university/AboutUniversity';
-import UniversityTestimonials from '@/components/clientSite/university/common/UniversityTestimonials';
 import UniversityContact from '@/components/clientSite/university/Contact';
 import UniversityFaculties from '@/components/clientSite/university/Faculties';
 import HeroHome from '@/components/clientSite/university/HeroHome';
@@ -23,16 +22,17 @@ export default function SingleUniversityHome() {
       setUniversity(university);
     }
   }, [universityData, id]);
+
   return (
     <UniversityLayout>
       <HeroHome university={university} />
       <AboutUniversity university={university} />
       <UniversityFaculties university={university} />
-      <UniversityPictureGallery />
-      <UniversityFAQ />
-      <SponsorHome />
-      <UniversityTestimonials />
-      <UniversityContact />
+      <UniversityPictureGallery university={university?.gallery} />
+      <UniversityFAQ university={university?.faqs} />
+      <SponsorHome sponsorData={university?.sponsors} />
+      {/* <UniversityTestimonials university={university} /> */}
+      <UniversityContact university={university} />
     </UniversityLayout>
   );
 }

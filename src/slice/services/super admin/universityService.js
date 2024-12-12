@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 export const universityService = createApi({
   reducerPath: 'universityService',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/super',
+    baseUrl:
+      'https://edu-smart-backend-3n7b.onrender.com/api/v1/university/admin',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -50,6 +51,20 @@ export const universityService = createApi({
         method: 'DELETE',
       }),
     }),
+    universitySponsor: builder.mutation({
+      query: (body) => {
+        const university_id =
+          body instanceof FormData
+            ? body.get('university_id')
+            : body.university_id;
+
+        return {
+          url: `/university/${university_id}/website/sponsor`,
+          method: 'PUT',
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -59,4 +74,5 @@ export const {
   useUpdateUniversityMutation,
   useGetSingleUniversityQuery,
   useDeleteUniversityMutation,
+  useUniversitySponsorMutation,
 } = universityService;

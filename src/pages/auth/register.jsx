@@ -15,11 +15,12 @@ import {
   useGenerateOtpMutation,
   useLogInMutation,
   useStudentRegisterMutation,
+  useUniversityRegisterMutation,
 } from '@/slice/services/public/auth/authService';
+import { brandlogo } from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
-import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
-import Header from '@/components/clientSite/university/common/Header';
+// import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
 // const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 const appEnvironment = 'production';
@@ -33,36 +34,43 @@ const Register = () => {
   const [generateOtp] = useGenerateOtpMutation();
   const [agentRegister] = useAgentRegisterMutation();
   const [studentRegister] = useStudentRegisterMutation();
+  const [universityRegister] = useUniversityRegisterMutation();
 
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//localhost:3005/agent`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/agent`
         );
       } else {
-        // window.location.assign(
-        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/agent`
-        // );
-
         window.location.assign(
-          `${window.location.protocol}//${'edusmartmy.netlify.app'}/agent`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent`
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//localhost:3005/student`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/student`
         );
       } else {
-        // window.location.assign(
-        //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/student`
-        // );
-
         window.location.assign(
-          `${window.location.protocol}//${'edusmartmy.netlify.app'}/student`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student`
+        );
+      }
+    } else if (
+      LoginData?.data?.token &&
+      LoginData?.data?.role === 'university_administrator'
+    ) {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/university-administrator`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/university-administrator`
         );
       }
     }
@@ -84,6 +92,7 @@ const Register = () => {
     state: '',
     zip: '',
     terms_and_conditions: '',
+    user_role: '',
   });
 
   const initialStepValidationSchema = Yup.object({
@@ -188,12 +197,45 @@ const Register = () => {
     }
   };
 
+  const handleUniversityRegistrationSubmit = async (
+    values,
+    { setSubmitting }
+  ) => {
+    setSubmitting(true);
+
+    console.log('university', values);
+
+    try {
+      const resRegister = await universityRegister({
+        ...values,
+        confirm_password: values?.password,
+      }).unwrap();
+
+      if (resRegister) {
+        toast.success(resRegister?.message);
+
+        const resLogin = await logIn({
+          email: values?.email,
+          password: values?.password,
+        }).unwrap();
+
+        if (resLogin) {
+          toast.success(resLogin?.message);
+        }
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   console.log(initialValues?.user_role);
 
   return (
     <>
       <ToastContainer />
-      <Header />
       <div
         className={`auth-page-wrapper auth-bg-cover d-flex flex-column justify-content-center align-items-center min-vh-100 `}
       >
@@ -203,7 +245,7 @@ const Register = () => {
           <div className="container">
             <div className="brand-logo">
               <Link href="/university">
-                <Image src={eduSmartLogo} alt="Logo" />
+                <Image src={brandlogo} width={500} height={500} alt="Logo" />
               </Link>
             </div>
           </div>
@@ -245,7 +287,9 @@ const Register = () => {
                         handleRegistrationSubmit={
                           initialValues?.user_role === 'Student'
                             ? handleStudentRegistrationSubmit
-                            : handleRegistrationSubmit
+                            : initialValues?.user_role === 'Agent'
+                              ? handleRegistrationSubmit
+                              : handleUniversityRegistrationSubmit
                         }
                       />
                     </>

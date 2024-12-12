@@ -8,10 +8,13 @@ import {
 
 //import images
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { userDummyImage } from '@/utils/common/data/dashboardEcommerce';
+
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
+import { userDummyImage } from '@/utils/common/data';
+
+const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
 const ProfileDropdown = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
@@ -39,9 +42,15 @@ const ProfileDropdown = () => {
     // window.location.assign(
     //   `${window.location.protocol}//${domain === 'localhost' ? `localhost:3005` : domain}/auth/login`
     // );
-    window.location.assign(
-      `${window.location.protocol}//${`edusmartmy.netlify.app`}/auth/login`
-    );
+    if (appEnvironment === 'development') {
+      window.location.assign(
+        `${window.location.protocol}//${'localhost:3005'}/auth/login`
+      );
+    } else {
+      window.location.assign(
+        `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
+      );
+    }
     // } else {
     //   document.cookie = 'token=; max-age=0; path=/';
 
