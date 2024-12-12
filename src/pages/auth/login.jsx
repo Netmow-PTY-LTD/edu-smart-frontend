@@ -3,6 +3,7 @@ import EmailField from '@/components/common/formField/EmailField';
 import PasswordField from '@/components/common/formField/PasswordField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import { useLogInMutation } from '@/slice/services/public/auth/authService';
+import { brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
 
 import Cookies from 'js-cookie';
@@ -13,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
-import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
 const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
@@ -147,7 +147,12 @@ const Login = () => {
           <div className="container">
             <div className="brand-logo">
               <Link href="/university">
-                <Image src={eduSmartLogo ? eduSmartLogo : ''} alt="Logo" />
+                <Image
+                  src={brandlogo ? brandlogo : ''}
+                  alt="Logo"
+                  width={300}
+                  height={300}
+                />
               </Link>
             </div>
             {/* <h2 className="text-black fw-bold mt-4 fs-20 text-center">

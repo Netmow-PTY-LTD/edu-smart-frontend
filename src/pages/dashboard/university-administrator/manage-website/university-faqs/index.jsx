@@ -1,51 +1,36 @@
-import SubmitButton from '@/components/common/formField/SubmitButton';
-import TextArea from '@/components/common/formField/TextAreaField';
-import Layout from '@/components/layout';
-import { Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
 
-const UniversityFAQ = () => {
-  const [initialValues, setInitialValues] = useState({});
-  const validationSchema = Yup.object({});
+const FAQForm = () => {
+  const initialValues = {
+    faqs: [{ title: '', description: '' }],
+  };
+  const validationSchema = Yup.object().shape({
+    faqs: Yup.array().of(
+      Yup.object().shape({
+        title: Yup.string().required('Question is required'),
+        description: Yup.string().required('Answer is required'),
+      })
+    ),
+  });
 
-  const onSubmit = (e) => {
-    console.log(e);
+  const onSubmit = (values) => {
+    console.log('Submitted FAQs:', values.faqs);
   };
 
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          <Formik
+          <FAQCardForm
+            onSubmit={onSubmit}
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Row>
-                 
-                 
-                  <Col md={12} xl={12}>
-                    <div className="my-4">
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={'formSubmit'}
-                      >
-                        {'Add FAQ'}
-                      </SubmitButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            )}
-          </Formik>
+          />
         </div>
       </div>
     </Layout>
   );
 };
 
-export default UniversityFAQ;
+export default FAQForm;

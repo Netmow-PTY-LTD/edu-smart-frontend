@@ -26,8 +26,6 @@ const UniversitySponsors = () => {
             {({ isSubmitting }) => (
               <Form>
                 <Row>
-                 
-                 
                   <Col md={12} xl={12}>
                     <div className="my-4">
                       <SubmitButton

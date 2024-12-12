@@ -10,7 +10,7 @@ const ProfileBgCover = ({ profileData }) => {
     <>
       <div className="profile-foreground position-relative mx-n5 mt-n5 pt-5">
         <div className="profile-wid-bg">
-          <Image src={profileBg} alt="" className="profile-wid-img" />
+          <Image src={profileBg} width={500} height={500} alt="" className="profile-wid-img" />
         </div>
       </div>
       <div className="ps-3 py-5 mb-lg-3 pb-lg-4">

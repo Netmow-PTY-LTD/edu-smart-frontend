@@ -189,9 +189,11 @@ const VerticalLayout = (props) => {
       {/* menu Items */}
       {(userInfodata?.data?.role === 'super_admin'
         ? superAdminSidebarData
-        : userInfodata?.data?.role === 'university_administrator'
-          ? universitySidebarData
-          : []
+        : userInfodata?.data?.role === 'student'
+          ? superAdminSidebarData
+          : userInfodata?.data?.role === 'university_administrator'
+            ? universitySidebarData
+            : []
       ).map((item, key) => {
         return (
           <React.Fragment key={key}>
@@ -368,7 +370,6 @@ const VerticalLayout = (props) => {
                   </ul>
                 </Collapse>
               </li>
-             
             ) : (
               <li className="nav-item fs-2">
                 <Link

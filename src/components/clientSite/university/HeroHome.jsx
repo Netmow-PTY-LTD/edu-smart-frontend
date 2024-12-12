@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
+import Image from 'next/image';
 import heroImage from '../../../../public/assets/images/landing/hero/hero-image.png';
 import logoMmu from '../../../../public/assets/images/landing/hero/logo-mmu.png';
-import searchIcon from '../../../../public/assets/images/landing/hero/search.png';
-import Image from 'next/image';
 
 export default function HeroHome({ university }) {
   const [selectedValue, setSelectedValue] = useState('');
@@ -11,14 +10,25 @@ export default function HeroHome({ university }) {
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
   };
-  console.log(university);
 
   return (
     <section className="hero-section">
       {/* hero image section */}
-      <figure>
-        <Image alt="hero" src={heroImage} sizes="100vw" />
-      </figure>
+      <div
+        className="d-flex align-items-center justify-content-center w-100"
+        style={{ height: '55vh' }}
+      >
+        <div className="w-100 h-100 position-relative">
+          <Image
+            src={university?.slider?.images?.[0]?.url || heroImage}
+            alt="Your Image"
+            layout="fill"
+            objectFit="cover"
+            className="w-100 h-100"
+          />
+        </div>
+      </div>
+
       {/* heroSection-info-header */}
       <div className="container">
         <div className="container-row">

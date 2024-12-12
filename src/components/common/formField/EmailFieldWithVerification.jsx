@@ -1,5 +1,5 @@
 import { useVerifyExistingUserMutation } from '@/slice/services/public/auth/authService';
-import { ErrorMessage, useField } from 'formik';
+import { useField } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const EmailFieldWithVerification = ({ label, ...props }) => {
@@ -27,7 +27,7 @@ const EmailFieldWithVerification = ({ label, ...props }) => {
     verifyEmail();
   }, [field?.value, verifyExistingUser]);
 
-  console.log(meta);
+  console.log(meta.touched && meta.error);
 
   return (
     <div className="mb-3 pb-3">
@@ -41,11 +41,7 @@ const EmailFieldWithVerification = ({ label, ...props }) => {
         placeholder="Enter your email"
       />
       {meta.touched && meta.error && (
-        <ErrorMessage
-          name={meta.error}
-          component="div"
-          style={{ color: 'red' }}
-        />
+        <div style={{ color: 'red' }}>{meta.touched && meta.error}</div>
       )}
       {isVerify && (
         <div>

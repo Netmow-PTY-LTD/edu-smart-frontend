@@ -17,9 +17,10 @@ import {
   useStudentRegisterMutation,
   useUniversityRegisterMutation,
 } from '@/slice/services/public/auth/authService';
+import { brandlogo } from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
-import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
+// import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
 // const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 const appEnvironment = 'production';
@@ -244,7 +245,7 @@ const Register = () => {
           <div className="container">
             <div className="brand-logo">
               <Link href="/university">
-                <Image src={eduSmartLogo} alt="Logo" />
+                <Image src={brandlogo} width={500} height={500} alt="Logo" />
               </Link>
             </div>
           </div>

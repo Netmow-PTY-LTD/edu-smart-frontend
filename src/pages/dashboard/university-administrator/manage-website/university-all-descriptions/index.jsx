@@ -1,10 +1,9 @@
-import SubmitButton from '@/components/common/formField/SubmitButton';
-import TextArea from '@/components/common/formField/TextAreaField';
+
 import Layout from '@/components/layout';
-import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { Card, Col, Row } from 'reactstrap';
+
+import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 
 const UniversityAllDescriptions = () => {
   const [initialValues, setInitialValues] = useState({});
@@ -14,62 +13,25 @@ const UniversityAllDescriptions = () => {
     console.log(e);
   };
 
+  const descriptionFields = [
+    { name: 'course_section_description', label: 'Course Section Description *' },
+    { name: 'faq_section_description', label: 'FAQ Section Description *' },
+    { name: 'review_section_description', label: 'Review Section Description *' },
+  ];
+
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-        <div className='text-center my-5'>
-       <h1 className='fs-1 fw-bold lh-lg'>Added All Description Here</h1>
-       </div>
-          <Formik
+          <DescriptionCardForm
+            title="Added All Description Here"
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <Row>
-                  <Col lg={6}>
-                    <TextArea
-                      name={'faculty_description'}
-                      label={'Faculty Description *'}
-                    />
-                  </Col>
-
-                  <Col lg={6}>
-                    {' '}
-                    <TextArea
-                      name={'gallery_description'}
-                      label={'Gallery Description *'}
-                    />
-                  </Col>
-                  <Col lg={6}>
-                    <TextArea
-                      name={'faq_description'}
-                      label={'FAQ Description *'}
-                    />
-                  </Col>
-                  <Col lg={6}>
-                    <TextArea
-                      name={'testimonial_description'}
-                      label={'Testimonial Description *'}
-                    />
-                  </Col>
-
-                  <Col md={12} xl={12}>
-                    <div className="my-4">
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={'formSubmit'}
-                      >
-                        {'Add Description'}
-                      </SubmitButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            )}
-          </Formik>
+            fields={descriptionFields}
+            submitButtonText="Add Description"
+            className="p-4 p-md-5"
+          />
         </div>
       </div>
     </Layout>

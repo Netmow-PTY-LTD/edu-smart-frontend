@@ -4,12 +4,19 @@ import Layout from '@/components/layout';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
+import ManageUniversityForSuperAdmin from '@/components/sAdminDashboard/commponents/ManageUniversityForSuperAdmin';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
 import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
 import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
 import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
 import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
+import {
+  categoryHeaders,
+  courseHeaders,
+  departmentHeaders,
+} from '@/utils/common/data';
 import classnames from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -57,110 +64,7 @@ const SingleUniversityProfile = () => {
     }
   };
 
-  const headers = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Department Name', key: 'name' },
-    {
-      title: 'Course Category',
-      key: 'categories',
-      render: (item, index) =>
-        item?.categories?.length > 0
-          ? item?.categories?.map((category) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
-                {category?.name}
-              </span>
-            ))
-          : '-',
-    },
-    {
-      title: 'Courses',
-      key: 'courses',
-      render: (item, index) =>
-        item?.courses?.length > 0
-          ? item?.courses.map((course) => (
-              <span key={index} className="d-flex flex-column text-capitalize">
-                {course?.name}
-              </span>
-            ))
-          : '-',
-    },
-
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-  ];
-
-  const categoryHeaders = [
-    {
-      title: 'SN',
-      key: 'key',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Course Category ', key: 'name' },
-    {
-      title: 'Department ',
-      key: 'department',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.department?.name}
-        </span>
-      ),
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-  ];
-  const courseHeaders = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Course Name', key: 'name' },
-    {
-      title: 'Department ',
-      key: 'department',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.department?.name}
-        </span>
-      ),
-    },
-    {
-      title: 'Course Category',
-      key: 'category',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.category?.name}
-        </span>
-      ),
-    },
-  ];
+  console.log(getSingleUniversityData?.data);
 
   return (
     <>
@@ -246,7 +150,7 @@ const SingleUniversityProfile = () => {
                             </span>
                           </NavLink>
                         </NavItem>
-                        {/* <NavItem className="fs-14">
+                        <NavItem className="fs-14">
                           <NavLink
                             style={{ cursor: 'pointer' }}
                             className={classnames({
@@ -258,25 +162,25 @@ const SingleUniversityProfile = () => {
                           >
                             <i className="ri-list-unordered d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Applications
+                              Manage University Website
                             </span>
                           </NavLink>
-                        </NavItem> */}
+                        </NavItem>
                       </Nav>
-                      {/* <div className="d-flex gap-3 flex-shrink-1 pb-5 me-3">
-                        <div
-                          type="button"
-                          // onClick={() => togEditModal(mainId)}
+                      <div className="d-flex gap-3 flex-shrink-1 ">
+                        <Link
+                          href={`/university/${university_id}`}
+                          target="_blank"
                           className="button px-3 py-2"
                         >
-                          <i className="ri-edit-box-line align-bottom"></i> Edit
-                          Profile
-                        </div>
-                      </div> */}
+                          <i className="ri-links-fill align-bottom"></i> visit
+                          University Pages
+                        </Link>
+                      </div>
                     </div>
                     {activeTab === '1' && (
                       <UniversityProfileOverview
-                        headers={headers}
+                        headers={departmentHeaders}
                         categoryHeaders={categoryHeaders}
                         courseHeaders={courseHeaders}
                         profileData={getSingleUniversityData?.data}
@@ -303,7 +207,11 @@ const SingleUniversityProfile = () => {
                         allCategoryData={getAllCategoriesData?.data}
                       />
                     )}
-                    {/* {activeTab === '5' && ''} */}
+                    {activeTab === '5' && (
+                      <ManageUniversityForSuperAdmin
+                        university_id={university_id}
+                      />
+                    )}
                   </div>
                 </Col>
               </Row>
