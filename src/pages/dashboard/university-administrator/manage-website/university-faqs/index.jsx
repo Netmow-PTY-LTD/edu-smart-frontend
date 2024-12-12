@@ -1,3 +1,5 @@
+import FAQCardForm from '@/components/common/FAQCardForm';
+import Layout from '@/components/layout';
 import React from 'react';
 import * as Yup from 'yup';
 
