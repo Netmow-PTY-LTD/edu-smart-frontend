@@ -107,7 +107,7 @@ export default function UniversitySponsorsList({ university_id }) {
     }
   };
 
-  //console.log(getSingleUniversityData?.data?.sponsors[0].name);
+  console.log(getSingleUniversityData);
 
   useEffect(() => {
     if (
