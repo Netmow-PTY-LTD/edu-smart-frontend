@@ -21,6 +21,7 @@ const UniversitySponsorModalForm = ({
   previewImage,
   formSubmit,
 }) => {
+  // console.log(initialValues);
   return (
     <Modal isOpen={isOpen} centered size="md">
       <ModalHeader toggle={onClose} className="fw-semibold text-black">
@@ -51,9 +52,9 @@ const UniversitySponsorModalForm = ({
                       <Col md={6} xl={6}>
                         <div className="">
                           <Field
-                            name="start_date" // This is your Formik field name
-                            component={DatepickerField} // Use your custom DatepickerField component
-                            label="Start Date" // Label for the field
+                            name="start_date"
+                            component={DatepickerField}
+                            label="Start Date"
                           />
                         </div>
                       </Col>
