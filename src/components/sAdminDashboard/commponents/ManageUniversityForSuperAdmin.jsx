@@ -7,6 +7,7 @@ import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponen
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import UniversityFaqList from '../administrationApiComponent/UniversityFaqList';
 
 const ManageUniversityForSuperAdmin = ({ university_id }) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -175,7 +176,9 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                 )}
                 {customverticalTab === 4 && (
                   <Col>
-                    <FAQCardForm className="m-5 p-4 p-md-5" />
+                    {/* <FAQCardForm className="m-5 p-4 p-md-5" /> */}
+                    <UniversityFaqList university_id={university_id}/>
+                    
                   </Col>
                 )}
                 {customverticalTab === 7 && (

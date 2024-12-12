@@ -19,7 +19,6 @@ export const universityAdministrationFaqService = createApi({
 
   // -------------------------------------- Endpoints -------------------------------
   endpoints: (builder) => ({
-
     updateUniversityFaq: builder.mutation({
       query: ({data,university_id}) => {
         return {

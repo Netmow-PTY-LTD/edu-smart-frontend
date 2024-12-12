@@ -14,7 +14,6 @@ const UniversityProfileOverview = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
 
-  console.log(allCourseData);
   return (
     <>
       <Row className="grid g-5 pb-2">
