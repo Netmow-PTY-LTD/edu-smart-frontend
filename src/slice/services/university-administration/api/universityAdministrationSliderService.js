@@ -18,7 +18,10 @@ export const universityAdministrationSliderService = createApi({
   endpoints: (builder) => ({
     updateUniversitySlider: builder.mutation({
       query: (body) => {
-        const university_id = body?.university_id;
+        const university_id =
+          body instanceof FormData
+            ? body.get('university_id')
+            : body.university_id;
         return {
           url: `/${university_id}/website/slider`,
           method: 'PUT',
@@ -29,4 +32,5 @@ export const universityAdministrationSliderService = createApi({
   }),
 });
 
-export const { updateUniversitySlider } = universityAdministrationSliderService;
+export const { useUpdateUniversitySliderMutation } =
+  universityAdministrationSliderService;

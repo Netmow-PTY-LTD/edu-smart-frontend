@@ -104,14 +104,12 @@ export default function UniversitySponsorsList({ university_id }) {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    console.log(values);
 
     const updatedData = { ...values, university_id: university_id };
-    console.log(updatedData);
     const finalData = new FormData();
     Object.entries(updatedData).forEach(([key, value]) => {
       if (value instanceof File) {
-        finalData.append(key, value); // Append the logo file directly
+        finalData.append(key, value);
       } else {
         finalData.append(key, value);
       }

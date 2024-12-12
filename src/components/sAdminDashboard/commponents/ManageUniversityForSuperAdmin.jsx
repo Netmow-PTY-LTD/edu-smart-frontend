@@ -151,7 +151,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                     title="Added All Description Here"
                     fields={descriptionFields}
                     submitButtonText="Add Description"
-                    className="m-5 p-4 p-md-5"
+                    className="p-4 p-md-5"
                   />
                 )}
                 {customverticalTab === 2 && (
