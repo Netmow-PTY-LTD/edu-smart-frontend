@@ -10,7 +10,7 @@ import React from 'react';
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
 // ModalForm Component
-const UniversitySponsorModalForm = ({
+const EditUniversitySponsorModalForm = ({
   formHeader,
   isOpen,
   onClose,
@@ -20,6 +20,7 @@ const UniversitySponsorModalForm = ({
   handleImageChange,
   previewImage,
   formSubmit,
+  setInitialValues,
 }) => {
   return (
     <Modal isOpen={isOpen} centered size="md">
@@ -30,9 +31,9 @@ const UniversitySponsorModalForm = ({
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={onSubmit}
+          onSubmit={onSubmit} // Corrected onSubmit function
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <Row>
                 <Col lg={12}>
@@ -40,7 +41,11 @@ const UniversitySponsorModalForm = ({
                     <Row>
                       <Col md={12} xl={12}>
                         <div className="">
-                          <TextField name="name" label="Sponsor Name *" />
+                          <TextField
+                            name="name"
+                            label="Sponsor Name *"
+                            value={name}
+                          />
                         </div>
                       </Col>
                       <Col md={12} xl={12}>
@@ -74,6 +79,7 @@ const UniversitySponsorModalForm = ({
                           <ImageField
                             name="logo"
                             label="Upload Logo"
+                            setFieldValue={setFieldValue}
                             handleImageChange={handleImageChange}
                           />
                         </div>
@@ -98,6 +104,7 @@ const UniversitySponsorModalForm = ({
                           </SubmitButton>
                         </div>
                       </Col>
+                      <pre>{JSON.stringify(values, null, 2)}</pre>
                     </Row>
                   </div>
                 </Col>
@@ -110,4 +117,4 @@ const UniversitySponsorModalForm = ({
   );
 };
 
-export default UniversitySponsorModalForm;
+export default EditUniversitySponsorModalForm;
