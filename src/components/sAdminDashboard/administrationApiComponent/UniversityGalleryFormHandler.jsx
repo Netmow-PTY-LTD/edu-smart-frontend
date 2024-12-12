@@ -8,19 +8,9 @@ import { Col } from 'reactstrap';
 import * as Yup from 'yup';
 const UniversityGalleryFormHandler = ({ university_id }) => {
   const [initialValues, setInitialValues] = useState({
-    images: [{
-        lastModified: 1733468580757,
-        lastModifiedDate: new Date(1733468580757), 
-        name: "https://res.cloudinary.com/ddm9zna39/image/upload/v1733739509/edu-smart/wjlg2aumyeyx6ix7s5sl.png",
-        size: 4953213, 
-        type: "image/jpeg",
-        webkitRelativePath: ""
-      }],
-    // images:[],
-    description: 'test',
+    images: [],
+    description: '',
   });
-
-  const [initialImage, setInitialImage] = useState([])
 
   const [addGallery] = useUpdateUniversityGalleryMutation();
 
@@ -33,43 +23,26 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
   });
 
   useEffect(() => {
-    if (getSingleUniversityData?.data?.gallery) {
-      const galleryData = getSingleUniversityData.data.gallery;
+    const fetchData = async () => {
+      if (getSingleUniversityData?.data?.gallery) {
+        const galleryData = getSingleUniversityData.data.gallery;
 
-      const fetchData = async () => {
         // eslint-disable-next-line no-undef
-        const imageFile = await Promise.resolve(galleryData?.images.map(
-            async (item) => {
-               // eslint-disable-next-line no-undef
-               const image = await Promise.resolve(convertImageUrlToFile(item.url)).then((data)=>  setInitialImage((currentData)=> [...currentData, data]))
-               console.log("after resolve ", image)
-               return image 
-             }
-           ))
-      
-        console.log( 'from form hadnler==>', imageFile);
-        return imageFile;
-    };
-    const imageFile = fetchData();
-    setInitialValues({
-      images: imageFile || [],
-      description: galleryData.description || '',
-    });
-    }
-  }, [getSingleUniversityData?.data?.gallery]);
+        const imageFiles = await Promise.all(
+          galleryData.images.map(async (item) =>
+            convertImageUrlToFile(item.url)
+          )
+        );
 
-  
-  useEffect(()=> {
-      if(initialImage?.length > 0){
-          setInitialValues((currenData)=> {
-              return {images: initialImage,
-                description: currenData?.description}
-            })
-        }
-    }, [initialImage])
-    
-    console.log("initial ", initialValues)
- 
+        setInitialValues({
+          images: imageFiles,
+          description: galleryData.description || '',
+        });
+      }
+    };
+
+    fetchData();
+  }, [getSingleUniversityData?.data?.gallery]);
 
   const validationSchema = Yup.object({
     images: Yup.array()
@@ -79,19 +52,30 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
   });
 
   const onSubmit = async (value, { setSubmitting }) => {
-   
     setSubmitting(true);
 
-    const formData = new FormData();
-    formData.append('description', value.description);
-    formData.append('images', value.images);
+    const finalData = {
+      ...value,
+      university_id: university_id,
+    };
+
+    const editedData = new FormData();
+    Object.entries(finalData).forEach(([key, value]) => {
+      if (key === 'images' && Array.isArray(value)) {
+        value.forEach((image) => {
+          editedData.append(key, image);
+        });
+      } else {
+        editedData.append(key, value);
+      }
+    });
 
     try {
-      //   const result = await addGallery({data:formData, univeristy_id:university_id}).unwrap();
-      //   console.log(result);
-      //   if (result) {
-      //     toast.success(result?.message);
-      //   }
+      const result = await addGallery(editedData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleUniversityRefetch();
+      }
     } catch (error) {
       const errorMessage = error?.data?.message;
       toast.error(errorMessage);
@@ -100,12 +84,8 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
     }
   };
 
-  if (getSingleUniversityIsLoading || initialValues === null) {
-    return <p>Loading...</p>;
-  }
-
   return (
-    <Col>
+    <Col lg={10}>
       <GalleryFormCard
         className="m-5 p-4 p-md-5"
         cardTitle=" Added  Gallery  Here ..."

@@ -15,8 +15,6 @@ const CommonTableComponent = ({
   const endIdx = Math.min((currentPage + 1) * perPageData, data?.length);
   const paginatedData = data?.length > 0 && data.slice(startIdx, endIdx);
 
- 
-
   return (
     <div>
       <div className="table-responsive mb-5">

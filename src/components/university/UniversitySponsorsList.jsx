@@ -1,4 +1,10 @@
+import {
+  useGetSingleUniversityQuery,
+  useUniversitySponsorMutation,
+} from '@/slice/services/super admin/universityService';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   Col,
   DropdownItem,
@@ -6,17 +12,10 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
 } from 'reactstrap';
-import CommonTableComponent from '../common/CommonTableComponent';
-import Image from 'next/image';
 import * as Yup from 'yup';
-import UniversitySponsorModalForm from './Modal/UniversitySponsorsModalForm';
-import {
-  useGetSingleUniversityQuery,
-  useUniversitySponsorMutation,
-} from '@/slice/services/super admin/universityService';
-import { toast } from 'react-toastify';
-import EditUniversitySponsorModalForm from './Modal/EditUniversitySponsorsModalForm';
+import CommonTableComponent from '../common/CommonTableComponent';
 import { convertImageUrlToFile } from '../common/helperFunctions/ConvertImgUrlToFile';
+import UniversitySponsorModalForm from './Modal/UniversitySponsorsModalForm';
 
 export default function UniversitySponsorsList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -301,6 +300,20 @@ export default function UniversitySponsorsList({ university_id }) {
         >
           Add New Sponsor
         </button>
+        <UniversitySponsorModalForm
+          formHeader={'Add Sponsor'}
+          onClose={() => {
+            setAddModalIsOpen(!addModalIsOpen);
+          }}
+          isOpen={addModalIsOpen}
+          onSubmit={handleSubmit}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          formSubmit={'Add Sponsor'}
+          setInitialValues={setInitialValues}
+          handleImageChange={handleImageChange}
+          previewImage={previewImage}
+        />
       </div>
       <CommonTableComponent
         headers={sponsorsHeaders}
@@ -309,20 +322,6 @@ export default function UniversitySponsorsList({ university_id }) {
         setCurrentPage={setCurrentPage}
         perPageData={perPageData}
         emptyMessage="No Data found yet."
-      />
-      <UniversitySponsorModalForm
-        formHeader={'Add Sponsor'}
-        onClose={() => {
-          setAddModalIsOpen(!addModalIsOpen);
-        }}
-        isOpen={addModalIsOpen}
-        onSubmit={handleSubmit}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        formSubmit={'Add Sponsor'}
-        setInitialValues={setInitialValues}
-        handleImageChange={handleImageChange}
-        previewImage={previewImage}
       />
 
       {/* For updating sponsor */}

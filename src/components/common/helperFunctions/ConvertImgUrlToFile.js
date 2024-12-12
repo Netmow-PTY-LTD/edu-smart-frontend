@@ -5,15 +5,12 @@ export const convertImageUrlToFile = async (imageUrl) => {
 
   try {
     const response = await fetch(imageUrl);
-    const blob = await response.blob().then((data)=> {
+    const blob = await response.blob().then((data) => {
       const file = new File([data], 'image.jpg', { type: 'image/jpeg' });
-    return file;
+      return file;
     });
 
-    console.log("return ", blob)
-
     return blob;
-    
   } catch (error) {
     console.error('Error fetching image:', error);
     throw new Error('Failed to convert image URL to file');

@@ -17,20 +17,43 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
     const previews = [];
 
     const files = form.values[field.name] || [];
-
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (isValidImage(file)) {
         validFiles.push(file);
         const reader = new FileReader();
+
         reader.onloadend = () => {
+          console.log('object');
+          console.log(reader.result);
           previews.push(reader.result);
+
+          // Check if all files have been processed
           if (previews.length === validFiles.length) {
             setPreviewImages(previews);
           }
         };
+
+        // Trigger the file reading process
+        reader.readAsDataURL(file);
       }
     }
+
+    // for (let i = 0; i < files.length; i++) {
+    //   const file = files[i];
+    //   if (isValidImage(file)) {
+    //     validFiles.push(file);
+    //     const reader = new FileReader();
+    //     reader.onloadend = () => {
+    //       console.log('object');
+    //       console.log(reader.result);
+    //       previews.push(reader.result);
+    //       if (previews.length === validFiles.length) {
+    //         setPreviewImages(previews);
+    //       }
+    //     };
+    //   }
+    // }
   }, [form.values, field.name]);
 
   const handleFileChange = async (event) => {

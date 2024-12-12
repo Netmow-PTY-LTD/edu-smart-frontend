@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 
 const UniversityFAQ = ({ university }) => {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(1);
 
   const toggle = (id) => {
     setOpen(open === id ? null : id);
@@ -33,10 +33,10 @@ const UniversityFAQ = ({ university }) => {
                     key={uni?.title}
                     className="custom-accordionwithicon-plus"
                   >
-                    <AccordionHeader targetId={index}>
+                    <AccordionHeader targetId={index + 1}>
                       {uni?.title}
                     </AccordionHeader>
-                    <AccordionBody accordionId={index}>
+                    <AccordionBody accordionId={index + 1}>
                       {uni?.description}
                     </AccordionBody>
                   </AccordionItem>

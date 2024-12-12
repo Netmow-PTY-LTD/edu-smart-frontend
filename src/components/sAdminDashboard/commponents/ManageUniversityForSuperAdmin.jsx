@@ -1,6 +1,4 @@
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
-import FAQCardForm from '@/components/common/FAQCardForm';
-import GalleryFormCard from '@/components/common/GalleryFormCard';
 import SliderCardComponent from '@/components/common/SliderCardComponent';
 import SocialLinksCardFormComponent from '@/components/common/SocialLinksCardFormComponent';
 import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
@@ -8,7 +6,6 @@ import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import UniversityFaqList from '../administrationApiComponent/UniversityFaqList';
-import GalleryFormCard from '@/components/common/GalleryFormCard';
 import UniversityGalleryFormHandler from '../administrationApiComponent/UniversityGalleryFormHandler';
 
 const ManageUniversityForSuperAdmin = ({ university_id }) => {
@@ -42,7 +39,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2  ': true,
                           active: customverticalTab === 1,
                         })}
                         onClick={() => {
@@ -50,14 +47,14 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                         }}
                       >
                         <i className="ri-file-info-fill d-block fs-20 mb-1"></i>
-                        All Sections Descriptions
+                        Section Descriptions
                       </NavLink>
                     </NavItem>
                     <NavItem>
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2': true,
                           active: customverticalTab === 2,
                         })}
                         onClick={() => {
@@ -72,7 +69,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2': true,
                           active: customverticalTab === 3,
                         })}
                         onClick={() => {
@@ -87,7 +84,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2': true,
                           active: customverticalTab === 4,
                         })}
                         onClick={() => {
@@ -102,7 +99,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2': true,
                           active: customverticalTab === 5,
                         })}
                         onClick={() => {
@@ -117,7 +114,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2': true,
                           active: customverticalTab === 6,
                         })}
                         onClick={() => {
@@ -132,7 +129,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          'mb-2 d-flex align-items-center justify-content-center py-3 gap-2': true,
+                          'mb-2 d-flex align-items-center justify-content-start py-3 gap-2': true,
                           active: customverticalTab === 7,
                         })}
                         onClick={() => {
@@ -145,10 +142,6 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                     </NavItem>
                   </Nav>
                 </Col>
-                {/* {customverticalTab === 1 && <BusinessSettings />} */}
-                {customverticalTab === 5 && (
-                  <UniversitySponsorsList university_id={university_id} />
-                )}
                 {customverticalTab === 1 && (
                   <DescriptionCardForm
                     title="Added All Description Here"
@@ -164,9 +157,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                   <UniversityGalleryFormHandler university_id={university_id} />
                 )}
                 {customverticalTab === 4 && (
-                  <Col>
-                    <UniversityFaqList university_id={university_id} />
-                  </Col>
+                  <UniversityFaqList university_id={university_id} />
                 )}
                 {customverticalTab === 5 && (
                   <UniversitySponsorsList university_id={university_id} />

@@ -19,19 +19,17 @@ export const universityAdministrationGalleryService = createApi({
 
   endpoints: (builder) => ({
     updateUniversityGallery: builder.mutation({
-      query: ({data,university_id}) => {  
+      query: (data) => {
+        const university_id = data.get('university_id');
         return {
           url: `/${university_id}/website/gallery`,
           method: 'PUT',
-          body:data,
+          body: data,
         };
       },
     }),
-
-    
   }),
 });
 
-export const {
- useUpdateUniversityGalleryMutation
-} =  universityAdministrationGalleryService;
+export const { useUpdateUniversityGalleryMutation } =
+  universityAdministrationGalleryService;

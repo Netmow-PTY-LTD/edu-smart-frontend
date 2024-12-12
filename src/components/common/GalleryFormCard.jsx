@@ -1,11 +1,10 @@
-import React from 'react';
-import { Card, CardHeader, CardBody, Row, Col } from 'reactstrap';
-import { Formik, Form } from 'formik';
-import PropTypes from 'prop-types';
 import MultipleImageField from '@/components/common/formField/MultipleImagesField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
+import { Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import TextArea from './formField/TextAreaField';
-
 
 const GalleryFormCard = ({
   cardTitle,
@@ -13,12 +12,10 @@ const GalleryFormCard = ({
   validationSchema,
   onSubmit,
   buttonLabel,
-  className
+  className,
 }) => {
   return (
-    <Col lg={9}>
-    
-    <Card className={className} >
+    <Card className={className}>
       <CardHeader>{cardTitle}</CardHeader>
       <CardBody>
         <Formik
@@ -29,17 +26,16 @@ const GalleryFormCard = ({
           validateOnChange={false}
           enableReinitialize={true}
         >
-          {({isSubmitting, setFieldValue ,values}) => (
-          
+          {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <Row>
-                <Col md={12} xl={12} >
-                 <TextArea label={'Description'}  name={"description"}/>
+                <Col md={12} xl={12}>
+                  <TextArea label={'Description'} name={'description'} />
                 </Col>
                 <Col>
                   <MultipleImageField
-                    form={{ setFieldValue ,values}}
-                    label={"Upload Image"}
+                    form={{ setFieldValue, values }}
+                    label={'Upload Image'}
                     field={{ name: 'images' }}
                   />
                 </Col>
@@ -60,7 +56,6 @@ const GalleryFormCard = ({
         </Formik>
       </CardBody>
     </Card>
-    </Col>
   );
 };
 

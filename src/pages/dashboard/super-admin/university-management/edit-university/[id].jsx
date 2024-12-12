@@ -69,9 +69,9 @@ const EditUniversity = () => {
             city: getSingleUniversityData?.city || '',
             state: getSingleUniversityData?.state || '',
             zip: getSingleUniversityData?.zip || '',
-            registration_no: getSingleUniversityData?.description || '',
+            registration_no: getSingleUniversityData?.registration_no || '',
             moe_registration_certificate_no:
-              getSingleUniversityData?.description || '',
+              getSingleUniversityData?.moe_registration_certificate_no || '',
             logo: file,
           });
           setImagePreview(URL.createObjectURL(file));
