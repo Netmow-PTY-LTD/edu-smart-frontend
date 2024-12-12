@@ -162,7 +162,7 @@ const SingleUniversityProfile = () => {
                           >
                             <i className="ri-list-unordered d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Manage University
+                              Manage University Website
                             </span>
                           </NavLink>
                         </NavItem>
