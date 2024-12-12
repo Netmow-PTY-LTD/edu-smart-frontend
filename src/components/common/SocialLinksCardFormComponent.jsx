@@ -59,7 +59,7 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
     facebook: Yup.string()
       .matches(
         /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.cop'
+        'Please enter a valid URL, e.g., https://www.domain.com'
       )
       .required('Name is required'),
     whatsapp: Yup.string()
@@ -71,25 +71,25 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
     twitter: Yup.string()
       .matches(
         /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.cop'
+        'Please enter a valid URL, e.g., https://www.domain.com'
       )
       .required('Name is required'),
     linkedin: Yup.string()
       .matches(
         /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.cop'
+        'Please enter a valid URL, e.g., https://www.domain.com'
       )
       .required('Name is required'),
     instagram: Yup.string()
       .matches(
         /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.cop'
+        'Please enter a valid URL, e.g., https://www.domain.com'
       )
       .required('Name is required'),
     youtube: Yup.string()
       .matches(
         /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.cop'
+        'Please enter a valid URL, e.g., https://www.domain.com'
       )
       .required('Name is required'),
   });
