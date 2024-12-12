@@ -24,13 +24,22 @@ export default function UniversitySponsorsList({ university_id }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [perPageData, setPerPageData] = useState(5);
   const [previewImage, setPreviewImage] = useState('');
-  const [sponsorId, setSponosorId] = useState('');
+  const [sponsorId, setSponsorId] = useState('');
   const [initialValues, setInitialValues] = useState({
     name: '',
     link: '',
     start_date: '',
     end_date: '',
     logo: '',
+  });
+
+  const [universitySponsor] = useUniversitySponsorMutation();
+  const {
+    data: getSingleUniversityData,
+    isLoading: getSingleUniversityIsLoading,
+    refetch: getSingleUniversityRefetch,
+  } = useGetSingleUniversityQuery(university_id, {
+    skip: !university_id,
   });
 
   const validationSchema = Yup.object({
@@ -43,8 +52,43 @@ export default function UniversitySponsorsList({ university_id }) {
     logo: Yup.mixed().required('The logo is required'),
   });
 
+  //console.log(sponsorId);
+
+  useEffect(() => {
+    if (getSingleUniversityData?.data?.sponsors && sponsorId) {
+      const sponsor =
+        getSingleUniversityData?.data?.sponsors?.length > 0 &&
+        getSingleUniversityData?.data?.sponsors?.find(
+          (sponsor) => sponsor._id === sponsorId
+        );
+
+      if (sponsor) {
+        const fetchedData = async () => {
+          try {
+            const file = sponsor?.logo?.url
+              ? await convertImageUrlToFile(sponsor?.logo?.url)
+              : '';
+
+            setInitialValues({
+              name: sponsor?.name || '',
+              link: sponsor?.link || '',
+              start_date: sponsor?.start_date || '',
+              end_date: sponsor?.end_date || '',
+              logo: file,
+            });
+
+            setPreviewImage(file !== '' ? URL.createObjectURL(file) : '');
+            setEditModalIsOpen(true);
+          } catch (error) {
+            console.error('Error loading data:', error);
+          }
+        };
+        fetchedData();
+      }
+    }
+  }, [getSingleUniversityData?.data?.sponsors, sponsorId]);
+
   const handleImageChange = (e, setFieldValue) => {
-    console.log('clicked');
     const file = e.target.files[0];
     if (file) {
       setFieldValue('logo', file);
@@ -54,32 +98,18 @@ export default function UniversitySponsorsList({ university_id }) {
     }
   };
 
-  const [universitySponsor] = useUniversitySponsorMutation();
-  const {
-    data: getSingleUniversityData,
-    isLoading: getSingleUniversityIsLoading,
-    refetch: getSingleUniversityRefetch,
-  } = useGetSingleUniversityQuery(university_id, {
-    skip: !university_id,
-  });
-
   const handleEditButtonClick = (id) => {
-    setSponosorId(id);
-    setEditModalIsOpen(true);
+    setSponsorId(id);
   };
-
-  console.log(sponsorId);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    console.log(values);
 
     const updatedData = { ...values, university_id: university_id };
-    console.log(updatedData);
     const finalData = new FormData();
     Object.entries(updatedData).forEach(([key, value]) => {
       if (value instanceof File) {
-        finalData.append(key, value); // Append the logo file directly
+        finalData.append(key, value);
       } else {
         finalData.append(key, value);
       }
@@ -109,45 +139,13 @@ export default function UniversitySponsorsList({ university_id }) {
 
   console.log(getSingleUniversityData);
 
-  useEffect(() => {
-    if (
-      getSingleUniversityData?.data?.sponsors &&
-      getSingleUniversityData?.data?.sponsors?.length > 0
-    ) {
-      const sponsor = getSingleUniversityData?.data?.sponsors?.find(
-        (sponsor) => sponsor._id === sponsorId
-      );
-      console.log(sponsor);
-      const fetchData = async () => {
-        try {
-          const file = await convertImageUrlToFile(
-            sponsor?.logo ? sponsor?.logo?.url : ''
-          );
-
-          setInitialValues({
-            name: sponsor?.name || '',
-            link: sponsor?.link || '',
-            start_date: sponsor?.start_date || '',
-            end_date: sponsor?.end_date || '',
-            logo: file,
-          });
-
-          setPreviewImage(URL.createObjectURL(file));
-          setEditModalIsOpen(true);
-        } catch (error) {
-          console.error('Error loading data:', error);
-        }
-      };
-
-      fetchData();
-    }
-  }, [getSingleUniversityData?.data?.sponsors, sponsorId]);
-
   const handleUpdateSponsor = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    console.log(values);
-
-    const updatedData = { ...values, university_id: university_id };
+    const updatedData = {
+      ...values,
+      university_id: university_id,
+      id: sponsorId,
+    };
     console.log(updatedData);
     const finalData = new FormData();
     Object.entries(updatedData).forEach(([key, value]) => {
@@ -194,27 +192,54 @@ export default function UniversitySponsorsList({ university_id }) {
       title: 'Website',
       key: 'link',
       render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{item?.link}</span>
+        <span className="d-flex flex-column">{item?.link}</span>
       ),
     },
     {
       title: 'Sponsor Logo',
       key: 'logo',
+      render: (item) => {
+        if (item?.logo?.url) {
+          return (
+            <Image
+              src={item?.logo?.url}
+              width={80}
+              height={80}
+              alt="Sponsor Logo"
+            />
+          );
+        }
+        return null;
+      },
+    },
+
+    {
+      title: 'Start Date',
+      key: 'start_date',
       render: (item) => (
-        <Image src={item?.logo?.url || ''} width={80} height={80} />
+        <span>
+          {' '}
+          {new Date(item?.start_date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+          })}
+        </span>
       ),
     },
 
     {
-      title: 'Startdate',
-      key: 'start_date',
-      render: (item) => <span>{item?.start_date}</span>,
-    },
-
-    {
-      title: 'End date',
+      title: 'End Date',
       key: 'end_date',
-      render: (item) => <span>{item?.end_date}</span>,
+      render: (item) => (
+        <span>
+          {new Date(item?.end_date).toLocaleDateString('en-US', {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+          })}
+        </span>
+      ),
     },
 
     {
@@ -252,6 +277,19 @@ export default function UniversitySponsorsList({ university_id }) {
       ),
     },
   ];
+
+  const handleEditModalClose = () => {
+    // getSingleDepartmentRefetch();
+    setSponsorId(null);
+    setInitialValues({
+      name: '',
+      link: '',
+      start_date: '',
+      end_date: '',
+      logo: '',
+    });
+    setEditModalIsOpen(false);
+  };
 
   return (
     <Col lg={10}>
@@ -291,15 +329,11 @@ export default function UniversitySponsorsList({ university_id }) {
 
       <UniversitySponsorModalForm
         formHeader={'Edit Sponsor'}
-        onClose={() => {
-          setEditModalIsOpen(!editModalIsOpen);
-        }}
+        onClose={handleEditModalClose}
         isOpen={editModalIsOpen}
         onSubmit={handleUpdateSponsor}
         initialValues={initialValues}
-        validationSchema={validationSchema}
         formSubmit={'Update Sponsor'}
-        setInitialValues={setInitialValues}
         handleImageChange={handleImageChange}
         previewImage={previewImage}
       />

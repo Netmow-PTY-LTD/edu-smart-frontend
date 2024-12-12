@@ -25,12 +25,11 @@ const DatepickerField = ({ field, form, label, ...props }) => {
         {...props}
         id={field?.name}
         name={field?.name}
-        value={field?.value || ''} // Ensure value is a string or empty string
-        onChange={handleChange} // Handle change to update Formik state
+        value={field?.value || ''}
+        onChange={handleChange}
         options={{
-          enableTime: false, // Disable time selection (allow only date)
-          dateFormat: 'Y-m-d', // Date format (year-month-day)
-          minDate: 'today', // Disable past dates
+          enableTime: false,
+          dateFormat: 'Y-m-d',
         }}
         className="form-control"
         style={{ borderRadius: '5px', padding: '8px', fontSize: '14px' }}
