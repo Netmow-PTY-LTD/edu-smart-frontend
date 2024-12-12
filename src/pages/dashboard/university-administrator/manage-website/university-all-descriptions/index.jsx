@@ -13,11 +13,10 @@ const UniversityAllDescriptions = () => {
     console.log(e);
   };
 
-  const fields = [
-    { name: 'faculty_description', label: 'Faculty Description *' },
-    { name: 'gallery_description', label: 'Gallery Description *' },
-    { name: 'faq_description', label: 'FAQ Description *' },
-    { name: 'testimonial_description', label: 'Testimonial Description *' },
+  const descriptionFields = [
+    { name: 'course_section_description', label: 'Course Section Description *' },
+    { name: 'faq_section_description', label: 'FAQ Section Description *' },
+    { name: 'review_section_description', label: 'Review Section Description *' },
   ];
 
   return (
@@ -29,7 +28,7 @@ const UniversityAllDescriptions = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
-            fields={fields}
+            fields={descriptionFields}
             submitButtonText="Add Description"
             className="p-4 p-md-5"
           />

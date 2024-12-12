@@ -37,6 +37,9 @@ const SingleUniversityProfile = () => {
     skip: !university_id,
   });
 
+
+  
+  
   const {
     data: getDepartmentData,
     error: getDepartmentError,

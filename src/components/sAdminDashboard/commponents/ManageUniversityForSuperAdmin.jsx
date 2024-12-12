@@ -1,3 +1,5 @@
+import UniversitySponsorsForm from '@/components/common/alldashboardCommon/UniversitySponsorsForm';
+import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import FAQCardForm from '@/components/common/FAQCardForm';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
@@ -146,6 +148,10 @@ const ManageUniversityForSuperAdmin = ({
                     </NavItem>
                   </Nav>
                 </Col>
+                {/* {customverticalTab === 1 && <BusinessSettings />} */}
+                {customverticalTab === 5 && (
+                  <UniversitySponsorsList university_id={university_id} />
+                )}
                 {customverticalTab === 1 && (
                   <DescriptionCardForm
                     title="Added All Description Here"

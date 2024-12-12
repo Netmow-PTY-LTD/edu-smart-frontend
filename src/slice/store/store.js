@@ -9,6 +9,10 @@ import LayoutReducer from '../services/super admin/dashboardSidebarService';
 import { departmentService } from '../services/super admin/departmentService';
 import { universityService } from '../services/super admin/universityService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
+import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
+import { universityAdministrationFaqService } from '../services/university-administration/api/universityAdministrationFaqService';
+import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
+import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +28,10 @@ export const store = configureStore({
     [userInfoService.reducerPath]: userInfoService.reducer,
     [publicAgentService.reducerPath]: publicAgentService.reducer,
     [publicUniversityService.reducerPath]: publicUniversityService.reducer,
+    [universityAdministrationDescriptionService.reducerPath]: universityAdministrationDescriptionService.reducer,
+    [universityAdministrationFaqService.reducerPath]: universityAdministrationFaqService.reducer,
+    [universityAdministrationSocialLinkService.reducerPath]: universityAdministrationSocialLinkService.reducer,
+    [universityAdministrationGalleryService.reducerPath]: universityAdministrationGalleryService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -34,7 +42,11 @@ export const store = configureStore({
       .concat(courseService.middleware)
       .concat(userInfoService.middleware)
       .concat(publicAgentService.middleware)
-      .concat(publicUniversityService.middleware),
+      .concat(publicUniversityService.middleware)
+      .concat(universityAdministrationDescriptionService.middleware)
+      .concat(universityAdministrationFaqService.middleware)
+      .concat(universityAdministrationSocialLinkService.middleware)
+      .concat(universityAdministrationGalleryService.middleware)
 });
 
 setupListeners(store.dispatch);

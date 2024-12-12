@@ -1,17 +1,15 @@
-import FAQCardForm from '@/components/common/FAQCardForm';
-import Layout from '@/components/layout';
 import React from 'react';
 import * as Yup from 'yup';
 
 const FAQForm = () => {
   const initialValues = {
-    faqs: [{ question: '', answer: '' }],
+    faqs: [{ title: '', description: '' }],
   };
   const validationSchema = Yup.object().shape({
     faqs: Yup.array().of(
       Yup.object().shape({
-        question: Yup.string().required('Question is required'),
-        answer: Yup.string().required('Answer is required'),
+        title: Yup.string().required('Question is required'),
+        description: Yup.string().required('Answer is required'),
       })
     ),
   });
