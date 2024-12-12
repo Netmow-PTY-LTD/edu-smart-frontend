@@ -37,9 +37,6 @@ const SingleUniversityProfile = () => {
     skip: !university_id,
   });
 
-
-  
-  
   const {
     data: getDepartmentData,
     error: getDepartmentError,
@@ -66,6 +63,8 @@ const SingleUniversityProfile = () => {
       setActiveTab(tab);
     }
   };
+
+  console.log(getSingleUniversityData?.data);
 
   return (
     <>
@@ -211,7 +210,6 @@ const SingleUniversityProfile = () => {
                     {activeTab === '5' && (
                       <ManageUniversityForSuperAdmin
                         university_id={university_id}
-                        getSingleUniversityData={getSingleUniversityData}
                       />
                     )}
                   </div>

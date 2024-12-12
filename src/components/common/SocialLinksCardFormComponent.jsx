@@ -1,6 +1,8 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 
+import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
+import { useUpdateUniversitySocialLinkMutation } from '@/slice/services/university-administration/api/universityAdministrationSocialLinkService';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -14,16 +16,14 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 import * as Yup from 'yup';
+import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 import SocialLinksModalForm from '../sAdminDashboard/modals/SocialLinksModalForm';
 
-const SocialLinksCardFormComponent = ({
-  university_id,
-  getSingleUniversityData,
-}) => {
+const SocialLinksCardFormComponent = ({ university_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+
   const [currentPage, setCurrentPage] = useState(0);
   const [socialLinkIdForEdit, setSocialLinkIdForEdit] = useState(null);
   const [socialLinkIdForDelete, setSocialLinkIdForDelete] = useState(null);
@@ -40,17 +40,30 @@ const SocialLinksCardFormComponent = ({
     youtube: '',
   });
 
+  const [updateUniversitySocialLink] = useUpdateUniversitySocialLinkMutation();
+  const {
+    data: getSingleUniversityData,
+    isLoading: getSingleUniversityIsLoading,
+    refetch: getSingleUniversityRefetch,
+  } = useGetSingleUniversityQuery(university_id, {
+    skip: !university_id,
+  });
+
   useEffect(() => {
-    if (getSingleUniversityData && socialLinkIdForEdit) {
+    if (getSingleUniversityData?.data?.social_links && socialLinkIdForEdit) {
       const fetchData = async () => {
         try {
           setInitialValues({
-            facebook: getSingleUniversityData?.facebook || '',
-            whatsapp: getSingleUniversityData?.whatsapp || '',
-            twitter: getSingleUniversityData?.twitter || '',
-            linkedin: getSingleUniversityData?.linkedin || '',
-            instagram: getSingleUniversityData?.instagram || '',
-            youtube: getSingleUniversityData?.youtube || '',
+            facebook:
+              getSingleUniversityData?.data?.social_links?.facebook || '',
+            whatsapp:
+              getSingleUniversityData?.data?.social_links?.whatsapp || '',
+            twitter: getSingleUniversityData?.data?.social_links?.twitter || '',
+            linkedin:
+              getSingleUniversityData?.data?.social_links?.linkedin || '',
+            instagram:
+              getSingleUniversityData?.data?.social_links?.instagram || '',
+            youtube: getSingleUniversityData?.data?.social_links?.youtube || '',
           });
           setEditModalIsOpen(true);
         } catch (error) {
@@ -60,7 +73,7 @@ const SocialLinksCardFormComponent = ({
 
       fetchData();
     }
-  }, [getSingleUniversityData, socialLinkIdForEdit]);
+  }, [getSingleUniversityData?.data?.social_links, socialLinkIdForEdit]);
 
   // Validation schema using Yup
   const validationSchema = Yup.object({
@@ -105,18 +118,18 @@ const SocialLinksCardFormComponent = ({
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-    console.log('Form values:', values);
 
     try {
       const finalData = { ...values, university_id: university_id };
 
-      // const result = await addSocialLink(finalData).unwrap();
+      const result = await updateUniversitySocialLink(finalData).unwrap();
 
-      // if (result) {
-      //   toast.success(result?.message || 'Social link added successfully!');
-      //   setAddModalIsOpen(false);
-      //   resetForm();
-      // }
+      if (result) {
+        toast.success(result?.message || 'Social link added successfully!');
+        getSingleUniversityRefetch();
+        setAddModalIsOpen(false);
+        resetForm();
+      }
     } catch (error) {
       const errorMessage =
         error?.data?.message || 'An error occurred while submitting the form';
@@ -131,11 +144,14 @@ const SocialLinksCardFormComponent = ({
   };
 
   const handleEditModalClose = () => {
-    // getSingleSocialLinkRefetch();
     setSocialLinkIdForEdit(null);
     setInitialValues({
-      name: '',
-      description: '',
+      facebook: '',
+      whatsapp: '',
+      twitter: '',
+      linkedin: '',
+      instagram: '',
+      youtube: '',
     });
     setEditModalIsOpen(false);
   };
@@ -143,25 +159,24 @@ const SocialLinksCardFormComponent = ({
   const handleUpdateSocialLink = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    const finalData = {
-      ...values,
-      id: socialLinkIdForEdit,
-    };
+    try {
+      const finalData = { ...values, university_id: university_id };
 
-    // try {
-    //   const result = await updateSocialLink(finalData).unwrap();
-    //   if (result) {
-    //     toast.success(result?.message);
+      const result = await updateUniversitySocialLink(finalData).unwrap();
 
-    //     handleEditModalClose();
-    //     setSocialLinkIdForEdit(null);
-    //   }
-    // } catch (error) {
-    //   const errorMessage = error?.data?.message;
-    //   toast.error(errorMessage);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+      if (result) {
+        toast.success(result?.message || 'Social link added successfully!');
+        getSingleUniversityRefetch();
+        handleEditModalClose();
+        setSocialLinkIdForEdit(null);
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.data?.message || 'An error occurred while submitting the form';
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleDeleteButtonClick = (itemId) => {
@@ -188,9 +203,6 @@ const SocialLinksCardFormComponent = ({
     //   //
     // }
   };
-
-  // search input change function
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Define table headers with custom render functions
   const headers = [
@@ -233,7 +245,7 @@ const SocialLinksCardFormComponent = ({
                 Edit
               </div>
             </DropdownItem>
-            <DropdownItem>
+            {/* <DropdownItem>
               <div
                 onClick={() => handleDeleteButtonClick(item._id)}
                 className="text-primary"
@@ -241,7 +253,7 @@ const SocialLinksCardFormComponent = ({
                 <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
                 Delete
               </div>
-            </DropdownItem>
+            </DropdownItem> */}
           </DropdownMenu>
         </UncontrolledDropdown>
       ),
@@ -257,49 +269,57 @@ const SocialLinksCardFormComponent = ({
     { name: 'youtube', label: 'Youtube:' },
   ];
 
+  
+
   return (
     <Col lg={10}>
       <ToastContainer />
-      {/* {'getSocialLinkIsLoading' ? (
+      {getSingleUniversityIsLoading ? (
         <LoaderSpiner />
-      ) : ( */}
-      <Card>
-        <CardHeader className="d-flex justify-content-between align-items-center">
-          <button
-            className="button px-3 py-2"
-            onClick={() => setAddModalIsOpen(!addModalIsOpen)}
-          >
-            Add New
-          </button>
-          <SocialLinksModalForm
-            formHeader={'Add New'}
-            isOpen={addModalIsOpen}
-            onClose={() => {
-              setAddModalIsOpen(!addModalIsOpen);
-            }}
-            onSubmit={handleSubmit}
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            formSubmit={'Submit'}
-            fields={socialLinkFields}
-          />
-        </CardHeader>
+      ) : (
+        <Card>
+          <CardHeader className="d-flex justify-content-between align-items-center">
+            {getSingleUniversityData?.data?.social_links ? (
+              ''
+            ) : (
+              <button
+                className="button px-3 py-2"
+                onClick={() => setAddModalIsOpen(!addModalIsOpen)}
+              >
+                Add New
+              </button>
+            )}
 
-        <CardBody>
-          <CommonTableComponent
-            headers={headers}
-            data={getSingleUniversityData ? [getSingleUniversityData] : []}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            perPageData={perPageData}
-            searchTerm={searchTerm}
-            handleSearchChange={handleSearchChange}
-            emptyMessage="No Data found yet."
-          />
-        </CardBody>
-      </Card>
+            <SocialLinksModalForm
+              formHeader={'Add New'}
+              isOpen={addModalIsOpen}
+              onClose={() => {
+                setAddModalIsOpen(!addModalIsOpen);
+              }}
+              onSubmit={handleSubmit}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              formSubmit={'Submit'}
+              fields={socialLinkFields}
+            />
+          </CardHeader>
 
-      {/* )} */}
+          <CardBody>
+            <CommonTableComponent
+              headers={headers}
+              data={
+                getSingleUniversityData?.data?.social_links
+                  ? [getSingleUniversityData?.data?.social_links]
+                  : []
+              }
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              perPageData={perPageData}
+              emptyMessage="No Data found yet."
+            />
+          </CardBody>
+        </Card>
+      )}
 
       {/* for update socialLink */}
       <SocialLinksModalForm

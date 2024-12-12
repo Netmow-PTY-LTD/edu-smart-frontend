@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 
-export const universityAdministrationSocialLinkService = createApi({
-  reducerPath: 'universityAdministrationSocialLinkService',
+export const universityAdministrationSliderService = createApi({
+  reducerPath: 'universityAdministrationSliderService',
   baseQuery: fetchBaseQuery({
     baseUrl:
       'https://edu-smart-backend-3n7b.onrender.com/api/v1/university/admin/university',
@@ -15,21 +15,18 @@ export const universityAdministrationSocialLinkService = createApi({
     },
   }),
 
-  // -------------------------------------- Endpoints -------------------------------
-
   endpoints: (builder) => ({
-    updateUniversitySocialLink: builder.mutation({
-      query: (data) => {
-        const university_id = data?.university_id;
+    updateUniversitySlider: builder.mutation({
+      query: (body) => {
+        const university_id = body?.university_id;
         return {
-          url: `/${university_id}/website/social-links`,
+          url: `/${university_id}/website/slider`,
           method: 'PUT',
-          body: data,
+          body,
         };
       },
     }),
   }),
 });
 
-export const { useUpdateUniversitySocialLinkMutation } =
-  universityAdministrationSocialLinkService;
+export const { updateUniversitySlider } = universityAdministrationSliderService;

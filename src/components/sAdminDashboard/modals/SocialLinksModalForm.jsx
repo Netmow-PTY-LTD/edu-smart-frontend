@@ -1,8 +1,8 @@
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import React from 'react';
-import { Col, Form, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
 const SocialLinksModalForm = ({
   isOpen,
@@ -29,11 +29,12 @@ const SocialLinksModalForm = ({
             {({ isSubmitting }) => (
               <Form>
                 <Row>
-                  {fields.map((field, index) => (
-                    <Col lg={6} key={index}>
-                      <TextField name={field.name} label={field.label} />
-                    </Col>
-                  ))}
+                  {fields?.length > 0 &&
+                    fields.map((field, index) => (
+                      <Col lg={6} key={index}>
+                        <TextField name={field.name} label={field.label} />
+                      </Col>
+                    ))}
                   <Col md={12} xl={12}>
                     <div className="my-4">
                       <SubmitButton

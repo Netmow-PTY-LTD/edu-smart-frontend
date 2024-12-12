@@ -1,18 +1,14 @@
-import UniversitySponsorsForm from '@/components/common/alldashboardCommon/UniversitySponsorsForm';
-import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import FAQCardForm from '@/components/common/FAQCardForm';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
+import SliderCardComponent from '@/components/common/SliderCardComponent';
 import SocialLinksCardFormComponent from '@/components/common/SocialLinksCardFormComponent';
 import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const ManageUniversityForSuperAdmin = ({
-  university_id,
-  getSingleUniversityData,
-}) => {
+const ManageUniversityForSuperAdmin = ({ university_id }) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -26,8 +22,6 @@ const ManageUniversityForSuperAdmin = ({
     { name: 'faq_description', label: 'FAQ Description *' },
     { name: 'testimonial_description', label: 'Testimonial Description *' },
   ];
-
-  console.log(getSingleUniversityData?.data);
 
   return (
     <>
@@ -116,7 +110,7 @@ const ManageUniversityForSuperAdmin = ({
                         Sponsors
                       </NavLink>
                     </NavItem>
-                    <NavItem id="stripesettings">
+                    {/* <NavItem id="stripesettings">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -130,7 +124,7 @@ const ManageUniversityForSuperAdmin = ({
                         <i className="ri-shield-star-fill d-block fs-20 mb-1"></i>
                         Testimonials
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                     <NavItem id="stripesettings">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -161,10 +155,7 @@ const ManageUniversityForSuperAdmin = ({
                   />
                 )}
                 {customverticalTab === 2 && (
-                  <GalleryFormCard
-                    className="m-5 p-4 p-md-5"
-                    cardTitle="Sliders"
-                  />
+                  <SliderCardComponent university_id={university_id} />
                 )}
                 {customverticalTab === 3 && (
                   <GalleryFormCard
@@ -181,12 +172,7 @@ const ManageUniversityForSuperAdmin = ({
                   <UniversitySponsorsList university_id={university_id} />
                 )}
                 {customverticalTab === 7 && (
-                  <SocialLinksCardFormComponent
-                    getSingleUniversityData={
-                      getSingleUniversityData?.data?.social_links
-                    }
-                    university_id={university_id}
-                  />
+                  <SocialLinksCardFormComponent university_id={university_id} />
                 )}
               </Row>
             </CardBody>
