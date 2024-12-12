@@ -4,6 +4,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import MultipleImageField from '@/components/common/formField/MultipleImagesField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
+import TextArea from './formField/TextAreaField';
 
 
 const GalleryFormCard = ({
@@ -12,7 +13,6 @@ const GalleryFormCard = ({
   validationSchema,
   onSubmit,
   buttonLabel,
-  inputLabel,
   className
 }) => {
   return (
@@ -27,14 +27,19 @@ const GalleryFormCard = ({
           onSubmit={onSubmit}
           validateOnBlur={false}
           validateOnChange={false}
+          enableReinitialize={true}
         >
           {({isSubmitting, setFieldValue ,values}) => (
+          
             <Form>
               <Row>
+                <Col md={12} xl={12} >
+                 <TextArea label={'Description'}  name={"description"}/>
+                </Col>
                 <Col>
                   <MultipleImageField
                     form={{ setFieldValue ,values}}
-                    label={inputLabel}
+                    label={"Upload Image"}
                     field={{ name: 'images' }}
                   />
                 </Col>
@@ -65,7 +70,6 @@ GalleryFormCard.propTypes = {
   validationSchema: PropTypes.object.isRequired,
   onSubmit: PropTypes.func.isRequired,
   buttonLabel: PropTypes.string.isRequired,
-  inputLabel:PropTypes.string.isRequired,
 };
 
 export default GalleryFormCard;

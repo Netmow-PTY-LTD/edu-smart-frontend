@@ -7,6 +7,9 @@ import UniversitySponsorsList from '@/components/university/UniversitySponsorsLi
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import UniversityFaqList from '../administrationApiComponent/UniversityFaqList';
+import GalleryFormCard from '@/components/common/GalleryFormCard';
+import UniversityGalleryFormHandler from '../administrationApiComponent/UniversityGalleryFormHandler';
 
 const ManageUniversityForSuperAdmin = ({ university_id }) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -158,14 +161,11 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                   <SliderCardComponent university_id={university_id} />
                 )}
                 {customverticalTab === 3 && (
-                  <GalleryFormCard
-                    className="m-5 p-4 p-md-5"
-                    cardTitle="Gallerys"
-                  />
+                  <UniversityGalleryFormHandler university_id={university_id} />
                 )}
                 {customverticalTab === 4 && (
                   <Col>
-                    <FAQCardForm className="m-5 p-4 p-md-5" />
+                    <UniversityFaqList university_id={university_id} />
                   </Col>
                 )}
                 {customverticalTab === 5 && (
