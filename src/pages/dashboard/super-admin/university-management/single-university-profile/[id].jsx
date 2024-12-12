@@ -208,6 +208,7 @@ const SingleUniversityProfile = () => {
                     {activeTab === '5' && (
                       <ManageUniversityForSuperAdmin
                         university_id={university_id}
+                        getSingleUniversityData={getSingleUniversityData}
                       />
                     )}
                   </div>

@@ -1,13 +1,16 @@
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import FAQCardForm from '@/components/common/FAQCardForm';
 import GalleryFormCard from '@/components/common/GalleryFormCard';
-import SocialLinksCardForm from '@/components/common/SocialLinksCardFormComponent';
+import SocialLinksCardFormComponent from '@/components/common/SocialLinksCardFormComponent';
 import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const ManageUniversityForSuperAdmin = ({ university_id }) => {
+const ManageUniversityForSuperAdmin = ({
+  university_id,
+  getSingleUniversityData,
+}) => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -22,12 +25,7 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
     { name: 'testimonial_description', label: 'Testimonial Description *' },
   ];
 
-  const socialLinkFields = [
-    { name: 'facebook', label: 'Facebook:' },
-    { name: 'twitter', label: 'Twitter:' },
-    { name: 'instagram', label: 'Instagram:' },
-    { name: 'youtube', label: 'Youtube:' },
-  ];
+  console.log(getSingleUniversityData?.data);
 
   return (
     <>
@@ -177,11 +175,11 @@ const ManageUniversityForSuperAdmin = ({ university_id }) => {
                   <UniversitySponsorsList university_id={university_id} />
                 )}
                 {customverticalTab === 7 && (
-                  <SocialLinksCardForm
-                    title="Add Social Links Here"
-                    fields={socialLinkFields}
-                    submitButtonText="Add Social Links"
-                    className="m-5 p-4 p-md-5"
+                  <SocialLinksCardFormComponent
+                    getSingleUniversityData={
+                      getSingleUniversityData?.data?.social_links
+                    }
+                    university_id={university_id}
                   />
                 )}
               </Row>
