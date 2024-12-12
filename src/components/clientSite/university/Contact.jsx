@@ -1,15 +1,29 @@
+import Maps from '@/components/common/Maps';
+import Link from 'next/link';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 
-export default function UniversityContact() {
+export default function UniversityContact({ university }) {
+  const universityLocation = [
+    university?.address_line_1 || '',
+    university?.address_line_2 || '',
+    university?.city || '',
+    university?.state || '',
+    university?.country || '',
+    university?.zip || '',
+  ]
+    .filter(Boolean)
+    .join(', ');
+
   return (
     <section className="contact-section">
       <div className="container">
         <Row>
           <Col lg={4}>
-            <div className="map-img">
-              <img src="/assets/images/map.png" alt="map" />
-            </div>
+            <Maps
+              headerTitle={'University Location'}
+              place={universityLocation}
+            />
           </Col>
           <Col lg={8} className="ps-0 ps-lg-5">
             <div className="univ-contact-main">
@@ -18,23 +32,77 @@ export default function UniversityContact() {
                 <div className="univ-info">
                   <h5 className="mb-4">University Details</h5>
                   <div className="univ-info-single">
-                    <b>Company Name : </b>{' '}
-                    <span>Universiti Telekom Sdn Bhd</span>
+                    <b>University Name : </b>{' '}
+                    <span>{university?.name || 'University of Malaya'}</span>
                   </div>
                   <div className="univ-info-single">
                     <b>Registration No: </b>{' '}
-                    <span>199701021324 (436821-T)</span>
+                    <span>
+                      {university?.registration_no || '199701021324 (436821-T)'}
+                    </span>
                   </div>
                   <div className="univ-info-single">
                     <b>MOE Registration Certification No: </b>{' '}
-                    <span>DU001(B).</span>
+                    <span>
+                      {university?.moe_registration_certificate_no ||
+                        'DU001(B).'}
+                    </span>
                   </div>
                 </div>
                 <div className="univ-address">
                   <h5>Address</h5>
                   <div className="address-details">
-                    Multimedia University, Persiaran Multimedia, 63100
-                    Cyberjaya, Selangor, Malaysia
+                    {university?.address_line_1?.trim() !== ''
+                      ? university?.address_line_1?.trim() +
+                        (university?.address_line_2?.trim() !== '' ||
+                        university?.city?.trim() !== '' ||
+                        university?.state?.trim() !== '' ||
+                        university?.zip?.trim() !== '' ||
+                        (university?.country?.trim() !== '' &&
+                          university?.country !== 'undefined')
+                          ? ', '
+                          : '')
+                      : ''}
+                    {university?.address_line_2?.trim() !== ''
+                      ? university?.address_line_2?.trim() +
+                        (university?.city?.trim() !== '' ||
+                        university?.state?.trim() !== '' ||
+                        university?.zip?.trim() !== '' ||
+                        (university?.country?.trim() !== '' &&
+                          university?.country !== 'undefined')
+                          ? ', '
+                          : '')
+                      : ''}
+                    {university?.city?.trim() !== ''
+                      ? university?.city?.trim() +
+                        (university?.state?.trim() !== '' ||
+                        university?.zip?.trim() !== '' ||
+                        (university?.country?.trim() !== '' &&
+                          university?.country !== 'undefined')
+                          ? ', '
+                          : '')
+                      : ''}
+
+                    {university?.state?.trim() !== ''
+                      ? university?.state?.trim() +
+                        (university?.zip?.trim() !== '' ||
+                        (university?.country?.trim() !== '' &&
+                          university?.country !== 'undefined')
+                          ? ', '
+                          : '')
+                      : ''}
+
+                    {university?.zip?.trim() !== ''
+                      ? university?.zip?.trim() +
+                        (university?.country?.trim() !== '' &&
+                        university?.country !== 'undefined'
+                          ? ', '
+                          : '')
+                      : ''}
+                    {university?.country?.trim() &&
+                    university?.country !== 'undefined'
+                      ? university?.country?.trim()
+                      : ''}
                   </div>
                 </div>
                 <div className="univ-contact">
@@ -56,7 +124,16 @@ export default function UniversityContact() {
                         />
                       </svg>
                       <span>Visit Website</span>
-                      <a href="#">www.companywebsite.com</a>
+                      <Link
+                        href={
+                          university?.website
+                            ? university.website
+                            : 'https://www.companywebsite.com'
+                        }
+                        target="_blank"
+                      >
+                        {university?.website || 'www.companywebsite.com'}
+                      </Link>
                     </div>
                     <div className="contact-info-single">
                       <svg
@@ -74,7 +151,9 @@ export default function UniversityContact() {
                       <span>
                         <b>Phone:</b>
                       </span>
-                      <a href="tel:+60 3 9876 5432">+60 3 9876 5432</a>
+                      <Link href={university?.phone || 'tel:+60 3 9876 5432'}>
+                        {university?.phone || '+60 3 9876 5432'}
+                      </Link>
                     </div>
                     <div className="contact-info-single">
                       <svg
@@ -93,9 +172,14 @@ export default function UniversityContact() {
                         {' '}
                         <b>Email:</b>
                       </span>{' '}
-                      <a href="mailto:info@universiti-telekom.my">
-                        info@universiti-telekom.my
-                      </a>
+                      <Link
+                        href={
+                          university?.email ||
+                          'mailto:info@universiti-telekom.my'
+                        }
+                      >
+                        {university?.email || 'info@universiti-telekom.my'}
+                      </Link>
                     </div>
                     <div className="contact-info-single">
                       <svg
@@ -116,7 +200,14 @@ export default function UniversityContact() {
                       </svg>
                       <span>Follow Online</span>
                       <div className="contact-social-links">
-                        <a href="#" className="fb">
+                        <Link
+                          href={
+                            university?.social_links?.facebook ||
+                            'https://www.facebook.com'
+                          }
+                          target="_blank"
+                          className="fb"
+                        >
                           <svg
                             width="10"
                             height="15"
@@ -129,9 +220,16 @@ export default function UniversityContact() {
                               fill="#092A67"
                             />
                           </svg>
-                        </a>
+                        </Link>
 
-                        <a href="#" className="linkedin">
+                        <Link
+                          href={
+                            university?.social_links?.linkedin ||
+                            'https://www.linkedin.com'
+                          }
+                          target="_blank"
+                          className="linkedin"
+                        >
                           <svg
                             width="17"
                             height="15"
@@ -148,9 +246,16 @@ export default function UniversityContact() {
                               fill="#092A67"
                             />
                           </svg>
-                        </a>
+                        </Link>
 
-                        <a href="#" className="twitter">
+                        <Link
+                          href={
+                            university?.social_links?.twitter ||
+                            'https://www.twitter.com'
+                          }
+                          target="_blank"
+                          className="twitter"
+                        >
                           <svg
                             width="18"
                             height="15"
@@ -163,8 +268,15 @@ export default function UniversityContact() {
                               fill="#092A67"
                             />
                           </svg>
-                        </a>
-                        <a href="#" className="insta">
+                        </Link>
+                        <Link
+                          href={
+                            university?.social_links?.instagram ||
+                            'https://www.instagram.com'
+                          }
+                          target="_blank"
+                          className="insta"
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
@@ -176,7 +288,7 @@ export default function UniversityContact() {
                               d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4zm9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3"
                             />
                           </svg>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

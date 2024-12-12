@@ -7,7 +7,7 @@ const SponsorHome = ({ sponsorData }) => {
     sponsorData || new Array(10).fill({ logo: { url: sponsorImage1 } });
 
   return (
-    <section className="sponsor-section">
+    <section className="sponsor-section pb-5">
       <div className="sponsor-container">
         <div className="sponsor">
           <h3 className="sponsor-title">Sponsored By</h3>

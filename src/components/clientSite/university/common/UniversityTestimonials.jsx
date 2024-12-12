@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import userImage from '../../../../../public/assets/images/landing/testimonials/user-picture.jpg';
 
-const UniversityTestimonials = () => {
-    const image=null;
+const UniversityTestimonials = ({ university }) => {
+  const image = null;
   return (
     <section className="testimonial-section">
       <div className="testimonal-section-content">
@@ -12,28 +12,31 @@ const UniversityTestimonials = () => {
           Telekom Malaysia Berhad (TM) took a leap of faith by establishing the
           first private-owned higher learning institute.
         </p>
-        <div className="testimonial-feedback  d-flex flex-column flex-lg-row gap-3" >
+        <div className="testimonial-feedback  d-flex flex-column flex-lg-row gap-3">
           {/* testimonial card 1 */}
           <div className="feedback-card">
             <div className="feedback-card__header">
-             {
-                image?( <figure className="feedback-card__user-picture">
-                    <Image src={image} 
-                    alt="User Picture" 
+              {image ? (
+                <figure className="feedback-card__user-picture">
+                  <Image
+                    src={image}
+                    alt="User Picture"
                     width={80}
                     height={80}
-                    className='rounded-circle'
-                    />
-                  </figure>):( <figure className="feedback-card__user-picture">
-                <Image 
-                src={userImage}
-                alt="User Picture" 
-                width={80}
-                height={80}
-                className='rounded-circle'
-                />
-              </figure>)
-             }
+                    className="rounded-circle"
+                  />
+                </figure>
+              ) : (
+                <figure className="feedback-card__user-picture">
+                  <Image
+                    src={userImage}
+                    alt="User Picture"
+                    width={80}
+                    height={80}
+                    className="rounded-circle"
+                  />
+                </figure>
+              )}
               <div className="feedback-card__info">
                 <h5 className="feedback-card__user-name">Emanuel</h5>
                 <p className="feedback-card__user-designation">Supervisor</p>
@@ -98,27 +101,30 @@ const UniversityTestimonials = () => {
               the obligations of business it will frequently occur that ..
             </p>
           </div>
-           {/* testimonial card 2 */}
-           <div className="feedback-card">
+          {/* testimonial card 2 */}
+          <div className="feedback-card">
             <div className="feedback-card__header">
-             {
-                image?( <figure className="feedback-card__user-picture">
-                    <Image src={image} 
-                    alt="User Picture" 
+              {image ? (
+                <figure className="feedback-card__user-picture">
+                  <Image
+                    src={image}
+                    alt="User Picture"
                     width={80}
                     height={80}
-                    className='rounded-circle'
-                    />
-                  </figure>):( <figure className="feedback-card__user-picture">
-                <Image 
-                src={userImage}
-                alt="User Picture" 
-                width={80}
-                height={80}
-                className='rounded-circle'
-                />
-              </figure>)
-             }
+                    className="rounded-circle"
+                  />
+                </figure>
+              ) : (
+                <figure className="feedback-card__user-picture">
+                  <Image
+                    src={userImage}
+                    alt="User Picture"
+                    width={80}
+                    height={80}
+                    className="rounded-circle"
+                  />
+                </figure>
+              )}
               <div className="feedback-card__info">
                 <h5 className="feedback-card__user-name">Emanuel</h5>
                 <p className="feedback-card__user-designation">Supervisor</p>
@@ -183,27 +189,30 @@ const UniversityTestimonials = () => {
               the obligations of business it will frequently occur that ..
             </p>
           </div>
-           {/* testimonial card 3 */}
-           <div className="feedback-card">
+          {/* testimonial card 3 */}
+          <div className="feedback-card">
             <div className="feedback-card__header">
-             {
-                image?( <figure className="feedback-card__user-picture">
-                    <Image src={image} 
-                    alt="User Picture" 
+              {image ? (
+                <figure className="feedback-card__user-picture">
+                  <Image
+                    src={image}
+                    alt="User Picture"
                     width={80}
                     height={80}
-                    className='rounded-circle'
-                    />
-                  </figure>):( <figure className="feedback-card__user-picture">
-                <Image 
-                src={userImage}
-                alt="User Picture" 
-                width={80}
-                height={80}
-                className='rounded-circle'
-                />
-              </figure>)
-             }
+                    className="rounded-circle"
+                  />
+                </figure>
+              ) : (
+                <figure className="feedback-card__user-picture">
+                  <Image
+                    src={userImage}
+                    alt="User Picture"
+                    width={80}
+                    height={80}
+                    className="rounded-circle"
+                  />
+                </figure>
+              )}
               <div className="feedback-card__info">
                 <h5 className="feedback-card__user-name">Emanuel</h5>
                 <p className="feedback-card__user-designation">Supervisor</p>

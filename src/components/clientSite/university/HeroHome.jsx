@@ -10,7 +10,6 @@ export default function HeroHome({ university }) {
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
   };
-  console.log(university);
 
   return (
     <section className="hero-section">

@@ -24,7 +24,7 @@ export default function SingleUniversityHome() {
     }
   }, [universityData, id]);
 
-  console.log(university);
+
 
   return (
     <UniversityLayout>
