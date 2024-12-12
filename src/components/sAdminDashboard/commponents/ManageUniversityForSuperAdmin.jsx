@@ -1,4 +1,4 @@
-
+import UniversitySponsorsForm from '@/components/common/alldashboardCommon/UniversitySponsorsForm';
 import UniversitySponsorsList from '@/components/university/UniversitySponsorsList';
 import DescriptionCardForm from '@/components/common/DescriptionFormCardCom';
 import FAQCardForm from '@/components/common/FAQCardForm';
