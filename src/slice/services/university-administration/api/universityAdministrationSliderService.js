@@ -29,8 +29,20 @@ export const universityAdministrationSliderService = createApi({
         };
       },
     }),
+    deleteUniversitySlider: builder.mutation({
+      query: ({ university_id, slider_id }) => {
+        return {
+          url: `/${university_id}/website/slider/${slider_id} `,
+          method: 'DELETE',
+        };
+      },
+    }),
   }),
 });
 
-export const { useUpdateUniversitySliderMutation } =
+export const { 
+  useUpdateUniversitySliderMutation ,
+  useDeleteUniversitySliderMutation
+
+} =
   universityAdministrationSliderService;

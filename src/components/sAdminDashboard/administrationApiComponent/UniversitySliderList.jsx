@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Col,
   DropdownItem,
@@ -12,10 +12,11 @@ import { toast } from 'react-toastify';
 
 import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-
-import { useUpdateUniversityFaqMutation } from '@/slice/services/university-administration/api/universityAdministrationFaqService';
 import UniversitysliderModalForm from './modals/UniversitysliderModalForm';
-import { useUpdateUniversitySliderMutation } from '@/slice/services/university-administration/api/universityAdministrationSliderService';
+import {
+  useDeleteUniversitySliderMutation,
+  useUpdateUniversitySliderMutation,
+} from '@/slice/services/university-administration/api/universityAdministrationSliderService';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Image from 'next/image';
 
@@ -72,9 +73,9 @@ export default function UniversitySliderList({ university_id }) {
     skip: !university_id,
   });
 
-  console.log('get sigle university data==>', getSingleUniversityData);
-
+ 
   const [updateUniversitySlider] = useUpdateUniversitySliderMutation();
+  const [deleteUniversitySlider] = useDeleteUniversitySliderMutation();
 
   const handleEditButtonClick = (id) => {
     const fetchAndSetSliderData = async () => {
@@ -114,6 +115,20 @@ export default function UniversitySliderList({ university_id }) {
     // Update component state to open modal and set ID
     setsliderId(id);
     setEditModalIsOpen(true);
+  };
+
+  const handleDeleteButtonClick = async (id) => {
+    const deleteData = { university_id, slider_id: id };
+    try {
+      const result = await deleteUniversitySlider(deleteData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleUniversityRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    }
   };
 
   const handleSliderSubmit = async (values, { setSubmitting }) => {
@@ -213,10 +228,10 @@ export default function UniversitySliderList({ university_id }) {
     { title: 'Title', key: 'title' },
     { title: 'Sub Title', key: 'sub_title' },
     { title: 'Description', key: 'description' },
-    { title: 'Button_1 Text', key: 'button_1_text' },
-    { title: 'Button_1 Link', key: 'button_1_link' },
-    { title: 'Button_1 Link', key: 'button_2_text' },
-    { title: 'Button_2 Link', key: 'button_2_link' },
+    { title: 'Button One Text', key: 'button_1_text' },
+    { title: 'Button One Link', key: 'button_1_link' },
+    { title: 'Button Two Text', key: 'button_2_text' },
+    { title: 'Button Two Link', key: 'button_2_link' },
 
     {
       title: 'Action',
@@ -240,6 +255,15 @@ export default function UniversitySliderList({ university_id }) {
               >
                 <i className="ri-pencil-fill align-start me-2 text-muted"></i>
                 Edit
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                className="text-primary"
+                onClick={() => handleDeleteButtonClick(item?._id)}
+              >
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Delete
               </div>
             </DropdownItem>
           </DropdownMenu>
