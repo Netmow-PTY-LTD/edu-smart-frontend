@@ -90,7 +90,7 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
         onChange={handleFileChange}
         className="form-control"
       />
-      <div className="mt-4">
+      <div className="my-4">
         {previewImages.length > 0 && (
           <div className="d-flex flex-wrap">
             {previewImages.map((src, index) => (

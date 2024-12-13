@@ -28,6 +28,15 @@ export const universityAdministrationFaqService = createApi({
         };
       },
     }),
+   deleteUniversityFaq: builder.mutation({
+      query: ({university_id,faq_id}) => {
+        return {
+          url: `/${university_id}/website/faq/${faq_id} `,
+          method: 'DELETE',
+        
+        };
+      },
+    }),
 
 
     
@@ -35,5 +44,6 @@ export const universityAdministrationFaqService = createApi({
 });
 
 export const {
- useUpdateUniversityFaqMutation
+ useUpdateUniversityFaqMutation,
+ useDeleteUniversityFaqMutation
 } =  universityAdministrationFaqService;
