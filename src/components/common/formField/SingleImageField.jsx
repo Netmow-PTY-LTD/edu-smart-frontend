@@ -10,9 +10,11 @@ const isValidImage = (file) => {
 
 const SingleImageField = ({ field, form, label, ...props }) => {
   const [previewImage, setPreviewImage] = useState(null);
-
+//   console.log( 'into single image  file =>', form.values.image)
+//   console.log( 'into single image  field =>', field)
   useEffect(() => {
     const file = form.values[field.name];
+ 
     if (file && isValidImage(file)) {
       const reader = new FileReader();
       reader.onloadend = () => {
