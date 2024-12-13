@@ -78,17 +78,19 @@ const PlayerSidebarData = () => {
           id: 'alluniversity',
           label: 'All University',
           icon: 'ri-government-fill',
-          link: '/dashboard/student/all-university-for-student',
-          pathName: '/dashboard/student/all-university-for-student',
+          link: '/dashboard/student/university-management/all-university-for-student',
+          pathName:
+            '/dashboard/student/university-management/all-university-for-student',
           parentId: 'university',
         },
 
         {
           id: 'applieduniversity',
           label: 'Applied University',
-          link: '/dashboard/student/applied-university-for-student',
+          link: '/dashboard/student/university-management/applied-university-for-student',
           icon: 'ri-building-4-fill',
-          pathName: '/dashboard/student/applied-university-for-student',
+          pathName:
+            '/dashboard/student/university-management/applied-university-for-student',
           parentId: 'university',
         },
       ],

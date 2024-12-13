@@ -12,7 +12,7 @@ const AllOverviewInfoCard = ({ data }) => {
               <tbody>
                 <tr>
                   <th className="ps-0" scope="row">
-                    Full Name
+                    Name
                   </th>
 
                   <td className="text-muted text-wrap d-flex">
@@ -24,7 +24,7 @@ const AllOverviewInfoCard = ({ data }) => {
                 </tr>
                 <tr>
                   <th className="ps-0" scope="row">
-                    Mobile
+                    Phone
                   </th>
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>

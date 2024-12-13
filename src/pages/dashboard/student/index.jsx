@@ -23,7 +23,6 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-
     if (token) {
       setIsAuthenticated(true);
     } else {

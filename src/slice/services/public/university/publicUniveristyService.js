@@ -20,7 +20,14 @@ export const publicUniversityService = createApi({
         method: 'GET',
       }),
     }),
+    getsingleUniversity: builder.query({
+      query: (university_id) => ({
+        url: `/university/${university_id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetAllUniversityQuery } = publicUniversityService;
+export const { useGetAllUniversityQuery, useGetsingleUniversityQuery } =
+  publicUniversityService;
