@@ -19,6 +19,7 @@ import {
 } from '@/slice/services/university-administration/api/universityAdministrationSliderService';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Image from 'next/image';
+import SearchComponent from '@/components/common/SearchComponent';
 
 export default function UniversitySliderList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -26,6 +27,7 @@ export default function UniversitySliderList({ university_id }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [perPageData, setPerPageData] = useState(5);
   const [sliderId, setsliderId] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [initialValues, setInitialValues] = useState({
     title: '',
     sub_title: '',
@@ -36,6 +38,8 @@ export default function UniversitySliderList({ university_id }) {
     button_2_link: '',
     images: '',
   });
+
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Titlle is required'),
@@ -73,7 +77,6 @@ export default function UniversitySliderList({ university_id }) {
     skip: !university_id,
   });
 
- 
   const [updateUniversitySlider] = useUpdateUniversitySliderMutation();
   const [deleteUniversitySlider] = useDeleteUniversitySliderMutation();
 
@@ -272,32 +275,44 @@ export default function UniversitySliderList({ university_id }) {
     },
   ];
 
+  const filteredData =
+    getSingleUniversityData?.data?.sliders?.length > 0 &&
+    getSingleUniversityData?.data?.sliders.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
   return (
     <Col lg={10}>
       <div className="align-items-center d-flex fw-semibold card-header">
-        <h4 className="fw-semibold fs-20 text-black mb-0">sliders List</h4>
-        <button
-          className="button px-4 py-3"
-          onClick={() => {
-            setInitialValues({
-              title: '',
-              sub_title: '',
-              description: '',
-              button_1_text: '',
-              button_1_link: '',
-              button_2_text: '',
-              button_2_link: '',
-              images: '',
-            });
-            setAddModalIsOpen(!addModalIsOpen);
-          }}
-        >
-          Add Slider info
-        </button>
+        <div className="d-flex align-items-center gap-4">
+          <h4 className="fw-semibold fs-20 text-black mb-0">Sliders List</h4>
+          <button
+            className="button px-4 py-3"
+            onClick={() => {
+              setInitialValues({
+                title: '',
+                sub_title: '',
+                description: '',
+                button_1_text: '',
+                button_1_link: '',
+                button_2_text: '',
+                button_2_link: '',
+                images: '',
+              });
+              setAddModalIsOpen(!addModalIsOpen);
+            }}
+          >
+            Add Slider info
+          </button>
+        </div>
+        <SearchComponent
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
+        />
       </div>
       <CommonTableComponent
         headers={slidersHeaders}
-        data={getSingleUniversityData?.data?.sliders}
+        data={filteredData}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         perPageData={perPageData}
