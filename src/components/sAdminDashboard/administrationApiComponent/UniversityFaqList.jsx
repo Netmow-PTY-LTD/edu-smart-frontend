@@ -16,7 +16,7 @@ import {
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 
 import UniversityFaqModalForm from './modals/FaqModalForm';
-import { useUpdateUniversityFaqMutation } from '@/slice/services/university-administration/api/universityAdministrationFaqService';
+import { useDeleteUniversityFaqMutation, useUpdateUniversityFaqMutation } from '@/slice/services/university-administration/api/universityAdministrationFaqService';
 
 export default function UniversityFaqList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -34,6 +34,7 @@ export default function UniversityFaqList({ university_id }) {
   });
 
   const [universityFaq] = useUpdateUniversityFaqMutation();
+  const [deleteUniversityFAQ] = useDeleteUniversityFaqMutation();
   const {
     data: getSingleUniversityData,
     isLoading: getSingleUniversityIsLoading,
@@ -56,6 +57,19 @@ export default function UniversityFaqList({ university_id }) {
     setEditModalIsOpen(true);
   };
 
+  const handleDeleteButtonClick = async (id) => {
+    const deleteData = { university_id, faq_id: id };
+    try {
+      const result = await deleteUniversityFAQ(deleteData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleUniversityRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    }
+  };
 
   const handleFaqSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
@@ -135,6 +149,15 @@ export default function UniversityFaqList({ university_id }) {
               >
                 <i className="ri-pencil-fill align-start me-2 text-muted"></i>
                 Edit
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                className="text-primary"
+                onClick={() => handleDeleteButtonClick(item?._id)}
+              >
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Delete
               </div>
             </DropdownItem>
           </DropdownMenu>
