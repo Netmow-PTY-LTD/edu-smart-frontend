@@ -7,11 +7,13 @@ import {
   useDeleteUniversityMutation,
   useGetUniversityQuery,
 } from '@/slice/services/super admin/universityService';
-import { userDummyImage } from '@/utils/common/data';
+import {
+  superAdminNameAndLogoData,
+  universityHeadersWithoutAction,
+} from '@/utils/common/data';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -28,6 +30,8 @@ const AllUniversityForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
+  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
+    useState('');
   const perPageData = 10;
 
   const {
@@ -77,140 +81,61 @@ const AllUniversityForSuperAdmin = () => {
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  // university table data
-  const headers = [
-    {
-      title: 'Logo',
-      key: 'logo',
-      render: (item) => (
-        <div className="d-flex align-items-center me-5">
-          <div className="flex-shrink-0 me-1">
+  const alluniversityHeaderAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown className="card-header-dropdown">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+          <DropdownItem>
             <Link
               href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
-              className="text-reset"
+              className="text-primary"
             >
-              <Image
-                src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
-                alt="User"
-                height={60}
-                width={60}
-                className="avatar-md p-1 me-3 align-middle rounded-circle"
-              />
+              <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
+              Manage
             </Link>
-          </div>
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
-              <Link
-                href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
-                className="text-reset"
-              >
-                {`${item.name} `}
-              </Link>
-            </h5>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-    { title: 'Code', key: 'code' },
-    {
-      title: 'Address',
-      key: 'address',
-      render: (item) => (
-        <div className="d-flex gap-2">
-          <div className="text-capitalize">
-            <span className="me-2">
-              {item?.address_line_1 ? item?.address_line_1 + ',' : '' || '-'}
-            </span>
-            <span className="me-2">
-              {item?.address_line_2 ? item?.address_line_2 + ',' : '' || '-'}
-            </span>
-          </div>
-          <div className="text-capitalize">
-            <span className="me-2">
-              {item?.city ? item?.city + ',' : '' || '-'}
-            </span>
-            <span className="me-2">
-              {item?.state ? item?.state + ',' : '' || '-'}
-            </span>
-          </div>
-          <div className="text-capitalize">
-            <span className="me-2">
-              {item?.zip ? item?.zip + ',' : '' || '-'}
-            </span>
-            <span className="me-2">{item?.country || '-'}</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      render: (item) => (
-        <>
-          <span
-            className={`border rounded-4 px-4 py-2 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
-          >
-            {item?.status ?? '-'}
-          </span>
-        </>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'actions',
-      render: (item) => (
-        <UncontrolledDropdown className="card-header-dropdown">
-          <DropdownToggle
-            tag="a"
-            className="text-reset dropdown-btn"
-            role="button"
-          >
-            <span className="button px-3">
-              <i className="ri-more-fill align-middle"></i>
-            </span>
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
-            <DropdownItem>
-              <Link
-                href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
-                className="text-primary"
-              >
-                <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-                Manage
-              </Link>
-            </DropdownItem>
-            <DropdownItem>
-              <Link
-                href={`/dashboard/super-admin/university-management/edit-university/${item?._id}`}
-                className="text-primary"
-              >
-                <i className="ri-pencil-fill align-start me-2 text-muted"></i>
-                Edit
-              </Link>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() => handleDeleteButtonClick(item._id)}
-                className="text-primary"
-              >
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                Delete
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      ),
-    },
-  ];
+          </DropdownItem>
+          <DropdownItem>
+            <Link
+              href={`/dashboard/super-admin/university-management/edit-university/${item?._id}`}
+              className="text-primary"
+            >
+              <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+              Edit
+            </Link>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => handleDeleteButtonClick(item._id)}
+              className="text-primary"
+            >
+              <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+              Delete
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
+
+  useEffect(() => {
+    setAllRegisteredUniversitydata([
+      superAdminNameAndLogoData,
+      ...universityHeadersWithoutAction,
+      alluniversityHeaderAction,
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Layout>
@@ -240,7 +165,7 @@ const AllUniversityForSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={headers}
+                    headers={allRegisteredUniversitydata}
                     data={isfilteredData ? isfilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

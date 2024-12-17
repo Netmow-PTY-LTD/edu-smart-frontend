@@ -2,7 +2,6 @@ import UniversityLayoutBanner from '@/components/clientSite/university/common/Un
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
 import UniversityList from '@/components/clientSite/university/UniversityList';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
-import Image from 'next/image';
 import React from 'react';
 
 export default function UniversityHome() {
