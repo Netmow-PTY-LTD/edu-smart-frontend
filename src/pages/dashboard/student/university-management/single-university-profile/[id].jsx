@@ -5,7 +5,17 @@ import { useGetsingleUniversityQuery } from '@/slice/services/public/university/
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Container,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+} from 'reactstrap';
 
 const SingleuniversityProfileForStudent = () => {
   const router = useRouter();
@@ -85,15 +95,41 @@ const SingleuniversityProfileForStudent = () => {
 
               {activeTab === '1' && (
                 <Row>
-                  {getSingleUniversityDataForStudent?.data?.courses?.length >
-                    0 &&
-                    getSingleUniversityDataForStudent?.data?.courses.map(
-                      (item, index) => (
-                        <Col key={index} lg={3}>
-                          <CourseCardComponent item={item} />
-                        </Col>
-                      )
-                    )}
+                  <Col lg={3}>
+                    <Card>
+                      <CardHeader>Hello</CardHeader>
+                      <CardBody>
+                        <div>All Department</div>
+                        <div className="d-flex flex-column align-items-start justify-content-start gap-3">
+                          <input type="checkbox" name="CSE" id="" />
+                          <input type="checkbox" name="EEE" id="" />
+                          <input type="checkbox" name="ME" id="" />
+                          <input type="checkbox" name="IPE" id="" />
+                          <input type="checkbox" name="CIVIL" id="" />
+                        </div>
+                        <hr />
+                        <div>All Programs</div>
+                        <div className="d-flex flex-column align-items-start justify-content-start gap-3">
+                          <input type="checkbox" name="CSE" id="" />
+                          <input type="checkbox" name="EEE" id="" />
+                          <input type="checkbox" name="ME" id="" />
+                          <input type="checkbox" name="IPE" id="" />
+                          <input type="checkbox" name="CIVIL" id="" />
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg={9}>
+                    {getSingleUniversityDataForStudent?.data?.courses?.length >
+                      0 &&
+                      getSingleUniversityDataForStudent?.data?.courses.map(
+                        (item, index) => (
+                          <Row key={index} lg={3}>
+                            <CourseCardComponent item={item} />
+                          </Row>
+                        )
+                      )}
+                  </Col>
                 </Row>
               )}
             </Row>
