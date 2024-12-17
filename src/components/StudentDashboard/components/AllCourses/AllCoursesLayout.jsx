@@ -1,8 +1,8 @@
-
 import CourseCardComponent from '@/components/common/CourseCardComponent';
 import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import FilterTags from './FilterTagsComponentAllCourses';
 
 const AllCoursesLayout = ({ university_id }) => {
   const {
@@ -47,7 +47,8 @@ const AllCoursesLayout = ({ university_id }) => {
       selectedDepartments.includes(course.department);
 
     const matchesProgram =
-      selectedPrograms.length === 0 || selectedPrograms.includes(course.program);
+      selectedPrograms.length === 0 ||
+      selectedPrograms.includes(course.program);
 
     return matchesDepartment && matchesProgram;
   });
@@ -55,20 +56,20 @@ const AllCoursesLayout = ({ university_id }) => {
   return (
     <Row>
       {/* Sidebar with filters */}
-      <Col lg={3} className="">
+      <Col lg={3}>
         <Card>
           <CardHeader>Filter Courses</CardHeader>
           <CardBody>
             {/* Department Filters */}
             <div>All Departments</div>
             <div className="d-flex flex-column align-items-start justify-content-start gap-3">
-              {["CSE", "EEE", "ME", "IPE", "CIVIL"].map((dept) => (
+              {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((dept) => (
                 <label key={dept}>
                   <input
                     type="checkbox"
                     name={dept}
                     onChange={handleDepartmentChange}
-                  />{" "}
+                  />{' '}
                   {dept}
                 </label>
               ))}
@@ -77,13 +78,13 @@ const AllCoursesLayout = ({ university_id }) => {
             {/* Program Filters */}
             <div>All Programs</div>
             <div className="d-flex flex-column align-items-start justify-content-start gap-3">
-              {["CSE", "EEE", "ME", "IPE", "CIVIL"].map((program) => (
+              {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((program) => (
                 <label key={program}>
                   <input
                     type="checkbox"
                     name={program}
                     onChange={handleProgramChange}
-                  />{" "}
+                  />{' '}
                   {program}
                 </label>
               ))}
@@ -94,6 +95,8 @@ const AllCoursesLayout = ({ university_id }) => {
 
       {/* Main Content Area */}
       <Col lg={9}>
+        <FilterTags/>
+
         <Row>
           {filteredCourses.length > 0 ? (
             filteredCourses.map((item, index) => (
@@ -102,7 +105,9 @@ const AllCoursesLayout = ({ university_id }) => {
               </Col>
             ))
           ) : (
-            <p className='text-warning' >No courses available for the selected filters.</p>
+            <p className="text-warning">
+              No courses available for the selected filters.
+            </p>
           )}
         </Row>
       </Col>
