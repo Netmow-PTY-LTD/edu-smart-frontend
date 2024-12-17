@@ -3,12 +3,14 @@ import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import {
   useAddCourseMutation,
   useDeleteCourseMutation,
   useGetCourseQuery,
   useUpdateCourseMutation,
 } from '@/slice/services/super admin/courseService';
+import { allowedFileTypes } from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -37,6 +39,7 @@ const AllCourseForSuperAdmin = ({
   const [courseIdForDelete, setCourseIdForDelete] = useState(null);
   const [allDepartmentName, setAllDepartmentName] = useState(null);
   const [allCategoryName, setAllCategoryName] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
 
   const perPageData = 10;
 
@@ -51,6 +54,9 @@ const AllCourseForSuperAdmin = ({
     description: '',
     department: '',
     category: '',
+    brochure: null,
+    entry_requirements: [''],
+    english_requirements: [''],
   });
 
   const [
@@ -121,6 +127,9 @@ const AllCourseForSuperAdmin = ({
 
       const fetchData = async () => {
         try {
+          const brochureFile = convertImageUrlToFile(
+            getSingleCourseData?.brochure?.url
+          );
           setInitialValues({
             name: getSingleCourseData?.name || '',
             available_seats: getSingleCourseData?.available_seats || '',
@@ -140,11 +149,15 @@ const AllCourseForSuperAdmin = ({
                   value: getSingleCourseData?.category?._id,
                 }
               : '' || '',
+            brochure: brochureFile || '',
             description: getSingleCourseData?.description || '',
+            entry_requirements: getSingleCourseData?.entry_requirements || '',
+            english_requirements: getSingleCourseData?.english_requirements || '',
           });
           setEditModalIsOpen(true);
+          setFilePreview(brochureFile);
         } catch (error) {
-          console.error('Error loading data:', error);
+          // console.error('Error loading data:', error);
         }
       };
 
@@ -180,13 +193,26 @@ const AllCourseForSuperAdmin = ({
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    const allData = {
+      ...values,
+      university_id: university_id,
+      department_id: values?.department,
+      category_id: values?.category,
+    };
+
     try {
-      const finalData = {
-        ...values,
-        university_id: university_id,
-        department_id: values?.department,
-        category_id: values?.category,
-      };
+      const finalData = new FormData();
+      Object.entries(allData).forEach(([key, value]) => {
+        if (key === 'entry_requirements' || key === 'english_requirements') {
+          finalData.append(key, JSON.stringify(value));
+        } else {
+          finalData.append(key, value);
+        }
+      });
+
+      console.log(finalData);
+
       const result = await addCourse(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
@@ -225,7 +251,7 @@ const AllCourseForSuperAdmin = ({
   const handleUpdateCourse = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    const finalData = {
+    const allData = {
       name: values?.name,
       available_seats: values?.available_seats,
       price_for_student: values?.price_for_student,
@@ -237,9 +263,20 @@ const AllCourseForSuperAdmin = ({
       university_id: university_id,
       department_id: values?.department,
       category_id: values?.category,
+      brochure: values?.brochure,
+      entry_requirements: values?.entry_requirements,
+      english_requirements: values?.english_requirements,
     };
 
     try {
+      const finalData = new FormData();
+      Object.entries(allData).forEach(([key, value]) => {
+        if (key === 'entry_requirements' || key === 'english_requirements') {
+          finalData.append(key, JSON.stringify(value));
+        } else {
+          finalData.append(key, value);
+        }
+      });
       const result = await updateCourse(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
@@ -282,6 +319,21 @@ const AllCourseForSuperAdmin = ({
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
+  const handleFileChange = (e, setFieldValue) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!allowedFileTypes.includes(file.type)) {
+        toast.error(
+          'Invalid file type. Only PDF, DOCX, DOC, or Excel files are allowed.'
+        );
+        return;
+      }
+
+      setFieldValue('brochure', file);
+      setFilePreview(file.name);
+    }
+  };
+
   // Filter data for search option
   const isfilteredData =
     getCourseData?.data?.length > 0 &&
@@ -289,7 +341,7 @@ const AllCourseForSuperAdmin = ({
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  console.log(isfilteredData);
+  // console.log(isfilteredData);
 
   // Define table headers with custom render functions
   const headers = [
@@ -419,11 +471,14 @@ const AllCourseForSuperAdmin = ({
               }}
               onSubmit={handleSubmit}
               initialValues={initialValues}
-              validationSchema={validationSchema}
+              // validationSchema={validationSchema}
               formSubmit={'Submit'}
               allDepartmentName={allDepartmentName}
               allCategoryName={allCategoryName}
               setInitialValues={setInitialValues}
+              handleFileChange={handleFileChange}
+              filePreview={filePreview}
+              setFilePreview={setFilePreview}
             />
             <SearchComponent
               searchTerm={searchTerm}

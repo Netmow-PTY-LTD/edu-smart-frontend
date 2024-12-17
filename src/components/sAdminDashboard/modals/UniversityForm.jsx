@@ -5,7 +5,7 @@ import NumberField from '@/components/common/formField/NumberField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
-import { brandlogo } from '@/utils/common/data';
+import { allowedFileTypes, brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
@@ -28,14 +28,6 @@ const UniversityForm = ({
 }) => {
   const options = useMemo(() => countryList().getData(), []);
 
-  const allowedTypes = [
-    'application/pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/msword',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  ];
-
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
     if (file) {
@@ -49,7 +41,7 @@ const UniversityForm = ({
   const handleSsmFileChange = (e, setFieldValue) => {
     const file = e.target.files[0];
     if (file) {
-      if (!allowedTypes.includes(file.type)) {
+      if (!allowedFileTypes.includes(file.type)) {
         toast.error(
           'Invalid file type. Only PDF, DOCX, DOC, or Excel files are allowed.'
         );
@@ -64,7 +56,7 @@ const UniversityForm = ({
   const handleGovtFileChange = (e, setFieldValue) => {
     const file = e.target.files[0];
     if (file) {
-      if (!allowedTypes.includes(file.type)) {
+      if (!allowedFileTypes.includes(file.type)) {
         toast.error(
           'Invalid file type. Only PDF, DOCX, DOC, or Excel files are allowed.'
         );

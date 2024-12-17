@@ -17,9 +17,9 @@ export const courseService = createApi({
   endpoints: (builder) => ({
     addCourse: builder.mutation({
       query: (body) => {
-        const university_id = body?.university_id;
-        const department_id = body?.department_id;
-        const category_id = body?.category_id;
+        const university_id = body.get('university_id');
+        const department_id = body.get('department_id');
+        const category_id = body.get('category_id');
         return {
           url: `/${university_id}/department/${department_id}/category/${category_id}/course`,
           method: 'POST',
