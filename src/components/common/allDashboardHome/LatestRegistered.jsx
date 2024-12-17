@@ -1,12 +1,11 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
-
 import CommonTableComponent from '../CommonTableComponent';
 
 const LatestRegistered = ({ data, headers, tableHead }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [perPageData, setPerPageData] = useState(5);
+  const latestData = Array.isArray(data) ? data.slice(0, 5) : [];
 
   return (
     <Card>
@@ -17,7 +16,7 @@ const LatestRegistered = ({ data, headers, tableHead }) => {
       <CardBody>
         <CommonTableComponent
           headers={headers}
-          data={data}
+          data={latestData}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           perPageData={perPageData}

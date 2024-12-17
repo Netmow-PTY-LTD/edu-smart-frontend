@@ -5,7 +5,12 @@ import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import { agentsHeadersWithoutAction, studentsHeadersWithoutAction, universityHeadersWithoutAction } from '@/utils/common/data';
+import {
+  agentsHeadersWithoutAction,
+  studentsHeadersWithoutAction,
+  superAdminNameAndLogoData,
+  universityHeadersWithoutAction,
+} from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
@@ -15,7 +20,8 @@ import { Col, Row } from 'reactstrap';
 
 const SuperAdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
+    useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
   const { data: getUniversityData } = useGetUniversityQuery();
   const { data: allAgentsData } = useGetAllAgentQuery();
@@ -28,6 +34,13 @@ const SuperAdminDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
+  }, []);
+
+  useEffect(() => {
+    setAllRegisteredUniversitydata([
+      superAdminNameAndLogoData,
+      ...universityHeadersWithoutAction,
+    ]);
   }, []);
 
   return (
@@ -55,7 +68,7 @@ const SuperAdminDashboard = () => {
                   <Col xxl={12}>
                     <LatestRegistered
                       tableHead={'Latest Registered University'}
-                      headers={universityHeadersWithoutAction}
+                      headers={allRegisteredUniversitydata}
                       data={
                         getUniversityData?.data ? getUniversityData?.data : []
                       }

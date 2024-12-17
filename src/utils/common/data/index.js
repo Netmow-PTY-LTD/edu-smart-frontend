@@ -7,41 +7,74 @@ const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
 
-// all univeresity header
-const universityHeadersWithoutAction = [
-  {
-    title: 'Logo - Name',
-    key: 'logo',
-    render: (item) => (
-      <div className="d-flex align-items-center me-5">
-        <div className="flex-shrink-0 me-1">
+const superAdminNameAndLogoData = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
           <Link
             href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
             className="text-reset"
           >
-            <Image
-              src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
+            {`${item.name} `}
           </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
-              className="text-reset"
-            >
-              {`${item.name} `}
-            </Link>
-          </h5>
-        </div>
+        </h5>
       </div>
-    ),
-  },
+    </div>
+  ),
+};
 
+const studentAndLogoData = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/student/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/student/university-management/single-university-profile/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.name} `}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+
+// all univeresity header
+const universityHeadersWithoutAction = [
   {
     title: 'Description',
     key: 'description',
@@ -51,7 +84,7 @@ const universityHeadersWithoutAction = [
       </p>
     ),
   },
-  { title: 'Code', key: 'code' },
+
   {
     title: 'Address',
     key: 'address',
@@ -96,6 +129,7 @@ const universityHeadersWithoutAction = [
     ),
   },
 ];
+
 // all agent header
 const agentsHeadersWithoutAction = [
   {
@@ -495,7 +529,9 @@ export {
   departmentHeaders,
   edulogo,
   profileBg,
+  studentAndLogoData,
   studentsHeadersWithoutAction,
+  superAdminNameAndLogoData,
   supperAdminWidgetsData,
   teamDummyImage,
   universityHeadersWithoutAction,
