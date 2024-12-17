@@ -95,11 +95,18 @@ const SingleuniversityProfileForStudent = () => {
               </div>
 
               {activeTab === '1' && (
-               <AllCoursesLayout university_id={university_id} />
+                
+
+                 <div style={{marginTop:"130px"}}>
+                     <AllCoursesLayout university_id={university_id} />
+                 </div>
+             
+             
               )}
             </Row>
           </Container>
         </div>
+       
       </div>
     </Layout>
   );

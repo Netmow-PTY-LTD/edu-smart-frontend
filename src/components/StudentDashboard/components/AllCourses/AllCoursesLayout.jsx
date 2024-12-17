@@ -55,62 +55,67 @@ const AllCoursesLayout = ({ university_id }) => {
 
   return (
     <Row>
-      {/* Sidebar with filters */}
-      <Col lg={3}>
-        <Card>
-          <CardHeader>Filter Courses</CardHeader>
-          <CardBody>
-            {/* Department Filters */}
-            <div>All Departments</div>
-            <div className="d-flex flex-column align-items-start justify-content-start gap-3">
-              {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((dept) => (
-                <label key={dept}>
-                  <input
-                    type="checkbox"
-                    name={dept}
-                    onChange={handleDepartmentChange}
-                  />{' '}
-                  {dept}
-                </label>
-              ))}
-            </div>
-            <hr />
-            {/* Program Filters */}
-            <div>All Programs</div>
-            <div className="d-flex flex-column align-items-start justify-content-start gap-3">
-              {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((program) => (
-                <label key={program}>
-                  <input
-                    type="checkbox"
-                    name={program}
-                    onChange={handleProgramChange}
-                  />{' '}
-                  {program}
-                </label>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-      </Col>
+      <Row>
+        <FilterTags />
+      </Row>
+      <Row>
+        {/* Sidebar with filters */}
+        <Col lg={3}>
+          <Card>
+            <CardHeader>Filter Courses</CardHeader>
+            <CardBody>
+              {/* Department Filters */}
+              <div>All Departments</div>
+              <div className="d-flex flex-column align-items-start justify-content-start gap-3">
+                {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((dept) => (
+                  <label key={dept}>
+                    <input
+                      type="checkbox"
+                      name={dept}
+                      onChange={handleDepartmentChange}
+                    />{' '}
+                    {dept}
+                  </label>
+                ))}
+              </div>
+              <hr />
+              {/* Program Filters */}
+              <div>All Programs</div>
+              <div className="d-flex flex-column align-items-start justify-content-start gap-3">
+                {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((program) => (
+                  <label key={program}>
+                    <input
+                      type="checkbox"
+                      name={program}
+                      onChange={handleProgramChange}
+                    />{' '}
+                    {program}
+                  </label>
+                ))}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
 
-      {/* Main Content Area */}
-      <Col lg={9}>
-        <FilterTags/>
+        {/* Main Content Area */}
+        <Col lg={9}>
+          {/* <FilterTags/> */}
 
-        <Row>
-          {filteredCourses.length > 0 ? (
-            filteredCourses.map((item, index) => (
-              <Col lg={4} md={6} sm={12} className="mb-4" key={index}>
-                <CourseCardComponent item={item} />
-              </Col>
-            ))
-          ) : (
-            <p className="text-warning">
-              No courses available for the selected filters.
-            </p>
-          )}
-        </Row>
-      </Col>
+          <Row>
+            {filteredCourses.length > 0 ? (
+              filteredCourses.map((item, index) => (
+                <Col lg={4} md={6} sm={12} className="mb-4" key={index}>
+                  <CourseCardComponent item={item} />
+                </Col>
+              ))
+            ) : (
+              <p className="text-warning">
+                No courses available for the selected filters.
+              </p>
+            )}
+          </Row>
+        </Col>
+      </Row>
     </Row>
   );
 };
