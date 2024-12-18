@@ -17,7 +17,7 @@ const AllCoursesLayout = ({ university_id }) => {
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       setDebouncedFilters(selectedValue);
-    }, 300); // Adjust debounce time as needed
+    }, 100); // Adjust debounce time as needed
 
     return () => clearTimeout(debounceTimeout);
   }, [selectedValue]);
@@ -35,7 +35,7 @@ const AllCoursesLayout = ({ university_id }) => {
     isLoading: getSingleUniversityCourseIsLoadingForStudent,
     refetch: getSingleUniversityCoursesForStudentRefetch,
   } = useFilterUniversityCoursesQuery(
-    { university_id, args: selectedValue },
+    { university_id, args: debouncedFilters },
     {
       skip: !university_id,
     }
