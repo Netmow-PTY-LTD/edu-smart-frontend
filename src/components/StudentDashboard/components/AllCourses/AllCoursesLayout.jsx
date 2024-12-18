@@ -3,7 +3,7 @@ import {
   useFilterUniversityCoursesQuery,
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import FilterTags from './FilterTagsComponentAllCourses';
 
@@ -11,6 +11,16 @@ const AllCoursesLayout = ({ university_id }) => {
   // State to manage selected filters
   const [selectedValue, setSelectedValue] = useState([]);
 
+  const [debouncedFilters, setDebouncedFilters] = useState(selectedValue);
+
+  // Debounce state changes to avoid excessive API calls
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+      setDebouncedFilters(selectedValue);
+    }, 300); // Adjust debounce time as needed
+
+    return () => clearTimeout(debounceTimeout);
+  }, [selectedValue]);
 
   const {
     data: getSingleUniversityDataForStudent,
@@ -56,7 +66,6 @@ const AllCoursesLayout = ({ university_id }) => {
     });
   };
 
-
   // Handle checkbox changes for programs
   const handleProgramChange = (event) => {
     const { name, checked } = event.target;
@@ -64,7 +73,7 @@ const AllCoursesLayout = ({ university_id }) => {
     setSelectedValue((prevSelectedValues) => {
       if (checked) {
         // Add the department to the selected value array if not already selected
-        const isAlreadySelected = prevSelectedValues.some(
+        const isAlreadySelected = prevSelectedValues?.some(
           (item) => item.name === 'course_category' && item.value === name
         );
         if (!isAlreadySelected) {
@@ -75,17 +84,34 @@ const AllCoursesLayout = ({ university_id }) => {
         }
       } else {
         // Remove the department from the selected value array if it is unchecked
-        return prevSelectedValues.filter(
+        return prevSelectedValues?.filter(
           (item) => !(item.name === 'course_category' && item.value === name)
         );
       }
     });
   };
 
+  // Utility function to check if a department is selected
+  const isDepartmentSelected = (deptName) => {
+    return selectedValue?.some(
+      (item) => item.name === 'department' && item.value === deptName
+    );
+  };
+
+  // Utility function to check if a program is selected
+  const isProgramSelected = (programName) => {
+    return selectedValue?.some(
+      (item) => item.name === 'course_category' && item.value === programName
+    );
+  };
+
   return (
     <Row>
       <Row>
-        <FilterTags selectedValue={selectedValue} setSelectedValue={setSelectedValue}/>
+        <FilterTags
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+        />
       </Row>
       <Row>
         {/* Sidebar with filters */}
@@ -101,6 +127,7 @@ const AllCoursesLayout = ({ university_id }) => {
                     <input
                       type="checkbox"
                       name={dept?.name}
+                      checked={isDepartmentSelected(dept?.name)}
                       onChange={handleDepartmentChange}
                     />{' '}
                     {dept?.name}
@@ -116,6 +143,7 @@ const AllCoursesLayout = ({ university_id }) => {
                     <input
                       type="checkbox"
                       name={program?.name}
+                      checked={isProgramSelected(program?.name)}
                       onChange={handleProgramChange}
                     />{' '}
                     {program?.name}

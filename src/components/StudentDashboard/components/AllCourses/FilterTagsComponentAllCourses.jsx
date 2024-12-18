@@ -12,11 +12,11 @@ const FilterTags = ({
 
     setFilters((prevSelectedValues) => {
       // Add the department to the selected value array if not already selected
-      const isAlreadySelected = prevSelectedValues.some(
+      const isAlreadySelected = prevSelectedValues?.some(
         (item) => item.name === name && item.value === value
       );
       if (isAlreadySelected) {
-        return prevSelectedValues.filter(
+        return prevSelectedValues?.filter(
           (item) => !(item.name === name && item.value === value)
         );
       }
@@ -32,7 +32,7 @@ const FilterTags = ({
           </Col>
           <Col>
             <div className="d-flex flex-wrap align-items-center">
-              {filters.map((filter,index) => (
+              {filters?.map((filter,index) => (
                 <span
                   key={index}
                   className="badge text-primary bg-secondary-subtle me-2 p-2"
@@ -48,7 +48,7 @@ const FilterTags = ({
                   </span>
                 </span>
               ))}
-              {filters.length > 0 && (
+              {filters?.length > 1 && (
                 <button
                   style={{ cursor: 'pointer' }}
                   type="button"
