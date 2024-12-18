@@ -125,7 +125,10 @@ const SingleuniversityProfileForStudent = () => {
                       getSingleUniversityDataForStudent?.data?.courses.map(
                         (item, index) => (
                           <Row key={index} lg={3}>
-                            <CourseCardComponent item={item} />
+                            <CourseCardComponent
+                              item={item}
+                              university_id={university_id}
+                            />
                           </Row>
                         )
                       )}
