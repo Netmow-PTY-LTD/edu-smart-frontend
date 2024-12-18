@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import { Row, Col } from 'reactstrap';
 
-const FilterTags = () => {
-  // State to manage the list of filters
-  const [filters, setFilters] = useState(['CSE', 'EEE', 'IPE']);
-
+const FilterTags = ({
+  selectedValue: filters,
+  setSelectedValue: setFilters,
+}) => {
   // Function to remove a specific filter
-  const removeFilter = (filterName) => {
-    setFilters(filters.filter((filter) => filter !== filterName));
-  };
+  const removeFilter = (filterData) => {
+    const name = filterData?.name;
+    const value = filterData?.value;
 
-  // Function to clear all filters
-  const clearAllFilters = () => {
-    setFilters([]);
+    setFilters((prevSelectedValues) => {
+      // Add the department to the selected value array if not already selected
+      const isAlreadySelected = prevSelectedValues.some(
+        (item) => item.name === name && item.value === value
+      );
+      if (isAlreadySelected) {
+        return prevSelectedValues.filter(
+          (item) => !(item.name === name && item.value === value)
+        );
+      }
+    });
   };
 
   return (
@@ -24,15 +32,16 @@ const FilterTags = () => {
           </Col>
           <Col>
             <div className="d-flex flex-wrap align-items-center">
-              {filters.map((filter) => (
+              {filters.map((filter,index) => (
                 <span
-                  key={filter}
+                  key={index}
                   className="badge text-primary bg-secondary-subtle me-2 p-2"
                 >
-                  {filter}{' '}
+                  {filter?.value}
                   <span
                     className="ms-1 text-danger"
                     style={{ cursor: 'pointer' }}
+                    // onClick={() => removeFilter(filter)}
                     onClick={() => removeFilter(filter)}
                   >
                     &times;
@@ -44,7 +53,7 @@ const FilterTags = () => {
                   style={{ cursor: 'pointer' }}
                   type="button"
                   className="badge text-primary bg-secondary-subtle"
-                  onClick={clearAllFilters}
+                  onClick={() => setFilters([])}
                 >
                   Clear All
                 </button>

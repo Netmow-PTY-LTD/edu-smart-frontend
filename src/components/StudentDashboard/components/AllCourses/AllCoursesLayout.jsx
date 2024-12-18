@@ -1,65 +1,91 @@
 import CourseCardComponent from '@/components/common/CourseCardComponent';
-import { useFilterUniversityCoursesQuery,  } from '@/slice/services/public/university/publicUniveristyService';
+import {
+  useFilterUniversityCoursesQuery,
+  useGetsingleUniversityQuery,
+} from '@/slice/services/public/university/publicUniveristyService';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import FilterTags from './FilterTagsComponentAllCourses';
 
 const AllCoursesLayout = ({ university_id }) => {
+  // State to manage selected filters
+  const [selectedValue, setSelectedValue] = useState([]);
+
+
   const {
-    data: getSingleUniversityCoursesDataForStudent,
+    data: getSingleUniversityDataForStudent,
     isLoading: getSingleUniversityIsLoadingForStudent,
     refetch: getSingleUniversityForStudentRefetch,
-  } =  useFilterUniversityCoursesQuery({ university_id, args:'' } , {
+  } = useGetsingleUniversityQuery(university_id, {
     skip: !university_id,
   });
 
-  console.log( 'get courses data into all courses layout=>', getSingleUniversityCoursesDataForStudent?.data)
-  // Extract course data
-  const allCourses = getSingleUniversityCoursesDataForStudent?.data || [];
+  const {
+    data: getSingleUniversityCoursesDataForStudent,
+    isLoading: getSingleUniversityCourseIsLoadingForStudent,
+    refetch: getSingleUniversityCoursesForStudentRefetch,
+  } = useFilterUniversityCoursesQuery(
+    { university_id, args: selectedValue },
+    {
+      skip: !university_id,
+    }
+  );
 
-  // State to manage selected filters
-  const [selectedDepartments, setSelectedDepartments] = useState([]);
-  const [selectedPrograms, setSelectedPrograms] = useState([]);
+  const universitData = getSingleUniversityDataForStudent?.data || [];
+  const allCourses = getSingleUniversityCoursesDataForStudent?.data || [];
 
   // Handle checkbox changes for departments
   const handleDepartmentChange = (event) => {
     const { name, checked } = event.target;
-    if (checked) {
-      setSelectedDepartments((prev) => [...prev, name]);
-    } else {
-      setSelectedDepartments((prev) => prev.filter((dept) => dept !== name));
-    }
+
+    setSelectedValue((prevSelectedValues) => {
+      if (checked) {
+        // Add the department to the selected value array if not already selected
+        const isAlreadySelected = prevSelectedValues.some(
+          (item) => item.name === 'department' && item.value === name
+        );
+        if (!isAlreadySelected) {
+          return [...prevSelectedValues, { name: 'department', value: name }];
+        }
+      } else {
+        // Remove the department from the selected value array if it is unchecked
+        return prevSelectedValues.filter(
+          (item) => !(item.name === 'department' && item.value === name)
+        );
+      }
+    });
   };
 
 
   // Handle checkbox changes for programs
   const handleProgramChange = (event) => {
     const { name, checked } = event.target;
-    if (checked) {
-      setSelectedPrograms((prev) => [...prev, name]);
-    } else {
-      setSelectedPrograms((prev) => prev.filter((program) => program !== name));
-    }
+
+    setSelectedValue((prevSelectedValues) => {
+      if (checked) {
+        // Add the department to the selected value array if not already selected
+        const isAlreadySelected = prevSelectedValues.some(
+          (item) => item.name === 'course_category' && item.value === name
+        );
+        if (!isAlreadySelected) {
+          return [
+            ...prevSelectedValues,
+            { name: 'course_category', value: name },
+          ];
+        }
+      } else {
+        // Remove the department from the selected value array if it is unchecked
+        return prevSelectedValues.filter(
+          (item) => !(item.name === 'course_category' && item.value === name)
+        );
+      }
+    });
   };
-
-
-  // Filter courses based on selected departments and programs
-  const filteredCourses = allCourses.filter((course) => {
-    const matchesDepartment =
-      selectedDepartments.length === 0 ||
-      selectedDepartments.includes(course.department);
-
-    const matchesProgram =
-      selectedPrograms.length === 0 ||
-      selectedPrograms.includes(course.program);
-
-    return matchesDepartment && matchesProgram;
-  });
 
   return (
     <Row>
       <Row>
-        <FilterTags />
+        <FilterTags selectedValue={selectedValue} setSelectedValue={setSelectedValue}/>
       </Row>
       <Row>
         {/* Sidebar with filters */}
@@ -70,14 +96,14 @@ const AllCoursesLayout = ({ university_id }) => {
               {/* Department Filters */}
               <div>All Departments</div>
               <div className="d-flex flex-column align-items-start justify-content-start mt-3 gap-3">
-                {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((dept) => (
-                  <label key={dept}>
+                {universitData?.departments?.map((dept, index) => (
+                  <label key={dept?._id}>
                     <input
                       type="checkbox"
-                      name={dept}
+                      name={dept?.name}
                       onChange={handleDepartmentChange}
                     />{' '}
-                    {dept}
+                    {dept?.name}
                   </label>
                 ))}
               </div>
@@ -85,14 +111,14 @@ const AllCoursesLayout = ({ university_id }) => {
               {/* Program Filters */}
               <div>All Programs</div>
               <div className="d-flex flex-column align-items-start justify-content-start gap-3 mt-3">
-                {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((program) => (
-                  <label key={program}>
+                {universitData?.categories?.map((program) => (
+                  <label key={program?._id}>
                     <input
                       type="checkbox"
-                      name={program}
+                      name={program?.name}
                       onChange={handleProgramChange}
                     />{' '}
-                    {program}
+                    {program?.name}
                   </label>
                 ))}
               </div>
@@ -102,11 +128,9 @@ const AllCoursesLayout = ({ university_id }) => {
 
         {/* Main Content Area */}
         <Col lg={9}>
-          {/* <FilterTags/> */}
-
           <Row>
-            {filteredCourses.length > 0 ? (
-              filteredCourses.map((item, index) => (
+            {allCourses.length > 0 ? (
+              allCourses?.map((item, index) => (
                 <Col lg={4} md={6} sm={12} className="mb-4" key={index}>
                   <CourseCardComponent item={item} />
                 </Col>
