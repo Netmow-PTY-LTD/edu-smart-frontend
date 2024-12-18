@@ -76,11 +76,6 @@ const AllCourseForSuperAdmin = ({
     refetch: getCourseRefetch,
   } = useGetCourseQuery(university_id, { skip: !university_id });
 
-  // const { data: getSingleCourseData, refetch: getSingleCourseRefetch } =
-  //   useGetSingleCourseQuery(courseIdForEdit, {
-  //     skip: !courseIdForEdit,
-  //   });
-
   const [
     updateCourse,
     {
@@ -127,9 +122,10 @@ const AllCourseForSuperAdmin = ({
 
       const fetchData = async () => {
         try {
-          const brochureFile = convertImageUrlToFile(
+          const brochureFile = await convertImageUrlToFile(
             getSingleCourseData?.brochure?.url
           );
+
           setInitialValues({
             name: getSingleCourseData?.name || '',
             available_seats: getSingleCourseData?.available_seats || '',
@@ -152,10 +148,12 @@ const AllCourseForSuperAdmin = ({
             brochure: brochureFile || '',
             description: getSingleCourseData?.description || '',
             entry_requirements: getSingleCourseData?.entry_requirements || '',
-            english_requirements: getSingleCourseData?.english_requirements || '',
+            english_requirements:
+              getSingleCourseData?.english_requirements || '',
           });
+
           setEditModalIsOpen(true);
-          setFilePreview(brochureFile);
+          setFilePreview(brochureFile?.name);
         } catch (error) {
           // console.error('Error loading data:', error);
         }
@@ -205,13 +203,15 @@ const AllCourseForSuperAdmin = ({
       const finalData = new FormData();
       Object.entries(allData).forEach(([key, value]) => {
         if (key === 'entry_requirements' || key === 'english_requirements') {
-          finalData.append(key, JSON.stringify(value));
+          if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+              finalData.append(`${key}[${index}]`, item);
+            });
+          }
         } else {
           finalData.append(key, value);
         }
       });
-
-      console.log(finalData);
 
       const result = await addCourse(finalData).unwrap();
       if (result) {
@@ -232,7 +232,6 @@ const AllCourseForSuperAdmin = ({
   };
 
   const handleEditModalClose = () => {
-    // getSingleCourseRefetch();
     setCourseIdForEdit(null);
     setInitialValues({
       name: '',
@@ -244,7 +243,11 @@ const AllCourseForSuperAdmin = ({
       description: '',
       department: '',
       category: '',
+      brochure: null,
+      entry_requirements: [''],
+      english_requirements: [''],
     });
+    setFilePreview(null);
     setEditModalIsOpen(false);
   };
 
@@ -261,8 +264,8 @@ const AllCourseForSuperAdmin = ({
       description: values?.description,
       course_id: courseIdForEdit,
       university_id: university_id,
-      department_id: values?.department,
-      category_id: values?.category,
+      department_id: values?.department?.value,
+      category_id: values?.category?.value,
       brochure: values?.brochure,
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
@@ -272,7 +275,11 @@ const AllCourseForSuperAdmin = ({
       const finalData = new FormData();
       Object.entries(allData).forEach(([key, value]) => {
         if (key === 'entry_requirements' || key === 'english_requirements') {
-          finalData.append(key, JSON.stringify(value));
+          if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+              finalData.append(`${key}[${index}]`, item);
+            });
+          }
         } else {
           finalData.append(key, value);
         }
@@ -340,8 +347,6 @@ const AllCourseForSuperAdmin = ({
     getCourseData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  // console.log(isfilteredData);
 
   // Define table headers with custom render functions
   const headers = [
@@ -512,6 +517,9 @@ const AllCourseForSuperAdmin = ({
         allCategoryName={allCategoryName}
         allDepartmentName={allDepartmentName}
         setInitialValues={setInitialValues}
+        handleFileChange={handleFileChange}
+        filePreview={filePreview}
+        setFilePreview={setFilePreview}
       />
 
       {/* Delete Course */}
