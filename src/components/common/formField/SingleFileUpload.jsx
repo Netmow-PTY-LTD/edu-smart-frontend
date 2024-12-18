@@ -1,18 +1,14 @@
-import { ErrorMessage, Field } from 'formik';
+import { allowedFileTypes } from '@/utils/common/data';
+import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const SingleFileUpload = ({ field, form, label, ...props }) => {
   const [filePreview, setFilePreview] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [fileName, setFileName] = useState('');
-  const validTypes = [
-    'application/pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/msword',
-  ];
 
   const isValidFile = (file) => {
-    return validTypes.includes(file.type);
+    return allowedFileTypes.includes(file.type);
   };
 
   useEffect(() => {
@@ -35,7 +31,7 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
     } else {
       setFilePreview(null);
     }
-  }, [form.values, field.name]);
+  }, [field.name, form.values]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

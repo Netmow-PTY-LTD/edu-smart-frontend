@@ -26,8 +26,20 @@ export const publicUniversityService = createApi({
         method: 'GET',
       }),
     }),
+
+    getSingleCourse: builder.query({
+      query: (data) => {
+        return {
+          url: `/university/${data?.university_id}/course/${data?.course_id}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAllUniversityQuery, useGetsingleUniversityQuery } =
-  publicUniversityService;
+export const {
+  useGetAllUniversityQuery,
+  useGetsingleUniversityQuery,
+  useGetSingleCourseQuery,
+} = publicUniversityService;

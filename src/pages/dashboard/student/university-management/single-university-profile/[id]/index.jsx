@@ -38,7 +38,7 @@ const SingleuniversityProfileForStudent = () => {
     }
   };
 
-  console.log(getSingleUniversityDataForStudent?.data?.courses);
+
 
   return (
     <Layout>
@@ -69,23 +69,6 @@ const SingleuniversityProfileForStudent = () => {
                       <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                       <span className="d-none d-md-inline-block">
                         All Courses
-                      </span>
-                    </NavLink>
-                  </NavItem>
-
-                  <NavItem className="fs-14">
-                    <NavLink
-                      style={{ cursor: 'pointer' }}
-                      className={classnames({
-                        active: activeTab === '3',
-                      })}
-                      onClick={() => {
-                        toggleTab('3');
-                      }}
-                    >
-                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                      <span className="d-none d-md-inline-block">
-                        By Programs
                       </span>
                     </NavLink>
                   </NavItem>

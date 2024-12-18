@@ -5,6 +5,7 @@ import { publicAgentService } from '../services/public/agent/publicAgentService'
 import { authService } from '../services/public/auth/authService';
 import { publicStudentService } from '../services/public/student/publicStudentService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
+import { studentSubmitDocumentService } from '../services/student/studentSubmitDocumentService';
 import { courseCategoriesService } from '../services/super admin/courseCategoriesService';
 import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
@@ -31,6 +32,8 @@ export const store = configureStore({
     [publicAgentService.reducerPath]: publicAgentService.reducer,
     [publicStudentService.reducerPath]: publicStudentService.reducer,
     [publicUniversityService.reducerPath]: publicUniversityService.reducer,
+    [studentSubmitDocumentService.reducerPath]:
+      studentSubmitDocumentService.reducer,
     [universityAdministrationDescriptionService.reducerPath]:
       universityAdministrationDescriptionService.reducer,
     [universityAdministrationFaqService.reducerPath]:
@@ -57,6 +60,7 @@ export const store = configureStore({
       .concat(universityAdministrationFaqService.middleware)
       .concat(universityAdministrationSocialLinkService.middleware)
       .concat(universityAdministrationGalleryService.middleware)
+      .concat(studentSubmitDocumentService.middleware)
       .concat(universityAdministrationSliderService.middleware),
 });
 

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { Badge, Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col } from 'reactstrap';
 
 const CourseCardComponent = ({ item, university_id }) => {
   return (
