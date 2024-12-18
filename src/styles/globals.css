@@ -125,27 +125,27 @@ body {
 
 @media only screen and (min-width: 2112px) {
   html {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 @media only screen and (min-width: 2304px) {
   html {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 2496px) {
   html {
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 2688px) {
   html {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 2880px) {
   html {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
 @media only screen and (min-width: 3072px) {
