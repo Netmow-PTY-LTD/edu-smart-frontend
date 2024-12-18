@@ -64,8 +64,6 @@ const SingleUniversityProfile = () => {
     }
   };
 
-  console.log(getSingleUniversityData?.data);
-
   return (
     <>
       <Layout>

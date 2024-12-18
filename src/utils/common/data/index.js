@@ -518,11 +518,20 @@ const departmentHeaders = [
   },
 ];
 
+const allowedFileTypes = [
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+];
+
 export {
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
   allDepartmentsWithoutAction,
+  allowedFileTypes,
   brandlogo,
   categoryHeaders,
   courseHeaders,
