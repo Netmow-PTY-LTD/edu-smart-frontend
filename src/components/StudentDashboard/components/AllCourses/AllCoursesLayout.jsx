@@ -1,20 +1,21 @@
 import CourseCardComponent from '@/components/common/CourseCardComponent';
-import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import { useFilterUniversityCoursesQuery,  } from '@/slice/services/public/university/publicUniveristyService';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import FilterTags from './FilterTagsComponentAllCourses';
 
 const AllCoursesLayout = ({ university_id }) => {
   const {
-    data: getSingleUniversityDataForStudent,
+    data: getSingleUniversityCoursesDataForStudent,
     isLoading: getSingleUniversityIsLoadingForStudent,
     refetch: getSingleUniversityForStudentRefetch,
-  } = useGetsingleUniversityQuery(university_id, {
+  } =  useFilterUniversityCoursesQuery({ university_id, args:'' } , {
     skip: !university_id,
   });
 
+  console.log( 'get courses data into all courses layout=>', getSingleUniversityCoursesDataForStudent?.data)
   // Extract course data
-  const allCourses = getSingleUniversityDataForStudent?.data?.courses || [];
+  const allCourses = getSingleUniversityCoursesDataForStudent?.data || [];
 
   // State to manage selected filters
   const [selectedDepartments, setSelectedDepartments] = useState([]);
@@ -30,6 +31,7 @@ const AllCoursesLayout = ({ university_id }) => {
     }
   };
 
+
   // Handle checkbox changes for programs
   const handleProgramChange = (event) => {
     const { name, checked } = event.target;
@@ -39,6 +41,7 @@ const AllCoursesLayout = ({ university_id }) => {
       setSelectedPrograms((prev) => prev.filter((program) => program !== name));
     }
   };
+
 
   // Filter courses based on selected departments and programs
   const filteredCourses = allCourses.filter((course) => {

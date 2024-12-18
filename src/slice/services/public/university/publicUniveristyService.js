@@ -29,6 +29,7 @@ export const publicUniversityService = createApi({
 
     filterUniversityCourses: builder.query({
       query: ({ university_id, args }) => {
+        console.log(args);
         const params = new URLSearchParams();
         if (args) {
           args.forEach((item) => {
