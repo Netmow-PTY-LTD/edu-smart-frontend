@@ -66,7 +66,7 @@ const AllCoursesLayout = ({ university_id }) => {
             <CardBody>
               {/* Department Filters */}
               <div>All Departments</div>
-              <div className="d-flex flex-column align-items-start justify-content-start gap-3">
+              <div className="d-flex flex-column align-items-start justify-content-start mt-3 gap-3">
                 {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((dept) => (
                   <label key={dept}>
                     <input
@@ -81,7 +81,7 @@ const AllCoursesLayout = ({ university_id }) => {
               <hr />
               {/* Program Filters */}
               <div>All Programs</div>
-              <div className="d-flex flex-column align-items-start justify-content-start gap-3">
+              <div className="d-flex flex-column align-items-start justify-content-start gap-3 mt-3">
                 {['CSE', 'EEE', 'ME', 'IPE', 'CIVIL'].map((program) => (
                   <label key={program}>
                     <input

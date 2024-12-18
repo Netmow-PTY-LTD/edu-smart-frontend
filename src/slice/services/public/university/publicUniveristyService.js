@@ -26,8 +26,27 @@ export const publicUniversityService = createApi({
         method: 'GET',
       }),
     }),
+
+    filterUniversityCourses: builder.query({
+      query: ({ university_id, args }) => {
+        const params = new URLSearchParams();
+        if (args) {
+          args.forEach((item) => {
+            params.append(item.name, item.value);
+          });
+        }
+        return {
+          url: `university/${university_id}/courses`,
+          method: 'GET',
+          params: params,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetAllUniversityQuery, useGetsingleUniversityQuery } =
-  publicUniversityService;
+export const {
+  useGetAllUniversityQuery,
+  useGetsingleUniversityQuery,
+  useFilterUniversityCoursesQuery,
+} = publicUniversityService;

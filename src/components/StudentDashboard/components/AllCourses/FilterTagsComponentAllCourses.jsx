@@ -20,7 +20,7 @@ const FilterTags = () => {
       <Col>
         <Row className="align-items-center">
           <Col xs="auto">
-            <h2 className="text-warning">Filtered By:</h2>
+            <h2 className="text-info-emphasis">Filtered By:</h2>
           </Col>
           <Col>
             <div className="d-flex flex-wrap align-items-center">
