@@ -3,6 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 import { authService } from '../services/public/auth/authService';
+import { publicStudentService } from '../services/public/student/publicStudentService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
 import { courseCategoriesService } from '../services/super admin/courseCategoriesService';
 import { courseService } from '../services/super admin/courseService';
@@ -28,6 +29,7 @@ export const store = configureStore({
     [courseService.reducerPath]: courseService.reducer,
     [userInfoService.reducerPath]: userInfoService.reducer,
     [publicAgentService.reducerPath]: publicAgentService.reducer,
+    [publicStudentService.reducerPath]: publicStudentService.reducer,
     [publicUniversityService.reducerPath]: publicUniversityService.reducer,
     [universityAdministrationDescriptionService.reducerPath]:
       universityAdministrationDescriptionService.reducer,
@@ -49,6 +51,7 @@ export const store = configureStore({
       .concat(courseService.middleware)
       .concat(userInfoService.middleware)
       .concat(publicAgentService.middleware)
+      .concat(publicStudentService.middleware)
       .concat(publicUniversityService.middleware)
       .concat(universityAdministrationDescriptionService.middleware)
       .concat(universityAdministrationFaqService.middleware)

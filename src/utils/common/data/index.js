@@ -200,7 +200,9 @@ const studentsHeadersWithoutAction = [
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link href={``} className="text-reset">
-              {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
+              {item?.first_name && item?.last_name
+                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+                : '-'}
             </Link>
           </h5>
         </div>
@@ -208,6 +210,17 @@ const studentsHeadersWithoutAction = [
     ),
   },
 
+  {
+    title: 'Agent',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.agent?.first_name && item?.agent?.last_name
+          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone' },
   {
