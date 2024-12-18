@@ -1,7 +1,8 @@
+import Link from 'next/link';
 import React from 'react';
 import { Badge, Card, CardBody, CardHeader, Col } from 'reactstrap';
 
-const CourseCardComponent = ({ item }) => {
+const CourseCardComponent = ({ item, university_id }) => {
   return (
     <>
       <Col lg={3}>
@@ -25,13 +26,13 @@ const CourseCardComponent = ({ item }) => {
             </div>
 
             <div className="d-flex align-items-center justify-content-center">
-              <Badge
-                pill
+              <Link
+                href={item?._id ? `${university_id}/course/${item._id}` : ''}
                 className="button py-2 px-4 fs-3"
                 color="bg-third-color"
               >
                 View Details
-              </Badge>
+              </Link>
             </div>
           </CardBody>
         </Card>

@@ -44,6 +44,24 @@
   color: #fff;
 }
 
+.btn-secondary-alt {
+  background-color: var(--color--secondary);
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  color: #fff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  outline: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-secondary-alt:hover {
+  background-color: var(--color--primary);
+  color: var(--color--secondary) !important;
+}
+
 .button {
   background-color: var(--color--primary);
   border-radius: 0.5rem;

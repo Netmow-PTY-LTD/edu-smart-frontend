@@ -92,7 +92,7 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
-        buttonLabel={'Add Gellary'}
+        buttonLabel={'Add Gallery'}
       />
     </Col>
   );
