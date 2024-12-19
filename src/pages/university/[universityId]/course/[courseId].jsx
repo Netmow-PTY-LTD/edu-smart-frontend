@@ -1,4 +1,5 @@
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
+import Loader from '@/components/constants/Loader/Loader';
 import { useGetSingleCourseQuery } from '@/slice/services/public/university/publicUniveristyService';
 
 import { useRouter } from 'next/router';
@@ -8,18 +9,10 @@ import {
   AccordionBody,
   AccordionHeader,
   AccordionItem,
-  Alert,
-  Badge,
   Button,
-  Card,
-  CardBody,
-  CardTitle,
   Col,
   Container,
-  ListGroup,
-  ListGroupItem,
   Row,
-  Spinner,
 } from 'reactstrap';
 
 const SingleCoursePageInFrontSite = () => {
@@ -47,14 +40,8 @@ const SingleCoursePageInFrontSite = () => {
     entry_requirements,
     english_requirements,
     brochure,
-    university,
-    category,
-    courses,
     department,
-    gst_for_agent,
     available_seats,
-    gst_for_student,
-    price_for_agent,
     price_for_student,
     program_duration,
     status,
@@ -64,27 +51,33 @@ const SingleCoursePageInFrontSite = () => {
       <Container className="my-5">
         {isLoading ? (
           <div className="d-flex justify-content-center my-5">
-            <Spinner color="primary" />
+            <Loader />
           </div>
-        ) : error ? (
-          <Alert color="danger" className="text-center my-5">
-            Failed to load course details.
-          </Alert>
         ) : (
           <>
-            <Row className="justify-content-center">
-              <Col xs={12} className="mb-4">
-                <div className="brif-section text-center">
-                  <h2 className="courseName fs-1">{university?.name}</h2>
-                  <p className="fucultyName"> {department?.name}</p>
+            <Row>
+              <Col xs={12} md={6} className="mb-4">
+                <div>
+                  <h2 className="fs-1">{name}</h2>
+                  <p> {department?.name}</p>
                   <hr />
-                  <time dateTime="2024-12-19T12:00:00">
+                  {/* <time dateTime="2024-12-19T12:00:00">
                     Course Admission Last Date||December 19, 2024, 12:00 PM
-                  </time>
-                  <p>{description}</p>
+                  </time> */}
+                  <p className="my-3">{description}</p>
+                  <div className="d-flex justify-content-between">
+                    <p>
+                      {' '}
+                      <strong>Available Seats:</strong> {available_seats}
+                    </p>
+                    <p>
+                      <strong>Program Duration:</strong>{' '}
+                      {program_duration || 'Not specified'}
+                    </p>
+                  </div>
+
                   <Button
-                    color="primary"
-                    className="py-3 my-3 px-2"
+                    className="button py-3 my-3 px-4"
                     href={brochure.url}
                     target="_blank"
                   >
@@ -92,46 +85,9 @@ const SingleCoursePageInFrontSite = () => {
                   </Button>
                 </div>
               </Col>
-              <Col xs={12} md={6} className="mb-3">
-                <Card>
-                  <CardBody>
-                    <CardTitle tag="h3" className="text-center mb-4">
-                      {name}
-                    </CardTitle>
-                    <ListGroup flush>
-                      <ListGroupItem>
-                        <strong>Price for Agent:</strong> ${price_for_agent}
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <strong>GST for Agent:</strong> {gst_for_agent}%
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <strong>Price for Student:</strong> ${price_for_student}
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <strong>GST for Student:</strong> {gst_for_student}%
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <strong>Available Seats:</strong> {available_seats}
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <strong>Program Duration:</strong>{' '}
-                        {program_duration || 'Not specified'}
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <strong>Status:</strong>{' '}
-                        <Badge
-                          color={status === 'active' ? 'success' : 'secondary'}
-                        >
-                          {status}
-                        </Badge>
-                      </ListGroupItem>
-                    </ListGroup>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col xs={12} md={6} className="mb-3">
-                <div className="requirement-section">
+
+              <Col xs={12} md={6}>
+                <div>
                   <Accordion flush open={open} toggle={toggle}>
                     <AccordionItem>
                       <AccordionHeader targetId="1">
@@ -140,7 +96,9 @@ const SingleCoursePageInFrontSite = () => {
                       <AccordionBody accordionId="1">
                         <ul>
                           {entry_requirements?.map((req, index) => (
-                            <li key={index}>{req}</li>
+                            <p key={index}>
+                              {index + 1}. {req}{' '}
+                            </p>
                           ))}
                         </ul>
                       </AccordionBody>
@@ -152,7 +110,9 @@ const SingleCoursePageInFrontSite = () => {
                       <AccordionBody accordionId="2">
                         <ul>
                           {english_requirements?.map((req, index) => (
-                            <li key={index}>{req}</li>
+                            <p key={index}>
+                              {index + 1}. {req}{' '}
+                            </p>
                           ))}
                         </ul>
                       </AccordionBody>
@@ -163,7 +123,7 @@ const SingleCoursePageInFrontSite = () => {
             </Row>
             <Row>
               <Col className="d-flex justify-content-center my-3">
-                <button className="button py-3 px-2">
+                <button className="button py-3 px-4">
                   Confirm Application
                 </button>
               </Col>
