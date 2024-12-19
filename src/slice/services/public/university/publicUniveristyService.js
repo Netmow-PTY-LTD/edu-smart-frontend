@@ -27,6 +27,26 @@ export const publicUniversityService = createApi({
       }),
     }),
 
+    filterUniversityCourses: builder.query({
+      query: ({ university_id, args }) => {
+        const params = new URLSearchParams();
+        // Check if args exist and append key-value pairs to params
+        if (args && Array.isArray(args)) {
+          args.forEach((item) => {
+            if (item.name && item.value) {
+              params.append(item.name, item.value);
+            }
+          });
+        }
+
+        return {
+          url: `university/${university_id}/courses`,
+          method: 'GET',
+          params: params,
+        };
+      },
+    }),
+
     getSingleCourse: builder.query({
       query: (data) => {
         return {
@@ -41,5 +61,5 @@ export const publicUniversityService = createApi({
 export const {
   useGetAllUniversityQuery,
   useGetsingleUniversityQuery,
-  useGetSingleCourseQuery,
+  useFilterUniversityCoursesQuery,
 } = publicUniversityService;

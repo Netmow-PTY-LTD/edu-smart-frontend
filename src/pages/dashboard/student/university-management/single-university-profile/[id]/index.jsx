@@ -1,6 +1,7 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import CourseCardComponent from '@/components/common/CourseCardComponent';
 import Layout from '@/components/layout';
+import AllCoursesLayout from '@/components/StudentDashboard/components/AllCourses/AllCoursesLayout';
 import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -77,50 +78,18 @@ const SingleuniversityProfileForStudent = () => {
               </div>
 
               {activeTab === '1' && (
-                <Row>
-                  <Col lg={3}>
-                    <Card>
-                      <CardHeader>Hello</CardHeader>
-                      <CardBody>
-                        <div>All Department</div>
-                        <div className="d-flex flex-column align-items-start justify-content-start gap-3">
-                          <input type="checkbox" name="CSE" id="" />
-                          <input type="checkbox" name="EEE" id="" />
-                          <input type="checkbox" name="ME" id="" />
-                          <input type="checkbox" name="IPE" id="" />
-                          <input type="checkbox" name="CIVIL" id="" />
-                        </div>
-                        <hr />
-                        <div>All Programs</div>
-                        <div className="d-flex flex-column align-items-start justify-content-start gap-3">
-                          <input type="checkbox" name="CSE" id="" />
-                          <input type="checkbox" name="EEE" id="" />
-                          <input type="checkbox" name="ME" id="" />
-                          <input type="checkbox" name="IPE" id="" />
-                          <input type="checkbox" name="CIVIL" id="" />
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col lg={9}>
-                    {getSingleUniversityDataForStudent?.data?.courses?.length >
-                      0 &&
-                      getSingleUniversityDataForStudent?.data?.courses.map(
-                        (item, index) => (
-                          <Row key={index} lg={3}>
-                            <CourseCardComponent
-                              item={item}
-                              university_id={university_id}
-                            />
-                          </Row>
-                        )
-                      )}
-                  </Col>
-                </Row>
+                
+
+                 <div style={{marginTop:"130px"}}>
+                     <AllCoursesLayout university_id={university_id} />
+                 </div>
+             
+             
               )}
             </Row>
           </Container>
         </div>
+       
       </div>
     </Layout>
   );
