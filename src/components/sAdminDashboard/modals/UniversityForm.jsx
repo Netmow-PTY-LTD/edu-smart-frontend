@@ -68,8 +68,6 @@ const UniversityForm = ({
     }
   };
 
-  console.log(initialValues);
-
   return (
     <div className="h-100">
       <div className="mb-4">

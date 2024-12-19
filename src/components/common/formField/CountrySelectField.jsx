@@ -4,8 +4,8 @@ import Select from 'react-select';
 
 const CountrySelectField = ({ name, label, options, ...props }) => {
   return (
-    <div>
-      <label htmlFor={name} className="form-label fs-2">
+    <div className='mb-4'>
+      <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Select'}
       </label>
 
