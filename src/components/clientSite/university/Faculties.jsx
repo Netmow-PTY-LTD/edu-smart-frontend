@@ -1,6 +1,7 @@
 import DOMPurify from 'dompurify';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
@@ -13,6 +14,10 @@ export default function UniversityFaculties({ university }) {
   const [activeTab, setActiveTab] = useState('all-courses');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
+
+  const router = useRouter();
+
+  console.log(router);
 
   useEffect(() => {
     if (university?.courses) {
@@ -152,7 +157,7 @@ export default function UniversityFaculties({ university }) {
                         {truncateText(item.description, 100)}
                       </div>
                       <Link
-                        href="#"
+                        href={`${router?.asPath}/course/${item?._id}`}
                         className="button py-3 px-5 fw-semibold d-inline-block mt-4"
                       >
                         Apply Now
