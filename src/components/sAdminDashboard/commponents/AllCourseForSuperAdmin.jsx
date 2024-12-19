@@ -57,6 +57,7 @@ const AllCourseForSuperAdmin = ({
     brochure: null,
     entry_requirements: [''],
     english_requirements: [''],
+    program_duration: '',
   });
 
   const [
@@ -150,6 +151,7 @@ const AllCourseForSuperAdmin = ({
             entry_requirements: getSingleCourseData?.entry_requirements || '',
             english_requirements:
               getSingleCourseData?.english_requirements || '',
+            program_duration: getSingleCourseData?.program_duration || '',
           });
 
           setEditModalIsOpen(true);
@@ -199,6 +201,8 @@ const AllCourseForSuperAdmin = ({
       category_id: values?.category,
     };
 
+    console.log(allData);
+
     try {
       const finalData = new FormData();
       Object.entries(allData).forEach(([key, value]) => {
@@ -246,6 +250,7 @@ const AllCourseForSuperAdmin = ({
       brochure: null,
       entry_requirements: [''],
       english_requirements: [''],
+      program_duration: '',
     });
     setFilePreview(null);
     setEditModalIsOpen(false);
@@ -269,6 +274,7 @@ const AllCourseForSuperAdmin = ({
       brochure: values?.brochure,
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
+      program_duration: values?.program_duration,
     };
 
     try {

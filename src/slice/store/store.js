@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { studentDocRelatedServiceForAgent } from '../services/agent/studentDocRelatedServiceForAgent';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 import { authService } from '../services/public/auth/authService';
@@ -32,6 +33,8 @@ export const store = configureStore({
     [publicAgentService.reducerPath]: publicAgentService.reducer,
     [publicStudentService.reducerPath]: publicStudentService.reducer,
     [publicUniversityService.reducerPath]: publicUniversityService.reducer,
+    [studentDocRelatedServiceForAgent.reducerPath]:
+      studentDocRelatedServiceForAgent.reducer,
     [studentSubmitDocumentService.reducerPath]:
       studentSubmitDocumentService.reducer,
     [universityAdministrationDescriptionService.reducerPath]:
@@ -61,6 +64,7 @@ export const store = configureStore({
       .concat(universityAdministrationSocialLinkService.middleware)
       .concat(universityAdministrationGalleryService.middleware)
       .concat(studentSubmitDocumentService.middleware)
+      .concat(studentDocRelatedServiceForAgent.middleware)
       .concat(universityAdministrationSliderService.middleware),
 });
 

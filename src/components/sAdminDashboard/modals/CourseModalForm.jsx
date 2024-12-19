@@ -1,5 +1,5 @@
-import FileUpload from '@/components/common/formField/FileUpload';
 import NumberField from '@/components/common/formField/NumberField';
+import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
@@ -35,7 +35,7 @@ const CourseModalForm = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, values, errors, touched }) => (
+          {({ isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form>
               <Row>
                 <Col xl={6}>
@@ -88,7 +88,7 @@ const CourseModalForm = ({
                     />
                   </div>
                 </Col>
-                <Col xl={6}>
+                <Col xl={4}>
                   <div className="mb-3">
                     <NumberField
                       name="price_for_agent"
@@ -96,9 +96,17 @@ const CourseModalForm = ({
                     />
                   </div>
                 </Col>
-                <Col xl={6}>
+                <Col xl={4}>
                   <div className="mb-3">
                     <NumberField name="gst_for_agent" label="GST For Agent" />
+                  </div>
+                </Col>
+                <Col xl={4}>
+                  <div className="mb-3">
+                    <TextField
+                      name="program_duration"
+                      label="Program Duration"
+                    />
                   </div>
                 </Col>
                 <Col xl={12}>
@@ -108,10 +116,10 @@ const CourseModalForm = ({
                         <p>{filePreview}</p>
                       </div>
                     )}
-                    <FileUpload
-                      name="brochure"
+                    <SingleFileUpload
+                      form={{ setFieldValue, values }}
                       label="Upload Brochure File"
-                      handleFileChange={handleFileChange}
+                      field={{ name: 'brochure' }}
                     />
                   </div>
                 </Col>
@@ -190,7 +198,9 @@ const CourseModalForm = ({
                           <Row key={index} className="align-items-center">
                             <Col md={11}>
                               <div className="mb-3">
-                                <label htmlFor={`english_requirements[${index}]`}>
+                                <label
+                                  htmlFor={`english_requirements[${index}]`}
+                                >
                                   {`English Requirements ${index + 1}`}
                                 </label>
 
