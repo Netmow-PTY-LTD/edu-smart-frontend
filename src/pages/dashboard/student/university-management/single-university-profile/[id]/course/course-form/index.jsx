@@ -48,8 +48,6 @@ export default function CourseForm({ setStep, step }) {
   const handleAddSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log(values);
-
     try {
       const finalData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
@@ -65,6 +63,7 @@ export default function CourseForm({ setStep, step }) {
       const result = await submitStudentDocument(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
+        setInitialValues({});
       }
     } catch (error) {
       const errorMessage = error?.data?.message;

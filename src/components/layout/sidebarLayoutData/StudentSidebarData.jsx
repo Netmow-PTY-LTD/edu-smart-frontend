@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-const PlayerSidebarData = () => {
+const StudentSidebarData = () => {
   const history = useRouter();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
@@ -111,17 +111,19 @@ const PlayerSidebarData = () => {
           id: 'alldocuments',
           label: 'All Documents',
           icon: 'ri-file-list-fill',
-          link: '/dashboard/student/all-documents-for-student',
-          pathName: '/dashboard/student/all-documents-for-student',
+          link: '/dashboard/student/manage-documents/all-submitted-documents-for-students',
+          pathName:
+            '/dashboard/student/manage-documents/all-submitted-documents-for-students',
           parentId: 'managedocument',
         },
 
         {
           id: 'documentuploadrequest',
           label: 'Doc Upload Request',
-          link: '/dashboard/student/document-upload-request-for-student',
+          link: '/dashboard/student/manage-documents/document-upload-request-for-students',
           icon: 'ri-file-list-3-fill',
-          pathName: '/dashboard/student/document-upload-request-for-student',
+          pathName:
+            '/dashboard/student/manage-documents/document-upload-request-for-students',
           parentId: 'managedocument',
         },
       ],
@@ -157,4 +159,4 @@ const PlayerSidebarData = () => {
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };
-export default PlayerSidebarData;
+export default StudentSidebarData;

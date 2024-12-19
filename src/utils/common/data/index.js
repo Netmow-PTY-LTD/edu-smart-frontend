@@ -175,6 +175,67 @@ const agentsHeadersWithoutAction = [
     ),
   },
 ];
+
+//student submitted doc header
+const studentSubmittedDocumentsHeaderWithoutAction = [
+  {
+    title: 'Title',
+    key: 'title',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.title ? item?.title : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+  {
+    title: 'Name',
+    key: 'name',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`}
+        </h5>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Email',
+    key: 'email',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.user?.email ? item?.user?.email : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Status',
+    key: 'status',
+    render: (item) => (
+      <span
+        className={`d-flex flex-column text-capitalize fw-semibold ${
+          item?.status === 'accepted'
+            ? 'text-success'
+            : item?.status === 'rejected'
+              ? 'text-danger'
+              : item?.status === 'pending'
+                ? 'text-warning'
+                : item?.status === 'requested'
+                  ? 'text-primary'
+                  : ''
+        }`}
+      >
+        {item?.status ? <span>{item?.status}</span> : '-'}
+      </span>
+    ),
+  },
+];
+
 // all student header
 const studentsHeadersWithoutAction = [
   {
@@ -552,6 +613,7 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
+  studentSubmittedDocumentsHeaderWithoutAction,
   studentsHeadersWithoutAction,
   superAdminNameAndLogoData,
   supperAdminWidgetsData,

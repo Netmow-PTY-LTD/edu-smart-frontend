@@ -21,8 +21,16 @@ export const studentSubmitDocumentService = createApi({
         body: body,
       }),
     }),
+    allSubmittedDocumentForStudent: builder.query({
+      query: () => ({
+        url: '/documents',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useSubmitStudentDocumentMutation } =
-  studentSubmitDocumentService;
+export const {
+  useSubmitStudentDocumentMutation,
+  useAllSubmittedDocumentForStudentQuery,
+} = studentSubmitDocumentService;
