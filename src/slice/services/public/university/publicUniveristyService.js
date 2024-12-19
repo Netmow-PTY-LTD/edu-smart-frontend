@@ -62,4 +62,5 @@ export const {
   useGetAllUniversityQuery,
   useGetsingleUniversityQuery,
   useFilterUniversityCoursesQuery,
+  useGetSingleCourseQuery,
 } = publicUniversityService;
