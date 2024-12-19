@@ -7695,6 +7695,12 @@ img.staff-img {
       width: 100%;
     }
   }
+  .search-result-container {
+    background-color: #e9f1fa;
+    .search-result-item:hover {
+      background-color: #8fc2e4;
+    }
+  }
 
   label.searchIcon-conatiner {
     margin-bottom: 0;
