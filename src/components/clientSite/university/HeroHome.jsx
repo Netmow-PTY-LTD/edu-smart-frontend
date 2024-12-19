@@ -11,16 +11,37 @@ import heroImage from '../../../../public/assets/images/landing/hero/hero-image.
 import logoMmu from '../../../../public/assets/images/landing/hero/logo-mmu.png';
 import Link from 'next/link';
 import { Col, Row } from 'reactstrap';
+import useDebounce from '@/utils/Hooks/useDebounce';
+import { useFilterUniversityCoursesQuery } from '@/slice/services/public/university/publicUniveristyService';
 
 export default function HeroHome({ university }) {
   const [selectedValue, setSelectedValue] = useState('');
+  const debouncedValue = useDebounce(selectedValue, 500);
+
+  const {
+    data: universityCourses,
+    isLoading: universityCourseIsLoading,
+    refetch: universityCoursesRefetch,
+  } = useFilterUniversityCoursesQuery(
+    {
+      university_id: university?._id,
+      args: [
+        {
+          name: 'course',
+          value: debouncedValue,
+        },
+      ],
+    },
+    {
+      skip: !university?._id,
+    }
+  );
+
+  console.log(universityCourses);
 
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
   };
-
-  // console.log(university);
-  // console.log(university?.sliders);
 
   return (
     <section className="hero-section">
@@ -127,7 +148,7 @@ export default function HeroHome({ university }) {
               </div>
               <div className="col-lg-6">
                 <div className="d-flex flex-wrap justify-content-lg-end justify-content-start align-items-center gap-5 mt-5 mt-lg-0">
-                  <div className="search-container">
+                  <div className="search-container position-relative">
                     <label htmlFor="search" className="searchIcon-conatiner">
                       <i className="ri-search-line fs-1"></i>
                     </label>
@@ -136,21 +157,31 @@ export default function HeroHome({ university }) {
                       type="text"
                       className="hero-search-input"
                       placeholder="Search a course"
+                      onChange={handleChange}
                     />
-                  </div>
-                  <div className="dropdownContainer">
-                    <select className="select">
-                      <option value="">Browse Courses</option>
-                      {university?.courses?.length > 0
-                        ? university?.courses?.map((course, i) => {
-                            return (
-                              <option key={i} value={course?.id}>
-                                {course?.name}
-                              </option>
-                            );
-                          })
-                        : null}
-                    </select>
+                    <div className="search-result-container position-absolute top-100 right-0 w-100 rounded mt-2 z-1">
+                      {universityCourseIsLoading ? (
+                        <div>Loading...</div>
+                      ) : (
+                        <div className="search-result px-4">
+                          {debouncedValue &&
+                            universityCourses?.data?.length > 0 &&
+                            universityCourses?.data?.map((course, i) => {
+                              return (
+                                <Link
+                                  href={`${university?._id}/course/${course?._id}`}
+                                  key={i}
+                                  className="search-result-item d-flex flex-column gap-1 p-2 my-4 justify-content-start align-items-start rounded"
+                                >
+                                  <span>{course?.name}</span>
+                                  <span>{course?.department?.name}</span>
+                                  <span>{course?.category?.name}</span>
+                                </Link>
+                              );
+                            })}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
