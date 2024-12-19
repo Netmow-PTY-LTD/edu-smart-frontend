@@ -1,13 +1,12 @@
-import CourseCardComponent from '@/components/common/CourseCardComponent';
+
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import {
   useFilterUniversityCoursesQuery,
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row } from 'reactstrap';
-import FilterTags from './FilterTagsComponentAllCourses';
-import FilterTagsUniversity from './FilterTagsComponentAllCourses';
+import {  Col, Pagination, PaginationItem, PaginationLink, Row } from 'reactstrap';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -130,7 +129,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
     <Row>
     
         {/* Sidebar with filters */}
-        <Col className="faculty-content-left" lg={3}>
+        <Col className="faculty-content-left" lg={3} md={4} sm={12}>
           <div className="faculty-content-left">
             <div className="faculty-tab-navs">
               <h5>Courses By Categories</h5>
@@ -174,7 +173,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
         {getSingleUniversityCourseIsLoadingForStudent ? (
           <LoaderSpiner />
         ) : (
-          <Col faculty-content-right lg={9}>
+          <Col className='faculty-content-right mt-sm-5 ' lg={9} md={8} sm={12}>
             <Row>
               {selectedData .length > 0 ? (
                 selectedData ?.map((item, index) => (
