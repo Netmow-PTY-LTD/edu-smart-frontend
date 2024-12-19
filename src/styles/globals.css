@@ -9712,7 +9712,7 @@ textarea.form-control {
 .course-btns {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   gap: 20px;
   margin-top: 20px;
 }
