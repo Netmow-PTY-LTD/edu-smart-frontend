@@ -161,6 +161,21 @@ const SingleUniversityCourse = () => {
                                   )}
                                 </AccordionBody>
                               </AccordionItem>
+                              <AccordionItem>
+                                <AccordionHeader targetId="3">
+                                  Program Duration
+                                </AccordionHeader>
+                                <AccordionBody accordionId="3">
+                                  {
+                                    <strong className="d-flex">
+                                      {
+                                        getSingleCourseData?.data
+                                          ?.program_duration
+                                      }
+                                    </strong>
+                                  }
+                                </AccordionBody>
+                              </AccordionItem>
                             </Accordion>
                           </div>
                         </Col>
