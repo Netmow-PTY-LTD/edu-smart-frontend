@@ -88,15 +88,9 @@ const SuperAdminSidebarData = () => {
     },
     {
       id: 'students',
-      label: 'Self Registered Students',
+      label: 'Students',
       icon: 'ri-group-fill',
-      link: '/dashboard/super-admin',
-    },
-    {
-      id: 'students',
-      label: 'By Agent Students',
-      icon: 'ri-group-fill',
-      link: '/dashboard/super-admin',
+      link: '/dashboard/super-admin/students',
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;

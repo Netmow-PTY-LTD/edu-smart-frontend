@@ -1,10 +1,10 @@
+import Link from 'next/link';
 import React from 'react';
-import { Badge, Card, CardBody, CardHeader, Col } from 'reactstrap';
+import { Card, CardBody, CardHeader,} from 'reactstrap';
 
-const CourseCardComponent = ({ item }) => {
+const CourseCardComponent = ({ item, university_id }) => {
   return (
     <>
-      <Col lg={3}>
         <Card className="px-4 py-2">
           <CardHeader className="d-flex align-items-center justify-content-center text-capitalize fw-medium fs-2 text-primary">
             {item?.name || 'Course Name'}
@@ -25,17 +25,16 @@ const CourseCardComponent = ({ item }) => {
             </div>
 
             <div className="d-flex align-items-center justify-content-center">
-              <Badge
-                pill
+              <Link
+                href={item?._id ? `${university_id}/course/${item._id}` : ''}
                 className="button py-2 px-4 fs-3"
                 color="bg-third-color"
               >
                 View Details
-              </Badge>
+              </Link>
             </div>
           </CardBody>
         </Card>
-      </Col>
     </>
   );
 };

@@ -1,16 +1,21 @@
 import React from 'react';
 
-
+import { profileBg, userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import { Col, Row } from 'reactstrap';
-import { profileBg, userDummyImage } from '@/utils/common/data';
 
 const ProfileBgCover = ({ profileData }) => {
   return (
     <>
       <div className="profile-foreground position-relative mx-n5 mt-n5 pt-5">
         <div className="profile-wid-bg">
-          <Image src={profileBg} width={500} height={500} alt="" className="profile-wid-img" />
+          <Image
+            src={profileBg || '/assets/images/landing/hero/hero-image.png'}
+            width={500}
+            height={500}
+            alt=""
+            className="profile-wid-img"
+          />
         </div>
       </div>
       <div className="ps-3 py-5 mb-lg-3 pb-lg-4">
@@ -37,7 +42,7 @@ const ProfileBgCover = ({ profileData }) => {
                 {profileData?.name ? profileData?.name : ''}
               </h1>
               <div className="me-2 text-light text-capitalize">
-                <i className="ri-map-pin-fill me-2 align-middle"></i>
+                <i className="ri-map-pin-fill me-2 align-middle third-color fs-1"></i>
                 {profileData?.city ? profileData?.city + ',' : ''}{' '}
                 {profileData?.country ? profileData?.country : ''}
               </div>

@@ -4,6 +4,7 @@ import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMess
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
+import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
   agentsHeadersWithoutAction,
@@ -25,6 +26,7 @@ const SuperAdminDashboard = () => {
   const { data: userInfodata } = useGetUserInfoQuery();
   const { data: getUniversityData } = useGetUniversityQuery();
   const { data: allAgentsData } = useGetAllAgentQuery();
+  const { data: allStudentsData } = useGetAllStudentQuery();
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -56,7 +58,7 @@ const SuperAdminDashboard = () => {
                     userInfoData={userInfodata?.data}
                     firstElementData={getUniversityData?.data?.length}
                     secondElementData={allAgentsData?.data?.length}
-                    thirdElementData={''}
+                    thirdElementData={allStudentsData?.data?.length}
                     gstAndCurrencyData={''}
                     fourthElementData={''}
                     paidSum={''}
@@ -85,7 +87,7 @@ const SuperAdminDashboard = () => {
                     <LatestRegistered
                       tableHead={'Latest Registered Students'}
                       headers={studentsHeadersWithoutAction}
-                      // data={allAgentsData?.data ? allAgentsData?.data : []}
+                      data={allStudentsData?.data ? allStudentsData?.data : []}
                     />
                   </Col>
                 </Row>

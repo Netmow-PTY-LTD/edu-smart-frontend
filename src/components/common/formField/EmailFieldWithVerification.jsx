@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 const EmailFieldWithVerification = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   const [isVerify, setIsVerify] = useState(null);
+  
   const [verifyExistingUser, { data: LoginData, error }] =
     useVerifyExistingUserMutation();
 
@@ -27,7 +28,7 @@ const EmailFieldWithVerification = ({ label, ...props }) => {
     verifyEmail();
   }, [field?.value, verifyExistingUser]);
 
-  console.log(meta.touched && meta.error);
+
 
   return (
     <div className="mb-3 pb-3">
