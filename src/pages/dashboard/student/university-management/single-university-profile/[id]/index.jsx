@@ -1,22 +1,11 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
-import CourseCardComponent from '@/components/common/CourseCardComponent';
 import Layout from '@/components/layout';
 import AllCoursesLayout from '@/components/StudentDashboard/components/AllCourses/AllCoursesLayout';
 import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Container,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-} from 'reactstrap';
+import { Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
 const SingleuniversityProfileForStudent = () => {
   const router = useRouter();
@@ -39,8 +28,6 @@ const SingleuniversityProfileForStudent = () => {
     }
   };
 
-
-
   return (
     <Layout>
       <div className="page-content">
@@ -49,9 +36,8 @@ const SingleuniversityProfileForStudent = () => {
             <ProfileBgCover
               profileData={getSingleUniversityDataForStudent?.data}
             />
-
             <Row>
-              <div className="d-flex mb-5">
+              <div style={{ marginTop: '10rem' }} className="d-flex">
                 <Nav
                   pills
                   className="animation-nav profile-nav gap-4 gap-lg-4 flex-grow-1"
@@ -78,18 +64,13 @@ const SingleuniversityProfileForStudent = () => {
               </div>
 
               {activeTab === '1' && (
-                
-
-                 <div style={{marginTop:"130px"}}>
-                     <AllCoursesLayout university_id={university_id} />
-                 </div>
-             
-             
+                <div style={{ marginTop: '30px' }}>
+                  <AllCoursesLayout university_id={university_id} />
+                </div>
               )}
             </Row>
           </Container>
         </div>
-       
       </div>
     </Layout>
   );

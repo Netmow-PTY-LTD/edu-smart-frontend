@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { profileBg, userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import { Col, Row } from 'reactstrap';
-import { profileBg, userDummyImage } from '@/utils/common/data';
 
 const ProfileBgCover = ({ profileData }) => {
   return (
@@ -42,7 +42,7 @@ const ProfileBgCover = ({ profileData }) => {
                 {profileData?.name ? profileData?.name : ''}
               </h1>
               <div className="me-2 text-light text-capitalize">
-                <i className="ri-map-pin-fill me-2 align-middle"></i>
+                <i className="ri-map-pin-fill me-2 align-middle third-color fs-1"></i>
                 {profileData?.city ? profileData?.city + ',' : ''}{' '}
                 {profileData?.country ? profileData?.country : ''}
               </div>

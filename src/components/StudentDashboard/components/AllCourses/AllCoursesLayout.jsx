@@ -1,4 +1,5 @@
 import CourseCardComponent from '@/components/common/CourseCardComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import {
   useFilterUniversityCoursesQuery,
   useGetsingleUniversityQuery,
@@ -155,21 +156,28 @@ const AllCoursesLayout = ({ university_id }) => {
         </Col>
 
         {/* Main Content Area */}
-        <Col lg={9}>
-          <Row>
-            {allCourses.length > 0 ? (
-              allCourses?.map((item, index) => (
-                <Col lg={4} md={6} sm={12} className="mb-4" key={index}>
-                  <CourseCardComponent item={item} />
-                </Col>
-              ))
-            ) : (
-              <p className="text-warning">
-                No courses available for the selected filters.
-              </p>
-            )}
-          </Row>
-        </Col>
+        {getSingleUniversityCourseIsLoadingForStudent ? (
+          <LoaderSpiner />
+        ) : (
+          <Col lg={9}>
+            <Row>
+              {allCourses.length > 0 ? (
+                allCourses?.map((item, index) => (
+                  <Col lg={4} md={6} sm={12} className="mb-4" key={index}>
+                    <CourseCardComponent
+                      item={item}
+                      university_id={university_id}
+                    />
+                  </Col>
+                ))
+              ) : (
+                <p className="text-warning">
+                  No courses available for the selected filters.
+                </p>
+              )}
+            </Row>
+          </Col>
+        )}
       </Row>
     </Row>
   );

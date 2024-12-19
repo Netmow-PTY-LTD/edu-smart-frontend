@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Row, Col } from 'reactstrap';
+import React from 'react';
+import { Col, Row } from 'reactstrap';
 
 const FilterTags = ({
   selectedValue: filters,
@@ -24,43 +24,32 @@ const FilterTags = ({
   };
 
   return (
-    <Row className="mb-4">
-      <Col>
-        <Row className="align-items-center">
-          <Col xs="auto">
-            <h2 className="text-info-emphasis">Filtered By:</h2>
-          </Col>
-          <Col>
-            <div className="d-flex flex-wrap align-items-center">
-              {filters?.map((filter,index) => (
-                <span
-                  key={index}
-                  className="badge text-primary bg-secondary-subtle me-2 p-2"
-                >
-                  {filter?.value}
-                  <span
-                    className="ms-1 text-danger"
-                    style={{ cursor: 'pointer' }}
-                    // onClick={() => removeFilter(filter)}
-                    onClick={() => removeFilter(filter)}
-                  >
-                    &times;
-                  </span>
-                </span>
-              ))}
-              {filters?.length > 1 && (
-                <button
-                  style={{ cursor: 'pointer' }}
-                  type="button"
-                  className="badge text-primary bg-secondary-subtle"
-                  onClick={() => setFilters([])}
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-          </Col>
-        </Row>
+    <Row className="mb-4 d-flex justify-content-center">
+      <Col className="d-flex align-items-center justify-content-start gap-2">
+        <h2 className="text-primary">Filtered By:</h2>
+
+        {filters?.map((filter, index) => (
+          <div
+            key={index}
+            className="d-flex justify-content-center align-items-center gap-2 badge text-primary bg-secondary-subtle me-2 p-2"
+          >
+            <span>{filter?.value}</span>
+            <span
+              className="ms-1 fs-1 cursor-pointer text-danger"
+              onClick={() => removeFilter(filter)}
+            >
+              &times;
+            </span>
+          </div>
+        ))}
+        {filters?.length > 1 && (
+          <div
+            className="d-flex justify-content-center align-items-center gap-2 badge text-primary bg-secondary-subtle  p-3 cursor-pointer"
+            onClick={() => setFilters([])}
+          >
+            Clear All
+          </div>
+        )}
       </Col>
     </Row>
   );

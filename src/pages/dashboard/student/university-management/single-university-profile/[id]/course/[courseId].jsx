@@ -1,4 +1,5 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
   useGetSingleCourseQuery,
@@ -42,8 +43,6 @@ const SingleUniversityCourse = () => {
     course_id: course_id,
   });
 
-
-
   const toggle = (id) => {
     if (open === id) {
       setOpen();
@@ -68,8 +67,6 @@ const SingleUniversityCourse = () => {
       });
   };
 
-
-
   return (
     <Layout>
       <div className="page-content">
@@ -78,29 +75,33 @@ const SingleUniversityCourse = () => {
             profileData={getSingleUniversityDataForStudent?.data}
           />
           <Container fluid>
-            {step === 1 ? (
-              <Card>
-                <CardHeader className="fs-1 fw-semibold">
-                  Course Details
-                </CardHeader>
-                <CardBody>
-                  <Row>
-                    <Col lg={6}>
-                      <div className="course-details">
-                        <h2>
-                          <span>Course Name: </span>
-                          {getSingleCourseData?.data?.name
-                            ? getSingleCourseData?.data?.name
-                            : 'Bachelor in Accounting (Hons.)'}
-                        </h2>
-                        <div className="course-description">
-                          <b className="text-secondary-alt fw-semibold fs-18">
-                            Course Description:
-                          </b>
-                          <br />
-                          {getSingleCourseData?.data?.description
-                            ? getSingleCourseData?.data?.description
-                            : `Accounting is the language of business, and accountants
+            {getSingleCourseIsLoading ? (
+              <LoaderSpiner />
+            ) : (
+              <>
+                {step === 1 ? (
+                  <Card>
+                    <CardHeader className="fs-1 fw-semibold">
+                      Course Details
+                    </CardHeader>
+                    <CardBody>
+                      <Row>
+                        <Col lg={6}>
+                          <div className="course-details">
+                            <h2>
+                              <span>Course Name: </span>
+                              {getSingleCourseData?.data?.name
+                                ? getSingleCourseData?.data?.name
+                                : 'Bachelor in Accounting (Hons.)'}
+                            </h2>
+                            <div className="course-description">
+                              <b className="text-secondary-alt fw-semibold fs-18">
+                                Course Description:
+                              </b>
+                              <br />
+                              {getSingleCourseData?.data?.description
+                                ? getSingleCourseData?.data?.description
+                                : `Accounting is the language of business, and accountants
                         help business leaders make smart financial decisions.
                         The Bachelor in Accounting (Hons) is a three-year
                         programme that is recognised by the Malaysian Institute
@@ -114,70 +115,72 @@ const SingleUniversityCourse = () => {
                         with others and the environment, which is introduced in
                         the Halatuju 4 Program Perakaunan published by Malaysian
                         Institute of Accountants.`}
-                        </div>
-                        <div className="course-btns">
-                          <button
-                            onClick={() =>
-                              handleDownload(
-                                getSingleCourseData?.data?.brochure?.url
-                              )
-                            }
-                            className="btn-secondary-alt"
-                          >
-                            Download Brochure
-                          </button>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col lg={6}>
-                      <div className="course-details">
-                        <Accordion open={open} toggle={toggle}>
-                          <AccordionItem>
-                            <AccordionHeader targetId="1">
-                              Entry Requirements
-                            </AccordionHeader>
-                            <AccordionBody accordionId="1">
-                              {getSingleCourseData?.data?.entry_requirements.map(
-                                (item, index) => (
-                                  <strong key={index} className="d-flex">
-                                    .{item}
-                                  </strong>
-                                )
-                              )}
-                            </AccordionBody>
-                          </AccordionItem>
-                          <AccordionItem>
-                            <AccordionHeader targetId="2">
-                              English Requirements
-                            </AccordionHeader>
-                            <AccordionBody accordionId="2">
-                              {getSingleCourseData?.data?.english_requirements.map(
-                                (item, index) => (
-                                  <strong key={index} className="d-flex">
-                                    .{item}
-                                  </strong>
-                                )
-                              )}
-                            </AccordionBody>
-                          </AccordionItem>
-                        </Accordion>
-                      </div>
-                    </Col>
-                    <Col lg={12}>
-                      <div className="d-flex justify-content-center">
-                        <button
-                          onClick={() => setStep(step + 1)}
-                          className="button py-3 px-5"
-                        >
-                          For Apply
-                        </button>
-                      </div>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            ) : (
-              <CourseForm setStep={setStep} step={step} />
+                            </div>
+                            <div className="course-btns">
+                              <button
+                                onClick={() =>
+                                  handleDownload(
+                                    getSingleCourseData?.data?.brochure?.url
+                                  )
+                                }
+                                className="btn-secondary-alt"
+                              >
+                                Download Brochure
+                              </button>
+                            </div>
+                          </div>
+                        </Col>
+                        <Col lg={6}>
+                          <div className="course-details">
+                            <Accordion open={open} toggle={toggle}>
+                              <AccordionItem>
+                                <AccordionHeader targetId="1">
+                                  Entry Requirements
+                                </AccordionHeader>
+                                <AccordionBody accordionId="1">
+                                  {getSingleCourseData?.data?.entry_requirements.map(
+                                    (item, index) => (
+                                      <strong key={index} className="d-flex">
+                                        .{item}
+                                      </strong>
+                                    )
+                                  )}
+                                </AccordionBody>
+                              </AccordionItem>
+                              <AccordionItem>
+                                <AccordionHeader targetId="2">
+                                  English Requirements
+                                </AccordionHeader>
+                                <AccordionBody accordionId="2">
+                                  {getSingleCourseData?.data?.english_requirements.map(
+                                    (item, index) => (
+                                      <strong key={index} className="d-flex">
+                                        .{item}
+                                      </strong>
+                                    )
+                                  )}
+                                </AccordionBody>
+                              </AccordionItem>
+                            </Accordion>
+                          </div>
+                        </Col>
+                        <Col lg={12}>
+                          <div className="d-flex justify-content-center">
+                            <button
+                              onClick={() => setStep(step + 1)}
+                              className="button py-3 px-5"
+                            >
+                              For Apply
+                            </button>
+                          </div>
+                        </Col>
+                      </Row>
+                    </CardBody>
+                  </Card>
+                ) : (
+                  <CourseForm setStep={setStep} step={step} />
+                )}
+              </>
             )}
           </Container>
         </div>
