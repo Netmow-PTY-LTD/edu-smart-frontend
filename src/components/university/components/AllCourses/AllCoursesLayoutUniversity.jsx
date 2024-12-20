@@ -181,7 +181,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
       {getSingleUniversityCourseIsLoadingForStudent ? (
         <LoaderSpiner />
       ) : (
-        <Col className="mt-sm-3 faculty-content-right  " lg={9} md={8} sm={12}>
+        <Col className="" lg={9} md={8} sm={12}>
           <Row>
             {selectedData.length > 0 ? (
               selectedData?.map((item, index) => (
@@ -211,14 +211,18 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
                 </Col>
               ))
             ) : (
-              <p className="text-warning">
-                No courses available for the selected filters.
-              </p>
+              <Col className="mt-sm-3  " lg={9} md={8} sm={12}>
+                <div className="faculty-item">
+                  <p className=" text-warning">
+                    No courses available for the selected filters.
+                  </p>
+                </div>
+              </Col>
             )}
           </Row>
           <Row>
             {selectedData.length > 0 && (
-              <Pagination size="sm" className="mt-5">
+              <Pagination size="lg" className="mt-5 ">
                 <PaginationItem disabled={currentPage === 1}>
                   <PaginationLink
                     first
@@ -275,7 +279,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
                   />
                 </PaginationItem>
               </Pagination>
-            ) }
+            )}
           </Row>
         </Col>
       )}
