@@ -20,7 +20,6 @@ const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 const Login = () => {
   const [logIn, { data: LoginData }] = useLogInMutation();
 
-  //  for authenticating
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'super_admin') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
@@ -36,18 +35,50 @@ const Login = () => {
     }
   }, [LoginData]);
 
-  // temporary agent login
+  useEffect(() => {
+    console.log(window?.location);
+  }, []);
+
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
-      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
-      if (appEnvironment === 'development') {
+      const subdomain = LoginData?.data?.domain?.subdomain;
+      const token = LoginData?.data?.token;
+
+      if (subdomain) {
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/agent`
+          `${window.location.protocol}//${subdomain}.localhost:3005`
         );
-      } else {
-        window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent`
-        );
+        if (appEnvironment === 'development') {
+          Cookies.set('token', token, {
+            domain: '',
+            path: '/dashboard/agent',
+            expires: 7,
+          });
+          Cookies.set('subdomain', subdomain, {
+            domain: '',
+            path: '/dashboard/agent',
+            expires: 7,
+          });
+
+          window.location.assign(
+            `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
+          );
+        } else {
+          const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+          Cookies.set('token', token, {
+            domain: domain,
+            expires: 7,
+          });
+          Cookies.set('subdomain', subdomain, {
+            domain: domain,
+            expires: 7,
+          });
+
+          window.location.assign(
+            `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
+          );
+        }
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
@@ -76,39 +107,6 @@ const Login = () => {
       }
     }
   }, [LoginData]);
-
-  // useEffect(() => {
-  //   if (
-  //     // subdomainData?.subdomain &&
-  //     typeof window !== 'undefined' &&
-  //     loginData?.token
-  //   ) {
-  //     if (loginData?.token) {
-  //       localStorage.setItem('token', loginData?.token);
-  //     }
-  //     if (appEnvironment === 'development') {
-  //       if (loginData.role && loginData?.role === 'admin') {
-  //         window.location.assign(
-  //           `${window.location.protocol}//${subdomainData?.subdomain}.localhost:3000/admin?token=${loginData.token}`
-  //         );
-  //       } else if (loginData.role && loginData?.role === 'guardian') {
-  //         window.location.assign(
-  //           `${window.location.protocol}//${subdomainData?.subdomain}.localhost:3000/guardian?token=${loginData.token}`
-  //         );
-  //       }
-  //     } else {
-  //       if (loginData.role && loginData?.role === 'admin') {
-  //         window.location.assign(
-  //           `${window.location.protocol}//${subdomainData?.subdomain}.${process.env.NEXT_PUBLIC_REDIRECT_URL}/admin?token=${loginData.token}`
-  //         );
-  //       } else if (loginData.role && loginData?.role === 'guardian') {
-  //         window.location.assign(
-  //           `${window.location.protocol}//${subdomainData?.subdomain}.${process.env.NEXT_PUBLIC_REDIRECT_URL}/guardian?token=${loginData.token}`
-  //         );
-  //       }
-  //     }
-  //   }
-  // }, []);
 
   //  for login
   const [initialValues, setInitialValues] = useState({

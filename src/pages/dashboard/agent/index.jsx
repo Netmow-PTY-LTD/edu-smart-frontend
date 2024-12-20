@@ -5,7 +5,7 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 
 import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
@@ -16,14 +16,17 @@ const AgentDashboard = () => {
   const { data: userInfodata } = useGetUserInfoQuery();
   const { data: getUniversityData } = useGetUniversityQuery();
 
-  useEffect(() => {
-    const token = Cookies.get('token');
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      window.location.href = '/auth/login';
-    }
-  }, []);
+  const token = Cookies.get('token');
+
+  console.log(token);
+  
+  // useEffect(() => {
+  //   if (token) {
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     // window.location.href = '/auth/login';
+  //   }
+  // }, []);
 
   return (
     <Layout>
