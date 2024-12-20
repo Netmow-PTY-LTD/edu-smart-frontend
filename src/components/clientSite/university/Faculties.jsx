@@ -1,7 +1,7 @@
 import AllCoursesLayoutUniversity from "@/components/university/components/AllCourses/AllCoursesLayoutUniversity";
 
 
-export default function UniversityFaculties({ university, universityId }) {
+export default function UniversityFaculties({universityId }) {
   return (
     <section className="university-faculties">
       <div className="container">
@@ -13,7 +13,7 @@ export default function UniversityFaculties({ university, universityId }) {
             the first private-owned higher learning institute..
           </p>
         </div>
-        <div className="faculty-content">
+        <div>
           <AllCoursesLayoutUniversity university_id={universityId} />
         </div>
       </div>
