@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { studentDocRelatedServiceForAgent } from '../services/agent/studentDocRelatedServiceForAgent';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 import { authService } from '../services/public/auth/authService';
+import { publicStudentService } from '../services/public/student/publicStudentService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
+import { studentSubmitDocumentService } from '../services/student/studentSubmitDocumentService';
 import { courseCategoriesService } from '../services/super admin/courseCategoriesService';
 import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
@@ -28,7 +31,12 @@ export const store = configureStore({
     [courseService.reducerPath]: courseService.reducer,
     [userInfoService.reducerPath]: userInfoService.reducer,
     [publicAgentService.reducerPath]: publicAgentService.reducer,
+    [publicStudentService.reducerPath]: publicStudentService.reducer,
     [publicUniversityService.reducerPath]: publicUniversityService.reducer,
+    [studentDocRelatedServiceForAgent.reducerPath]:
+      studentDocRelatedServiceForAgent.reducer,
+    [studentSubmitDocumentService.reducerPath]:
+      studentSubmitDocumentService.reducer,
     [universityAdministrationDescriptionService.reducerPath]:
       universityAdministrationDescriptionService.reducer,
     [universityAdministrationFaqService.reducerPath]:
@@ -49,11 +57,14 @@ export const store = configureStore({
       .concat(courseService.middleware)
       .concat(userInfoService.middleware)
       .concat(publicAgentService.middleware)
+      .concat(publicStudentService.middleware)
       .concat(publicUniversityService.middleware)
       .concat(universityAdministrationDescriptionService.middleware)
       .concat(universityAdministrationFaqService.middleware)
       .concat(universityAdministrationSocialLinkService.middleware)
       .concat(universityAdministrationGalleryService.middleware)
+      .concat(studentSubmitDocumentService.middleware)
+      .concat(studentDocRelatedServiceForAgent.middleware)
       .concat(universityAdministrationSliderService.middleware),
 });
 

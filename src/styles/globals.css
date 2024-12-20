@@ -125,27 +125,27 @@ body {
 
 @media only screen and (min-width: 2112px) {
   html {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 @media only screen and (min-width: 2304px) {
   html {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 2496px) {
   html {
-    font-size: 11px;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 2688px) {
   html {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 @media only screen and (min-width: 2880px) {
   html {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
 @media only screen and (min-width: 3072px) {
@@ -9705,4 +9705,34 @@ textarea.form-control {
 
 .textarea.form-control {
   min-height: auto !important;
+}
+
+/* Single Course */
+
+.course-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.course-details {
+  padding: 10px 15px;
+}
+
+.course-details h2 {
+  font-size: 40px;
+  color: var(--color--secondary);
+  font-weight: 600;
+}
+
+.course-description {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 18px 0;
+}
+
+.form-content {
+  padding: 10px 15px;
 }

@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 import CommonTableComponent from '../common/CommonTableComponent';
 import { convertImageUrlToFile } from '../common/helperFunctions/ConvertImgUrlToFile';
 import UniversitySponsorModalForm from './Modal/UniversitySponsorsModalForm';
+import SearchComponent from '../common/SearchComponent';
 
 export default function UniversitySponsorsList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function UniversitySponsorsList({ university_id }) {
   const [perPageData, setPerPageData] = useState(5);
   const [previewImage, setPreviewImage] = useState('');
   const [sponsorId, setSponsorId] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [initialValues, setInitialValues] = useState({
     name: '',
     link: '',
@@ -31,6 +33,8 @@ export default function UniversitySponsorsList({ university_id }) {
     end_date: '',
     logo: '',
   });
+
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const [universitySponsor] = useUniversitySponsorMutation();
   const {
@@ -136,7 +140,7 @@ export default function UniversitySponsorsList({ university_id }) {
     }
   };
 
-  console.log(getSingleUniversityData);
+  //console.log(getSingleUniversityData);
 
   const handleUpdateSponsor = async (values, { setSubmitting }) => {
     setSubmitting(true);
@@ -145,7 +149,6 @@ export default function UniversitySponsorsList({ university_id }) {
       university_id: university_id,
       id: sponsorId,
     };
-    console.log(updatedData);
     const finalData = new FormData();
     Object.entries(updatedData).forEach(([key, value]) => {
       if (value instanceof File) {
@@ -182,7 +185,9 @@ export default function UniversitySponsorsList({ university_id }) {
       title: 'SN',
       key: 'sn',
       render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+        <span className="d-flex flex-column text-capitalize">
+          {currentPage * perPageData + index + 1}
+        </span>
       ),
     },
 
@@ -290,16 +295,25 @@ export default function UniversitySponsorsList({ university_id }) {
     setEditModalIsOpen(false);
   };
 
+  // Filter data for search option
+  const filteredData =
+    getSingleUniversityData?.data?.sponsors?.length > 0 &&
+    getSingleUniversityData?.data?.sponsors.filter((item) =>
+      item?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
   return (
     <Col lg={10}>
       <div className="align-items-center d-flex fw-semibold card-header">
-        <h4 className="fw-semibold fs-20 text-black mb-0">Sponsors List</h4>
-        <button
-          className="button px-4 py-3"
-          onClick={() => setAddModalIsOpen(!addModalIsOpen)}
-        >
-          Add New Sponsor
-        </button>
+        <div className="d-flex align-items-center gap-4">
+          <h4 className="fw-semibold fs-20 text-black mb-0">Sponsors List</h4>
+          <button
+            className="button px-4 py-3"
+            onClick={() => setAddModalIsOpen(!addModalIsOpen)}
+          >
+            Add New Sponsor
+          </button>
+        </div>
         <UniversitySponsorModalForm
           formHeader={'Add Sponsor'}
           onClose={() => {
@@ -314,10 +328,14 @@ export default function UniversitySponsorsList({ university_id }) {
           handleImageChange={handleImageChange}
           previewImage={previewImage}
         />
+        <SearchComponent
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
+        />
       </div>
       <CommonTableComponent
         headers={sponsorsHeaders}
-        data={getSingleUniversityData?.data?.sponsors}
+        data={filteredData}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         perPageData={perPageData}

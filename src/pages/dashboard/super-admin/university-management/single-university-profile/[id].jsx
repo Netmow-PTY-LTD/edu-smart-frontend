@@ -64,8 +64,6 @@ const SingleUniversityProfile = () => {
     }
   };
 
-  console.log(getSingleUniversityData?.data);
-
   return (
     <>
       <Layout>
@@ -173,7 +171,7 @@ const SingleUniversityProfile = () => {
                           target="_blank"
                           className="button px-3 py-2"
                         >
-                          <i className="ri-links-fill align-bottom"></i> visit
+                          <i className="ri-links-fill align-bottom"></i> Visit
                           University Pages
                         </Link>
                       </div>

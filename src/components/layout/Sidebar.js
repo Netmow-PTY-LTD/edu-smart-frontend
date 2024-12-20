@@ -7,20 +7,13 @@ import mainlogo from '/public/Edusmart-White-Logo.png';
 //Import Components
 import Image from 'next/image';
 import Link from 'next/link';
-import { useDispatch } from 'react-redux';
 import { Container } from 'reactstrap';
 
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import VerticalLayout from './VerticalLayouts';
 
 const Sidebar = ({ layoutType }) => {
-  const dispatch = useDispatch();
-
-  // const { data: userInfoData } = useSelector(
-  //   (state) => state.AdminDashboard.userInfo
-  // );
-
-  // const userInfoData = { role: 'super-admin' };
-  const userInfoData = { role: 'administration' };
+  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
 
   useEffect(() => {
     var verticalOverlay = document.getElementsByClassName('vertical-overlay');
@@ -37,14 +30,15 @@ const Sidebar = ({ layoutType }) => {
         <div className="navbar-brand-box">
           <Link
             href={
-              userInfoData?.role === 'admin'
-                ? '/admin'
-                : userInfoData?.role === 'player'
-                  ? '/player'
-                  : userInfoData?.role === 'super-admin'
-                    ? '/super-admin'
-                    : userInfoData?.role === 'administration'
-                    ? '/administration' : '/'
+              userInfodata?.data?.role === 'agent'
+                ? '/agent'
+                : userInfodata?.data?.role === 'student'
+                  ? '/student'
+                  : userInfodata?.data?.role === 'super_admin'
+                    ? '/super_admin'
+                    : userInfodata?.data?.role === 'university_administration'
+                      ? '/university_administration'
+                      : '/'
             }
             className="logo logo-light "
           >

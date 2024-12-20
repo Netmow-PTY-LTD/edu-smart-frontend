@@ -4,8 +4,14 @@ import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMess
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
+import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import { agentsHeadersWithoutAction, studentsHeadersWithoutAction, universityHeadersWithoutAction } from '@/utils/common/data';
+import {
+  agentsHeadersWithoutAction,
+  studentsHeadersWithoutAction,
+  superAdminNameAndLogoData,
+  universityHeadersWithoutAction,
+} from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
@@ -15,10 +21,12 @@ import { Col, Row } from 'reactstrap';
 
 const SuperAdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
+    useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
   const { data: getUniversityData } = useGetUniversityQuery();
   const { data: allAgentsData } = useGetAllAgentQuery();
+  const { data: allStudentsData } = useGetAllStudentQuery();
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -28,6 +36,13 @@ const SuperAdminDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
+  }, []);
+
+  useEffect(() => {
+    setAllRegisteredUniversitydata([
+      superAdminNameAndLogoData,
+      ...universityHeadersWithoutAction,
+    ]);
   }, []);
 
   return (
@@ -43,7 +58,7 @@ const SuperAdminDashboard = () => {
                     userInfoData={userInfodata?.data}
                     firstElementData={getUniversityData?.data?.length}
                     secondElementData={allAgentsData?.data?.length}
-                    thirdElementData={''}
+                    thirdElementData={allStudentsData?.data?.length}
                     gstAndCurrencyData={''}
                     fourthElementData={''}
                     paidSum={''}
@@ -55,7 +70,7 @@ const SuperAdminDashboard = () => {
                   <Col xxl={12}>
                     <LatestRegistered
                       tableHead={'Latest Registered University'}
-                      headers={universityHeadersWithoutAction}
+                      headers={allRegisteredUniversitydata}
                       data={
                         getUniversityData?.data ? getUniversityData?.data : []
                       }
@@ -72,7 +87,7 @@ const SuperAdminDashboard = () => {
                     <LatestRegistered
                       tableHead={'Latest Registered Students'}
                       headers={studentsHeadersWithoutAction}
-                      // data={allAgentsData?.data ? allAgentsData?.data : []}
+                      data={allStudentsData?.data ? allStudentsData?.data : []}
                     />
                   </Col>
                 </Row>

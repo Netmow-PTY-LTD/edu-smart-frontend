@@ -14,20 +14,22 @@ export default function SingleUniversityHome() {
   const [university, setUniversity] = useState(null);
   const { data: universityData } = useGetAllUniversityQuery();
   const router = useRouter();
-  const { id } = router.query;
+  const { universityId } = router.query;
 
   useEffect(() => {
     if (universityData?.data?.length > 0) {
-      const university = universityData?.data?.find((uni) => uni._id === id);
+      const university = universityData?.data?.find(
+        (uni) => uni._id === universityId
+      );
       setUniversity(university);
     }
-  }, [universityData, id]);
+  }, [universityData, universityId]);
 
   return (
     <UniversityLayout>
       <HeroHome university={university} />
       <AboutUniversity university={university} />
-      <UniversityFaculties university={university} />
+      <UniversityFaculties universityId={universityId} />
       <UniversityPictureGallery university={university?.gallery} />
       <UniversityFAQ university={university?.faqs} />
       <SponsorHome sponsorData={university?.sponsors} />

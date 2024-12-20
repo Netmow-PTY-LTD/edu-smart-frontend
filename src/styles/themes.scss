@@ -32,16 +32,37 @@
   justify-content: center;
   font-weight: 400;
   height: 2.8rem;
+  border: 1px solid #fa5047;
   border-radius: 0.4rem;
   background-color: rgba(147, 68, 232, 0.1);
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem;
   font-size: 1.8rem;
   line-height: 1;
-  color: #9344e8;
+  color: #fa5047;
 }
 .third-btn:hover {
-  background-color: #9344e8;
+  background-color: #fa5047;
   color: #fff;
+  border: 1px solid #fa5047;
+  border-radius: 0.4rem;
+}
+
+.btn-secondary-alt {
+  background-color: var(--color--secondary);
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  color: #fff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  outline: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-secondary-alt:hover {
+  background-color: var(--color--primary);
+  color: var(--color--secondary) !important;
 }
 
 .button {

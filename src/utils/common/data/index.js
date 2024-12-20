@@ -7,41 +7,74 @@ const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
 
-// all univeresity header
-const universityHeadersWithoutAction = [
-  {
-    title: 'Logo - Name',
-    key: 'logo',
-    render: (item) => (
-      <div className="d-flex align-items-center me-5">
-        <div className="flex-shrink-0 me-1">
+const superAdminNameAndLogoData = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
           <Link
             href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
             className="text-reset"
           >
-            <Image
-              src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
+            {`${item.name} `}
           </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
-              className="text-reset"
-            >
-              {`${item.name} `}
-            </Link>
-          </h5>
-        </div>
+        </h5>
       </div>
-    ),
-  },
+    </div>
+  ),
+};
 
+const studentAndLogoData = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/student/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/student/university-management/single-university-profile/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.name} `}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+
+// all univeresity header
+const universityHeadersWithoutAction = [
   {
     title: 'Description',
     key: 'description',
@@ -51,7 +84,7 @@ const universityHeadersWithoutAction = [
       </p>
     ),
   },
-  { title: 'Code', key: 'code' },
+
   {
     title: 'Address',
     key: 'address',
@@ -96,6 +129,7 @@ const universityHeadersWithoutAction = [
     ),
   },
 ];
+
 // all agent header
 const agentsHeadersWithoutAction = [
   {
@@ -141,6 +175,67 @@ const agentsHeadersWithoutAction = [
     ),
   },
 ];
+
+//student submitted doc header
+const studentSubmittedDocumentsHeaderWithoutAction = [
+  {
+    title: 'Title',
+    key: 'title',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.title ? item?.title : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+  {
+    title: 'Name',
+    key: 'name',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`}
+        </h5>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Email',
+    key: 'email',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.user?.email ? item?.user?.email : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Status',
+    key: 'status',
+    render: (item) => (
+      <span
+        className={`d-flex flex-column text-capitalize fw-semibold ${
+          item?.status === 'accepted'
+            ? 'text-success'
+            : item?.status === 'rejected'
+              ? 'text-danger'
+              : item?.status === 'pending'
+                ? 'text-warning'
+                : item?.status === 'requested'
+                  ? 'text-primary'
+                  : ''
+        }`}
+      >
+        {item?.status ? <span>{item?.status}</span> : '-'}
+      </span>
+    ),
+  },
+];
+
 // all student header
 const studentsHeadersWithoutAction = [
   {
@@ -166,7 +261,9 @@ const studentsHeadersWithoutAction = [
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link href={``} className="text-reset">
-              {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
+              {item?.first_name && item?.last_name
+                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+                : '-'}
             </Link>
           </h5>
         </div>
@@ -174,6 +271,17 @@ const studentsHeadersWithoutAction = [
     ),
   },
 
+  {
+    title: 'Agent',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.agent?.first_name && item?.agent?.last_name
+          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone' },
   {
@@ -484,18 +592,30 @@ const departmentHeaders = [
   },
 ];
 
+const allowedFileTypes = [
+  'application/pdf',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+];
+
 export {
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
   allDepartmentsWithoutAction,
+  allowedFileTypes,
   brandlogo,
   categoryHeaders,
   courseHeaders,
   departmentHeaders,
   edulogo,
   profileBg,
+  studentAndLogoData,
+  studentSubmittedDocumentsHeaderWithoutAction,
   studentsHeadersWithoutAction,
+  superAdminNameAndLogoData,
   supperAdminWidgetsData,
   teamDummyImage,
   universityHeadersWithoutAction,
