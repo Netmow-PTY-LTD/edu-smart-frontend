@@ -56,8 +56,8 @@ const SingleCoursePageInFrontSite = () => {
         ) : (
           <>
             <Row>
-              <Col xs={12} md={6} className="mb-4">
-                <div>
+              <Col xs={12} md={6} className="mb-4"  >
+                <div className='me-lg-3'>
                   <h2 className="fs-1">{name}</h2>
                   <p> {department?.name}</p>
                   <hr />
@@ -86,8 +86,8 @@ const SingleCoursePageInFrontSite = () => {
                 </div>
               </Col>
 
-              <Col xs={12} md={6}>
-                <div>
+              <Col xs={12} md={6} className="mb-4" >
+                <div className='ms-lg-3'>
                   <Accordion flush open={open} toggle={toggle}>
                     <AccordionItem>
                       <AccordionHeader targetId="1">

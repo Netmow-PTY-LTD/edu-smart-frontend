@@ -181,7 +181,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
       {getSingleUniversityCourseIsLoadingForStudent ? (
         <LoaderSpiner />
       ) : (
-        <Col className="mt-sm-3 faculty-content-right  "  lg={9} md={8} sm={12}>
+        <Col className="mt-sm-3 faculty-content-right  " lg={9} md={8} sm={12}>
           <Row>
             {selectedData.length > 0 ? (
               selectedData?.map((item, index) => (
@@ -217,63 +217,65 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
             )}
           </Row>
           <Row>
-            <Pagination size="sm" className="mt-5">
-              <PaginationItem disabled={currentPage === 1}>
-                <PaginationLink
-                  first
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(1);
-                  }}
-                />
-              </PaginationItem>
-              <PaginationItem disabled={currentPage === 1}>
-                <PaginationLink
-                  previous
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(currentPage - 1);
-                  }}
-                />
-              </PaginationItem>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <PaginationItem active={page === currentPage} key={page}>
-                    <PaginationLink
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlePageChange(page);
-                      }}
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              )}
-              <PaginationItem disabled={currentPage === totalPages}>
-                <PaginationLink
-                  next
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(currentPage + 1);
-                  }}
-                />
-              </PaginationItem>
-              <PaginationItem disabled={currentPage === totalPages}>
-                <PaginationLink
-                  last
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(totalPages);
-                  }}
-                />
-              </PaginationItem>
-            </Pagination>
+            {selectedData.length > 0 && (
+              <Pagination size="sm" className="mt-5">
+                <PaginationItem disabled={currentPage === 1}>
+                  <PaginationLink
+                    first
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(1);
+                    }}
+                  />
+                </PaginationItem>
+                <PaginationItem disabled={currentPage === 1}>
+                  <PaginationLink
+                    previous
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage - 1);
+                    }}
+                  />
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <PaginationItem active={page === currentPage} key={page}>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(page);
+                        }}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                )}
+                <PaginationItem disabled={currentPage === totalPages}>
+                  <PaginationLink
+                    next
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(currentPage + 1);
+                    }}
+                  />
+                </PaginationItem>
+                <PaginationItem disabled={currentPage === totalPages}>
+                  <PaginationLink
+                    last
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(totalPages);
+                    }}
+                  />
+                </PaginationItem>
+              </Pagination>
+            ) }
           </Row>
         </Col>
       )}
