@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import StudentProfile from '../../student/profile-settings-for-student';
+import StudentProfileUI from '@/components/sAdminDashboard/temporaryUIWithFunctional/StudentProfile';
 const Settings = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
@@ -123,6 +125,11 @@ const Settings = () => {
                         <div>
                           <h2> Thi is setting content components</h2>
                         </div>
+                      </Col>
+                    )}
+                    {customverticalTab === 6 && (
+                      <Col lg={10}>
+                       <StudentProfileUI/>
                       </Col>
                     )}
                   </Row>

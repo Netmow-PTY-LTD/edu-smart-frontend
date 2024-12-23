@@ -21,7 +21,7 @@ import EmailField from '@/components/common/formField/EmailField';
 import CountrySelectField from '@/components/common/formField/CountrySelectField';
 import NumberField from '@/components/common/formField/NumberField';
 import countryList from 'react-select-country-list';
-const StudentProfile = () => {
+const StudentProfileUI = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [initialValues, setInitialValues] = useState({
@@ -54,6 +54,7 @@ const StudentProfile = () => {
       Object.entries(values).forEach(([key, value]) => {
         finalData.append(key, value);
       });
+      
     } catch (error) {
       const errorMessage = error?.data?.message;
       toast.error(errorMessage);
@@ -63,14 +64,12 @@ const StudentProfile = () => {
   };
   const options = useMemo(() => countryList().getData(), []);
   return (
-    <Layout>
-      <div className="page-content">
-        <div className="h-100">
-          <Card className="my-2">
+   <>
+    <Card className="my-2">
             <CardHeader>
               <CardTitle tag="h5"> Profiles </CardTitle>
             </CardHeader>
-            <CardBody>
+            <CardBody className='p-5'>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -80,7 +79,7 @@ const StudentProfile = () => {
                 {({ isSubmitting, setFieldValue }) => (
                   <Form>
                     <Row>
-                      <Col lg={3}>
+                      <Col lg={3} >
                         <div className="mb-5 profile-img">
                           <div className="img-preview mb-3">
                             <Image
@@ -178,10 +177,8 @@ const StudentProfile = () => {
               </Formik>
             </CardBody>
           </Card>
-        </div>
-      </div>
-    </Layout>
+   </>
   );
 };
 
-export default StudentProfile;
+export default StudentProfileUI;
