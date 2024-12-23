@@ -181,7 +181,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
       {getSingleUniversityCourseIsLoadingForStudent ? (
         <LoaderSpiner />
       ) : (
-        <Col className="" lg={9} md={8} sm={12}>
+        <Col className="mt-lg-0 mt-4" lg={9} md={8} sm={12}>
           <Row>
             {selectedData.length > 0 ? (
               selectedData?.map((item, index) => (
