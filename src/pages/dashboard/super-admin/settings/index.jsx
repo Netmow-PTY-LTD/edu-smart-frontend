@@ -6,6 +6,7 @@ import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import StudentProfileUI from '@/components/sAdminDashboard/temporaryUIWithFunctional/StudentProfile';
 import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySettings';
 import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
+import SMTPSettings from '@/components/sAdminDashboard/Settings/SMTPSettings';
 
 const Settings = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -130,6 +131,11 @@ const Settings = () => {
                     {customverticalTab === 2 && (
                       <Col lg={10}>
                        <CurrencySettings/>
+                      </Col>
+                    )}
+                    {customverticalTab === 5 && (
+                      <Col lg={10}>
+                       <SMTPSettings/>
                       </Col>
                     )}
                     {customverticalTab === 6 && (
