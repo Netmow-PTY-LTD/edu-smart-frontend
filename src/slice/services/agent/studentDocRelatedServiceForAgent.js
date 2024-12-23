@@ -32,32 +32,32 @@ export const studentDocRelatedServiceForAgent = createApi({
       },
     }),
     singleStudentForAgent: builder.query({
-      query: (data) => {
-        const student_id = data?.student_id;
+      query: (student_id) => {
         return {
           url: `/students/${student_id}`,
           method: 'GET',
         };
       },
     }),
-    deleteStudentForAgent: builder.query({
+    updateStudentForAgent: builder.mutation({
       query: (data) => {
-        const student_id = data?.student_id;
+        const student_id = data.get('student_id');
+        return {
+          url: `/students/${student_id}`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+    }),
+    deleteStudentForAgent: builder.mutation({
+      query: (student_id) => {
         return {
           url: `/students/${student_id}`,
           method: 'DELETE',
         };
       },
     }),
-    updateStudentForAgent: builder.query({
-      query: (data) => {
-        const student_id = data?.student_id;
-        return {
-          url: `/students/${student_id}`,
-          method: 'PATCH',
-        };
-      },
-    }),
+
     allSubmittedDocumentForAgent: builder.query({
       query: () => {
         return {
@@ -92,8 +92,8 @@ export const {
   useAddStudentForAgentMutation,
   useAllStudentForAgentQuery,
   useSingleStudentForAgentQuery,
-  useUpdateStudentForAgentQuery,
-  useDeleteStudentForAgentQuery,
+  useUpdateStudentForAgentMutation,
+  useDeleteStudentForAgentMutation,
   useAllSubmittedDocumentForAgentQuery,
   useCreateDocRequestForAgentMutation,
   useUpdateDocStatusForAgentMutation,

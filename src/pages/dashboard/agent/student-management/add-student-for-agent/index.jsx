@@ -1,6 +1,9 @@
 import AddStudentComponentForAgent from '@/components/agentDashboard/AddStudentComponent';
 import Layout from '@/components/layout';
-import { useAddStudentForAgentMutation } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import {
+  useAddStudentForAgentMutation,
+  useAllStudentForAgentQuery,
+} from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -26,6 +29,12 @@ const AddStudentForAgent = () => {
   });
 
   const [addStudent] = useAddStudentForAgentMutation();
+  const {
+    data: allStudentForAgentData,
+    error: allStudentForAgentError,
+    isLoading: allStudentForAgentIsLoading,
+    refetch: allStudentForAgentRefetch,
+  } = useAllStudentForAgentQuery();
 
   const validationSchema = Yup.object({
     first_name: Yup.string().required('First name is required'),
@@ -46,27 +55,29 @@ const AddStudentForAgent = () => {
     country: Yup.string().required('Country is required'),
   });
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-
-    console.log(values);
 
     try {
       const finalData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
         finalData.append(key, value);
       });
+
       const response = await addStudent(finalData).unwrap();
+
       if (response) {
         toast.success(response?.message);
+        allStudentForAgentRefetch();
         setImagePreview(null);
-        setImagePreview(null);
+        resetForm();
+
         router.push(
           '/dashboard/agent/student-management/all-student-for-agent'
         );
       }
     } catch (error) {
-      const errorMessage = error?.data?.message;
+      const errorMessage = error?.data?.message || 'Something went wrong!';
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);

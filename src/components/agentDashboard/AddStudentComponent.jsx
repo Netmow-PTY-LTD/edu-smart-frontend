@@ -40,10 +40,14 @@ const AddStudentComponentForAgent = ({
           {headTitle}
           <i class="ri-user-fill text-primary fw-bold fs-1"></i>
         </h1>
-        Note:{' '}
-        <span className="text-danger fw-semibold">
-          All fields are required.
-        </span>
+        {headTitle === 'Add New Student' && (
+          <>
+            Note:{' '}
+            <span className="text-danger fw-semibold">
+              All fields are required.
+            </span>
+          </>
+        )}
       </div>
       <div className="">
         <Card className="p-4 p-md-5 add-university-card">
@@ -53,7 +57,7 @@ const AddStudentComponentForAgent = ({
             onSubmit={handleSubmit}
             enableReinitialize={true}
           >
-            {({ isSubmitting, setFieldValue }) => (
+            {({ isSubmitting, setFieldValue, resetForm }) => (
               <Form>
                 <Row>
                   <Col lg={3}>
