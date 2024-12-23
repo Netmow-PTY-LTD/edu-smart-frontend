@@ -10,6 +10,7 @@ import Image from 'next/image';
 import React, { useMemo } from 'react';
 import countryList from 'react-select-country-list';
 import { Card, Col, Row } from 'reactstrap';
+import PasswordField from '../common/formField/PasswordField';
 
 const AddStudentComponentForAgent = ({
   initialValues,
@@ -39,10 +40,14 @@ const AddStudentComponentForAgent = ({
           {headTitle}
           <i class="ri-user-fill text-primary fw-bold fs-1"></i>
         </h1>
-        Note:{' '}
-        <span className="text-danger fw-semibold">
-          All fields are required.
-        </span>
+        {headTitle === 'Add New Student' && (
+          <>
+            Note:{' '}
+            <span className="text-danger fw-semibold">
+              All fields are required.
+            </span>
+          </>
+        )}
       </div>
       <div className="">
         <Card className="p-4 p-md-5 add-university-card">
@@ -52,7 +57,7 @@ const AddStudentComponentForAgent = ({
             onSubmit={handleSubmit}
             enableReinitialize={true}
           >
-            {({ isSubmitting, setFieldValue }) => (
+            {({ isSubmitting, setFieldValue, resetForm }) => (
               <Form>
                 <Row>
                   <Col lg={3}>
@@ -111,6 +116,19 @@ const AddStudentComponentForAgent = ({
                         <Col md={6} xl={6}>
                           <div className="">
                             <NumberField name="phone" label="Contact Number" />
+                          </div>
+                        </Col>
+                        <Col md={6} xl={6}>
+                          <div className="">
+                            <PasswordField name="password" label="Password" />
+                          </div>
+                        </Col>
+                        <Col md={6} xl={6}>
+                          <div className="">
+                            <PasswordField
+                              name="confirm_password"
+                              label="Confirm Password"
+                            />
                           </div>
                         </Col>
                         <Col md={6} xl={6}>

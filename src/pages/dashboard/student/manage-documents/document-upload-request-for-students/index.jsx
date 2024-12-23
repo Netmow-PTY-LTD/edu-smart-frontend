@@ -24,63 +24,7 @@ const AllUploadDocumentsForStudents = () => {
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  //   const actionHeader = [
-  //     {
-  //       title: 'Actions',
-  //       key: 'actions',
-  //       render: (item) => {
-  //         const status = item?.status;
-
-  //         console.log(status);
-  //         const validStatuses = ['accepted', 'rejected', 'pending', 'requested'];
-
-  //         if (validStatuses.includes(status)) {
-  //           return (
-  //             <UncontrolledDropdown className="card-header-dropdown">
-  //               <DropdownToggle
-  //                 tag="a"
-  //                 className="text-reset dropdown-btn"
-  //                 role="button"
-  //               >
-  //                 <span className="button px-3">
-  //                   <i className="ri-more-fill align-middle"></i>
-  //                 </span>
-  //               </DropdownToggle>
-  //               <DropdownMenu className="dropdown-menu dropdown-menu-end">
-  //                 {status === 'accepted' && (
-  //                   <DropdownItem>
-  //                     <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-  //                     Manage Accepted
-  //                   </DropdownItem>
-  //                 )}
-  //                 {status === 'rejected' && (
-  //                   <DropdownItem>
-  //                     <i className="ri-refresh-fill align-start me-2 text-muted fw-bold"></i>
-  //                     Reconsider
-  //                   </DropdownItem>
-  //                 )}
-  //                 {status === 'pending' && (
-  //                   <DropdownItem>
-  //                     <i className="ri-check-fill align-start me-2 text-muted fw-bold"></i>
-  //                     Approve
-  //                   </DropdownItem>
-  //                 )}
-  //                 {status === 'requested' && (
-  //                   <DropdownItem>
-  //                     <i className="ri-question-fill align-start me-2 text-muted fw-bold"></i>
-  //                     Review Request
-  //                   </DropdownItem>
-  //                 )}
-  //               </DropdownMenu>
-  //             </UncontrolledDropdown>
-  //           );
-  //         }
-
-  //         // If the status is not one of the valid ones, return null or no dropdown
-  //         return null;
-  //       },
-  //     },
-  //   ];
+  
 
   const uploadAction = [
     {
