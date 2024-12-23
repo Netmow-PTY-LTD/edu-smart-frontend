@@ -3,7 +3,7 @@ import TextField from '@/components/common/formField/TextField';
 import Layout from '@/components/layout';
 import { Formik } from 'formik';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Button,
   Card,
@@ -17,6 +17,10 @@ import {
 import { brandlogo } from '@/utils/common/data';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import EmailField from '@/components/common/formField/EmailField';
+import CountrySelectField from '@/components/common/formField/CountrySelectField';
+import NumberField from '@/components/common/formField/NumberField';
+import countryList from 'react-select-country-list';
 const StudentProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -50,6 +54,7 @@ const StudentProfile = () => {
       Object.entries(values).forEach(([key, value]) => {
         finalData.append(key, value);
       });
+      
     } catch (error) {
       const errorMessage = error?.data?.message;
       toast.error(errorMessage);
@@ -57,20 +62,21 @@ const StudentProfile = () => {
       setSubmitting(false);
     }
   };
-
+  const options = useMemo(() => countryList().getData(), []);
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
           <Card className="my-2">
             <CardHeader>
-              <CardTitle tag="h5"> Profile Settings</CardTitle>
+              <CardTitle tag="h5"> Profiles </CardTitle>
             </CardHeader>
             <CardBody>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize={true}
               >
                 {({ isSubmitting, setFieldValue }) => (
                   <Form>
@@ -103,28 +109,71 @@ const StudentProfile = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col sm={12} md={6} xl={6}>
-                        <TextField label={'Full Name'} name={'fullName'} />
-                      </Col>
-                      <Col sm={12} md={6} xl={6}>
-                        <TextField
-                          label={'Emaill Address'}
-                          name={'emailAddress'}
-                        />
-                      </Col>
-                      <Col sm={12} md={6} xl={6}>
-                        <TextField label={'Password'} name={'password'} />
-                      </Col>
-                      <Col sm={12} md={6} xl={6}>
-                        <TextField
-                          label={'Change Password'}
-                          name={'changePassword'}
-                        />
-                      </Col>
-                      <Col sm={12} className="text-end">
+                    <Col md={6}>
+                      <TextField name={'first_name'} label={'First Name'} />
+                    </Col>
+                    <Col md={6}>
+                      <TextField name={'last_name'} label={'Last Name'} />
+                    </Col>
+
+                    <Col md={6}>
+                      <EmailField
+                        name={'secondary_email'}
+                        label={'Secondary Email'}
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <TextField
+                        name={'subdomain'}
+                        label={
+                          'Subdomain Name (part of URL, cannot be changed)'
+                        }
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <TextField
+                        name={'organization_name'}
+                        label={'Organization Name )'}
+                      />
+                    </Col>
+                    <Col md={6}>
+                      <CountrySelectField
+                        name={'country'}
+                        label={'Select Country'}
+                        options={options}
+                      />
+                    </Col>
+                    <Col md={4}>
+                      <NumberField name={'phone'} label={'Phone'} />
+                    </Col>
+                    <Col md={4}>
+                      <TextField
+                        name={'address_line_1'}
+                        label={'Address Line 1'}
+                      />
+                    </Col>
+                    <Col md={4}>
+                      <TextField
+                        name={'address_line_2'}
+                        label={'Address Line 2'}
+                      />
+                    </Col>
+
+                    <Col md={4}>
+                      <TextField name={'city'} label={'City'} />
+                    </Col>
+                    <Col md={4}>
+                      <TextField name={'state'} label={'State'} />
+                    </Col>
+                    <Col md={4}>
+                      <NumberField name={'zip'} label={'Zip Code'} />
+                    </Col>
+                    <Col sm={12} className="text-end">
                         <Button className="button">Save Change</Button>
                       </Col>
-                    </Row>
+                  </Row>
+
+               
                   </Form>
                 )}
               </Formik>
