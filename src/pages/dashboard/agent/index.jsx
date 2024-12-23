@@ -1,9 +1,10 @@
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import Layout from '@/components/layout';
+import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { studentsHeadersWithoutAction } from '@/utils/common/data';
 
-import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -14,11 +15,15 @@ const AgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
 
-  const token = Cookies.get('token');
-
-  console.log(token);
+  const {
+    data: allStudentForAgentData,
+    error: allStudentForAgentError,
+    isLoading: allStudentForAgentIsLoading,
+    refetch: allStudentForAgentRefetch,
+  } = useAllStudentForAgentQuery();
 
   // useEffect(() => {
+  // const token = Cookies.get('token');
   //   if (token) {
   //     setIsAuthenticated(true);
   //   } else {
@@ -39,8 +44,12 @@ const AgentDashboard = () => {
                   <Col xxl={12}>
                     <LatestRegistered
                       tableHead={'Latest Registered Students'}
-                      headers={''}
-                      data={[]}
+                      headers={studentsHeadersWithoutAction}
+                      data={
+                        allStudentForAgentData?.data
+                          ? allStudentForAgentData?.data
+                          : []
+                      }
                     />
                   </Col>
                 </Row>
