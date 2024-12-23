@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import StudentProfileUI from '@/components/sAdminDashboard/temporaryUIWithFunctional/StudentProfile';
 import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySettings';
+import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
 
 const Settings = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -123,9 +124,7 @@ const Settings = () => {
                     </Col>
                     {customverticalTab === 1 && (
                       <Col lg={10}>
-                        <div>
-                          <h2> Thi is setting content components</h2>
-                        </div>
+                       <BusinessSettings/>
                       </Col>
                     )}
                     {customverticalTab === 2 && (

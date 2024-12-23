@@ -63,7 +63,7 @@ const StudentProfileUI = () => {
   const options = useMemo(() => countryList().getData(), []);
   return (
     <>
-      <Card className="my-2">
+      <Card className="mt-5">
         <CardHeader>
           <CardTitle tag="h5"> Profiles </CardTitle>
         </CardHeader>
