@@ -22,15 +22,15 @@ const ProfileDropdown = () => {
 
   const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
 
-  useEffect(() => {
-    const token = Cookies.get('token');
+  // useEffect(() => {
+  //   const token = Cookies.get('token');
 
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      window.location.href = '/auth/login';
-    }
-  }, []);
+  //   if (token) {
+  //     setIsAuthenticated(true);
+  //   } else {
+  //     window.location.href = '/auth/login';
+  //   }
+  // }, []);
 
   const toggleProfileDropdown = () => {
     setIsProfileDropdown(!isProfileDropdown);

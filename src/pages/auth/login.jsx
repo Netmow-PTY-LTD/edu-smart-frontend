@@ -36,49 +36,46 @@ const Login = () => {
   }, [LoginData]);
 
   useEffect(() => {
-    console.log(window?.location);
-  }, []);
-
-  useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
       const subdomain = LoginData?.data?.domain?.subdomain;
       const token = LoginData?.data?.token;
 
-      if (subdomain) {
+      if (appEnvironment === 'development') {
+        Cookies.set('token', token, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
+        Cookies.set('subdomain', subdomain, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
+
+        // window.location.assign(
+        //   `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
+        // );
         window.location.assign(
-          `${window.location.protocol}//${subdomain}.localhost:3005`
+          `${window.location.protocol}//localhost:3005/dashboard/agent`
         );
-        if (appEnvironment === 'development') {
-          Cookies.set('token', token, {
-            domain: '',
-            path: '/dashboard/agent',
-            expires: 7,
-          });
-          Cookies.set('subdomain', subdomain, {
-            domain: '',
-            path: '/dashboard/agent',
-            expires: 7,
-          });
+      } else {
+        const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
 
-          window.location.assign(
-            `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
-          );
-        } else {
-          const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+        Cookies.set('token', token, {
+          domain: domain,
+          expires: 7,
+        });
+        Cookies.set('subdomain', subdomain, {
+          domain: domain,
+          expires: 7,
+        });
 
-          Cookies.set('token', token, {
-            domain: domain,
-            expires: 7,
-          });
-          Cookies.set('subdomain', subdomain, {
-            domain: domain,
-            expires: 7,
-          });
-
-          window.location.assign(
-            `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
-          );
-        }
+        // window.location.assign(
+        //   `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
+        // );
+        window.location.assign(
+          `${window.location.protocol}//${domain}/dashboard/agent`
+        );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
@@ -108,7 +105,6 @@ const Login = () => {
     }
   }, [LoginData]);
 
-  //  for login
   const [initialValues, setInitialValues] = useState({
     email: '',
     password: '',

@@ -10,6 +10,7 @@ import Image from 'next/image';
 import React, { useMemo } from 'react';
 import countryList from 'react-select-country-list';
 import { Card, Col, Row } from 'reactstrap';
+import PasswordField from '../common/formField/PasswordField';
 
 const AddStudentComponentForAgent = ({
   initialValues,
@@ -111,6 +112,19 @@ const AddStudentComponentForAgent = ({
                         <Col md={6} xl={6}>
                           <div className="">
                             <NumberField name="phone" label="Contact Number" />
+                          </div>
+                        </Col>
+                        <Col md={6} xl={6}>
+                          <div className="">
+                            <PasswordField name="password" label="Password" />
+                          </div>
+                        </Col>
+                        <Col md={6} xl={6}>
+                          <div className="">
+                            <PasswordField
+                              name="confirm_password"
+                              label="Confirm Password"
+                            />
                           </div>
                         </Col>
                         <Col md={6} xl={6}>

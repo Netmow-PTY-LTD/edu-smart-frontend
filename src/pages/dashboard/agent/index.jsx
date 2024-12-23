@@ -2,7 +2,6 @@ import LatestRegistered from '@/components/common/allDashboardHome/LatestRegiste
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
@@ -14,12 +13,11 @@ const AgentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
-  const { data: getUniversityData } = useGetUniversityQuery();
 
   const token = Cookies.get('token');
 
   console.log(token);
-  
+
   // useEffect(() => {
   //   if (token) {
   //     setIsAuthenticated(true);
@@ -42,9 +40,7 @@ const AgentDashboard = () => {
                     <LatestRegistered
                       tableHead={'Latest Registered Students'}
                       headers={''}
-                      data={
-                        getUniversityData?.data ? getUniversityData?.data : []
-                      }
+                      data={[]}
                     />
                   </Col>
                 </Row>
