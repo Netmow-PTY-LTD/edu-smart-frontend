@@ -7,6 +7,8 @@ import StudentProfileUI from '@/components/sAdminDashboard/temporaryUIWithFuncti
 import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySettings';
 import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
 import SMTPSettings from '@/components/sAdminDashboard/Settings/SMTPSettings';
+import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDnsSettings';
+import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentSettings';
 
 const Settings = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -131,6 +133,16 @@ const Settings = () => {
                     {customverticalTab === 2 && (
                       <Col lg={10}>
                        <CurrencySettings/>
+                      </Col>
+                    )}
+                    {customverticalTab === 3 && (
+                      <Col lg={10}>
+                       <DomainDnsSettings/>
+                      </Col>
+                    )}
+                    {customverticalTab === 4 && (
+                      <Col lg={10}>
+                       <PaymentSettings/>
                       </Col>
                     )}
                     {customverticalTab === 5 && (
