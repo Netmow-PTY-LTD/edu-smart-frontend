@@ -77,7 +77,7 @@ const BusinessSettings = () => {
                   <TextField name={'website'} label={'Website(Optional)'}/>
                   </Col>
                  
-                  <Col md={3}>
+                  <Col md={4}>
                     <NumberField name={'phone'} label={'Phone Number'} />
                   </Col>
                   <Col md={4}>
