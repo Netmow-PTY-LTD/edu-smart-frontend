@@ -179,6 +179,15 @@ const agentsHeadersWithoutAction = [
 //student submitted doc header
 const studentSubmittedDocumentsHeaderWithoutAction = [
   {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+      </div>
+    ),
+  },
+  {
     title: 'Title',
     key: 'title',
     render: (item) => (
@@ -613,8 +622,8 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
-  studentSubmittedDocumentsHeaderWithoutAction,
   studentsHeadersWithoutAction,
+  studentSubmittedDocumentsHeaderWithoutAction,
   superAdminNameAndLogoData,
   supperAdminWidgetsData,
   teamDummyImage,

@@ -133,6 +133,14 @@ const AgentSidebarData = () => {
       stateVariables: isManageDocument,
       subItems: [
         {
+          id: 'alldocument',
+          label: 'All Document',
+          link: '/dashboard/agent/manage-documents/all-document-for-agent',
+          icon: 'ri-file-fill',
+          pathName: '/dashboard/agent/manage-documents/all-document-for-agent',
+          parentId: 'managedocument',
+        },
+        {
           id: 'documentuploadrequest',
           label: 'Doc Upload Request',
           link: '/dashboard/agent/manage-documents/document-upload-request',
