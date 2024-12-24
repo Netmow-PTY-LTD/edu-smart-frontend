@@ -25,8 +25,10 @@ const ProfileBgCover = ({ profileData }) => {
               <Image
                 src={
                   profileData?.logo?.url
-                    ? profileData?.logo?.url
-                    : `${userDummyImage}`
+                    ? profileData.logo.url
+                    : profileData?.profile_image
+                      ? profileData.profile_image.url
+                      : userDummyImage
                 }
                 height={40}
                 width={60}

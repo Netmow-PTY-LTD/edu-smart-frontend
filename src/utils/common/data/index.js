@@ -361,6 +361,63 @@ const studentsHeadersWithLogoLink = [
     ),
   },
 ];
+const studentsHeadersWithLogoLinkInAgent = [
+  {
+    title: 'Name',
+    key: 'profile_image',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <div className="flex-shrink-0 me-1">
+          <Link href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`} className="text-reset">
+            <Image
+              src={
+                item?.profile_image?.url
+                  ? item?.profile_image?.url
+                  : `${userDummyImage}`
+              }
+              alt="User"
+              height={60}
+              width={60}
+              className="avatar-md p-1 me-3 align-middle rounded-circle"
+            />
+          </Link>
+        </div>
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            <Link href={``} className="text-reset">
+              {item?.first_name && item?.last_name
+                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+                : '-'}
+            </Link>
+          </h5>
+        </div>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Agent',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.agent?.first_name && item?.agent?.last_name
+          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  { title: 'Email', key: 'email' },
+  { title: 'Phone', key: 'phone' },
+  {
+    title: 'Country',
+    key: 'country',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.country ? <span>{item.country}</span> : '-'}
+      </span>
+    ),
+  },
+];
 
 
 
@@ -690,5 +747,6 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
-  studentsHeadersWithLogoLink
+  studentsHeadersWithLogoLink,
+  studentsHeadersWithLogoLinkInAgent
 };

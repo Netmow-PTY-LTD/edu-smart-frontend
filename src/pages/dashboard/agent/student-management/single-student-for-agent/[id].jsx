@@ -4,7 +4,7 @@ import DocumentRequestPage from '@/components/agentDashboard/studentManagement/s
 import OverviewPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/OverviewPage';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
-import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -19,12 +19,14 @@ const SingleStudentForAgent = () => {
   const student_id = router.query.id;
 
   const {
-    data: getSingleUniversityDataForStudent,
-    isLoading: getSingleUniversityIsLoadingForStudent,
-    refetch: getSingleUniversityForStudentRefetch,
-  } = useGetsingleUniversityQuery(student_id, {
+    data: getSingleStudent,
+    isLoading: getSingleStudenIsLoadingForStudent,
+    refetch: getSingleStudenRefetch,
+  } = useGetSingleStudentQuery(student_id, {
     skip: !student_id,
   });
+
+  console.log('getSingleStudent', getSingleStudent)
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -39,7 +41,7 @@ const SingleStudentForAgent = () => {
         <div className="h-100">
           <Container fluid>
             <ProfileBgCover
-              profileData={getSingleUniversityDataForStudent?.data}
+              profileData={getSingleStudent?.data}
             />
             <Row>
               <div style={{ marginTop: '10rem' }} className="d-flex">

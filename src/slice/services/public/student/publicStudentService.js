@@ -20,7 +20,15 @@ export const publicStudentService = createApi({
         method: 'GET',
       }),
     }),
+
+    getSingleStudent: builder.query({
+      query: (student_id) => ({
+        url: `/Student/${student_id}`,
+        method: 'GET',
+      }),
+    }),
+
   }),
 });
 
-export const { useGetAllStudentQuery } = publicStudentService;
+export const { useGetAllStudentQuery,useGetSingleStudentQuery } = publicStudentService;

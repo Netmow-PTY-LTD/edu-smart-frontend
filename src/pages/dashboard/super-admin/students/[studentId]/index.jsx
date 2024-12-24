@@ -3,7 +3,7 @@ import Layout from '@/components/layout';
 import AppliedUniversityPageSuper from '@/components/sAdminDashboard/students/singleStudentProfile/AppliedUniversityPageSuper';
 import DocumentRequestPageSuper from '@/components/sAdminDashboard/students/singleStudentProfile/DocumentRequestPageSuper';
 import OverviewPageStudentSuper from '@/components/sAdminDashboard/students/singleStudentProfile/OverviewPageStudentSuper';
-import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -18,12 +18,14 @@ const SingleStudentForSuperAdmin = () => {
   const student_id = router.query.id;
 
   const {
-    data: getSingleUniversityDataForStudent,
-    isLoading: getSingleUniversityIsLoadingForStudent,
-    refetch: getSingleUniversityForStudentRefetch,
-  } = useGetsingleUniversityQuery(student_id, {
+    data: getSingleStudent,
+    isLoading: getSingleStudenIsLoadingForStudent,
+    refetch: getSingleStudenRefetch,
+  } = useGetSingleStudentQuery(student_id, {
     skip: !student_id,
   });
+
+  console.log('getSingleStudent', getSingleStudent)
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -37,7 +39,7 @@ const SingleStudentForSuperAdmin = () => {
         <div className="h-100">
           <Container fluid>
             <ProfileBgCover
-              profileData={getSingleUniversityDataForStudent?.data}
+              profileData={getSingleStudent?.data}
             />
             <Row>
               <div style={{ marginTop: '10rem' }} className="d-flex">
