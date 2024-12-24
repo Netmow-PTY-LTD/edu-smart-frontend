@@ -8,6 +8,7 @@ const AgentSidebarData = () => {
   const [isWebsite, setIsWebsite] = useState(false);
   const [isManageDocument, setIsManageDocument] = useState(false);
   const [isStudentManagement, setIsStudentManagement] = useState(false);
+  const [isUinversityManagement, setIsUinversityManagement] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
@@ -39,6 +40,9 @@ const AgentSidebarData = () => {
       setIsManageDocument(false);
     }
 
+    if (iscurrentState !== 'Manage University') {
+      setIsUinversityManagement(false);
+    }
     if (iscurrentState !== 'Manage Student') {
       setIsMyProfile(false);
     }
@@ -56,6 +60,7 @@ const AgentSidebarData = () => {
     isManageDocument,
     isMyProfile,
     isSettings,
+    isUinversityManagement
   ]);
 
   const menuItems = [
@@ -89,6 +94,28 @@ const AgentSidebarData = () => {
     //   ],
     // },
 
+    {
+      id: 'universitymanagement',
+      label: 'University Management',
+      icon: 'ri-school-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsUinversityManagement(!isUinversityManagement);
+        setIscurrentState('Manage University');
+      },
+      stateVariables: isUinversityManagement,
+      subItems: [
+        {
+          id: 'allUniversity',
+          label: 'All University',
+          icon: 'ri-school-line',
+          link: '/dashboard/agent/university-management/all-university',
+          pathName: '/dashboard/agent/university-management/all-university',
+          parentId: 'universitymanagement',
+        },
+      ],
+    },
     {
       id: 'studentmanagement',
       label: 'Student Management',
