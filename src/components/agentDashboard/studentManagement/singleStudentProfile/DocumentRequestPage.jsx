@@ -1,6 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
-import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';

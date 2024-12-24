@@ -1,10 +1,6 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
 import AllCoursesLayout from '@/components/StudentDashboard/components/AllCourses/AllCoursesLayout';
-import AppliedUniversityPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/AppliedUniversityPage';
-import DocumentPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/DocumentPage';
-import DocumentRequestPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/DocumentRequestPage';
-import OverviewPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/OverviewPage';
 import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -58,68 +54,6 @@ const SingleuniversityProfileForStudent = () => {
                       }}
                     >
                       <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                      <span className="d-none d-md-inline-block">Overview</span>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem className="fs-14">
-                    <NavLink
-                      style={{ cursor: 'pointer' }}
-                      className={classnames({
-                        active: activeTab === '2',
-                      })}
-                      onClick={() => {
-                        toggleTab('2');
-                      }}
-                    >
-                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                      <span className="d-none d-md-inline-block">
-                        Documents
-                      </span>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem className="fs-14">
-                    <NavLink
-                      style={{ cursor: 'pointer' }}
-                      className={classnames({
-                        active: activeTab === '3',
-                      })}
-                      onClick={() => {
-                        toggleTab('3');
-                      }}
-                    >
-                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                      <span className="d-none d-md-inline-block">
-                        Document Request
-                      </span>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem className="fs-14">
-                    <NavLink
-                      style={{ cursor: 'pointer' }}
-                      className={classnames({
-                        active: activeTab === '4',
-                      })}
-                      onClick={() => {
-                        toggleTab('4');
-                      }}
-                    >
-                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                      <span className="d-none d-md-inline-block">
-                      Applied University
-                      </span>
-                    </NavLink>
-                  </NavItem>
-                  <NavItem className="fs-14">
-                    <NavLink
-                      style={{ cursor: 'pointer' }}
-                      className={classnames({
-                        active: activeTab === '5',
-                      })}
-                      onClick={() => {
-                        toggleTab('5');
-                      }}
-                    >
-                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                       <span className="d-none d-md-inline-block">
                         All Courses
                       </span>
@@ -130,26 +64,6 @@ const SingleuniversityProfileForStudent = () => {
               </div>
 
               {activeTab === '1' && (
-                <div style={{ marginTop: '50px' }}>
-                <OverviewPage/>
-                </div>
-              )}
-              {activeTab === '2' && (
-                <div style={{ marginTop: '50px' }}>
-                <DocumentPage/>
-                </div>
-              )}
-              {activeTab === '3' && (
-                <div style={{ marginTop: '50px' }}>
-                <DocumentRequestPage/>
-                </div>
-              )}
-              {activeTab === '4' && (
-                <div style={{ marginTop: '50px' }}>
-                <AppliedUniversityPage/>
-                </div>
-              )}
-              {activeTab === '5' && (
                 <div style={{ marginTop: '50px' }}>
                   <AllCoursesLayout university_id={university_id} />
                 </div>
