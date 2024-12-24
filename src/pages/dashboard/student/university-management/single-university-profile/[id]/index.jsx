@@ -54,6 +54,68 @@ const SingleuniversityProfileForStudent = () => {
                       }}
                     >
                       <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                      <span className="d-none d-md-inline-block">Overview</span>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="fs-14">
+                    <NavLink
+                      style={{ cursor: 'pointer' }}
+                      className={classnames({
+                        active: activeTab === '2',
+                      })}
+                      onClick={() => {
+                        toggleTab('2');
+                      }}
+                    >
+                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                      <span className="d-none d-md-inline-block">
+                        Documents
+                      </span>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="fs-14">
+                    <NavLink
+                      style={{ cursor: 'pointer' }}
+                      className={classnames({
+                        active: activeTab === '3',
+                      })}
+                      onClick={() => {
+                        toggleTab('3');
+                      }}
+                    >
+                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                      <span className="d-none d-md-inline-block">
+                        Document Request
+                      </span>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="fs-14">
+                    <NavLink
+                      style={{ cursor: 'pointer' }}
+                      className={classnames({
+                        active: activeTab === '4',
+                      })}
+                      onClick={() => {
+                        toggleTab('4');
+                      }}
+                    >
+                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                      <span className="d-none d-md-inline-block">
+                      Applied University
+                      </span>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="fs-14">
+                    <NavLink
+                      style={{ cursor: 'pointer' }}
+                      className={classnames({
+                        active: activeTab === '5',
+                      })}
+                      onClick={() => {
+                        toggleTab('5');
+                      }}
+                    >
+                      <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                       <span className="d-none d-md-inline-block">
                         All Courses
                       </span>
@@ -63,8 +125,8 @@ const SingleuniversityProfileForStudent = () => {
                 <div className="d-flex gap-3 flex-shrink-1 "></div>
               </div>
 
-              {activeTab === '1' && (
-                <div style={{ marginTop: '30px' }}>
+              {activeTab === '5' && (
+                <div style={{ marginTop: '50px' }}>
                   <AllCoursesLayout university_id={university_id} />
                 </div>
               )}
