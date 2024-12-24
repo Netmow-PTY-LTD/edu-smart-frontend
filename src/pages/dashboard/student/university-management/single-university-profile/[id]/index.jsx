@@ -1,6 +1,10 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
 import AllCoursesLayout from '@/components/StudentDashboard/components/AllCourses/AllCoursesLayout';
+import AppliedUniversityPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/AppliedUniversityPage';
+import DocumentPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/DocumentPage';
+import DocumentRequestPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/DocumentRequestPage';
+import OverviewPage from '@/components/StudentDashboard/components/universityManagement/singleUniversityProfile/OverviewPage';
 import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -125,6 +129,26 @@ const SingleuniversityProfileForStudent = () => {
                 <div className="d-flex gap-3 flex-shrink-1 "></div>
               </div>
 
+              {activeTab === '1' && (
+                <div style={{ marginTop: '50px' }}>
+                <OverviewPage/>
+                </div>
+              )}
+              {activeTab === '2' && (
+                <div style={{ marginTop: '50px' }}>
+                <DocumentPage/>
+                </div>
+              )}
+              {activeTab === '3' && (
+                <div style={{ marginTop: '50px' }}>
+                <DocumentRequestPage/>
+                </div>
+              )}
+              {activeTab === '4' && (
+                <div style={{ marginTop: '50px' }}>
+                <AppliedUniversityPage/>
+                </div>
+              )}
               {activeTab === '5' && (
                 <div style={{ marginTop: '50px' }}>
                   <AllCoursesLayout university_id={university_id} />
