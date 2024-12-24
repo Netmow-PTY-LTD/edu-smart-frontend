@@ -16,14 +16,14 @@ const SingleStudentForAgent = () => {
   const [activeTab, setActiveTab] = useState('1');
 
   //  ------------------- Just for UI example this data will come from API -----------------------
-  const university_id = router.query.id;
+  const student_id = router.query.id;
 
   const {
     data: getSingleUniversityDataForStudent,
     isLoading: getSingleUniversityIsLoadingForStudent,
     refetch: getSingleUniversityForStudentRefetch,
-  } = useGetsingleUniversityQuery(university_id, {
-    skip: !university_id,
+  } = useGetsingleUniversityQuery(student_id, {
+    skip: !student_id,
   });
 
   const toggleTab = (tab) => {
@@ -32,7 +32,7 @@ const SingleStudentForAgent = () => {
     }
   };
 
-  
+
   return (
     <Layout>
       <div className="page-content">
