@@ -15,7 +15,9 @@ const SingleStudentForSuperAdmin = () => {
   const [activeTab, setActiveTab] = useState('1');
 
   //  ------------------- Just for UI example this data will come from API -----------------------
-  const student_id = router.query.id;
+  const student_id = router.query.studentId;
+
+
 
   const {
     data: getSingleStudent,
@@ -25,7 +27,7 @@ const SingleStudentForSuperAdmin = () => {
     skip: !student_id,
   });
 
-  console.log('getSingleStudent', getSingleStudent)
+
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
