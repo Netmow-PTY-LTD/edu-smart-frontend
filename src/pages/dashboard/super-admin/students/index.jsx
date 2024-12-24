@@ -1,7 +1,7 @@
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
 import Layout from '@/components/layout';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
-import { studentsHeadersWithoutAction } from '@/utils/common/data';
+import { studentsHeadersWithLogoLink } from '@/utils/common/data';
 
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
@@ -22,7 +22,7 @@ const AllStudentsPage = () => {
               <div className="h-100">
                 <LatestRegistered
                   tableHead={'Latest Registered Students'}
-                  headers={studentsHeadersWithoutAction}
+                  headers={studentsHeadersWithLogoLink }
                   data={allStudentsData?.data ? allStudentsData?.data : []}
                 />
               </div>
