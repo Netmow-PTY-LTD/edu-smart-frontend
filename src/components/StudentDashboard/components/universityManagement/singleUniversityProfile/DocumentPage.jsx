@@ -9,6 +9,7 @@ const DocumentPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
 
+  // -------------------- Just for UI example this data will come from API -----------------------
   const {
     data: allSubmittedDocumentForStudentData,
     error: allSubmittedDocumentForStudentError,
