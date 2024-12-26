@@ -1,4 +1,3 @@
-
 import NumberField from '@/components/common/formField/NumberField';
 import TextField from '@/components/common/formField/TextField';
 import { Formik } from 'formik';
@@ -47,7 +46,7 @@ const BusinessSettings = () => {
           >
             {({ isSubmitting }) => (
               <Form>
-                <Row>
+                {/* <Row>
                   <Col md={6}>
                     <TextField name={'companyName'} label={'Company Name'}/>
                  
@@ -86,7 +85,8 @@ const BusinessSettings = () => {
                   <Col sm={12} className="text-end">
                     <Button className="button">Save Change</Button>
                   </Col>
-                </Row>
+                </Row> */}
+                <div>Development in progress .........</div>
               </Form>
             )}
           </Formik>
