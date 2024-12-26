@@ -1,11 +1,20 @@
+import CountrySelectField from '@/components/common/formField/CountrySelectField';
+import EmailField from '@/components/common/formField/EmailField';
 import ImageField from '@/components/common/formField/ImageField';
+import NumberField from '@/components/common/formField/NumberField';
+import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import Loader from '@/components/constants/Loader/Loader';
 import Layout from '@/components/layout';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { brandlogo } from '@/utils/common/data';
 import { Formik } from 'formik';
 import Image from 'next/image';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import countryList from 'react-select-country-list';
+import { toast } from 'react-toastify';
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -14,13 +23,7 @@ import {
   Form,
   Row,
 } from 'reactstrap';
-import { brandlogo } from '@/utils/common/data';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import EmailField from '@/components/common/formField/EmailField';
-import CountrySelectField from '@/components/common/formField/CountrySelectField';
-import NumberField from '@/components/common/formField/NumberField';
-import countryList from 'react-select-country-list';
 const StudentProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -28,6 +31,39 @@ const StudentProfile = () => {
     fullName: '',
     logo: null,
   });
+
+  const { data: userInfodata } = useGetUserInfoQuery();
+
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      if (userInfodata?.data) {
+        const student = userInfodata?.data ? userInfodata?.data : null;
+
+        console.log(student);
+
+        const profile_image = await convertImageUrlToFile(
+          student?.profile_image?.url
+        );
+
+        setInitialValues({
+          first_name: student?.first_name || '',
+          last_name: student?.last_name || '',
+          email: student?.email || '',
+          phone: student?.phone || '',
+          address_line_1: student?.address_line_1 || '',
+          address_line_2: student?.address_line_2 || '',
+          city: student?.city || '',
+          state: student?.state || '',
+          zip: student?.zip || '',
+          country: student?.country || '',
+          profile_image: profile_image,
+        });
+        const imageUrl = URL.createObjectURL(profile_image);
+        setImagePreview(imageUrl);
+      }
+    };
+    fetchStudentData();
+  }, [userInfodata?.data]);
 
   const validationSchema = Yup.object({
     fullName: Yup.string().required('Full Name is required'),
@@ -61,7 +97,9 @@ const StudentProfile = () => {
       setSubmitting(false);
     }
   };
+
   const options = useMemo(() => countryList().getData(), []);
+
   return (
     <Layout>
       <div className="page-content">
@@ -106,73 +144,62 @@ const StudentProfile = () => {
                           </button>
                         </div>
                       </Col>
-                    </Row>
-                    <Row>
-                    <Col md={6}>
-                      <TextField name={'first_name'} label={'First Name'} />
-                    </Col>
-                    <Col md={6}>
-                      <TextField name={'last_name'} label={'Last Name'} />
-                    </Col>
+                      <Col lg={9}>
+                        <Row>
+                          <Col md={6}>
+                            <TextField
+                              name={'first_name'}
+                              label={'First Name'}
+                            />
+                          </Col>
+                          <Col md={6}>
+                            <TextField name={'last_name'} label={'Last Name'} />
+                          </Col>
 
-                    <Col md={6}>
-                      <EmailField
-                        name={'secondary_email'}
-                        label={'Secondary Email'}
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <TextField
-                        name={'subdomain'}
-                        label={
-                          'Subdomain Name (part of URL, cannot be changed)'
-                        }
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <TextField
-                        name={'organization_name'}
-                        label={'Organization Name )'}
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <CountrySelectField
-                        name={'country'}
-                        label={'Select Country'}
-                        options={options}
-                      />
-                    </Col>
-                    <Col md={4}>
-                      <NumberField name={'phone'} label={'Phone'} />
-                    </Col>
-                    <Col md={4}>
-                      <TextField
-                        name={'address_line_1'}
-                        label={'Address Line 1'}
-                      />
-                    </Col>
-                    <Col md={4}>
-                      <TextField
-                        name={'address_line_2'}
-                        label={'Address Line 2'}
-                      />
-                    </Col>
+                          <Col md={6}>
+                            <EmailField name={'email'} label={'Email'} />
+                          </Col>
 
-                    <Col md={4}>
-                      <TextField name={'city'} label={'City'} />
-                    </Col>
-                    <Col md={4}>
-                      <TextField name={'state'} label={'State'} />
-                    </Col>
-                    <Col md={4}>
-                      <NumberField name={'zip'} label={'Zip Code'} />
-                    </Col>
-                    <Col sm={12} className="text-end">
-                        <Button className="button">Save Change</Button>
+                          <Col md={6}>
+                            <CountrySelectField
+                              name={'country'}
+                              label={'Select Country'}
+                              options={options}
+                            />
+                          </Col>
+                          <Col md={4}>
+                            <NumberField name={'phone'} label={'Phone'} />
+                          </Col>
+                          <Col md={4}>
+                            <TextField
+                              name={'address_line_1'}
+                              label={'Address Line 1'}
+                            />
+                          </Col>
+                          <Col md={4}>
+                            <TextField
+                              name={'address_line_2'}
+                              label={'Address Line 2'}
+                            />
+                          </Col>
+
+                          <Col md={4}>
+                            <TextField name={'city'} label={'City'} />
+                          </Col>
+                          <Col md={4}>
+                            <TextField name={'state'} label={'State'} />
+                          </Col>
+                          <Col md={4}>
+                            <NumberField name={'zip'} label={'Zip Code'} />
+                          </Col>
+                          <Col sm={12} className="hstck mx-auto">
+                            <SubmitButton disabled={isSubmitting}>
+                              {isSubmitting ? <Loader /> : 'Update'}
+                            </SubmitButton>
+                          </Col>
+                        </Row>
                       </Col>
-                  </Row>
-
-               
+                    </Row>
                   </Form>
                 )}
               </Formik>
