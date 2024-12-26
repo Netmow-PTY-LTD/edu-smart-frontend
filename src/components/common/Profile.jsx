@@ -20,7 +20,7 @@ import EmailField from '@/components/common/formField/EmailField';
 import CountrySelectField from '@/components/common/formField/CountrySelectField';
 import NumberField from '@/components/common/formField/NumberField';
 import countryList from 'react-select-country-list';
-const StudentProfileUI = () => {
+const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [initialValues, setInitialValues] = useState({
@@ -175,4 +175,4 @@ const StudentProfileUI = () => {
   );
 };
 
-export default StudentProfileUI;
+export default Profile;
