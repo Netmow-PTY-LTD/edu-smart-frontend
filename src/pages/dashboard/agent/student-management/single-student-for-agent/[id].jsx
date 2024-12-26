@@ -1,10 +1,10 @@
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
+import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
 import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -26,7 +26,7 @@ const SingleStudentForAgent = () => {
     skip: !student_id,
   });
 
-  console.log('getSingleStudent', getSingleStudent);
+
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -123,7 +123,7 @@ const SingleStudentForAgent = () => {
               )}
               {activeTab === '2' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage student_id={student_id} />
+                  <DocumentPage student_id={student_id} />
                 </div>
               )}
               {activeTab === '3' && (
