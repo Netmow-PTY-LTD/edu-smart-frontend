@@ -19,6 +19,7 @@ const DocumentPage = ({ student_id }) => {
   });
 
  
+  console.log(getSingleStudent);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
