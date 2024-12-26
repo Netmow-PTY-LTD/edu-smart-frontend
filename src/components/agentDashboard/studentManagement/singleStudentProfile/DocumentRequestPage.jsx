@@ -1,19 +1,25 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
+import { useSingleStudentSubmittedDocumentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 
-const DocumentRequestPage = () => {
+const DocumentRequestPage = ({ student_id }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-
 
   // -------------------- Just for UI example this data will come from API -----------------------
   const [
     AllUploadDocumentsForStudentsData,
     setAllUploadDocumentsForStudentsData,
   ] = useState('');
+
+  const { data: useSingleStudentSubmittedDocumentForAgent } =
+    useSingleStudentSubmittedDocumentForAgentQuery(student_id);
+
+  console.log(useSingleStudentSubmittedDocumentForAgent);
+
   const perPageData = 10;
 
   // search input change function
