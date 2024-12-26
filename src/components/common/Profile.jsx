@@ -1,73 +1,31 @@
-import ImageField from '@/components/common/formField/ImageField';
-import TextField from '@/components/common/formField/TextField';
-import { Formik } from 'formik';
-import Image from 'next/image';
-import React, { useMemo, useState } from 'react';
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  Form,
-  Row,
-} from 'reactstrap';
-import { brandlogo } from '@/utils/common/data';
-import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import EmailField from '@/components/common/formField/EmailField';
 import CountrySelectField from '@/components/common/formField/CountrySelectField';
+import EmailField from '@/components/common/formField/EmailField';
+import ImageField from '@/components/common/formField/ImageField';
 import NumberField from '@/components/common/formField/NumberField';
-import countryList from 'react-select-country-list';
-const Profile = () => {
-  const [imagePreview, setImagePreview] = useState(null);
+import TextField from '@/components/common/formField/TextField';
+import { brandlogo } from '@/utils/common/data';
+import { Form, Formik } from 'formik';
+import Image from 'next/image';
+import React from 'react';
+import { Card, CardBody, CardHeader, CardTitle, Col, Row } from 'reactstrap';
+import SubmitButton from './formField/SubmitButton';
+const Profile = ({
+  initialValues,
+  validationSchema,
+  handleSubmit,
+  imagePreview,
+  handleImageChange,
+  setImagePreview,
+  options,
+}) => {
 
-  const [initialValues, setInitialValues] = useState({
-    fullName: '',
-    logo: null,
-  });
-
-  const validationSchema = Yup.object({
-    fullName: Yup.string().required('Full Name is required'),
-    logo: Yup.mixed().required('Logo is required'),
-  });
-
-  const handleImageChange = (e, setFieldValue, fieldName) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFieldValue(fieldName, file);
-
-      const imageUrl = URL.createObjectURL(file);
-      setImagePreview(imageUrl);
-    }
-  };
-
-  // Handle form submission
-  const handleSubmit = async (values, { setSubmitting }) => {
-    setSubmitting(true);
-    console.log('formData', values);
-
-    try {
-      const finalData = new FormData();
-      Object.entries(values).forEach(([key, value]) => {
-        finalData.append(key, value);
-      });
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-  const options = useMemo(() => countryList().getData(), []);
   return (
     <>
-      <Card className="mt-5">
+      <Card className="my-2">
         <CardHeader>
-          <CardTitle tag="h5"> Profiles </CardTitle>
+          <CardTitle className="fw-semibold">Profile Information</CardTitle>
         </CardHeader>
-        <CardBody className="p-5">
+        <CardBody>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -103,67 +61,60 @@ const Profile = () => {
                       </button>
                     </div>
                   </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <TextField name={'first_name'} label={'First Name'} />
-                  </Col>
-                  <Col md={6}>
-                    <TextField name={'last_name'} label={'Last Name'} />
-                  </Col>
+                  <Col lg={9}>
+                    <Row>
+                      <Col md={6}>
+                        <TextField name={'first_name'} label={'First Name'} />
+                      </Col>
+                      <Col md={6}>
+                        <TextField name={'last_name'} label={'Last Name'} />
+                      </Col>
 
-                  <Col md={6}>
-                    <EmailField
-                      name={'secondary_email'}
-                      label={'Secondary Email'}
-                    />
-                  </Col>
-                  <Col md={6}>
-                    <TextField
-                      name={'subdomain'}
-                      label={'Subdomain Name (part of URL, cannot be changed)'}
-                    />
-                  </Col>
-                  <Col md={6}>
-                    <TextField
-                      name={'organization_name'}
-                      label={'Organization Name )'}
-                    />
-                  </Col>
-                  <Col md={6}>
-                    <CountrySelectField
-                      name={'country'}
-                      label={'Select Country'}
-                      options={options}
-                    />
-                  </Col>
-                  <Col md={4}>
-                    <NumberField name={'phone'} label={'Phone'} />
-                  </Col>
-                  <Col md={4}>
-                    <TextField
-                      name={'address_line_1'}
-                      label={'Address Line 1'}
-                    />
-                  </Col>
-                  <Col md={4}>
-                    <TextField
-                      name={'address_line_2'}
-                      label={'Address Line 2'}
-                    />
-                  </Col>
+                      <Col md={6}>
+                        <EmailField name={'email'} label={'Email'} />
+                      </Col>
 
-                  <Col md={4}>
-                    <TextField name={'city'} label={'City'} />
-                  </Col>
-                  <Col md={4}>
-                    <TextField name={'state'} label={'State'} />
-                  </Col>
-                  <Col md={4}>
-                    <NumberField name={'zip'} label={'Zip Code'} />
-                  </Col>
-                  <Col sm={12} className="text-end">
-                    <Button className="button">Save Change</Button>
+                      <Col md={6}>
+                        <CountrySelectField
+                          name={'country'}
+                          label={'Select Country'}
+                          options={options}
+                        />
+                      </Col>
+                      <Col md={4}>
+                        <NumberField name={'phone'} label={'Phone'} />
+                      </Col>
+                      <Col md={4}>
+                        <TextField
+                          name={'address_line_1'}
+                          label={'Address Line 1'}
+                        />
+                      </Col>
+                      <Col md={4}>
+                        <TextField
+                          name={'address_line_2'}
+                          label={'Address Line 2'}
+                        />
+                      </Col>
+
+                      <Col md={4}>
+                        <TextField name={'city'} label={'City'} />
+                      </Col>
+                      <Col md={4}>
+                        <TextField name={'state'} label={'State'} />
+                      </Col>
+                      <Col md={4}>
+                        <NumberField name={'zip'} label={'Zip Code'} />
+                      </Col>
+                      <Col md={12} xl={12}>
+                        <div className="my-4">
+                          <SubmitButton
+                            isSubmitting={isSubmitting}
+                            formSubmit={'Update'}
+                          />
+                        </div>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Form>
