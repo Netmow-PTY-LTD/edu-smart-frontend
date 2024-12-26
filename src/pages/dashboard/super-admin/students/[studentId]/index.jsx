@@ -28,6 +28,7 @@ const SingleStudentForSuperAdmin = () => {
   });
 
 
+  console.log(getSingleStudent);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
