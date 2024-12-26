@@ -14,11 +14,10 @@ const AllOverviewInfoCard = ({ data }) => {
                   <th className="ps-0" scope="row">
                     Name
                   </th>
-
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">
-                      {data?.name ? data?.name : ''}
+                    <span className="d-inline-block text-capitalize">
+                      {data?.name || data?.first_name + ' ' + data?.last_name}
                     </span>
                   </td>
                 </tr>
@@ -111,7 +110,9 @@ const AllOverviewInfoCard = ({ data }) => {
                     <span className="d-inline-block">
                       {
                         <p className="text-wrap">
-                          {`${data?.description.split(' ').slice(0, 20).join(' ')}...`}
+                          {data?.description
+                            ? `${data?.description?.split(' ').slice(0, 20).join(' ')}...`
+                            : ''}
                         </p>
                       }
                     </span>

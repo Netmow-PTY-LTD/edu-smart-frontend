@@ -25,8 +25,10 @@ const ProfileBgCover = ({ profileData }) => {
               <Image
                 src={
                   profileData?.logo?.url
-                    ? profileData?.logo?.url
-                    : `${userDummyImage}`
+                    ? profileData.logo.url
+                    : profileData?.profile_image
+                      ? profileData.profile_image.url
+                      : userDummyImage
                 }
                 height={40}
                 width={60}
@@ -39,7 +41,8 @@ const ProfileBgCover = ({ profileData }) => {
           <Col>
             <div className="p-2">
               <h1 className="text-white text-uppercase fs-1 mb-1">
-                {profileData?.name ? profileData?.name : ''}
+                {profileData?.name ||
+                  profileData?.first_name + ' ' + profileData?.last_name}
               </h1>
               <div className="me-2 text-light text-capitalize">
                 <i className="ri-map-pin-fill me-2 align-middle third-color fs-1"></i>

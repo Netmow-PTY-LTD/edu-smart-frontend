@@ -1,21 +1,23 @@
-import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
-import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
-import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
+import AppliedUniversityPageSuper from '@/components/sAdminDashboard/students/singleStudentProfile/AppliedUniversityPageSuper';
+import DocumentRequestPageSuper from '@/components/sAdminDashboard/students/singleStudentProfile/DocumentRequestPageSuper';
+import OverviewPageStudentSuper from '@/components/sAdminDashboard/students/singleStudentProfile/OverviewPageStudentSuper';
 import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import { Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const SingleStudentForAgent = () => {
+const SingleStudentForSuperAdmin = () => {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('1');
 
   //  ------------------- Just for UI example this data will come from API -----------------------
-  const student_id = router.query.id;
+  const student_id = router.query.studentId;
+
+
 
   const {
     data: getSingleStudent,
@@ -25,7 +27,8 @@ const SingleStudentForAgent = () => {
     skip: !student_id,
   });
 
-  console.log('getSingleStudent', getSingleStudent);
+
+  console.log(getSingleStudent);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -38,7 +41,9 @@ const SingleStudentForAgent = () => {
       <div className="page-content">
         <div className="h-100">
           <Container fluid>
-            <ProfileBgCover profileData={getSingleStudent?.data} />
+            <ProfileBgCover
+              profileData={getSingleStudent?.data}
+            />
             <Row>
               <div style={{ marginTop: '10rem' }} className="d-flex">
                 <Nav
@@ -114,25 +119,22 @@ const SingleStudentForAgent = () => {
 
               {activeTab === '1' && (
                 <div style={{ marginTop: '50px' }}>
-                  {/* <OverviewPage /> */}
-                  <Col xl={3}>
-                    <AllOverviewInfoCard data={getSingleStudent?.data} />
-                  </Col>
+                  <OverviewPageStudentSuper />
                 </div>
               )}
               {activeTab === '2' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage student_id={student_id} />
+                  <DocumentRequestPageSuper />
                 </div>
               )}
               {activeTab === '3' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage />
+                  <DocumentRequestPageSuper />
                 </div>
               )}
               {activeTab === '4' && (
                 <div style={{ marginTop: '50px' }}>
-                  <AppliedUniversityPage />
+                  <AppliedUniversityPageSuper />
                 </div>
               )}
             </Row>
@@ -143,4 +145,4 @@ const SingleStudentForAgent = () => {
   );
 };
 
-export default SingleStudentForAgent;
+export default SingleStudentForSuperAdmin;

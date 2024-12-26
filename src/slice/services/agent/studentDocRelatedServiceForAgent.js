@@ -85,6 +85,14 @@ export const studentDocRelatedServiceForAgent = createApi({
         };
       },
     }),
+    singleStudentSubmittedDocumentForAgent: builder.query({
+      query: (id) => {
+        return {
+          url: `/documents/${id}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -97,4 +105,5 @@ export const {
   useAllSubmittedDocumentForAgentQuery,
   useCreateDocRequestForAgentMutation,
   useUpdateDocStatusForAgentMutation,
+  useSingleStudentSubmittedDocumentForAgentQuery,
 } = studentDocRelatedServiceForAgent;

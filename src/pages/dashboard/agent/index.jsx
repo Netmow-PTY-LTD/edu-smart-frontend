@@ -3,7 +3,7 @@ import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMess
 import Layout from '@/components/layout';
 import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { studentsHeadersWithoutAction } from '@/utils/common/data';
+import { studentsHeadersWithLogoLinkInAgent, studentsHeadersWithoutAction } from '@/utils/common/data';
 
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
@@ -44,7 +44,7 @@ const AgentDashboard = () => {
                   <Col xxl={12}>
                     <LatestRegistered
                       tableHead={'Latest Registered Students'}
-                      headers={studentsHeadersWithoutAction}
+                      headers={studentsHeadersWithLogoLinkInAgent}
                       data={
                         allStudentForAgentData?.data
                           ? allStudentForAgentData?.data

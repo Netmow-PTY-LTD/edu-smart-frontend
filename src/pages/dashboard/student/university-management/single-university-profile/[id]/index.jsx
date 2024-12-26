@@ -64,7 +64,7 @@ const SingleuniversityProfileForStudent = () => {
               </div>
 
               {activeTab === '1' && (
-                <div style={{ marginTop: '30px' }}>
+                <div style={{ marginTop: '50px' }}>
                   <AllCoursesLayout university_id={university_id} />
                 </div>
               )}

@@ -92,6 +92,12 @@ const SuperAdminSidebarData = () => {
       icon: 'ri-group-fill',
       link: '/dashboard/super-admin/students',
     },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: 'ri-settings-2-line',
+      link: '/dashboard/super-admin/settings',
+    },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };
