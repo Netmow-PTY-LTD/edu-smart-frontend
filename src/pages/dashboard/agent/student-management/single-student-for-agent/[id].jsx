@@ -1,6 +1,6 @@
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
 import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
-import OverviewPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/OverviewPage';
+import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
@@ -8,7 +8,7 @@ import { useGetSingleStudentQuery } from '@/slice/services/public/student/public
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
 const SingleStudentForAgent = () => {
   const router = useRouter();
@@ -115,12 +115,15 @@ const SingleStudentForAgent = () => {
 
               {activeTab === '1' && (
                 <div style={{ marginTop: '50px' }}>
-                  <OverviewPage />
+                  {/* <OverviewPage /> */}
+                  <Col xl={3}>
+                    <AllOverviewInfoCard data={getSingleStudent?.data} />
+                  </Col>
                 </div>
               )}
               {activeTab === '2' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage />
+                  <DocumentRequestPage student_id={student_id} />
                 </div>
               )}
               {activeTab === '3' && (
