@@ -42,6 +42,8 @@ const AllUniversityForSuperAdmin = () => {
     refetch: getUniversityRefetch,
   } = useGetUniversityQuery();
 
+
+  console.log('usniversity data=>',  getUniversityData);
   const [
     deleteUniversity,
     {
