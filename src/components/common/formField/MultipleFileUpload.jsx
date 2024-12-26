@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { ErrorMessage } from 'formik'; // Assuming you're using Formik for validation
+import React, { useEffect, useState } from 'react';
 
 const MultipleFileUpload = ({ field, form, label, ...props }) => {
   const [filePreviews, setFilePreviews] = useState([]);
@@ -17,10 +17,10 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
   };
 
   useEffect(() => {
-    // Ensure the field value is always an array
     const files = form.values[field.name] || [];
 
-    if (files.length > 0) {
+    if (files?.length > 0) {
+
       const validFiles = files.filter(isValidFile);
       setFilePreviews(
         validFiles.map((file) =>
@@ -31,13 +31,19 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     }
   }, [form.values, field.name]);
 
+
+
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
+
     const validFiles = selectedFiles.filter((file) => isValidFile(file));
 
     if (validFiles.length > 0) {
-      // Add new files to the existing ones in Formik, ensuring the value is an array
-      const currentFiles = form.values[field.name] || []; // Ensure it's an array
+      // Ensure currentFiles is always an array
+      const currentFiles = Array.isArray(form.values[field.name])
+        ? form.values[field.name]
+        : [];
+
       const newFiles = [...currentFiles, ...validFiles];
 
       const newFilePreviews = validFiles.map((file) =>
