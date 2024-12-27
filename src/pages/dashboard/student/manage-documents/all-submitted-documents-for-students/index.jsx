@@ -31,6 +31,9 @@ const AllSubmittedDocumentsForStudents = () => {
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+  console.log(allSubmittedDocumentForStudentData?.data);
+  console.log(isFilteredData);
+
   return (
     <Layout>
       <div className="page-content">

@@ -84,15 +84,15 @@ const StudentSidebarData = () => {
           parentId: 'university',
         },
 
-        {
-          id: 'applieduniversity',
-          label: 'Applied University',
-          link: '/dashboard/student/university-management/applied-university-for-student',
-          icon: 'ri-building-4-fill',
-          pathName:
-            '/dashboard/student/university-management/applied-university-for-student',
-          parentId: 'university',
-        },
+        // {
+        //   id: 'applieduniversity',
+        //   label: 'Applied University',
+        //   link: '/dashboard/student/university-management/applied-university-for-student',
+        //   icon: 'ri-building-4-fill',
+        //   pathName:
+        //     '/dashboard/student/university-management/applied-university-for-student',
+        //   parentId: 'university',
+        // },
       ],
     },
     {
@@ -141,20 +141,6 @@ const StudentSidebarData = () => {
         setIscurrentState('My Profile');
       },
       stateVariables: isMyProfile,
-    },
-
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: 'ri-settings-3-line',
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsSettings(!isSettings);
-        setIscurrentState('Settings');
-      },
-      stateVariables: isSettings,
-      subItems: [],
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;

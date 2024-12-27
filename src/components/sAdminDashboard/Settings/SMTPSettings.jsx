@@ -47,7 +47,7 @@ const SMTPSettings = () => {
           >
             {({ isSubmitting }) => (
               <Form>
-                <Row>
+                {/* <Row>
                   <Col md={6}>
                     <TextField name={'sMTPHost'} label={'SMTP Host'} />
                   </Col>
@@ -74,7 +74,8 @@ const SMTPSettings = () => {
                   <Col sm={12} className="text-end">
                     <Button className="button">Save Change</Button>
                   </Col>
-                </Row>
+                </Row> */}
+                <div>Development in progress .........</div>
               </Form>
             )}
           </Formik>

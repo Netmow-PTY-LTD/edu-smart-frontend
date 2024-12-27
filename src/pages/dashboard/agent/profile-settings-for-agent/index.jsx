@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-const StudentProfile = () => {
+const AgentProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [initialValues, setInitialValues] = useState({
@@ -136,4 +136,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile;
+export default AgentProfile;

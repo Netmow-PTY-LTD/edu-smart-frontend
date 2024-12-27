@@ -7,6 +7,38 @@ const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
 
+const agentNameAndLogoData = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/agent/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.name} `}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
 const superAdminNameAndLogoData = {
   title: 'Logo - Name',
   key: 'logo',
@@ -748,5 +780,6 @@ export {
   universityHeadersWithoutAction,
   userDummyImage,
   studentsHeadersWithLogoLink,
-  studentsHeadersWithLogoLinkInAgent
+  studentsHeadersWithLogoLinkInAgent,
+  agentNameAndLogoData
 };

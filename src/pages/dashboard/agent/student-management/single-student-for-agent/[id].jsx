@@ -1,9 +1,10 @@
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
+import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
 import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
-import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
+import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -21,11 +22,11 @@ const SingleStudentForAgent = () => {
     data: getSingleStudent,
     isLoading: getSingleStudenIsLoadingForStudent,
     refetch: getSingleStudenRefetch,
-  } = useGetSingleStudentQuery(student_id, {
+  } = useSingleStudentForAgentQuery(student_id, {
     skip: !student_id,
   });
 
-  console.log('getSingleStudent', getSingleStudent);
+
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -122,12 +123,15 @@ const SingleStudentForAgent = () => {
               )}
               {activeTab === '2' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage student_id={student_id} />
+                  <DocumentPage student_id={student_id} />
                 </div>
               )}
               {activeTab === '3' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage />
+                  <DocumentRequestPage
+                    student_id={student_id}
+                    getSingleStudent={getSingleStudent}
+                  />
                 </div>
               )}
               {activeTab === '4' && (
