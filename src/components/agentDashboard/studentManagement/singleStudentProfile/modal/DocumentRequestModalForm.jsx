@@ -15,6 +15,7 @@ import { Formik, Field, Form } from 'formik';
 import TextField from '@/components/common/formField/TextField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
+import TextArea from '@/components/common/formField/TextAreaField';
 
 const DocumentRequestModalForm = ({
   formHeader,
@@ -60,12 +61,20 @@ const DocumentRequestModalForm = ({
                     <div className="ps-0">
                       <Row>
                         <Col md={12} xl={12}>
-                          <div className="">
+                          <div className="mb-4">
                             <SingleSelectField
                               options={options}
                               name="title"
                               label="Document Title *"
                               setInitialValues={setInitialValues}
+                            />
+                          </div>
+                        </Col>
+                        <Col md={12} xl={12}>
+                          <div className="">
+                            <TextArea
+                              name="description"
+                              label="Description *"
                             />
                           </div>
                         </Col>

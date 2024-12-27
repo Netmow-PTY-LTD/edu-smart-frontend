@@ -28,10 +28,12 @@ const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [initialValues, setInitialValues] = useState({
     title: '',
+    description: '',
   });
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
+    description: Yup.string().required('Description is required'),
   });
 
   const [createDocumentRequest] = useCreateDocRequestForAgentMutation();
@@ -79,6 +81,15 @@ const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
           <h5 className="fs-14 fw-medium text-capitalize">
             {`${item?.title ? item?.title : '-'}`}
           </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
         </div>
       ),
     },
@@ -184,19 +195,6 @@ const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
             />
           </CardBody>
         </Card>
-        {/* Updated Doc Status */}
-        <DocumentRequestModalForm
-          formHeader={'Edit Document'}
-          isOpen={addModalIsOpen}
-          onClose={() => {
-            setAddModalIsOpen(!addModalIsOpen);
-          }}
-          onSubmit={handleSubmit}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          formSubmit={'Add Document'}
-          setInitialValues={setInitialValues}
-        />
       </div>
     </Row>
   );

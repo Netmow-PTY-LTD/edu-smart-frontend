@@ -26,8 +26,6 @@ const SingleStudentForAgent = () => {
     skip: !student_id,
   });
 
-
-
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
