@@ -105,47 +105,9 @@ const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
     },
   ];
 
-  const uploadAction = [
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (item) => (
-        <UncontrolledDropdown direction="end">
-          <DropdownToggle
-            tag="a"
-            className="text-reset dropdown-btn"
-            role="button"
-          >
-            <span className="button px-3">
-              <i className="ri-more-fill align-middle"></i>
-            </span>
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
-            <DropdownItem>
-              <div
-                className="text-primary"
-                onClick={() => handleEditButtonClick(item?._id)}
-              >
-                <i className="ri-pencil-fill align-start me-2 text-muted"></i>
-                Edit
-              </div>
-            </DropdownItem>
-            {/* <DropdownItem>
-            <div className="text-primary">
-              <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-              Delete
-            </div>
-          </DropdownItem> */}
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      ),
-    },
-  ];
-
   useEffect(() => {
     setAllUploadDocumentsForStudentsData([
       ...documentRequestHeaderWithoutAction,
-      ...uploadAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -179,29 +141,6 @@ const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
   const docRequestData = getSingleStudent?.data?.documents?.filter(
     (item) => item?.status === 'requested'
   );
-
-  const [updateDocRequest] = useUpdateDocStatusForAgentMutation();
-
-  const handleUpdateSponsor = async (values, { setSubmitting }) => {
-    setSubmitting(true);
-    const updatedData = {
-      ...values,
-      user: student_id,
-    };
-
-    try {
-      const result = await updateDocRequest(updatedData).unwrap();
-      if (result) {
-        toast.success(result?.message);
-        setEditModalIsOpen(!editModalIsOpen);
-      }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <Row>

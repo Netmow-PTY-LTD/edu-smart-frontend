@@ -77,7 +77,7 @@ export const studentDocRelatedServiceForAgent = createApi({
     }),
     updateDocStatusForAgent: builder.mutation({
       query: (data) => {
-        const id = data?.student_id;
+        const id = data?.id;
         return {
           url: `/documents/${id}`,
           method: 'PATCH',
