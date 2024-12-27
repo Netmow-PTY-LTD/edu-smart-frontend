@@ -21,9 +21,35 @@ export const studentSubmitDocumentService = createApi({
         body: body,
       }),
     }),
+    submitSingleDocumentForStudent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/document/${id}`,
+          method: 'POST',
+          body: body,
+        };
+      },
+    }),
+    updateSingleDocumentForStudent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/document/${id}`,
+          method: 'POST',
+          body: body,
+        };
+      },
+    }),
     allSubmittedDocumentForStudent: builder.query({
       query: () => ({
         url: '/documents',
+        method: 'GET',
+      }),
+    }),
+    getDocumentRequestForStudent: builder.query({
+      query: () => ({
+        url: '/documents/requested',
         method: 'GET',
       }),
     }),
@@ -33,4 +59,7 @@ export const studentSubmitDocumentService = createApi({
 export const {
   useSubmitStudentDocumentMutation,
   useAllSubmittedDocumentForStudentQuery,
+  useGetDocumentRequestForStudentQuery,
+  useSubmitSingleDocumentForStudentMutation,
+  useUpdateSingleDocumentForStudentMutation,
 } = studentSubmitDocumentService;

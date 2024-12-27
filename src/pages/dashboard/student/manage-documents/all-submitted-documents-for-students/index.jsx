@@ -1,5 +1,6 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
@@ -31,34 +32,37 @@ const AllSubmittedDocumentsForStudents = () => {
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  console.log(allSubmittedDocumentForStudentData?.data);
   console.log(isFilteredData);
 
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          <Card>
-            <CardHeader className="d-flex justify-content-between align-items-center">
-              Submitted Docs
-              <SearchComponent
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
-              />
-            </CardHeader>
-            <CardBody>
-              <CommonTableComponent
-                headers={studentSubmittedDocumentsHeaderWithoutAction}
-                data={isFilteredData ? isFilteredData : []}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                perPageData={perPageData}
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
-                emptyMessage="No Data found yet."
-              />
-            </CardBody>
-          </Card>
+          {allSubmittedDocumentForStudentIsLoading ? (
+            <LoaderSpiner />
+          ) : (
+            <Card>
+              <CardHeader className="d-flex justify-content-between align-items-center">
+                Submitted Docs
+                <SearchComponent
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                />
+              </CardHeader>
+              <CardBody>
+                <CommonTableComponent
+                  headers={studentSubmittedDocumentsHeaderWithoutAction}
+                  data={isFilteredData ? isFilteredData : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={perPageData}
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                  emptyMessage="No Data found yet."
+                />
+              </CardBody>
+            </Card>
+          )}
         </div>
       </div>
     </Layout>
