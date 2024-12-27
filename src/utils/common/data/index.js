@@ -253,6 +253,17 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
       </div>
     ),
   },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
 
   {
     title: 'Status',
@@ -763,6 +774,7 @@ const allowedFileTypes = [
 ];
 
 export {
+  agentNameAndLogoData,
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
@@ -775,6 +787,8 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
+  studentsHeadersWithLogoLink,
+  studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
   studentSubmittedDocumentsHeaderWithoutAction,
   superAdminNameAndLogoData,
@@ -782,7 +796,4 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
-  studentsHeadersWithLogoLink,
-  studentsHeadersWithLogoLinkInAgent,
-  agentNameAndLogoData,
 };
