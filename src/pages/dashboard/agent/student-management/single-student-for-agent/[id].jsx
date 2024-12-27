@@ -4,7 +4,7 @@ import DocumentRequestPage from '@/components/agentDashboard/studentManagement/s
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import Layout from '@/components/layout';
-import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
+import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -22,11 +22,11 @@ const SingleStudentForAgent = () => {
     data: getSingleStudent,
     isLoading: getSingleStudenIsLoadingForStudent,
     refetch: getSingleStudenRefetch,
-  } = useGetSingleStudentQuery(student_id, {
+  } = useSingleStudentForAgentQuery(student_id, {
     skip: !student_id,
   });
 
-  console.log('getSingleStudent', getSingleStudent);
+
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
