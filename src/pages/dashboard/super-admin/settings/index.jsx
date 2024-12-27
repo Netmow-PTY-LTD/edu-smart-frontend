@@ -8,7 +8,7 @@ import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSett
 import SMTPSettings from '@/components/sAdminDashboard/Settings/SMTPSettings';
 import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDnsSettings';
 import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentSettings';
-import Profile from '@/components/common/Profile';
+import SuperAdminProfile from '@/components/sAdminDashboard/Settings/SuperAdminProfile';
 
 const Settings = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -150,7 +150,8 @@ const Settings = () => {
                     )}
                     {customverticalTab === 6 && (
                       <Col lg={10}>
-                        <Profile />
+                        
+                        <SuperAdminProfile/>
                       </Col>
                     )}
                   </Row>

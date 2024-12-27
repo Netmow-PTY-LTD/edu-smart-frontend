@@ -10,6 +10,7 @@ const FullScreenDropdown = () => {
     full screen
     */
   const toggleFullscreen = () => {
+
     if (typeof window !== "undefined") {
       let document = window.document;
       document.body.classList.add('fullscreen-enable');
@@ -48,6 +49,7 @@ const FullScreenDropdown = () => {
         )
           document.body.classList.remove('fullscreen-enable');
       };
+      
       document.addEventListener('fullscreenchange', exitHandler);
       document.addEventListener('webkitfullscreenchange', exitHandler);
       document.addEventListener('mozfullscreenchange', exitHandler);

@@ -67,21 +67,16 @@ const AllDocumentForAgentDashboard = () => {
                 {status === 'accepted' && (
                   <DropdownItem>
                     <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-                    Manage Accepted
+                    Accepted
                   </DropdownItem>
                 )}
-                {status === 'rejected' && (
+                {/* {status === 'rejected' && (
                   <DropdownItem>
                     <i className="ri-refresh-fill align-start me-2 text-muted fw-bold"></i>
                     Reconsider
                   </DropdownItem>
-                )}
-                {status === 'pending' && (
-                  <DropdownItem>
-                    <i className="ri-check-fill align-start me-2 text-muted fw-bold"></i>
-                    Approve
-                  </DropdownItem>
-                )}
+                )} */}
+
                 {status === 'requested' && (
                   <DropdownItem>
                     <i className="ri-question-fill align-start me-2 text-muted fw-bold"></i>

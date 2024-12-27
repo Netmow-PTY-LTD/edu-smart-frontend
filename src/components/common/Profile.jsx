@@ -40,21 +40,21 @@ const Profile = ({
                       <div className="img-preview mb-3">
                         <Image
                           src={imagePreview || brandlogo}
-                          alt="Brand Logo"
+                          alt="Avatar"
                           width={200}
                           height={200}
                         />
                       </div>
                       <ImageField
-                        name="logo"
-                        label="Upload Logo"
+                        name="profile_image"
+                        label="Upload Avatar"
                         handleImageChange={handleImageChange}
                       />
                       <button
                         className="btn btn-danger w-100 mt-4 fw-semibold fs-14"
                         onClick={() => {
                           setImagePreview(null);
-                          setFieldValue('logo', null);
+                          setFieldValue('profile_image', null);
                         }}
                       >
                         Remove

@@ -9,7 +9,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-const StudentProfile = () => {
+const SuperAdminProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [initialValues, setInitialValues] = useState({
@@ -30,6 +30,8 @@ const StudentProfile = () => {
     useGetUserInfoQuery();
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
+  console.log(userInfodata);
+
   useEffect(() => {
     const fetchStudentData = async () => {
       if (userInfodata?.data) {
@@ -38,8 +40,6 @@ const StudentProfile = () => {
         const profile_image = await convertImageUrlToFile(
           student?.profile_image?.url
         );
-
-        
 
         setInitialValues({
           first_name: student?.first_name || '',
@@ -119,21 +119,17 @@ const StudentProfile = () => {
   const options = useMemo(() => countryList().getData(), []);
 
   return (
-    <Layout>
-      <div className="page-content">
-        <div className="h-100">
-          <Profile
-            initialValues={initialValues}
-            handleSubmit={handleSubmit}
-            imagePreview={imagePreview}
-            handleImageChange={handleImageChange}
-            setImagePreview={setImagePreview}
-            options={options}
-          />
-        </div>
-      </div>
-    </Layout>
+    <div className='mt-5'>
+      <Profile
+        initialValues={initialValues}
+        handleSubmit={handleSubmit}
+        imagePreview={imagePreview}
+        handleImageChange={handleImageChange}
+        setImagePreview={setImagePreview}
+        options={options}
+      />
+    </div>
   );
 };
 
-export default StudentProfile;
+export default SuperAdminProfile;
