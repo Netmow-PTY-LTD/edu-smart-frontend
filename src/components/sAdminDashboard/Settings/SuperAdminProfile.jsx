@@ -119,7 +119,7 @@ const SuperAdminProfile = () => {
   const options = useMemo(() => countryList().getData(), []);
 
   return (
-    <>
+    <div className='mt-5'>
       <Profile
         initialValues={initialValues}
         handleSubmit={handleSubmit}
@@ -128,7 +128,7 @@ const SuperAdminProfile = () => {
         setImagePreview={setImagePreview}
         options={options}
       />
-    </>
+    </div>
   );
 };
 
