@@ -248,7 +248,19 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
     render: (item) => (
       <div>
         <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item?.user?.email ? item?.user?.email : '-'}`}
+        {`${item?.user?.email ? item?.user?.email : '-'}`}
+
+        </h5>
+      </div>
+    ),
+  },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
         </h5>
       </div>
     ),
@@ -343,7 +355,10 @@ const studentsHeadersWithLogoLink = [
     render: (item) => (
       <div className="d-flex align-items-center">
         <div className="flex-shrink-0 me-1">
-          <Link href={`/dashboard/super-admin/students/${item?._id}`} className="text-reset">
+          <Link
+            href={`/dashboard/super-admin/students/${item?._id}`}
+            className="text-reset"
+          >
             <Image
               src={
                 item?.profile_image?.url
@@ -400,7 +415,10 @@ const studentsHeadersWithLogoLinkInAgent = [
     render: (item) => (
       <div className="d-flex align-items-center">
         <div className="flex-shrink-0 me-1">
-          <Link href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`} className="text-reset">
+          <Link
+            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+            className="text-reset"
+          >
             <Image
               src={
                 item?.profile_image?.url
@@ -450,9 +468,6 @@ const studentsHeadersWithLogoLinkInAgent = [
     ),
   },
 ];
-
-
-
 
 // university department header
 const allDepartmentsWithoutAction = [
@@ -760,6 +775,7 @@ const allowedFileTypes = [
 ];
 
 export {
+  agentNameAndLogoData,
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
@@ -772,6 +788,8 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
+  studentsHeadersWithLogoLink,
+  studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
   studentSubmittedDocumentsHeaderWithoutAction,
   superAdminNameAndLogoData,
@@ -779,7 +797,4 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
-  studentsHeadersWithLogoLink,
-  studentsHeadersWithLogoLinkInAgent,
-  agentNameAndLogoData
 };

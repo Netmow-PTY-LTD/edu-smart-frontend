@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import ImageField from '@/components/common/formField/ImageField';
 import MultipleFileUpload from '@/components/common/formField/MultipleFileUpload';
 import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
@@ -46,32 +47,64 @@ export default function CourseForm({ setStep, step }) {
 
         const documentPromises = singleStudentData?.data?.documents?.map(
           async (student) => {
-            const convertedFile = await convertImageUrlToFile(
-              student?.file?.url
-            );
-
-            setInitialValues((prev) => ({
-              ...prev,
-              [student?.title]: convertedFile,
-            }));
-
-            if (student?.title === 'photograph') {
-              setPhotographPreviewImage(student?.file?.url);
-            }
-            if (student?.title === 'passport') {
-              setPassportPreviewImage(student?.file?.url);
-            }
             if (student?.title === 'academic_certificate') {
-              setInitialValues((prev) => ({
-                ...prev,
-                ['academic_certificate']: [convertedFile],
-              }));
+              const convertedFiles = await Promise.all(
+                student?.file?.map(async (file) =>
+                  convertImageUrlToFile(file?.url)
+                )
+              );
+
+              return {
+                title: student?.title,
+                convertedFiles,
+              };
+            } else {
+              const convertedFile = await convertImageUrlToFile(
+                student?.file[0]?.url
+              );
+
+              return {
+                title: student?.title,
+                convertedFile,
+              };
             }
           }
         );
 
-        // eslint-disable-next-line no-undef
-        await Promise.all(documentPromises);
+        const documentData = await Promise.all(documentPromises);
+
+        const newValues = documentData.reduce(
+          (acc, { title, convertedFiles, convertedFile }) => {
+            if (title === 'academic_certificate') {
+              acc.academic_certificate = [
+                ...(acc.academic_certificate || []),
+                ...convertedFiles.filter(
+                  (file) =>
+                    !acc.academic_certificate?.some(
+                      (existingFile) => existingFile === file
+                    )
+                ),
+              ];
+            } else {
+              acc[title] = convertedFile;
+
+              if (title === 'photograph') {
+                setPhotographPreviewImage(URL.createObjectURL(convertedFile));
+              }
+              if (title === 'passport') {
+                setPassportPreviewImage(URL.createObjectURL(convertedFile));
+              }
+            }
+
+            return acc;
+          },
+          {}
+        );
+
+        setInitialValues((prev) => ({
+          ...prev,
+          ...newValues,
+        }));
 
         setLoading(false);
       }

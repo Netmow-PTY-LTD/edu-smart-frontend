@@ -19,7 +19,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
   ];
 
   const isValidFile = (file) => {
-    return validTypes.includes(file.type);
+    return validTypes.includes(file?.type);
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
         ? form.values[field.name]
         : [];
 
-      console.log(currentFiles);
+      // console.log(currentFiles);
 
       const newFiles = [...currentFiles, ...validFiles];
 
@@ -82,7 +82,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     form.setFieldValue(field.name, updatedFiles);
   };
 
-  console.log(filePreviews);
+  // console.log(filePreviews);
 
   return (
     <div>
