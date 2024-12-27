@@ -1,4 +1,5 @@
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
+import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
 import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
@@ -122,12 +123,15 @@ const SingleStudentForAgent = () => {
               )}
               {activeTab === '2' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage student_id={student_id} />
+                  <DocumentPage student_id={student_id} />
                 </div>
               )}
               {activeTab === '3' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage />
+                  <DocumentRequestPage
+                    student_id={student_id}
+                    getSingleStudent={getSingleStudent}
+                  />
                 </div>
               )}
               {activeTab === '4' && (
