@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
-import StudentProfileUI from '@/components/sAdminDashboard/temporaryUIWithFunctional/StudentProfile';
 import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySettings';
 import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
 import SMTPSettings from '@/components/sAdminDashboard/Settings/SMTPSettings';
 import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDnsSettings';
 import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentSettings';
+import SuperAdminProfile from '@/components/sAdminDashboard/Settings/SuperAdminProfile';
 
 const Settings = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
@@ -32,7 +32,6 @@ const Settings = () => {
                         className="nav nav-pills flex-column nav-pills-tab custom-verti-nav-pills text-center p-3 "
                       >
                         <NavItem>
-                       
                           <NavLink
                             style={{ cursor: 'pointer' }}
                             className={classnames({
@@ -43,7 +42,6 @@ const Settings = () => {
                               customtoggleVertical(1);
                             }}
                           >
-                          
                             <i class="ri-briefcase-line d-block fs-20 mb-1"></i>
                             Business Settings & Branding
                           </NavLink>
@@ -60,7 +58,7 @@ const Settings = () => {
                             }}
                           >
                             <i className="ri-file-image-fill d-block fs-20 mb-1"></i>
-                           Currency Settings
+                            Currency Settings
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -75,7 +73,7 @@ const Settings = () => {
                             }}
                           >
                             <i class="ri-global-line d-block fs-20 mb-1"></i>
-                           Domain & DNS Management
+                            Domain & DNS Management
                           </NavLink>
                         </NavItem>
                         <NavItem id="stripesettings">
@@ -105,7 +103,7 @@ const Settings = () => {
                             }}
                           >
                             <i className="ri-mail-settings-line d-block fs-20 mb-1"></i>
-                           SMTP & Email Config
+                            SMTP & Email Config
                           </NavLink>
                         </NavItem>
                         <NavItem id="stripesettings">
@@ -120,39 +118,40 @@ const Settings = () => {
                             }}
                           >
                             <i className="ri-user-line d-block fs-20 mb-1"></i>
-                          Profiles
+                            Profiles
                           </NavLink>
                         </NavItem>
                       </Nav>
                     </Col>
                     {customverticalTab === 1 && (
                       <Col lg={10}>
-                       <BusinessSettings/>
+                        <BusinessSettings />
                       </Col>
                     )}
                     {customverticalTab === 2 && (
                       <Col lg={10}>
-                       <CurrencySettings/>
+                        <CurrencySettings />
                       </Col>
                     )}
                     {customverticalTab === 3 && (
                       <Col lg={10}>
-                       <DomainDnsSettings/>
+                        <DomainDnsSettings />
                       </Col>
                     )}
                     {customverticalTab === 4 && (
                       <Col lg={10}>
-                       <PaymentSettings/>
+                        <PaymentSettings />
                       </Col>
                     )}
                     {customverticalTab === 5 && (
                       <Col lg={10}>
-                       <SMTPSettings/>
+                        <SMTPSettings />
                       </Col>
                     )}
                     {customverticalTab === 6 && (
                       <Col lg={10}>
-                       <StudentProfileUI/>
+                        
+                        <SuperAdminProfile/>
                       </Col>
                     )}
                   </Row>

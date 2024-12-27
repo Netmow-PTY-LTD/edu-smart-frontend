@@ -7,6 +7,38 @@ const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
 
+const agentNameAndLogoData = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/agent/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.name} `}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
 const superAdminNameAndLogoData = {
   title: 'Logo - Name',
   key: 'logo',
@@ -221,6 +253,17 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
       </div>
     ),
   },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
 
   {
     title: 'Status',
@@ -254,6 +297,127 @@ const studentsHeadersWithoutAction = [
       <div className="d-flex align-items-center">
         <div className="flex-shrink-0 me-1">
           <Link href={``} className="text-reset">
+            <Image
+              src={
+                item?.profile_image?.url
+                  ? item?.profile_image?.url
+                  : `${userDummyImage}`
+              }
+              alt="User"
+              height={60}
+              width={60}
+              className="avatar-md p-1 me-3 align-middle rounded-circle"
+            />
+          </Link>
+        </div>
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            <Link href={``} className="text-reset">
+              {item?.first_name && item?.last_name
+                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+                : '-'}
+            </Link>
+          </h5>
+        </div>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Agent',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.agent?.first_name && item?.agent?.last_name
+          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  { title: 'Email', key: 'email' },
+  { title: 'Phone', key: 'phone' },
+  {
+    title: 'Country',
+    key: 'country',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.country ? <span>{item.country}</span> : '-'}
+      </span>
+    ),
+  },
+];
+
+const studentsHeadersWithLogoLink = [
+  {
+    title: 'Name',
+    key: 'profile_image',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <div className="flex-shrink-0 me-1">
+          <Link
+            href={`/dashboard/super-admin/students/${item?._id}`}
+            className="text-reset"
+          >
+            <Image
+              src={
+                item?.profile_image?.url
+                  ? item?.profile_image?.url
+                  : `${userDummyImage}`
+              }
+              alt="User"
+              height={60}
+              width={60}
+              className="avatar-md p-1 me-3 align-middle rounded-circle"
+            />
+          </Link>
+        </div>
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            <Link href={``} className="text-reset">
+              {item?.first_name && item?.last_name
+                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+                : '-'}
+            </Link>
+          </h5>
+        </div>
+      </div>
+    ),
+  },
+
+  {
+    title: 'Agent',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.agent?.first_name && item?.agent?.last_name
+          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  { title: 'Email', key: 'email' },
+  { title: 'Phone', key: 'phone' },
+  {
+    title: 'Country',
+    key: 'country',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.country ? <span>{item.country}</span> : '-'}
+      </span>
+    ),
+  },
+];
+const studentsHeadersWithLogoLinkInAgent = [
+  {
+    title: 'Name',
+    key: 'profile_image',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <div className="flex-shrink-0 me-1">
+          <Link
+            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+            className="text-reset"
+          >
             <Image
               src={
                 item?.profile_image?.url
@@ -463,7 +627,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-school-fill',
     link: 'View all',
-    pathName: '/super-admin/university-management/all-university',
+    pathName: '/dashboard/super-admin/university-management/all-university',
   },
 
   {
@@ -473,7 +637,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-group-2-fill',
     link: 'View all',
-    pathName: '/super-admin/agents',
+    pathName: '/dashboard/super-admin/agents',
   },
   {
     id: 3,
@@ -482,7 +646,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-group-fill',
     link: 'View  all',
-    pathName: '/super-admin',
+    pathName: '/dashboard/super-admin/students',
   },
   {
     id: 4,
@@ -491,7 +655,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-wallet-3-fill',
     link: 'All Charges',
-    pathName: '/super-admin',
+    pathName: '/dashboard/super-admin',
   },
 ];
 
@@ -610,6 +774,7 @@ const allowedFileTypes = [
 ];
 
 export {
+  agentNameAndLogoData,
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
@@ -622,6 +787,8 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
+  studentsHeadersWithLogoLink,
+  studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
   studentSubmittedDocumentsHeaderWithoutAction,
   superAdminNameAndLogoData,

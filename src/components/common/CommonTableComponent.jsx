@@ -23,8 +23,8 @@ const CommonTableComponent = ({
           <thead className="fs-2 bg-light">
             <tr>
               {headers?.length > 0 &&
-                headers?.map((header) => (
-                  <th key={header.key || header.title} scope="col">
+                headers?.map((header, index) => (
+                  <th key={index} scope="col">
                     {header.title}
                   </th>
                 ))}
@@ -35,7 +35,7 @@ const CommonTableComponent = ({
           <tbody>
             {paginatedData.length > 0 ? (
               paginatedData.map((item, rowIndex) => (
-                <tr key={item._id || rowIndex}>
+                <tr key={rowIndex}>
                   {headers?.length > 0 &&
                     headers?.map((header) => (
                       <td key={header.key}>

@@ -1,10 +1,11 @@
+import { serverInfo } from '@/utils/common/serverInfo';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import Cookies from 'js-cookie';
 
 export const studentDocRelatedServiceForAgent = createApi({
   reducerPath: 'studentDocRelatedServiceForAgent',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/agent',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/agent',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -77,11 +78,19 @@ export const studentDocRelatedServiceForAgent = createApi({
     }),
     updateDocStatusForAgent: builder.mutation({
       query: (data) => {
-        const student_id = data?.student_id;
+        const id = data?.id;
         return {
-          url: `/documents/${student_id}`,
+          url: `/documents/${id}`,
           method: 'PATCH',
           body: data,
+        };
+      },
+    }),
+    singleStudentSubmittedDocumentForAgent: builder.query({
+      query: (id) => {
+        return {
+          url: `/documents/${id}`,
+          method: 'GET',
         };
       },
     }),
@@ -97,4 +106,5 @@ export const {
   useAllSubmittedDocumentForAgentQuery,
   useCreateDocRequestForAgentMutation,
   useUpdateDocStatusForAgentMutation,
+  useSingleStudentSubmittedDocumentForAgentQuery,
 } = studentDocRelatedServiceForAgent;

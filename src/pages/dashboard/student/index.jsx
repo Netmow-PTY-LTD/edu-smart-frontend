@@ -1,10 +1,13 @@
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import { useGetDocumentRequestForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import {
   studentAndLogoData,
+  studentSubmittedDocumentsHeaderWithoutAction,
   universityHeadersWithoutAction,
 } from '@/utils/common/data';
 
@@ -18,8 +21,15 @@ const StudentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
     useState('');
-  const { data: userInfodata } = useGetUserInfoQuery();
-  const { data: universityData } = useGetAllUniversityQuery();
+  const { data: userInfodata, isLoading: userInfoIsLoading } =
+    useGetUserInfoQuery();
+  const { data: universityData, isLoading: universityIsLoading } =
+    useGetAllUniversityQuery();
+  const {
+    data: getDocumentRequestForStudentData,
+    isLoading: getDocumentRequestForStudentIsLoading,
+    refetch: getDocumentRequestForStudentRefetch,
+  } = useGetDocumentRequestForStudentQuery();
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -41,37 +51,43 @@ const StudentDashboard = () => {
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
-          <Row>
-            <Col>
-              <div className="h-100">
-                <WelcomingMessage data={userInfodata?.data} />
+          {universityIsLoading ||
+          userInfoIsLoading ||
+          getDocumentRequestForStudentIsLoading ? (
+            <LoaderSpiner />
+          ) : (
+            <Row>
+              <Col>
+                <div className="h-100">
+                  <WelcomingMessage data={userInfodata?.data} />
 
-                <Row xxl={12} className="g-5">
-                  <Col xxl={12}>
-                    <LatestRegistered
-                      tableHead={'All Registered University'}
-                      headers={allRegisteredUniversitydata}
-                      data={universityData?.data ? universityData?.data : []}
-                    />
-                  </Col>
-                  <Col xxl={6}>
-                    <LatestRegistered
-                      tableHead={'My Applied Universities'}
-                      // headers={}
-                      // data={}
-                    />
-                  </Col>
-                  <Col xxl={6}>
-                    <LatestRegistered
-                      tableHead={'Document Upload Request'}
-                      // headers={}
-                      // data={}
-                    />
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
+                  <Row xxl={12} className="g-5">
+                    <Col xxl={12}>
+                      <LatestRegistered
+                        tableHead={'All Registered University'}
+                        headers={allRegisteredUniversitydata}
+                        data={universityData?.data ? universityData?.data : []}
+                      />
+                    </Col>
+                    <Col xxl={6}>
+                      <LatestRegistered
+                        tableHead={'My Applied Universities'}
+                        // headers={}
+                        // data={}
+                      />
+                    </Col>
+                    <Col xxl={6}>
+                      <LatestRegistered
+                        tableHead={'Document Upload Request'}
+                        headers={studentSubmittedDocumentsHeaderWithoutAction}
+                        data={getDocumentRequestForStudentData?.data}
+                      />
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          )}
         </div>
       </div>
     </Layout>
