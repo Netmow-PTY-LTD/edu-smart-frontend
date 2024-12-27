@@ -3,6 +3,7 @@ import MultipleFileUpload from '@/components/common/formField/MultipleFileUpload
 import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useSubmitStudentDocumentMutation } from '@/slice/services/student/studentSubmitDocumentService';
@@ -15,6 +16,7 @@ import { Card, CardBody, Col, Row } from 'reactstrap';
 export default function CourseForm({ setStep, step }) {
   const [photographPreviewImage, setPhotographPreviewImage] = useState('');
   const [passportPreviewImage, setPassportPreviewImage] = useState('');
+  const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState({
     photograph: '',
     passport: '',
@@ -40,31 +42,41 @@ export default function CourseForm({ setStep, step }) {
   useEffect(() => {
     const fetchStudentData = async () => {
       if (singleStudentData?.data) {
-        console.log(singleStudentData?.data?.documents);
+        setLoading(true);
 
-        singleStudentData?.data?.documents?.length > 0 &&
-          singleStudentData?.data?.documents.map(async (student) => {
-            const convertedTitle = student?.title
-              .toLowerCase()
-              .replace(/\s+/g, '_');
-
+        const documentPromises = singleStudentData?.data?.documents?.map(
+          async (student) => {
             const convertedFile = await convertImageUrlToFile(
               student?.file?.url
             );
+
             setInitialValues((prev) => ({
               ...prev,
-              [convertedTitle]: convertedFile,
+              [student?.title]: convertedFile,
             }));
 
-            if (convertedTitle === 'photograph') {
+            if (student?.title === 'photograph') {
               setPhotographPreviewImage(student?.file?.url);
             }
-            if (convertedTitle === 'passport') {
+            if (student?.title === 'passport') {
               setPassportPreviewImage(student?.file?.url);
             }
-          });
+            if (student?.title === 'academic_certificate') {
+              setInitialValues((prev) => ({
+                ...prev,
+                ['academic_certificate']: [convertedFile],
+              }));
+            }
+          }
+        );
+
+        // eslint-disable-next-line no-undef
+        await Promise.all(documentPromises);
+
+        setLoading(false);
       }
     };
+
     fetchStudentData();
   }, [singleStudentData?.data]);
 
@@ -129,296 +141,309 @@ export default function CourseForm({ setStep, step }) {
             Previous
           </h5>
         </div>
-        <CardBody>
-          <div className="form-content">
-          <Formik
-  initialValues={initialValues}
-  onSubmit={handleAddSubmit}
-  enableReinitialize
->
-  {({ isSubmitting, setFieldValue, values }) => {
-    return (
-      <Form>
-        <Row>
-          <Col lg={12}>
-            <div className="ps-0">
-              <Row>
-                <Col md={6} xl={6}>
-                  <h4 className="text-secondary-alt fs-2 mb-3">
-                    Passport Size Photograph
-                  </h4>
-                  <div className="mb-2 profile-img">
-                    <ImageField
-                      name="photograph"
-                      label="Upload Photograph"
-                      handleImageChange={handleImageChange}
-                      disabled={!!values.photograph} // Disable if the field has a value
-                    />
-                  </div>
-                  {photographPreviewImage && (
-                    <div className="img-preview">
-                      <Image
-                        src={photographPreviewImage || ''}
-                        alt="Sponsor Logo"
-                        width={200}
-                        height={200}
-                      />
-                    </div>
-                  )}
-                </Col>
-                <Col lg={6}>
-                  <h4 className="text-secondary-alt fs-2 mb-3">
-                    Passport
-                  </h4>
-                  <div className="mb-2 profile-img">
-                    <ImageField
-                      name="passport"
-                      label="Upload Passport Image"
-                      handleImageChange={handleImageChange}
-                      disabled={!!values.passport} // Disable if the field has a value
-                    />
-                  </div>
-                  {passportPreviewImage && (
-                    <div className="img-preview mb-3">
-                      <Image
-                        src={passportPreviewImage || ''}
-                        alt="Sponsor Logo"
-                        width={200}
-                        height={200}
-                      />
-                    </div>
-                  )}
-                </Col>
-                <Col lg={6}>
-                  <div className="mb-3">
-                    <SingleFileUpload
-                      form={{ setFieldValue, values }}
-                      label={'Offer Letter'}
-                      field={{ name: 'offer_letter' }}
-                      disabled={!!values.offer_letter} // Disable if the field has a value
-                    />
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  <div className="mb-3">
-                    <SingleFileUpload
-                      form={{ setFieldValue, values }}
-                      label={'Medical Certificate'}
-                      field={{ name: 'medical_certificate' }}
-                      disabled={!!values.medical_certificate} // Disable if the field has a value
-                    />
-                  </div>
-                </Col>
-                <Col lg={12}>
-                  <MultipleFileUpload
-                    form={{ setFieldValue, values }}
-                    label={'Academic Certificates and Transcripts'}
-                    field={{ name: 'academic_certificate' }}
-                    disabled={values.academic_certificate && values.academic_certificate.length > 0} // Disable if the field has a value
-                  />
-                </Col>
+        {loading ? (
+          <LoaderSpiner />
+        ) : (
+          <CardBody>
+            <div className="form-content">
+              <Formik
+                initialValues={initialValues}
+                onSubmit={handleAddSubmit}
+                enableReinitialize
+              >
+                {({ isSubmitting, setFieldValue, values }) => {
+                  return (
+                    <Form>
+                      <Row>
+                        <Col lg={12}>
+                          <div className="ps-0">
+                            <Row>
+                              <Col md={6} xl={6}>
+                                <h4 className="text-secondary-alt fs-2 mb-3">
+                                  Passport Size Photograph
+                                </h4>
+                                <div className="mb-2 profile-img">
+                                  <ImageField
+                                    name="photograph"
+                                    label="Upload Photograph"
+                                    handleImageChange={handleImageChange}
+                                    disabled={!!values.photograph}
+                                  />
+                                </div>
+                                {photographPreviewImage && (
+                                  <div className="img-preview">
+                                    <Image
+                                      src={photographPreviewImage || ''}
+                                      alt="Sponsor Logo"
+                                      width={200}
+                                      height={200}
+                                    />
+                                  </div>
+                                )}
+                              </Col>
+                              <Col lg={6}>
+                                <h4 className="text-secondary-alt fs-2 mb-3">
+                                  Passport
+                                </h4>
+                                <div className="mb-2 profile-img">
+                                  <ImageField
+                                    name="passport"
+                                    label="Upload Passport Image"
+                                    handleImageChange={handleImageChange}
+                                    disabled={!!values.passport}
+                                  />
+                                </div>
+                                {passportPreviewImage && (
+                                  <div className="img-preview mb-3">
+                                    <Image
+                                      src={passportPreviewImage || ''}
+                                      alt="Sponsor Logo"
+                                      width={200}
+                                      height={200}
+                                    />
+                                  </div>
+                                )}
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Offer Letter'}
+                                    field={{ name: 'offer_letter' }}
+                                    disabled={!!values.offer_letter}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Medical Certificate'}
+                                    field={{ name: 'medical_certificate' }}
+                                    disabled={!!values.medical_certificate}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={12}>
+                                <MultipleFileUpload
+                                  form={{ setFieldValue, values }}
+                                  label={
+                                    'Academic Certificates and Transcripts'
+                                  }
+                                  field={{ name: 'academic_certificate' }}
+                                  disabled={
+                                    values.academic_certificate &&
+                                    values.academic_certificate.length > 0
+                                  }
+                                />
+                              </Col>
 
-                <Col lg={6}>
-                  <div className="mb-3">
-                    <SingleFileUpload
-                      form={{ setFieldValue, values }}
-                      label={'Personal Bond'}
-                      field={{ name: 'personal_bond' }}
-                      disabled={!!values.personal_bond} // Disable if the field has a value
-                    />
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  <div className="mb-3">
-                    <SingleFileUpload
-                      form={{ setFieldValue, values }}
-                      label={'No Objection Certificate'}
-                      field={{ name: 'noc' }}
-                      disabled={!!values.noc} // Disable if the field has a value
-                    />
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  <div className="mb-3">
-                    <SingleFileUpload
-                      form={{ setFieldValue, values }}
-                      label={'Letter of Eligibility'}
-                      field={{ name: 'letter_of_eligibility' }}
-                      disabled={!!values.letter_of_eligibility} // Disable if the field has a value
-                    />
-                  </div>
-                </Col>
-                <Col lg={6}>
-                  <div className="mb-3">
-                    <SingleFileUpload
-                      form={{ setFieldValue, values }}
-                      label={'Proof of English proficiency'}
-                      field={{ name: 'english_language_certificate' }}
-                      disabled={!!values.english_language_certificate} // Disable if the field has a value
-                    />
-                  </div>
-                </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Personal Bond'}
+                                    field={{ name: 'personal_bond' }}
+                                    disabled={!!values.personal_bond}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'No Objection Certificate'}
+                                    field={{ name: 'noc' }}
+                                    disabled={!!values.noc}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Letter of Eligibility'}
+                                    field={{ name: 'letter_of_eligibility' }}
+                                    disabled={!!values.letter_of_eligibility}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Proof of English proficiency'}
+                                    field={{
+                                      name: 'english_language_certificate',
+                                    }}
+                                    disabled={
+                                      !!values.english_language_certificate
+                                    }
+                                  />
+                                </div>
+                              </Col>
 
-                <Col md={12} xl={12}>
-                  <div className="my-4 text-center">
-                    <SubmitButton
-                      isSubmitting={isSubmitting}
-                      formSubmit={'Complete'}
-                    >
-                      {'Complete'}
-                    </SubmitButton>
-                  </div>
-                </Col>
-              </Row>
+                              <Col md={12} xl={12}>
+                                <div className="my-4 text-center">
+                                  <SubmitButton
+                                    isSubmitting={isSubmitting}
+                                    formSubmit={'Complete'}
+                                  >
+                                    {'Complete'}
+                                  </SubmitButton>
+                                </div>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                  );
+                }}
+              </Formik>
+
+              {/* <Formik
+                initialValues={initialValues}
+                onSubmit={handleAddSubmit}
+                enableReinitialize
+              >
+                {({ isSubmitting, setFieldValue, values }) => {
+                  return (
+                    <Form>
+                      <Row>
+                        <Col lg={12}>
+                          <div className="ps-0">
+                            <Row>
+                              <Col md={6} xl={6}>
+                                <h4 className="text-secondary-alt fs-2 mb-3">
+                                  Passport Size Photograph
+                                </h4>
+                                <div className="mb-2 profile-img">
+                                  <ImageField
+                                    name="photograph"
+                                    label="Upload Photograph"
+                                    handleImageChange={handleImageChange}
+                                  />
+                                </div>
+                                {photographPreviewImage && (
+                                  <div className="img-preview">
+                                    <Image
+                                      src={photographPreviewImage || ''}
+                                      alt="Sponsor Logo"
+                                      width={200}
+                                      height={200}
+                                    />
+                                  </div>
+                                )}
+                              </Col>
+                              <Col lg={6}>
+                                <h4 className="text-secondary-alt fs-2 mb-3">
+                                  Passport
+                                </h4>
+                                <div className="mb-2 profile-img">
+                                  <ImageField
+                                    name="passport"
+                                    label="Upload Passport Image"
+                                    handleImageChange={handleImageChange}
+                                  />
+                                </div>
+                                {passportPreviewImage && (
+                                  <div className="img-preview mb-3">
+                                    <Image
+                                      src={passportPreviewImage || ''}
+                                      alt="Sponsor Logo"
+                                      width={200}
+                                      height={200}
+                                    />
+                                  </div>
+                                )}
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Offer Letter'}
+                                    field={{ name: 'offer_letter' }}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Medical Certificate'}
+                                    field={{ name: 'medical_certificate' }}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={12}>
+                                <MultipleFileUpload
+                                  form={{ setFieldValue, values }}
+                                  label={'Academic Certificates and Transcripts'}
+                                  field={{ name: 'academic_certificate' }}
+                                />
+                              </Col>
+  
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Personal Bond'}
+                                    field={{ name: 'personal_bond' }}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'No Objection Certificate'}
+                                    field={{ name: 'noc' }}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Letter of Eligibility'}
+                                    field={{ name: 'letter_of_eligibility' }}
+                                  />
+                                </div>
+                              </Col>
+                              <Col lg={6}>
+                                <div className="mb-3">
+                                  <SingleFileUpload
+                                    form={{ setFieldValue, values }}
+                                    label={'Proof of English proficiency'}
+                                    field={{
+                                      name: 'english_language_certificate',
+                                    }}
+                                  />
+                                </div>
+                              </Col>
+  
+                              <Col md={12} xl={12}>
+                                <div className="my-4 text-center">
+                                  <SubmitButton
+                                    isSubmitting={isSubmitting}
+                                    formSubmit={'Complete'}
+                                  >
+                                    {'Complete'}
+                                  </SubmitButton>
+                                </div>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form>
+                  );
+                }}
+              </Formik> */}
             </div>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }}
-</Formik>
-
-            {/* <Formik
-              initialValues={initialValues}
-              onSubmit={handleAddSubmit}
-              enableReinitialize
-            >
-              {({ isSubmitting, setFieldValue, values }) => {
-                return (
-                  <Form>
-                    <Row>
-                      <Col lg={12}>
-                        <div className="ps-0">
-                          <Row>
-                            <Col md={6} xl={6}>
-                              <h4 className="text-secondary-alt fs-2 mb-3">
-                                Passport Size Photograph
-                              </h4>
-                              <div className="mb-2 profile-img">
-                                <ImageField
-                                  name="photograph"
-                                  label="Upload Photograph"
-                                  handleImageChange={handleImageChange}
-                                />
-                              </div>
-                              {photographPreviewImage && (
-                                <div className="img-preview">
-                                  <Image
-                                    src={photographPreviewImage || ''}
-                                    alt="Sponsor Logo"
-                                    width={200}
-                                    height={200}
-                                  />
-                                </div>
-                              )}
-                            </Col>
-                            <Col lg={6}>
-                              <h4 className="text-secondary-alt fs-2 mb-3">
-                                Passport
-                              </h4>
-                              <div className="mb-2 profile-img">
-                                <ImageField
-                                  name="passport"
-                                  label="Upload Passport Image"
-                                  handleImageChange={handleImageChange}
-                                />
-                              </div>
-                              {passportPreviewImage && (
-                                <div className="img-preview mb-3">
-                                  <Image
-                                    src={passportPreviewImage || ''}
-                                    alt="Sponsor Logo"
-                                    width={200}
-                                    height={200}
-                                  />
-                                </div>
-                              )}
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <SingleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'Offer Letter'}
-                                  field={{ name: 'offer_letter' }}
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <SingleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'Medical Certificate'}
-                                  field={{ name: 'medical_certificate' }}
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={12}>
-                              <MultipleFileUpload
-                                form={{ setFieldValue, values }}
-                                label={'Academic Certificates and Transcripts'}
-                                field={{ name: 'academic_certificate' }}
-                              />
-                            </Col>
-
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <SingleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'Personal Bond'}
-                                  field={{ name: 'personal_bond' }}
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <SingleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'No Objection Certificate'}
-                                  field={{ name: 'noc' }}
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <SingleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'Letter of Eligibility'}
-                                  field={{ name: 'letter_of_eligibility' }}
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <SingleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'Proof of English proficiency'}
-                                  field={{
-                                    name: 'english_language_certificate',
-                                  }}
-                                />
-                              </div>
-                            </Col>
-
-                            <Col md={12} xl={12}>
-                              <div className="my-4 text-center">
-                                <SubmitButton
-                                  isSubmitting={isSubmitting}
-                                  formSubmit={'Complete'}
-                                >
-                                  {'Complete'}
-                                </SubmitButton>
-                              </div>
-                            </Col>
-                          </Row>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Form>
-                );
-              }}
-            </Formik> */}
-          </div>
-        </CardBody>
+          </CardBody>
+        )}
       </Card>
     </>
   );

@@ -1,4 +1,4 @@
-import { ErrorMessage } from 'formik'; // Assuming you're using Formik for validation
+import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const MultipleFileUpload = ({ field, form, label, ...props }) => {
@@ -10,6 +10,12 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     'application/msword',
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/bmp',
+    'image/tiff',
   ];
 
   const isValidFile = (file) => {
@@ -20,18 +26,17 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     const files = form.values[field.name] || [];
 
     if (files?.length > 0) {
-
       const validFiles = files.filter(isValidFile);
       setFilePreviews(
         validFiles.map((file) =>
-          file.type === 'application/pdf' ? URL.createObjectURL(file) : null
+          file.type === 'application/pdf' || file.type.startsWith('image/')
+            ? URL.createObjectURL(file)
+            : null
         )
       );
       setFileNames(validFiles.map((file) => file.name));
     }
   }, [form.values, field.name]);
-
-
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -39,30 +44,34 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     const validFiles = selectedFiles.filter((file) => isValidFile(file));
 
     if (validFiles.length > 0) {
-      // Ensure currentFiles is always an array
       const currentFiles = Array.isArray(form.values[field.name])
         ? form.values[field.name]
         : [];
 
+      console.log(currentFiles);
+
       const newFiles = [...currentFiles, ...validFiles];
 
-      const newFilePreviews = validFiles.map((file) =>
-        file.type === 'application/pdf' ? URL.createObjectURL(file) : null
-      );
+      const newFilePreviews = validFiles
+        .map((file) =>
+          file.type === 'application/pdf' || file.type.startsWith('image/')
+            ? URL.createObjectURL(file)
+            : null
+        )
+        .filter((preview) => preview !== null);
+
       const newFileNames = validFiles.map((file) => file.name);
 
       setFilePreviews((prevPreviews) => [...prevPreviews, ...newFilePreviews]);
       setFileNames((prevNames) => [...prevNames, ...newFileNames]);
 
-      // Update Formik with the new files
       form.setFieldValue(field.name, newFiles);
     }
   };
 
   const handleRemoveFile = (index) => {
-    const currentFiles = form.values[field.name] || []; // Ensure it's an array
+    const currentFiles = form.values[field.name] || [];
 
-    // Safely filter the array
     const updatedFiles = currentFiles.filter((_, i) => i !== index);
     const updatedPreviews = filePreviews.filter((_, i) => i !== index);
     const updatedNames = fileNames.filter((_, i) => i !== index);
@@ -70,9 +79,10 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     setFilePreviews(updatedPreviews);
     setFileNames(updatedNames);
 
-    // Update Formik with the updated files
     form.setFieldValue(field.name, updatedFiles);
   };
+
+  console.log(filePreviews);
 
   return (
     <div>
