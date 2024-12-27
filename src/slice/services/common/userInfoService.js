@@ -7,7 +7,6 @@ export const userInfoService = createApi({
     baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
-      // console.log('token', token);
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -25,10 +24,11 @@ export const userInfoService = createApi({
       query: (data) => ({
         url: '/user',
         method: 'PATCH',
-        body:data
+        body: data,
       }),
     }),
   }),
 });
 
-export const { useGetUserInfoQuery,useUpdateUserInfoMutation } = userInfoService;
+export const { useGetUserInfoQuery, useUpdateUserInfoMutation } =
+  userInfoService;
