@@ -128,7 +128,10 @@ const SingleStudentForAgent = () => {
               )}
               {activeTab === '3' && (
                 <div style={{ marginTop: '50px' }}>
-                  <DocumentRequestPage />
+                  <DocumentRequestPage
+                    student_id={student_id}
+                    getSingleStudent={getSingleStudent}
+                  />
                 </div>
               )}
               {activeTab === '4' && (
