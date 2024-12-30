@@ -1,10 +1,6 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
-import Layout from '@/components/layout';
-import {
-  useGetUserInfoQuery,
-  useUpdateUserInfoMutation,
-} from '@/slice/services/common/userInfoService';
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
