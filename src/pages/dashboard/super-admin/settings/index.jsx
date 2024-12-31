@@ -7,7 +7,7 @@ import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySett
 import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
 import SMTPSettings from '@/components/sAdminDashboard/Settings/SMTPSettings';
 import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDnsSettings';
-import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentSettings';
+import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentBox/PaymentSettings';
 import SuperAdminProfile from '@/components/sAdminDashboard/Settings/SuperAdminProfile';
 
 const Settings = () => {
