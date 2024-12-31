@@ -1,10 +1,11 @@
+import { serverInfo } from '@/utils/common/serverInfo';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import Cookies from 'js-cookie';
 
 export const studentSubmitDocumentService = createApi({
   reducerPath: 'studentSubmitDocumentService',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://edu-smart-backend-3n7b.onrender.com/api/v1/student',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/student',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -21,9 +22,35 @@ export const studentSubmitDocumentService = createApi({
         body: body,
       }),
     }),
+    submitSingleDocumentForStudent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/document/${id}`,
+          method: 'POST',
+          body: body,
+        };
+      },
+    }),
+    updateSingleDocumentForStudent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/document/${id}`,
+          method: 'POST',
+          body: body,
+        };
+      },
+    }),
     allSubmittedDocumentForStudent: builder.query({
       query: () => ({
         url: '/documents',
+        method: 'GET',
+      }),
+    }),
+    getDocumentRequestForStudent: builder.query({
+      query: () => ({
+        url: '/documents/requested',
         method: 'GET',
       }),
     }),
@@ -33,4 +60,7 @@ export const studentSubmitDocumentService = createApi({
 export const {
   useSubmitStudentDocumentMutation,
   useAllSubmittedDocumentForStudentQuery,
+  useGetDocumentRequestForStudentQuery,
+  useSubmitSingleDocumentForStudentMutation,
+  useUpdateSingleDocumentForStudentMutation,
 } = studentSubmitDocumentService;

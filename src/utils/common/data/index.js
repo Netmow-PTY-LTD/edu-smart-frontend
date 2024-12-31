@@ -253,6 +253,17 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
       </div>
     ),
   },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
 
   {
     title: 'Status',
@@ -343,7 +354,10 @@ const studentsHeadersWithLogoLink = [
     render: (item) => (
       <div className="d-flex align-items-center">
         <div className="flex-shrink-0 me-1">
-          <Link href={`/dashboard/super-admin/students/${item?._id}`} className="text-reset">
+          <Link
+            href={`/dashboard/super-admin/students/${item?._id}`}
+            className="text-reset"
+          >
             <Image
               src={
                 item?.profile_image?.url
@@ -400,7 +414,10 @@ const studentsHeadersWithLogoLinkInAgent = [
     render: (item) => (
       <div className="d-flex align-items-center">
         <div className="flex-shrink-0 me-1">
-          <Link href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`} className="text-reset">
+          <Link
+            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+            className="text-reset"
+          >
             <Image
               src={
                 item?.profile_image?.url
@@ -450,9 +467,6 @@ const studentsHeadersWithLogoLinkInAgent = [
     ),
   },
 ];
-
-
-
 
 // university department header
 const allDepartmentsWithoutAction = [
@@ -613,7 +627,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-school-fill',
     link: 'View all',
-    pathName: '/super-admin/university-management/all-university',
+    pathName: '/dashboard/super-admin/university-management/all-university',
   },
 
   {
@@ -623,7 +637,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-group-2-fill',
     link: 'View all',
-    pathName: '/super-admin/agents',
+    pathName: '/dashboard/super-admin/agents',
   },
   {
     id: 3,
@@ -632,7 +646,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-group-fill',
     link: 'View  all',
-    pathName: '/super-admin',
+    pathName: '/dashboard/super-admin/students',
   },
   {
     id: 4,
@@ -641,7 +655,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-wallet-3-fill',
     link: 'All Charges',
-    pathName: '/super-admin',
+    pathName: '/dashboard/super-admin',
   },
 ];
 
@@ -760,6 +774,7 @@ const allowedFileTypes = [
 ];
 
 export {
+  agentNameAndLogoData,
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
@@ -772,6 +787,8 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
+  studentsHeadersWithLogoLink,
+  studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
   studentSubmittedDocumentsHeaderWithoutAction,
   superAdminNameAndLogoData,
@@ -779,7 +796,4 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
-  studentsHeadersWithLogoLink,
-  studentsHeadersWithLogoLinkInAgent,
-  agentNameAndLogoData
 };

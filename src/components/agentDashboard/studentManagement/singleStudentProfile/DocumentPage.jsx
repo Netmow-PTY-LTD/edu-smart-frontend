@@ -19,12 +19,9 @@ import {
 } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { toast, ToastContainer } from 'react-toastify';
 const DocumentPage = ({ student_id }) => {
-  const [documentTableHeader, setDocumentTableHeader] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
-
-  const [updateDocStatus] = useUpdateDocStatusForAgentMutation();
 
   const {
     data: getSingleStudent,
@@ -48,17 +45,88 @@ const DocumentPage = ({ student_id }) => {
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const actionHeader = [
+  const docRequestTableHeaderData = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {/* Correctly calculate the row number across pages */}
+            {currentPage * perPageData + index + 1}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.title ? item?.title : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Name',
+      key: 'name',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`}
+          </h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium">
+            {`${item?.user?.email ? item?.user?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
     {
       title: 'Actions',
       key: 'actions',
       render: (item) => {
         const status = item?.status;
 
-        console.log(status);
         const validStatuses = ['accepted', 'rejected', 'pending', 'requested'];
 
-        if (validStatuses.includes(status)) {
+        if (
+          validStatuses.includes(status) &&
+          status !== 'accepted' &&
+          status !== 'rejected'
+        ) {
           return (
             <UncontrolledDropdown className="card-header-dropdown">
               <DropdownToggle
@@ -71,12 +139,6 @@ const DocumentPage = ({ student_id }) => {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu dropdown-menu-end">
-                {/* {status === 'accepted' && (
-                  <DropdownItem>
-                    <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-                    Accepted
-                  </DropdownItem>
-                )} */}
                 {status === 'pending' && (
                   <>
                     <DropdownItem
@@ -120,14 +182,7 @@ const DocumentPage = ({ student_id }) => {
     },
   ];
 
-  useEffect(() => {
-    setDocumentTableHeader([
-      ...studentSubmittedDocumentsHeaderWithoutAction,
-      ...actionHeader,
-    ]);
-  }, []);
-
-  const [updateDocRequest] = useUpdateDocStatusForAgentMutation();
+  const [updateDocStatus] = useUpdateDocStatusForAgentMutation();
 
   const handleUpdateDocument = async (item, action) => {
     const updatedData = {
@@ -137,9 +192,10 @@ const DocumentPage = ({ student_id }) => {
     };
 
     try {
-      const result = await updateDocRequest(updatedData).unwrap();
+      const result = await updateDocStatus(updatedData).unwrap();
       if (result) {
         toast.success(result?.message);
+        getSingleStudenRefetch();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -161,7 +217,7 @@ const DocumentPage = ({ student_id }) => {
           </CardHeader>
           <CardBody>
             <CommonTableComponent
-              headers={documentTableHeader}
+              headers={docRequestTableHeaderData}
               data={isFilteredData ? isFilteredData : []}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
