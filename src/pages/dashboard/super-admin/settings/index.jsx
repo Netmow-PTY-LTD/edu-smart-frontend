@@ -6,7 +6,7 @@ import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySettings';
 import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
 import SMTPSettings from '@/components/sAdminDashboard/Settings/SMTPSettings';
-import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDnsSettings';
+import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDNSManagement/DomainDnsSettings';
 import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentBox/PaymentSettings';
 import SuperAdminProfile from '@/components/sAdminDashboard/Settings/SuperAdminProfile';
 

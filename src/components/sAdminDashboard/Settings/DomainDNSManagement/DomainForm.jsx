@@ -1,22 +1,21 @@
+import TextField from '@/components/common/formField/TextField';
 import { Formik } from 'formik';
 import { useState } from 'react';
-import { Card, CardBody, CardHeader, CardTitle, Form, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, CardTitle, Col, Form, Row } from 'reactstrap';
 import * as Yup from 'yup';
-const DomainDnsSettings = () => {
+const DomainForm = () => {
   const [initialValues, setInitialValues] = useState({
-    gst: '',
-    currency: '',
+    domainName: '',
+   
   });
 
   const validationSchema = Yup.object({
-    gst: Yup.number()
-      .required('GST is required')
-      .min(0, 'GST cannot be less than 0')
-      .max(100, 'GST cannot be more than 100')
-      .typeError('GST must be a number'),
-    currency: Yup.number()
-      .required('Currency is required')
-      .typeError('Currency must be a number'),
+    domainName: Yup.string()
+      .required('Domain Name is required')  // Field is required
+      .matches(
+        /^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,  // Regex for domain name validation
+        'Domain Name must be a valid domain (e.g., example.com)'
+      ),
   });
 
   const handleSubmit = (value) => {};
@@ -35,7 +34,10 @@ const DomainDnsSettings = () => {
           >
             {({ isSubmitting }) => (
               <Form>
-                <div>Development in progress .........</div>
+               <Col md={6} > <TextField name={'domainName'} label={'Domain Name'}/></Col>
+                <Col sm={12} className="text-end">
+                    <Button className="button">Save Change</Button>
+                  </Col>
               </Form>
             )}
           </Formik>
@@ -45,4 +47,4 @@ const DomainDnsSettings = () => {
   );
 };
 
-export default DomainDnsSettings;
+export default DomainForm;
