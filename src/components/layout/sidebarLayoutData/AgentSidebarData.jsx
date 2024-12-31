@@ -179,31 +179,18 @@ const AgentSidebarData = () => {
     // },
 
     {
-      id: 'myprofile',
-      label: 'My profile',
-      icon: 'ri-article-line',
-      link: '/dashboard/agent/profile-settings-for-agent',
-      pathName: '/dashboard/agent/profile-settings-for-agent',
-      click: function (e) {
-        e.preventDefault();
-        setIsMyProfile(!isMyProfile);
-        setIscurrentState('My Profile');
-      },
-      stateVariables: isMyProfile,
-    },
-
-    {
       id: 'settings',
       label: 'Settings',
       icon: 'ri-settings-3-line',
-      link: '/#',
+      link: '/dashboard/agent/settings',
+      pathName: '/dashboard/agent/settings',
       click: function (e) {
         e.preventDefault();
         setIsSettings(!isSettings);
         setIscurrentState('Settings');
       },
       stateVariables: isSettings,
-      subItems: [],
+      
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;

@@ -1,15 +1,11 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
-import Layout from '@/components/layout';
-import {
-  useGetUserInfoQuery,
-  useUpdateUserInfoMutation,
-} from '@/slice/services/common/userInfoService';
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-const AgentProfile = () => {
+const UserProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const [initialValues, setInitialValues] = useState({
@@ -30,6 +26,8 @@ const AgentProfile = () => {
     useGetUserInfoQuery();
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
+  console.log(userInfodata);
+
   useEffect(() => {
     const fetchStudentData = async () => {
       if (userInfodata?.data) {
@@ -38,8 +36,6 @@ const AgentProfile = () => {
         const profile_image = await convertImageUrlToFile(
           student?.profile_image?.url
         );
-
-        
 
         setInitialValues({
           first_name: student?.first_name || '',
@@ -119,21 +115,17 @@ const AgentProfile = () => {
   const options = useMemo(() => countryList().getData(), []);
 
   return (
-    <Layout>
-      <div className="page-content">
-        <div className="h-100">
-          <Profile
-            initialValues={initialValues}
-            handleSubmit={handleSubmit}
-            imagePreview={imagePreview}
-            handleImageChange={handleImageChange}
-            setImagePreview={setImagePreview}
-            options={options}
-          />
-        </div>
-      </div>
-    </Layout>
+    <div className='mt-5'>
+      <Profile
+        initialValues={initialValues}
+        handleSubmit={handleSubmit}
+        imagePreview={imagePreview}
+        handleImageChange={handleImageChange}
+        setImagePreview={setImagePreview}
+        options={options}
+      />
+    </div>
   );
 };
 
-export default AgentProfile;
+export default UserProfile;

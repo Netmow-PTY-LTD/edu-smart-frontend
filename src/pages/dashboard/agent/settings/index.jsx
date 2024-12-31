@@ -1,6 +1,7 @@
 import Layout from '@/components/layout';
 import React, { useState } from 'react';
 import classnames from 'classnames';
+
 import { Card, CardBody, Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import CurrencySettings from '@/components/sAdminDashboard/Settings/CurrencySettings';
 import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
@@ -9,7 +10,8 @@ import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDNSMa
 import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentBox/PaymentSettings';
 import UserProfile from '@/components/sAdminDashboard/Settings/UserProfile';
 
-const SettingsForSuperAdmin = () => {
+
+const SettingsForAgent = () => {
   const [customverticalTab, setcustomverticalTab] = useState(1);
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
@@ -42,7 +44,7 @@ const SettingsForSuperAdmin = () => {
                             }}
                           >
                             <i class="ri-briefcase-line d-block fs-20 mb-1"></i>
-                            Business Settings & Branding
+                            Business ForAgent & Branding
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -164,4 +166,4 @@ const SettingsForSuperAdmin = () => {
   );
 };
 
-export default SettingsForSuperAdmin;
+export default SettingsForAgent;
