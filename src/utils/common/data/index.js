@@ -248,8 +248,7 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
     render: (item) => (
       <div>
         <h5 className="fs-14 fw-medium text-capitalize">
-        {`${item?.user?.email ? item?.user?.email : '-'}`}
-
+          {`${item?.user?.email ? item?.user?.email : '-'}`}
         </h5>
       </div>
     ),
@@ -628,7 +627,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-school-fill',
     link: 'View all',
-    pathName: '/super-admin/university-management/all-university',
+    pathName: '/dashboard/super-admin/university-management/all-university',
   },
 
   {
@@ -638,7 +637,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'info',
     icon: 'ri-group-2-fill',
     link: 'View all',
-    pathName: '/super-admin/agents',
+    pathName: '/dashboard/super-admin/agents',
   },
   {
     id: 3,
@@ -647,7 +646,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-group-fill',
     link: 'View  all',
-    pathName: '/super-admin',
+    pathName: '/dashboard/super-admin/students',
   },
   {
     id: 4,
@@ -656,7 +655,7 @@ const supperAdminWidgetsData = [
     bgcolor: 'warning',
     icon: 'ri-wallet-3-fill',
     link: 'All Charges',
-    pathName: '/super-admin',
+    pathName: '/dashboard/super-admin',
   },
 ];
 
