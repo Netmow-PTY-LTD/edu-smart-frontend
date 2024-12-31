@@ -1,3 +1,5 @@
+
+import ToggleSwitch from '@/components/common/ToggleSwitch';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { Card, CardBody, CardHeader, CardTitle, Form, Row } from 'reactstrap';
@@ -20,11 +22,17 @@ const PaymentSettings = () => {
   });
 
   const handleSubmit = (value) => {};
+
+  const handleToggleChange = (newState) => {
+    console.log('Toggle State:', newState);
+  };
+
   return (
     <>
       <Card className="mt-5">
         <CardHeader>
-          <CardTitle tag="h5"> Payment Settings  </CardTitle>
+          <CardTitle tag="h5"> Stripe Settings </CardTitle>
+          <ToggleSwitch initialChecked={false} onChange={handleToggleChange} />
         </CardHeader>
         <CardBody className="p-5">
           <Formik
