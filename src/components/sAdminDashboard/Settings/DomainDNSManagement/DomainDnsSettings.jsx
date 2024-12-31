@@ -13,7 +13,13 @@ const DomainDnsSettings = () => {
         </Col>
       </Row>
       <Row lg={12} sm={12}>
-        <Col lg={3} md={6} sm={12}>
+        <Col lg={4} md={6} sm={12}>
+          <DNSRecords />
+        </Col>
+        <Col lg={4} md={6} sm={12}>
+          <DNSRecords />
+        </Col>
+        <Col lg={4} md={6} sm={12}>
           <DNSRecords />
         </Col>
       </Row>
