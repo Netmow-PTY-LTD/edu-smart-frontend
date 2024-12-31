@@ -254,6 +254,12 @@ p {
   color: var(--color--secondary);
 }
 
+.section-heading {
+  max-width: 1000px;
+  margin: auto;
+  text-align: center;
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 0.7rem;
@@ -8177,4 +8183,76 @@ img.staff-img {
   font-size: 1.125rem;
   line-height: 1.9125rem;
   color: #092a67;
+}
+
+// Agent Home University section
+
+.home-university {
+  padding: 100px 0;
+  background: #fff;
+}
+
+.university-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.university-card-content h3 {
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.university-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.university-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color--primary);
+  border-radius: 9px;
+  padding: 8px 12px;
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 170%; /* 34px */
+}
+
+.address span {
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 170%; /* 30.6px */
+}
+
+.university-card-content {
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.university-card-image img {
+  width: 100%;
+  aspect-ratio: 1/0.6;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid #000;
 }
