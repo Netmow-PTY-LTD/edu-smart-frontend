@@ -1,5 +1,6 @@
 import GalleryFormCard from '@/components/common/GalleryFormCard';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 import { useUpdateUniversityGalleryMutation } from '@/slice/services/university-administration/api/universityAdministrationGalleryService';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +8,7 @@ import { toast } from 'react-toastify';
 import { Col } from 'reactstrap';
 import * as Yup from 'yup';
 const UniversityGalleryFormHandler = ({ university_id }) => {
+  const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
     images: [],
     description: '',
@@ -24,6 +26,7 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       if (getSingleUniversityData?.data?.gallery) {
         const galleryData = getSingleUniversityData.data.gallery;
 
@@ -39,6 +42,7 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
           description: galleryData.description || '',
         });
       }
+      setLoading(false);
     };
 
     fetchData();
@@ -86,14 +90,18 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
 
   return (
     <Col lg={10}>
-      <GalleryFormCard
-        className="m-5 p-4 p-md-5"
-        cardTitle=" Added  Gallery  Here ..."
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        buttonLabel={'Add Gallery'}
-      />
+      {getSingleUniversityIsLoading || loading ? (
+        <LoaderSpiner />
+      ) : (
+        <GalleryFormCard
+          className="m-5 p-4 p-md-5"
+          cardTitle="Gallery"
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          buttonLabel={'Add Gallery'}
+        />
+      )}
     </Col>
   );
 };
