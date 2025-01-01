@@ -9,10 +9,10 @@ import {
 //import images
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 
+import { userDummyImage } from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
-import { userDummyImage } from '@/utils/common/data';
 
 const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
@@ -38,15 +38,18 @@ const ProfileDropdown = () => {
 
   const handlelogOut = () => {
     // if (userInfoData?.role === 'super_admin') {
-    Cookies.remove('token');
+
     // window.location.assign(
     //   `${window.location.protocol}//${domain === 'localhost' ? `localhost:3005` : domain}/auth/login`
     // );
     if (appEnvironment === 'development') {
+      Cookies.remove('token');
       window.location.assign(
         `${window.location.protocol}//${'localhost:3005'}/auth/login`
       );
     } else {
+      const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+      Cookies.remove('token', { domain: domain });
       window.location.assign(
         `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
       );
