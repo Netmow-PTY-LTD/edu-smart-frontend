@@ -46,7 +46,7 @@ const CurrencySettings = () => {
           >
             {({ isSubmitting }) => (
               <Form>
-                {/* <Row>
+                <Row>
                   <Col md={6}>
                     <NumberField name={'gst'} label={'GST(%)'} />
                   </Col>
@@ -56,8 +56,8 @@ const CurrencySettings = () => {
                   <Col sm={12} className="text-end">
                     <Button className="button">Save Change</Button>
                   </Col>
-                </Row> */}
-                <div>Development in progress .........</div>
+                </Row>
+               
               </Form>
             )}
           </Formik>

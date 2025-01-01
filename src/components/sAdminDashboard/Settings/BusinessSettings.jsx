@@ -46,7 +46,7 @@ const BusinessSettings = () => {
           >
             {({ isSubmitting }) => (
               <Form>
-                {/* <Row>
+                <Row>
                   <Col md={6}>
                     <TextField name={'companyName'} label={'Company Name'}/>
                  
@@ -85,8 +85,8 @@ const BusinessSettings = () => {
                   <Col sm={12} className="text-end">
                     <Button className="button">Save Change</Button>
                   </Col>
-                </Row> */}
-                <div>Development in progress .........</div>
+                </Row>
+             
               </Form>
             )}
           </Formik>

@@ -1,17 +1,14 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
-import Layout from '@/components/layout';
-import {
-  useGetUserInfoQuery,
-  useUpdateUserInfoMutation,
-} from '@/slice/services/common/userInfoService';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-const SuperAdminProfile = () => {
+const UserProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
-
+  const [profileIsLoading, setProfileIsLoading] = useState(null);
   const [initialValues, setInitialValues] = useState({
     first_name: '',
     last_name: '',
@@ -26,14 +23,17 @@ const SuperAdminProfile = () => {
     profile_image: null,
   });
 
-  const { data: userInfodata, refetch: getUserInfoRefetch } =
-    useGetUserInfoQuery();
-  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const {
+    data: userInfodata,
+    isLoading: userInfoIsLoading,
+    refetch: getUserInfoRefetch,
+  } = useGetUserInfoQuery();
 
-  console.log(userInfodata);
+  const [updateUserInfo] = useUpdateUserInfoMutation();
 
   useEffect(() => {
     const fetchStudentData = async () => {
+      setProfileIsLoading(true);
       if (userInfodata?.data) {
         const student = userInfodata?.data ? userInfodata?.data : null;
 
@@ -59,6 +59,7 @@ const SuperAdminProfile = () => {
           : '';
         setImagePreview(imageUrl);
       }
+      setProfileIsLoading(false);
     };
     fetchStudentData();
   }, [userInfodata?.data]);
@@ -119,17 +120,21 @@ const SuperAdminProfile = () => {
   const options = useMemo(() => countryList().getData(), []);
 
   return (
-    <div className='mt-5'>
-      <Profile
-        initialValues={initialValues}
-        handleSubmit={handleSubmit}
-        imagePreview={imagePreview}
-        handleImageChange={handleImageChange}
-        setImagePreview={setImagePreview}
-        options={options}
-      />
+    <div className="mt-5">
+      {userInfoIsLoading || profileIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <Profile
+          initialValues={initialValues}
+          handleSubmit={handleSubmit}
+          imagePreview={imagePreview}
+          handleImageChange={handleImageChange}
+          setImagePreview={setImagePreview}
+          options={options}
+        />
+      )}
     </div>
   );
 };
 
-export default SuperAdminProfile;
+export default UserProfile;
