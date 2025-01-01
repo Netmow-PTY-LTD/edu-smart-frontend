@@ -8173,6 +8173,7 @@ img.staff-img {
 .form-check-input:checked {
   background-color: var(--color--primary) !important
 }
+
 // Agent Home University section
 
 .home-university {
@@ -8218,7 +8219,8 @@ img.staff-img {
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
-  line-height: 170%; /* 34px */
+  line-height: 170%;
+  /* 34px */
 }
 
 .address span {
@@ -8227,7 +8229,8 @@ img.staff-img {
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 170%; /* 30.6px */
+  line-height: 170%;
+  /* 30.6px */
 }
 
 .university-card-content {
@@ -8248,3 +8251,35 @@ img.staff-img {
 
 // Agent Home Mission section
 
+.popular-coureses-section {
+  padding: 100px 0;
+  background: #fff;
+
+  .container {
+    // container code area
+
+    .popular-coureses-heading {
+      h5 {
+        color: var(--Secondary-Color, #13C9BF);
+        text-align: center;
+        font-family: Lora;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+
+      h4 {
+        color: var(--Black, #1C1C1C);
+        text-align: center;
+        font-family: Lora;
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+
+    .popular-coureses-content {}
+  }
+}
