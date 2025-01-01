@@ -13,10 +13,10 @@ const HomeMission = () => {
         <div className="relocation-section">
           <div className="relocation-images">
             <figure className="relocation-image">
-              <img src="#" alt="Student assistance illustration" />
+              <img src="/assets/images/agent/mission-image/earth.png" alt="Student assistance illustration" />
             </figure>
             <figure className="relocation-image">
-              <img src="#" alt="Educational journey concept" />
+              <img src="/assets/images/agent/mission-image/happy-student.png" alt="Educational journey concept" />
             </figure>
           </div>
   
@@ -31,7 +31,7 @@ const HomeMission = () => {
   
         <div className="institute-section">
           <figure className="institute-image">
-            <img src="#" alt="Choosing the right institute" />
+            <img src="/assets/images/agent/mission-image/institute.png" alt="Choosing the right institute" />
           </figure>
           <h2 className="institute-title">Choosing the Right Institute & Program to Securing Your Visa</h2>
           <button className="institute-button">Apply Now</button>
