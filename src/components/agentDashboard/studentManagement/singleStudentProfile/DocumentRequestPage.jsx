@@ -1,66 +1,75 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
-import {
-  useCreateDocRequestForAgentMutation,
-  useSingleStudentSubmittedDocumentForAgentQuery,
-  useUpdateDocStatusForAgentMutation,
-} from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useCreateDocRequestForAgentMutation } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Row,
-  UncontrolledDropdown,
-} from 'reactstrap';
-import DocumentRequestModalForm from './modal/DocumentRequestModalForm';
 import { toast, ToastContainer } from 'react-toastify';
+import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 import * as Yup from 'yup';
+import DocumentRequestModalForm from './modal/DocumentRequestModalForm';
 
-const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
+const DocumentRequestPage = ({
+  student_id,
+  getSingleStudent,
+  refetchSingleStudent,
+  sigleStudentIsLoading,
+}) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
-  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
   });
+  const perPageData = 10;
+
+  const [createDocumentRequest] = useCreateDocRequestForAgentMutation();
+
+  const [
+    AllUploadDocumentsForStudentsData,
+    setAllUploadDocumentsForStudentsData,
+  ] = useState('');
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
   });
 
-  const [createDocumentRequest] = useCreateDocRequestForAgentMutation();
-
-  //console.log(student_id);
-  // -------------------- Just for UI example this data will come from API -----------------------
-  const [
-    AllUploadDocumentsForStudentsData,
-    setAllUploadDocumentsForStudentsData,
-  ] = useState('');
-
-  //console.log(useSingleStudentSubmittedDocumentForAgent);
-
-  const perPageData = 10;
+  useEffect(() => {
+    setAllUploadDocumentsForStudentsData([
+      ...documentRequestHeaderWithoutAction,
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  // Filter data for search option
-  const isfilteredData =
-    'allSubmittedDocumentForStudentData'?.data?.length > 0 &&
-    'allSubmittedDocumentForStudentData'?.data.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  const isFilteredData =
+    getSingleStudent?.data?.documents?.length > 0 &&
+    getSingleStudent?.data?.documents?.filter(
+      (item) =>
+        item?.status === 'requested' &&
+        item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const handleEditButtonClick = (id) => {
-    console.log(id);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    const updatedData = { ...values, user: student_id };
+    try {
+      const result = await createDocumentRequest(updatedData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        refetchSingleStudent();
+        setAddModalIsOpen(!addModalIsOpen);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const documentRequestHeaderWithoutAction = [
@@ -116,86 +125,53 @@ const DocumentRequestPage = ({ student_id, getSingleStudent }) => {
     },
   ];
 
-  useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
-      ...documentRequestHeaderWithoutAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    setSubmitting(true);
-
-    console.log(values);
-
-    const updatedData = { ...values, user: student_id };
-    try {
-      // const finalData = new FormData();
-      // Object.entries(updatedData).forEach(([key, value]) => {
-      //   finalData.append(key, value);
-      // });
-      const result = await createDocumentRequest(updatedData).unwrap();
-      if (result) {
-        toast.success(result?.message);
-        setAddModalIsOpen(!addModalIsOpen);
-      }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  //console.log(getSingleStudent?.data?.documents);
-
-  const docRequestData = getSingleStudent?.data?.documents?.filter(
-    (item) => item?.status === 'requested'
-  );
-
   return (
     <Row>
-      <div>
-        <Card>
-          <ToastContainer />
-          <CardHeader className="d-flex justify-content-between align-items-center">
-            <button
-              className="button py-3 px-4"
-              onClick={() => setAddModalIsOpen(!addModalIsOpen)}
-            >
-              Add Document Request
-            </button>
-            <SearchComponent
-              searchTerm={searchTerm}
-              handleSearchChange={handleSearchChange}
+      {sigleStudentIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <div>
+          <Card>
+            <ToastContainer />
+            <CardHeader className="d-flex justify-content-between align-items-center">
+              <button
+                className="button py-3 px-4"
+                onClick={() => setAddModalIsOpen(!addModalIsOpen)}
+              >
+                Add Document Request
+              </button>
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+              />
+            </CardHeader>
+            <DocumentRequestModalForm
+              formHeader={'Add Document'}
+              isOpen={addModalIsOpen}
+              onClose={() => {
+                setAddModalIsOpen(!addModalIsOpen);
+              }}
+              onSubmit={handleSubmit}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              formSubmit={'Add Document'}
+              setInitialValues={setInitialValues}
             />
-          </CardHeader>
-          <DocumentRequestModalForm
-            formHeader={'Add Document'}
-            isOpen={addModalIsOpen}
-            onClose={() => {
-              setAddModalIsOpen(!addModalIsOpen);
-            }}
-            onSubmit={handleSubmit}
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            formSubmit={'Add Document'}
-            setInitialValues={setInitialValues}
-          />
-          <CardBody>
-            <CommonTableComponent
-              headers={AllUploadDocumentsForStudentsData}
-              data={docRequestData || []}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              perPageData={perPageData}
-              searchTerm={searchTerm}
-              handleSearchChange={handleSearchChange}
-              emptyMessage="No Data found yet."
-            />
-          </CardBody>
-        </Card>
-      </div>
+            <CardBody>
+              <CommonTableComponent
+                headers={AllUploadDocumentsForStudentsData}
+                data={isFilteredData || []}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                perPageData={perPageData}
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                emptyMessage="No Data found yet."
+              />
+            </CardBody>
+          </Card>
+        </div>
+      )}
     </Row>
   );
 };

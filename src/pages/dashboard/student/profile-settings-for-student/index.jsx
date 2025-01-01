@@ -1,5 +1,6 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
   useGetUserInfoQuery,
@@ -7,8 +8,7 @@ import {
 } from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
-import { toast } from 'react-toastify';
-import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
 const StudentProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -26,8 +26,11 @@ const StudentProfile = () => {
     profile_image: null,
   });
 
-  const { data: userInfodata, refetch: getUserInfoRefetch } =
-    useGetUserInfoQuery();
+  const {
+    data: userInfodata,
+    isLoading: userInfoIsLoading,
+    refetch: getUserInfoRefetch,
+  } = useGetUserInfoQuery();
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
   useEffect(() => {
@@ -38,8 +41,6 @@ const StudentProfile = () => {
         const profile_image = await convertImageUrlToFile(
           student?.profile_image?.url
         );
-
-        
 
         setInitialValues({
           first_name: student?.first_name || '',
@@ -97,9 +98,13 @@ const StudentProfile = () => {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    const updateData = { ...values };
+    delete updateData.email;
+
     try {
       const finalData = new FormData();
-      Object.entries(values).forEach(([key, value]) => {
+      Object.entries(updateData).forEach(([key, value]) => {
         finalData.append(key, value);
       });
 
@@ -120,16 +125,21 @@ const StudentProfile = () => {
 
   return (
     <Layout>
+      <ToastContainer />
       <div className="page-content">
         <div className="h-100">
-          <Profile
-            initialValues={initialValues}
-            handleSubmit={handleSubmit}
-            imagePreview={imagePreview}
-            handleImageChange={handleImageChange}
-            setImagePreview={setImagePreview}
-            options={options}
-          />
+          {userInfoIsLoading ? (
+            <LoaderSpiner />
+          ) : (
+            <Profile
+              initialValues={initialValues}
+              handleSubmit={handleSubmit}
+              imagePreview={imagePreview}
+              handleImageChange={handleImageChange}
+              setImagePreview={setImagePreview}
+              options={options}
+            />
+          )}
         </div>
       </div>
     </Layout>

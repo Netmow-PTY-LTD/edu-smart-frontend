@@ -86,9 +86,10 @@ const ProfileDropdown = () => {
               priority={true}
               className="rounded-circle header-profile-user"
               src={
-                userInfodata?.data?.profile_image?.url
-                  ? userInfodata?.data?.profile_image?.url
-                  : `${userInfodata?.data?.role === 'super_admin' ? '/favicon.png' : userDummyImage}`
+                userInfodata?.data?.profile_image?.url ||
+                (userInfodata?.data?.role === 'super_admin'
+                  ? '/favicon.png'
+                  : userDummyImage)
               }
               width={50}
               height={30}

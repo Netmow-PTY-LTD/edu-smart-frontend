@@ -1,11 +1,13 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@/slice/services/common/userInfoService';
+import {
+  useGetUserInfoQuery,
+  useUpdateUserInfoMutation,
+} from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
-import { toast } from 'react-toastify';
-import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
 const UserProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [profileIsLoading, setProfileIsLoading] = useState(null);
@@ -98,9 +100,13 @@ const UserProfile = () => {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    const updateData = { ...values };
+    delete updateData.email;
+
     try {
       const finalData = new FormData();
-      Object.entries(values).forEach(([key, value]) => {
+      Object.entries(updateData).forEach(([key, value]) => {
         finalData.append(key, value);
       });
 
@@ -121,6 +127,7 @@ const UserProfile = () => {
 
   return (
     <div className="mt-5">
+      <ToastContainer />
       {userInfoIsLoading || profileIsLoading ? (
         <LoaderSpiner />
       ) : (
