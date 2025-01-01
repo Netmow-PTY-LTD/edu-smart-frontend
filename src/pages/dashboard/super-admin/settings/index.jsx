@@ -26,7 +26,7 @@ const Settings = () => {
               <Card>
                 <CardBody>
                   <Row>
-                    <Col lg={2}>
+                    <Col lg={3}>
                       <Nav
                         pills
                         className="nav nav-pills flex-column nav-pills-tab custom-verti-nav-pills text-center p-3 "
@@ -124,33 +124,32 @@ const Settings = () => {
                       </Nav>
                     </Col>
                     {customverticalTab === 1 && (
-                      <Col lg={10}>
+                      <Col lg={9}>
                         <BusinessSettings />
                       </Col>
                     )}
                     {customverticalTab === 2 && (
-                      <Col lg={10}>
+                      <Col lg={9}>
                         <CurrencySettings />
                       </Col>
                     )}
                     {customverticalTab === 3 && (
-                      <Col lg={10}>
+                      <Col lg={9}>
                         <DomainDnsSettings />
                       </Col>
                     )}
                     {customverticalTab === 4 && (
-                      <Col lg={10}>
+                      <Col lg={9}>
                         <PaymentSettings />
                       </Col>
                     )}
                     {customverticalTab === 5 && (
-                      <Col lg={10}>
+                      <Col lg={9}>
                         <SMTPSettings />
                       </Col>
                     )}
                     {customverticalTab === 6 && (
-                      <Col lg={10}>
-                        
+                      <Col lg={9}>
                         <SuperAdminProfile/>
                       </Col>
                     )}
