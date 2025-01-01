@@ -1,14 +1,12 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import {
-  useGetUserInfoQuery,
-  useUpdateUserInfoMutation,
-} from '@/slice/services/common/userInfoService';
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
-const SuperAdminProfile = () => {
+import * as Yup from 'yup';
+const UserProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [profileIsLoading, setProfileIsLoading] = useState(null);
   const [initialValues, setInitialValues] = useState({
@@ -139,4 +137,4 @@ const SuperAdminProfile = () => {
   );
 };
 
-export default SuperAdminProfile;
+export default UserProfile;
