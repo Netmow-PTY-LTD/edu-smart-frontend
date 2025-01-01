@@ -25,6 +25,10 @@ const PopularCourses = () => {
           <CourseCard />
           <CourseCard />
         </article>
+
+        <div className='d-flex justify-content-center align-item-center'>
+          <button className="popular-coureses-button">Explore All Courses <i class="ri-arrow-right-line ms-1"></i></button>
+        </div>
       </div>
     </section>
   );

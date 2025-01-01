@@ -8310,7 +8310,8 @@ img.staff-img {
         font-style: normal;
         font-weight: 600;
         line-height: 170%;
-        i{
+
+        i {
           color: #13C9BF;
           margin-right: 4px;
         }
@@ -8335,7 +8336,7 @@ img.staff-img {
       font-weight: 400;
       line-height: 170%;
       margin: 5px 0;
-     
+
 
 
     }
@@ -8363,4 +8364,17 @@ img.staff-img {
 
     }
   }
+}
+
+.popular-coureses-button {
+  padding: 14px 24px;
+  color: var(--Black, #1C1C1C);
+  font-family: Lora;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 170%;
+  border-radius: 12px;
+  background: var(--Secondary-Color, #13C9BF);
+
 }
