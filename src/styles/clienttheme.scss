@@ -8286,73 +8286,81 @@ img.staff-img {
       gap: 30px;
       margin: 80px 0;
 
-      .course-card {
-        text-align: start;
+    }
+  }
+}
 
-        .course-card__body {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 5px;
-          align-self: stretch;
+// Course Card
+.course-card {
+  text-align: start;
+  max-width: 513px;
 
-          header {
-            h6 {
-              color: var(--Black, #1C1C1C);
-              font-family: Lora;
-              font-size: 18px;
-              font-style: normal;
-              font-weight: 600;
-              line-height: 170%;
+  .course-card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    align-self: stretch;
 
-            }
-
-            h5 {
-              color: var(--Black, #1C1C1C);
-              font-family: Lora;
-              font-size: 24px;
-              font-style: normal;
-              font-weight: 700;
-              line-height: normal;
-            }
-          }
-
-          p {
-            color: var(--Black, #1C1C1C);
-            font-family: Poppins;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 170%;
-            margin: 5px 0;
-
-
-          }
+    header {
+      h6 {
+        color: var(--Black, #1C1C1C);
+        font-family: Lora;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 170%;
+        i{
+          color: #13C9BF;
+          margin-right: 4px;
         }
 
-
-
-        footer {
-          display: flex;
-          justify-content: start;
-          align-items: center;
-          gap: 10px;
-          margin-top: 21px;
-
-          button {
-            color: var(--Black, #1C1C1C);
-            font-family: Lora;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 170%;
-            border-radius: 12px;
-            background: var(--Green, #B5D336);
-            padding: 8px 20px;
-
-          }
-        }
       }
+
+      h5 {
+        color: var(--Black, #1C1C1C);
+        font-family: Lora;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+      }
+    }
+
+    p {
+      color: var(--Black, #1C1C1C);
+      font-family: Poppins;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 170%;
+      margin: 5px 0;
+     
+
+
+    }
+  }
+
+
+
+  footer {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    margin-top: 21px;
+
+    button {
+      color: var(--Black, #1C1C1C);
+      font-family: Lora;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 170%;
+      border-radius: 12px;
+      background: var(--Green, #B5D336);
+      padding: 8px 20px;
+
     }
   }
 }
