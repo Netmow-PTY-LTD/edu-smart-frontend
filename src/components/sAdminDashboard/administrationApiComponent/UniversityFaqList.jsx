@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Col,
   DropdownItem,
@@ -7,16 +7,18 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import {
-  useGetSingleUniversityQuery,
-} from '@/slice/services/super admin/universityService';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import {
+  useDeleteUniversityFaqMutation,
+  useUpdateUniversityFaqMutation,
+} from '@/slice/services/university-administration/api/universityAdministrationFaqService';
 import UniversityFaqModalForm from './modals/FaqModalForm';
-import { useDeleteUniversityFaqMutation, useUpdateUniversityFaqMutation } from '@/slice/services/university-administration/api/universityAdministrationFaqService';
 
 export default function UniversityFaqList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -28,19 +30,21 @@ export default function UniversityFaqList({ university_id }) {
     title: '',
     description: '',
   });
-  const validationSchema = Yup.object({
-    title: Yup.string().required('title is required'),
-    description: Yup.string().required('description is required'),
-  });
 
-  const [universityFaq] = useUpdateUniversityFaqMutation();
-  const [deleteUniversityFAQ] = useDeleteUniversityFaqMutation();
   const {
     data: getSingleUniversityData,
     isLoading: getSingleUniversityIsLoading,
     refetch: getSingleUniversityRefetch,
   } = useGetSingleUniversityQuery(university_id, {
     skip: !university_id,
+  });
+
+  const [universityFaq] = useUpdateUniversityFaqMutation();
+  const [deleteUniversityFAQ] = useDeleteUniversityFaqMutation();
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required('title is required'),
+    description: Yup.string().required('description is required'),
   });
 
   const handleEditButtonClick = (id) => {
@@ -73,15 +77,15 @@ export default function UniversityFaqList({ university_id }) {
 
   const handleFaqSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-       const faqData = { data:values, university_id: university_id };
-      
+    const faqData = { data: values, university_id: university_id };
+
     try {
       const result = await universityFaq(faqData).unwrap();
-     
+
       if (result) {
         toast.success(result?.message);
         setAddModalIsOpen(!addModalIsOpen);
-        getSingleUniversityRefetch()
+        getSingleUniversityRefetch();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -94,14 +98,17 @@ export default function UniversityFaqList({ university_id }) {
   const handleUpdateFaq = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    const updateFaqData = { data:{id: faqId, ...values} , university_id: university_id };
-    
+    const updateFaqData = {
+      data: { id: faqId, ...values },
+      university_id: university_id,
+    };
+
     try {
       const result = await universityFaq(updateFaqData).unwrap();
       if (result) {
         toast.success(result?.message);
         setEditModalIsOpen(!editModalIsOpen);
-        getSingleUniversityRefetch()
+        getSingleUniversityRefetch();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -109,12 +116,8 @@ export default function UniversityFaqList({ university_id }) {
     } finally {
       setSubmitting(false);
     }
-    
   };
 
-  
-
- 
   const faqsHeaders = [
     {
       title: 'SN',
@@ -168,32 +171,35 @@ export default function UniversityFaqList({ university_id }) {
 
   return (
     <Col lg={10}>
-      <div className="align-items-center d-flex fw-semibold card-header">
-        <h4 className="fw-semibold fs-20 text-black mb-0">Faqs List</h4>
-        <button
-          className="button px-4 py-3"
-          onClick={() => 
-          {
-            setInitialValues({
-              title: '',
-              description: '',
-            });
-            setAddModalIsOpen(!addModalIsOpen)
-          }
-            
-          }
-        >
-          Add New Faq
-        </button>
-      </div>
-      <CommonTableComponent
-        headers={faqsHeaders}
-        data={getSingleUniversityData?.data?.faqs}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        perPageData={perPageData}
-        emptyMessage="No Data found yet."
-      />
+      {getSingleUniversityIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <>
+          <div className="align-items-center d-flex fw-semibold card-header">
+            <h4 className="fw-semibold fs-20 text-primary mb-0">Faqs List</h4>
+            <button
+              className="button px-4 py-3"
+              onClick={() => {
+                setInitialValues({
+                  title: '',
+                  description: '',
+                });
+                setAddModalIsOpen(!addModalIsOpen);
+              }}
+            >
+              Add New Faq
+            </button>
+          </div>
+          <CommonTableComponent
+            headers={faqsHeaders}
+            data={getSingleUniversityData?.data?.faqs}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            perPageData={perPageData}
+            emptyMessage="No Data found yet."
+          />
+        </>
+      )}
 
       {/* creating faq */}
       <UniversityFaqModalForm
@@ -223,8 +229,6 @@ export default function UniversityFaqList({ university_id }) {
         formSubmit={'Update Faq'}
         setInitialValues={setInitialValues}
       />
-
-     
     </Col>
   );
 }

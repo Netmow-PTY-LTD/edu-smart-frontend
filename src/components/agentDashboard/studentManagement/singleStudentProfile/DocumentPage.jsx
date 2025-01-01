@@ -1,7 +1,10 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 
-import React, { useEffect, useState } from 'react';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useUpdateDocStatusForAgentMutation } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -12,26 +15,17 @@ import {
   Row,
   UncontrolledDropdown,
 } from 'reactstrap';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
-import {
-  useSingleStudentForAgentQuery,
-  useUpdateDocStatusForAgentMutation,
-} from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { toast, ToastContainer } from 'react-toastify';
-const DocumentPage = ({ student_id }) => {
+const DocumentPage = ({
+  student_id,
+  getSingleStudent,
+  refetchSingleStudent,
+  sigleStudentIsLoading,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
 
-  const {
-    data: getSingleStudent,
-    isLoading: getSingleStudenIsLoadingForStudent,
-    refetch: getSingleStudenRefetch,
-  } = useSingleStudentForAgentQuery(student_id, {
-    skip: !student_id,
-  });
-
-  //console.log(getSingleStudent);
+  const [updateDocStatus] = useUpdateDocStatusForAgentMutation();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -128,7 +122,7 @@ const DocumentPage = ({ student_id }) => {
           status !== 'rejected'
         ) {
           return (
-            <UncontrolledDropdown className="card-header-dropdown">
+            <UncontrolledDropdown direction="end">
               <DropdownToggle
                 tag="a"
                 className="text-reset dropdown-btn"
@@ -138,7 +132,7 @@ const DocumentPage = ({ student_id }) => {
                   <i className="ri-more-fill align-middle"></i>
                 </span>
               </DropdownToggle>
-              <DropdownMenu className="dropdown-menu dropdown-menu-end">
+              <DropdownMenu className="ms-3">
                 {status === 'pending' && (
                   <>
                     <DropdownItem
@@ -182,8 +176,6 @@ const DocumentPage = ({ student_id }) => {
     },
   ];
 
-  const [updateDocStatus] = useUpdateDocStatusForAgentMutation();
-
   const handleUpdateDocument = async (item, action) => {
     const updatedData = {
       user: student_id,
@@ -195,7 +187,7 @@ const DocumentPage = ({ student_id }) => {
       const result = await updateDocStatus(updatedData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getSingleStudenRefetch();
+        refetchSingleStudent();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -205,30 +197,34 @@ const DocumentPage = ({ student_id }) => {
 
   return (
     <Row>
-      <div>
-        <Card>
-          <ToastContainer />
-          <CardHeader className="d-flex justify-content-between align-items-center">
-            Submitted Docs
-            <SearchComponent
-              searchTerm={searchTerm}
-              handleSearchChange={handleSearchChange}
-            />
-          </CardHeader>
-          <CardBody>
-            <CommonTableComponent
-              headers={docRequestTableHeaderData}
-              data={isFilteredData ? isFilteredData : []}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              perPageData={perPageData}
-              searchTerm={searchTerm}
-              handleSearchChange={handleSearchChange}
-              emptyMessage="No Data found yet."
-            />
-          </CardBody>
-        </Card>
-      </div>
+      {sigleStudentIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <div>
+          <Card>
+            <ToastContainer />
+            <CardHeader className="d-flex justify-content-between align-items-center">
+              Submitted Docs
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+              />
+            </CardHeader>
+            <CardBody>
+              <CommonTableComponent
+                headers={docRequestTableHeaderData}
+                data={isFilteredData ? isFilteredData : []}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                perPageData={perPageData}
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                emptyMessage="No Data found yet."
+              />
+            </CardBody>
+          </Card>
+        </div>
+      )}
     </Row>
   );
 };

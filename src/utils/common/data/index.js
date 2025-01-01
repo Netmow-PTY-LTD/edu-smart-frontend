@@ -14,7 +14,7 @@ const agentNameAndLogoData = {
     <div className="d-flex align-items-center me-5">
       <div className="flex-shrink-0 me-1">
         <Link
-          href={`/dashboard/agent/university-management/single-university-profile/${item?._id}`}
+          href={`/dashboard/agent/university-management/single-university-profile-for-agent/${item?._id}`}
           className="text-reset"
         >
           <Image
@@ -29,7 +29,7 @@ const agentNameAndLogoData = {
       <div>
         <h5 className="fs-14 fw-medium text-capitalize">
           <Link
-            href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
+            href={`/dashboard/agent/university-management/single-university-profile-for-agent/${item?._id}`}
             className="text-reset"
           >
             {`${item.name} `}

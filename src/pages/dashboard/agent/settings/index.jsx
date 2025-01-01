@@ -151,7 +151,6 @@ const SettingsForAgent = () => {
                     )}
                     {customverticalTab === 6 && (
                       <Col lg={10}>
-                        
                         <UserProfile/>
                       </Col>
                     )}

@@ -15,8 +15,9 @@ import {
 import * as Yup from 'yup';
 import CommonTableComponent from '../common/CommonTableComponent';
 import { convertImageUrlToFile } from '../common/helperFunctions/ConvertImgUrlToFile';
-import UniversitySponsorModalForm from './Modal/UniversitySponsorsModalForm';
 import SearchComponent from '../common/SearchComponent';
+import LoaderSpiner from '../constants/Loader/LoaderSpiner';
+import UniversitySponsorModalForm from './Modal/UniversitySponsorsModalForm';
 
 export default function UniversitySponsorsList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -304,43 +305,48 @@ export default function UniversitySponsorsList({ university_id }) {
 
   return (
     <Col lg={10}>
-      <div className="align-items-center d-flex fw-semibold card-header">
-        <div className="d-flex align-items-center gap-4">
-          <h4 className="fw-semibold fs-20 text-black mb-0">Sponsors List</h4>
-          <button
-            className="button px-4 py-3"
-            onClick={() => setAddModalIsOpen(!addModalIsOpen)}
-          >
-            Add New Sponsor
-          </button>
-        </div>
-        <UniversitySponsorModalForm
-          formHeader={'Add Sponsor'}
-          onClose={() => {
-            setAddModalIsOpen(!addModalIsOpen);
-          }}
-          isOpen={addModalIsOpen}
-          onSubmit={handleSubmit}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          formSubmit={'Add Sponsor'}
-          setInitialValues={setInitialValues}
-          handleImageChange={handleImageChange}
-          previewImage={previewImage}
-        />
-        <SearchComponent
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-        />
-      </div>
-      <CommonTableComponent
-        headers={sponsorsHeaders}
-        data={filteredData}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        perPageData={perPageData}
-        emptyMessage="No Data found yet."
-      />
+      {getSingleUniversityIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <>
+          <div className="align-items-center d-flex fw-semibold card-header">
+            <div className="d-flex align-items-center gap-4">
+              <button
+                className="button px-4 py-3"
+                onClick={() => setAddModalIsOpen(!addModalIsOpen)}
+              >
+                Add New Sponsor
+              </button>
+            </div>
+            <UniversitySponsorModalForm
+              formHeader={'Add Sponsor'}
+              onClose={() => {
+                setAddModalIsOpen(!addModalIsOpen);
+              }}
+              isOpen={addModalIsOpen}
+              onSubmit={handleSubmit}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              formSubmit={'Add Sponsor'}
+              setInitialValues={setInitialValues}
+              handleImageChange={handleImageChange}
+              previewImage={previewImage}
+            />
+            <SearchComponent
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+            />
+          </div>
+          <CommonTableComponent
+            headers={sponsorsHeaders}
+            data={filteredData}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            perPageData={perPageData}
+            emptyMessage="No Data found yet."
+          />
+        </>
+      )}
 
       {/* For updating sponsor */}
 
