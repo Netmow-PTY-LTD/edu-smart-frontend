@@ -7,7 +7,7 @@ const EmailField = ({ name, label, ...props }) => {
       <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Email'}
       </label>
-      {/* Use Formik's Field component */}
+
       <Field
         {...props}
         type="email"
@@ -15,7 +15,6 @@ const EmailField = ({ name, label, ...props }) => {
         name={name}
         className="form-control"
         placeholder="Enter your email"
-        isDisabled={props.disabled}
       />
       {/* Show validation error if it exists */}
       <ErrorMessage name={name} component="div" style={{ color: 'red' }} />

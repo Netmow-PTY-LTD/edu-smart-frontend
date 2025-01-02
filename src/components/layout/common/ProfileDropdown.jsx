@@ -44,12 +44,14 @@ const ProfileDropdown = () => {
     // );
     if (appEnvironment === 'development') {
       Cookies.remove('token');
+      Cookies.remove('subdomain');
       window.location.assign(
         `${window.location.protocol}//${'localhost:3005'}/auth/login`
       );
     } else {
       const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
       Cookies.remove('token', { domain: domain });
+      Cookies.remove('subdomain', { domain: domain });
       window.location.assign(
         `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
       );
@@ -119,7 +121,10 @@ const ProfileDropdown = () => {
               : ''}
           </h6>
           <DropdownItem className="p-0">
-            <Link href={'/'} className="dropdown-item">
+            <Link
+              href={`/dashboard/${userInfodata?.data?.role === 'super_admin' ? 'super-admin' : userInfodata?.data?.role}/settings/profile`}
+              className="dropdown-item"
+            >
               <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-2"></i>
               <span className="align-middle">Profile</span>
             </Link>
