@@ -15,6 +15,7 @@ const EmailField = ({ name, label, ...props }) => {
         name={name}
         className="form-control"
         placeholder="Enter your email"
+        disabled={props.disabled}
       />
       {/* Show validation error if it exists */}
       <ErrorMessage name={name} component="div" style={{ color: 'red' }} />

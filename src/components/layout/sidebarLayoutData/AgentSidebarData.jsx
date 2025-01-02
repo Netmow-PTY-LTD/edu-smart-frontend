@@ -206,14 +206,14 @@ const AgentSidebarData = () => {
           pathName: '/dashboard/agent/settings/currency',
           parentId: 'settings',
         },
-        {
-          id: 'domainsettings',
-          label: 'Domain Settings',
-          icon: 'ri-global-fill',
-          link: '/dashboard/agent/settings/domain',
-          pathName: '/dashboard/agent/settings/domain',
-          parentId: 'settings',
-        },
+        // {
+        //   id: 'domainsettings',
+        //   label: 'Domain Settings',
+        //   icon: 'ri-global-fill',
+        //   link: '/dashboard/agent/settings/domain',
+        //   pathName: '/dashboard/agent/settings/domain',
+        //   parentId: 'settings',
+        // },
         {
           id: 'paymentsettings',
           label: 'Payment Settings',
