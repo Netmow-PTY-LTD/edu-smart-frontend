@@ -96,13 +96,13 @@ const InitialInfo = ({
                   onClick={'googleRegistrationHandler'}
                   className="button  px-3 py-1"
                 >
-                  <i class="ri-google-fill me-2"></i>Register with Google
+                  <i className="ri-google-fill me-2"></i>Register with Google
                 </button>
                 <button
                   onClick={'linkedinRegistrationHandler'}
                   className="button  px-3 py-1"
                 >
-                  <i class="ri-linkedin-box-fill me-2"></i> Register with
+                  <i className="ri-linkedin-box-fill me-2"></i> Register with
                   Linkedin
                 </button>
               </div> */}
