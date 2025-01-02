@@ -96,7 +96,7 @@ const AgentSidebarData = () => {
 
     {
       id: 'universitymanagement',
-      label: 'University Management',
+      label: 'University',
       icon: 'ri-school-line',
       link: '/#',
       click: function (e) {
@@ -118,7 +118,7 @@ const AgentSidebarData = () => {
     },
     {
       id: 'studentmanagement',
-      label: 'Student Management',
+      label: 'Student',
       icon: 'ri-group-fill',
       link: '/#',
       click: function (e) {
@@ -182,15 +182,71 @@ const AgentSidebarData = () => {
       id: 'settings',
       label: 'Settings',
       icon: 'ri-settings-3-line',
-      link: '/dashboard/agent/settings',
-      pathName: '/dashboard/agent/settings',
+      link: '/#',
       click: function (e) {
         e.preventDefault();
         setIsSettings(!isSettings);
         setIscurrentState('Settings');
       },
       stateVariables: isSettings,
-      
+      subItems: [
+        {
+          id: 'businesssettings',
+          label: 'Business settings',
+          icon: 'ri-briefcase-fill',
+          link: '/dashboard/agent/settings/business',
+          pathName: '/dashboard/agent/settings/business',
+          parentId: 'settings',
+        },
+        {
+          id: 'currencysettings',
+          label: 'Currency Settings',
+          icon: 'ri-money-dollar-circle-fill',
+          link: '/dashboard/agent/settings/currency',
+          pathName: '/dashboard/agent/settings/currency',
+          parentId: 'settings',
+        },
+        {
+          id: 'domainsettings',
+          label: 'Domain Settings',
+          icon: 'ri-global-fill',
+          link: '/dashboard/agent/settings/domain',
+          pathName: '/dashboard/agent/settings/domain',
+          parentId: 'settings',
+        },
+        {
+          id: 'paymentsettings',
+          label: 'Payment Settings',
+          icon: 'ri-refund-2-fill',
+          link: '/dashboard/agent/settings/payment',
+          pathName: '/dashboard/agent/settings/payment',
+          parentId: 'settings',
+        },
+        {
+          id: 'profilesettings',
+          label: 'Profile Settings',
+          icon: 'ri-user-settings-fill',
+          link: '/dashboard/agent/settings/profile',
+          pathName: '/dashboard/agent/settings/profile',
+          parentId: 'settings',
+        },
+        {
+          id: 'changeemail',
+          label: 'Change Email',
+          icon: 'ri-mail-add-fill',
+          link: '/dashboard/agent/settings/email',
+          pathName: '/dashboard/agent/settings/email',
+          parentId: 'settings',
+        },
+        {
+          id: 'changepassword',
+          label: 'Change Password',
+          icon: 'ri-lock-password-fill',
+          link: '/dashboard/agent/settings/password',
+          pathName: '/dashboard/agent/settings/password',
+          parentId: 'settings',
+        },
+      ],
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;

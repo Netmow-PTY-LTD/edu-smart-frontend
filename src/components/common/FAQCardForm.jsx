@@ -74,7 +74,7 @@ const FAQCardForm = ({
                         type="button"
                         onClick={() => push({ title: '', description: '' })}
                       >
-                        <i class="ri-add-line fw-bold fs-1"></i>{' '}
+                        <i className="ri-add-line fw-bold fs-1"></i>{' '}
                         <span>Add Another FAQ</span>
                       </Button>
                     </div>

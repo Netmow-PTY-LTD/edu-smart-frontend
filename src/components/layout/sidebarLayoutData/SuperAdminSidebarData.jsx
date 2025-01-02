@@ -8,6 +8,7 @@ const SuperAdminSidebarData = () => {
   const [isUniversities, setIsUniversities] = useState(false);
   const [isUniversity, setIsUniversity] = useState(false);
   const [isUniManagement, setIsUniManagement] = useState(false);
+  const [isSettings, setIsSettings] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -95,8 +96,72 @@ const SuperAdminSidebarData = () => {
     {
       id: 'settings',
       label: 'Settings',
-      icon: 'ri-settings-2-line',
-      link: '/dashboard/super-admin/settings',
+      icon: 'ri-settings-3-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsSettings(!isSettings);
+        setIscurrentState('Settings');
+      },
+      stateVariables: isSettings,
+      subItems: [
+        {
+          id: 'businesssettings',
+          label: 'Business settings',
+          icon: 'ri-briefcase-fill',
+          link: '/dashboard/super-admin/settings/business',
+          pathName: '/dashboard/super-admin/settings/business',
+          parentId: 'settings',
+        },
+        {
+          id: 'smtpsettings',
+          label: 'SMTP & Email Config',
+          icon: 'ri-mail-settings-fill',
+          link: '/dashboard/super-admin/settings/smtp-config',
+          pathName: '/dashboard/super-admin/settings/smtp-config',
+          parentId: 'settings',
+        },
+        {
+          id: 'currencysettings',
+          label: 'Currency Settings',
+          icon: 'ri-money-dollar-circle-fill',
+          link: '/dashboard/super-admin/settings/currency',
+          pathName: '/dashboard/super-admin/settings/currency',
+          parentId: 'settings',
+        },
+        {
+          id: 'paymentsettings',
+          label: 'Payment Settings',
+          icon: 'ri-refund-2-fill',
+          link: '/dashboard/super-admin/settings/payment',
+          pathName: '/dashboard/super-admin/settings/payment',
+          parentId: 'settings',
+        },
+        {
+          id: 'profilesettings',
+          label: 'Profile Settings',
+          icon: 'ri-user-settings-fill',
+          link: '/dashboard/super-admin/settings/profile',
+          pathName: '/dashboard/super-admin/settings/profile',
+          parentId: 'settings',
+        },
+        {
+          id: 'changeemail',
+          label: 'Change Email',
+          icon: 'ri-mail-add-fill',
+          link: '/dashboard/super-admin/settings/email',
+          pathName: '/dashboard/super-admin/settings/email',
+          parentId: 'settings',
+        },
+        {
+          id: 'changepassword',
+          label: 'Change Password',
+          icon: 'ri-lock-password-fill',
+          link: '/dashboard/super-admin/settings/password',
+          pathName: '/dashboard/super-admin/settings/password',
+          parentId: 'settings',
+        },
+      ],
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
