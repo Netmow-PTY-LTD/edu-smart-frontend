@@ -42,8 +42,8 @@ const ColorPicker = ({ label, name, ...props }) => {
             width: -50,
             height: 50,
             backgroundColor: field.value || '#e9f1fa',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
+            border: '1px solid #092a67',
+            borderRadius: '1.2rem',
             margin: '5px 0',
             cursor: 'pointer',
           }}
