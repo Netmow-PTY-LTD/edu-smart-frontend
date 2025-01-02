@@ -109,7 +109,6 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
       if (result) {
         toast.success(result?.message || 'Social link added successfully!');
         getSingleUniversityRefetch();
-        resetForm();
       }
     } catch (error) {
       const errorMessage =
