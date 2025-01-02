@@ -1,7 +1,13 @@
 import NumberField from '@/components/common/formField/NumberField';
+import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
-import { Formik } from 'formik';
-import { useState } from 'react';
+import {
+  useGetAgentCurrencySettingsQuery,
+  useUpdateAgentCurrencySettingsMutation,
+} from '@/slice/services/agent/AgentSettingsService';
+import { Form, Formik } from 'formik';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   Button,
   Card,
@@ -9,15 +15,36 @@ import {
   CardHeader,
   CardTitle,
   Col,
-  Form,
   Row,
 } from 'reactstrap';
 import * as Yup from 'yup';
 const CurrencySettings = ({ userType }) => {
   const [initialValues, setInitialValues] = useState({
-    gst: '',
+    gst: 0,
     currency: '',
   });
+
+  const {
+    data: currencyData,
+    isLoading: currencyIsLoading,
+    refetch: currencyRefatch,
+  } = useGetAgentCurrencySettingsQuery();
+
+  const [updateAgentCurrencySettings] =
+    useUpdateAgentCurrencySettingsMutation();
+
+  useEffect(() => {
+    if (currencyData?.data?._id) {
+      setInitialValues({
+        gst: currencyData?.data?.gst || 0,
+        currency: currencyData?.data?.currency || '',
+      });
+    }
+  }, [
+    currencyData?.data?._id,
+    currencyData?.data?.currency,
+    currencyData?.data?.gst,
+  ]);
 
   const validationSchema = Yup.object({
     gst: Yup.number()
@@ -25,12 +52,27 @@ const CurrencySettings = ({ userType }) => {
       .min(0, 'GST cannot be less than 0')
       .max(100, 'GST cannot be more than 100')
       .typeError('GST must be a number'),
-    currency: Yup.number()
+    currency: Yup.string()
       .required('Currency is required')
       .typeError('Currency must be a number'),
   });
 
-  const handleSubmit = (value) => {};
+  const handleSubmit = async (value, { setSubmitting }) => {
+    setSubmitting(true);
+    try {
+      const result = await updateAgentCurrencySettings(value).unwrap();
+
+      if (result?.success) {
+        toast.success('Currency and Fees updated successfully');
+        currencyRefatch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <>
       <Card className="mt-5">
@@ -51,10 +93,17 @@ const CurrencySettings = ({ userType }) => {
                     <NumberField name={'gst'} label={'GST(%)'} />
                   </Col>
                   <Col md={6}>
-                    <NumberField name={'currency'} label={'Currency'} />
+                    <TextField
+                      name={'currency'}
+                      label={'Currency'}
+                      disabled={true}
+                    />
                   </Col>
                   <Col sm={12} className="text-end">
-                    <Button className="button">Save Change</Button>
+                    <SubmitButton
+                      isSubmitting={isSubmitting}
+                      formSubmit={'Save Change'}
+                    />
                   </Col>
                 </Row>
               </Form>
