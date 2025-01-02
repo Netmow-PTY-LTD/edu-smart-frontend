@@ -17,6 +17,9 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
+import { agentSettingsService } from '../services/agent/AgentSettingsService';
+import { settingsService } from '../services/common/settingsService';
+import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 
 export const store = configureStore({
   reducer: {
@@ -47,6 +50,9 @@ export const store = configureStore({
       universityAdministrationGalleryService.reducer,
     [universityAdministrationSliderService.reducerPath]:
       universityAdministrationSliderService.reducer,
+    [agentSettingsService.reducerPath]: agentSettingsService.reducer,
+    [settingsService.reducerPath]: settingsService.reducer,
+    [superAdminSettingsService.reducerPath]: superAdminSettingsService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -65,7 +71,10 @@ export const store = configureStore({
       .concat(universityAdministrationGalleryService.middleware)
       .concat(studentSubmitDocumentService.middleware)
       .concat(studentDocRelatedServiceForAgent.middleware)
-      .concat(universityAdministrationSliderService.middleware),
+      .concat(universityAdministrationSliderService.middleware)
+      .concat(agentSettingsService.middleware)
+      .concat(settingsService.middleware)
+      .concat(superAdminSettingsService.middleware),
 });
 
 setupListeners(store.dispatch);

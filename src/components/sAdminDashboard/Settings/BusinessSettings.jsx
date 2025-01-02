@@ -1,7 +1,8 @@
 import NumberField from '@/components/common/formField/NumberField';
 import TextField from '@/components/common/formField/TextField';
+import { useGetAgentBusinessSettingsQuery } from '@/slice/services/agent/AgentSettingsService';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -13,11 +14,28 @@ import {
   Row,
 } from 'reactstrap';
 import * as Yup from 'yup';
-const BusinessSettings = () => {
+const BusinessSettings = ({ userType }) => {
   const [initialValues, setInitialValues] = useState({
     gst: '',
     currency: '',
   });
+
+  const {
+    data: agentBusinessSettings,
+    isLoading: agentBusinessSettingsLoading,
+    error: agentBusinessSettingsError,
+  } = useGetAgentBusinessSettingsQuery();
+
+  console.log(agentBusinessSettings);
+
+  useEffect(() => {
+    if (agentBusinessSettings?.data?._id) {
+      setInitialValues({
+        gst: agentBusinessSettings?.data?.gst,
+        currency: agentBusinessSettings?.data?.currency,
+      });
+    }
+  }, []);
 
   const validationSchema = Yup.object({
     gst: Yup.number()
@@ -48,45 +66,42 @@ const BusinessSettings = () => {
               <Form>
                 <Row>
                   <Col md={6}>
-                    <TextField name={'companyName'} label={'Company Name'}/>
-                 
+                    <TextField name={'companyName'} label={'Company Name'} />
                   </Col>
                   <Col md={6}>
-                  <TextField name={'shortInfo'} label={'Short Info'}/>
+                    <TextField name={'shortInfo'} label={'Short Info'} />
                   </Col>
                   <Col md={6}>
-                  <TextField name={'address'} label={'Address'}/>
+                    <TextField name={'address'} label={'Address'} />
                   </Col>
                   <Col md={6}>
-                  <TextField name={'address2'} label={'Address2'}/>
+                    <TextField name={'address2'} label={'Address2'} />
                   </Col>
                   <Col md={4}>
-                  <TextField name={'state'} label={'State'}/>
-                
+                    <TextField name={'state'} label={'State'} />
                   </Col>
-                 
+
                   <Col md={4}>
-                  <TextField name={'city'} label={'City'}/>
+                    <TextField name={'city'} label={'City'} />
                   </Col>
                   <Col md={4}>
                     <NumberField name={'zip'} label={'Zip'} />
                   </Col>
-                 
+
                   <Col md={4}>
-                  <TextField name={'website'} label={'Website(Optional)'}/>
+                    <TextField name={'website'} label={'Website(Optional)'} />
                   </Col>
-                 
+
                   <Col md={4}>
                     <NumberField name={'phone'} label={'Phone Number'} />
                   </Col>
                   <Col md={4}>
-                  <TextField name={'email'} label={'Email'}/>
+                    <TextField name={'email'} label={'Email'} />
                   </Col>
                   <Col sm={12} className="text-end">
                     <Button className="button">Save Change</Button>
                   </Col>
                 </Row>
-             
               </Form>
             )}
           </Formik>

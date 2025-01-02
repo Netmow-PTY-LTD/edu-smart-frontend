@@ -14,7 +14,7 @@ import {
   Row,
 } from 'reactstrap';
 import * as Yup from 'yup';
-const SMTPSettings = () => {
+const SMTPSettings = ({ userType }) => {
   const [initialValues, setInitialValues] = useState({
     gst: '',
     currency: '',
@@ -75,7 +75,6 @@ const SMTPSettings = () => {
                     <Button className="button">Save Change</Button>
                   </Col>
                 </Row>
-              
               </Form>
             )}
           </Formik>
