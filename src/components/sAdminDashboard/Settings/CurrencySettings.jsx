@@ -13,7 +13,7 @@ import {
   Row,
 } from 'reactstrap';
 import * as Yup from 'yup';
-const CurrencySettings = () => {
+const CurrencySettings = ({ userType }) => {
   const [initialValues, setInitialValues] = useState({
     gst: '',
     currency: '',
@@ -57,7 +57,6 @@ const CurrencySettings = () => {
                     <Button className="button">Save Change</Button>
                   </Col>
                 </Row>
-               
               </Form>
             )}
           </Formik>
