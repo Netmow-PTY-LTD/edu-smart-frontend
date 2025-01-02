@@ -222,13 +222,15 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
   {
     title: 'Title',
     key: 'title',
-    render: (item) => (
-      <div>
-        <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item?.title ? item?.title : '-'}`}
-        </h5>
-      </div>
-    ),
+    render: (item) => {
+      const newTitle = item?.title?.replace(/_/g, ' ');
+
+      return (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{newTitle || '-'}</h5>
+        </div>
+      );
+    },
   },
   {
     title: 'Name',
