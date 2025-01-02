@@ -38,7 +38,7 @@ const AddStudentComponentForAgent = ({
       <div className="mb-4">
         <h1 className="text-secondary-alt fw-semibold mb-3 d-flex align-items-center gap-4">
           {headTitle}
-          <i class="ri-user-fill text-primary fw-bold fs-1"></i>
+          <i className="ri-user-fill text-primary fw-bold fs-1"></i>
         </h1>
         {headTitle === 'Add New Student' && (
           <>
