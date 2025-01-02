@@ -119,7 +119,10 @@ const ProfileDropdown = () => {
               : ''}
           </h6>
           <DropdownItem className="p-0">
-            <Link href={'/'} className="dropdown-item">
+            <Link
+              href={`/dashboard/${userInfodata?.data?.role === 'super_admin' ? 'super-admin' : userInfodata?.data?.role}/settings/profile`}
+              className="dropdown-item"
+            >
               <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-2"></i>
               <span className="align-middle">Profile</span>
             </Link>
