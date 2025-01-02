@@ -105,22 +105,22 @@ const SuperAdminSidebarData = () => {
       },
       stateVariables: isSettings,
       subItems: [
-        {
-          id: 'businesssettings',
-          label: 'Business settings',
-          icon: 'ri-briefcase-fill',
-          link: '/dashboard/super-admin/settings/business',
-          pathName: '/dashboard/super-admin/settings/business',
-          parentId: 'settings',
-        },
-        {
-          id: 'smtpsettings',
-          label: 'SMTP & Email Config',
-          icon: 'ri-mail-settings-fill',
-          link: '/dashboard/super-admin/settings/smtp-config',
-          pathName: '/dashboard/super-admin/settings/smtp-config',
-          parentId: 'settings',
-        },
+        // {
+        //   id: 'businesssettings',
+        //   label: 'Business settings',
+        //   icon: 'ri-briefcase-fill',
+        //   link: '/dashboard/super-admin/settings/business',
+        //   pathName: '/dashboard/super-admin/settings/business',
+        //   parentId: 'settings',
+        // },
+        // {
+        //   id: 'smtpsettings',
+        //   label: 'SMTP & Email Config',
+        //   icon: 'ri-mail-settings-fill',
+        //   link: '/dashboard/super-admin/settings/smtp-config',
+        //   pathName: '/dashboard/super-admin/settings/smtp-config',
+        //   parentId: 'settings',
+        // },
         {
           id: 'currencysettings',
           label: 'Currency Settings',
