@@ -152,7 +152,7 @@ const DashBoardLayout = (props) => {
       ) : (
         <div id="layout-wrapper">
           <Header
-            headerClass={headerClass}
+            headerclassName={headerClass}
             layoutModeType={layoutModeType}
             onChangeLayoutMode={onChangeLayoutMode}
           />

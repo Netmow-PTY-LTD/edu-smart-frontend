@@ -74,7 +74,7 @@ const UniversityForm = ({
         <h1 className="text-secondary-alt fw-semibold mb-3 d-flex align-items-center gap-4">
           {headTitle}
           {headTitle === 'Add New University' ? (
-            <i class="ri-school-fill text-primary fw-bold fs-1"></i>
+            <i className="ri-school-fill text-primary fw-bold fs-1"></i>
           ) : (
             ''
           )}
