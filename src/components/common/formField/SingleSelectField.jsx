@@ -12,7 +12,7 @@ const SingleSelectField = ({
 }) => {
   return (
     <div>
-      <label htmlFor={name} className="form-label fs-2">
+      <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Select'}
       </label>
 
