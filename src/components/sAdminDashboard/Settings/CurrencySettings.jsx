@@ -4,7 +4,7 @@ import TextField from '@/components/common/formField/TextField';
 import {
   useGetAgentCurrencySettingsQuery,
   useUpdateAgentCurrencySettingsMutation,
-} from '@/slice/services/agent/AgentSettingsService';
+} from '@/slice/services/agent/agentSettingsService';
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';

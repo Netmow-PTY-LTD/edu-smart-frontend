@@ -3,7 +3,7 @@ import ToggleSwitch from '@/components/common/ToggleSwitch';
 import {
   useGetAgentStripeSettingsQuery,
   useUpdateAgentStripeSettingsMutation,
-} from '@/slice/services/agent/AgentSettingsService';
+} from '@/slice/services/agent/agentSettingsService';
 import Select from 'react-select';
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
