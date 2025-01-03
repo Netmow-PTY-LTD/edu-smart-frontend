@@ -38,26 +38,19 @@ const Register = () => {
 
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
-      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
-      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       const subdomain = LoginData?.data?.domain?.subdomain;
       const token = LoginData?.data?.token;
 
       if (appEnvironment === 'development') {
         Cookies.set('token', token, {
           expires: 7,
-          domain: '.localhost',
-          sameSite: 'Lax',
         });
         Cookies.set('subdomain', subdomain, {
           expires: 7,
-          domain: '.localhost',
-          sameSite: 'Lax',
         });
-
-        // window.location.assign(
-        //   `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
-        // );
+        Cookies.set('role', LoginData?.data?.role, {
+          expires: 7,
+        });
         window.location.assign(
           `${window.location.protocol}//localhost:3005/dashboard/agent`
         );
@@ -65,17 +58,14 @@ const Register = () => {
         const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
 
         Cookies.set('token', token, {
-          domain: domain,
           expires: 7,
         });
         Cookies.set('subdomain', subdomain, {
-          domain: domain,
           expires: 7,
         });
-
-        // window.location.assign(
-        //   `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
-        // );
+        Cookies.set('role', LoginData?.data?.role, {
+          expires: 7,
+        });
         window.location.assign(
           `${window.location.protocol}//${domain}/dashboard/agent`
         );
@@ -89,13 +79,9 @@ const Register = () => {
       if (appEnvironment === 'development') {
         Cookies.set('token', token, {
           expires: 7,
-          domain: '.localhost',
-          sameSite: 'Lax',
         });
         Cookies.set('subdomain', subdomain, {
           expires: 7,
-          domain: '.localhost',
-          sameSite: 'Lax',
         });
         window.location.assign(
           `${window.location.protocol}//localhost:3005/dashboard/student`
@@ -104,33 +90,120 @@ const Register = () => {
         const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
 
         Cookies.set('token', token, {
-          domain: domain,
           expires: 7,
         });
         Cookies.set('subdomain', subdomain, {
-          domain: domain,
           expires: 7,
         });
         window.location.assign(
           `${window.location.protocol}//${domain}/dashboard/student`
         );
       }
-    } else if (
-      LoginData?.data?.token &&
-      LoginData?.data?.role === 'university_administrator'
-    ) {
-      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
-      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
-      if (appEnvironment === 'development') {
-        window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/university-administrator`
-        );
-      } else {
-        window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/university-administrator`
-        );
-      }
     }
+
+    // if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
+    //   const subdomain = LoginData?.data?.domain?.subdomain;
+    //   const token = LoginData?.data?.token;
+
+    //   if (appEnvironment === 'development') {
+    //     Cookies.set('token', token, {
+    //       expires: 7,
+    //       domain: '.localhost',
+    //       sameSite: 'Lax',
+    //     });
+    //     Cookies.set('subdomain', subdomain, {
+    //       expires: 7,
+    //       domain: '.localhost',
+    //       sameSite: 'Lax',
+    //     });
+    //     Cookies.set('role', LoginData?.data?.role, {
+    //       expires: 7,
+    //       domain: '.localhost',
+    //       sameSite: 'Lax',
+    //     });
+
+    //     // window.location.assign(
+    //     //   `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
+    //     // );
+    //     window.location.assign(
+    //       `${window.location.protocol}//localhost:3005/dashboard/agent`
+    //     );
+    //   } else {
+    //     const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+    //     Cookies.set('token', token, {
+    //       domain: domain,
+    //       expires: 7,
+    //     });
+    //     Cookies.set('subdomain', subdomain, {
+    //       domain: domain,
+    //       expires: 7,
+    //     });
+    //     Cookies.set('role', LoginData?.data?.role, {
+    //       domain: domain,
+    //       expires: 7,
+    //     });
+
+    //     // window.location.assign(
+    //     //   `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
+    //     // );
+    //     window.location.assign(
+    //       `${window.location.protocol}//${domain}/dashboard/agent`
+    //     );
+    //   }
+    // } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
+    //   Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+    //   Cookies.set('role', LoginData?.data?.role, { expires: 7 });
+    //   const subdomain = LoginData?.data?.domain?.subdomain;
+    //   const token = LoginData?.data?.token;
+
+    //   if (appEnvironment === 'development') {
+    //     Cookies.set('token', token, {
+    //       expires: 7,
+    //       domain: '.localhost',
+    //       sameSite: 'Lax',
+    //     });
+    //     Cookies.set('subdomain', subdomain, {
+    //       expires: 7,
+    //       domain: '.localhost',
+    //       sameSite: 'Lax',
+    //     });
+    //     window.location.assign(
+    //       `${window.location.protocol}//localhost:3005/dashboard/student`
+    //     );
+    //   } else {
+    //     const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+    //     Cookies.set('token', token, {
+    //       domain: domain,
+    //       expires: 7,
+    //     });
+    //     Cookies.set('subdomain', subdomain, {
+    //       domain: domain,
+    //       expires: 7,
+    //     });
+    //     window.location.assign(
+    //       `${window.location.protocol}//${domain}/dashboard/student`
+    //     );
+    //   }
+    // }
+
+    // else if (
+    //   LoginData?.data?.token &&
+    //   LoginData?.data?.role === 'university_administrator'
+    // ) {
+    //   Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+    //   Cookies.set('role', LoginData?.data?.role, { expires: 7 });
+    //   if (appEnvironment === 'development') {
+    //     window.location.assign(
+    //       `${window.location.protocol}//${'localhost:3005'}/dashboard/university-administrator`
+    //     );
+    //   } else {
+    //     window.location.assign(
+    //       `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/university-administrator`
+    //     );
+    //   }
+    // }
   }, [LoginData]);
 
   const [initialValues, setInitialValues] = useState({

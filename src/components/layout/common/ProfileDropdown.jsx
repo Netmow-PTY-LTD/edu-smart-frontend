@@ -50,13 +50,20 @@ const ProfileDropdown = () => {
         `${window.location.protocol}//${'localhost:3005'}/auth/login`
       );
     } else {
-      const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
-      Cookies.remove('token', { domain: domain });
-      Cookies.remove('subdomain', { domain: domain });
-      Cookies.remove('role', { domain: domain });
+      Cookies.remove('token');
+      Cookies.remove('subdomain');
+      Cookies.remove('role');
       window.location.assign(
         `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
       );
+
+      // const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+      // Cookies.remove('token', { domain: domain });
+      // Cookies.remove('subdomain', { domain: domain });
+      // Cookies.remove('role', { domain: domain });
+      // window.location.assign(
+      //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
+      // );
     }
     // } else {
     //   document.cookie = 'token=; max-age=0; path=/';
