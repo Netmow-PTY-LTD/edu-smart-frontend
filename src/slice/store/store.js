@@ -17,7 +17,7 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
-import { agentSettingsService } from '../services/agent/AgentSettingsService';
+import { agentSettingsService } from '../services/agent/agentSettingsService';
 import { settingsService } from '../services/common/settingsService';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 
