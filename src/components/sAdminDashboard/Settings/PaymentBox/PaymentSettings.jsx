@@ -7,15 +7,11 @@ import PaypalSettings from './PaypalSettings';
 const PaymentSettings = () => {
   return (
     <Row>
-      <Col lg={6}>
+      <Col lg={12}>
         <StripeSettings />
       </Col>
-      <Col lg={6}>
-        <PaypalSettings/>
-      </Col>
-      <Col lg={6}>
-        <SSLCommerceSettings />
-      </Col>
+      <Col lg={6}>{/* <PaypalSettings/> */}</Col>
+      <Col lg={6}>{/* <SSLCommerceSettings /> */}</Col>
     </Row>
   );
 };

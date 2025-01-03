@@ -1,4 +1,5 @@
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
@@ -15,7 +16,8 @@ const AllAgentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
 
-  const { data: allAgentsData } = useGetAllAgentQuery();
+  const { data: allAgentsData, isLoading: allagentsIsloading } =
+    useGetAllAgentQuery();
 
   const agentsHeaders = [
     {
@@ -66,17 +68,21 @@ const AllAgentsPage = () => {
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
-          <Row>
-            <Col>
-              <div className="h-100">
-                <LatestRegistered
-                  tableHead={'Latest Registered Agents'}
-                  headers={agentsHeaders}
-                  data={allAgentsData?.data ? allAgentsData?.data : []}
-                />
-              </div>
-            </Col>
-          </Row>
+          {allagentsIsloading ? (
+            <LoaderSpiner />
+          ) : (
+            <Row>
+              <Col>
+                <div className="h-100">
+                  <LatestRegistered
+                    tableHead={'Latest Registered Agents'}
+                    headers={agentsHeaders}
+                    data={allAgentsData?.data ? allAgentsData?.data : []}
+                  />
+                </div>
+              </Col>
+            </Row>
+          )}
         </div>
       </div>
     </Layout>

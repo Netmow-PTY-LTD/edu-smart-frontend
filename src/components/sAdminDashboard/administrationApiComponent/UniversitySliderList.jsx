@@ -7,19 +7,21 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import UniversitysliderModalForm from './modals/UniversitysliderModalForm';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
   useDeleteUniversitySliderMutation,
   useUpdateUniversitySliderMutation,
 } from '@/slice/services/university-administration/api/universityAdministrationSliderService';
-import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
-import SearchComponent from '@/components/common/SearchComponent';
+import UniversitysliderModalForm from './modals/UniversitysliderModalForm';
 
 export default function UniversitySliderList({ university_id }) {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -39,7 +41,16 @@ export default function UniversitySliderList({ university_id }) {
     images: '',
   });
 
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  const {
+    data: getSingleUniversityData,
+    isLoading: getSingleUniversityIsLoading,
+    refetch: getSingleUniversityRefetch,
+  } = useGetSingleUniversityQuery(university_id, {
+    skip: !university_id,
+  });
+
+  const [updateUniversitySlider] = useUpdateUniversitySliderMutation();
+  const [deleteUniversitySlider] = useDeleteUniversitySliderMutation();
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Titlle is required'),
@@ -69,21 +80,11 @@ export default function UniversitySliderList({ university_id }) {
       .required('An image is required'),
   });
 
-  const {
-    data: getSingleUniversityData,
-    isLoading: getSingleUniversityIsLoading,
-    refetch: getSingleUniversityRefetch,
-  } = useGetSingleUniversityQuery(university_id, {
-    skip: !university_id,
-  });
-
-  const [updateUniversitySlider] = useUpdateUniversitySliderMutation();
-  const [deleteUniversitySlider] = useDeleteUniversitySliderMutation();
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const handleEditButtonClick = (id) => {
     const fetchAndSetSliderData = async () => {
       try {
-        // Find the slider item by ID
         const sliderItem = getSingleUniversityData?.data?.sliders?.find(
           (item) => item._id === id
         );
@@ -93,12 +94,8 @@ export default function UniversitySliderList({ university_id }) {
           return;
         }
 
-        // Convert the image URL to a File object
         const imageFiles = await convertImageUrlToFile(sliderItem.image.url);
 
-        console.log('Converted Image Files:', imageFiles);
-
-        // Set the initial form values
         setInitialValues({
           title: sliderItem.title || '',
           sub_title: sliderItem.sub_title || '',
@@ -113,9 +110,8 @@ export default function UniversitySliderList({ university_id }) {
         console.error('Error fetching or processing slider data:', error);
       }
     };
-    // Fetch data and update state
+
     fetchAndSetSliderData();
-    // Update component state to open modal and set ID
     setsliderId(id);
     setEditModalIsOpen(true);
   };
@@ -146,10 +142,6 @@ export default function UniversitySliderList({ university_id }) {
           finalData.append(key, value);
         }
       });
-
-      // for (let [key, value] of finalData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
 
       const result = await updateUniversitySlider(finalData).unwrap();
       if (result) {
@@ -184,15 +176,11 @@ export default function UniversitySliderList({ university_id }) {
         }
       });
 
-      // for (let [key, value] of finalData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
-
       const result = await updateUniversitySlider(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
         getSingleUniversityRefetch();
-        setAddModalIsOpen(!addModalIsOpen);
+        setEditModalIsOpen(!editModalIsOpen);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -215,12 +203,13 @@ export default function UniversitySliderList({ university_id }) {
       title: 'Slider Picture',
       key: 'image',
       render: (item, index) => {
+        console.log(item?.image?.url);
         return (
           <span className="d-flex flex-column text-capitalize">
             <Image
               width={80}
               height={80}
-              src={item?.image?.url}
+              src={item?.image?.url || userDummyImage}
               alt="slider-Image"
               key={index + 1}
             />
@@ -283,41 +272,46 @@ export default function UniversitySliderList({ university_id }) {
 
   return (
     <Col lg={10}>
-      <div className="align-items-center d-flex fw-semibold card-header">
-        <div className="d-flex align-items-center gap-4">
-          <h4 className="fw-semibold fs-20 text-black mb-0">Sliders List</h4>
-          <button
-            className="button px-4 py-3"
-            onClick={() => {
-              setInitialValues({
-                title: '',
-                sub_title: '',
-                description: '',
-                button_1_text: '',
-                button_1_link: '',
-                button_2_text: '',
-                button_2_link: '',
-                images: '',
-              });
-              setAddModalIsOpen(!addModalIsOpen);
-            }}
-          >
-            Add Slider info
-          </button>
-        </div>
-        <SearchComponent
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-        />
-      </div>
-      <CommonTableComponent
-        headers={slidersHeaders}
-        data={filteredData}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        perPageData={perPageData}
-        emptyMessage="No Data found yet."
-      />
+      {getSingleUniversityIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <>
+          <div className="align-items-center d-flex fw-semibold card-header">
+            <div className="d-flex align-items-center gap-4">
+              <button
+                className="button px-4 py-3"
+                onClick={() => {
+                  setInitialValues({
+                    title: '',
+                    sub_title: '',
+                    description: '',
+                    button_1_text: '',
+                    button_1_link: '',
+                    button_2_text: '',
+                    button_2_link: '',
+                    images: '',
+                  });
+                  setAddModalIsOpen(!addModalIsOpen);
+                }}
+              >
+                Add Slider info
+              </button>
+            </div>
+            <SearchComponent
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+            />
+          </div>
+          <CommonTableComponent
+            headers={slidersHeaders}
+            data={filteredData}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            perPageData={perPageData}
+            emptyMessage="No Data found yet."
+          />
+        </>
+      )}
 
       {/* creating slider */}
       <UniversitysliderModalForm
@@ -343,7 +337,6 @@ export default function UniversitySliderList({ university_id }) {
         isOpen={editModalIsOpen}
         onSubmit={handleUpdateSlider}
         initialValues={initialValues}
-        validationSchema={validationSchema}
         formSubmit={'Update Slider info'}
         setInitialValues={setInitialValues}
       />

@@ -1,13 +1,16 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Profile from '@/components/common/Profile';
-import { useGetUserInfoQuery, useUpdateUserInfoMutation } from '@/slice/services/common/userInfoService';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import {
+  useGetUserInfoQuery,
+  useUpdateUserInfoMutation,
+} from '@/slice/services/common/userInfoService';
 import React, { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
-import { toast } from 'react-toastify';
-import * as Yup from 'yup';
+import { toast, ToastContainer } from 'react-toastify';
 const UserProfile = () => {
   const [imagePreview, setImagePreview] = useState(null);
-
+  const [profileIsLoading, setProfileIsLoading] = useState(null);
   const [initialValues, setInitialValues] = useState({
     first_name: '',
     last_name: '',
@@ -22,14 +25,17 @@ const UserProfile = () => {
     profile_image: null,
   });
 
-  const { data: userInfodata, refetch: getUserInfoRefetch } =
-    useGetUserInfoQuery();
-  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const {
+    data: userInfodata,
+    isLoading: userInfoIsLoading,
+    refetch: getUserInfoRefetch,
+  } = useGetUserInfoQuery();
 
-  console.log(userInfodata);
+  const [updateUserInfo] = useUpdateUserInfoMutation();
 
   useEffect(() => {
     const fetchStudentData = async () => {
+      setProfileIsLoading(true);
       if (userInfodata?.data) {
         const student = userInfodata?.data ? userInfodata?.data : null;
 
@@ -55,6 +61,7 @@ const UserProfile = () => {
           : '';
         setImagePreview(imageUrl);
       }
+      setProfileIsLoading(false);
     };
     fetchStudentData();
   }, [userInfodata?.data]);
@@ -93,9 +100,13 @@ const UserProfile = () => {
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    const updateData = { ...values };
+    delete updateData.email;
+
     try {
       const finalData = new FormData();
-      Object.entries(values).forEach(([key, value]) => {
+      Object.entries(updateData).forEach(([key, value]) => {
         finalData.append(key, value);
       });
 
@@ -115,15 +126,20 @@ const UserProfile = () => {
   const options = useMemo(() => countryList().getData(), []);
 
   return (
-    <div className='mt-5'>
-      <Profile
-        initialValues={initialValues}
-        handleSubmit={handleSubmit}
-        imagePreview={imagePreview}
-        handleImageChange={handleImageChange}
-        setImagePreview={setImagePreview}
-        options={options}
-      />
+    <div className="mt-5">
+      <ToastContainer />
+      {userInfoIsLoading || profileIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <Profile
+          initialValues={initialValues}
+          handleSubmit={handleSubmit}
+          imagePreview={imagePreview}
+          handleImageChange={handleImageChange}
+          setImagePreview={setImagePreview}
+          options={options}
+        />
+      )}
     </div>
   );
 };

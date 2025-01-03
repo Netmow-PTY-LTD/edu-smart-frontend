@@ -1,8 +1,8 @@
+import { Form, Formik } from 'formik';
 import React from 'react';
-import { Card, CardHeader, CardBody, Row, Col } from 'reactstrap';
-import { Formik, Form } from 'formik';
-import TextArea from './formField/TextAreaField';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 import SubmitButton from './formField/SubmitButton';
+import TextArea from './formField/TextAreaField';
 
 const DescriptionCardForm = ({
   title,
@@ -14,7 +14,7 @@ const DescriptionCardForm = ({
   className,
 }) => {
   return (
-    <Col lg={10}>
+    <Col>
       <Card className={className}>
         <CardHeader>{title}</CardHeader>
         <CardBody>
@@ -22,12 +22,13 @@ const DescriptionCardForm = ({
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
+            enableReinitialize={true}
           >
             {({ isSubmitting }) => (
               <Form>
                 <Row>
                   {fields.map((field, index) => (
-                    <Col lg={6} key={index}>
+                    <Col lg={12} key={index}>
                       <TextArea name={field.name} label={field.label} />
                     </Col>
                   ))}

@@ -18,7 +18,6 @@ const Profile = ({
   setImagePreview,
   options,
 }) => {
-
   return (
     <>
       <Card className="my-2">
@@ -36,18 +35,22 @@ const Profile = ({
               <Form>
                 <Row>
                   <Col lg={3}>
-                    <div className="mb-5 profile-img">
-                      <div className="img-preview mb-3">
+                    <div
+                      id="profileimage"
+                      className="mb-5 profile-img text-center"
+                    >
+                      <div className="mb-3 profile-user">
                         <Image
                           src={imagePreview || brandlogo}
-                          alt="Avatar"
+                          alt="Profile Photo"
                           width={200}
                           height={200}
+                          className="rounded-circle avatar-xl img-thumbnail user-profile-image"
                         />
                       </div>
                       <ImageField
                         name="profile_image"
-                        label="Upload Avatar"
+                        label="Upload Photo"
                         handleImageChange={handleImageChange}
                       />
                       <button

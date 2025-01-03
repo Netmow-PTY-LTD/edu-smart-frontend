@@ -42,7 +42,6 @@ const AllUniversityForAgent = () => {
       agentNameAndLogoData,
       ...universityHeadersWithoutAction,
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -56,6 +55,7 @@ const AllUniversityForAgent = () => {
             ) : (
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
+                  <h2>All University List</h2>
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}

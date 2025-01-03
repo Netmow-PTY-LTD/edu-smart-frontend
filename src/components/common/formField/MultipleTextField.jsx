@@ -43,7 +43,7 @@ const MultipleTextField = ({
                   onClick={() => remove(index)}
                   className="third-btn"
                 >
-                  <i class="ri-delete-bin-fill"></i>
+                  <i className="ri-delete-bin-fill"></i>
                 </Button>
               </Col>
             </Row>

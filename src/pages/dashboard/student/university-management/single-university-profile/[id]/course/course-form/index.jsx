@@ -88,11 +88,21 @@ export default function CourseForm({ setStep, step }) {
             } else {
               acc[title] = convertedFile;
 
-              if (title === 'photograph') {
-                setPhotographPreviewImage(URL.createObjectURL(convertedFile));
-              }
-              if (title === 'passport') {
-                setPassportPreviewImage(URL.createObjectURL(convertedFile));
+              if (title === 'photograph' || title === 'passport') {
+                if (convertedFile instanceof Blob) {
+                  const previewImageUrl = URL.createObjectURL(convertedFile);
+
+                  if (title === 'photograph') {
+                    setPhotographPreviewImage(previewImageUrl);
+                  } else if (title === 'passport') {
+                    setPassportPreviewImage(previewImageUrl);
+                  }
+                } else {
+                  console.error(
+                    'convertedFile is not a valid Blob or File:',
+                    convertedFile
+                  );
+                }
               }
             }
 

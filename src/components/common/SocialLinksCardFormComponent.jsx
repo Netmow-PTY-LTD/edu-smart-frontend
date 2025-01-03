@@ -10,7 +10,7 @@ import SubmitButton from './formField/SubmitButton';
 import TextField from './formField/TextField';
 
 const SocialLinksCardFormComponent = ({ university_id }) => {
-  // Define initial form values
+  const [loading, setLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
     facebook: '',
     whatsapp: '',
@@ -21,6 +21,7 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
   });
 
   const [updateUniversitySocialLink] = useUpdateUniversitySocialLinkMutation();
+
   const {
     data: getSingleUniversityData,
     isLoading: getSingleUniversityIsLoading,
@@ -32,6 +33,7 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
   useEffect(() => {
     if (getSingleUniversityData?.data?.social_links) {
       const fetchData = async () => {
+        setLoading(true);
         try {
           setInitialValues({
             facebook:
@@ -48,6 +50,7 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
         } catch (error) {
           console.error('Error loading data:', error);
         }
+        setLoading(false);
       };
 
       fetchData();
@@ -106,7 +109,6 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
       if (result) {
         toast.success(result?.message || 'Social link added successfully!');
         getSingleUniversityRefetch();
-        resetForm();
       }
     } catch (error) {
       const errorMessage =
@@ -129,7 +131,7 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
   return (
     <Col lg={10}>
       <ToastContainer />
-      {getSingleUniversityIsLoading ? (
+      {getSingleUniversityIsLoading || loading ? (
         <LoaderSpiner />
       ) : (
         <Card>

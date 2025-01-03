@@ -69,7 +69,10 @@ const SingleUniversityProfile = () => {
       <Layout>
         <div className="page-content ">
           <ToastContainer />
-          {getSingleUniversityIsLoading ? (
+          {getSingleUniversityIsLoading ||
+          getDepartmentIsLoading ||
+          getAllCategoriesIsLoading ||
+          getCourseIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Container fluid>

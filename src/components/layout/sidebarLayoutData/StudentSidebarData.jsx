@@ -130,17 +130,42 @@ const StudentSidebarData = () => {
     },
 
     {
-      id: 'myprofile',
-      label: 'My profile',
-      icon: 'ri-article-line',
-      link: '/dashboard/student/profile-settings-for-student',
-      pathName: '/dashboard/student/profile-settings-for-student',
+      id: 'settings',
+      label: 'Settings',
+      icon: 'ri-settings-3-line',
+      link: '/#',
       click: function (e) {
         e.preventDefault();
-        setIsMyProfile(!isMyProfile);
-        setIscurrentState('My Profile');
+        setIsSettings(!isSettings);
+        setIscurrentState('Settings');
       },
-      stateVariables: isMyProfile,
+      stateVariables: isSettings,
+      subItems: [
+        {
+          id: 'profilesettings',
+          label: 'Profile Settings',
+          icon: 'ri-user-settings-fill',
+          link: '/dashboard/student/settings/profile',
+          pathName: '/dashboard/student/settings/profile',
+          parentId: 'settings',
+        },
+        {
+          id: 'changeemail',
+          label: 'Change Email',
+          icon: 'ri-mail-add-fill',
+          link: '/dashboard/student/settings/email',
+          pathName: '/dashboard/student/settings/email',
+          parentId: 'settings',
+        },
+        {
+          id: 'changepassword',
+          label: 'Change Password',
+          icon: 'ri-lock-password-fill',
+          link: '/dashboard/student/settings/password',
+          pathName: '/dashboard/student/settings/password',
+          parentId: 'settings',
+        },
+      ],
     },
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
