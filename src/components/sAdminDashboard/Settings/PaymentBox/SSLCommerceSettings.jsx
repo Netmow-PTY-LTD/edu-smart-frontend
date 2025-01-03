@@ -22,9 +22,9 @@ const SSLCommerceSettings = () => {
   const validationSchema = Yup.object({
     accountNumber: Yup.string()
       .required('Account Number is required')
-      .min(10, 'Account Number should be at least 10 characters long')  // Adjust length as needed
+      .min(10, 'Account Number should be at least 10 characters long') // Adjust length as needed
       .max(20, 'Account Number should not be more than 20 characters long'), // Adjust max length if necessary
-  
+
     privateKey: Yup.string()
       .required('Private Key is required')
       .min(32, 'Private Key should be at least 32 characters long') // Adjust minimum length as needed
@@ -54,14 +54,14 @@ const SSLCommerceSettings = () => {
             {({ isSubmitting }) => (
               <Form>
                 <Row>
-                  <Col  lg={12} >
+                  <Col lg={12}>
                     <PasswordField
                       name={'accountNumber'}
                       label={'Account Number'}
                       placeholder={'Enter Account Number '}
                     />
                   </Col>
-                  <Col  lg={12} >
+                  <Col lg={12}>
                     <PasswordField
                       name={'privateKey'}
                       label={'Private Key'}
