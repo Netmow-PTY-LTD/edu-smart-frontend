@@ -39,6 +39,7 @@ const Register = () => {
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
           `${window.location.protocol}//${'localhost:3005'}/dashboard/agent`
@@ -50,6 +51,7 @@ const Register = () => {
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
           `${window.location.protocol}//${'localhost:3005'}/dashboard/student`
@@ -64,6 +66,7 @@ const Register = () => {
       LoginData?.data?.role === 'university_administrator'
     ) {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
           `${window.location.protocol}//${'localhost:3005'}/dashboard/university-administrator`
