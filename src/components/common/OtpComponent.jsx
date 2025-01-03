@@ -7,6 +7,7 @@ const OtpComponent = ({
   isLoading,
   handleSubmit,
   setOtp,
+  showBtn = true,
 }) => {
   return (
     <>
@@ -39,17 +40,18 @@ const OtpComponent = ({
           </div>
 
           <div className="mt-4">
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <button
-                disabled={isLoading}
-                onClick={(e) => handleSubmit(e)}
-                className="button fs-2 w-100 btn fw-semibold"
-              >
-                Confirm OTP
-              </button>
-            )}
+            {showBtn &&
+              (isLoading ? (
+                <Loader />
+              ) : (
+                <button
+                  disabled={isLoading}
+                  onClick={(e) => handleSubmit(e)}
+                  className="button fs-2 w-100 btn fw-semibold"
+                >
+                  Confirm OTP
+                </button>
+              ))}
           </div>
         </div>
       </div>

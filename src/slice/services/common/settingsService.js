@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 export const settingsService = createApi({
   reducerPath: 'settingsService',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/agent',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
