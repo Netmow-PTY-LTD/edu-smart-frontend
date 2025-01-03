@@ -2,6 +2,7 @@ import CheckboxField from '@/components/common/formField/CheckBoxField';
 import EmailField from '@/components/common/formField/EmailField';
 import PasswordField from '@/components/common/formField/PasswordField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useLogInMutation } from '@/slice/services/public/auth/authService';
 import { brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
@@ -19,10 +20,34 @@ const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
 const Login = () => {
   const [logIn, { data: LoginData }] = useLogInMutation();
+  const [isAuthCheck, setIsAuthCheck] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const role = Cookies.get('role');
+
+    if (!token || !role) {
+      Cookies.remove('token');
+      Cookies.remove('role');
+      setIsAuthCheck(true);
+    } else {
+      const dashboardPath = role === 'super_admin' ? 'super-admin' : role;
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/${dashboardPath}`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${dashboardPath}`
+        );
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'super_admin') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
           `${window.location.protocol}//${'localhost:3005'}/dashboard/super-admin`
@@ -51,6 +76,11 @@ const Login = () => {
           domain: '.localhost',
           sameSite: 'Lax',
         });
+        Cookies.set('role', LoginData?.data?.role, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
 
         // window.location.assign(
         //   `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
@@ -69,6 +99,10 @@ const Login = () => {
           domain: domain,
           expires: 7,
         });
+        Cookies.set('role', LoginData?.data?.role, {
+          domain: domain,
+          expires: 7,
+        });
 
         // window.location.assign(
         //   `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
@@ -78,6 +112,8 @@ const Login = () => {
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       const subdomain = LoginData?.data?.domain?.subdomain;
       const token = LoginData?.data?.token;
 
@@ -115,6 +151,7 @@ const Login = () => {
       LoginData?.data?.role === 'university_administrator'
     ) {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
           `${window.location.protocol}//${'localhost:3005'}/dashboard/university-administrator`
@@ -156,88 +193,94 @@ const Login = () => {
   return (
     <>
       <ToastContainer />
-      <div className="auth-page-wrapper auth-bg-cover pt-5 pb-2 d-flex flex-column justify-content-center align-items-center min-vh-100">
-        <div className="bg-overlay "></div>
-        {/* <!-- auth-page content --> */}
-        <div className="branding-area">
-          <div className="container">
-            <div className="brand-logo">
-              <Link href="/university">
-                <Image
-                  src={brandlogo ? brandlogo : ''}
-                  alt="Logo"
-                  width={300}
-                  height={300}
-                />
-              </Link>
-            </div>
-            {/* <h2 className="text-black fw-bold mt-4 fs-20 text-center">
+      {!isAuthCheck ? (
+        <LoaderSpiner />
+      ) : (
+        <div className="auth-page-wrapper auth-bg-cover pt-5 pb-2 d-flex flex-column justify-content-center align-items-center min-vh-100">
+          <div className="bg-overlay "></div>
+          {/* <!-- auth-page content --> */}
+          <div className="branding-area">
+            <div className="container">
+              <div className="brand-logo">
+                <Link href="/university">
+                  <Image
+                    src={brandlogo ? brandlogo : ''}
+                    alt="Logo"
+                    width={300}
+                    height={300}
+                  />
+                </Link>
+              </div>
+              {/* <h2 className="text-black fw-bold mt-4 fs-20 text-center">
               Login To EduSmart
             </h2> */}
+            </div>
           </div>
-        </div>
-        <div className="auth-page-content overflow-hidden pt-lg-5">
-          <div className="container p-3">
-            <div className="row pt-1">
-              <div className="col-lg-12 fs-2 ">
-                <div className="card overflow-hidden">
-                  <div className="row justify-content-center g-0">
-                    <div className="col-lg-6">
-                      <div className="p-lg-5 p-4 auth-one-bg h-100 position-relative">
-                        <div className="bg-overlay-login"></div>
+          <div className="auth-page-content overflow-hidden pt-lg-5">
+            <div className="container p-3">
+              <div className="row pt-1">
+                <div className="col-lg-12 fs-2 ">
+                  <div className="card overflow-hidden">
+                    <div className="row justify-content-center g-0">
+                      <div className="col-lg-6">
+                        <div className="p-lg-5 p-4 auth-one-bg h-100 position-relative">
+                          <div className="bg-overlay-login"></div>
+                        </div>
                       </div>
-                    </div>
-                    {/* <!-- end col --> */}
+                      {/* <!-- end col --> */}
 
-                    <div className="col-lg-6">
-                      <div className="p-5 p-lg-5 px-4 px-lg-5 py-5">
-                        <div>
-                          <h5 className="fs-24 fw-bold text-black mb-5 text-center">
-                            Login To EduSmart
-                          </h5>
-                        </div>
+                      <div className="col-lg-6">
+                        <div className="p-5 p-lg-5 px-4 px-lg-5 py-5">
+                          <div>
+                            <h5 className="fs-24 fw-bold text-black mb-5 text-center">
+                              Login To EduSmart
+                            </h5>
+                          </div>
 
-                        <div className="mt-4">
-                          <Formik
-                            initialValues={initialValues}
-                            validationSchema={validationSchema}
-                            onSubmit={handleLogin}
-                          >
-                            {({ isSubmitting }) => (
-                              <Form>
-                                <Row>
-                                  <Col xl={12}>
-                                    <div className="mb-3">
-                                      <EmailField name="email" label="Email" />
-                                    </div>
-                                  </Col>
+                          <div className="mt-4">
+                            <Formik
+                              initialValues={initialValues}
+                              validationSchema={validationSchema}
+                              onSubmit={handleLogin}
+                            >
+                              {({ isSubmitting }) => (
+                                <Form>
+                                  <Row>
+                                    <Col xl={12}>
+                                      <div className="mb-3">
+                                        <EmailField
+                                          name="email"
+                                          label="Email"
+                                        />
+                                      </div>
+                                    </Col>
 
-                                  <Col xl={12}>
-                                    <PasswordField
-                                      name="password"
-                                      label="Password"
-                                    />
-                                  </Col>
-                                  <Col xl={12}>
-                                    <CheckboxField
-                                      name="remember_me"
-                                      label={'Remember Me'}
-                                    />
-                                  </Col>
-                                </Row>
-                                <div className="hstack gap-2 justify-content-start mx-auto mt-5 mb-2">
-                                  <SubmitButton
-                                    isSubmitting={isSubmitting}
-                                    formSubmit={'Login'}
-                                  >
-                                    {'Login'}
-                                  </SubmitButton>
-                                </div>
-                              </Form>
-                            )}
-                          </Formik>
-                        </div>
-                        {/* <div className="d-flex align-items-center justify-content-center gap-5 my-4">
+                                    <Col xl={12}>
+                                      <PasswordField
+                                        name="password"
+                                        label="Password"
+                                      />
+                                    </Col>
+                                    <Col xl={12}>
+                                      <CheckboxField
+                                        name="remember_me"
+                                        label={'Remember Me'}
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <div className="hstack gap-2 justify-content-start mx-auto mt-5 mb-2">
+                                    <SubmitButton
+                                      isSubmitting={isSubmitting}
+                                      formSubmit={'Login'}
+                                    >
+                                      {'Login'}
+                                    </SubmitButton>
+                                  </div>
+                                </Form>
+                              )}
+                            </Formik>
+                          </div>
+                          {/* <div className="d-flex align-items-center justify-content-center gap-5 my-4">
                           <button className="button text-white px-3 py-1">
                             <i className="ri-google-fill me-2"></i>Login with
                             Google
@@ -248,20 +291,20 @@ const Login = () => {
                           </button>
                         </div> */}
 
-                        <div className="mt-5 fs-2 text-center">
-                          <p className="mb-0">
-                            Don't have an account ?{' '}
-                            <Link
-                              href="/auth/register"
-                              className="fw-semibold text-primary text-decoration-underline"
-                            >
-                              {' '}
-                              Signup
-                            </Link>{' '}
-                          </p>
-                        </div>
+                          <div className="mt-5 fs-2 text-center">
+                            <p className="mb-0">
+                              Don't have an account ?{' '}
+                              <Link
+                                href="/auth/register"
+                                className="fw-semibold text-primary text-decoration-underline"
+                              >
+                                {' '}
+                                Signup
+                              </Link>{' '}
+                            </p>
+                          </div>
 
-                        {/* <div className="mt-4 d-flex justify-content-center">
+                          {/* <div className="mt-4 d-flex justify-content-center">
                             <GoogleLogin
                               onSuccess={(credentialResponse) => {
                                 handleGoogleLogin(credentialResponse);
@@ -270,38 +313,39 @@ const Login = () => {
                               useOneTap={true}
                             />
                           </div> */}
+                        </div>
                       </div>
+                      {/* <!-- end col --> */}
                     </div>
-                    {/* <!-- end col --> */}
-                  </div>
-                  {/* <!-- end row -->
+                    {/* <!-- end row -->
                         </div> */}
-                  {/* <!-- end card --> */}
+                    {/* <!-- end card --> */}
+                  </div>
+                  {/* <!-- end col -->/ */}
                 </div>
-                {/* <!-- end col -->/ */}
               </div>
             </div>
-          </div>
 
-          {/* <!-- footer --> */}
-          <footer className="mt-4">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="text-center">
-                    <p className="mb-0 fs-4">
-                      &copy; {new Date().getFullYear()} EduSmart. Crafted with{' '}
-                      <i className="mdi mdi-heart text-danger"></i> by Inleads
-                      IT MY
-                    </p>
+            {/* <!-- footer --> */}
+            <footer className="mt-4">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="text-center">
+                      <p className="mb-0 fs-4">
+                        &copy; {new Date().getFullYear()} EduSmart. Crafted with{' '}
+                        <i className="mdi mdi-heart text-danger"></i> by Inleads
+                        IT MY
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </footer>
-          {/* <!-- end Footer --> */}
+            </footer>
+            {/* <!-- end Footer --> */}
+          </div>
         </div>
-      </div>
+      )}
 
       <Script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
