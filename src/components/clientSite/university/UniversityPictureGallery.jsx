@@ -1,8 +1,8 @@
+import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import React from 'react';
 
 const UniversityPictureGallery = ({ university }) => {
-
   return (
     <>
       <section className="gellary-area py-5">
@@ -24,7 +24,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[0]?.url ||
-                  '/assets/university-gallery/1st-element.jpeg'
+                  // '/assets/university-gallery/1st-element.jpeg'
+                  userDummyImage
                 }
                 alt=""
               />
@@ -34,7 +35,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[1]?.url ||
-                  '/assets/university-gallery/second-element.png'
+                  // '/assets/university-gallery/second-element.png'
+                  userDummyImage
                 }
                 alt=""
               />
@@ -46,7 +48,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[2]?.url ||
-                  '/assets/university-gallery/third-element.jpeg'
+                  // '/assets/university-gallery/third-element.jpeg'
+                  userDummyImage
                 }
                 alt=""
               />
@@ -56,7 +59,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[3]?.url ||
-                  '/assets/university-gallery/fourth-element.png'
+                  // '/assets/university-gallery/fourth-element.png'
+                  userDummyImage
                 }
                 alt=""
               />
@@ -66,7 +70,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[4]?.url ||
-                  '/assets/university-gallery/fivth-element.png'
+                  // '/assets/university-gallery/fivth-element.png'
+                  userDummyImage
                 }
                 alt=""
               />
@@ -78,7 +83,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[5]?.url ||
-                  '/assets/university-gallery/sixth-element.jpeg'
+                  // '/assets/university-gallery/sixth-element.jpeg'
+                  userDummyImage
                 }
                 alt=""
               />
@@ -88,7 +94,8 @@ const UniversityPictureGallery = ({ university }) => {
                 height={500}
                 src={
                   university?.images?.[6]?.url ||
-                  '/assets/university-gallery/seventh-element.png'
+                  // '/assets/university-gallery/seventh-element.png'
+                  userDummyImage
                 }
                 alt=""
               />

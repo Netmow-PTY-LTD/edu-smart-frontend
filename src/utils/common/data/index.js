@@ -243,14 +243,25 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
       </div>
     ),
   },
+  {
+    title: 'Agent',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.requested_by?.first_name && item?.requested_by?.last_name
+          ? `${item?.requested_by?.first_name ? item?.requested_by?.first_name : ''} ${item?.requested_by?.last_name ? item?.requested_by?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
 
   {
-    title: 'Email',
+    title: 'Agent Email',
     key: 'email',
     render: (item) => (
       <div>
         <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item?.user?.email ? item?.user?.email : '-'}`}
+          {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
         </h5>
       </div>
     ),

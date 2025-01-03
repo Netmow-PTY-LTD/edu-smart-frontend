@@ -22,13 +22,13 @@ import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 // import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
-// const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
-const appEnvironment = 'production';
+const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
 const Register = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [step, setStep] = useState(1);
+  const [checkExistingUser, setCheckExistingUser] = useState('');
 
   const [logIn, { data: LoginData }] = useLogInMutation();
   const [generateOtp] = useGenerateOtpMutation();
@@ -38,25 +38,77 @@ const Register = () => {
 
   useEffect(() => {
     if (LoginData?.data?.token && LoginData?.data?.role === 'agent') {
-      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      const subdomain = LoginData?.data?.domain?.subdomain;
+      const token = LoginData?.data?.token;
+
       if (appEnvironment === 'development') {
+        Cookies.set('token', token, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
+        Cookies.set('subdomain', subdomain, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
+
+        // window.location.assign(
+        //   `${window.location.protocol}//${subdomain}.localhost:3005/dashboard/agent`
+        // );
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/agent`
+          `${window.location.protocol}//localhost:3005/dashboard/agent`
         );
       } else {
+        const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+        Cookies.set('token', token, {
+          domain: domain,
+          expires: 7,
+        });
+        Cookies.set('subdomain', subdomain, {
+          domain: domain,
+          expires: 7,
+        });
+
+        // window.location.assign(
+        //   `${window.location.protocol}//${subdomain}.${domain}/dashboard/agent`
+        // );
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent`
+          `${window.location.protocol}//${domain}/dashboard/agent`
         );
       }
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
-      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      const subdomain = LoginData?.data?.domain?.subdomain;
+      const token = LoginData?.data?.token;
+
       if (appEnvironment === 'development') {
+        Cookies.set('token', token, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
+        Cookies.set('subdomain', subdomain, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/student`
+          `${window.location.protocol}//localhost:3005/dashboard/student`
         );
       } else {
+        const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+        Cookies.set('token', token, {
+          domain: domain,
+          expires: 7,
+        });
+        Cookies.set('subdomain', subdomain, {
+          domain: domain,
+          expires: 7,
+        });
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student`
+          `${window.location.protocol}//${domain}/dashboard/student`
         );
       }
     } else if (
@@ -91,7 +143,7 @@ const Register = () => {
     city: '',
     state: '',
     zip: '',
-    terms_and_conditions: '',
+    terms_and_conditions: false,
     user_role: '',
   });
 
@@ -99,16 +151,27 @@ const Register = () => {
     user_role: Yup.string().required('Please Select User First'),
     email: Yup.string().required('Email is required'),
     password: Yup.string().required('Password is required'),
-    terms_and_conditions: Yup.string().required(
-      'terms_and_conditions is required'
-    ),
+    terms_and_conditions: Yup.boolean()
+      .oneOf([true], 'You must accept the terms and conditions')
+      .required('terms_and_conditions is required'),
   });
 
   const agentRegistrationValidationSchema = Yup.object({
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last Name is required'),
-    secondary_email: Yup.string().required('Secondary Email is required'),
-    subdomain: Yup.string().required('Subdomain is required'),
+
+    subdomain: Yup.string().test(
+      'subdomain-required',
+      'Subdomain is required',
+      function (value) {
+        const { user_role } = this.parent;
+        if (user_role !== 'Student' && user_role !== 'University' && !value) {
+          return false;
+        }
+        return true;
+      }
+    ),
+
     phone: Yup.string().required('Phone is required'),
     address_line_1: Yup.string().required('Address Line 1 is required'),
     country: Yup.string().required('Country is required'),
@@ -121,11 +184,16 @@ const Register = () => {
     setSubmitting(true);
 
     try {
-      const res = await generateOtp({ email: values?.email }).unwrap();
-      if (res) {
-        setInitialValues(values);
-        toast.success(res?.message);
-        setStep(step + 1);
+      if (checkExistingUser) {
+        toast.error('Email already exists');
+      } else {
+        const res = await generateOtp({ email: values?.email }).unwrap();
+        if (res) {
+          setCheckExistingUser('');
+          setInitialValues(values);
+          toast.success(res?.message);
+          setStep(step + 1);
+        }
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -231,7 +299,7 @@ const Register = () => {
     }
   };
 
-  console.log(initialValues?.user_role);
+  console.log(initialValues);
 
   return (
     <>
@@ -265,6 +333,7 @@ const Register = () => {
                         validationSchema={initialStepValidationSchema}
                         formSubmit={'Continue To Register'}
                         setInitialValues={setInitialValues}
+                        setCheckExistingUser={setCheckExistingUser}
                       />
                     </>
                   )}

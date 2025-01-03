@@ -3,6 +3,8 @@ import SearchComponent from '@/components/common/SearchComponent';
 
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useUpdateDocStatusForAgentMutation } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -38,6 +40,8 @@ const DocumentPage = ({
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  console.log(getSingleStudent?.data?.documents[0]?.file[0]?.url);
 
   const docRequestTableHeaderData = [
     {
@@ -111,6 +115,39 @@ const DocumentPage = ({
         </span>
       ),
     },
+    {
+      title: 'Preview',
+      key: 'preview',
+      render: (item) => {
+        console.log(item);
+        console.log(item?.file[0]?.url);
+        return (
+          <div>
+            {item?.file.length > 0 ? (
+              <Link target="_blank" href={`${item?.file[0]?.url}`}>
+                {item?.file[0]?.url?.endsWith('.pdf') ? (
+                  <div>Open File</div>
+                ) : (
+                  <Image
+                    src={
+                      typeof item?.file[0]?.url === 'string'
+                        ? item?.file[0]?.url
+                        : URL.createObjectURL(new Blob([item?.file[0]?.url]))
+                    }
+                    alt="file"
+                    width={50}
+                    height={50}
+                  />
+                )}
+              </Link>
+            ) : (
+              ''
+            )}
+          </div>
+        );
+      },
+    },
+
     {
       title: 'Actions',
       key: 'actions',

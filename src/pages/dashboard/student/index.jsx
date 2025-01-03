@@ -43,7 +43,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     setAllRegisteredUniversitydata([
       studentAndLogoData,
-      ...universityHeadersWithoutAction,
+      ...universityHeadersWithoutAction.slice(0, -1),
     ]);
   }, []);
 
@@ -64,7 +64,7 @@ const StudentDashboard = () => {
                   <Row xxl={12} className="g-5">
                     <Col xxl={12}>
                       <LatestRegistered
-                        tableHead={'All Registered University'}
+                        tableHead={'All University'}
                         headers={allRegisteredUniversitydata}
                         data={universityData?.data ? universityData?.data : []}
                       />

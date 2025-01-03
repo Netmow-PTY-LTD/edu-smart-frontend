@@ -1,5 +1,6 @@
 import AddStudentComponentForAgent from '@/components/agentDashboard/AddStudentComponent';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
   useAllStudentForAgentQuery,
@@ -13,6 +14,7 @@ import { toast, ToastContainer } from 'react-toastify';
 const EditStudentForAgent = () => {
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState(null);
+  const [isEditLoading, setIsEditLoading] = useState(false);
   const student_id = router.query.id;
   const [initialValues, setInitialValues] = useState({
     first_name: '',
@@ -33,13 +35,14 @@ const EditStudentForAgent = () => {
   const [updateStudentForAgent] = useUpdateStudentForAgentMutation();
   const { refetch: allStudentForAgentRefetch } = useAllStudentForAgentQuery();
 
-  const { data: singleStudentForAgentData } = useSingleStudentForAgentQuery(
-    student_id,
-    { skip: !student_id }
-  );
+  const {
+    data: singleStudentForAgentData,
+    isLoading: singleStudentForAgentIsLoading,
+  } = useSingleStudentForAgentQuery(student_id, { skip: !student_id });
 
   useEffect(() => {
     const fetchStudentData = async () => {
+      setIsEditLoading(true);
       if (singleStudentForAgentData?.data) {
         const student = singleStudentForAgentData?.data
           ? singleStudentForAgentData?.data
@@ -67,6 +70,7 @@ const EditStudentForAgent = () => {
         const imageUrl = URL.createObjectURL(profile_image);
         setImagePreview(imageUrl);
       }
+      setIsEditLoading(false);
     };
     fetchStudentData();
   }, [singleStudentForAgentData]);
@@ -108,17 +112,20 @@ const EditStudentForAgent = () => {
       <div className="page-content">
         <div className="container-fluid">
           <ToastContainer />
-
-          <div className="h-100">
-            <AddStudentComponentForAgent
-              headTitle={'Update Student'}
-              initialValues={initialValues}
-              handleSubmit={handleSubmit}
-              formSubmit={'Update Student'}
-              imagePreview={imagePreview}
-              setImagePreview={setImagePreview}
-            />
-          </div>
+          {isEditLoading || singleStudentForAgentIsLoading ? (
+            <LoaderSpiner />
+          ) : (
+            <div className="h-100">
+              <AddStudentComponentForAgent
+                headTitle={'Update Student'}
+                initialValues={initialValues}
+                handleSubmit={handleSubmit}
+                formSubmit={'Update Student'}
+                imagePreview={imagePreview}
+                setImagePreview={setImagePreview}
+              />
+            </div>
+          )}
         </div>
       </div>
     </Layout>

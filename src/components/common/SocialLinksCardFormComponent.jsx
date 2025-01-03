@@ -61,10 +61,10 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
   const validationSchema = Yup.object({
     facebook: Yup.string()
       .matches(
-        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.com'
+        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-]*)*$/,
+        'Please enter a valid URL, e.g., https://www.domain.com or https://www.domain.com/facebook'
       )
-      .required('Name is required'),
+      .required('Facebook URL is required'),
     whatsapp: Yup.string()
       .matches(
         /^\+?(\d{1,4})?[\s.-]?\(?\d{1,4}\)?[\s.-]?\d{1,4}[\s.-]?\d{1,4}$/,
@@ -73,28 +73,28 @@ const SocialLinksCardFormComponent = ({ university_id }) => {
       .required('WhatsApp number is required'),
     twitter: Yup.string()
       .matches(
-        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.com'
+        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-]*)*$/,
+        'Please enter a valid URL, e.g., https://www.domain.com or https://www.domain.com/twitter'
       )
-      .required('Name is required'),
+      .required('Twitter URL is required'),
     linkedin: Yup.string()
       .matches(
-        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.com'
+        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-]*)*$/,
+        'Please enter a valid URL, e.g., https://www.domain.com or https://www.domain.com/linkedin'
       )
-      .required('Name is required'),
+      .required('LinkedIn URL is required'),
     instagram: Yup.string()
       .matches(
-        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.com'
+        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-]*)*$/,
+        'Please enter a valid URL, e.g., https://www.domain.com or https://www.domain.com/instagram'
       )
-      .required('Name is required'),
+      .required('Instagram URL is required'),
     youtube: Yup.string()
       .matches(
-        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/,
-        'Please enter a valid URL, e.g., https://www.domain.com'
+        /^https:\/\/(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/[a-zA-Z0-9-]*)*$/,
+        'Please enter a valid URL, e.g., https://www.domain.com or https://www.domain.com/youtube'
       )
-      .required('Name is required'),
+      .required('YouTube URL is required'),
   });
 
   // Handle form submission

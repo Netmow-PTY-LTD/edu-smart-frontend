@@ -27,6 +27,7 @@ export default function UniversitySponsorsList({ university_id }) {
   const [previewImage, setPreviewImage] = useState('');
   const [sponsorId, setSponsorId] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isUpdateLoading, setIsUpdateLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
     name: '',
     link: '',
@@ -60,6 +61,7 @@ export default function UniversitySponsorsList({ university_id }) {
 
   useEffect(() => {
     if (getSingleUniversityData?.data?.sponsors && sponsorId) {
+      setIsUpdateLoading(true);
       const sponsor =
         getSingleUniversityData?.data?.sponsors?.length > 0 &&
         getSingleUniversityData?.data?.sponsors?.find(
@@ -89,6 +91,7 @@ export default function UniversitySponsorsList({ university_id }) {
         };
         fetchedData();
       }
+      setIsUpdateLoading(false);
     }
   }, [getSingleUniversityData?.data?.sponsors, sponsorId]);
 
@@ -131,7 +134,8 @@ export default function UniversitySponsorsList({ university_id }) {
       const result = await universitySponsor(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        setAddModalIsOpen(!addModalIsOpen);
+        getSingleUniversityRefetch();
+        setAddModalIsOpen(false);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -171,7 +175,7 @@ export default function UniversitySponsorsList({ university_id }) {
       const result = await universitySponsor(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        setEditModalIsOpen(!editModalIsOpen);
+        handleEditModalClose();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -284,7 +288,7 @@ export default function UniversitySponsorsList({ university_id }) {
   ];
 
   const handleEditModalClose = () => {
-    // getSingleDepartmentRefetch();
+    getSingleUniversityRefetch();
     setSponsorId(null);
     setInitialValues({
       name: '',
@@ -293,6 +297,7 @@ export default function UniversitySponsorsList({ university_id }) {
       end_date: '',
       logo: '',
     });
+    setPreviewImage('');
     setEditModalIsOpen(false);
   };
 
@@ -305,7 +310,7 @@ export default function UniversitySponsorsList({ university_id }) {
 
   return (
     <Col lg={10}>
-      {getSingleUniversityIsLoading ? (
+      {getSingleUniversityIsLoading || isUpdateLoading ? (
         <LoaderSpiner />
       ) : (
         <>
