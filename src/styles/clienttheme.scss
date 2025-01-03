@@ -8294,6 +8294,7 @@ img.staff-img {
 .course-card {
   text-align: start;
   max-width: 513px;
+  margin: 0 auto;
 
   .course-card__body {
     display: flex;
@@ -8364,8 +8365,74 @@ img.staff-img {
 
     }
   }
+   // Responsive styles
+   @media (max-width: 768px) {
+    max-width: 100%;
+    padding: 12px;
+
+    .course-card__body {
+      header {
+        h6 {
+          font-size: 16px;
+
+          i {
+            margin-right: 3px;
+          }
+        }
+
+        h5 {
+          font-size: 20px;
+        }
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
+
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+
+      button {
+        font-size: 18px;
+        padding: 8px 16px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .course-card__body {
+      header {
+        h6 {
+          font-size: 14px;
+        }
+
+        h5 {
+          font-size: 18px;
+        }
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    footer {
+      button {
+        font-size: 16px;
+        padding: 6px 12px;
+      }
+    }
+  }
 }
 
+
+
+
+
+// Popular Courses Button
 .popular-coureses-button {
   padding: 14px 24px;
   color: var(--Black, #1C1C1C);
@@ -8377,4 +8444,14 @@ img.staff-img {
   border-radius: 12px;
   background: var(--Secondary-Color, #13C9BF);
 
+  @media (max-width: 768px) {
+    font-size: 18px;
+    padding: 12px 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    padding: 10px 16px;
+  }
 }
+
