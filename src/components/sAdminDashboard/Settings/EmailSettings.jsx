@@ -1,9 +1,15 @@
 import EmailField from '@/components/common/formField/EmailField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import OtpComponent from '@/components/common/OtpComponent';
+import { useChangeEmailMutation } from '@/slice/services/common/settingsService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import {
+  useGenerateOtpMutation,
+  useVerifyOtpMutation,
+} from '@/slice/services/public/auth/authService';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader, CardTitle, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -14,43 +20,123 @@ const EmailSettings = () => {
   const { data: userInfodata, refetch: userInfoRefetch } =
     useGetUserInfoQuery();
 
+  const [generateOtp, { isLoading: generateOtpIsloading }] =
+    useGenerateOtpMutation();
+
+  const [verifyOtp] = useVerifyOtpMutation();
+
+  const [changeEmail] = useChangeEmailMutation();
+
   const [initialValues, setInitialValues] = useState({
-    email: '',
+    current_email: '',
+    new_email: '',
+    otp: '',
   });
 
   useEffect(() => {
     if (step === 1) {
       setInitialValues({
-        email: userInfodata?.data?.email,
+        current_email: userInfodata?.data?.email,
       });
     }
   }, [step, userInfodata]);
 
+  useEffect(() => {
+    if (step === 2) {
+      const inputElements = document.querySelectorAll('input.code-input');
+
+      const handleKeyDown = (e, index) => {
+        if (e.keyCode === 8 && e.target.value === '' && index > 0) {
+          const newIndex = Math.max(0, index - 1);
+          inputElements[newIndex].focus();
+          setOtp((prevValues) => {
+            const newValues = [...prevValues];
+            newValues[newIndex] = '';
+            return newValues;
+          });
+        }
+      };
+
+      const handleInput = (e, index) => {
+        const newValue = e.target.value;
+        const [first, ...rest] = newValue;
+
+        setOtp((prevValues) => {
+          const newValues = [...prevValues];
+          newValues[index] = first ?? '';
+          return newValues;
+        });
+
+        if (first !== undefined && index < otp.length - 1) {
+          inputElements[index + 1].focus();
+        }
+      };
+
+      inputElements.forEach((ele, index) => {
+        ele.addEventListener('keydown', (e) => handleKeyDown(e, index));
+        ele.addEventListener('input', (e) => handleInput(e, index));
+      });
+
+      return () => {
+        inputElements.forEach((ele, index) => {
+          ele.removeEventListener('keydown', (e) => handleKeyDown(e, index));
+          ele.removeEventListener('input', (e) => handleInput(e, index));
+        });
+      };
+    }
+  }, [otp.length, step]);
+
   const validationSchema = Yup.object({});
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    // setSubmitting(true);
+    setSubmitting(true);
     try {
       {
-        step === 1 && setStep(step + 1);
-        setInitialValues({
-          email: '',
-        });
+        if (step === 1) {
+          const response = await generateOtp({
+            email: values.current_email,
+          }).unwrap();
+          if (response?.success) {
+            toast.success('OTP sent successfully');
+            setStep(step + 1);
+          }
+        }
       }
 
       {
-        step === 2 && setStep(step + 1);
+        if (step === 2) {
+          const response = await verifyOtp({
+            email: values.current_email,
+            otp: otp.join(''),
+          }).unwrap();
+          if (response?.success) {
+            toast.success(response?.message);
+            setOtp(['', '', '', '', '', '']);
+            setStep(step + 1);
+          }
+        }
       }
 
       {
-        step === 3 && setStep(step + 1);
+        if (step === 3) {
+          const response = await changeEmail({
+            current_email: initialValues.current_email,
+            new_email: values.new_email,
+          }).unwrap();
+          if (response?.success) {
+            userInfoRefetch();
+            toast.success('Email changed successfully');
+            setStep(1);
+          }
+        }
       }
 
       console.log(values);
     } catch (error) {
+      toast.error('Error during form submission');
       console.error('Error during form submission:', error);
     } finally {
-      // setSubmitting(false);
+      setSubmitting(false);
     }
   };
 
@@ -91,7 +177,7 @@ const EmailSettings = () => {
                     {step === 1 && (
                       <Col>
                         <EmailField
-                          name={'email'}
+                          name={'current_email'}
                           label={'Current Email'}
                           disabled={true}
                         />
@@ -100,19 +186,24 @@ const EmailSettings = () => {
                     {step === 2 && (
                       <Col>
                         <h2 className="text-center text-primary">Enter OTP</h2>
+                        <h4 className="text-center text-primary">
+                          We have send and OTP to your current email. Please
+                          check your inbox and verify.{' '}
+                        </h4>
                         <OtpComponent
                           otp={otp}
                           handlePaste={handlePaste}
-                          isLoading={'isLoading'}
+                          isLoading={generateOtpIsloading}
                           handleSubmit={handleSubmit}
                           setOtp={setOtp}
+                          showBtn={false}
                         />
                       </Col>
                     )}
                     {step === 3 && (
                       <Col>
                         <EmailField
-                          name={'email'}
+                          name={'new_email'}
                           label={'Change Email'}
                           disabled={false}
                         />
