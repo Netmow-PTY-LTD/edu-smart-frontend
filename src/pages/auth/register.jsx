@@ -100,7 +100,7 @@ const Register = () => {
     email: Yup.string().required('Email is required'),
     password: Yup.string().required('Password is required'),
     terms_and_conditions: Yup.string().required(
-      'terms_and_conditions is required'
+      'Terms and conditions is required'
     ),
   });
 
