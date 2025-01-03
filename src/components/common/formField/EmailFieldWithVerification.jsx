@@ -1,11 +1,16 @@
 import { useVerifyExistingUserMutation } from '@/slice/services/public/auth/authService';
 import { useField } from 'formik';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-const EmailFieldWithVerification = ({ label, ...props }) => {
+const EmailFieldWithVerification = ({
+  label,
+  setCheckExistingUser,
+  ...props
+}) => {
   const [field, meta] = useField(props);
   const [isVerify, setIsVerify] = useState(null);
-  
+
   const [verifyExistingUser, { data: LoginData, error }] =
     useVerifyExistingUserMutation();
 
@@ -15,10 +20,14 @@ const EmailFieldWithVerification = ({ label, ...props }) => {
         try {
           const res = await verifyExistingUser({ email: field.value }).unwrap();
           if (res) {
+            console.log(res);
             setIsVerify(true);
+            setCheckExistingUser(field.value);
+            toast.error('Email already exists');
           }
         } catch (error) {
           setIsVerify(false);
+          setCheckExistingUser('');
         }
       } else {
         setIsVerify(false);
@@ -26,9 +35,7 @@ const EmailFieldWithVerification = ({ label, ...props }) => {
     };
 
     verifyEmail();
-  }, [field?.value, verifyExistingUser]);
-
-
+  }, [field.value, setCheckExistingUser, verifyExistingUser]);
 
   return (
     <div className="mb-3 pb-3">

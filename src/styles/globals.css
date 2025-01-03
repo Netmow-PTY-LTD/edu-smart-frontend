@@ -42,6 +42,7 @@ body {
 .bg-third-color {
   background-color: var(--third-color);
 }
+
 .bg-fourth-color {
   background-color: var(--fourth-color);
 }

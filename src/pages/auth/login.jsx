@@ -114,13 +114,36 @@ const Login = () => {
     } else if (LoginData?.data?.token && LoginData?.data?.role === 'student') {
       Cookies.set('token', LoginData?.data?.token, { expires: 7 });
       Cookies.set('role', LoginData?.data?.role, { expires: 7 });
+      const subdomain = LoginData?.data?.domain?.subdomain;
+      const token = LoginData?.data?.token;
+
       if (appEnvironment === 'development') {
+        Cookies.set('token', token, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
+        Cookies.set('subdomain', subdomain, {
+          expires: 7,
+          domain: '.localhost',
+          sameSite: 'Lax',
+        });
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/student`
+          `${window.location.protocol}//localhost:3005/dashboard/student`
         );
       } else {
+        const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
+
+        Cookies.set('token', token, {
+          domain: domain,
+          expires: 7,
+        });
+        Cookies.set('subdomain', subdomain, {
+          domain: domain,
+          expires: 7,
+        });
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student`
+          `${window.location.protocol}//${domain}/dashboard/student`
         );
       }
     } else if (
