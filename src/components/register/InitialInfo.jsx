@@ -14,6 +14,7 @@ const InitialInfo = ({
   onSubmit,
   formSubmit,
   setInitialValues,
+  setCheckExistingUser,
 }) => {
   const roleOptions = [
     {
@@ -65,6 +66,7 @@ const InitialInfo = ({
                           <EmailFieldWithVerification
                             name="email"
                             label="Email"
+                            setCheckExistingUser={setCheckExistingUser}
                           />
                         </div>
                       </Col>

@@ -5,7 +5,6 @@ import countryList from 'react-select-country-list';
 import { ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 import CountrySelectField from '../common/formField/CountrySelectField';
-import EmailField from '../common/formField/EmailField';
 import NumberField from '../common/formField/NumberField';
 import SubmitButton from '../common/formField/SubmitButton';
 import TextField from '../common/formField/TextField';
@@ -30,7 +29,7 @@ const DetailsInfo = ({
               Let’s fill the form to complete your registration successfully.
             </h5>
             <p className="text-danger text-bold">
-              Note: Star (*) marked fields are required to fill.
+              All fields are required to fill.
             </p>
           </div>
 
@@ -39,8 +38,9 @@ const DetailsInfo = ({
               initialValues={initialValues}
               validationSchema={agentRegistrationValidationSchema}
               onSubmit={handleRegistrationSubmit}
+              validateOnChange={true}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, values }) => (
                 <Form>
                   <Row>
                     <Col md={6}>
@@ -50,26 +50,28 @@ const DetailsInfo = ({
                       <TextField name={'last_name'} label={'Last Name'} />
                     </Col>
 
-                    <Col md={6}>
-                      <EmailField
-                        name={'secondary_email'}
-                        label={'Secondary Email'}
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <TextField
-                        name={'subdomain'}
-                        label={
-                          'Subdomain Name (part of URL, cannot be changed)'
-                        }
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <TextField
-                        name={'organization_name'}
-                        label={'Organization Name )'}
-                      />
-                    </Col>
+                    {values?.user_role === 'Student' ||
+                    values?.user_role === 'University' ? (
+                      ''
+                    ) : (
+                      <>
+                        <Col md={6}>
+                          <TextField
+                            name={'subdomain'}
+                            label={
+                              'Subdomain Name (part of URL, cannot be changed)'
+                            }
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <TextField
+                            name={'organization_name'}
+                            label={'Organization Name )'}
+                          />
+                        </Col>
+                      </>
+                    )}
+
                     <Col md={6}>
                       <CountrySelectField
                         name={'country'}
@@ -77,7 +79,7 @@ const DetailsInfo = ({
                         options={options}
                       />
                     </Col>
-                    <Col md={4}>
+                    <Col md={6}>
                       <NumberField name={'phone'} label={'Phone'} />
                     </Col>
                     <Col md={4}>

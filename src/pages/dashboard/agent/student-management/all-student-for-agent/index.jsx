@@ -29,7 +29,7 @@ const AllStudentsForAgent = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [studentHeadersData, setStudentHeadersData] = useState([]);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [studentIdForDelete, setStudentIdForDelete] = useState(false);
+  const [studentIdForDelete, setStudentIdForDelete] = useState('');
 
   const perPageData = 10;
 
@@ -57,7 +57,7 @@ const AllStudentsForAgent = () => {
   const handleDeleteButtonClick = (itemId) => {
     console.log(itemId);
     setStudentIdForDelete(itemId);
-    setDeleteModalIsOpen(!deleteModalIsOpen);
+    setDeleteModalIsOpen(true);
   };
 
   const handleDelete = async (id) => {
@@ -66,7 +66,8 @@ const AllStudentsForAgent = () => {
       if (result) {
         toast.success(result?.message);
         await allStudentForAgentRefetch();
-        handleDeleteButtonClick();
+        setStudentIdForDelete('');
+        setDeleteModalIsOpen(!deleteModalIsOpen);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -75,6 +76,18 @@ const AllStudentsForAgent = () => {
       //
     }
   };
+
+  useEffect(() => {
+    if (allStudentForAgentData?.data?.length > 0) {
+      const updatedHeaders = [
+        studentAndLogoData,
+        ...studentsHeadersWithoutAction.slice(1),
+        studentHeaderAction,
+      ];
+      setStudentHeadersData(updatedHeaders);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allStudentForAgentData?.data?.length]);
 
   const studentAndLogoData = {
     title: 'Logo - Name',
@@ -161,18 +174,6 @@ const AllStudentsForAgent = () => {
       </UncontrolledDropdown>
     ),
   };
-
-  useEffect(() => {
-    if (allStudentForAgentData?.data?.length > 0) {
-      const updatedHeaders = [
-        studentAndLogoData,
-        ...studentsHeadersWithoutAction.slice(1),
-        studentHeaderAction,
-      ];
-      setStudentHeadersData(updatedHeaders);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allStudentForAgentData?.data?.length]);
 
   return (
     <Layout>
