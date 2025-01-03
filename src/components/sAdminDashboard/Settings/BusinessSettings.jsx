@@ -9,7 +9,7 @@ import { convertImageUrlToFile } from '@/components/common/helperFunctions/Conve
 import {
   useGetAgentBusinessSettingsQuery,
   useUpdateAgentBusinessSettingsMutation,
-} from '@/slice/services/agent/AgentSettingsService';
+} from '@/slice/services/agent/agentSettingsService';
 import { Form, Formik } from 'formik';
 import { useEffect, useMemo, useState } from 'react';
 import countryList from 'react-select-country-list';
@@ -43,6 +43,7 @@ const BusinessSettings = () => {
     data: agentBusinessSettingData,
     refetch: agentBusinessSettingRefetch,
   } = useGetAgentBusinessSettingsQuery();
+
   const [updateAgentBusinessSettings] =
     useUpdateAgentBusinessSettingsMutation();
 
