@@ -11,6 +11,7 @@ import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/dat
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
+import * as Yup from 'yup';
 
 const AllUploadDocumentsForStudents = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,7 +38,36 @@ const AllUploadDocumentsForStudents = () => {
   const [submitSingleDocumentForStudent] =
     useSubmitSingleDocumentForStudentMutation();
 
-  console.log(getDocumentRequestForStudentData);
+  const validationSchema = Yup.object({
+    document: Yup.array()
+      .of(
+        Yup.mixed()
+          .test(
+            'fileFormat',
+            'Only PDF, JPG, PNG files are allowed',
+            (value) => {
+              if (value) {
+                const fileType = value.type;
+                return (
+                  fileType === 'application/pdf' ||
+                  fileType === 'image/jpeg' ||
+                  fileType === 'image/png'
+                );
+              }
+              return false;
+            }
+          )
+          .test('fileSize', 'File size must be 5MB or less', (value) => {
+            if (value) {
+              return value.size <= 5 * 1024 * 1024;
+            }
+            return false;
+          })
+      )
+      .required('Documents are required')
+      .min(1, 'At least one document is required')
+      .max(5, 'You can upload a maximum of 5 documents'),
+  });
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -73,11 +103,6 @@ const AllUploadDocumentsForStudents = () => {
       const finalData = new FormData();
       Object.entries(updatedata).forEach(([key, value]) => {
         if (key === 'document') {
-          // if (Array.isArray(value)) {
-          //   value.forEach((item, index) => {
-          //     finalData.append(`${key}[${index}]`, item);
-          //   });
-          // }
           if (Array.isArray(value)) {
             value.forEach((item, index) => {
               finalData.append(`${key}`, item);
@@ -154,6 +179,7 @@ const AllUploadDocumentsForStudents = () => {
             toggle={togModal}
             handleAddSubmit={handleSubmit}
             submitBtn={'Upload'}
+            validationSchema={validationSchema}
           />
         }
       </div>

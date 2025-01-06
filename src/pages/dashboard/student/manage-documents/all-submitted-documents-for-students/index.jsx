@@ -4,13 +4,18 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
-import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllSubmittedDocumentsForStudents = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-
+  const [
+    AllUploadDocumentsForStudentsData,
+    setAllUploadDocumentsForStudentsData,
+  ] = useState('');
   const perPageData = 10;
 
   const {
@@ -32,6 +37,39 @@ const AllSubmittedDocumentsForStudents = () => {
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+  useEffect(() => {
+    setAllUploadDocumentsForStudentsData([
+      ...studentSubmittedDocumentsHeaderWithoutAction,
+      ...uploadAction,
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const uploadAction = [
+    {
+      title: 'Preview',
+      key: 'preview',
+      render: (item) => (
+        <Link target="_blank" href={`${item?.file?.url}`}>
+          {item?.file?.url?.endsWith('.pdf') ? (
+            <div>Open File</div>
+          ) : (
+            <Image
+              src={
+                typeof item?.file[0]?.url === 'string'
+                  ? item?.file[0]?.url
+                  : URL.createObjectURL(new Blob([item?.file?.url]))
+              }
+              alt="file"
+              width={80}
+              height={50}
+            />
+          )}
+        </Link>
+      ),
+    },
+  ];
+
   console.log(isFilteredData);
 
   return (
@@ -51,7 +89,7 @@ const AllSubmittedDocumentsForStudents = () => {
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={studentSubmittedDocumentsHeaderWithoutAction}
+                  headers={AllUploadDocumentsForStudentsData}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
