@@ -47,10 +47,10 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
       ) {
         setFilePreview(null);
       }
-      form.setFieldValue(field.name, file);
+      form?.setFieldValue(field?.name, file);
     } else {
       setFilePreview(null);
-      form.setFieldValue(field.name, null);
+      form?.setFieldValue(field?.name, null);
     }
   };
 

@@ -21,7 +21,14 @@ export const publicAgentService = createApi({
         method: 'GET',
       }),
     }),
+    getSingleAgent: builder.query({
+      query: (id) => ({
+        url: `/agent/${id}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetAllAgentQuery } = publicAgentService;
+export const { useGetAllAgentQuery, useGetSingleAgentQuery } =
+  publicAgentService;

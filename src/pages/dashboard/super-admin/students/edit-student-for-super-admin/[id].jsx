@@ -38,7 +38,11 @@ const EditStudentForAgent = () => {
   const {
     data: singleStudentForAgentData,
     isLoading: singleStudentForAgentIsLoading,
+    refetch: singleStudentForAgentRefetch,
   } = useSingleStudentForAgentQuery(student_id, { skip: !student_id });
+
+  console.log(singleStudentForAgentData);
+  console.log(student_id);
 
   useEffect(() => {
     const fetchStudentData = async () => {
@@ -75,6 +79,8 @@ const EditStudentForAgent = () => {
     fetchStudentData();
   }, [singleStudentForAgentData]);
 
+  console.log(initialValues);
+
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
 
@@ -92,11 +98,10 @@ const EditStudentForAgent = () => {
       if (response) {
         toast.success(response?.message);
         allStudentForAgentRefetch();
+        singleStudentForAgentRefetch();
         setImagePreview(null);
         resetForm();
-        router.push(
-          '/dashboard/agent/student-management/all-student-for-agent'
-        );
+        router.push('/dashboard/super-admin/students');
       }
     } catch (error) {
       const errorMessage = error?.data?.message;

@@ -8,8 +8,8 @@ import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentSe
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
-  agentsHeadersWithoutAction,
-  studentsHeadersWithoutAction,
+  agentsHeaders,
+  studentsHeadersWithLogoLink,
   superAdminNameAndLogoData,
   universityHeadersWithoutAction,
 } from '@/utils/common/data';
@@ -90,14 +90,14 @@ const SuperAdminDashboard = () => {
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
-                        headers={agentsHeadersWithoutAction}
+                        headers={agentsHeaders}
                         data={allAgentsData?.data ? allAgentsData?.data : []}
                       />
                     </Col>
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
-                        headers={studentsHeadersWithoutAction}
+                        headers={studentsHeadersWithLogoLink}
                         data={
                           allStudentsData?.data ? allStudentsData?.data : []
                         }
