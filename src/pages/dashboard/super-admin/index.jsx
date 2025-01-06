@@ -9,7 +9,7 @@ import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStu
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
   agentsHeadersWithoutAction,
-  studentsHeadersWithoutAction,
+  studentsHeadersWithLogoLink,
   superAdminNameAndLogoData,
   universityHeadersWithoutAction,
 } from '@/utils/common/data';
@@ -97,7 +97,7 @@ const SuperAdminDashboard = () => {
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
-                        headers={studentsHeadersWithoutAction}
+                        headers={studentsHeadersWithLogoLink}
                         data={
                           allStudentsData?.data ? allStudentsData?.data : []
                         }

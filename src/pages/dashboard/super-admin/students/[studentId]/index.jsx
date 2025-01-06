@@ -5,22 +5,17 @@ import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverv
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import AppliedUniversityPageSuper from '@/components/sAdminDashboard/students/singleStudentProfile/AppliedUniversityPageSuper';
-import DocumentRequestPageSuper from '@/components/sAdminDashboard/students/singleStudentProfile/DocumentRequestPageSuper';
-import OverviewPageStudentSuper from '@/components/sAdminDashboard/students/singleStudentProfile/OverviewPageStudentSuper';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { useGetSingleStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import { Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
 const SingleStudentForSuperAdmin = () => {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('1');
 
-  //  ------------------- Just for UI example this data will come from API -----------------------
   const student_id = router.query.studentId;
 
   const {
@@ -101,7 +96,8 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
+
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -116,7 +112,7 @@ const SingleStudentForSuperAdmin = () => {
                           Applied University
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>

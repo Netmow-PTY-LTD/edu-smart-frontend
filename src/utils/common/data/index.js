@@ -386,7 +386,10 @@ const studentsHeadersWithLogoLink = [
         </div>
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
-            <Link href={``} className="text-reset">
+            <Link
+              href={`/dashboard/super-admin/students/${item?._id}`}
+              className="text-reset"
+            >
               {item?.first_name && item?.last_name
                 ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
                 : '-'}

@@ -4,9 +4,18 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { studentsHeadersWithLogoLink } from '@/utils/common/data';
+import Link from 'next/link';
 
 import React, { useState } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
@@ -14,6 +23,7 @@ const AllStudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
+  // const [studentsHeadersData, setStudentHeadersData] = useState('');
 
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
@@ -29,6 +39,53 @@ const AllStudentsPage = () => {
         item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  const studentHeaderAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown direction="end">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="me-3">
+          <DropdownItem>
+            <Link
+              href={`/dashboard/super-admin/students/${item?._id}`}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill align-start me-2 text-muted fw-bold"></i>
+              View Profile
+            </Link>
+          </DropdownItem>
+          <DropdownItem>
+            <Link
+              href={`/dashboard/super-admin/students/edit-student-for-super-admin/${item?._id}`}
+              className="text-primary"
+            >
+              <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+              Edit
+            </Link>
+          </DropdownItem>
+          {/* <DropdownItem>
+              <div
+                onClick={() => handleDeleteButtonClick(item._id)}
+                className="text-primary"
+              >
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Delete
+              </div>
+            </DropdownItem> */}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
 
   return (
     <Layout>
@@ -48,7 +105,10 @@ const AllStudentsPage = () => {
                 </CardHeader>
                 <CardBody className="p-4">
                   <CommonTableComponent
-                    headers={studentsHeadersWithLogoLink}
+                    headers={[
+                      ...studentsHeadersWithLogoLink,
+                      studentHeaderAction,
+                    ]}
                     data={isFilteredData ? isFilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
