@@ -40,7 +40,7 @@ const AllUniversityForAgent = () => {
   useEffect(() => {
     setAllRegisteredUniversitydata([
       agentNameAndLogoData,
-      ...universityHeadersWithoutAction,
+      ...universityHeadersWithoutAction.slice(0, -1),
     ]);
   }, []);
 

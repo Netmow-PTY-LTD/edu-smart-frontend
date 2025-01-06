@@ -97,7 +97,7 @@ const SingleStudentForAgent = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -112,7 +112,7 @@ const SingleStudentForAgent = () => {
                           Applied University
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>

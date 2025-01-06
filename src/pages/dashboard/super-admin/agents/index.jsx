@@ -41,7 +41,10 @@ const AllAgentsPage = () => {
       render: (item) => (
         <div className="d-flex align-items-center">
           <div className="flex-shrink-0 me-1">
-            <Link href={``} className="text-reset">
+            <Link
+              href={`/dashboard/super-admin/agents/${item?._id}`}
+              className="text-reset"
+            >
               <Image
                 src={
                   item?.profile_image?.url
@@ -57,7 +60,10 @@ const AllAgentsPage = () => {
           </div>
           <div>
             <h5 className="fs-14 fw-medium text-capitalize">
-              <Link href={``} className="text-reset">
+              <Link
+                href={`/dashboard/super-admin/agents/${item?._id}`}
+                className="text-reset"
+              >
                 {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
               </Link>
             </h5>

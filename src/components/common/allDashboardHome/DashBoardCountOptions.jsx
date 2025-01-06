@@ -1,4 +1,7 @@
-import { supperAdminWidgetsData } from '@/utils/common/data';
+import {
+  agentProfileWidgetData,
+  supperAdminWidgetsData,
+} from '@/utils/common/data';
 import Link from 'next/link';
 import React from 'react';
 import CountUp from 'react-countup';
@@ -21,7 +24,9 @@ const DashBoardCountOptions = ({
         <Row className="grid g-5">
           {(userInfoData?.role === 'super_admin'
             ? supperAdminWidgetsData
-            : []
+            : userInfoData?.role === 'agent_profile'
+              ? agentProfileWidgetData
+              : []
           ).map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">

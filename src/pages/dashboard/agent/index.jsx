@@ -4,7 +4,10 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { studentsHeadersWithLogoLinkInAgent } from '@/utils/common/data';
+import {
+  studentAndLogoDataForAgentDashboard,
+  studentsHeadersWithLogoLinkInAgent,
+} from '@/utils/common/data';
 
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
@@ -48,7 +51,10 @@ const AgentDashboard = () => {
                     <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
-                        headers={studentsHeadersWithLogoLinkInAgent}
+                        headers={[
+                          studentAndLogoDataForAgentDashboard,
+                          ...studentsHeadersWithLogoLinkInAgent.slice(1),
+                        ]}
                         data={
                           allStudentForAgentData?.data
                             ? allStudentForAgentData?.data

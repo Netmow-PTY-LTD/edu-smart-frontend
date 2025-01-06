@@ -423,6 +423,45 @@ const studentsHeadersWithLogoLink = [
     ),
   },
 ];
+
+const studentAndLogoDataForAgentDashboard = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+            className="text-reset"
+          >
+            {item?.first_name && item?.last_name
+              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+              : '-'}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
 const studentsHeadersWithLogoLinkInAgent = [
   {
     title: 'Name',
@@ -674,6 +713,27 @@ const supperAdminWidgetsData = [
     pathName: '/dashboard/super-admin',
   },
 ];
+const agentProfileWidgetData = [
+  {
+    id: 1,
+    label: 'Registered UNIVERSITIES',
+    counter: '4',
+    bgcolor: 'info',
+    icon: 'ri-school-fill',
+    link: 'View all',
+    pathName: '/dashboard/super-admin/university-management/all-university',
+  },
+
+  {
+    id: 2,
+    label: 'registered agents',
+    counter: '25',
+    bgcolor: 'info',
+    icon: 'ri-group-2-fill',
+    link: 'View all',
+    pathName: '/dashboard/super-admin/agents',
+  },
+];
 
 const courseHeaders = [
   {
@@ -791,6 +851,7 @@ const allowedFileTypes = [
 
 export {
   agentNameAndLogoData,
+  agentProfileWidgetData,
   agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
@@ -803,6 +864,7 @@ export {
   edulogo,
   profileBg,
   studentAndLogoData,
+  studentAndLogoDataForAgentDashboard,
   studentsHeadersWithLogoLink,
   studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
