@@ -119,8 +119,6 @@ const DocumentPage = ({
       title: 'Preview',
       key: 'preview',
       render: (item) => {
-        console.log(item);
-        console.log(item?.file[0]?.url);
         return (
           <div>
             {item?.file.length > 0 ? (

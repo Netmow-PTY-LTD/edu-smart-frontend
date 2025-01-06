@@ -7,10 +7,9 @@ import {
   useDeleteStudentForAgentMutation,
 } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import {
+  studentAndLogoDataForAgentDashboard,
   studentsHeadersWithoutAction,
-  userDummyImage,
 } from '@/utils/common/data';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -80,7 +79,7 @@ const AllStudentsForAgent = () => {
   useEffect(() => {
     if (allStudentForAgentData?.data?.length > 0) {
       const updatedHeaders = [
-        studentAndLogoData,
+        studentAndLogoDataForAgentDashboard,
         ...studentsHeadersWithoutAction.slice(1),
         studentHeaderAction,
       ];
@@ -88,45 +87,6 @@ const AllStudentsForAgent = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allStudentForAgentData?.data?.length]);
-
-  const studentAndLogoData = {
-    title: 'Logo - Name',
-    key: 'logo',
-    render: (item) => (
-      <div className="d-flex align-items-center me-5">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
-              className="text-reset"
-            >
-              {item?.first_name && item?.last_name
-                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-                : '-'}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  };
 
   const studentHeaderAction = {
     title: 'Action',

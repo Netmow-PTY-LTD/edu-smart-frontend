@@ -6,7 +6,9 @@ const AllOverviewInfoCard = ({ data }) => {
     <>
       <Card>
         <CardBody>
-          <CardTitle className="fw-medium mb-3">Info</CardTitle>
+          <CardTitle className="fw-semibold mb-3 text-primary">
+            User Information
+          </CardTitle>
           <div className="table-responsive">
             <Table className="table-borderless mb-0">
               <tbody>

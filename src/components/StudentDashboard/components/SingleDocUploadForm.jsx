@@ -19,6 +19,7 @@ const SingleDocUploadForm = ({
   toggle,
   handleAddSubmit,
   submitBtn,
+  validationSchema,
 }) => {
   return (
     <>
@@ -32,6 +33,7 @@ const SingleDocUploadForm = ({
               <Formik
                 initialValues={initialValues}
                 onSubmit={handleAddSubmit}
+                validationSchema={validationSchema}
                 enableReinitialize
               >
                 {({ isSubmitting, setFieldValue, values }) => {
