@@ -79,7 +79,7 @@ const SuperAdminSidebarData = () => {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
-      link: '/dashboard/super-admin/',
+      link: '/dashboard/super-admin/packages',
     },
     {
       id: 'agents',
