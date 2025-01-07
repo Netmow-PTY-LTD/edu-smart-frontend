@@ -491,7 +491,7 @@ table td {
 }
 
 .bg-secondary-subtle.hot-offer-full-height {
-  height: calc(100vh - 200px);
+  min-height: calc(100vh - 200px);
 }
 
 .header-bottom {
