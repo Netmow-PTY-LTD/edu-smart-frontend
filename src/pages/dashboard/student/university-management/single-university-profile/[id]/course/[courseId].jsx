@@ -185,7 +185,7 @@ const SingleUniversityCourse = () => {
                               onClick={() => setStep(step + 1)}
                               className="button py-3 px-5"
                             >
-                              For Apply
+                              Continue For Apply
                             </button>
                           </div>
                         </Col>
