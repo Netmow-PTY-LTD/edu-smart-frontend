@@ -490,6 +490,10 @@ table td {
   width: 0px;
 }
 
+.bg-secondary-subtle.hot-offer-full-height {
+  height: calc(100vh - 200px);
+}
+
 .header-bottom {
   padding: 1.5rem 0 1.5rem;
   background-color: #fff;

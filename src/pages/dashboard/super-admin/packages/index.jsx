@@ -27,7 +27,7 @@ const PackagePageInSuperAdmin = () => {
                 <h1 className="text-secondary-alt fw-semibold d-flex align-items-center">
                   Our Popular Package
                 </h1>
-                All fields are required.
+                Please Select Below Your Own Package
               </div>
               <div onClick={togOpenModal}>
                 <button className="button px-4 py-2">
