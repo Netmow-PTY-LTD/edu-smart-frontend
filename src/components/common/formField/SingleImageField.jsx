@@ -4,14 +4,13 @@ import React, { useEffect, useState } from 'react';
 
 // Helper function to validate file types
 const isValidImage = (file) => {
-  const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  const validTypes = ['image/jpeg', 'image/png', 'image/gif','image/webp'];
   return validTypes.includes(file.type);
 };
 
 const SingleImageField = ({ field, form, label, ...props }) => {
   const [previewImage, setPreviewImage] = useState(null);
-  //   console.log( 'into single image  file =>', form.values.image)
-  //   console.log( 'into single image  field =>', field)
+
   useEffect(() => {
     const file = form.values[field.name];
 
@@ -28,6 +27,7 @@ const SingleImageField = ({ field, form, label, ...props }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    
     if (file && isValidImage(file)) {
       const reader = new FileReader();
       reader.onloadend = () => {

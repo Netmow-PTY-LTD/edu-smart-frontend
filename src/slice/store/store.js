@@ -6,6 +6,7 @@ import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 import { authService } from '../services/public/auth/authService';
+import { publicPackageService } from '../services/public/package/publicPackageService';
 import { publicStudentService } from '../services/public/student/publicStudentService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
 import { studentSubmitDocumentService } from '../services/student/studentSubmitDocumentService';
@@ -13,6 +14,7 @@ import { courseCategoriesService } from '../services/super admin/courseCategorie
 import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
 import { departmentService } from '../services/super admin/departmentService';
+import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 import { universityService } from '../services/super admin/universityService';
@@ -55,6 +57,8 @@ export const store = configureStore({
     [settingsService.reducerPath]: settingsService.reducer,
     [superAdminSettingsService.reducerPath]: superAdminSettingsService.reducer,
     [paymentServices.reducerPath]: paymentServices.reducer,
+    [packageService.reducerPath]: packageService.reducer,
+    [publicPackageService.reducerPath]: publicPackageService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -77,6 +81,8 @@ export const store = configureStore({
       .concat(agentSettingsService.middleware)
       .concat(settingsService.middleware)
       .concat(paymentServices.middleware)
+      .concat(packageService.middleware)
+      .concat(publicPackageService.middleware)
       .concat(superAdminSettingsService.middleware),
 });
 
