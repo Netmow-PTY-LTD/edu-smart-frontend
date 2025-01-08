@@ -23,6 +23,7 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
+import { hotOfferService } from '../services/super admin/hotOfferService';
 
 export const store = configureStore({
   reducer: {
@@ -59,6 +60,7 @@ export const store = configureStore({
     [paymentServices.reducerPath]: paymentServices.reducer,
     [packageService.reducerPath]: packageService.reducer,
     [publicPackageService.reducerPath]: publicPackageService.reducer,
+    [hotOfferService.reducerPath]: hotOfferService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -83,6 +85,7 @@ export const store = configureStore({
       .concat(paymentServices.middleware)
       .concat(packageService.middleware)
       .concat(publicPackageService.middleware)
+      .concat(hotOfferService.middleware)
       .concat(superAdminSettingsService.middleware),
 });
 

@@ -40,6 +40,7 @@ const PackagePageInSuperAdmin = () => {
     isLoading: getAllPackageIsLoading,
     refetch: getAllPackageRefetch,
   } = useGetAllPackageQuery();
+  
   const {
     data: getSinglePackageData,
     isLoading: getSinglePackageIsLoading,
@@ -210,7 +211,7 @@ const PackagePageInSuperAdmin = () => {
                         ) : (
                           <div className="d-flex flex-column justify-content-center align-items-center text-center text-capitalize">
                             <h1 className="text-primary">
-                              No hot offer found right now
+                              No package found right now
                             </h1>
                             <p className="text-primary">
                               Please add a package.
