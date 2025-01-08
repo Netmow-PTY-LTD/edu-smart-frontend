@@ -41,7 +41,6 @@ const PackagePageInSuperAdmin = () => {
                     <SinglePackageComponent />
                     <SinglePackageComponent />
                     <SinglePackageComponent />
-                    <SinglePackageComponent />
                   </div>
                 </CardBody>
               </Card>

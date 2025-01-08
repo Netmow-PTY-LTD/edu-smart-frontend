@@ -1,6 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { agentSettingsService } from '../services/agent/agentSettingsService';
 import { studentDocRelatedServiceForAgent } from '../services/agent/studentDocRelatedServiceForAgent';
+import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 import { authService } from '../services/public/auth/authService';
@@ -11,15 +13,14 @@ import { courseCategoriesService } from '../services/super admin/courseCategorie
 import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
 import { departmentService } from '../services/super admin/departmentService';
+import { paymentServices } from '../services/super admin/paymentServices';
+import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
 import { universityAdministrationFaqService } from '../services/university-administration/api/universityAdministrationFaqService';
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
-import { agentSettingsService } from '../services/agent/agentSettingsService';
-import { settingsService } from '../services/common/settingsService';
-import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 
 export const store = configureStore({
   reducer: {
@@ -53,6 +54,7 @@ export const store = configureStore({
     [agentSettingsService.reducerPath]: agentSettingsService.reducer,
     [settingsService.reducerPath]: settingsService.reducer,
     [superAdminSettingsService.reducerPath]: superAdminSettingsService.reducer,
+    [paymentServices.reducerPath]: paymentServices.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -74,6 +76,7 @@ export const store = configureStore({
       .concat(universityAdministrationSliderService.middleware)
       .concat(agentSettingsService.middleware)
       .concat(settingsService.middleware)
+      .concat(paymentServices.middleware)
       .concat(superAdminSettingsService.middleware),
 });
 

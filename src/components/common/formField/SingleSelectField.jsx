@@ -28,10 +28,12 @@ const SingleSelectField = ({
               : null;
 
           const handleChange = (selectedOption) => {
-            setInitialValues((prev) => ({
-              ...prev,
-              user_role: selectedOption?.value,
-            }));
+            if (setInitialValues) {
+              setInitialValues((prev) => ({
+                ...prev,
+                user_role: selectedOption?.value,
+              }));
+            }
             form.setFieldValue(
               name,
               selectedOption ? selectedOption?.value : null

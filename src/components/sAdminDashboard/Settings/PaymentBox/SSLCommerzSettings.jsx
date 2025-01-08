@@ -1,53 +1,58 @@
 import PasswordField from '@/components/common/formField/PasswordField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
-import { Formik } from 'formik';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
 import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  Form,
-  Row,
-} from 'reactstrap';
+  useGetSSLcommerzForSuperAdminQuery,
+  useUpdateSSLcommerzForSuperAdminMutation,
+} from '@/slice/services/super admin/paymentServices';
+import { Form, Formik } from 'formik';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { Card, CardBody, CardHeader, CardTitle, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 const SSLCommerzSettings = () => {
   const [initialValues, setInitialValues] = useState({
-    publishable_key_live: '',
-    secret_key_live: '',
-    publishable_key_test: '',
-    secret_key_test: '',
+    store_id_live: '',
+    store_password_live: '',
+    store_id_test: '',
+    store_password_test: '',
     mode: '',
   });
 
-  // const { data: sslCommerzData, refetch: sslCommerzRefatch } =
-  //   useGetSSLCommerzSettingsQuery();
+  const {
+    data: getSSLcommerzForSuperAdminData,
+    refetch: updateSSLcommerzForSuperAdminRefatch,
+  } = useGetSSLcommerzForSuperAdminQuery();
 
-  // const [updateAgentStripeSettings] = useUpdateSSLCommerzSettingsMutation();
+  const [updateSSLcommerzForSuperAdmin] =
+    useUpdateSSLcommerzForSuperAdminMutation();
 
-  // useEffect(() => {
-  //   if (sslCommerzData?.data?._id) {
-  //     setInitialValues({
-  //       publishable_key_live: sslCommerzData?.data?.publishable_key_live || '',
-  //       secret_key_live: sslCommerzData?.data?.secret_key_live || '',
-  //       publishable_key_test: sslCommerzData?.data?.publishable_key_test || '',
-  //       secret_key_test: sslCommerzData?.data?.secret_key_test || '',
-  //       mode: sslCommerzData?.data?.mode || '',
-  //     });
-
-  //
-  //   }
-  // }, [
-  //   sslCommerzData?.data?._id,
-  //   sslCommerzData?.data?.mode,
-  //   sslCommerzData?.data?.publishable_key_live,
-  //   sslCommerzData?.data?.publishable_key_test,
-  //   sslCommerzData?.data?.secret_key_live,
-  //   sslCommerzData?.data?.secret_key_test,
-  // ]);
+  useEffect(() => {
+    if (getSSLcommerzForSuperAdminData?.data?._id) {
+      setInitialValues({
+        store_id_live:
+          getSSLcommerzForSuperAdminData?.data?.store_id_live || '',
+        store_password_live:
+          getSSLcommerzForSuperAdminData?.data?.store_password_live || '',
+        store_id_test:
+          getSSLcommerzForSuperAdminData?.data?.store_id_test || '',
+        store_password_test:
+          getSSLcommerzForSuperAdminData?.data?.store_password_test || '',
+        mode:
+          {
+            label: getSSLcommerzForSuperAdminData?.data?.mode,
+            value: getSSLcommerzForSuperAdminData?.data?.mode,
+          } || '',
+      });
+    }
+  }, [
+    getSSLcommerzForSuperAdminData?.data?._id,
+    getSSLcommerzForSuperAdminData?.data?.mode,
+    getSSLcommerzForSuperAdminData?.data?.store_id_live,
+    getSSLcommerzForSuperAdminData?.data?.store_id_test,
+    getSSLcommerzForSuperAdminData?.data?.store_password_live,
+    getSSLcommerzForSuperAdminData?.data?.store_password_test,
+  ]);
 
   const validationSchema = Yup.object({
     stripeKey: Yup.string()
@@ -59,17 +64,21 @@ const SSLCommerzSettings = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const data = { ...values };
-    console.log('Form Value:', data);
+    const data = {
+      ...values,
+      mode:
+        typeof values?.mode === 'object' ? values?.mode?.value : values?.mode,
+    };
+
     try {
       setSubmitting(true);
-      //  const result = await useUpdateSSLCommerzSettingsMutation(data).unwrap();
-      //  if (result?.success) {
-      //    toast.success('Stripe Settings Updated Successfully');
-      //    agentStripeRefatch();
-      //  } else {
-      //    toast.error('Error during form submission');
-      //  }
+      const result = await updateSSLcommerzForSuperAdmin(data).unwrap();
+      if (result?.success) {
+        toast.success('SSL Settings Updated Successfully');
+        updateSSLcommerzForSuperAdminRefatch();
+      } else {
+        toast.error('Error during form submission');
+      }
     } catch (error) {
       console.error('Error during form submission:', error);
       toast.error('Error during form submission');
@@ -100,29 +109,29 @@ const SSLCommerzSettings = () => {
                 <Row>
                   <Col lg={6}>
                     <PasswordField
-                      name={'publishable_key_live'}
-                      label={'SSL Live Key'}
+                      name={'store_id_live'}
+                      label={'Store Id Live'}
                       placeholder={'Enter SSL Key '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
-                      name={'secret_key_live'}
-                      label={'SSL Live Secret'}
+                      name={'store_password_live'}
+                      label={'Store Password Live'}
                       placeholder={'Enter SSL Secret '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
-                      name={'publishable_key_test'}
-                      label={'SSL Test Key'}
+                      name={'store_id_test'}
+                      label={'Store Id Test'}
                       placeholder={'Enter SSL Key '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
-                      name={'secret_key_test'}
-                      label={'SSL Test Secret'}
+                      name={'store_password_test'}
+                      label={'Store Password Live'}
                       placeholder={'Enter SSL Secret '}
                     />
                   </Col>
@@ -130,7 +139,6 @@ const SSLCommerzSettings = () => {
                     <SingleSelectField
                       name={'mode'}
                       label={'Mode'}
-                      setInitialValues={''}
                       options={modeOptions}
                     />
                   </Col>

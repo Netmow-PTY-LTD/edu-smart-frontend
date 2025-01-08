@@ -31,7 +31,11 @@ const StripeSettings = () => {
         secret_key_live: agentStripeData?.data?.secret_key_live || '',
         publishable_key_test: agentStripeData?.data?.publishable_key_test || '',
         secret_key_test: agentStripeData?.data?.secret_key_test || '',
-        mode: agentStripeData?.data?.mode || '',
+        mode:
+          {
+            label: agentStripeData?.data?.mode,
+            value: agentStripeData?.data?.mode,
+          } || '',
       });
     }
   }, [
@@ -55,8 +59,12 @@ const StripeSettings = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const data = { ...values };
-    console.log('Form Value:', data);
+    const data = {
+      ...values,
+      mode:
+        typeof values?.mode === 'object' ? values?.mode?.value : values?.mode,
+    };
+
     try {
       setSubmitting(true);
       const result = await updateAgentStripeSettings(data).unwrap();
@@ -126,7 +134,6 @@ const StripeSettings = () => {
                     <SingleSelectField
                       name={'mode'}
                       label={'Mode'}
-                      setInitialValues={''}
                       options={modeOptions}
                     />
                   </Col>
