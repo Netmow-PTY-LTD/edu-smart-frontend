@@ -7,7 +7,11 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import { studentsHeadersWithLogoLink } from '@/utils/common/data';
+import { useGetAgentEarningsQuery } from '@/slice/services/super admin/agentService';
+import {
+  agentEarnigsHeaders,
+  studentsHeadersWithLogoLink,
+} from '@/utils/common/data';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -16,10 +20,14 @@ import {
   CardBody,
   CardHeader,
   Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Nav,
   NavItem,
   NavLink,
   Row,
+  UncontrolledDropdown,
 } from 'reactstrap';
 
 const SingleAgentInSuperAdminDashboard = () => {
@@ -40,6 +48,12 @@ const SingleAgentInSuperAdminDashboard = () => {
   });
 
   const { data: userInfodata } = useGetUserInfoQuery();
+  const {
+    data: agentEarningsData,
+    isLoading: agentEarningLoading,
+    refetch: agentEarningRefetch,
+  } = useGetAgentEarningsQuery(agent_id);
+  console.log(agentEarningsData);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -61,11 +75,58 @@ const SingleAgentInSuperAdminDashboard = () => {
 
   console.log(getSingleAgent?.data?.students[0]);
 
+  const agentEarningsHeaderAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown className="card-header-dropdown">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+          <DropdownItem>
+            <div
+              // onClick={() => }
+              className="text-primary"
+            >
+              <i className="ri-check-double-fill align-start me-2 text-success"></i>
+              Mark as Paid
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              // onClick={() => }
+              className="text-primary"
+            >
+              <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+              Mark as Unpaid
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              // onClick={() => }
+              className="text-primary"
+            >
+              <i className="ri-loader-2-fill align-start me-2 text-muted"></i>
+              Mark as Pending
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
+
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          {getSingleAgentIsLoading ? (
+          {getSingleAgentIsLoading || agentEarningLoading ? (
             <LoaderSpiner />
           ) : (
             <div className="container-fluid">
@@ -170,8 +231,11 @@ const SingleAgentInSuperAdminDashboard = () => {
                           </CardHeader>
                           <CardBody>
                             <CommonTableComponent
-                              headers={[...studentsHeadersWithLogoLink]}
-                              data={isFilteredData || []}
+                              headers={[
+                                ...agentEarnigsHeaders,
+                                agentEarningsHeaderAction,
+                              ]}
+                              data={agentEarningsData?.data || []}
                               currentPage={currentPage}
                               setCurrentPage={setCurrentPage}
                               perPageData={perPageData}

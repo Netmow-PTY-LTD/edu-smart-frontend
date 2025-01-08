@@ -20,6 +20,8 @@ import { universityAdministrationSocialLinkService } from '../services/universit
 import { agentSettingsService } from '../services/agent/agentSettingsService';
 import { settingsService } from '../services/common/settingsService';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
+import { superAdminAgentService } from '../services/super admin/agentService';
+import { agentEarningsService } from '../services/agent/agentEarningsService';
 
 export const store = configureStore({
   reducer: {
@@ -53,6 +55,8 @@ export const store = configureStore({
     [agentSettingsService.reducerPath]: agentSettingsService.reducer,
     [settingsService.reducerPath]: settingsService.reducer,
     [superAdminSettingsService.reducerPath]: superAdminSettingsService.reducer,
+    [superAdminAgentService.reducerPath]: superAdminAgentService.reducer,
+    [agentEarningsService.reducerPath]: agentEarningsService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -74,7 +78,9 @@ export const store = configureStore({
       .concat(universityAdministrationSliderService.middleware)
       .concat(agentSettingsService.middleware)
       .concat(settingsService.middleware)
-      .concat(superAdminSettingsService.middleware),
+      .concat(superAdminSettingsService.middleware)
+      .concat(superAdminAgentService.middleware)
+      .concat(agentEarningsService.middleware),
 });
 
 setupListeners(store.dispatch);
