@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 export const agentEarningsService = createApi({
   reducerPath: 'agentEarningsService',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/super-admin/agent',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/agent',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {

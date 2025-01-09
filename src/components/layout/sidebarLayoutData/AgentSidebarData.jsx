@@ -177,6 +177,12 @@ const AgentSidebarData = () => {
     //     },
     //   ],
     // },
+    {
+      id: 'earnings',
+      label: 'Earnings',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/agent/earnings',
+    },
 
     {
       id: 'settings',

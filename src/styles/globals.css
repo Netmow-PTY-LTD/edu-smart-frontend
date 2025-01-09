@@ -9737,3 +9737,7 @@ textarea.form-control {
 .form-content {
   padding: 10px 15px;
 }
+
+.table-responsive {
+  min-height: 120px;
+}

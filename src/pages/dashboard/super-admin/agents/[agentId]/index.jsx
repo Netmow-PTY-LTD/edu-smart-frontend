@@ -7,7 +7,10 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import { useGetAgentEarningsQuery } from '@/slice/services/super admin/agentService';
+import {
+  useGetAgentEarningsQuery,
+  useUpdateAgentEarningsMutation,
+} from '@/slice/services/super admin/agentService';
 import {
   agentEarnigsHeaders,
   studentsHeadersWithLogoLink,
@@ -15,6 +18,7 @@ import {
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -53,7 +57,8 @@ const SingleAgentInSuperAdminDashboard = () => {
     isLoading: agentEarningLoading,
     refetch: agentEarningRefetch,
   } = useGetAgentEarningsQuery(agent_id);
-  console.log(agentEarningsData);
+
+  const [updateAgentEarnings] = useUpdateAgentEarningsMutation();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -73,13 +78,31 @@ const SingleAgentInSuperAdminDashboard = () => {
     }
   };
 
+  const handleEarningStatusUpdate = async (id, status) => {
+    try {
+      const response = await updateAgentEarnings({
+        id,
+        status,
+      }).unwrap();
+
+      if (response?.success) {
+        toast.success(response?.message);
+        agentEarningRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      console.log(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
   console.log(getSingleAgent?.data?.students[0]);
 
   const agentEarningsHeaderAction = {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      <UncontrolledDropdown className="card-header-dropdown">
+      <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
           className="text-reset dropdown-btn"
@@ -89,10 +112,10 @@ const SingleAgentInSuperAdminDashboard = () => {
             <i className="ri-more-fill align-middle"></i>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+        <DropdownMenu className="ms-2">
           <DropdownItem>
             <div
-              // onClick={() => }
+              onClick={() => handleEarningStatusUpdate(item._id, 'paid')}
               className="text-primary"
             >
               <i className="ri-check-double-fill align-start me-2 text-success"></i>
@@ -101,7 +124,7 @@ const SingleAgentInSuperAdminDashboard = () => {
           </DropdownItem>
           <DropdownItem>
             <div
-              // onClick={() => }
+              onClick={() => handleEarningStatusUpdate(item._id, 'unpaid')}
               className="text-primary"
             >
               <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
@@ -110,7 +133,7 @@ const SingleAgentInSuperAdminDashboard = () => {
           </DropdownItem>
           <DropdownItem>
             <div
-              // onClick={() => }
+              onClick={() => handleEarningStatusUpdate(item._id, 'pending')}
               className="text-primary"
             >
               <i className="ri-loader-2-fill align-start me-2 text-muted"></i>
@@ -126,6 +149,7 @@ const SingleAgentInSuperAdminDashboard = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
+          <ToastContainer />
           {getSingleAgentIsLoading || agentEarningLoading ? (
             <LoaderSpiner />
           ) : (
@@ -225,11 +249,11 @@ const SingleAgentInSuperAdminDashboard = () => {
                   <div style={{ marginTop: '30px' }}>
                     <Row>
                       <Col xl={12}>
-                        <Card id="viewstudents">
+                        <Card>
                           <CardHeader className="text-primary fw-semibold fs-2">
                             Agent's Earnings
                           </CardHeader>
-                          <CardBody>
+                          <CardBody className="mh-100">
                             <CommonTableComponent
                               headers={[
                                 ...agentEarnigsHeaders,

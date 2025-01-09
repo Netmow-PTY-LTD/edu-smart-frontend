@@ -22,6 +22,7 @@ import { settingsService } from '../services/common/settingsService';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 import { superAdminAgentService } from '../services/super admin/agentService';
 import { agentEarningsService } from '../services/agent/agentEarningsService';
+import { paymentService } from '../services/common/paymentService';
 
 export const store = configureStore({
   reducer: {
@@ -57,6 +58,7 @@ export const store = configureStore({
     [superAdminSettingsService.reducerPath]: superAdminSettingsService.reducer,
     [superAdminAgentService.reducerPath]: superAdminAgentService.reducer,
     [agentEarningsService.reducerPath]: agentEarningsService.reducer,
+    [paymentService.reducerPath]: paymentService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -80,7 +82,8 @@ export const store = configureStore({
       .concat(settingsService.middleware)
       .concat(superAdminSettingsService.middleware)
       .concat(superAdminAgentService.middleware)
-      .concat(agentEarningsService.middleware),
+      .concat(agentEarningsService.middleware)
+      .concat(paymentService.middleware),
 });
 
 setupListeners(store.dispatch);
