@@ -42,6 +42,8 @@ export default function StudentApplicationPaymentOption() {
       toast.error('Something went wrong');
     }
   };
+
+  
   return (
     <Layout>
       <div className="page-content">
