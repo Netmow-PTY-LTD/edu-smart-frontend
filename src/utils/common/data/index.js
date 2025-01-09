@@ -1,11 +1,14 @@
+import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Progress } from 'reactstrap';
 
 const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 const teamDummyImage = '/assets/images/users/multi-user.jpg';
 const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
+const hot_offer_image = '/Hot Offer.png';
 
 const agentNameAndLogoData = {
   title: 'Logo - Name',
@@ -420,6 +423,158 @@ const studentsHeadersWithLogoLink = [
       <span className="d-flex flex-column text-capitalize">
         {item?.country ? <span>{item.country}</span> : '-'}
       </span>
+    ),
+  },
+];
+
+const agentEarnigsHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+  {
+    title: 'Package',
+    key: 'agent_package',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.agent_package?.package?.name
+          ? item?.agent_package?.package?.name
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Amount',
+    key: 'amount',
+  },
+  {
+    title: 'Start Date',
+    key: 'start_date',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {moment(item?.start_date).format('DD-MM-YYYY')}
+      </span>
+    ),
+  },
+  {
+    title: 'End Date',
+    key: 'end_date',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {moment(item?.end_date).format('DD-MM-YYYY')}
+      </span>
+    ),
+  },
+  {
+    title: 'Target Status',
+    key: 'target_status',
+    render: (item) => (
+      <Progress
+        className="my-2"
+        style={{
+          height: '10px',
+          borderRadius: '20px',
+          backgroundColor: 'rgba(75, 77, 70, 0.18)',
+        }}
+        color="success"
+        value={
+          (item?.agent_package?.target?.target_achieved /
+            item?.agent_package?.target?.target) *
+            100 >
+          0
+            ? (item?.agent_package?.target?.target_achieved /
+                item?.agent_package?.target?.target) *
+              100
+            : 10
+        }
+      >
+        <span className="fs-4">
+          {item?.agent_package?.target?.target_achieved || 0}
+          {'/'}
+          {item?.agent_package?.target?.target || 0}
+        </span>
+      </Progress>
+    ),
+  },
+  {
+    title: 'Payout Status',
+    key: 'payment_status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+        >
+          {item?.payment_status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+];
+
+const studentApplicationsHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+  {
+    title: 'University',
+    key: 'university',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.university?.name ? item?.university?.name : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Course',
+    key: 'course',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.course?.name ? item?.course?.name : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Applied By',
+    key: 'applied_by',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.applied_by?.first_name && item?.applied_by?.last_name
+          ? `${item?.applied_by?.first_name ? item?.applied_by?.first_name : ''} ${item?.applied_by?.last_name ? item?.applied_by?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Payment Status',
+    key: 'payment_status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+        >
+          {item?.payment_status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+  {
+    title: 'Status',
+    key: 'status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-fourth-color text-white' : item?.status === 'pending' ? 'bg-info text-white' : 'bg-warning text-white'}`}
+        >
+          {item?.status ?? '-'}
+        </span>
+      </>
     ),
   },
 ];
@@ -914,6 +1069,7 @@ export {
   courseHeaders,
   departmentHeaders,
   edulogo,
+  hot_offer_image,
   profileBg,
   studentAndLogoData,
   studentAndLogoDataForAgentDashboard,
@@ -926,4 +1082,6 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
+  agentEarnigsHeaders,
+  studentApplicationsHeaders,
 };

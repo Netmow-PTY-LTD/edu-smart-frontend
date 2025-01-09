@@ -6,7 +6,7 @@ import {
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionBody,
@@ -19,7 +19,10 @@ import {
   Container,
   Row,
 } from 'reactstrap';
-import CourseForm from './course-form';
+import CourseForm from '../course-form';
+import { toast, ToastContainer } from 'react-toastify';
+import { useCreateApplicationMutation } from '@/slice/services/common/applicationService';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 
 const SingleUniversityCourse = () => {
   const router = useRouter();
@@ -34,6 +37,9 @@ const SingleUniversityCourse = () => {
     refetch: getSingleUniversityForStudentRefetch,
   } = useGetsingleUniversityQuery(university_id);
 
+  const { data: userInfoData, isLoading: userInfoLoading } =
+    useGetUserInfoQuery();
+
   const {
     data: getSingleCourseData,
     isLoading: getSingleCourseIsLoading,
@@ -42,6 +48,79 @@ const SingleUniversityCourse = () => {
     university_id: university_id,
     course_id: course_id,
   });
+
+  const [createApplication, { isLoading: createApplicationIsLoading }] =
+    useCreateApplicationMutation();
+
+  useEffect(() => {
+    if (university_id) {
+      getSingleUniversityForStudentRefetch(university_id);
+    }
+  }, [getSingleUniversityForStudentRefetch, university_id]);
+
+  useEffect(() => {
+    const requestToCreateApplication = async (
+      course_id,
+      student_id,
+      payment_price,
+      payment_gst,
+      payment_status,
+      transaction_id
+    ) => {
+      try {
+        const response = await createApplication({
+          course_id,
+          student_id,
+          payment_price,
+          payment_gst,
+          payment_status,
+          transaction_id,
+        }).unwrap();
+        console.log(response);
+        if (response.success) {
+          toast.success('Application created successfully');
+          window.location.href = `/dashboard/student/applications`;
+        } else {
+          toast.error('Application failed');
+        }
+      } catch (error) {
+        toast.error('Something went wrong while creating application');
+      }
+    };
+    if (
+      router?.query?.payment_status === 'success' &&
+      router?.query?.transaction_id &&
+      getSingleCourseData?.data?._id &&
+      getSingleCourseData?.data?.price_for_student &&
+      getSingleCourseData?.data?.gst_for_student &&
+      userInfoData?.data?._id
+    ) {
+      const course_id = getSingleCourseData?.data?._id;
+      const student_id = userInfoData?.data?._id;
+      const payment_price = getSingleCourseData?.data?.price_for_student;
+      const payment_gst = getSingleCourseData?.data?.gst_for_student;
+      const payment_status =
+        router?.query?.payment_status === 'success' ? 'paid' : 'unpaid';
+      const transaction_id = router?.query?.transaction_id;
+      toast.success('Payment Successfull');
+      requestToCreateApplication(
+        course_id,
+        student_id,
+        payment_price,
+        payment_gst,
+        payment_status,
+        transaction_id
+      );
+    }
+  }, [
+    createApplication,
+    getSingleCourseData?.data?._id,
+    getSingleCourseData?.data?.gst_for_student,
+    getSingleCourseData?.data?.price_for_student,
+    router?.query?.payment_status,
+    router?.query?.transaction_id,
+    userInfoData?.data?._id,
+  ]);
 
   const toggle = (id) => {
     if (open === id) {
@@ -75,7 +154,10 @@ const SingleUniversityCourse = () => {
             profileData={getSingleUniversityDataForStudent?.data}
           />
           <Container fluid>
-            {getSingleCourseIsLoading ? (
+            <ToastContainer />
+            {getSingleCourseIsLoading ||
+            userInfoLoading ||
+            createApplicationIsLoading ? (
               <LoaderSpiner />
             ) : (
               <>
@@ -185,7 +267,7 @@ const SingleUniversityCourse = () => {
                               onClick={() => setStep(step + 1)}
                               className="button py-3 px-5"
                             >
-                              For Apply
+                              Continue For Apply
                             </button>
                           </div>
                         </Col>

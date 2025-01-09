@@ -490,6 +490,10 @@ table td {
   width: 0px;
 }
 
+.bg-secondary-subtle.hot-offer-full-height {
+  min-height: calc(100vh - 200px);
+}
+
 .header-bottom {
   padding: 1.5rem 0 1.5rem;
   background-color: #fff;
@@ -773,6 +777,8 @@ table td {
   -webkit-transform: rotate(45deg) translate(-8px, -8px);
   transform: rotate(45deg) translate(-8px, -8px);
 }
+
+
 
 @media (max-width: 991.98px) {
   .main-nav {
@@ -9736,4 +9742,8 @@ textarea.form-control {
 
 .form-content {
   padding: 10px 15px;
+}
+
+.table-responsive {
+  min-height: 120px;
 }

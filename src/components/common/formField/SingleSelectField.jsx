@@ -11,7 +11,7 @@ const SingleSelectField = ({
   ...props
 }) => {
   return (
-    <div>
+    <div className='mb-3'>
       <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Select'}
       </label>
@@ -28,10 +28,12 @@ const SingleSelectField = ({
               : null;
 
           const handleChange = (selectedOption) => {
-            setInitialValues((prev) => ({
-              ...prev,
-              user_role: selectedOption?.value,
-            }));
+            if (setInitialValues) {
+              setInitialValues((prev) => ({
+                ...prev,
+                user_role: selectedOption?.value,
+              }));
+            }
             form.setFieldValue(
               name,
               selectedOption ? selectedOption?.value : null
