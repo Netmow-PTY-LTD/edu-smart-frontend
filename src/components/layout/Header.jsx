@@ -146,7 +146,7 @@ const Header = () => {
                     className="button d-flex align-items-center p-3 "
                     id="visitwebsite"
                   >
-                    <i class="ri-shield-star-line me-2"></i>
+                    <i className="ri-shield-star-line me-2"></i>
                     <span className="flex-grow-1 me-2 ">Upgrade</span>
                   </Link>
                 </div>

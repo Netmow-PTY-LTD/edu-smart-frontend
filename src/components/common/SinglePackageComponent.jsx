@@ -52,36 +52,36 @@ const SinglePackageComponent = ({ data, updatePackage, handleUpgrade }) => {
         <div className="pricing-lists">
           <ul>
             <li className="d-flex align-items-center gap-2">
-              <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
+              <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
                 Commission {data?.commission}%
               </span>
             </li>
             <li className="d-flex align-items-center gap-2">
-              <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
+              <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
                 Minimum Files {data?.minimum_files}
               </span>
             </li>
             <li className="d-flex align-items-center gap-2">
-              <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
+              <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
                 Auto Commission Deduct
               </span>
             </li>
             <li className="d-flex align-items-center gap-2">
               {data?.yearly_bonus === true ? (
-                <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
+                <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               ) : (
-                <i class="ri-close-circle-fill text-danger fs-1"></i>
+                <i className="ri-close-circle-fill text-danger fs-1"></i>
               )}
               <span className="text-primary fw-semibold">Yearly Bonus</span>
             </li>
             <li className="d-flex align-items-center gap-2">
               {data?.family_trip === true ? (
-                <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
+                <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               ) : (
-                <i class="ri-close-circle-fill text-danger fs-1"></i>
+                <i className="ri-close-circle-fill text-danger fs-1"></i>
               )}
               <span className="text-primary fw-semibold">Family Trip</span>
             </li>

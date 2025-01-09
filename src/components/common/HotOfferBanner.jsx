@@ -18,7 +18,7 @@ const HotOfferBanner = ({ height = '120px', width = '220px', data }) => {
       <div
         style={{
           position: 'absolute',
-          top: '36%',
+          top: '40%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           textAlign: 'start',
