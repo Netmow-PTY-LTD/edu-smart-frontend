@@ -9,6 +9,7 @@ import {
   useGetHotOfferInSuperAdminQuery,
   useUpdateHotOfferInSuperAdminMutation,
 } from '@/slice/services/super admin/hotOfferService';
+
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody } from 'reactstrap';

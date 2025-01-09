@@ -3,15 +3,12 @@ import SinglePackageComponent from '@/components/common/SinglePackageComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import PackageModal from '@/components/sAdminDashboard/modals/PackageModal';
-import {
-  useGetAllPackageQuery,
-  useGetSinglePackageQuery,
-} from '@/slice/services/public/package/publicPackageService';
+import { useGetAllPackageQuery, useGetSinglePackageQuery } from '@/slice/services/public/package/publicPackageService';
 import { useGetHotOfferInSuperAdminQuery } from '@/slice/services/super admin/hotOfferService';
-import {
-  useAddPackageInSuperAdminMutation,
-  useUpdatePackageInSuperAdminMutation,
-} from '@/slice/services/super admin/packageService';
+import { useAddPackageInSuperAdminMutation, useUpdatePackageInSuperAdminMutation } from '@/slice/services/super admin/packageService';
+
+
+
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody } from 'reactstrap';

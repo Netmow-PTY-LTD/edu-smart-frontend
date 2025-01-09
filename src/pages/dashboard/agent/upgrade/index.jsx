@@ -3,10 +3,8 @@ import SinglePackageComponent from '@/components/common/SinglePackageComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import {
-  useGetAllHotOfferQuery,
-  useGetAllPackageQuery,
-} from '@/slice/services/public/package/publicPackageService';
+import { useGetAllHotOfferQuery, useGetAllPackageQuery } from '@/slice/services/public/package/publicPackageService';
+
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 
