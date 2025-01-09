@@ -74,6 +74,9 @@ const SingleHotOfferCardComponent = ({
               <p className="text-primary fw-semibold text-capitalize">
                 {data?.offer_duration.split('_').join(' ')}
               </p>
+              <p className="text-primary fw-semibold text-capitalize">
+                <strong>For</strong> {data?.package?.name}
+              </p>
             </div>
             <button
               style={{

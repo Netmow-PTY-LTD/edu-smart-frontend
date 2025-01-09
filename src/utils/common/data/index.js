@@ -6,6 +6,7 @@ const teamDummyImage = '/assets/images/users/multi-user.jpg';
 const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 const profileBg = '/profile_bg.jpg';
+const hot_offer_image = '/Hot Offer.png';
 
 const agentNameAndLogoData = {
   title: 'Logo - Name',
@@ -914,6 +915,7 @@ export {
   courseHeaders,
   departmentHeaders,
   edulogo,
+  hot_offer_image,
   profileBg,
   studentAndLogoData,
   studentAndLogoDataForAgentDashboard,

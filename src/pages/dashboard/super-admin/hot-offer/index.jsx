@@ -51,8 +51,6 @@ const HotOfferForSuperAdmin = () => {
           (item) => item?._id === hotOfferId
         );
 
-        console.log(singleHotOfferData);
-
         try {
           setInitialValues({
             name: singleHotOfferData?.name || '',
@@ -81,8 +79,6 @@ const HotOfferForSuperAdmin = () => {
       setSingleHotOfferIsLoading(true);
     }
   }, [getHotOfferData?.data, hotOfferId]);
-
-  console.log(initialValues);
 
   // add hotOffer handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -123,8 +119,6 @@ const HotOfferForSuperAdmin = () => {
       status: values?.hot_offer_status?.value || values?.hot_offer_status,
       hot_offer_id: hotOfferId,
     };
-
-    console.log(editData);
 
     try {
       const response = await updateHotOfferInSuperAdmin(editData).unwrap();

@@ -31,8 +31,19 @@ export const publicPackageService = createApi({
         };
       },
     }),
+    getAllHotOffer: builder.query({
+      query: () => {
+        return {
+          url: `/hot-offer`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetSinglePackageQuery, useGetAllPackageQuery } =
-  publicPackageService;
+export const {
+  useGetSinglePackageQuery,
+  useGetAllPackageQuery,
+  useGetAllHotOfferQuery,
+} = publicPackageService;

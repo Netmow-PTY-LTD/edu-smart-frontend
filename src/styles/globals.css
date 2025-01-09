@@ -778,6 +778,8 @@ table td {
   transform: rotate(45deg) translate(-8px, -8px);
 }
 
+
+
 @media (max-width: 991.98px) {
   .main-nav {
     max-width: 50rem;

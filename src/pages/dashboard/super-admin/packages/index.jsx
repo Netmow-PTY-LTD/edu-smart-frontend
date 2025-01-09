@@ -7,6 +7,7 @@ import {
   useGetAllPackageQuery,
   useGetSinglePackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
+import { useGetHotOfferInSuperAdminQuery } from '@/slice/services/super admin/hotOfferService';
 import {
   useAddPackageInSuperAdminMutation,
   useUpdatePackageInSuperAdminMutation,
@@ -20,6 +21,7 @@ const PackagePageInSuperAdmin = () => {
   const [openModal, setOpenModal] = useState(false);
   const [editOpenModal, setEditOpenModal] = useState(false);
   const [packageId, setPacakageId] = useState('');
+  const [packageDetailsData, setPackageDetailsData] = useState([]);
   const [initialValues, setInitialValues] = useState({
     name: '',
     price: '',
@@ -35,12 +37,7 @@ const PackagePageInSuperAdmin = () => {
 
   const [addPackageInSuperAdmin] = useAddPackageInSuperAdminMutation();
   const [updatePackageInSuperAdmin] = useUpdatePackageInSuperAdminMutation();
-  const {
-    data: getAllPackageData,
-    isLoading: getAllPackageIsLoading,
-    refetch: getAllPackageRefetch,
-  } = useGetAllPackageQuery();
-  
+
   const {
     data: getSinglePackageData,
     isLoading: getSinglePackageIsLoading,
@@ -48,6 +45,40 @@ const PackagePageInSuperAdmin = () => {
   } = useGetSinglePackageQuery(packageId, {
     skip: !packageId,
   });
+
+  const {
+    data: getAllPackageData,
+    isLoading: getAllPackageIsLoading,
+    refetch: getAllPackageRefetch,
+  } = useGetAllPackageQuery();
+
+  const {
+    data: getHotOfferData,
+    isLoading: getHotOfferIsLoading,
+    refetch: getHotOfferRefetch,
+  } = useGetHotOfferInSuperAdminQuery();
+
+  useEffect(() => {
+    if (
+      getAllPackageData?.data?.length > 0 &&
+      getHotOfferData?.data?.length > 0
+    ) {
+      const updatedPackageData = getAllPackageData?.data.map((packageItem) => {
+        const matchedOffers = getHotOfferData?.data.find(
+          (offerItem) => packageItem?._id === offerItem?.package?._id
+        );
+        if (matchedOffers) {
+          return {
+            ...packageItem,
+            hot_offer: matchedOffers,
+          };
+        }
+        return packageItem;
+      });
+      setPackageDetailsData(updatedPackageData);
+      // console.log(updatedPackageData);
+    }
+  }, [getHotOfferData?.data, getAllPackageData?.data]);
 
   useEffect(() => {
     if (getSinglePackageData?.data && packageId) {
@@ -130,12 +161,31 @@ const PackagePageInSuperAdmin = () => {
     const editData = {
       name: values?.name || '',
       price: values?.price || 0,
-      duration: values?.duration?.value || '',
-      yearly_bonus: values?.yearly_bonus?.value || '',
+      duration: values?.duration?.value || values?.duration || '',
+      yearly_bonus: values?.yearly_bonus?.value
+        ? values?.yearly_bonus?.value
+        : values?.yearly_bonus?.value === false
+          ? values?.yearly_bonus?.value
+          : values?.yearly_bonus
+            ? values?.yearly_bonus
+            : values?.yearly_bonus === false
+              ? values?.yearly_bonus
+              : '',
       yearly_bonus_amount: values?.yearly_bonus_amount || '',
       commission: values?.commission || '',
-      family_trip: values?.family_trip?.value || '',
-      family_trip_duration: values?.family_trip_duration?.value || '',
+      family_trip: values?.family_trip?.value
+        ? values?.family_trip?.value
+        : values?.family_trip?.value === false
+          ? values?.family_trip?.value
+          : values?.family_trip
+            ? values?.family_trip
+            : values?.family_trip === false
+              ? values?.family_trip
+              : '',
+      family_trip_duration:
+        values?.family_trip_duration?.value ||
+        values?.family_trip_duration ||
+        '',
       minimum_files: values?.minimum_files || '',
       icon: values?.icon,
       package_id: packageId,
@@ -188,7 +238,7 @@ const PackagePageInSuperAdmin = () => {
               </div>
               <div onClick={togOpenModal}>
                 <button className="button px-4 py-2">
-                  Add Package <i class="ri-add-line fw-bolder"></i>
+                  Add Package <i className="ri-add-line fw-bolder"></i>
                 </button>
               </div>
             </div>
@@ -196,12 +246,12 @@ const PackagePageInSuperAdmin = () => {
               <Card>
                 <CardBody className="bg-secondary-subtle hot-offer-full-height">
                   <div className="sqdk-pricing-table my-5 gap-5">
-                    {getAllPackageIsLoading ? (
+                    {getAllPackageIsLoading || getHotOfferIsLoading ? (
                       <LoaderSpiner />
                     ) : (
                       <>
-                        {getAllPackageData?.data?.length > 0 ? (
-                          getAllPackageData?.data.map((item, index) => (
+                        {packageDetailsData?.length > 0 ? (
+                          packageDetailsData.map((item, index) => (
                             <SinglePackageComponent
                               key={index}
                               data={item}

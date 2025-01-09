@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 const SinglePackageComponent = ({ data, updatePackage }) => {
-
+  console.log(data);
   return (
     <>
       <div className="sqdk-single-pricing-table position-relative">
@@ -14,8 +14,14 @@ const SinglePackageComponent = ({ data, updatePackage }) => {
           }}
           className="mt-2 me-2 text-danger text-center fw-bold"
         >
-          <i className="ri-fire-fill text-danger fw-bold fs-1"></i>
-          <span className="ms-2">Hot Offer 50% Extra Commission</span>
+          {data?.hot_offer ? (
+            <>
+              <i className="ri-fire-fill text-danger fw-bold fs-1"></i>
+              <span className="ms-2">{`Hot Offer ${data?.hot_offer?.offer_percentage}% Extra Commission`}</span>
+            </>
+          ) : (
+            ''
+          )}
         </div>
         <div className="d-flex align-items-center justify-content-between mt-3 gap-5">
           <h1 className="text-secondary-alt text-capitalize">{data?.name}</h1>

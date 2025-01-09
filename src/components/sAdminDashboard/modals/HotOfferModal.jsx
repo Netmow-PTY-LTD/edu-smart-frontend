@@ -47,18 +47,18 @@ const HotOfferModal = ({
     },
   ];
   const durationOptions = [
-    { label: '1_month', value: '1_month' },
-    { label: '2_months', value: '2_months' },
-    { label: '3_months', value: '3_months' },
-    { label: '4_months', value: '4_months' },
-    { label: '5_months', value: '5_months' },
-    { label: '6_months', value: '6_months' },
-    { label: '7_months', value: '7_months' },
-    { label: '8_months', value: '8_months' },
-    { label: '9_months', value: '9_months' },
-    { label: '10_months', value: '10_months' },
-    { label: '11_months', value: '11_months' },
-    { label: '12_months', value: '12_months' },
+    { label: '1 Month', value: '1_month' },
+    { label: '2 Months', value: '2_months' },
+    { label: '3 Months', value: '3_months' },
+    { label: '4 Months', value: '4_months' },
+    { label: '5 Months', value: '5_months' },
+    { label: '6 Months', value: '6_months' },
+    { label: '7 Months', value: '7_months' },
+    { label: '8 Months', value: '8_months' },
+    { label: '9 Months', value: '9_months' },
+    { label: '10 Months', value: '10_months' },
+    { label: '11 Months', value: '11_months' },
+    { label: '1 Year', value: '1_year' },
   ];
 
   return (
