@@ -1,7 +1,7 @@
 import React from 'react';
 
 const HotOfferBanner = ({ height = '120px', width = '220px', data }) => {
-  console.log(data);
+  // console.log(data);
   return (
     <div
       style={{

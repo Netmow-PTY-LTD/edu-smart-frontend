@@ -2,8 +2,7 @@ import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import React from 'react';
 
-const SinglePackageComponent = ({ data, updatePackage }) => {
-  console.log(data);
+const SinglePackageComponent = ({ data, updatePackage, handleUpgrade }) => {
   return (
     <>
       <div className="sqdk-single-pricing-table position-relative">
@@ -96,7 +95,10 @@ const SinglePackageComponent = ({ data, updatePackage }) => {
             <span className="text-center">Edit Package</span>
           </div>
         ) : (
-          <div className="d-flex align-items-center justify-content-center button hstack py-2">
+          <div
+            onClick={() => handleUpgrade(data?._id)}
+            className="d-flex align-items-center justify-content-center button hstack py-2"
+          >
             <span className="text-center fw-medium">Upgrade</span>
           </div>
         )}

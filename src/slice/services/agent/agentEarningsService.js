@@ -21,7 +21,18 @@ export const agentEarningsService = createApi({
         method: 'GET',
       }),
     }),
+    upgradePackageForAgent: builder.mutation({
+      query: (body) => {
+        const package_id = body.get('package_id');
+        return {
+          url: `/package/upgrade/${package_id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetEarningsQuery } = agentEarningsService;
+export const { useGetEarningsQuery, useUpgradePackageForAgentMutation } =
+  agentEarningsService;

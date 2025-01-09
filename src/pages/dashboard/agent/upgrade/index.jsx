@@ -1,16 +1,40 @@
 import HotOfferBanner from '@/components/common/HotOfferBanner';
+import PaymentOption from '@/components/common/PaymentOption';
 import SinglePackageComponent from '@/components/common/SinglePackageComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useUpgradePackageForAgentMutation } from '@/slice/services/agent/agentEarningsService';
+import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { useGetAllHotOfferQuery, useGetAllPackageQuery } from '@/slice/services/public/package/publicPackageService';
+import {
+  useGetAllHotOfferQuery,
+  useGetAllPackageQuery,
+} from '@/slice/services/public/package/publicPackageService';
+import { useRouter } from 'next/router';
 
-import React from 'react';
-import { Col, Row } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import {
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from 'reactstrap';
 
 const UpgradePackageInAgentdashboard = () => {
-  const { data: userInfodata } = useGetUserInfoQuery();
+  const [upgradePackageId, setUpgradePackageId] = useState('');
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const router = useRouter();
 
+  const payment_status = router.query?.payment_status;
+
+  const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+  const [upgradePackageForAgent] = useUpgradePackageForAgentMutation();
+
+  const { data: userInfodata } = useGetUserInfoQuery();
   const {
     data: getAllPackageData,
     isLoading: getAllPackageIsLoading,
@@ -23,12 +47,90 @@ const UpgradePackageInAgentdashboard = () => {
     refetch: getAllHotOfferRefetch,
   } = useGetAllHotOfferQuery();
 
-  console.log(getAllHotOfferData);
+  useEffect(() => {
+    if (payment_status === 'success') {
+      try {
+        const finalData = {};
+        const response = upgradePackageForAgent(finalData).unwrap();
+        if (response) {
+          toast.success(response?.message);
+          router.replace(
+            {
+              pathname: router.pathname,
+              query: '',
+            },
+            undefined,
+            { shallow: true }
+          );
+          // router.push(
+          //   '/dashboard/agent/student-management/all-student-for-agent'
+          // );
+        }
+      } catch (error) {
+        const errorMessage = error?.data?.message || 'Something went wrong!';
+        toast.error(errorMessage);
+      }
+    }
+    if (payment_status === 'failed') {
+      toast.error('Payment Failed! Please Try Again.');
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: '',
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+    if (payment_status === 'cancel') {
+      toast.error('Payment Cancelled! Please Try Again.');
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: '',
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [payment_status, router, upgradePackageForAgent]);
+
+  const handleUpgrade = (id) => {
+    setUpgradePackageId(id);
+    setOpenPaymentModal(!openPaymentModal);
+  };
+
+  const sslCommerzPaymentHandler = async () => {
+    const price = 15000;
+    const faild_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=failed`;
+    const success_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=success`;
+    const cancel_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`;
+    const package_id = upgradePackageId;
+
+    try {
+      const response = await sslCommerzPaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        package_id,
+      }).unwrap();
+
+      if (response.success && response?.data?.gatewayPageURL) {
+        window.location.href = response?.data?.gatewayPageURL;
+      } else {
+        toast.error('Payment failed');
+      }
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
+  };
 
   return (
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
+          <ToastContainer />
           <div className="h-100">
             <Row>
               <Col xl={10}>
@@ -39,7 +141,11 @@ const UpgradePackageInAgentdashboard = () => {
                     <>
                       {getAllPackageData?.data?.length > 0 ? (
                         getAllPackageData?.data.map((item, index) => (
-                          <SinglePackageComponent key={index} data={item} />
+                          <SinglePackageComponent
+                            key={index}
+                            data={item}
+                            handleUpgrade={handleUpgrade}
+                          />
                         ))
                       ) : (
                         <div className="d-flex flex-column justify-content-center align-items-center text-center text-capitalize">
@@ -69,6 +175,29 @@ const UpgradePackageInAgentdashboard = () => {
               </Col>
             </Row>
           </div>
+          {openPaymentModal && (
+            <Modal isOpen={openPaymentModal}>
+              <ModalHeader
+                toggle={() => {
+                  setUpgradePackageId('');
+                  setOpenPaymentModal(!openPaymentModal);
+                }}
+              >
+                Select Payment Option
+              </ModalHeader>
+              <ModalBody>
+                <Card>
+                  <CardBody>
+                    <div className="w-50 mx-auto">
+                      <PaymentOption
+                        sslCommerzPaymentHandler={sslCommerzPaymentHandler}
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
+              </ModalBody>
+            </Modal>
+          )}
         </div>
       </div>
     </Layout>
