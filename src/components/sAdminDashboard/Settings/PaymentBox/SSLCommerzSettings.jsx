@@ -2,60 +2,65 @@ import PasswordField from '@/components/common/formField/PasswordField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import {
-  useGetAgentStripeSettingsQuery,
-  useUpdateAgentStripeSettingsMutation,
-} from '@/slice/services/agent/agentSettingsService';
+  useGetSSLcommerzForSuperAdminQuery,
+  useUpdateSSLcommerzForSuperAdminMutation,
+} from '@/slice/services/super admin/paymentServices';
 import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader, CardTitle, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
-const StripeSettings = () => {
+const SSLCommerzSettings = () => {
   const [initialValues, setInitialValues] = useState({
-    publishable_key_live: '',
-    secret_key_live: '',
-    publishable_key_test: '',
-    secret_key_test: '',
+    store_id_live: '',
+    store_password_live: '',
+    store_id_test: '',
+    store_password_test: '',
     mode: '',
   });
 
-  const { data: agentStripeData, refetch: agentStripeRefatch } =
-    useGetAgentStripeSettingsQuery();
+  const {
+    data: getSSLcommerzForSuperAdminData,
+    refetch: updateSSLcommerzForSuperAdminRefatch,
+  } = useGetSSLcommerzForSuperAdminQuery();
 
-  const [updateAgentStripeSettings] = useUpdateAgentStripeSettingsMutation();
+  const [updateSSLcommerzForSuperAdmin] =
+    useUpdateSSLcommerzForSuperAdminMutation();
 
   useEffect(() => {
-    if (agentStripeData?.data?._id) {
+    if (getSSLcommerzForSuperAdminData?.data?._id) {
       setInitialValues({
-        publishable_key_live: agentStripeData?.data?.publishable_key_live || '',
-        secret_key_live: agentStripeData?.data?.secret_key_live || '',
-        publishable_key_test: agentStripeData?.data?.publishable_key_test || '',
-        secret_key_test: agentStripeData?.data?.secret_key_test || '',
+        store_id_live:
+          getSSLcommerzForSuperAdminData?.data?.store_id_live || '',
+        store_password_live:
+          getSSLcommerzForSuperAdminData?.data?.store_password_live || '',
+        store_id_test:
+          getSSLcommerzForSuperAdminData?.data?.store_id_test || '',
+        store_password_test:
+          getSSLcommerzForSuperAdminData?.data?.store_password_test || '',
         mode:
           {
-            label: agentStripeData?.data?.mode,
-            value: agentStripeData?.data?.mode,
+            label: getSSLcommerzForSuperAdminData?.data?.mode,
+            value: getSSLcommerzForSuperAdminData?.data?.mode,
           } || '',
       });
     }
   }, [
-    agentStripeData?.data?._id,
-    agentStripeData?.data?.mode,
-    agentStripeData?.data?.publishable_key_live,
-    agentStripeData?.data?.publishable_key_test,
-    agentStripeData?.data?.secret_key_live,
-    agentStripeData?.data?.secret_key_test,
+    getSSLcommerzForSuperAdminData?.data?._id,
+    getSSLcommerzForSuperAdminData?.data?.mode,
+    getSSLcommerzForSuperAdminData?.data?.store_id_live,
+    getSSLcommerzForSuperAdminData?.data?.store_id_test,
+    getSSLcommerzForSuperAdminData?.data?.store_password_live,
+    getSSLcommerzForSuperAdminData?.data?.store_password_test,
   ]);
-
-  // console.log(initialValues);
 
   const validationSchema = Yup.object({
     stripeKey: Yup.string()
-      .required('Stripe Key is required')
-      .min(10, 'Stripe Key should be at least 10 characters long'),
+      .required(' Key is required')
+      .min(10, ' Key should be at least 10 characters long'),
     stripeSecret: Yup.string()
-      .required('Stripe Secret is required')
-      .min(10, 'Stripe Secret should be at least 10 characters long'),
+      .required(' Secret is required')
+      .min(10, ' Secret should be at least 10 characters long'),
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -67,10 +72,10 @@ const StripeSettings = () => {
 
     try {
       setSubmitting(true);
-      const result = await updateAgentStripeSettings(data).unwrap();
+      const result = await updateSSLcommerzForSuperAdmin(data).unwrap();
       if (result?.success) {
-        toast.success('Stripe Settings Updated Successfully');
-        agentStripeRefatch();
+        toast.success('SSL Settings Updated Successfully');
+        updateSSLcommerzForSuperAdminRefatch();
       } else {
         toast.error('Error during form submission');
       }
@@ -91,7 +96,7 @@ const StripeSettings = () => {
     <>
       <Card className="mt-5">
         <CardHeader>
-          <CardTitle tag="h5"> Stripe Settings </CardTitle>
+          <CardTitle tag="h5"> SSL Commerz Settings </CardTitle>
         </CardHeader>
         <CardBody className="p-5">
           <Formik
@@ -104,30 +109,30 @@ const StripeSettings = () => {
                 <Row>
                   <Col lg={6}>
                     <PasswordField
-                      name={'publishable_key_live'}
-                      label={'Stripe Live Key'}
-                      placeholder={'Enter Stripe Key '}
+                      name={'store_id_live'}
+                      label={'Store Id Live'}
+                      placeholder={'Enter SSL Key '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
-                      name={'secret_key_live'}
-                      label={'Stripe Live Secret'}
-                      placeholder={'Enter Stripe Secret '}
+                      name={'store_password_live'}
+                      label={'Store Password Live'}
+                      placeholder={'Enter SSL Secret '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
-                      name={'publishable_key_test'}
-                      label={'Stripe Test Key'}
-                      placeholder={'Enter Stripe Key '}
+                      name={'store_id_test'}
+                      label={'Store Id Test'}
+                      placeholder={'Enter SSL Key '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
-                      name={'secret_key_test'}
-                      label={'Stripe Test Secret'}
-                      placeholder={'Enter Stripe Secret '}
+                      name={'store_password_test'}
+                      label={'Store Password Live'}
+                      placeholder={'Enter SSL Secret '}
                     />
                   </Col>
                   <Col lg={6}>
@@ -154,4 +159,4 @@ const StripeSettings = () => {
   );
 };
 
-export default StripeSettings;
+export default SSLCommerzSettings;

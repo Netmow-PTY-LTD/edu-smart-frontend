@@ -3,12 +3,23 @@ import SingleImageField from '@/components/common/formField/SingleImageField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import CurrencyList from 'currency-list';
 import { Form, Formik } from 'formik';
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Card, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
-const PackageModal = ({ open, close, modalHeader, submitButton }) => {
+const PackageModal = ({
+  open,
+  close,
+  modalHeader,
+  submitButton,
+  initialValues,
+  validationSchema,
+  handleSubmit,
+  isLoading,
+}) => {
   const Currencies = CurrencyList.getAll('en_US');
   const currencyDataArray = Object.values(Currencies);
   const currencyNamesArray = currencyDataArray.map((currency) => currency.code);
@@ -17,110 +28,119 @@ const PackageModal = ({ open, close, modalHeader, submitButton }) => {
     value: name,
   }));
 
-  const familytripOptions = [
+  const durationOptions = [
     {
-      label: 'Daily',
-      value: 'Daily',
+      label: 'weekly',
+      value: 'weekly',
     },
     {
-      label: 'Weekly',
-      value: 'Weekly',
+      label: 'monthly',
+      value: 'monthly',
     },
     {
-      label: 'Monthly',
-      value: 'Monthly',
-    },
-    {
-      label: 'Yearly',
-      value: 'Yearly',
+      label: 'yearly',
+      value: 'yearly',
     },
   ];
 
-  const statusOptions = [
+  const booleanOptions = [
     {
-      label: 'Active',
-      value: 'Active',
+      label: 'Yes',
+      value: true,
     },
     {
-      label: 'Inactive',
-      value: 'Inactive',
+      label: 'No',
+      value: false,
     },
   ];
 
   return (
     <Modal isOpen={open} toggle={close} centered size="xl">
+      <ToastContainer />
       <ModalHeader toggle={close}>{modalHeader}</ModalHeader>
-      <ModalBody>
-        <Card>
-          <Formik
-            initialValues={{
-              image: null,
-            }}
-            validationSchema={''}
-            onSubmit={''}
-            enableReinitialize={true}
-          >
-            {({ isSubmitting, values, setFieldValue }) => (
-              <Form>
-                <Row>
-                  <Col xl={6}>
-                    <TextField label="Package Name" name="package_name" />
-                  </Col>
-                  <Col xl={6}>
-                    <SingleSelectField
-                      name={'package_currency'}
-                      label={'Package Currency'}
-                      setInitialValues={''}
-                      options={options}
-                    />
-                  </Col>
-                  <Col xl={4}>
-                    <NumberField label="Yearly Bonus" name="yearly_bonus" />
-                  </Col>
-                  <Col xl={4}>
-                    <NumberField label="Commission (%)" name="commission" />
-                  </Col>
-                  <Col xl={4}>
-                    <NumberField label="Max Files" name="max_files" />
-                  </Col>
-                  <Col xl={6}>
-                    <SingleSelectField
-                      name={'family_trip'}
-                      label={'Family Trip'}
-                      setInitialValues={''}
-                      options={familytripOptions}
-                    />
-                  </Col>
-                  <Col xl={6}>
-                    <SingleSelectField
-                      name={'form_status'}
-                      label={'Status'}
-                      setInitialValues={''}
-                      options={statusOptions}
-                    />
-                  </Col>
-                  <Col xl={12}>
-                    <SingleImageField
-                      field={{ name: 'image' }}
-                      form={{ setFieldValue, values }}
-                      label="Uploaded Picture"
-                    />
-                  </Col>
-
-                  <div className="hstck mx-auto d-flex align-items-center justify-content-center my-5">
-                    <Col xl={12}>
-                      <SubmitButton
-                        isSubmitting={isSubmitting}
-                        formSubmit={submitButton}
+      {isLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <ModalBody>
+          <Card>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+              enableReinitialize={true}
+            >
+              {({ isSubmitting, values, setFieldValue, resetForm }) => (
+                <Form>
+                  <Row>
+                    <Col xl={6}>
+                      <TextField label="Package Name" name="name" />
+                    </Col>
+                    <Col xl={6}>
+                      <NumberField label="Package Price" name="price" />
+                    </Col>
+                    <Col xl={6}>
+                      <SingleSelectField
+                        name={'duration'}
+                        label={'Package Duration'}
+                        options={durationOptions}
                       />
                     </Col>
-                  </div>
-                </Row>
-              </Form>
-            )}
-          </Formik>
-        </Card>
-      </ModalBody>
+                    <Col xl={6}>
+                      <SingleSelectField
+                        name={'yearly_bonus'}
+                        label={'Yearly Bonus'}
+                        options={booleanOptions}
+                      />
+                    </Col>
+                    <Col xl={6}>
+                      <NumberField
+                        label="Yearly Bonus Amount"
+                        name="yearly_bonus_amount"
+                      />
+                    </Col>
+                    <Col xl={6}>
+                      <NumberField label="Commission (%)" name="commission" />
+                    </Col>
+                    <Col xl={4}>
+                      <SingleSelectField
+                        name={'family_trip'}
+                        label={'Family Trip'}
+                        options={booleanOptions}
+                      />
+                    </Col>
+                    <Col xl={4}>
+                      <SingleSelectField
+                        name={'family_trip_duration'}
+                        label={'Family Trip Duration'}
+                        options={durationOptions}
+                      />
+                    </Col>
+                    <Col xl={4}>
+                      <NumberField label="Minimum Files" name="minimum_files" />
+                    </Col>
+                    <Col xl={12}>
+                      <SingleImageField
+                        field={{ name: 'icon' }}
+                        form={{ setFieldValue, values }}
+                        label="Uploaded Icon"
+                      />
+                    </Col>
+
+                    <div className="hstck mx-auto d-flex align-items-center justify-content-center my-5">
+                      <Col xl={12}>
+                        <SubmitButton
+                          isSubmitting={isSubmitting}
+                          formSubmit={submitButton}
+                        />
+                      </Col>
+                    </div>
+                  </Row>
+                </Form>
+              )}
+            </Formik>
+          </Card>
+        </ModalBody>
+      )}
     </Modal>
   );
 };

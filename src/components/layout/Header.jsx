@@ -15,6 +15,7 @@ import FullScreenDropdown from '@/components/layout/common/FullScreenDropdown';
 import ProfileDropdown from '@/components/layout/common/ProfileDropdown';
 import Website from '@/components/layout/common/Website';
 
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import Script from 'next/script';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -22,6 +23,8 @@ import { changeSidebarVisibility } from '../constants/utils/dashboardSidebarUtil
 
 const Header = () => {
   const dispatch = useDispatch();
+
+  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
 
   const selectDashboardData = createSelector(
     (state) => state.Layout.sidebarVisibilitytype,
@@ -135,6 +138,22 @@ const Header = () => {
             {/* header icon end*/}
 
             <div className="d-flex ">
+              {userInfodata?.data?.role === 'agent' ? (
+                <div className=" header-item">
+                  <Link
+                    href={`${userInfodata?.data?.role === 'agent' ? '/dashboard/agent/upgrade' : ''}`}
+                    type="button"
+                    className="button d-flex align-items-center p-3 "
+                    id="visitwebsite"
+                  >
+                    <i class="ri-shield-star-line me-2"></i>
+                    <span className="flex-grow-1 me-2 ">Upgrade</span>
+                  </Link>
+                </div>
+              ) : (
+                ''
+              )}
+
               <FullScreenDropdown />
               <ProfileDropdown data={''} totalCharges={''} />
             </div>

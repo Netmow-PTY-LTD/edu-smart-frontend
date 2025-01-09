@@ -10,11 +10,15 @@ import { useGetSingleStudentQuery } from '@/slice/services/public/student/public
 import { useSubmitStudentDocumentMutation } from '@/slice/services/student/studentSubmitDocumentService';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 
 export default function CourseForm({ setStep, step }) {
+  const router = useRouter();
+  const university_id = router.query.id;
+  const course_id = router.query.courseId;
   const [photographPreviewImage, setPhotographPreviewImage] = useState('');
   const [passportPreviewImage, setPassportPreviewImage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -140,34 +144,39 @@ export default function CourseForm({ setStep, step }) {
     }
   };
 
+  // const handleAddSubmit = async (values, { setSubmitting }) => {
+  //   setSubmitting(true);
+
+  //   try {
+  //     const finalData = new FormData();
+  //     Object.entries(values).forEach(([key, value]) => {
+  //       if (key === 'academic_certificate') {
+  //         values?.academic_certificate.length > 0 &&
+  //           values?.academic_certificate.map((ac) =>
+  //             finalData.append('academic_certificate', ac)
+  //           );
+  //       } else {
+  //         finalData.append(key, value);
+  //       }
+  //     });
+  //     const result = await submitStudentDocument(finalData).unwrap();
+  //     if (result) {
+  //       toast.success(result?.message);
+  //       singleStudentRefetch();
+  //     }
+  //   } catch (error) {
+  //     const errorMessage = error?.data?.message;
+  //     toast.error(errorMessage);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
   const handleAddSubmit = async (values, { setSubmitting }) => {
-    setSubmitting(true);
-
-    try {
-      const finalData = new FormData();
-      Object.entries(values).forEach(([key, value]) => {
-        if (key === 'academic_certificate') {
-          values?.academic_certificate.length > 0 &&
-            values?.academic_certificate.map((ac) =>
-              finalData.append('academic_certificate', ac)
-            );
-        } else {
-          finalData.append(key, value);
-        }
-      });
-      const result = await submitStudentDocument(finalData).unwrap();
-      if (result) {
-        toast.success(result?.message);
-        singleStudentRefetch();
-      }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
-    }
+    router.push(
+      `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
+    );
   };
-
   return (
     <>
       <ToastContainer />
@@ -330,9 +339,9 @@ export default function CourseForm({ setStep, step }) {
                                 <div className="my-4 text-center">
                                   <SubmitButton
                                     isSubmitting={isSubmitting}
-                                    formSubmit={'Complete'}
+                                    formSubmit={'Proceed to Payment'}
                                   >
-                                    {'Complete'}
+                                    {'Proceed to Payment'}
                                   </SubmitButton>
                                 </div>
                               </Col>

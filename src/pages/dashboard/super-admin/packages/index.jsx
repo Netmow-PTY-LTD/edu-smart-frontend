@@ -1,19 +1,222 @@
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import SinglePackageComponent from '@/components/common/SinglePackageComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import PackageModal from '@/components/sAdminDashboard/modals/PackageModal';
-import { userDummyImage } from '@/utils/common/data';
-import Image from 'next/image';
-import React, { useState } from 'react';
+import { useGetAllPackageQuery, useGetSinglePackageQuery } from '@/slice/services/public/package/publicPackageService';
+import { useGetHotOfferInSuperAdminQuery } from '@/slice/services/super admin/hotOfferService';
+import { useAddPackageInSuperAdminMutation, useUpdatePackageInSuperAdminMutation } from '@/slice/services/super admin/packageService';
+
+
+
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody } from 'reactstrap';
+import * as Yup from 'yup';
 
 const PackagePageInSuperAdmin = () => {
   const [openModal, setOpenModal] = useState(false);
   const [editOpenModal, setEditOpenModal] = useState(false);
+  const [packageId, setPacakageId] = useState('');
+  const [packageDetailsData, setPackageDetailsData] = useState([]);
+  const [initialValues, setInitialValues] = useState({
+    name: '',
+    price: '',
+    duration: '',
+    yearly_bonus: '',
+    yearly_bonus_amount: '',
+    commission: '',
+    family_trip: '',
+    family_trip_duration: '',
+    minimum_files: '',
+    icon: null,
+  });
+
+  const [addPackageInSuperAdmin] = useAddPackageInSuperAdminMutation();
+  const [updatePackageInSuperAdmin] = useUpdatePackageInSuperAdminMutation();
+
+  const {
+    data: getSinglePackageData,
+    isLoading: getSinglePackageIsLoading,
+    refetch: getSinglePackageRefetch,
+  } = useGetSinglePackageQuery(packageId, {
+    skip: !packageId,
+  });
+
+  const {
+    data: getAllPackageData,
+    isLoading: getAllPackageIsLoading,
+    refetch: getAllPackageRefetch,
+  } = useGetAllPackageQuery();
+
+  const {
+    data: getHotOfferData,
+    isLoading: getHotOfferIsLoading,
+    refetch: getHotOfferRefetch,
+  } = useGetHotOfferInSuperAdminQuery();
+
+  useEffect(() => {
+    if (
+      getAllPackageData?.data?.length > 0 &&
+      getHotOfferData?.data?.length > 0
+    ) {
+      const updatedPackageData = getAllPackageData?.data.map((packageItem) => {
+        const matchedOffers = getHotOfferData?.data.find(
+          (offerItem) => packageItem?._id === offerItem?.package?._id
+        );
+        if (matchedOffers) {
+          return {
+            ...packageItem,
+            hot_offer: matchedOffers,
+          };
+        }
+        return packageItem;
+      });
+      setPackageDetailsData(updatedPackageData);
+      // console.log(updatedPackageData);
+    }
+  }, [getHotOfferData?.data, getAllPackageData?.data]);
+
+  useEffect(() => {
+    if (getSinglePackageData?.data && packageId) {
+      const fetchData = async () => {
+        try {
+          const file = await convertImageUrlToFile(
+            getSinglePackageData?.data?.icon?.url
+          );
+          setInitialValues({
+            name: getSinglePackageData?.data?.name || '',
+            price: getSinglePackageData?.data?.price || 0,
+            duration:
+              {
+                label: getSinglePackageData?.data?.duration,
+                value: getSinglePackageData?.data?.duration,
+              } || '',
+            yearly_bonus:
+              {
+                label: getSinglePackageData?.data?.yearly_bonus,
+                value: getSinglePackageData?.data?.yearly_bonus,
+              } || '',
+            yearly_bonus_amount:
+              getSinglePackageData?.data?.yearly_bonus_amount || '',
+            commission: getSinglePackageData?.data?.commission || '',
+            family_trip:
+              {
+                label: getSinglePackageData?.data?.family_trip,
+                value: getSinglePackageData?.data?.family_trip,
+              } || '',
+            family_trip_duration:
+              {
+                label: getSinglePackageData?.data?.family_trip_duration,
+                value: getSinglePackageData?.data?.family_trip_duration,
+              } || '',
+            minimum_files: getSinglePackageData?.data?.minimum_files || '',
+            icon: file,
+          });
+        } catch (error) {
+          console.error('Error loading data:', error);
+        }
+      };
+      fetchData();
+    }
+  }, [getSinglePackageData?.data, packageId]);
+
+  const validationSchema = Yup.object({});
+
+  // add package handler
+  const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+    const editData = {
+      ...values,
+    };
+
+    try {
+      const finalData = new FormData();
+      Object.entries(editData).forEach(([key, value]) => {
+        finalData.append(key, value);
+      });
+      const response = await addPackageInSuperAdmin(finalData).unwrap();
+
+      if (response) {
+        toast.success(response?.message);
+        getAllPackageRefetch();
+        resetForm();
+        setOpenModal(!openModal);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // update  package handler
+  const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+    const editData = {
+      name: values?.name || '',
+      price: values?.price || 0,
+      duration: values?.duration?.value || values?.duration || '',
+      yearly_bonus: values?.yearly_bonus?.value
+        ? values?.yearly_bonus?.value
+        : values?.yearly_bonus?.value === false
+          ? values?.yearly_bonus?.value
+          : values?.yearly_bonus
+            ? values?.yearly_bonus
+            : values?.yearly_bonus === false
+              ? values?.yearly_bonus
+              : '',
+      yearly_bonus_amount: values?.yearly_bonus_amount || '',
+      commission: values?.commission || '',
+      family_trip: values?.family_trip?.value
+        ? values?.family_trip?.value
+        : values?.family_trip?.value === false
+          ? values?.family_trip?.value
+          : values?.family_trip
+            ? values?.family_trip
+            : values?.family_trip === false
+              ? values?.family_trip
+              : '',
+      family_trip_duration:
+        values?.family_trip_duration?.value ||
+        values?.family_trip_duration ||
+        '',
+      minimum_files: values?.minimum_files || '',
+      icon: values?.icon,
+      package_id: packageId,
+    };
+
+    try {
+      const finalData = new FormData();
+      Object.entries(editData).forEach(([key, value]) => {
+        finalData.append(key, value);
+      });
+      const response = await updatePackageInSuperAdmin(finalData).unwrap();
+      if (response) {
+        toast.success(response?.message);
+        getAllPackageRefetch();
+        getSinglePackageRefetch();
+        resetForm();
+        setPacakageId('');
+        setEditOpenModal(!editOpenModal);
+        setInitialValues({});
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const togOpenModal = () => {
     setOpenModal(!openModal);
   };
 
-  const togEditOpenModal = () => {
+  const togEditOpenModal = (id) => {
+    setPacakageId(id);
     setEditOpenModal(!editOpenModal);
   };
 
@@ -21,220 +224,49 @@ const PackagePageInSuperAdmin = () => {
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
+          <ToastContainer />
           <div className="h-100">
             <div className="d-flex align-items-center justify-content-between mb-4">
               <div>
                 <h1 className="text-secondary-alt fw-semibold d-flex align-items-center">
                   Our Popular Package
                 </h1>
-                All fields are required.
+                Please Select Below Your Own Package
               </div>
               <div onClick={togOpenModal}>
                 <button className="button px-4 py-2">
-                  Add Package <i class="ri-add-line fw-bolder"></i>
+                  Add Package <i className="ri-add-line fw-bolder"></i>
                 </button>
               </div>
             </div>
             <div>
               <Card>
-                <CardBody className="bg-secondary-subtle">
+                <CardBody className="bg-secondary-subtle hot-offer-full-height">
                   <div className="sqdk-pricing-table my-5 gap-5">
-                    <div
-                      className="sqdk-single-pricing-table wow animate__animated animate__fadeIn"
-                      data-wow-delay="0.1s"
-                      key={'index'}
-                    >
-                      <div className="pricing-table-heading d-flex align-items-center justify-content-between">
-                        <h4>{'Introducer Associate'}</h4>
-                        <div className="icon">
-                          <Image
-                            src={userDummyImage}
-                            alt="alt-image"
-                            width={50}
-                            height={50}
-                          />
-                        </div>
-                      </div>
-                      <div className="price">
-                        <p>
-                          <span>MYR</span>
-                          <small className="ms-3 text-primary">0</small>
-                          <small>/Month</small>
-                        </p>
-                      </div>
-
-                      <div className="pricing-lists">
-                        <ul>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Commission 50%
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Minimum Files 5
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Auto Commission Deduct
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-close-circle-fill text-danger fs-1"></i>
-                            <span className="text-primary fw-semibold">
-                              Yearly Bonus
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-close-circle-fill text-danger fs-1"></i>
-                            <span className="text-primary fw-semibold">
-                              Family Trip
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div
-                        onClick={togEditOpenModal}
-                        className="d-flex align-items-center justify-content-center button hstack py-2"
-                      >
-                        <span className="text-center">Edit Package</span>
-                      </div>
-                    </div>
-                    <div
-                      className="sqdk-single-pricing-table wow animate__animated animate__fadeIn"
-                      data-wow-delay="0.1s"
-                      key={'index'}
-                    >
-                      <div className="pricing-table-heading ">
-                        <h4>{'Introducer Associate'}</h4>
-                        <div className="icon">
-                          <Image
-                            src={userDummyImage}
-                            alt=""
-                            width={50}
-                            height={50}
-                          />
-                        </div>
-                      </div>
-                      <div className="price">
-                        <p>
-                          <span>MYR</span>
-                          <small className="ms-3 text-primary">0</small>
-                          <small>/Month</small>
-                        </p>
-                      </div>
-                      <div className="pricing-lists">
-                        <ul>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Commission 60%
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Minimum Files 5
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Auto Commission Deduct
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Yearly Bonus
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-close-circle-fill text-danger fs-1"></i>
-                            <span className="text-primary fw-semibold">
-                              Family Trip
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div
-                        onClick={togEditOpenModal}
-                        className="d-flex align-items-center justify-content-center button hstack py-2"
-                      >
-                        <span className="text-center">Edit Package</span>
-                      </div>
-                    </div>
-                    <div
-                      className="sqdk-single-pricing-table wow animate__animated animate__fadeIn"
-                      data-wow-delay="0.1s"
-                      key={'index'}
-                    >
-                      <div className="pricing-table-heading ">
-                        <h4>{'Introducer Associate'}</h4>
-                        <div className="icon">
-                          <Image
-                            src={userDummyImage}
-                            alt=""
-                            width={50}
-                            height={50}
-                          />
-                        </div>
-                      </div>
-                      <div className="price">
-                        <p>
-                          <span>MYR</span>
-                          <small className="ms-3 text-primary">0</small>
-                          <small>/Month</small>
-                        </p>
-                      </div>
-
-                      <div className="pricing-lists">
-                        <ul>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Commission 75%
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Minimum Files 5
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Auto Commission Deduct
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Yearly Bonus
-                            </span>
-                          </li>
-                          <li className="d-flex align-items-center gap-2">
-                            <i class="ri-checkbox-circle-fill fs-1 third-color"></i>
-                            <span className="text-primary fw-semibold">
-                              Family Trip
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-                      <div
-                        onClick={togEditOpenModal}
-                        className="d-flex align-items-center justify-content-center button hstack py-2"
-                      >
-                        <span className="text-center">Edit Package</span>
-                      </div>
-                    </div>
+                    {getAllPackageIsLoading || getHotOfferIsLoading ? (
+                      <LoaderSpiner />
+                    ) : (
+                      <>
+                        {packageDetailsData?.length > 0 ? (
+                          packageDetailsData.map((item, index) => (
+                            <SinglePackageComponent
+                              key={index}
+                              data={item}
+                              updatePackage={togEditOpenModal}
+                            />
+                          ))
+                        ) : (
+                          <div className="d-flex flex-column justify-content-center align-items-center text-center text-capitalize">
+                            <h1 className="text-primary">
+                              No package found right now
+                            </h1>
+                            <p className="text-primary">
+                              Please add a package.
+                            </p>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
                 </CardBody>
               </Card>
@@ -247,17 +279,27 @@ const PackagePageInSuperAdmin = () => {
               close={togOpenModal}
               modalHeader={'Add Package'}
               submitButton={'Add Package'}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              handleSubmit={handleAddSubmit}
             />
           }
 
           {
             // update package
-
             <PackageModal
               open={editOpenModal}
-              close={togEditOpenModal}
-              modalHeader={'Add Package'}
-              submitButton={'Add Package'}
+              close={() => (
+                setPacakageId(''),
+                setEditOpenModal(!editOpenModal),
+                setInitialValues({})
+              )}
+              modalHeader={'Update Package'}
+              submitButton={'Update Package'}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              handleSubmit={handleUpdateSubmit}
+              isLoading={getSinglePackageIsLoading}
             />
           }
         </div>

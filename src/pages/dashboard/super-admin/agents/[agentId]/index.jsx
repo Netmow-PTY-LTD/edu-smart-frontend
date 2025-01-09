@@ -7,19 +7,31 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import { studentsHeadersWithLogoLink } from '@/utils/common/data';
+import {
+  useGetAgentEarningsQuery,
+  useUpdateAgentEarningsMutation,
+} from '@/slice/services/super admin/agentService';
+import {
+  agentEarnigsHeaders,
+  studentsHeadersWithLogoLink,
+} from '@/utils/common/data';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
   CardHeader,
   Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Nav,
   NavItem,
   NavLink,
   Row,
+  UncontrolledDropdown,
 } from 'reactstrap';
 
 const SingleAgentInSuperAdminDashboard = () => {
@@ -40,6 +52,13 @@ const SingleAgentInSuperAdminDashboard = () => {
   });
 
   const { data: userInfodata } = useGetUserInfoQuery();
+  const {
+    data: agentEarningsData,
+    isLoading: agentEarningLoading,
+    refetch: agentEarningRefetch,
+  } = useGetAgentEarningsQuery(agent_id);
+
+  const [updateAgentEarnings] = useUpdateAgentEarningsMutation();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -59,13 +78,79 @@ const SingleAgentInSuperAdminDashboard = () => {
     }
   };
 
+  const handleEarningStatusUpdate = async (id, status) => {
+    try {
+      const response = await updateAgentEarnings({
+        id,
+        status,
+      }).unwrap();
+
+      if (response?.success) {
+        toast.success(response?.message);
+        agentEarningRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      console.log(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
   console.log(getSingleAgent?.data?.students[0]);
+
+  const agentEarningsHeaderAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown direction="end">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="ms-2">
+          <DropdownItem>
+            <div
+              onClick={() => handleEarningStatusUpdate(item._id, 'paid')}
+              className="text-primary"
+            >
+              <i className="ri-check-double-fill align-start me-2 text-success"></i>
+              Mark as Paid
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => handleEarningStatusUpdate(item._id, 'unpaid')}
+              className="text-primary"
+            >
+              <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+              Mark as Unpaid
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => handleEarningStatusUpdate(item._id, 'pending')}
+              className="text-primary"
+            >
+              <i className="ri-loader-2-fill align-start me-2 text-muted"></i>
+              Mark as Pending
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
 
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          {getSingleAgentIsLoading ? (
+          <ToastContainer />
+          {getSingleAgentIsLoading || agentEarningLoading ? (
             <LoaderSpiner />
           ) : (
             <div className="container-fluid">
@@ -90,6 +175,22 @@ const SingleAgentInSuperAdminDashboard = () => {
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
                           Overview
+                        </span>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '2',
+                        })}
+                        onClick={() => {
+                          toggleTab('2');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Earnings
                         </span>
                       </NavLink>
                     </NavItem>
@@ -131,6 +232,34 @@ const SingleAgentInSuperAdminDashboard = () => {
                             <CommonTableComponent
                               headers={[...studentsHeadersWithLogoLink]}
                               data={isFilteredData || []}
+                              currentPage={currentPage}
+                              setCurrentPage={setCurrentPage}
+                              perPageData={perPageData}
+                              searchTerm={searchTerm}
+                              handleSearchChange={handleSearchChange}
+                              emptyMessage="No Data found yet."
+                            />
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </div>
+                )}
+                {activeTab === '2' && (
+                  <div style={{ marginTop: '30px' }}>
+                    <Row>
+                      <Col xl={12}>
+                        <Card>
+                          <CardHeader className="text-primary fw-semibold fs-2">
+                            Agent's Earnings
+                          </CardHeader>
+                          <CardBody className="mh-100">
+                            <CommonTableComponent
+                              headers={[
+                                ...agentEarnigsHeaders,
+                                agentEarningsHeaderAction,
+                              ]}
+                              data={agentEarningsData?.data || []}
                               currentPage={currentPage}
                               setCurrentPage={setCurrentPage}
                               perPageData={perPageData}
