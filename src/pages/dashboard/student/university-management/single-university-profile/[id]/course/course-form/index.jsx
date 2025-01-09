@@ -17,6 +17,7 @@ import { Card, CardBody, Col, Row } from 'reactstrap';
 
 export default function CourseForm({ setStep, step }) {
   const router = useRouter();
+  const university_id = router.query.id;
   const course_id = router.query.courseId;
   const [photographPreviewImage, setPhotographPreviewImage] = useState('');
   const [passportPreviewImage, setPassportPreviewImage] = useState('');
@@ -173,7 +174,7 @@ export default function CourseForm({ setStep, step }) {
 
   const handleAddSubmit = async (values, { setSubmitting }) => {
     router.push(
-      `/dashboard/student/university-management/single-university-profile/${course_id}/payment-options`
+      `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
     );
   };
   return (

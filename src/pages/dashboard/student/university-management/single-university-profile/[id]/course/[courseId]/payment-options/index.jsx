@@ -7,18 +7,19 @@ import { toast } from 'react-toastify';
 
 export default function StudentApplicationPaymentOption() {
   const router = useRouter();
+  const universityId = router.query.id;
   const courseId = router.query.courseId;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
 
+  // http://localhost:3005/dashboard/student/university-management/single-university-profile/6749b688feca9ebb6398a0ad
+  // http://localhost:3005/dashboard/student/university-management/single-university-profile/6749b688feca9ebb6398a0ad/course/67624977986876cb913fad6a
+
   const sslCommerzPaymentHandler = async () => {
     const price = 15000;
-    const faild_url =
-      'http://localhost:3005/dashboard/student/university-management/single-university-profile/67624977986876cb913fad6a/?payemt_status=faild';
-    const success_url =
-      'http://localhost:3005/dashboard/student/university-management/single-university-profile/67624977986876cb913fad6a/?payemt_status=success';
-    const cancel_url =
-      'http://localhost:3005/dashboard/student/university-management/single-university-profile/67624977986876cb913fad6a?payemt_status=cancel';
+    const faild_url = `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payemt_status=faild`;
+    const success_url = `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payemt_status=success`;
+    const cancel_url = `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payemt_status=cancel`;
     const course_id = courseId;
     const package_id = '';
 
