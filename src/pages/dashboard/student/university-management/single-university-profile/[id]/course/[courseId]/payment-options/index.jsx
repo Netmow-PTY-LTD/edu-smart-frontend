@@ -12,14 +12,20 @@ export default function StudentApplicationPaymentOption() {
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
 
-  // http://localhost:3005/dashboard/student/university-management/single-university-profile/6749b688feca9ebb6398a0ad
-  // http://localhost:3005/dashboard/student/university-management/single-university-profile/6749b688feca9ebb6398a0ad/course/67624977986876cb913fad6a
-
   const sslCommerzPaymentHandler = async () => {
     const price = 15000;
-    const faild_url = `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payemt_status=faild`;
-    const success_url = `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payemt_status=success`;
-    const cancel_url = `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payemt_status=cancel`;
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=faild`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=faild`;
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=success`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=success`;
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=cancel`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=cancel`;
     const course_id = courseId;
     const package_id = '';
 
