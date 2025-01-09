@@ -24,6 +24,9 @@ import { universityAdministrationGalleryService } from '../services/university-a
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
 import { hotOfferService } from '../services/super admin/hotOfferService';
+import { superAdminAgentService } from '../services/super admin/agentService';
+import { agentEarningsService } from '../services/agent/agentEarningsService';
+import { paymentService } from '../services/common/paymentService';
 
 export const store = configureStore({
   reducer: {
@@ -57,6 +60,9 @@ export const store = configureStore({
     [agentSettingsService.reducerPath]: agentSettingsService.reducer,
     [settingsService.reducerPath]: settingsService.reducer,
     [superAdminSettingsService.reducerPath]: superAdminSettingsService.reducer,
+    [superAdminAgentService.reducerPath]: superAdminAgentService.reducer,
+    [agentEarningsService.reducerPath]: agentEarningsService.reducer,
+    [paymentService.reducerPath]: paymentService.reducer,
     [paymentServices.reducerPath]: paymentServices.reducer,
     [packageService.reducerPath]: packageService.reducer,
     [publicPackageService.reducerPath]: publicPackageService.reducer,
@@ -86,7 +92,10 @@ export const store = configureStore({
       .concat(packageService.middleware)
       .concat(publicPackageService.middleware)
       .concat(hotOfferService.middleware)
-      .concat(superAdminSettingsService.middleware),
+      .concat(superAdminSettingsService.middleware)
+      .concat(superAdminAgentService.middleware)
+      .concat(agentEarningsService.middleware)
+      .concat(paymentService.middleware),
 });
 
 setupListeners(store.dispatch);

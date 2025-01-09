@@ -6,7 +6,7 @@ import {
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionBody,
@@ -19,7 +19,7 @@ import {
   Container,
   Row,
 } from 'reactstrap';
-import CourseForm from './course-form';
+import CourseForm from '../course-form';
 
 const SingleUniversityCourse = () => {
   const router = useRouter();
@@ -33,6 +33,13 @@ const SingleUniversityCourse = () => {
     isLoading: getSingleUniversityIsLoadingForStudent,
     refetch: getSingleUniversityForStudentRefetch,
   } = useGetsingleUniversityQuery(university_id);
+
+  useEffect(() => {
+    if (university_id) {
+      console.log('university_id', university_id);
+      getSingleUniversityForStudentRefetch(university_id);
+    }
+  }, [getSingleUniversityForStudentRefetch, university_id]);
 
   const {
     data: getSingleCourseData,
