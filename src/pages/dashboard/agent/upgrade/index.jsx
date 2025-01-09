@@ -27,14 +27,18 @@ import {
 const UpgradePackageInAgentdashboard = () => {
   const [upgradePackageId, setUpgradePackageId] = useState('');
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [upgradePackageIsLoading, setUpgradePackageIsLoading] = useState(false);
   const router = useRouter();
 
   const payment_status = router.query?.payment_status;
+  const transaction_id = router.query?.transaction_id;
+  const package_id = router.query?.package_id;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const [upgradePackageForAgent] = useUpgradePackageForAgentMutation();
 
-  const { data: userInfodata } = useGetUserInfoQuery();
+  const { data: userInfodata, refetch: userInfoRefetch } =
+    useGetUserInfoQuery();
   const {
     data: getAllPackageData,
     isLoading: getAllPackageIsLoading,
@@ -48,52 +52,77 @@ const UpgradePackageInAgentdashboard = () => {
   } = useGetAllHotOfferQuery();
 
   useEffect(() => {
-    if (payment_status === 'success') {
-      try {
-        const finalData = {};
-        const response = upgradePackageForAgent(finalData).unwrap();
-        if (response) {
-          toast.success(response?.message);
-          router.replace(
-            {
-              pathname: router.pathname,
-              query: '',
-            },
-            undefined,
-            { shallow: true }
-          );
-          // router.push(
-          //   '/dashboard/agent/student-management/all-student-for-agent'
-          // );
+    const handlePayment = async () => {
+      setUpgradePackageIsLoading(true);
+      if (payment_status === 'success' && transaction_id) {
+        try {
+          const finalData = {
+            transaction_id: transaction_id,
+            package_id: package_id,
+          };
+          const response = await upgradePackageForAgent(finalData).unwrap();
+          if (response) {
+            toast.success(response?.message);
+            userInfoRefetch();
+            setTimeout(() => {
+              router.replace(
+                {
+                  pathname: router.pathname,
+                  query: '',
+                },
+                undefined,
+                { shallow: true }
+              );
+            }, 3000);
+          }
+        } catch (error) {
+          const errorMessage = error?.data?.message || 'Something went wrong!';
+          toast.error(errorMessage);
+          setTimeout(() => {
+            router.replace(
+              {
+                pathname: router.pathname,
+                query: '',
+              },
+              undefined,
+              { shallow: true }
+            );
+          }, 3000);
         }
-      } catch (error) {
-        const errorMessage = error?.data?.message || 'Something went wrong!';
-        toast.error(errorMessage);
       }
-    }
-    if (payment_status === 'failed') {
-      toast.error('Payment Failed! Please Try Again.');
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: '',
-        },
-        undefined,
-        { shallow: true }
-      );
-    }
-    if (payment_status === 'cancel') {
-      toast.error('Payment Cancelled! Please Try Again.');
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: '',
-        },
-        undefined,
-        { shallow: true }
-      );
-    }
-  }, [payment_status, router, upgradePackageForAgent]);
+      if (payment_status === 'failed') {
+        toast.error('Payment Failed! Please Try Again.');
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: '',
+          },
+          undefined,
+          { shallow: true }
+        );
+      }
+      if (payment_status === 'cancel') {
+        toast.error('Payment Cancelled! Please Try Again.');
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: '',
+          },
+          undefined,
+          { shallow: true }
+        );
+      }
+      setUpgradePackageIsLoading(false);
+    };
+    handlePayment();
+  }, [
+    package_id,
+    payment_status,
+    router,
+    transaction_id,
+    upgradePackageForAgent,
+    userInfoRefetch,
+  ]);
 
   const handleUpgrade = (id) => {
     setUpgradePackageId(id);
@@ -103,7 +132,7 @@ const UpgradePackageInAgentdashboard = () => {
   const sslCommerzPaymentHandler = async () => {
     const price = 15000;
     const faild_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=failed`;
-    const success_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=success`;
+    const success_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`;
     const cancel_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`;
     const package_id = upgradePackageId;
 
@@ -135,7 +164,7 @@ const UpgradePackageInAgentdashboard = () => {
             <Row>
               <Col xl={10}>
                 <div className=" d-flex align-items-center justify-content-center my-5 gap-5">
-                  {getAllPackageIsLoading ? (
+                  {getAllPackageIsLoading || upgradePackageIsLoading ? (
                     <LoaderSpiner />
                   ) : (
                     <>

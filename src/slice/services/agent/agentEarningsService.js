@@ -23,7 +23,7 @@ export const agentEarningsService = createApi({
     }),
     upgradePackageForAgent: builder.mutation({
       query: (body) => {
-        const package_id = body.get('package_id');
+        const package_id = body.package_id;
         return {
           url: `/package/upgrade/${package_id}`,
           method: 'PATCH',

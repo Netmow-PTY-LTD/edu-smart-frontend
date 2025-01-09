@@ -186,7 +186,7 @@ const HotOfferForSuperAdmin = () => {
               </div>
               <div onClick={togOpenModal}>
                 <button className="button px-4 py-2">
-                  Add Hot Offer <i class="ri-add-line fw-bolder"></i>
+                  Add Hot Offer <i className="ri-add-line fw-bolder"></i>
                 </button>
               </div>
             </div>

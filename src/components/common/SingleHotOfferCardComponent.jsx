@@ -32,7 +32,7 @@ const SingleHotOfferCardComponent = ({
                   transform: 'rotate(90deg)',
                 }}
               >
-                <i class="ri-more-2-fill fw-bolder fs-1"></i>
+                <i className="ri-more-2-fill fw-bolder fs-1"></i>
               </button>
             </DropdownToggle>
             <DropdownMenu className="ms-2">
