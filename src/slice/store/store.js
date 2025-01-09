@@ -27,6 +27,7 @@ import { hotOfferService } from '../services/super admin/hotOfferService';
 import { superAdminAgentService } from '../services/super admin/agentService';
 import { agentEarningsService } from '../services/agent/agentEarningsService';
 import { paymentService } from '../services/common/paymentService';
+import { applicationService } from '../services/common/applicationService';
 
 export const store = configureStore({
   reducer: {
@@ -67,6 +68,7 @@ export const store = configureStore({
     [packageService.reducerPath]: packageService.reducer,
     [publicPackageService.reducerPath]: publicPackageService.reducer,
     [hotOfferService.reducerPath]: hotOfferService.reducer,
+    [applicationService.reducerPath]: applicationService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -95,7 +97,8 @@ export const store = configureStore({
       .concat(superAdminSettingsService.middleware)
       .concat(superAdminAgentService.middleware)
       .concat(agentEarningsService.middleware)
-      .concat(paymentService.middleware),
+      .concat(paymentService.middleware)
+      .concat(applicationService.middleware),
 });
 
 setupListeners(store.dispatch);

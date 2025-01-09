@@ -128,6 +128,12 @@ const StudentSidebarData = () => {
         },
       ],
     },
+    {
+      id: 'applications',
+      label: 'Applications',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/student/applications',
+    },
 
     {
       id: 'settings',
