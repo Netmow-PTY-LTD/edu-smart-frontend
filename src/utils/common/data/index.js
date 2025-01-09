@@ -514,6 +514,71 @@ const agentEarnigsHeaders = [
   },
 ];
 
+const studentApplicationsHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+  {
+    title: 'University',
+    key: 'university',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.university?.name ? item?.university?.name : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Course',
+    key: 'course',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.course?.name ? item?.course?.name : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Applied By',
+    key: 'applied_by',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.applied_by?.first_name && item?.applied_by?.last_name
+          ? `${item?.applied_by?.first_name ? item?.applied_by?.first_name : ''} ${item?.applied_by?.last_name ? item?.applied_by?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Payment Status',
+    key: 'payment_status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+        >
+          {item?.payment_status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+  {
+    title: 'Status',
+    key: 'status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-fourth-color text-white' : item?.status === 'pending' ? 'bg-info text-white' : 'bg-warning text-white'}`}
+        >
+          {item?.status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+];
+
 const agentsHeaders = [
   {
     title: 'Name',
@@ -1018,4 +1083,5 @@ export {
   universityHeadersWithoutAction,
   userDummyImage,
   agentEarnigsHeaders,
+  studentApplicationsHeaders,
 };
