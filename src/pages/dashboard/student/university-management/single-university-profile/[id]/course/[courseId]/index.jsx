@@ -122,6 +122,15 @@ const SingleUniversityCourse = () => {
     userInfoData?.data?._id,
   ]);
 
+  useEffect(() => {
+    if (router?.query?.payment_status === 'faild') {
+      toast.error('Payment Failed');
+    }
+    if (router?.query?.payment_status === 'cancel') {
+      toast.error('Payment Cancelled');
+    }
+  }, [router?.query?.payment_status]);
+
   const toggle = (id) => {
     if (open === id) {
       setOpen();

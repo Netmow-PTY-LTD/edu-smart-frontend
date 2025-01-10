@@ -2,10 +2,19 @@ import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import React from 'react';
 
-const SinglePackageComponent = ({ data, updatePackage, handleUpgrade }) => {
+const SinglePackageComponent = ({
+  data,
+  updatePackage,
+  handleUpgrade,
+  style,
+  unselectedPackage,
+}) => {
   return (
     <>
-      <div className="sqdk-single-pricing-table position-relative">
+      <div
+        style={style}
+        className="sqdk-single-pricing-table position-relative"
+      >
         <div
           style={{
             position: 'absolute',
@@ -23,7 +32,9 @@ const SinglePackageComponent = ({ data, updatePackage, handleUpgrade }) => {
           )}
         </div>
         <div className="d-flex align-items-center justify-content-between mt-3 gap-5">
-          <h1 className="text-secondary-alt text-capitalize">{data?.name}</h1>
+          <h1 className="text-secondary-alt text-capitalize text-nowrap">
+            {data?.name}
+          </h1>
           <div className="icon">
             <Image
               src={
@@ -93,6 +104,14 @@ const SinglePackageComponent = ({ data, updatePackage, handleUpgrade }) => {
             className="d-flex align-items-center justify-content-center button hstack py-2"
           >
             <span className="text-center">Edit Package</span>
+          </div>
+        ) : Object.keys(style).length > 0 ? (
+          <div className="px-3 py-1 rounded-3 fw-semibold text-primary  bg-info-subtle">
+            Currently Using This Package
+          </div>
+        ) : unselectedPackage ? (
+          <div className="bg-danger-subtle px-3 py-1 rounded-3 fw-semibold text-danger">
+            Can't Downgrade This Package
           </div>
         ) : (
           <div

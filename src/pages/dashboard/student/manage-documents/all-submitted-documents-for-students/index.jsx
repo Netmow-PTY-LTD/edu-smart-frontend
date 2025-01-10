@@ -50,8 +50,8 @@ const AllSubmittedDocumentsForStudents = () => {
       title: 'Preview',
       key: 'preview',
       render: (item) => (
-        <Link target="_blank" href={`${item?.file?.url}`}>
-          {item?.file?.url?.endsWith('.pdf') ? (
+        <Link target="_blank" href={`${item?.file[0]?.url}`}>
+          {item?.file[0]?.url?.endsWith('.pdf') ? (
             <div>Open File</div>
           ) : (
             <Image
@@ -69,8 +69,6 @@ const AllSubmittedDocumentsForStudents = () => {
       ),
     },
   ];
-
-  console.log(isFilteredData);
 
   return (
     <Layout>

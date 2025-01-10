@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, Col, Row } from 'reactstrap';
+import * as Yup from 'yup';
 
 export default function CourseForm({ setStep, step }) {
   const router = useRouter();
@@ -42,6 +43,129 @@ export default function CourseForm({ setStep, step }) {
     refetch: singleStudentRefetch,
   } = useGetSingleStudentQuery(userInfodata?.data?._id, {
     skip: !userInfodata?.data?._id,
+  });
+
+  // Helper function to validate file types
+  const fileTypeValidation = (allowedTypes) => {
+    return (value) => {
+      if (value && value.length > 0) {
+        for (let i = 0; i < value.length; i++) {
+          const file = value[i];
+          const fileType = file.type;
+          if (!allowedTypes.includes(fileType)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+  };
+
+  // File size validation (in MB)
+  const fileSizeValidation = (maxSizeInMB, file) => {
+    if (!file) return false; // No file selected
+    const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+    return file.size <= maxSizeInBytes;
+  };
+
+  const validationSchema = Yup.object({
+    photograph: Yup.mixed()
+      .required('Photograph is required')
+      .test('fileType', 'Photograph must be an image file', (value) =>
+        fileTypeValidation(['image/jpeg', 'image/png', 'image/jpg'], value)
+      )
+      .test('fileSize', 'Photograph must be less than 5MB', (value) =>
+        fileSizeValidation(5, value)
+      ),
+
+    passport: Yup.mixed()
+      .required('Passport is required')
+      .test('fileType', 'Passport must be an image file', (value) =>
+        fileTypeValidation(['image/jpeg', 'image/png', 'image/jpg'], value)
+      )
+      .test('fileSize', 'Passport must be less than 5MB', (value) =>
+        fileSizeValidation(5, value)
+      ),
+
+    offer_letter: Yup.mixed()
+      .required('Offer letter is required')
+      .test('fileType', 'Offer letter must be a PDF file', (value) =>
+        fileTypeValidation(['application/pdf'], value)
+      )
+      .test('fileSize', 'Offer letter must be less than 10MB', (value) =>
+        fileSizeValidation(10, value)
+      ),
+
+    medical_certificate: Yup.mixed()
+      .required('Medical certificate is required')
+      .test('fileType', 'Medical certificate must be a PDF file', (value) =>
+        fileTypeValidation(['application/pdf'], value)
+      )
+      .test('fileSize', 'Medical certificate must be less than 10MB', (value) =>
+        fileSizeValidation(10, value)
+      ),
+
+    academic_certificate: Yup.array()
+      .of(
+        Yup.mixed()
+          .test(
+            'fileType',
+            'Academic certificate must be an image or PDF file',
+            (value) =>
+              fileTypeValidation(
+                ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'],
+                value
+              )
+          )
+          .test(
+            'fileSize',
+            'Each academic certificate must be less than 10MB',
+            (value) => fileSizeValidation(10, value)
+          )
+      )
+      .required('Academic certificates are required'),
+
+    personal_bond: Yup.mixed()
+      .required('Personal bond is required')
+      .test('fileType', 'Personal bond must be a PDF file', (value) =>
+        fileTypeValidation(['application/pdf'], value)
+      )
+      .test('fileSize', 'Personal bond must be less than 10MB', (value) =>
+        fileSizeValidation(10, value)
+      ),
+
+    noc: Yup.mixed()
+      .required('NOC is required')
+      .test('fileType', 'NOC must be a PDF file', (value) =>
+        fileTypeValidation(['application/pdf'], value)
+      )
+      .test('fileSize', 'NOC must be less than 10MB', (value) =>
+        fileSizeValidation(10, value)
+      ),
+
+    letter_of_eligibility: Yup.mixed()
+      .required('Letter of eligibility is required')
+      .test('fileType', 'Letter of eligibility must be a PDF file', (value) =>
+        fileTypeValidation(['application/pdf'], value)
+      )
+      .test(
+        'fileSize',
+        'Letter of eligibility must be less than 10MB',
+        (value) => fileSizeValidation(10, value)
+      ),
+
+    english_language_certificate: Yup.mixed()
+      .required('English language certificate is required')
+      .test(
+        'fileType',
+        'English language certificate must be a PDF file',
+        (value) => fileTypeValidation(['application/pdf'], value)
+      )
+      .test(
+        'fileSize',
+        'English language certificate must be less than 10MB',
+        (value) => fileSizeValidation(10, value)
+      ),
   });
 
   useEffect(() => {
@@ -127,8 +251,6 @@ export default function CourseForm({ setStep, step }) {
     fetchStudentData();
   }, [singleStudentData?.data]);
 
-  console.log(initialValues);
-
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
     if (file) {
@@ -144,39 +266,61 @@ export default function CourseForm({ setStep, step }) {
     }
   };
 
-  // const handleAddSubmit = async (values, { setSubmitting }) => {
-  //   setSubmitting(true);
-
-  //   try {
-  //     const finalData = new FormData();
-  //     Object.entries(values).forEach(([key, value]) => {
-  //       if (key === 'academic_certificate') {
-  //         values?.academic_certificate.length > 0 &&
-  //           values?.academic_certificate.map((ac) =>
-  //             finalData.append('academic_certificate', ac)
-  //           );
-  //       } else {
-  //         finalData.append(key, value);
-  //       }
-  //     });
-  //     const result = await submitStudentDocument(finalData).unwrap();
-  //     if (result) {
-  //       toast.success(result?.message);
-  //       singleStudentRefetch();
-  //     }
-  //   } catch (error) {
-  //     const errorMessage = error?.data?.message;
-  //     toast.error(errorMessage);
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
-
   const handleAddSubmit = async (values, { setSubmitting }) => {
-    router.push(
-      `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
-    );
+    setSubmitting(true);
+
+    try {
+      if (
+        (values.academic_certificate.length < 1 ||
+          !values.photograph ||
+          !values.passport ||
+          !values.offer_letter ||
+          !values.medical_certificate ||
+          !values.personal_bond ||
+          !values.noc ||
+          !values.letter_of_eligibility ||
+          !values.english_language_certificate) &&
+        (initialValues.academic_certificate.length < 1 ||
+          !initialValues.photograph ||
+          !initialValues.passport ||
+          !initialValues.offer_letter ||
+          !initialValues.medical_certificate ||
+          !initialValues.personal_bond ||
+          !initialValues.noc ||
+          !initialValues.letter_of_eligibility ||
+          !initialValues.english_language_certificate)
+      ) {
+        toast.error('All fields are required');
+        return;
+      } else {
+        const finalData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          if (key === 'academic_certificate') {
+            values?.academic_certificate.length > 0 &&
+              values?.academic_certificate.map((ac) =>
+                finalData.append('academic_certificate', ac)
+              );
+          } else {
+            finalData.append(key, value);
+          }
+        });
+        const result = await submitStudentDocument(finalData).unwrap();
+        if (result?.success) {
+          toast.success(result?.message);
+          singleStudentRefetch();
+          router.push(
+            `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
+          );
+        }
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
+
   return (
     <>
       <ToastContainer />
@@ -198,9 +342,13 @@ export default function CourseForm({ setStep, step }) {
         ) : (
           <CardBody>
             <div className="form-content">
+              <div className="text-danger fw-semibold fs-2 mb-4">
+                *All Fields Are Required
+              </div>
               <Formik
                 initialValues={initialValues}
                 onSubmit={handleAddSubmit}
+                validationSchema={validationSchema}
                 enableReinitialize
               >
                 {({ isSubmitting, setFieldValue, values }) => {

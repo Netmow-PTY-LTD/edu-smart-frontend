@@ -473,7 +473,7 @@ const agentEarnigsHeaders = [
     key: 'target_status',
     render: (item) => (
       <Progress
-        className="my-2"
+        className="my-2 "
         style={{
           height: '10px',
           borderRadius: '20px',

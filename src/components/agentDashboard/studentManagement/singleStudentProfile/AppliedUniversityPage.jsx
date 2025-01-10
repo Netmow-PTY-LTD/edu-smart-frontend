@@ -1,78 +1,54 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
-import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardHeader, Row } from 'reactstrap';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useGetSingleStudentApplicationQuery } from '@/slice/services/agent/agentApplicationService';
+import { studentApplicationsHeaders } from '@/utils/common/data';
+import React, { useState } from 'react';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
-const AppliedUniversityPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+const AppliedUniversityPage = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(0);
-
-  // -------------------- Just for UI example this data will come from API -----------------------
-  const [
-    AllUploadDocumentsForStudentsData,
-    setAllUploadDocumentsForStudentsData,
-  ] = useState('');
   const perPageData = 10;
 
-  // search input change function
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
-  // Filter data for search option
-  const isfilteredData =
-    'allSubmittedDocumentForStudentData'?.data?.length > 0 &&
-    'allSubmittedDocumentForStudentData'?.data.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-  const uploadAction = [
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.title ? item?.title : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-  ];
-
-  useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
-      ...studentSubmittedDocumentsHeaderWithoutAction,
-      ...uploadAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { data: applicationData, isLoading: applicationLoading } =
+    useGetSingleStudentApplicationQuery(id, {
+      skip: !id,
+    });
 
   return (
-    <Row>
-      <div>
-        <Card>
-          <CardHeader className="d-flex justify-content-between align-items-center">
-          Applied University
-            <SearchComponent
-              searchTerm={searchTerm}
-              handleSearchChange={handleSearchChange}
-            />
-          </CardHeader>
-          <CardBody>
-            <CommonTableComponent
-              headers={AllUploadDocumentsForStudentsData}
-              data={isfilteredData ? isfilteredData : []}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              perPageData={perPageData}
-              searchTerm={searchTerm}
-              handleSearchChange={handleSearchChange}
-              emptyMessage="No Data found yet."
-            />
-          </CardBody>
-        </Card>
-      </div>
-    </Row>
+    <>
+      {applicationLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <div className="page-content">
+          <div className="h-100">
+            <div className="container-fluid">
+              <div>
+                <Row>
+                  <Col xl={12}>
+                    <Card>
+                      <CardHeader className="text-primary fw-semibold fs-2">
+                        Student's University Applications
+                      </CardHeader>
+                      <CardBody className="mh-100">
+                        <CommonTableComponent
+                          headers={[...studentApplicationsHeaders]}
+                          data={applicationData?.data || []}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          perPageData={perPageData}
+                          emptyMessage="No Data found yet."
+                        />
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
