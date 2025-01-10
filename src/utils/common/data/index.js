@@ -475,7 +475,7 @@ const agentEarnigsHeaders = [
       <Progress
         className="my-2 "
         style={{
-          height: '10px',
+          height: '13px',
           borderRadius: '20px',
           backgroundColor: 'rgba(75, 77, 70, 0.18)',
         }}
@@ -488,7 +488,7 @@ const agentEarnigsHeaders = [
             ? (item?.agent_package?.target?.target_achieved /
                 item?.agent_package?.target?.target) *
               100
-            : 10
+            : 15
         }
       >
         <span className="fs-4">
@@ -505,7 +505,7 @@ const agentEarnigsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : 'bg-warning-subtle text-warning'}`}
         >
           {item?.payment_status ?? '-'}
         </span>
