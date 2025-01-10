@@ -31,13 +31,13 @@ const Sidebar = ({ layoutType }) => {
           <Link
             href={
               userInfodata?.data?.role === 'agent'
-                ? '/agent'
+                ? '/dashboard/agent'
                 : userInfodata?.data?.role === 'student'
-                  ? '/student'
+                  ? '/dashboard/student'
                   : userInfodata?.data?.role === 'super_admin'
-                    ? '/super_admin'
+                    ? '/dashboard/super_admin'
                     : userInfodata?.data?.role === 'university_administration'
-                      ? '/university_administration'
+                      ? '/dashboard/university_administration'
                       : '/'
             }
             className="logo logo-light "
