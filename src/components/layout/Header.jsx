@@ -102,7 +102,7 @@ const Header = () => {
             {/* header icon start*/}
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
-                <Link href="/" className="logo logo-dark">
+                <Link href="" className="logo logo-dark">
                   <span className="logo-sm">
                     <Image priority={true} src={logoDark} alt="" height="22" />
                   </span>
@@ -111,7 +111,7 @@ const Header = () => {
                   </span>
                 </Link>
 
-                <Link href="/" className="logo logo-light">
+                <Link href="" className="logo logo-light">
                   <span className="logo-sm">
                     <Image priority={true} src={logoDark} alt="" height="22" />
                   </span>

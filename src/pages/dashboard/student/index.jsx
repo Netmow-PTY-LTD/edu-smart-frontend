@@ -69,14 +69,14 @@ const StudentDashboard = () => {
                         data={universityData?.data ? universityData?.data : []}
                       />
                     </Col>
-                    <Col xxl={6}>
+                    {/* <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'My Applied Universities'}
                         // headers={}
                         // data={}
                       />
-                    </Col>
-                    <Col xxl={6}>
+                    </Col> */}
+                    <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Document Upload Request'}
                         headers={studentSubmittedDocumentsHeaderWithoutAction}
