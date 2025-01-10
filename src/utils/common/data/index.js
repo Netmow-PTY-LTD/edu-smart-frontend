@@ -514,6 +514,49 @@ const agentEarnigsHeaders = [
   },
 ];
 
+const EmgsStatusListHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+  {
+    title: 'User',
+    key: 'user',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.user?.first_name && item?.user?.last_name
+          ? `${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'University',
+    key: 'university',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.application?.university?.name
+          ? item?.application?.university?.name
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Course',
+    key: 'course',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.application?.course?.name
+          ? item?.application?.course?.name
+          : '-'}
+      </span>
+    ),
+  },
+];
+
 const studentApplicationsHeaders = [
   {
     title: 'SN',
@@ -1084,4 +1127,5 @@ export {
   userDummyImage,
   agentEarnigsHeaders,
   studentApplicationsHeaders,
+  EmgsStatusListHeaders,
 };

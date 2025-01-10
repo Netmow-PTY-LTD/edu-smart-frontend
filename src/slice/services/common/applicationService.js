@@ -36,6 +36,25 @@ export const applicationService = createApi({
         method: 'GET',
       }),
     }),
+    getAllEmgsStatus: builder.query({
+      query: (id) => ({
+        url: `/application/emgs/status/${id}`,
+        method: 'GET',
+      }),
+    }),
+    getEmgsStatusTimeline: builder.query({
+      query: (id) => ({
+        url: `/application/emgs/status/${id}/timeline`,
+        method: 'GET',
+      }),
+    }),
+    addEmgsTimeline: builder.mutation({
+      query: (data) => ({
+        url: `/application/emgs/status/${data?.id}/timeline`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -43,4 +62,7 @@ export const {
   useCreateApplicationMutation,
   useGetApplicationsQuery,
   useGetApplicationQuery,
+  useGetAllEmgsStatusQuery,
+  useGetEmgsStatusTimelineQuery,
+  useAddEmgsTimelineMutation,
 } = applicationService;
