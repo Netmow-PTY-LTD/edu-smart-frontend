@@ -127,8 +127,6 @@ export default function CourseForm({ setStep, step }) {
     fetchStudentData();
   }, [singleStudentData?.data]);
 
-  console.log(initialValues);
-
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
     if (file) {
@@ -144,39 +142,61 @@ export default function CourseForm({ setStep, step }) {
     }
   };
 
-  // const handleAddSubmit = async (values, { setSubmitting }) => {
-  //   setSubmitting(true);
-
-  //   try {
-  //     const finalData = new FormData();
-  //     Object.entries(values).forEach(([key, value]) => {
-  //       if (key === 'academic_certificate') {
-  //         values?.academic_certificate.length > 0 &&
-  //           values?.academic_certificate.map((ac) =>
-  //             finalData.append('academic_certificate', ac)
-  //           );
-  //       } else {
-  //         finalData.append(key, value);
-  //       }
-  //     });
-  //     const result = await submitStudentDocument(finalData).unwrap();
-  //     if (result) {
-  //       toast.success(result?.message);
-  //       singleStudentRefetch();
-  //     }
-  //   } catch (error) {
-  //     const errorMessage = error?.data?.message;
-  //     toast.error(errorMessage);
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
-
   const handleAddSubmit = async (values, { setSubmitting }) => {
-    router.push(
-      `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
-    );
+    setSubmitting(true);
+
+    try {
+      if (
+        (values.academic_certificate.length < 1 ||
+          !values.photograph ||
+          !values.passport ||
+          !values.offer_letter ||
+          !values.medical_certificate ||
+          !values.personal_bond ||
+          !values.noc ||
+          !values.letter_of_eligibility ||
+          !values.english_language_certificate) &&
+        (initialValues.academic_certificate.length < 1 ||
+          !initialValues.photograph ||
+          !initialValues.passport ||
+          !initialValues.offer_letter ||
+          !initialValues.medical_certificate ||
+          !initialValues.personal_bond ||
+          !initialValues.noc ||
+          !initialValues.letter_of_eligibility ||
+          !initialValues.english_language_certificate)
+      ) {
+        toast.error('All fields are required');
+        return;
+      } else {
+        const finalData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          if (key === 'academic_certificate') {
+            values?.academic_certificate.length > 0 &&
+              values?.academic_certificate.map((ac) =>
+                finalData.append('academic_certificate', ac)
+              );
+          } else {
+            finalData.append(key, value);
+          }
+        });
+        const result = await submitStudentDocument(finalData).unwrap();
+        if (result?.success) {
+          toast.success(result?.message);
+          singleStudentRefetch();
+          router.push(
+            `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
+          );
+        }
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
+
   return (
     <>
       <ToastContainer />
