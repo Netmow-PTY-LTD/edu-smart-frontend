@@ -5,7 +5,6 @@ import SubmitButton from '@/components/common/formField/SubmitButton';
 import { useLogInMutation } from '@/slice/services/public/auth/authService';
 import { brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
-
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';

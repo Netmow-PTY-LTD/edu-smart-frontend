@@ -167,8 +167,13 @@ const DashBoardLayout = (props) => {
   );
 };
 
+
+
 DashBoardLayout.propTypes = {
   children: PropTypes.object,
 };
+
+
+
 
 export default withRouter(DashBoardLayout);

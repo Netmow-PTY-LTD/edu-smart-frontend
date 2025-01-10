@@ -225,6 +225,7 @@ p {
   transition: all 0.3s ease;
 }
 
+
 .close-btn:hover {
   background-color: #e60707;
   color: #f7d9d9;
@@ -287,10 +288,10 @@ p {
   [data-scroll] {
     transform: none !important;
   }
+ 
 }
 
 // Topbar
-
 .topbar-content {
   display: flex;
   justify-content: space-between;
@@ -8402,6 +8403,7 @@ img.staff-img {
     }
   }
 
+
   @media (max-width: 480px) {
     .course-card__body {
       header {
@@ -8453,5 +8455,6 @@ img.staff-img {
     font-size: 16px;
     padding: 10px 16px;
   }
+  
 }
 
