@@ -174,6 +174,16 @@ const UpgradePackageInAgentdashboard = () => {
                             key={index}
                             data={item}
                             handleUpgrade={handleUpgrade}
+                            style={
+                              item?._id ===
+                              userInfodata?.data?.agent_package?.package?._id
+                                ? { border: '5px solid #13C9BF' }
+                                : {}
+                            }
+                            unselectedPackage={
+                              item?.price <
+                              userInfodata?.data?.agent_package?.package?.price
+                            }
                           />
                         ))
                       ) : (

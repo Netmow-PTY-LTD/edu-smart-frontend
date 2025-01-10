@@ -12,6 +12,8 @@ const ImageField = ({ name, label, handleImageChange, ...props }) => {
         {label || 'Upload Image'}
       </label>
 
+      
+
       <Field name={name}>
         {({ form }) => {
           return (
