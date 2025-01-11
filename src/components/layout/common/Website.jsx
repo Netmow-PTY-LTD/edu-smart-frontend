@@ -7,7 +7,7 @@ const Website = () => {
 
   return (
     <>
-      <div className=" header-item">
+      {/* <div className=" header-item">
         <Link
           href={`${userInfodata?.data?.role === 'university_administrator' ? '/university/' + userInfodata?.data?._id : ''}`}
           target="_blank"
@@ -23,7 +23,7 @@ const Website = () => {
               : 'Website'}
           </span>
         </Link>
-      </div>
+      </div> */}
     </>
   );
 };
