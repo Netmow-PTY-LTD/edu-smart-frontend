@@ -514,6 +514,49 @@ const agentEarnigsHeaders = [
   },
 ];
 
+const EmgsStatusListHeaders = [
+  {
+    title: 'SN',
+    key: 'sn',
+    render: (item, index) => (
+      <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+    ),
+  },
+  {
+    title: 'User',
+    key: 'user',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.user?.first_name && item?.user?.last_name
+          ? `${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'University',
+    key: 'university',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.application?.university?.name
+          ? item?.application?.university?.name
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Course',
+    key: 'course',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.application?.course?.name
+          ? item?.application?.course?.name
+          : '-'}
+      </span>
+    ),
+  },
+];
+
 const studentApplicationsHeaders = [
   {
     title: 'SN',
@@ -833,38 +876,25 @@ const allCoursesWithoutAction = [
     ),
   },
   {
-    title: 'Price For Student',
-    key: 'price_for_student',
+    title: 'Course Fee',
+    key: 'price',
     render: (item, index) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.price_for_student}
-      </span>
+      <span className="d-flex flex-column text-capitalize">{item?.price}</span>
     ),
   },
   {
-    title: 'GST For Student',
-    key: 'gst_for_student',
+    title: 'GST In Course Fee (%)',
+    key: 'gst',
     render: (item, index) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.gst_for_student}
-      </span>
+      <span className="d-flex flex-column text-capitalize">{item?.gst}</span>
     ),
   },
   {
-    title: 'Price For Agent',
-    key: 'price_for_agent',
+    title: 'Agent Commission (%)',
+    key: 'agent_commission',
     render: (item, index) => (
       <span className="d-flex flex-column text-capitalize">
-        {item?.price_for_agent}
-      </span>
-    ),
-  },
-  {
-    title: 'GST For Agent',
-    key: 'gst_for_agent',
-    render: (item, index) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.gst_for_agent}
+        {item?.agent_commission}
       </span>
     ),
   },
@@ -1084,4 +1114,5 @@ export {
   userDummyImage,
   agentEarnigsHeaders,
   studentApplicationsHeaders,
+  EmgsStatusListHeaders,
 };
