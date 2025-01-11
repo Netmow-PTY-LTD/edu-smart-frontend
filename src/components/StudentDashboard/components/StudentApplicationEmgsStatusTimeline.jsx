@@ -4,20 +4,15 @@ import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
 import { Button, Col, Row } from 'reactstrap';
-import AddEmgsModal from './modal/AddEmgsModal';
 
-export default function ApplicationEmgsStatusTimeline({
+export default function StudentApplicationEmgsStatusTimeline({
   setActiveTab,
   currentTimeline,
 }) {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const {
-    data: timelineData,
-    isLoading: timelineLoading,
-    refetch: timelineRefe,
-  } = useGetEmgsStatusTimelineQuery(currentTimeline, {
-    skip: !currentTimeline,
-  });
+  const { data: timelineData, isLoading: timelineLoading } =
+    useGetEmgsStatusTimelineQuery(currentTimeline, {
+      skip: !currentTimeline,
+    });
   return (
     <>
       {timelineLoading ? (
@@ -31,12 +26,6 @@ export default function ApplicationEmgsStatusTimeline({
             >
               <i className="ri-arrow-left-line me-2"></i>
               Back
-            </Button>
-            <Button
-              className="button fs-14 mt-3"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <i className="ri-add-line me-2"></i> Add New Status
             </Button>
           </div>
           <Col lg={12}>
@@ -76,12 +65,6 @@ export default function ApplicationEmgsStatusTimeline({
           </Col>
         </Row>
       )}
-      <AddEmgsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        dataRefetch={timelineRefe}
-        emgs_status_id={currentTimeline}
-      />
     </>
   );
 }

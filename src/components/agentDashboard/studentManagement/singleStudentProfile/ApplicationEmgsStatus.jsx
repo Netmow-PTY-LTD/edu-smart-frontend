@@ -32,6 +32,7 @@ import {
   agentEarnigsHeaders,
   EmgsStatusListHeaders,
 } from '@/utils/common/data';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 
 const ApplicationEmgsStatus = ({ student_id }) => {
   const data = [0, 1, 2, 3, 4, 5];
@@ -44,6 +45,11 @@ const ApplicationEmgsStatus = ({ student_id }) => {
     useGetAllEmgsStatusQuery(student_id, {
       skip: !student_id,
     });
+
+  const handleViewEmgsStatus = (id) => {
+    setCurrentTimeline(id);
+    setActiveTab('2');
+  };
 
   const EmgsStatusActionData = {
     title: 'Action',
@@ -62,10 +68,10 @@ const ApplicationEmgsStatus = ({ student_id }) => {
         <DropdownMenu className="ms-2">
           <DropdownItem>
             <div
-              // onClick={() => handleEarningStatusUpdate(item._id, 'paid')}
+              onClick={() => handleViewEmgsStatus(item._id)}
               className="text-primary"
             >
-              <i className="ri-check-double-fill align-start me-2 text-success"></i>
+              <i className="ri-eye-fill me-2"></i>
               View EMGS Status
             </div>
           </DropdownItem>
@@ -78,37 +84,40 @@ const ApplicationEmgsStatus = ({ student_id }) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          {activeTab === '1' && (
-            <div>
-              <Row>
-                <Col xl={12}>
-                  <Card>
-                    <CardHeader className="text-primary fw-semibold fs-2">
-                      Student's EMGS Status List
-                    </CardHeader>
-                    <CardBody className="mh-100">
-                      <CommonTableComponent
-                        headers={[
-                          ...EmgsStatusListHeaders,
-                          EmgsStatusActionData,
-                        ]}
-                        data={allEmgsStatusData?.data || []}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        perPageData={perPageData}
-                        emptyMessage="No Data found yet."
-                      />
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-            </div>
-          )}
+          {activeTab === '1' &&
+            (allEmgsStatusLoading ? (
+              <LoaderSpiner />
+            ) : (
+              <div>
+                <Row>
+                  <Col xl={12}>
+                    <Card>
+                      <CardHeader className="text-primary fw-semibold fs-2">
+                        Student's EMGS Status List
+                      </CardHeader>
+                      <CardBody className="mh-100">
+                        <CommonTableComponent
+                          headers={[
+                            ...EmgsStatusListHeaders,
+                            EmgsStatusActionData,
+                          ]}
+                          data={allEmgsStatusData?.data || []}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          perPageData={perPageData}
+                          emptyMessage="No Data found yet."
+                        />
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            ))}
 
           {activeTab === '2' && (
             <ApplicationEmgsStatusTimeline
               setActiveTab={setActiveTab}
-              data={data}
+              currentTimeline={currentTimeline}
             />
           )}
         </Container>

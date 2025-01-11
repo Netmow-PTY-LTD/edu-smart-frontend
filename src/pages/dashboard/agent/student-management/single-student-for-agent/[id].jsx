@@ -126,7 +126,7 @@ const SingleStudentForAgent = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Timeline
+                          EMGS Status
                         </span>
                       </NavLink>
                     </NavItem>

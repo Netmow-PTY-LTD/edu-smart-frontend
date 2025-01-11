@@ -49,11 +49,14 @@ export const applicationService = createApi({
       }),
     }),
     addEmgsTimeline: builder.mutation({
-      query: (data) => ({
-        url: `/application/emgs/status/${data?.id}/timeline`,
-        method: 'POST',
-        body: data,
-      }),
+      query: (data) => {
+        const id = data.get('id');
+        return {
+          url: `/application/emgs/status/${id}/timeline`,
+          method: 'POST',
+          body: data,
+        };
+      },
     }),
   }),
 });

@@ -876,38 +876,25 @@ const allCoursesWithoutAction = [
     ),
   },
   {
-    title: 'Price For Student',
-    key: 'price_for_student',
+    title: 'Course Fee',
+    key: 'price',
     render: (item, index) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.price_for_student}
-      </span>
+      <span className="d-flex flex-column text-capitalize">{item?.price}</span>
     ),
   },
   {
-    title: 'GST For Student',
-    key: 'gst_for_student',
+    title: 'GST In Course Fee (%)',
+    key: 'gst',
     render: (item, index) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.gst_for_student}
-      </span>
+      <span className="d-flex flex-column text-capitalize">{item?.gst}</span>
     ),
   },
   {
-    title: 'Price For Agent',
-    key: 'price_for_agent',
+    title: 'Agent Commission (%)',
+    key: 'agent_commission',
     render: (item, index) => (
       <span className="d-flex flex-column text-capitalize">
-        {item?.price_for_agent}
-      </span>
-    ),
-  },
-  {
-    title: 'GST For Agent',
-    key: 'gst_for_agent',
-    render: (item, index) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.gst_for_agent}
+        {item?.agent_commission}
       </span>
     ),
   },

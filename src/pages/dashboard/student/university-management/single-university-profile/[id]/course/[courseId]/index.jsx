@@ -91,14 +91,15 @@ const SingleUniversityCourse = () => {
       router?.query?.payment_status === 'success' &&
       router?.query?.transaction_id &&
       getSingleCourseData?.data?._id &&
-      getSingleCourseData?.data?.price_for_student &&
-      getSingleCourseData?.data?.gst_for_student &&
+      getSingleCourseData?.data?.price >= 0 &&
+      getSingleCourseData?.data?.gst >= 0 &&
+      getSingleCourseData?.data?.agent_commission > 0 &&
       userInfoData?.data?._id
     ) {
       const course_id = getSingleCourseData?.data?._id;
       const student_id = userInfoData?.data?._id;
-      const payment_price = getSingleCourseData?.data?.price_for_student;
-      const payment_gst = getSingleCourseData?.data?.gst_for_student;
+      const payment_price = getSingleCourseData?.data?.price;
+      const payment_gst = getSingleCourseData?.data?.gst;
       const payment_status =
         router?.query?.payment_status === 'success' ? 'paid' : 'unpaid';
       const transaction_id = router?.query?.transaction_id;
@@ -115,8 +116,9 @@ const SingleUniversityCourse = () => {
   }, [
     createApplication,
     getSingleCourseData?.data?._id,
-    getSingleCourseData?.data?.gst_for_student,
-    getSingleCourseData?.data?.price_for_student,
+    getSingleCourseData?.data?.agent_commission,
+    getSingleCourseData?.data?.gst,
+    getSingleCourseData?.data?.price,
     router?.query?.payment_status,
     router?.query?.transaction_id,
     userInfoData?.data?._id,
