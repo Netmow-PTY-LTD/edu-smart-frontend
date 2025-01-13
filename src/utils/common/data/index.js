@@ -505,7 +505,7 @@ const agentEarnigsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+          className={` rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : 'bg-warning-subtle text-warning'}`}
         >
           {item?.payment_status ?? '-'}
         </span>
@@ -600,7 +600,7 @@ const studentApplicationsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : ''}`}
         >
           {item?.payment_status ?? '-'}
         </span>
@@ -613,7 +613,7 @@ const studentApplicationsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-fourth-color text-white' : item?.status === 'pending' ? 'bg-info text-white' : 'bg-warning text-white'}`}
+          className={`fw-semibold px-4 py-1 rounded-4 text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
         >
           {item?.status ?? '-'}
         </span>
