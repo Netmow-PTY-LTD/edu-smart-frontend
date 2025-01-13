@@ -71,6 +71,15 @@ const BusinessSettings = () => {
         city: agentBusinessSettingData?.data?.city || '',
         state: agentBusinessSettingData?.data?.state || '',
         zip: agentBusinessSettingData?.data?.zip || '',
+        country:
+          // agentBusinessSettingData?.data?.country 
+          // ||
+          {
+            label: agentBusinessSettingData?.data?.country,
+            value: agentBusinessSettingData?.data?.country,
+          }
+          // ''
+          ,
         website: agentBusinessSettingData?.data?.website || '',
         phone: agentBusinessSettingData?.data?.phone || '',
         logo: logo,
@@ -104,8 +113,11 @@ const BusinessSettings = () => {
     agentBusinessSettingData?.data?.state,
     agentBusinessSettingData?.data?.website,
     agentBusinessSettingData?.data?.zip,
+    agentBusinessSettingData?.data?.country,
     agentBusinessSettingData?.date?.favicon,
   ]);
+
+  console.log(initialValues);
 
   const validationSchema = Yup.object({});
 
@@ -178,7 +190,6 @@ const BusinessSettings = () => {
                       name={'country'}
                       label={'Country'}
                       options={options}
-                      setInitialValues={setInitialValues}
                     />
                   </Col>
                   <Col md={6}>

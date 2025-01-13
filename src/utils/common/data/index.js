@@ -251,8 +251,8 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
     key: 'agent',
     render: (item) => (
       <span className="d-flex flex-column text-capitalize">
-        {item?.requested_by?.first_name && item?.requested_by?.last_name
-          ? `${item?.requested_by?.first_name ? item?.requested_by?.first_name : ''} ${item?.requested_by?.last_name ? item?.requested_by?.last_name : ''}`
+        {item?.user?.agent?.first_name && item?.user?.agent?.last_name
+          ? `${item?.user?.agent?.first_name ? item?.user?.agent?.first_name : ''} ${item?.user?.agent?.last_name ? item?.user?.agent?.last_name : ''}`
           : '-'}
       </span>
     ),
@@ -264,7 +264,7 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
     render: (item) => (
       <div>
         <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          {`${item?.user?.agent?.email ? item?.user?.agent?.email : '-'}`}
         </h5>
       </div>
     ),
@@ -475,7 +475,7 @@ const agentEarnigsHeaders = [
       <Progress
         className="my-2 "
         style={{
-          height: '10px',
+          height: '13px',
           borderRadius: '20px',
           backgroundColor: 'rgba(75, 77, 70, 0.18)',
         }}
@@ -491,9 +491,9 @@ const agentEarnigsHeaders = [
             : 10
         }
       >
-        <span className="fs-4">
+        <span className="fs-12 fw-semibold">
           {item?.agent_package?.target?.target_achieved || 0}
-          {'/'}
+          {' / '}
           {item?.agent_package?.target?.target || 0}
         </span>
       </Progress>
@@ -1086,6 +1086,7 @@ const allowedFileTypes = [
 ];
 
 export {
+  agentEarnigsHeaders,
   agentNameAndLogoData,
   agentProfileWidgetData,
   agentsHeaders,
@@ -1099,10 +1100,12 @@ export {
   courseHeaders,
   departmentHeaders,
   edulogo,
+  EmgsStatusListHeaders,
   hot_offer_image,
   profileBg,
   studentAndLogoData,
   studentAndLogoDataForAgentDashboard,
+  studentApplicationsHeaders,
   studentsHeadersWithLogoLink,
   studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
@@ -1112,7 +1115,4 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
-  agentEarnigsHeaders,
-  studentApplicationsHeaders,
-  EmgsStatusListHeaders,
 };
