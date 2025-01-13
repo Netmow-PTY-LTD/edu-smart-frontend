@@ -128,14 +128,14 @@ const SuperAdminSidebarData = () => {
         //   pathName: '/dashboard/super-admin/settings/smtp-config',
         //   parentId: 'settings',
         // },
-        {
-          id: 'currencysettings',
-          label: 'Currency Settings',
-          icon: 'ri-money-dollar-circle-fill',
-          link: '/dashboard/super-admin/settings/currency',
-          pathName: '/dashboard/super-admin/settings/currency',
-          parentId: 'settings',
-        },
+        // {
+        //   id: 'currencysettings',
+        //   label: 'Currency Settings',
+        //   icon: 'ri-money-dollar-circle-fill',
+        //   link: '/dashboard/super-admin/settings/currency',
+        //   pathName: '/dashboard/super-admin/settings/currency',
+        //   parentId: 'settings',
+        // },
         {
           id: 'paymentsettings',
           label: 'Payment Settings',

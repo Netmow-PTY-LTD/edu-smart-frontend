@@ -11,7 +11,7 @@ const SingleSelectField = ({
   ...props
 }) => {
   return (
-    <div className='mb-3'>
+    <div className="mb-3">
       <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Select'}
       </label>
@@ -20,12 +20,16 @@ const SingleSelectField = ({
         {({ field, form }) => {
           const selectedOption =
             options?.length > 0
-              ? options?.find((option) =>
-                  option?.value === field?.value?.value
-                    ? option?.value === field?.value?.value
-                    : option?.value === field?.value?.label
-                )
+              ? options.find((option) => {
+                  console.log(option.value);
+                  return (
+                    option.label === field?.value?.value ||
+                    option.label === field?.value?.label
+                  );
+                })
               : null;
+
+          console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
             if (setInitialValues) {
@@ -36,7 +40,7 @@ const SingleSelectField = ({
             }
             form.setFieldValue(
               name,
-              selectedOption ? selectedOption?.value : null
+              selectedOption ? selectedOption?.label : null
             );
           };
 

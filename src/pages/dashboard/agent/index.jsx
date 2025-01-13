@@ -1,10 +1,14 @@
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
+import HotOfferBanner from '@/components/common/HotOfferBanner';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useGetEarningsQuery } from '@/slice/services/agent/agentEarningsService';
 import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { useGetAllHotOfferQuery } from '@/slice/services/public/package/publicPackageService';
 import {
+  agentEarnigsHeaders,
   studentAndLogoDataForAgentDashboard,
   studentsHeadersWithLogoLinkInAgent,
 } from '@/utils/common/data';
@@ -26,6 +30,15 @@ const AgentDashboard = () => {
     refetch: allStudentForAgentRefetch,
   } = useAllStudentForAgentQuery();
 
+  const {
+    data: getAllHotOfferData,
+    isLoading: getAllHotOfferIsLoading,
+    refetch: getAllHotOfferRefetch,
+  } = useGetAllHotOfferQuery();
+
+  const { data: earningData, isLoading: earningLoading } =
+    useGetEarningsQuery();
+
   // useEffect(() => {
   // const token = Cookies.get('token');
   //   if (token) {
@@ -39,11 +52,11 @@ const AgentDashboard = () => {
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
-          {allStudentForAgentIsLoading ? (
+          {allStudentForAgentIsLoading || earningLoading ? (
             <LoaderSpiner />
           ) : (
-            <Row>
-              <Col>
+            <Row className="g-5">
+              <Col xl={10}>
                 <div className="h-100">
                   <WelcomingMessage data={userInfodata?.data} />
 
@@ -62,7 +75,29 @@ const AgentDashboard = () => {
                         }
                       />
                     </Col>
+                    <Col xl={12}>
+                      <LatestRegistered
+                        tableHead={'Agents Earnings'}
+                        headers={[...agentEarnigsHeaders]}
+                        data={earningData?.data || []}
+                      />
+                    </Col>
                   </Row>
+                </div>
+              </Col>
+
+              <Col xl={2}>
+                <div className="my-5 gap-5">
+                  {getAllHotOfferData?.data?.length > 0
+                    ? getAllHotOfferData?.data.map((item, index) => (
+                        <HotOfferBanner
+                          key={index}
+                          height="140px"
+                          width="265px"
+                          data={item}
+                        />
+                      ))
+                    : ''}
                 </div>
               </Col>
             </Row>
