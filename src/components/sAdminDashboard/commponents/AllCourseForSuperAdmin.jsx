@@ -47,10 +47,9 @@ const AllCourseForSuperAdmin = ({
   const [initialValues, setInitialValues] = useState({
     name: '',
     available_seats: '',
-    price_for_student: '',
-    gst_for_student: '',
-    price_for_agent: '',
-    gst_for_agent: '',
+    price: '',
+    gst: '',
+    agent_commission: '',
     description: '',
     department: '',
     category: '',
@@ -130,10 +129,9 @@ const AllCourseForSuperAdmin = ({
           setInitialValues({
             name: getSingleCourseData?.name || '',
             available_seats: getSingleCourseData?.available_seats || '',
-            price_for_student: getSingleCourseData?.price_for_student || '',
-            gst_for_student: getSingleCourseData?.gst_for_student || '',
-            price_for_agent: getSingleCourseData?.price_for_agent || '',
-            gst_for_agent: getSingleCourseData?.gst_for_agent || '',
+            price: getSingleCourseData?.price || '',
+            gst: getSingleCourseData?.gst || '',
+            agent_commission: getSingleCourseData?.agent_commission || '',
             department: getSingleCourseData?.department?._id
               ? {
                   label: getSingleCourseData?.department?.name,
@@ -175,18 +173,15 @@ const AllCourseForSuperAdmin = ({
     available_seats: Yup.string()
       .max(12, 'maximum use 12 letters')
       .required('available_seats is required'),
-    price_for_student: Yup.string()
+    price: Yup.string()
       .max(12, 'maximum use 12 letters')
-      .required('price_for_student is required'),
-    gst_for_student: Yup.string()
+      .required('price is required'),
+    gst: Yup.string()
       .max(12, 'maximum use 12 letters')
-      .required('gst_for_student is required'),
-    price_for_agent: Yup.string()
+      .required('gst is required'),
+    agent_commission: Yup.string()
       .max(12, 'maximum use 12 letters')
-      .required('price_for_agent is required'),
-    gst_for_agent: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('gst_for_agent is required'),
+      .required('Agent commission is required'),
     description: Yup.string().required('description is required'),
   });
 
@@ -240,10 +235,9 @@ const AllCourseForSuperAdmin = ({
     setInitialValues({
       name: '',
       available_seats: '',
-      price_for_student: '',
-      gst_for_student: '',
-      price_for_agent: '',
-      gst_for_agent: '',
+      price: '',
+      gst: '',
+      agent_commission: '',
       description: '',
       department: '',
       category: '',
@@ -262,10 +256,9 @@ const AllCourseForSuperAdmin = ({
     const allData = {
       name: values?.name,
       available_seats: values?.available_seats,
-      price_for_student: values?.price_for_student,
-      gst_for_student: values?.gst_for_student,
-      price_for_agent: values?.price_for_agent,
-      gst_for_agent: values?.gst_for_agent,
+      price: values?.price,
+      gst: values?.gst,
+      agent_commission: values?.agent_commission,
       description: values?.description,
       course_id: courseIdForEdit,
       university_id: university_id,
@@ -375,42 +368,30 @@ const AllCourseForSuperAdmin = ({
       ),
     },
     {
-      title: 'Price For Student',
-      key: 'price_for_student',
+      title: 'Course Fee',
+      key: 'price',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.price_for_student}
+          {item?.price}
         </span>
       ),
     },
     {
-      title: 'GST For Student',
-      key: 'gst_for_student',
+      title: 'GST In Course Fee (%)',
+      key: 'gst',
       render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.gst_for_student}
-        </span>
+        <span className="d-flex flex-column text-capitalize">{item?.gst}</span>
       ),
     },
     {
-      title: 'Price For Agent',
-      key: 'price_for_agent',
+      title: 'Agent Commission (%)',
+      key: 'agent_commission',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.price_for_agent}
+          {item?.agent_commission}
         </span>
       ),
     },
-    {
-      title: 'GST For Agent',
-      key: 'gst_for_agent',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.gst_for_agent}
-        </span>
-      ),
-    },
-
     {
       title: 'Description',
       key: 'description',

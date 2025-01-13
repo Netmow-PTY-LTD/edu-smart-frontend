@@ -74,34 +74,23 @@ const CourseModalForm = ({
 
                 <Col xl={6}>
                   <div className="mb-3">
-                    <NumberField
-                      name="price_for_student"
-                      label="Price For Student"
-                    />
+                    <NumberField name="price" label="Course Fee" />
+                  </div>
+                </Col>
+                <Col xl={6}>
+                  <div className="mb-3">
+                    <NumberField name="gst" label="GST In Course Fee (%)" />
                   </div>
                 </Col>
                 <Col xl={6}>
                   <div className="mb-3">
                     <NumberField
-                      name="gst_for_student"
-                      label="GST For Student"
+                      name="agent_commission"
+                      label="Agent Commision (%)"
                     />
                   </div>
                 </Col>
-                <Col xl={4}>
-                  <div className="mb-3">
-                    <NumberField
-                      name="price_for_agent"
-                      label="Price For Agent"
-                    />
-                  </div>
-                </Col>
-                <Col xl={4}>
-                  <div className="mb-3">
-                    <NumberField name="gst_for_agent" label="GST For Agent" />
-                  </div>
-                </Col>
-                <Col xl={4}>
+                <Col xl={6}>
                   <div className="mb-3">
                     <TextField
                       name="program_duration"
