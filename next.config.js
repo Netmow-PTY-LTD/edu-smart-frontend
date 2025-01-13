@@ -14,7 +14,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'squaddeck-v2.sgp1.digitaloceanspaces.com',
+        hostname: 'edu-smart.sgp1.digitaloceanspaces.com',
       },
       {
         protocol: 'https',
