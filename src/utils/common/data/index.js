@@ -251,8 +251,8 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
     key: 'agent',
     render: (item) => (
       <span className="d-flex flex-column text-capitalize">
-        {item?.requested_by?.first_name && item?.requested_by?.last_name
-          ? `${item?.requested_by?.first_name ? item?.requested_by?.first_name : ''} ${item?.requested_by?.last_name ? item?.requested_by?.last_name : ''}`
+        {item?.user?.agent?.first_name && item?.user?.agent?.last_name
+          ? `${item?.user?.agent?.first_name ? item?.user?.agent?.first_name : ''} ${item?.user?.agent?.last_name ? item?.user?.agent?.last_name : ''}`
           : '-'}
       </span>
     ),
@@ -264,7 +264,7 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
     render: (item) => (
       <div>
         <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          {`${item?.user?.agent?.email ? item?.user?.agent?.email : '-'}`}
         </h5>
       </div>
     ),
@@ -491,9 +491,9 @@ const agentEarnigsHeaders = [
             : 15
         }
       >
-        <span className="fs-4">
+        <span className="fs-12 fw-semibold">
           {item?.agent_package?.target?.target_achieved || 0}
-          {'/'}
+          {' / '}
           {item?.agent_package?.target?.target || 0}
         </span>
       </Progress>
@@ -505,7 +505,7 @@ const agentEarnigsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : 'bg-warning-subtle text-warning'}`}
+          className={` rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : 'bg-warning-subtle text-warning'}`}
         >
           {item?.payment_status ?? '-'}
         </span>
@@ -600,7 +600,7 @@ const studentApplicationsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-fourth-color text-white' : 'bg-info text-white'}`}
+          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : ''}`}
         >
           {item?.payment_status ?? '-'}
         </span>
@@ -613,7 +613,7 @@ const studentApplicationsHeaders = [
     render: (item) => (
       <>
         <span
-          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-fourth-color text-white' : item?.status === 'pending' ? 'bg-info text-white' : 'bg-warning text-white'}`}
+          className={`fw-semibold px-4 py-1 rounded-4 text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
         >
           {item?.status ?? '-'}
         </span>
@@ -1086,6 +1086,7 @@ const allowedFileTypes = [
 ];
 
 export {
+  agentEarnigsHeaders,
   agentNameAndLogoData,
   agentProfileWidgetData,
   agentsHeaders,
@@ -1099,10 +1100,12 @@ export {
   courseHeaders,
   departmentHeaders,
   edulogo,
+  EmgsStatusListHeaders,
   hot_offer_image,
   profileBg,
   studentAndLogoData,
   studentAndLogoDataForAgentDashboard,
+  studentApplicationsHeaders,
   studentsHeadersWithLogoLink,
   studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
@@ -1112,7 +1115,4 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
-  agentEarnigsHeaders,
-  studentApplicationsHeaders,
-  EmgsStatusListHeaders,
 };

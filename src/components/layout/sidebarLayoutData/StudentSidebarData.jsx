@@ -131,7 +131,7 @@ const StudentSidebarData = () => {
     {
       id: 'applications',
       label: 'Applications',
-      icon: 'ri-dashboard-2-line',
+      icon: 'ri-list-check-3',
       link: '/dashboard/student/applications',
     },
 

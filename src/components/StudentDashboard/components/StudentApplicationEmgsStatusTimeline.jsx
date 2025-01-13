@@ -3,7 +3,7 @@ import { useGetEmgsStatusTimelineQuery } from '@/slice/services/common/applicati
 import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
-import { Button, Col, Row } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 
 export default function StudentApplicationEmgsStatusTimeline({
   setActiveTab,
@@ -13,36 +13,39 @@ export default function StudentApplicationEmgsStatusTimeline({
     useGetEmgsStatusTimelineQuery(currentTimeline, {
       skip: !currentTimeline,
     });
+
+  console.log(timelineData?.data);
   return (
     <>
       {timelineLoading ? (
         <LoaderSpiner />
       ) : (
         <Row>
-          <div className="d-flex justify-content-between my-3">
-            <Button
-              className="btn btn-danger fs-14 mt-3"
+          <div className="d-flex align-items-center justify-content-between my-3">
+            <btn
+              className="button fs-2 mt-3 px-4 py-2"
               onClick={() => setActiveTab('1')}
             >
               <i className="ri-arrow-left-line me-2"></i>
               Back
-            </Button>
+            </btn>
           </div>
           <Col lg={12}>
             <div>
               <h3 className="fs-22 text-center my-4">Timeline Status</h3>
-              <div className="timeline">
+              <div className="timeline ">
                 {timelineData?.data?.map((item, index) => (
                   <div
                     key={index + 1}
-                    className={`${(index + 1) % 2 === 0 ? 'timeline-item right' : 'timeline-item left'}`}
+                    className={`${(index + 1) % 2 === 0 ? 'timeline-item right ' : 'timeline-item left '}`}
                   >
-                    <i className="icon ri-stack-line"></i>
-                    <div className="date">
+                    <i className="icon ri-stack-line card-animate"></i>
+                    <div className="date ">
                       {moment(item?.createdAt).format('DD-MM-YYYY')}
                     </div>
-                    <div className="content">
-                      <div className="d-flex">
+
+                    <div className="content card-animate rounded-4">
+                      <div className="d-flex ">
                         <div className="flex-shrink-0">
                           {item?.image?.url && (
                             <Image
@@ -52,7 +55,7 @@ export default function StudentApplicationEmgsStatusTimeline({
                             />
                           )}
                         </div>
-                        <div className="flex-grow-1 ms-3">
+                        <div className="flex-grow-1 ms-3 ">
                           <h3>{item?.title}</h3>
                           <p className="text-muted mb-2">{item?.description}</p>
                         </div>

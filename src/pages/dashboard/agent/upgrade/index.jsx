@@ -198,7 +198,7 @@ const UpgradePackageInAgentdashboard = () => {
                   )}
                 </div>
               </Col>
-              <Col xl={2}>
+              {/* <Col xl={2}>
                 <div className="my-5 gap-5">
                   {getAllHotOfferData?.data?.length > 0
                     ? getAllHotOfferData?.data.map((item, index) => (
@@ -211,7 +211,7 @@ const UpgradePackageInAgentdashboard = () => {
                       ))
                     : ''}
                 </div>
-              </Col>
+              </Col> */}
             </Row>
           </div>
           {openPaymentModal && (
