@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const OurServices = () => {
@@ -9,6 +10,7 @@ const OurServices = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
+        padding: '146px 0',
       }}
     >
       <div className="section-heading">
@@ -16,6 +18,52 @@ const OurServices = () => {
         <h2 className="text-light">
           EduSmart Guiding For Global Education Journey
         </h2>
+      </div>
+      <div className="ourservices-content">
+        {/* student-banner */}
+        <div className="d-flex student-banner ">
+          <div className="banner-image">
+            <figure className="student">
+              <Image
+                src="/assets/images/landing/ourServices/student.png"
+                alt="student"
+                width={460}
+                height={500}
+              />
+            </figure>
+            <figure className="globe">
+              <Image
+                src="/assets/images/landing/ourServices/earth_image.png"
+                alt="Globe"
+                width={500}
+                height={500}
+              />
+            </figure>
+          </div>
+          <div className="student-banner-info">
+            <div>
+              <h2 className="text-light">
+                Relocation Guideline For International Student
+              </h2>
+              <p className="text-light">
+                At Edusmart, we guide you through every step of studying abroad
+                from choosing the right program to securing your visa making
+                your global education journey seamless.
+              </p>
+              <button className="btn">Contact Us Now</button>
+            </div>
+            <figure>
+              <Image
+                src="/assets/images/landing/ourServices/Vector_2.png"
+                alt="Vector2"
+                width={500}
+                height={500}
+              />
+            </figure>
+          </div>
+        </div>
+        {/* info-banner */}
+        <div></div>
       </div>
     </div>
   );
