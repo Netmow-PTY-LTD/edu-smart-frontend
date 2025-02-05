@@ -1,33 +1,36 @@
 // our services section
 
+.section-heading {
+    h3 {
+        color: #13C9BF !important;
+    }
+}
+
 .ourservices-content {
     display: flex;
     justify-content: space-around;
-    gap: 30px;
-    // margin: 80px;
-
+    gap: 30px; // student-banner
 
     .student-banner {
         background-color: #13C9BF;
         border-radius: 24px;
         display: flex;
 
-
-
         .banner-image {
-            margin: 52px 46px 0 0;
+            // margin-top: 52px;
             position: relative;
+            width: 50%;
 
             .student {
                 position: absolute;
                 bottom: 0;
                 left: -60px;
-                object-fit: contain;
+                // object-fit: contain;
                 margin-bottom: 0;
             }
 
             .globe {
-
+                margin-top: 88px;
                 margin-bottom: 0;
             }
 
@@ -35,19 +38,22 @@
 
         .student-banner-info {
             position: relative;
+            width: 50%;
 
 
             div {
-                // margin: 52px 46px 0 0;
+                margin: 52px 46px 0 0;
                 text-align: right;
                 padding: 46px 46px 72px 0;
 
 
                 h2 {
                     font-family: Lora;
-                    font-size: 32px;
                     font-weight: 700;
+                    font-size: 32px;
                     line-height: 40.96px;
+
+
                     text-align: right;
                     text-underline-position: from-font;
                     text-decoration-skip-ink: none;
@@ -58,18 +64,22 @@
 
                 p {
                     font-family: Poppins;
-                    font-size: 18px;
-                    font-weight: 400;
                     line-height: 30.6px;
+                    font-size: 18px;
+
+                    font-weight: 400;
                     text-align: right;
                     text-underline-position: from-font;
                     text-decoration-skip-ink: none;
+                    color: #1C1C1C !important;
                 }
 
                 button {
-                    padding: 14px 24px 14px 24px;
+                    padding: 12px 24px 12px 24px;
                     gap: 10px;
                     border-radius: 12px;
+
+
                     opacity: 0px;
                     background: #1C1C1C;
                     color: #fff;
@@ -78,8 +88,9 @@
                     font-size: 20px;
                     font-weight: 700;
                     line-height: 34px;
-                    text-align: left;
-                    margin: 26px 46px 72px 0;
+
+
+
 
 
                 }
@@ -87,29 +98,37 @@
 
             figure {
                 margin-top: 72px;
+                right: 35px;
+
+
                 position: absolute;
                 bottom: 0;
                 margin-bottom: 0;
-                right: 35px;
             }
         }
+
     }
 
+    // student-info-banner
     .info-banner {
         border-radius: 24px;
+        z-index: 1;
         position: relative;
 
         div {
-
             margin: 36px 45px;
+
+
             text-align: center;
 
             p {
 
                 font-family: Lora;
-                font-size: 32px;
                 font-weight: 700;
+                font-size: 32px;
                 line-height: 40.96px;
+
+
                 text-align: center;
                 text-underline-position: from-font;
                 text-decoration-skip-ink: none;
@@ -117,11 +136,9 @@
             }
 
             .button {
-
                 padding: 8px 20px 8px 20px;
                 gap: 10px;
                 border-radius: 12px;
-
 
             }
         }
@@ -130,18 +147,184 @@
             position: absolute;
             top: 194px;
             left: 480.79px;
-            z-index: -1;
 
 
         }
 
         .paralla-vector {
+            z-index: -1;
             position: absolute;
             top: -0.3px;
             left: 31.13px;
+
+
+
 
 
         }
     }
 
 }
+
+
+// our services section .section-heading {
+//     h3 {
+//         color: #13C9BF !important;
+//     }
+// }
+
+// .ourservices-content {
+//     display: flex;
+//     justify-content: space-around;
+//     gap: 1.875rem;
+
+//     // student-banner
+//     .student-banner {
+//         background-color: #13C9BF;
+//         border-radius: 1.5rem;
+//         display: flex;
+
+//         .banner-image {
+
+//             margin-top: 3.25rem;
+//             position: relative;
+//             width: 50%;
+
+//             .student {
+//                 position: absolute;
+//                 bottom: 0;
+//                 left: -4rem;
+
+//                 margin-bottom: 0;
+//             }
+
+//             .globe {
+//                 margin-top: 5.5rem;
+//                 margin-bottom: 0;
+//             }
+
+//         }
+
+//         .student-banner-info {
+//             position: relative;
+//             width: 50%;
+
+//             div {
+//                 text-align: right;
+//                 padding: 2.875rem 2.875rem 4.5rem 0;
+//                 h2 {
+//                     font-family: Lora;
+//                     font-weight: 700;
+//                     font-size: 2rem;
+//                     line-height: 2.56rem;
+//                     text-align: right;
+//                     text-underline-position: from-font;
+//                     text-decoration-skip-ink: none;
+//                     color: #1C1C1C !important;
+
+//                 }
+
+//                 p {
+//                     font-family: Poppins;
+//                     line-height: 1.91rem;
+//                     font-size: 1.125rem;
+//                     font-weight: 400;
+//                     text-align: right;
+//                     text-underline-position: from-font;
+//                     text-decoration-skip-ink: none;
+//                     color: #1C1C1C !important;
+//                 }
+
+//                 button {
+
+//                     padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+//                     gap: 0.625rem;
+//                     border-radius: 0.75rem;
+
+//                     opacity: 0px;
+//                     background: #1C1C1C;
+//                     color: #fff;
+
+//                     font-family: Lora;
+
+//                     font-size: 1.25rem;
+//                     font-weight: 700;
+//                     line-height: 2.125rem;
+
+
+
+
+//                 }
+//             }
+
+//             figure {
+
+//                 margin-top: 4.5rem;
+//                 right: 2.19rem;
+
+//                 position: absolute;
+//                 bottom: 0;
+//                 margin-bottom: 0;
+//             }
+//         }
+
+//     }
+
+//     // student-info-banner
+//     .info-banner {
+
+//         border-radius: 1.5rem;
+//         position: relative;
+
+//         div {
+
+//             margin: 2.25rem 2.8125rem;
+
+//             text-align: center;
+
+//             p {
+
+//                 font-family: Lora;
+//                 font-weight: 700;
+//                 font-size: 2rem;
+//                 line-height: 2.56rem;
+
+//                 text-align: center;
+//                 text-underline-position: from-font;
+//                 text-decoration-skip-ink: none;
+
+//             }
+
+//             .button {
+
+//                 padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+//                 gap: 0.625rem;
+//                 border-radius: 0.75rem;
+
+
+
+//             }
+//         }
+
+//         .plus-vector {
+//             position: absolute;
+//             top: 12.125rem;
+//             left: 30.05rem;
+
+
+
+
+//         }
+
+//         .paralla-vector {
+//             position: absolute;
+//             top: -0.01875rem;
+//             /* Can be approximated to 0rem if insignificant */
+//             left: 1.95rem;
+
+
+
+//         }
+//     }
+
+// }

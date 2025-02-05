@@ -21,13 +21,13 @@ const OurServices = () => {
       </div>
       <div className="ourservices-content">
         {/* student-banner */}
-        <div className="d-flex student-banner ">
+        <div className="student-banner ">
           <div className="banner-image">
             <figure className="student">
               <Image
                 src="/assets/images/landing/ourServices/student.png"
                 alt="student"
-                width={460}
+                width={500}
                 height={500}
               />
             </figure>
@@ -50,7 +50,9 @@ const OurServices = () => {
                 from choosing the right program to securing your visa making
                 your global education journey seamless.
               </p>
-              <button className="btn">Contact Us Now</button>
+              <div>
+                <button className="btn">Contact Us Now</button>
+              </div>
             </div>
             <figure>
               <Image
@@ -75,9 +77,9 @@ const OurServices = () => {
         >
           <div>
             <p>Choosing the right Institute & program to securing your visa</p>
-
             <button className="button">Apply Online</button>
           </div>
+          {/* vector */}
           <figure className="paralla-vector">
             <Image
               src="/assets/images/landing/ourServices/Vector_4.png"
