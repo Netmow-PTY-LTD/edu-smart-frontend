@@ -10,7 +10,7 @@ const OurServices = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        padding: '146px 0',
+        padding: '146px 100px',
       }}
     >
       <div className="section-heading">
@@ -56,14 +56,45 @@ const OurServices = () => {
               <Image
                 src="/assets/images/landing/ourServices/Vector_2.png"
                 alt="Vector2"
-                width={500}
-                height={500}
+                width={320}
+                height={320}
               />
             </figure>
           </div>
         </div>
         {/* info-banner */}
-        <div></div>
+        <div
+          className="info-banner"
+          style={{
+            backgroundImage:
+              'url("/assets/images/landing/ourServices/Info_Image.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          <div>
+            <p>Choosing the right Institute & program to securing your visa</p>
+
+            <button className="button">Apply Online</button>
+          </div>
+          <figure className="paralla-vector">
+            <Image
+              src="/assets/images/landing/ourServices/Vector_4.png"
+              alt="Vector2"
+              width={180}
+              height={160}
+            />
+          </figure>
+          <figure className="plus-vector">
+            <Image
+              src="/assets/images/landing/ourServices/Vector_3.png"
+              alt="Vector2"
+              width={60}
+              height={60}
+            />
+          </figure>
+        </div>
       </div>
     </div>
   );
