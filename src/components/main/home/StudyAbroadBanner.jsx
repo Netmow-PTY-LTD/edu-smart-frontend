@@ -25,6 +25,8 @@ const StudyAbroadBanner = () => {
             alt="Architecture"
             width={960}
             height={650}
+            layout="responsive"
+            priority // Optional: Use this if you want the image to load first on page load
           />
         </figure>
       </div>
