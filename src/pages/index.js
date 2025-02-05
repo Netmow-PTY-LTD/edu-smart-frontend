@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+import HeroSection from '@/components/main/home/HeroSection';
+import Layout from '@/components/main/layout';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,11 +11,11 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    router.push('/auth/login');
-  }, [router]);
-
-  return <></>;
+  return (
+    <Layout>
+      <HeroSection />
+    </Layout>
+  );
 };
 
 export default HomePage;
