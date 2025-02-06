@@ -1,0 +1,204 @@
+.popular-coureses-section {
+    padding: 100px 0;
+    background: #fff;
+
+    .container {
+        // container code area
+
+        .popular-coureses-heading {
+            h5 {
+                color: var(--Secondary-Color, #13C9BF);
+                text-align: center;
+                font-family: Lora;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+
+            h4 {
+                color: var(--Black, #1C1C1C);
+                text-align: center;
+                font-family: Lora;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+
+        .popular-coureses-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 80px 0;
+
+        }
+    }
+}
+
+// Course Card
+.course-card {
+    text-align: start;
+    max-width: 513px;
+    margin: 0 auto;
+
+    .course-card__body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        align-self: stretch;
+
+        header {
+            h6 {
+                color: var(--Black, #1C1C1C);
+                font-family: Lora;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 170%;
+
+                i {
+                    color: #13C9BF;
+                    margin-right: 4px;
+                }
+
+            }
+
+            h5 {
+                color: var(--Black, #1C1C1C);
+                font-family: Lora;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+
+        p {
+            color: var(--Black, #1C1C1C);
+            font-family: Poppins;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 170%;
+            margin: 5px 0;
+
+
+
+        }
+    }
+
+
+
+    footer {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 10px;
+        margin-top: 21px;
+
+        button {
+            color: var(--Black, #1C1C1C);
+            font-family: Lora;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 170%;
+            border-radius: 12px;
+            background: var(--Green, #B5D336);
+            padding: 8px 20px;
+
+        }
+    }
+
+    // Responsive styles
+    @media (max-width: 768px) {
+        max-width: 100%;
+        padding: 12px;
+
+        .course-card__body {
+            header {
+                h6 {
+                    font-size: 16px;
+
+                    i {
+                        margin-right: 3px;
+                    }
+                }
+
+                h5 {
+                    font-size: 20px;
+                }
+            }
+
+            p {
+                font-size: 16px;
+            }
+        }
+
+        footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+
+            button {
+                font-size: 18px;
+                padding: 8px 16px;
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        .course-card__body {
+            header {
+                h6 {
+                    font-size: 14px;
+                }
+
+                h5 {
+                    font-size: 18px;
+                }
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+
+        footer {
+            button {
+                font-size: 16px;
+                padding: 6px 12px;
+            }
+        }
+    }
+}
+
+
+
+
+
+// Popular Courses Button
+.popular-coureses-button {
+    padding: 14px 24px;
+    color: var(--Black, #1C1C1C);
+    font-family: Lora;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 170%;
+    border-radius: 12px;
+    background: var(--Secondary-Color, #13C9BF);
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        padding: 12px 20px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+}

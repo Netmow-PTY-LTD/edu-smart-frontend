@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import StudyAbroadBanner from '@/components/main/home/StudyAbroadBanner';
+import PopularCourses from '@/components/main/home/PopularCourses';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const HomePage = () => {
     <Layout>
       <HeroSection />
       <OurServices />
+      <PopularCourses />
       <StudyAbroadBanner />
     </Layout>
   );
