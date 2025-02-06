@@ -1,7 +1,8 @@
 require('dotenv').config();
 
+import HomeUniversities from '@/components/clientSite/agent/Home/HomeUniversities';
 import HeroSection from '@/components/main/home/HeroSection';
-import Layout from '@/components/main/layout';
+import MainLayout from '@/components/main/layout';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -12,9 +13,10 @@ const HomePage = () => {
   const router = useRouter();
 
   return (
-    <Layout>
+    <MainLayout>
       <HeroSection />
-    </Layout>
+      <HomeUniversities />
+    </MainLayout>
   );
 };
 
