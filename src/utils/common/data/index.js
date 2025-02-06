@@ -7,8 +7,10 @@ const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 const teamDummyImage = '/assets/images/users/multi-user.jpg';
 const edulogo = '/favicon.png';
 const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
+const footerLogo = '/Edusmart-White-Logo.png';
 const profileBg = '/profile_bg.jpg';
 const hot_offer_image = '/Hot Offer.png';
+const footerShape = '/footer-shape.png';
 
 const agentNameAndLogoData = {
   title: 'Logo - Name',
@@ -488,7 +490,7 @@ const agentEarnigsHeaders = [
             ? (item?.agent_package?.target?.target_achieved /
                 item?.agent_package?.target?.target) *
               100
-            : 10
+            : 15
         }
       >
         <span className="fs-12 fw-semibold">
@@ -1100,6 +1102,8 @@ export {
   courseHeaders,
   departmentHeaders,
   edulogo,
+  footerLogo,
+  footerShape,
   EmgsStatusListHeaders,
   hot_offer_image,
   profileBg,
