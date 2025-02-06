@@ -1,0 +1,68 @@
+@import "./components/courseCard.scss";
+
+.popular-coureses-section {
+    padding: 100px 0;
+    background: #fff;
+
+    .container {
+        // container code area
+
+        .popular-coureses-heading {
+            h5 {
+                color: var(--Secondary-Color, #13C9BF);
+                text-align: center;
+                font-family: Lora;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+
+            h4 {
+                color: var(--Black, #1C1C1C);
+                text-align: center;
+                font-family: Lora;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+
+        .popular-coureses-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 80px 0;
+
+        }
+    }
+}
+
+
+
+
+
+
+// Popular Courses Button
+.popular-coureses-button {
+    padding: 14px 24px;
+    color: var(--Black, #1C1C1C);
+    font-family: Lora;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 170%;
+    border-radius: 12px;
+    background: var(--Secondary-Color, #13C9BF);
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+        padding: 12px 20px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+}
