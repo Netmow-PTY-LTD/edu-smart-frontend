@@ -4,13 +4,12 @@ import React from 'react';
 const OurServices = () => {
   return (
     <div
-      className="bg-black"
+      className="bg-black ourServices-section"
       style={{
         backgroundImage: 'url("/assets/images/landing/ourServices/Vector.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        padding: '146px 100px',
       }}
     >
       <div className="section-heading">
@@ -19,6 +18,7 @@ const OurServices = () => {
           EduSmart Guiding For Global Education Journey
         </h2>
       </div>
+
       <div className="ourservices-content">
         {/* student-banner */}
         <div className="student-banner ">
@@ -41,7 +41,7 @@ const OurServices = () => {
             </figure>
           </div>
           <div className="student-banner-info">
-            <div>
+            <div className="info-card">
               <h2 className="text-light">
                 Relocation Guideline For International Student
               </h2>
@@ -51,7 +51,9 @@ const OurServices = () => {
                 your global education journey seamless.
               </p>
               <div>
-                <button className="btn">Contact Us Now</button>
+                <button className="btn">
+                  Contact Us Now <i class="ri-arrow-right-line"></i>{' '}
+                </button>
               </div>
             </div>
             <figure>
@@ -64,6 +66,7 @@ const OurServices = () => {
             </figure>
           </div>
         </div>
+
         {/* info-banner */}
         <div
           className="info-banner"
@@ -77,7 +80,9 @@ const OurServices = () => {
         >
           <div>
             <p>Choosing the right Institute & program to securing your visa</p>
-            <button className="button">Apply Online</button>
+            <button className="button">
+              Apply Online <i class="ri-arrow-right-line"></i>
+            </button>
           </div>
           {/* vector */}
           <figure className="paralla-vector">

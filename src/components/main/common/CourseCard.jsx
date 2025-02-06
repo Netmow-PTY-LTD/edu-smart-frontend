@@ -26,7 +26,9 @@ const CourseCard = () => {
         </p>
       </div>
       <footer>
-        <button class="course-card__button">View Details</button>
+        <button class="course-card__button">
+          View Details <i class="ri-arrow-right-line"></i>
+        </button>
       </footer>
     </div>
   );
