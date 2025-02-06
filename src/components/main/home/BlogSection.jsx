@@ -1,5 +1,5 @@
 import React from 'react';
-import BlogCard from '../common/blogCard';
+import BlogCard from '../common/BlogCard';
 
 const BlogSection = () => {
   return (

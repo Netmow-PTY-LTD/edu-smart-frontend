@@ -6,6 +6,7 @@ import React from 'react';
 // import MobileNav from '../mobileNav';
 import { useState } from 'react';
 import { brandlogo } from '@/utils/common/data';
+import MobileNavMain from './MobileNavMain';
 
 export default function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
@@ -13,6 +14,10 @@ export default function Header() {
     setShowMobileNav(!showMobileNav);
   };
   const { data: universityData } = useGetAllUniversityQuery();
+  const courses = universityData?.data?.flatMap(
+    (university) => university.courses
+  );
+
   return (
     <>
       <header className="header">
@@ -58,17 +63,19 @@ export default function Header() {
                       </svg>
                     </Link>
                     <ul className="sub-menu">
-                      {universityData?.courses?.length > 0 &&
-                        universityData?.courses?.map((item, index) => (
+                      {courses?.length > 0 &&
+                        courses?.map((item, index) => (
                           <li key={index}>
-                            <Link href={`/course/${item?._id}`}>
+                            <Link
+                              href={`/university/${item?.university}/course/${item?._id}`}
+                            >
                               {item.name}
                             </Link>
                           </li>
                         ))}
-                      <li>
+                      {/* <li>
                         <Link href={`/courses`}>View All Courses</Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                   <li className="menu-item-has-children">
@@ -155,15 +162,15 @@ export default function Header() {
               <div className="d-flex gap-3">
                 <Link
                   href={`/auth/login`}
-                  className={`button text-secondary-alt fs-20 fw-semibold py-2 px-5 d-none d-lg-block`}
+                  className={`fs-20 fw-semibold py-2 px-3 d-none d-lg-block btn-login-main`}
                 >
                   Login
                 </Link>
                 <Link
-                  href={`/auth/login`}
-                  className={`button text-secondary-alt fs-20 fw-semibold py-2 px-5 d-none d-lg-block`}
+                  href={`/auth/register`}
+                  className={`fs-20 fw-semibold py-2 px-5 d-none d-lg-block btn-register-main`}
                 >
-                  Student Registration
+                  Register
                 </Link>
                 <div className="hamburger-menu" onClick={toggleMobileNav}>
                   <div className="line line1"></div>
@@ -174,10 +181,10 @@ export default function Header() {
             </div>
           </div>
         </div>
-        {/* <MobileNav
+        <MobileNavMain
           showMobileNav={showMobileNav}
           setShowMobileNav={setShowMobileNav}
-        /> */}
+        />
       </header>
     </>
   );

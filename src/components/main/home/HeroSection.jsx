@@ -15,15 +15,15 @@ export default function HeroSection() {
     universityData?.data?.find((uni) => uni._id === selectedUniversity) || null;
 
   // Departments come directly from the selected university
-  const departments = university ? university.departments : [];
+  // const departments = university ? university.departments : [];
 
   // Filter courses from the university where the course.department matches the selected department
-  const courses =
-    university && selectedDepartment
-      ? university.courses.filter(
-          (course) => course.department === selectedDepartment
-        )
-      : [];
+  // const courses =
+  //   university && selectedDepartment
+  //     ? university.courses.filter(
+  //         (course) => course.department === selectedDepartment
+  //       )
+  //     : [];
 
   // Handlers to update the state
   const handleUniversityChange = (e) => {
@@ -54,6 +54,15 @@ export default function HeroSection() {
   };
 
   //console.log('universityData', universityData);
+
+  const courses = universityData?.data?.flatMap(
+    (university) => university.courses
+  );
+  // console.log(courses);
+
+  const departments = universityData?.data?.flatMap(
+    (university) => university.departments
+  );
   return (
     <section className="hero-main">
       <div className="container">
@@ -78,12 +87,12 @@ export default function HeroSection() {
                 >
                   Join us as agent
                 </Link>
-                <Link
-                  href="/universities"
+                {/* <Link
+                  href="/university/courses"
                   className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                 >
                   Explore Courses
-                </Link>
+                </Link> */}
               </div>
             </div>
           </Col>
@@ -104,7 +113,7 @@ export default function HeroSection() {
               <div className="form-area">
                 <Row>
                   <Col lg={3} md={6}>
-                    <div className="form-group">
+                    <div className="form-group mb-3">
                       <label htmlFor="">Select University</label>
                       <select
                         type="text"
@@ -121,14 +130,14 @@ export default function HeroSection() {
                     </div>
                   </Col>
                   <Col lg={3} md={6}>
-                    <div className="form-group">
+                    <div className="form-group mb-3">
                       <label htmlFor="">Select Department</label>
                       <select
                         type="text"
                         className="form-select"
                         value={selectedDepartment}
                         onChange={handleDepartmentChange}
-                        disabled={!selectedUniversity}
+                        // disabled={!selectedUniversity}
                       >
                         <option>Select Department</option>
                         {departments?.length > 0 &&
@@ -140,14 +149,14 @@ export default function HeroSection() {
                   </Col>
 
                   <Col lg={3} md={6}>
-                    <div className="form-group">
+                    <div className="form-group mb-3">
                       <label htmlFor="">Select Course</label>
                       <select
                         type="text"
                         className="form-select"
                         value={selectedCourse}
                         onChange={handleCourseChange}
-                        disabled={!selectedDepartment}
+                        // disabled={!selectedDepartment}
                       >
                         <option>Select Course</option>
                         {courses?.length > 0 &&
@@ -158,13 +167,15 @@ export default function HeroSection() {
                     </div>
                   </Col>
                   <Col lg={3} md={6} className="d-flex align-items-end">
-                    <button
-                      type="submit"
-                      className="button text-secondary-alt p-4 text-center w-100"
-                      style={{ height: '48px' }}
-                    >
-                      Search Courses
-                    </button>
+                    <div className="mb-3 w-100">
+                      <button
+                        type="submit"
+                        className="button text-secondary-alt p-4 text-center w-100 d-flex justify-content-center align-items-center"
+                        style={{ height: '4.8rem', fontWeight: '600' }}
+                      >
+                        Search Courses
+                      </button>
+                    </div>
                   </Col>
                 </Row>
               </div>

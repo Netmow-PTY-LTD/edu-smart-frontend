@@ -629,9 +629,11 @@ table td {
 .main-nav ul.sub-menu {
   position: absolute;
   width: 30rem;
+  height: 30rem;
   background-color: #fff;
   left: -8.2rem;
   top: 5rem;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
@@ -747,6 +749,16 @@ table td {
 
 .main-nav ul li a.btn-primary:hover {
   color: #fff;
+}
+
+.btn-login-main {
+  color: #1c1c1c;
+}
+
+.btn-register-main {
+  border: 2px solid #1c1c1c;
+  border-radius: 1.2rem;
+  color: #1c1c1c;
 }
 
 .hamburger-menu {
@@ -1310,7 +1322,7 @@ a.video-player {
   border-style: solid;
   position: relative;
   z-index: 1;
-  top: 5px;
+  top: 1px;
   color: var(--Black, #1c1c1c);
   font-family: Lora;
   font-size: 24px;
@@ -1330,6 +1342,17 @@ a.video-player {
 
   .hero-cta {
     flex-wrap: wrap;
+  }
+
+  .hero-img {
+    margin: 30px 0;
+  }
+
+  .hero-search-area .hero-search-title {
+    display: block;
+  }
+  .hero-search-form {
+    border-radius: 0 0 24px 24px;
   }
 }
 
@@ -4474,6 +4497,7 @@ textarea::placeholder {
   background-color: var(--footer-bg);
   padding: 8rem 0;
   position: relative;
+  z-index: 1;
 }
 
 .main-footer p {
@@ -4492,6 +4516,7 @@ textarea::placeholder {
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: -1;
 }
 
 .main-footer h3 {
@@ -4538,7 +4563,7 @@ textarea::placeholder {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding-top: 20px;
+  padding: 20px 0;
   border-top: 1px solid #fff;
 }
 

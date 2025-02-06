@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const BlogCard = () => {
@@ -24,9 +25,9 @@ const BlogCard = () => {
         </p>
       </div>
       <footer>
-        <button class="blog-card__button">
+        <Link href="#" class="blog-card__button">
           Read More <i class="ri-arrow-right-line"></i>
-        </button>
+        </Link>
       </footer>
     </div>
   );
