@@ -473,6 +473,7 @@ table td {
 
 .container {
   max-width: 1600px !important;
+  padding: 0 2rem !important;
 }
 
 .logo {
