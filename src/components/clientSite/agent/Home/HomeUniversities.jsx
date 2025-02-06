@@ -4,7 +4,6 @@ import React from 'react';
 
 export default function HomeUniversities() {
   const { data: universityData } = useGetAllUniversityQuery();
-  console.log('universityData', universityData);
   return (
     <section className="home-university">
       <div className="container">
@@ -21,7 +20,11 @@ export default function HomeUniversities() {
               <div className="university-card" key={index}>
                 <div className="university-card-image">
                   <img
-                    src="/assets/images/agent/univ-image1.png"
+                    src={
+                      item?.logo?.url
+                        ? item?.logo?.url
+                        : '/assets/images/university.png'
+                    }
                     alt="university"
                   />
                 </div>
@@ -123,10 +126,10 @@ export default function HomeUniversities() {
               </div>
             ))}
         </div>
-        <div className="d-flex justify-content-center align-item-center">
-          <button className="popular-coureses-button">
+        <div className="d-flex justify-content-center align-item-center mt-5">
+          <Link href="/university" className="popular-coureses-button">
             Explore All Universities <i class="ri-arrow-right-line ms-1"></i>
-          </button>
+          </Link>
         </div>
       </div>
     </section>
