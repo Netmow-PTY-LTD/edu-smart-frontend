@@ -14,15 +14,21 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
   useEffect(() => {
     const file = form.values[field.name];
 
+
+
     if (file && isValidFile(file)) {
       setFileName(file.name);
       setFileType(file.type);
-      if (file.type === 'application/pdf') {
-        setFilePreview(URL.createObjectURL(file));
+      if (
+        file.type === 'application/pdf' ||
+        file.type === 'application/octet-stream'
+      ) {
+        setFilePreview(file);
       } else if (
         file.type ===
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-        file.type === 'application/msword'
+        file.type === 'application/msword' ||
+        file.type === 'application/pdf'
       ) {
         setFilePreview(null);
       } else {
@@ -33,8 +39,11 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
     }
   }, [field.name, form.values]);
 
+
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    
     if (file && isValidFile(file)) {
       setFileName(file.name);
       setFileType(file.type);
@@ -66,24 +75,25 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
       <label htmlFor={field.name} className="form-label fs-2">
         {label || 'Upload File'}
       </label>
-
       <input
         {...props}
         type="file"
         id={field.name}
         name={field.name}
-        className="form-control "
+        className="form-control"
         onChange={handleFileChange}
+        accept="application/pdf"
       />
 
       <div className="my-4">
         {filePreview && (
           <div className="position-relative d-inline-block">
-            {filePreview && fileType === 'application/pdf' && (
+            {(fileType === 'application/pdf' ||
+              fileType === 'application/octet-stream') && (
               <div className="pdf-preview">
                 <object
                   data={filePreview}
-                  type="application/pdf"
+                  type={'application/pdf'}
                   width="200"
                   height="200"
                 />

@@ -1085,6 +1085,7 @@ const allowedFileTypes = [
   'application/msword',
   'application/vnd.ms-excel',
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/octet-stream',
 ];
 
 export {
@@ -1102,9 +1103,9 @@ export {
   courseHeaders,
   departmentHeaders,
   edulogo,
+  EmgsStatusListHeaders,
   footerLogo,
   footerShape,
-  EmgsStatusListHeaders,
   hot_offer_image,
   profileBg,
   studentAndLogoData,
