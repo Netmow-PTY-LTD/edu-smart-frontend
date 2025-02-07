@@ -8274,6 +8274,7 @@ img.staff-img {
   padding: 15px 0;
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
 }
 
 .university-card-image {
@@ -8288,4 +8289,33 @@ img.staff-img {
   border: 1px solid #1c1c1c;
 }
 
+@media (max-width: 991px) {
+  .university-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .university-card-content h3 {
+    height: auto;
+  }
+
+  .address {
+    height: auto;
+  }
+}
+
+@media (max-width: 575px) {
+  .university-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 // Agent Home Mission section
+
+.course-card__image img {
+  width: 100%;
+  aspect-ratio: 1/0.7;
+  object-fit: cover;
+  border-radius: 10px;
+}

@@ -65,7 +65,7 @@ export default function HeroHome({ university }) {
                           <div className="slider-desc">
                             {slider?.description || ''}
                           </div>
-                          <div className="btns">
+                          {/* <div className="btns">
                             <Link
                               href={slider?.button_1_link || ''}
                               className="button py-3 px-5 fw-semibold text-center"
@@ -82,7 +82,7 @@ export default function HeroHome({ university }) {
                                 ? slider?.button_2_text
                                 : 'Apply Now'}
                             </Link>
-                          </div>
+                          </div> */}
                         </div>
                       </Col>
                     </Row>
@@ -108,7 +108,7 @@ export default function HeroHome({ university }) {
                       Explore the journey, victories, and spirit of our team.
                       Stay updated and connected with every milestone.
                     </div>
-                    <div className="btns">
+                    {/* <div className="btns">
                       <Link
                         href="#"
                         className="button py-3 px-5 fw-semibold text-center"
@@ -121,7 +121,7 @@ export default function HeroHome({ university }) {
                       >
                         Apply Now
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 </Col>
               </Row>
@@ -140,8 +140,8 @@ export default function HeroHome({ university }) {
                     className="university-logo"
                     alt="logoMmu"
                     src={university?.logo?.url || logoMmu}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                   />
                   <h4 className="d-none d-md-block">{university?.name}</h4>
                 </div>

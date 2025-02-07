@@ -7,7 +7,7 @@ const CourseCard = ({ course }) => {
     <div class="course-card">
       <figure class="course-card__image">
         <Image
-          src="/assets/images/landing/popularCourse/Program Image.png"
+          src={course?.image}
           alt="MBA in International Business at Harvard University"
           width={500}
           height={300}
@@ -25,7 +25,7 @@ const CourseCard = ({ course }) => {
       </div>
       <footer>
         <Link
-          href={`/university/${course?.university}/course/${course?._id}`}
+          href={`/university/${course?.university?._id}/course/${course?._id}`}
           class="course-card__button"
         >
           View Details <i className="ri-arrow-right-line"></i>

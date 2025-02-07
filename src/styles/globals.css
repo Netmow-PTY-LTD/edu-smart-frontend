@@ -9870,3 +9870,8 @@ textarea.form-control {
 .table-responsive {
   min-height: 120px;
 }
+
+.address-main {
+  color: var(--color--primary);
+  margin-top: 30px;
+}
