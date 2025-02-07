@@ -123,7 +123,7 @@ export default function UniversitySponsorsList({ university_id }) {
     });
 
     for (let [key, value] of finalData.entries()) {
-      console.log(`${key}:`, value);
+      // console.log(`${key}:`, value);
     }
 
     try {

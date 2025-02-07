@@ -1,7 +1,9 @@
 import AgentLayout from '@/components/clientSite/agent/AgentLayout';
-import HomeMission from '@/components/clientSite/agent/Home/HomeMission';
+import AgentPopularCourses from '@/components/clientSite/agent/Home/AgentPopularCourses';
+import AgentServices from '@/components/clientSite/agent/Home/AgentServices';
 import HomeSlider from '@/components/clientSite/agent/Home/HomeSlider';
 import HomeUniversities from '@/components/clientSite/agent/Home/HomeUniversities';
+
 import React from 'react';
 
 export default function AgentHome() {
@@ -9,7 +11,8 @@ export default function AgentHome() {
     <AgentLayout>
       <HomeSlider />
       <HomeUniversities />
-      <HomeMission/>
+      <AgentServices />
+      <AgentPopularCourses />
     </AgentLayout>
   );
 }

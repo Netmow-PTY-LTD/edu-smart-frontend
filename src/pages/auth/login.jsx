@@ -268,12 +268,12 @@ const Login = () => {
           <div className="branding-area">
             <div className="container">
               <div className="brand-logo">
-                <Link href="/university">
+                <Link href="/">
                   <Image
                     src={brandlogo ? brandlogo : ''}
                     alt="Logo"
                     width={300}
-                    height={300}
+                    height={50}
                   />
                 </Link>
               </div>

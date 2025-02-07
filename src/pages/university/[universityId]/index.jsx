@@ -26,7 +26,7 @@ export default function SingleUniversityHome() {
   }, [universityData, universityId]);
 
   return (
-    <UniversityLayout>
+    <UniversityLayout university={university}>
       <HeroHome university={university} />
       <AboutUniversity university={university} />
       <UniversityFaculties universityId={universityId} />

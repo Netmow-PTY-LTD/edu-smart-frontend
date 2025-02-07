@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-const OurServices = () => {
+const AgentServices = () => {
   return (
     <div
       className="bg-black ourServices-section"
@@ -52,7 +52,7 @@ const OurServices = () => {
               </p>
               <div>
                 <button className="btn">
-                  Contact Us Now <i className="ri-arrow-right-line"></i>{' '}
+                  Contact Us Now <i class="ri-arrow-right-line"></i>{' '}
                 </button>
               </div>
             </div>
@@ -107,4 +107,4 @@ const OurServices = () => {
   );
 };
 
-export default OurServices;
+export default AgentServices;

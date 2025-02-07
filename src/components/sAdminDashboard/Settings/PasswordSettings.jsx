@@ -23,7 +23,7 @@ const PasswordSettings = () => {
       }
     } catch (error) {
       toast.error(error?.data?.message || 'Something went wrong');
-      console.log(error);
+      // console.log(error);
     } finally {
       setSubmitting(false);
     }
