@@ -72,14 +72,13 @@ const BusinessSettings = () => {
         state: agentBusinessSettingData?.data?.state || '',
         zip: agentBusinessSettingData?.data?.zip || '',
         country:
-          // agentBusinessSettingData?.data?.country 
+          // agentBusinessSettingData?.data?.country
           // ||
           {
             label: agentBusinessSettingData?.data?.country,
             value: agentBusinessSettingData?.data?.country,
-          }
-          // ''
-          ,
+          },
+        // ''
         website: agentBusinessSettingData?.data?.website || '',
         phone: agentBusinessSettingData?.data?.phone || '',
         logo: logo,
@@ -117,7 +116,7 @@ const BusinessSettings = () => {
     agentBusinessSettingData?.date?.favicon,
   ]);
 
-  console.log(initialValues);
+  // console.log(initialValues);
 
   const validationSchema = Yup.object({});
 

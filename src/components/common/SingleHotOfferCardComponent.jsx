@@ -14,7 +14,7 @@ const SingleHotOfferCardComponent = ({
   deleteHotOffer,
 }) => {
   const bgImage = '/assets/card-bg.png';
-  console.log(data);
+
   return (
     <>
       <div>

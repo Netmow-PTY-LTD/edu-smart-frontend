@@ -17,7 +17,7 @@ const FAQForm = () => {
   });
 
   const onSubmit = (values) => {
-    console.log('Submitted FAQs:', values.faqs);
+    // console.log('Submitted FAQs:', values.faqs);
   };
 
   return (
