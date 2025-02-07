@@ -52,7 +52,7 @@ const OurServices = () => {
               </p>
               <div>
                 <button className="btn">
-                  Contact Us Now <i class="ri-arrow-right-line"></i>{' '}
+                  Contact Us Now <i className="ri-arrow-right-line"></i>{' '}
                 </button>
               </div>
             </div>

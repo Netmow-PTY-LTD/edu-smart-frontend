@@ -1,4 +1,7 @@
-import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import {
+  useGetAllCoursesQuery,
+  useGetAllUniversityQuery,
+} from '@/slice/services/public/university/publicUniveristyService';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,9 +17,7 @@ export default function Header() {
     setShowMobileNav(!showMobileNav);
   };
   const { data: universityData } = useGetAllUniversityQuery();
-  const courses = universityData?.data?.flatMap(
-    (university) => university.courses
-  );
+  const { data: allCourses } = useGetAllCoursesQuery();
 
   return (
     <>
@@ -63,11 +64,11 @@ export default function Header() {
                       </svg>
                     </Link>
                     <ul className="sub-menu">
-                      {courses?.length > 0 &&
-                        courses?.map((item, index) => (
+                      {allCourses?.data?.length > 0 &&
+                        allCourses?.data?.map((item, index) => (
                           <li key={index}>
                             <Link
-                              href={`/university/${item?.university}/course/${item?._id}`}
+                              href={`/university/${item?.university?._id}/course/${item?._id}`}
                             >
                               {item.name}
                             </Link>

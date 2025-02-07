@@ -21,7 +21,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
 
   const [debouncedFilters, setDebouncedFilters] = useState(selectedValue);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 6;
 
   // Debounce state changes to avoid excessive API calls
   useEffect(() => {

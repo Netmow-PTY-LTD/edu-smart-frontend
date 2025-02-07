@@ -33,7 +33,7 @@ export default function HomeSlider() {
                     </div>
                     <div className="btns">
                       <Link
-                        href="#"
+                        href="/auth/register"
                         className="button py-3 px-5 fw-semibold text-center"
                       >
                         Apply For Free
