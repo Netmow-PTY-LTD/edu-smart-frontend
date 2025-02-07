@@ -47,9 +47,9 @@ export default function HeroSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // You can access the selected values here:
-    console.log('Selected University:', selectedUniversity);
-    console.log('Selected Department:', selectedDepartment);
-    console.log('Selected Course:', selectedCourse);
+    // console.log('Selected University:', selectedUniversity);
+    // console.log('Selected Department:', selectedDepartment);
+    // console.log('Selected Course:', selectedCourse);
     // Further processing...
   };
 

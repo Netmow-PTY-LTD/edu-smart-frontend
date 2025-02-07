@@ -84,13 +84,13 @@ const EditUniversity = () => {
     }
   }, [getUniversityData?.data, universityId]);
 
-  console.log(initialValues);
+  // console.log(initialValues);
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log(values);
+    // console.log(values);
 
     const finalData = {
       ...values,

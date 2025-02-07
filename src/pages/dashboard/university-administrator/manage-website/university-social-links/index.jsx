@@ -8,7 +8,7 @@ const UniversitySocailLinks = () => {
   const validationSchema = Yup.object({});
 
   const onSubmit = (e) => {
-    console.log(e);
+    // console.log(e);
   };
 
   const fields = [

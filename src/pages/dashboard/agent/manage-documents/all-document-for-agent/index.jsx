@@ -27,7 +27,7 @@ const AllDocumentForAgentDashboard = () => {
     refetch: allSubmittedDocumentForAgentRefetch,
   } = useAllSubmittedDocumentForAgentQuery();
 
-  console.log(allSubmittedDocumentForAgentData);
+  // console.log(allSubmittedDocumentForAgentData);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -48,7 +48,7 @@ const AllDocumentForAgentDashboard = () => {
       render: (item) => {
         const status = item?.status;
 
-        console.log(status);
+        // console.log(status);
         const validStatuses = ['accepted', 'rejected', 'pending', 'requested'];
 
         if (validStatuses.includes(status)) {

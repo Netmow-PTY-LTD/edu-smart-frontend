@@ -50,7 +50,7 @@ const SliderCardComponent = ({ university_id }) => {
         ? getSingleUniversityData?.data?.slider
         : null;
 
-      console.log(slider);
+      // console.log(slider);
       setInitialValues({
         title: slider?.title || '',
         sub_title: slider?.sub_title || '',
@@ -112,7 +112,7 @@ const SliderCardComponent = ({ university_id }) => {
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
+    // console.log(values);
     setSubmitting(true);
     const updatedData = { ...values, university_id: university_id };
     try {
@@ -125,7 +125,7 @@ const SliderCardComponent = ({ university_id }) => {
         }
       });
       for (let [key, value] of finalData.entries()) {
-        console.log(`${key}:`, value);
+        // console.log(`${key}:`, value);
       }
 
       const result = await updateUniversitySlider(finalData).unwrap();

@@ -90,7 +90,7 @@ const HotOfferForSuperAdmin = () => {
       offer_percentage: values?.offer_percentage,
       offer_duration: values?.offer_duration,
     };
-    console.log(finalData);
+    // console.log(finalData);
     try {
       const response = await addHotOfferInSuperAdmin(finalData).unwrap();
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import CourseCard from '../common/CourseCard';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import CourseCard from '@/components/main/common/CourseCard';
 
-const PopularCourses = () => {
+const AgentPopularCourses = () => {
   const { data: universityData } = useGetAllUniversityQuery();
-  // console.log(universityData);
+
   const courses = universityData?.data?.flatMap(
     (university) => university.courses
   );
-  // console.log(courses);
+
   return (
     <section className="popular-coureses-section ">
       <div className="container">
@@ -36,4 +36,4 @@ const PopularCourses = () => {
   );
 };
 
-export default PopularCourses;
+export default AgentPopularCourses;
