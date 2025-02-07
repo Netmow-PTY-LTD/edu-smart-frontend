@@ -51,7 +51,7 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
   const validationSchema = Yup.object({
     images: Yup.array()
       .min(1, 'At least one image is required')
-      .max(5, 'Image gallery should not exceed 5 images')
+      .max(7, 'Image gallery should not exceed 5 images')
       .required('Image gallery is required'),
     description: Yup.string().required('Image gallery is required'),
   });
