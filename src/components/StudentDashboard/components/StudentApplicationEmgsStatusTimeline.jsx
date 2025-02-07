@@ -14,7 +14,7 @@ export default function StudentApplicationEmgsStatusTimeline({
       skip: !currentTimeline,
     });
 
-  console.log(timelineData?.data);
+  // console.log(timelineData?.data);
   return (
     <>
       {timelineLoading ? (

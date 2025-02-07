@@ -284,7 +284,7 @@ const Register = () => {
   const handleRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log('agent', values);
+    // console.log('agent', values);
 
     try {
       const resRegister = await agentRegister({
@@ -315,7 +315,7 @@ const Register = () => {
   const handleStudentRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log('student', values);
+    // console.log('student', values);
 
     try {
       const resRegister = await studentRegister({
@@ -349,7 +349,7 @@ const Register = () => {
   ) => {
     setSubmitting(true);
 
-    console.log('university', values);
+    // console.log('university', values);
 
     try {
       const resRegister = await universityRegister({
@@ -377,7 +377,7 @@ const Register = () => {
     }
   };
 
-  console.log(initialValues);
+  // console.log(initialValues);
 
   return (
     <>
@@ -390,8 +390,8 @@ const Register = () => {
         <div className="branding-area">
           <div className="container">
             <div className="brand-logo">
-              <Link href="/university">
-                <Image src={brandlogo} width={500} height={500} alt="Logo" />
+              <Link href="/">
+                <Image src={brandlogo} width={300} height={80} alt="Logo" />
               </Link>
             </div>
           </div>

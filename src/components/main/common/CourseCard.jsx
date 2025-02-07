@@ -28,7 +28,7 @@ const CourseCard = ({ course }) => {
           href={`/university/${course?.university}/course/${course?._id}`}
           class="course-card__button"
         >
-          View Details <i class="ri-arrow-right-line"></i>
+          View Details <i className="ri-arrow-right-line"></i>
         </Link>
       </footer>
     </div>

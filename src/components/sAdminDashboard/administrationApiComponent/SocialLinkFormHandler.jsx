@@ -5,17 +5,19 @@ import { toast } from 'react-toastify';
 import { Col } from 'reactstrap';
 import * as Yup from 'yup';
 
-const SocialLinkFormHandler = ({className, apiData}) => {
-    const [updateSocailLinks]=useUpdateUniversitySocialLinkMutation();
+const SocialLinkFormHandler = ({ className, apiData }) => {
+  const [updateSocailLinks] = useUpdateUniversitySocialLinkMutation();
   const [initialValues, setInitialValues] = useState({});
   const validationSchema = Yup.object({});
 
-
-  const onSubmit = async(value,{ setSubmitting }) => {
+  const onSubmit = async (value, { setSubmitting }) => {
     setSubmitting(true);
     try {
-      const result = await await updateSocailLinks({data:value, university_id:apiData}).unwrap();
-      console.log(result)
+      const result = await await updateSocailLinks({
+        data: value,
+        university_id: apiData,
+      }).unwrap();
+      // console.log(result)
       if (result) {
         toast.success(result?.message);
       }
@@ -25,11 +27,7 @@ const SocialLinkFormHandler = ({className, apiData}) => {
     } finally {
       setSubmitting(false);
     }
-
-  
-};
-
-
+  };
 
   const socialLinkFields = [
     { name: 'facebook', label: 'Facebook:' },

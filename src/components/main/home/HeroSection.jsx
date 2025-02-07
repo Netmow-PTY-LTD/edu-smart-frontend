@@ -1,70 +1,68 @@
-import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import {
+  useGetAllCoursesQuery,
+  useGetAllUniversityQuery,
+} from '@/slice/services/public/university/publicUniveristyService';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 
 export default function HeroSection() {
   const { data: universityData } = useGetAllUniversityQuery();
-  const [selectedUniversity, setSelectedUniversity] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedUniversity, setSelectedUniversity] = useState(null);
+  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
-  // Get the selected university object (if any)
-  const university =
-    universityData?.data?.find((uni) => uni._id === selectedUniversity) || null;
+  const router = useRouter();
 
-  // Departments come directly from the selected university
-  // const departments = university ? university.departments : [];
+  // Get courses based on selected university
 
-  // Filter courses from the university where the course.department matches the selected department
-  // const courses =
-  //   university && selectedDepartment
-  //     ? university.courses.filter(
-  //         (course) => course.department === selectedDepartment
-  //       )
-  //     : [];
-
-  // Handlers to update the state
+  // Handlers
   const handleUniversityChange = (e) => {
     const uniId = e.target.value;
-    setSelectedUniversity(uniId);
-    setSelectedDepartment(''); // Reset department & course when university changes
-    setSelectedCourse('');
-  };
 
-  const handleDepartmentChange = (e) => {
-    const deptId = e.target.value;
-    setSelectedDepartment(deptId);
-    setSelectedCourse(''); // Reset course when department changes
+    if (!uniId) {
+      setSelectedUniversity('');
+      setSelectedCourses([]);
+      setSelectedCourse('');
+      return;
+    }
+
+    setSelectedUniversity(uniId);
+    const foundUniversity = universityData?.data?.find(
+      (uni) => uni._id === uniId
+    );
+
+    setSelectedCourses(
+      foundUniversity?.courses?.length > 0 ? foundUniversity.courses : []
+    );
+    setSelectedCourse(''); // Reset selected course
   };
 
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value);
+    console.log(selectedCourse);
   };
 
-  // Handle form submission (for example, to search courses)
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can access the selected values here:
-    console.log('Selected University:', selectedUniversity);
-    console.log('Selected Department:', selectedDepartment);
-    console.log('Selected Course:', selectedCourse);
-    // Further processing...
+    if (selectedCourse) {
+      router.push(`/university/${selectedUniversity}/course/${selectedCourse}`);
+    } else {
+      toast.error('Please select a course');
+    }
   };
 
-  //console.log('universityData', universityData);
+  const { data: allCourses } = useGetAllCoursesQuery();
 
-  const courses = universityData?.data?.flatMap(
-    (university) => university.courses
-  );
-  // console.log(courses);
+  const displayedCourses =
+    selectedCourses.length > 0 ? selectedCourses : allCourses?.data || [];
 
-  const departments = universityData?.data?.flatMap(
-    (university) => university.departments
-  );
   return (
     <section className="hero-main">
+      <ToastContainer />
       <div className="container">
         <Row>
           <Col lg={6} md={12}>
@@ -112,7 +110,7 @@ export default function HeroSection() {
             <form onSubmit={handleSubmit}>
               <div className="form-area">
                 <Row>
-                  <Col lg={3} md={6}>
+                  <Col lg={5}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select University</label>
                       <select
@@ -121,15 +119,19 @@ export default function HeroSection() {
                         value={selectedUniversity}
                         onChange={handleUniversityChange}
                       >
-                        <option>Select University</option>
+                        <option value="Select University">
+                          Select University
+                        </option>
                         {universityData?.data?.length > 0 &&
                           universityData?.data?.map((item, index) => (
-                            <option key={index}>{item.name}</option>
+                            <option key={index} value={item._id}>
+                              {item.name}
+                            </option>
                           ))}
                       </select>
                     </div>
                   </Col>
-                  <Col lg={3} md={6}>
+                  {/* <Col lg={3} md={6}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select Department</label>
                       <select
@@ -146,9 +148,9 @@ export default function HeroSection() {
                           ))}
                       </select>
                     </div>
-                  </Col>
+                  </Col> */}
 
-                  <Col lg={3} md={6}>
+                  <Col lg={5}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select Course</label>
                       <select
@@ -159,21 +161,23 @@ export default function HeroSection() {
                         // disabled={!selectedDepartment}
                       >
                         <option>Select Course</option>
-                        {courses?.length > 0 &&
-                          courses?.map((item, index) => (
-                            <option key={index}>{item.name}</option>
+                        {displayedCourses?.length > 0 &&
+                          displayedCourses?.map((item) => (
+                            <option key={item._id} value={item._id}>
+                              {item?.name}
+                            </option>
                           ))}
                       </select>
                     </div>
                   </Col>
-                  <Col lg={3} md={6} className="d-flex align-items-end">
+                  <Col lg={2} className="d-flex align-items-end">
                     <div className="mb-3 w-100">
                       <button
                         type="submit"
                         className="button text-secondary-alt p-4 text-center w-100 d-flex justify-content-center align-items-center"
                         style={{ height: '4.8rem', fontWeight: '600' }}
                       >
-                        Search Courses
+                        Go to course
                       </button>
                     </div>
                   </Col>

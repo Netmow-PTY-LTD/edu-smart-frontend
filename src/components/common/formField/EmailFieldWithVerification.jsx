@@ -20,7 +20,7 @@ const EmailFieldWithVerification = ({
         try {
           const res = await verifyExistingUser({ email: field.value }).unwrap();
           if (res) {
-            console.log(res);
+            // console.log(res);
             setIsVerify(true);
             setCheckExistingUser(field.value);
             toast.error('Email already exists');

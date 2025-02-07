@@ -91,12 +91,12 @@ const SingleAgentInSuperAdminDashboard = () => {
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
-      console.log(errorMessage);
+      // console.log(errorMessage);
       toast.error(errorMessage);
     }
   };
 
-  console.log(getSingleAgent?.data?.students[0]);
+  // console.log(getSingleAgent?.data?.students[0]);
 
   const agentEarningsHeaderAction = {
     title: 'Action',

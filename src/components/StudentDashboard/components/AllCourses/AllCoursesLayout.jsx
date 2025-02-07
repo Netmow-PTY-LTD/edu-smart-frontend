@@ -46,18 +46,30 @@ const AllCoursesLayout = ({ university_id }) => {
     const { name, checked } = event.target;
 
     setSelectedValue((prevSelectedValues) => {
+      // if (checked) {
+      //   const isAlreadySelected = prevSelectedValues?.some(
+      //     (item) => item.name === 'department' && item.value === name
+      //   );
+      //   if (!isAlreadySelected) {
+      //     return [...prevSelectedValues, { name: 'department', value: name }];
+      //   }
+      // } else {
+      //   return prevSelectedValues.filter(
+      //     (item) => !(item.name === 'department' && item.value === name)
+      //   );
+      // }
+
+      // --------------------- NB: This Filtering method not fixed this logic future changeable ------------------------
+      // Filter out any previously selected department values
+      const previousValues = prevSelectedValues?.filter(
+        (item) => item.name !== 'department'
+      );
+
       if (checked) {
-        const isAlreadySelected = prevSelectedValues.some(
-          (item) => item.name === 'department' && item.value === name
-        );
-        if (!isAlreadySelected) {
-          return [...prevSelectedValues, { name: 'department', value: name }];
-        }
-      } else {
-        return prevSelectedValues.filter(
-          (item) => !(item.name === 'department' && item.value === name)
-        );
+        // Add the new department selection while keeping other selected values
+        return [...previousValues, { name: 'department', value: name }];
       }
+      return prevSelectedValues;
     });
   };
 
@@ -65,21 +77,33 @@ const AllCoursesLayout = ({ university_id }) => {
     const { name, checked } = event.target;
 
     setSelectedValue((prevSelectedValues) => {
+      // if (checked) {
+      //   const isAlreadySelected = prevSelectedValues?.some(
+      //     (item) => item.name === 'course_category' && item.value === name
+      //   );
+      //   if (!isAlreadySelected) {
+      //     return [
+      //       ...prevSelectedValues,
+      //       { name: 'course_category', value: name },
+      //     ];
+      //   }
+      // } else {
+      //   return prevSelectedValues?.filter(
+      //     (item) => !(item.name === 'course_category' && item.value === name)
+      //   );
+      // }
+
+      // --------------------- NB: This Filtering method not fixed this logic future changeable ------------------------
+      // Filter out any previously selected course_category values
+      const previousValues = prevSelectedValues?.filter(
+        (item) => item.name !== 'course_category'
+      );
+
       if (checked) {
-        const isAlreadySelected = prevSelectedValues?.some(
-          (item) => item.name === 'course_category' && item.value === name
-        );
-        if (!isAlreadySelected) {
-          return [
-            ...prevSelectedValues,
-            { name: 'course_category', value: name },
-          ];
-        }
-      } else {
-        return prevSelectedValues?.filter(
-          (item) => !(item.name === 'course_category' && item.value === name)
-        );
+        // Add the new course_category selection while keeping other selected values
+        return [...previousValues, { name: 'course_category', value: name }];
       }
+      return prevSelectedValues;
     });
   };
 
@@ -97,8 +121,7 @@ const AllCoursesLayout = ({ university_id }) => {
 
   return (
     <>
-      {getSingleUniversityIsLoadingForStudent ||
-      getSingleUniversityCourseIsLoadingForStudent ? (
+      {getSingleUniversityIsLoadingForStudent ? (
         <LoaderSpiner />
       ) : (
         <Row>
@@ -119,7 +142,8 @@ const AllCoursesLayout = ({ university_id }) => {
                     {universitData?.departments?.map((dept, index) => (
                       <label key={dept?._id}>
                         <input
-                          type="checkbox"
+                          // type="checkbox"
+                          type="radio"
                           name={dept?.name}
                           checked={isDepartmentSelected(dept?.name)}
                           onChange={handleDepartmentChange}
@@ -135,7 +159,8 @@ const AllCoursesLayout = ({ university_id }) => {
                     {universitData?.categories?.map((program) => (
                       <label key={program?._id}>
                         <input
-                          type="checkbox"
+                          // type="checkbox"
+                          type="radio"
                           name={program?.name}
                           checked={isProgramSelected(program?.name)}
                           onChange={handleProgramChange}
@@ -149,7 +174,12 @@ const AllCoursesLayout = ({ university_id }) => {
             </Col>
 
             {getSingleUniversityCourseIsLoadingForStudent ? (
-              <LoaderSpiner />
+              <div
+                className="d-flex justify-content-center align-items-center w-100"
+                style={{ minHeight: '200px' }}
+              >
+                <LoaderSpiner />
+              </div>
             ) : (
               <Col lg={9}>
                 <Row>

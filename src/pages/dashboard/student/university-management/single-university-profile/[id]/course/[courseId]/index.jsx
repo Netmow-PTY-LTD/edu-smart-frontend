@@ -76,7 +76,7 @@ const SingleUniversityCourse = () => {
           payment_status,
           transaction_id,
         }).unwrap();
-        console.log(response);
+        // console.log(response);
         if (response.success) {
           toast.success('Application created successfully');
           window.location.href = `/dashboard/student/applications`;
