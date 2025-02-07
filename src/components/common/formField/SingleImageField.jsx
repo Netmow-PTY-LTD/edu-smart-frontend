@@ -4,7 +4,13 @@ import React, { useEffect, useState } from 'react';
 
 // Helper function to validate file types
 const isValidImage = (file) => {
-  const validTypes = ['image/jpeg', 'image/png', 'image/gif','image/webp'];
+  const validTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'application/octet-stream',
+  ];
   return validTypes.includes(file.type);
 };
 
@@ -27,7 +33,7 @@ const SingleImageField = ({ field, form, label, ...props }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    
+
     if (file && isValidImage(file)) {
       const reader = new FileReader();
       reader.onloadend = () => {

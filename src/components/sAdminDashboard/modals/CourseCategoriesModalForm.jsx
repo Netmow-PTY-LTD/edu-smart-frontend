@@ -42,7 +42,6 @@ const CourseCategoryModalForm = ({
                     name="department"
                     label="Select Department"
                     options={allDepartmentName}
-                    setInitialValues={setInitialValues}
                   />
                 </Col>
                 <TextArea name="description" label="Description" />

@@ -47,6 +47,8 @@ const BusinessSettings = () => {
   const [updateAgentBusinessSettings] =
     useUpdateAgentBusinessSettingsMutation();
 
+  console.log(agentBusinessSettingData?.data);
+
   useEffect(() => {
     const setData = async () => {
       const logo = agentBusinessSettingData?.data?.logo
@@ -57,11 +59,12 @@ const BusinessSettings = () => {
             agentBusinessSettingData?.data?.footer_logo?.url
           )
         : null;
-      const favicon = agentBusinessSettingData?.date?.favicon
+      const favicon = agentBusinessSettingData?.data?.favicon
         ? await convertImageUrlToFile(
             agentBusinessSettingData?.data?.favicon?.url
           )
         : null;
+
       setInitialValues({
         name: agentBusinessSettingData?.data?.name || '',
         description: agentBusinessSettingData?.data?.description || '',
@@ -121,12 +124,14 @@ const BusinessSettings = () => {
   const validationSchema = Yup.object({});
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    delete values.email;
+
     try {
       setSubmitting(true);
-      const updateData = { ...values };
-      delete updateData.email;
+      const newData = { ...values, country: values?.country };
+      console.log(newData);
       const finalData = new FormData();
-      Object.entries(updateData).forEach(([key, value]) => {
+      Object.entries(newData).forEach(([key, value]) => {
         finalData.append(key, value);
       });
       const result = await updateAgentBusinessSettings(finalData).unwrap();
@@ -143,6 +148,8 @@ const BusinessSettings = () => {
       setSubmitting(false);
     }
   };
+
+  console.log(initialValues);
 
   return (
     <>
