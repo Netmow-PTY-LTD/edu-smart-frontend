@@ -1,4 +1,3 @@
-import HotOfferBanner from '@/components/common/HotOfferBanner';
 import PaymentOption from '@/components/common/PaymentOption';
 import SinglePackageComponent from '@/components/common/SinglePackageComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
@@ -131,9 +130,19 @@ const UpgradePackageInAgentdashboard = () => {
 
   const sslCommerzPaymentHandler = async () => {
     const price = 15000;
-    const faild_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=failed`;
-    const success_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`;
-    const cancel_url = `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`;
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=failed`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=failed`;
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`;
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=cancel`;
+
     const package_id = upgradePackageId;
 
     try {
