@@ -17,7 +17,6 @@ const CourseCategoryModalForm = ({
   formSubmit,
   allDepartmentName,setInitialValues
 }) => {
-  console.log(initialValues);
   console.log(allDepartmentName);
   return (
     <Modal isOpen={isOpen} centered size="lg">
@@ -41,7 +40,6 @@ const CourseCategoryModalForm = ({
                     name="department"
                     label="Select Department"
                     options={allDepartmentName}
-                    setInitialValues={setInitialValues}
                   />
                 </Col>
                 <TextArea name="description" label="Description" />
