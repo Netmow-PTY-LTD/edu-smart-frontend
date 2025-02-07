@@ -57,6 +57,8 @@ const DocumentRequestPage = ({
     setSubmitting(true);
 
     const updatedData = { ...values, user: student_id };
+
+    console.log(updatedData);
     try {
       const result = await createDocumentRequest(updatedData).unwrap();
       if (result) {
