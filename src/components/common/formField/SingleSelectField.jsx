@@ -39,18 +39,9 @@ const SingleSelectField = ({
               }));
             }
 
-            // console.log(typeof selectedOption?.value === 'string');
-            // console.log(selectedOption?.value);
-            // form.setFieldValue(
-            //   name,
-            //   typeof selectedOption?.value === 'string'
-            //     ? selectedOption?.label
-            //     : selectedOption?.value
-            // );
-            
             form.setFieldValue(
               name,
-              selectedOption ? selectedOption?.value : null
+              name === 'country' ? selectedOption?.label : selectedOption?.value
             );
           };
 
