@@ -57,7 +57,8 @@ export default function HeroSection() {
 
   const { data: allCourses } = useGetAllCoursesQuery();
 
-  const displayedCourses = selectedCourses.length > 0 ? selectedCourses : [];
+  const displayedCourses =
+    selectedCourses.length > 0 ? selectedCourses : allCourses?.data || [];
 
   return (
     <section className="hero-main">
