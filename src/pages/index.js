@@ -4,7 +4,6 @@ import HomeUniversities from '@/components/clientSite/agent/Home/HomeUniversitie
 import HeroSection from '@/components/main/home/HeroSection';
 import MainLayout from '@/components/main/layout';
 import OurServices from '@/components/main/home/OurServices';
-import Layout from '@/components/main/layout';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';

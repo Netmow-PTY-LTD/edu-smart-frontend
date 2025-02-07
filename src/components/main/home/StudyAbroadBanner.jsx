@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const StudyAbroadBanner = () => {
@@ -15,9 +16,9 @@ const StudyAbroadBanner = () => {
             approval, making your journey smooth and successful. Start today and
             unlock global opportunities!
           </p>
-          <button className=" study-abroad__button button">
-            Contact Us For Information<i class="ri-arrow-right-line"></i>
-          </button>
+          <Link href="/contact" className=" study-abroad__button button">
+            Contact Us For Information<i className="ri-arrow-right-line"></i>
+          </Link>
         </div>
         <div className="study-abroad__image">
           <figure>

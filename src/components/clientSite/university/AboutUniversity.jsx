@@ -28,7 +28,7 @@ const AboutUniversity = ({ university }) => {
         </div>
         <div className="w-100 w-lg-50 d-flex justify-content-center align-items-center">
           <Image
-            className="mw-100"
+            className="mw-100 rounded-5"
             src={university?.logo?.url || aboutImage}
             alt="university about image"
             width={400}

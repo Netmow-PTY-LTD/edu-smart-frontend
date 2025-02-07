@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const OurServices = () => {
@@ -51,9 +52,9 @@ const OurServices = () => {
                 your global education journey seamless.
               </p>
               <div>
-                <button className="btn">
+                <Link href="/contact" className="btn">
                   Contact Us Now <i className="ri-arrow-right-line"></i>{' '}
-                </button>
+                </Link>
               </div>
             </div>
             <figure>
@@ -80,9 +81,9 @@ const OurServices = () => {
         >
           <div>
             <p>Choosing the right Institute & program to securing your visa</p>
-            <button className="button">
+            {/* <button className="button">
               Apply Online <i class="ri-arrow-right-line"></i>
-            </button>
+            </button> */}
           </div>
           {/* vector */}
           <figure className="paralla-vector">

@@ -17,6 +17,8 @@ export default function HeroSection() {
 
   const router = useRouter();
 
+  const { data: allCourses } = useGetAllCoursesQuery();
+
   // Get courses based on selected university
 
   // Handlers
@@ -28,6 +30,12 @@ export default function HeroSection() {
       setSelectedCourses([]);
       setSelectedCourse('');
       return;
+    }
+
+    if (uniId == 'Select University') {
+      setSelectedUniversity(allCourses?.data);
+      setSelectedCourses([]);
+      setSelectedCourse('');
     }
 
     setSelectedUniversity(uniId);
@@ -55,10 +63,10 @@ export default function HeroSection() {
     }
   };
 
-  const { data: allCourses } = useGetAllCoursesQuery();
-
   const displayedCourses =
-    selectedCourses.length > 0 ? selectedCourses : allCourses?.data || [];
+    selectedUniversity || selectedUniversity !== null
+      ? selectedCourses
+      : allCourses?.data || [];
 
   return (
     <section className="hero-main">

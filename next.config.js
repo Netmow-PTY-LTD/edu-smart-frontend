@@ -28,6 +28,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'media.licdn.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co.com',
+      },
     ],
     // domains: ['res.cloudinary.com', 'lh3.googleusercontent.com'],
   },

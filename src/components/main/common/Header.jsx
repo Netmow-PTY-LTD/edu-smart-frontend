@@ -154,7 +154,7 @@ export default function Header() {
                     </Link>
                   </li> */}
                   <li>
-                    <Link href="/agent/contact" className="nav-link">
+                    <Link href="/contact" className="nav-link">
                       <span>Contact</span>
                     </Link>
                   </li>
