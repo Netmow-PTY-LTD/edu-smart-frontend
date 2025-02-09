@@ -13,50 +13,35 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
 
   useEffect(() => {
     const file = form.values[field.name];
-
-
-
+    console.log(file?.type);
     if (file && isValidFile(file)) {
       setFileName(file.name);
       setFileType(file.type);
-      if (
-        file.type === 'application/pdf' ||
-        file.type === 'application/octet-stream'
-      ) {
-        setFilePreview(file);
-      } else if (
-        file.type ===
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-        file.type === 'application/msword' ||
-        file.type === 'application/pdf'
-      ) {
-        setFilePreview(null);
+      if (file.type === 'application/pdf' || file.type === 'application/octet-stream' || file.type.startsWith('image/')) {
+        setFilePreview(URL.createObjectURL(file));
+        form?.setFieldValue(field?.name, file);
       } else {
         setFilePreview(null);
       }
     } else {
       setFilePreview(null);
+      form?.setFieldValue(field?.name, null);
     }
-  }, [field.name, form.values]);
-
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [field.name]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    
+
     if (file && isValidFile(file)) {
       setFileName(file.name);
       setFileType(file.type);
-      if (file.type === 'application/pdf') {
+      if (file.type === 'application/pdf' || file.type.startsWith('image/')) {
         setFilePreview(URL.createObjectURL(file));
-      } else if (
-        file.type ===
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
-        file.type === 'application/msword'
-      ) {
+        form?.setFieldValue(field?.name, file);
+      } else {
         setFilePreview(null);
       }
-      form?.setFieldValue(field?.name, file);
     } else {
       setFilePreview(null);
       form?.setFieldValue(field?.name, null);
@@ -69,6 +54,8 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
     setFileType(null);
     form.setFieldValue(field.name, null);
   };
+
+  console.log(filePreview);
 
   return (
     <div>
