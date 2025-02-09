@@ -12,7 +12,7 @@ import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -309,8 +309,10 @@ export default function CourseForm({ setStep, step }) {
           }
         });
         const result = await submitStudentDocument(finalData).unwrap();
+        // console.log(result);
         if (result?.success) {
-          toast.success(result?.message);
+          console.log('check');
+          toast.success(result?.message || 'Document Submit Successfully.');
           singleStudentRefetch();
           router.push(
             `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
@@ -318,8 +320,9 @@ export default function CourseForm({ setStep, step }) {
         }
       }
     } catch (error) {
+      // console.log(error?.data?.message);
       const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
+      toast.error(errorMessage || 'Failed. Please Try Again.');
     } finally {
       setSubmitting(false);
     }
@@ -437,10 +440,10 @@ export default function CourseForm({ setStep, step }) {
                                     'Academic Certificates and Transcripts'
                                   }
                                   field={{ name: 'academic_certificate' }}
-                                  disabled={
-                                    values.academic_certificate &&
-                                    values.academic_certificate.length > 0
-                                  }
+                                  // disabled={
+                                  //   values.academic_certificate &&
+                                  //   values.academic_certificate.length > 0
+                                  // }
                                 />
                               </Col>
 
