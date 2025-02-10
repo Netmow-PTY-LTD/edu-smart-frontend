@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
 import { footerLogo, footerShape } from '@/utils/common/data';
+import Subscription from './Subscription';
 
 export default function Footer() {
   return (
@@ -58,25 +59,16 @@ export default function Footer() {
             </Col>
             <Col lg={5} md={12}>
               <h3>Subscribe</h3>
+
               <p>
                 Join our newsletter to stay up to date on features and releases.
               </p>
-              <form>
-                <div className="form-wrapper">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="subscribe-input"
-                  />
-                  <button type="submit" className="btn-subscribe">
-                    Subscribe
-                  </button>
-                </div>
-                <p>
-                  By subscribing you agree to with our Privacy Policy and
-                  provide consent to receive updates from our company.
-                </p>
-              </form>
+
+              <Subscription />
+              <p>
+                By subscribing you agree to our Privacy Policy and provide
+                consent to receive updates from our company.
+              </p>
             </Col>
           </Row>
         </div>
