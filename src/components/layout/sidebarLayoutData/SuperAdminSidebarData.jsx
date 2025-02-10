@@ -82,6 +82,12 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/packages',
     },
     {
+      id: 'coupon',
+      label: 'Coupon Management',
+      icon: 'ri-coupon-3-fill',
+      link: '/dashboard/super-admin/coupon-management',
+    },
+    {
       id: 'hotoffer',
       label: 'Hot Offers',
       icon: 'ri-fire-fill',

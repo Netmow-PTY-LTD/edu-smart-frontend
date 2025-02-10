@@ -675,6 +675,50 @@ const agentsHeaders = [
   },
 ];
 
+const couponHeaders = [
+  {
+    title: 'Name',
+    key: 'name',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/super-admin/agents/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.name ?? '-'}`}
+          </Link>
+        </h5>
+      </div>
+    ),
+  },
+
+  { title: 'Start Time', key: 'start_time' },
+  { title: 'End Time', key: 'end_time' },
+  {
+    title: 'Coupon Duration',
+    key: 'coupon_duration',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.coupon_duration ?? '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Status',
+    key: 'status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+        >
+          {item?.status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+];
+
 const studentAndLogoDataForAgentDashboard = {
   title: 'Logo - Name',
   key: 'logo',
@@ -1106,6 +1150,7 @@ export {
   allowedFileTypes,
   brandlogo,
   categoryHeaders,
+  couponHeaders,
   courseHeaders,
   departmentHeaders,
   edulogo,
