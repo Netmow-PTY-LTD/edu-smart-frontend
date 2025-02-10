@@ -20,7 +20,7 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-const AllUniversityForSuperAdmin = () => {
+const AllSubscriptionForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allSubscriptionData, setAllSubscriptionData] = useState('');
@@ -74,11 +74,11 @@ const AllUniversityForSuperAdmin = () => {
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu dropdown-menu-end">
           <DropdownItem>
-            <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
+            <i class="ri-check-double-fill me-2"></i>
             Subscribe
           </DropdownItem>
           <DropdownItem>
-            <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+            <i class="ri-close-line me-2"></i>
             Unsubscribe
           </DropdownItem>
         </DropdownMenu>
@@ -133,4 +133,4 @@ const AllUniversityForSuperAdmin = () => {
   );
 };
 
-export default AllUniversityForSuperAdmin;
+export default AllSubscriptionForSuperAdmin;
