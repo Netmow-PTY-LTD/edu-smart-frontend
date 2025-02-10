@@ -27,6 +27,10 @@ const UpgradePackageInAgentdashboard = () => {
   const [upgradePackageId, setUpgradePackageId] = useState('');
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [upgradePackageIsLoading, setUpgradePackageIsLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponError, setCouponError] = useState('');
+  const [couponAmount, setTotalCouponAmount] = useState('');
+  const couponName = 'edusmart2025';
   const router = useRouter();
 
   const payment_status = router.query?.payment_status;
@@ -58,6 +62,7 @@ const UpgradePackageInAgentdashboard = () => {
           const finalData = {
             transaction_id: transaction_id,
             package_id: package_id,
+            coupon: 'yes',
           };
           const response = await upgradePackageForAgent(finalData).unwrap();
           if (response) {
@@ -164,6 +169,36 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
+  const handleCouponSubmit = (e) => {
+    e.preventDefault();
+    const matchedCouponCode = couponName;
+
+    if (!couponCode) {
+      toast.error('Coupon code is required.');
+      setCouponError('Coupon code is required.');
+      return;
+    }
+    if (couponCode !== matchedCouponCode) {
+      toast.error('Invalid coupon code.');
+      setCouponError('Invalid coupon code.');
+      return;
+    }
+
+    if (couponCode === matchedCouponCode) {
+      toast.success('Coupon applied successfully.');
+      const singlePackageData =
+        getAllPackageData?.data?.length > 0 &&
+        getAllPackageData?.data.find((item) => item?._id === upgradePackageId);
+      // console.log(singlePackageData);
+      const couponCalculation = 12 * singlePackageData?.price;
+      setTotalCouponAmount(couponCalculation);
+      console.log(couponCalculation);
+    } else {
+      toast.error('Not A Valid Coupon');
+      setCouponError('Not A Valid Coupon');
+    }
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -224,10 +259,13 @@ const UpgradePackageInAgentdashboard = () => {
             </Row>
           </div>
           {openPaymentModal && (
-            <Modal isOpen={openPaymentModal}>
+            <Modal isOpen={openPaymentModal} centered size="lg">
               <ModalHeader
                 toggle={() => {
                   setUpgradePackageId('');
+                  setCouponCode('');
+                  setCouponError('');
+                  setTotalCouponAmount('');
                   setOpenPaymentModal(!openPaymentModal);
                 }}
               >
@@ -235,6 +273,81 @@ const UpgradePackageInAgentdashboard = () => {
               </ModalHeader>
               <ModalBody>
                 <Card>
+                  <div className="m-4">
+                    <label htmlFor="couponCode" className="form-label fs-3">
+                      Do You Have A Coupon?
+                    </label>
+                    <div className="d-flex gap-3">
+                      <input
+                        type="text"
+                        id="couponCode"
+                        className="form-control fs-3 text-primary fw-medium"
+                        value={couponCode}
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            setCouponError('');
+                            setCouponCode(e.target.value);
+                          } else {
+                            setTotalCouponAmount('');
+                            setCouponCode(e.target.value);
+                          }
+                        }}
+                        onPaste={(e) => {
+                          if (e.target.value) {
+                            setCouponError('');
+                            setCouponCode(e.target.value);
+                          } else {
+                            setTotalCouponAmount('');
+                            setCouponCode(e.target.value);
+                          }
+                        }}
+                        placeholder="Enter coupon code"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleCouponSubmit();
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="button px-3 fw-medium"
+                        onClick={(e) => handleCouponSubmit(e)}
+                        // disabled={'loading'}
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {couponError && (
+                      <div className="text-danger mt-2">{couponError}</div>
+                    )}
+                    {couponAmount && (
+                      <div className="my-3 text-primary fs-2 fw-semibold text-center text-capitalize">
+                        Total amount : {couponAmount}{' '}
+                        {couponAmount != null &&
+                          couponAmount !== '' &&
+                          couponAmount !== undefined &&
+                          'MYR'}
+                      </div>
+                    )}
+                    {couponAmount && (
+                      <div className="text-primary fs-2 fw-semibold text-center">
+                        You have to pay : {0}{' '}
+                        {couponAmount != null &&
+                          couponAmount !== '' &&
+                          couponAmount !== undefined &&
+                          'MYR'}
+                      </div>
+                    )}
+                    {couponAmount && (
+                      <div
+                        onClick={''}
+                        className="my-3 text-primary fs-2 fw-semibold text-center "
+                      >
+                        <button className="button px-4 py-2">Continue</button>
+                      </div>
+                    )}
+                  </div>
+
                   <CardBody>
                     <div className="w-50 mx-auto">
                       <PaymentOption
