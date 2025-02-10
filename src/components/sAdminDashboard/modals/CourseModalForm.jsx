@@ -80,6 +80,14 @@ const CourseModalForm = ({
                 </Col>
                 <Col xl={6}>
                   <div className="mb-3">
+                    <NumberField
+                      name="university_price"
+                      label="University Fee"
+                    />
+                  </div>
+                </Col>
+                <Col xl={6}>
+                  <div className="mb-3">
                     <NumberField name="gst" label="GST In Course Fee (%)" />
                   </div>
                 </Col>

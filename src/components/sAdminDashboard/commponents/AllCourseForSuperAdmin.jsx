@@ -24,6 +24,7 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 import CourseModalForm from '../modals/CourseModalForm';
+import Image from 'next/image';
 
 const AllCourseForSuperAdmin = ({
   university_id,
@@ -78,7 +79,6 @@ const AllCourseForSuperAdmin = ({
     refetch: getCourseRefetch,
   } = useGetCourseQuery(university_id, { skip: !university_id });
 
-  console.log('get course data ===>', getCourseData);
   const [
     updateCourse,
     {
@@ -182,6 +182,10 @@ const AllCourseForSuperAdmin = ({
       .typeError('Course Fee must be a number')
       .min(0, 'Course Fee cannot be negative')
       .required('Course Fee is required'),
+    university_price: Yup.number()
+      .typeError('Course Fee must be a number')
+      .min(0, 'Course Fee cannot be negative')
+      .required('Course Fee is required'),
     gst: Yup.number()
       .typeError('GST must be a number')
       .min(0, 'GST cannot be negative')
@@ -216,6 +220,7 @@ const AllCourseForSuperAdmin = ({
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
+    console.log('values from handle Submit==>', values);
     const allData = {
       ...values,
       university_id: university_id,
@@ -227,24 +232,28 @@ const AllCourseForSuperAdmin = ({
       const finalData = new FormData();
 
       Object.entries(allData).forEach(([key, value]) => {
-        if (key === 'entry_requirements' || key === 'english_requirements') {
-          if (Array.isArray(value)) {
-            value.forEach((item, index) => {
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            if (
+              key === 'entry_requirements' ||
+              key === 'english_requirements'
+            ) {
               finalData.append(`${key}[${index}]`, item);
-            });
-          }
+            } else if (key === 'document_requirements') {
+              finalData.append(`${key}[${index}][title]`, item.title);
+              finalData.append(
+                `${key}[${index}][description]`,
+                item.description
+              );
+              finalData.append(
+                `${key}[${index}][isRequired]`,
+                item.isRequired ?? true
+              );
+            }
+          });
         } else {
           finalData.append(key, value);
         }
-        // if (key === 'document_requirements') {
-        //   if (Array.isArray(value)) {
-        //     value.forEach((item, index) => {
-        //       finalData.append(`${key}[${index}][${item.title}]`, item);
-        //     });
-        //   }
-        // } else {
-        //   finalData.append(key, value);
-        // }
       });
 
       const result = await addCourse(finalData).unwrap();
@@ -393,6 +402,7 @@ const AllCourseForSuperAdmin = ({
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+  console.log(isfilteredData);
   // Define table headers with custom render functions
   const headers = [
     {
@@ -400,6 +410,25 @@ const AllCourseForSuperAdmin = ({
       key: 'sn',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    {
+      title: 'Course Picture',
+      key: 'img',
+      render: (item, index) => (
+        <div className="d-flex flex-column text-capitalize">
+          {item.image && (
+            <Image
+              src={item.image.url}
+              alt={`Course ${index + 1}`}
+              width={40}
+              height={40}
+              className="mt-2 rounded"
+              style={{ objectFit: 'cover' }}
+            />
+          )}
+        </div>
       ),
     },
 
@@ -416,6 +445,15 @@ const AllCourseForSuperAdmin = ({
     {
       title: 'Course Fee',
       key: 'price',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.price}
+        </span>
+      ),
+    },
+    {
+      title: 'University Fee',
+      key: 'university_price',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
           {item?.price}
