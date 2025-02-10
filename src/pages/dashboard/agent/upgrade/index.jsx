@@ -169,8 +169,7 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
-  const handleCouponSubmit = (e) => {
-    e.preventDefault();
+  const handleCouponSubmit = () => {
     const matchedCouponCode = couponName;
 
     if (!couponCode) {
@@ -311,7 +310,7 @@ const UpgradePackageInAgentdashboard = () => {
                       <button
                         type="button"
                         className="button px-3 fw-medium"
-                        onClick={(e) => handleCouponSubmit(e)}
+                        onClick={() => handleCouponSubmit()}
                         // disabled={'loading'}
                       >
                         Apply
@@ -331,11 +330,7 @@ const UpgradePackageInAgentdashboard = () => {
                     )}
                     {couponAmount && (
                       <div className="text-primary fs-2 fw-semibold text-center">
-                        You have to pay : {0}{' '}
-                        {couponAmount != null &&
-                          couponAmount !== '' &&
-                          couponAmount !== undefined &&
-                          'MYR'}
+                        Get It for FREE with Our Exclusive Coupon!
                       </div>
                     )}
                     {couponAmount && (

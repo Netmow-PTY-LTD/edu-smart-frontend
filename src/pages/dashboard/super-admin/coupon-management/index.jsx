@@ -1,11 +1,18 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import CouponModal from '@/components/sAdminDashboard/modals/CouponModal';
+import {
+  useAddCouponInSuperAdminMutation,
+  useDeleteCouponInSuperAdminMutation,
+  useGetCouponInSuperAdminQuery,
+  useUpdateCouponInSuperAdminMutation,
+} from '@/slice/services/super admin/couponService';
 import { couponHeaders } from '@/utils/common/data';
-import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -24,128 +31,137 @@ const CouponManagementInSuperAdmin = () => {
     start_date: '',
     end_date: '',
     package_id: null,
-    package_duration: '',
+    discount_percentage: '',
     coupon_status: '',
   });
 
-  //   const [addCouponInSuperAdmin] = useAddCouponInSuperAdminMutation();
-  //   const [updateCouponInSuperAdmin] = useUpdateCouponInSuperAdminMutation();
-  //   const [
-  //     deleteCouponInSuperAdmin,
-  //     { isLoading: deleteCouponInSuperIsLoading },
-  //   ] = useDeleteCouponInSuperAdminMutation();
-  //   const {
-  //     data: getCouponData,
-  //     isLoading: getCouponIsLoading,
-  //     refetch: getCouponRefetch,
-  //   } = useGetCouponInSuperAdminQuery();
+  const [addCouponInSuperAdmin] = useAddCouponInSuperAdminMutation();
+  const [updateCouponInSuperAdmin] = useUpdateCouponInSuperAdminMutation();
+  const [
+    deleteCouponInSuperAdmin,
+    { isLoading: deleteCouponInSuperIsLoading },
+  ] = useDeleteCouponInSuperAdminMutation();
+  const {
+    data: getCouponData,
+    isLoading: getCouponIsLoading,
+    refetch: getCouponRefetch,
+  } = useGetCouponInSuperAdminQuery();
 
   const validationSchema = Yup.object({});
 
-  //   useEffect(() => {
-  //     if ('getCouponData'?.data?.length > 0 && couponId) {
-  //       setSingleCouponIsLoading(false);
-  //       const fetchData = async () => {
-  //         const singleCouponData = 'getCouponData'?.data?.find(
-  //           (item) => item?._id === couponId
-  //         );
+  useEffect(() => {
+    if (getCouponData?.data?.length > 0 && couponId) {
+      setSingleCouponIsLoading(false);
 
-  //         try {
-  //           setInitialValues({
-  //             name: singleCouponData?.name || '',
-  //             package_id:
-  //               {
-  //                 label: singleCouponData?.package?.name || '',
-  //                 value: singleCouponData?.package?._id || '',
-  //               } || '',
-  //             offer_percentage: singleCouponData?.offer_percentage || 0,
-  //             offer_duration:
-  //               {
-  //                 label: singleCouponData?.offer_duration || '',
-  //                 value: singleCouponData?.offer_duration || '',
-  //               } || '',
-  //             hot_offer_status:
-  //               {
-  //                 label: singleCouponData?.status || '',
-  //                 value: singleCouponData?.status || '',
-  //               } || '',
-  //           });
-  //         } catch (error) {
-  //           console.error('Error loading data:', error);
-  //         }
-  //       };
-  //       fetchData();
-  //       setSingleCouponIsLoading(true);
-  //     }
-  //   }, [getCouponData?.data, couponId]);
+      const fetchData = async () => {
+        const singleCouponData = getCouponData?.data?.find(
+          (item) => item?._id === couponId
+        );
+
+        console.log(singleCouponData);
+
+        try {
+          setInitialValues({
+            name: singleCouponData?.code || '',
+            start_date: singleCouponData?.createdAt || '',
+            end_date: singleCouponData?.expiry_date || '',
+            package_id:
+              {
+                label: singleCouponData?.package?.name || '',
+                value: singleCouponData?.package?._id || '',
+              } || '',
+            offer_percentage: singleCouponData?.offer_percentage || 0,
+            discount_percentage: singleCouponData?.discount_percentage || '',
+            coupon_status:
+              {
+                label: singleCouponData?.status || '',
+                value: singleCouponData?.status || '',
+              } || '',
+          });
+        } catch (error) {
+          console.error('Error loading data:', error);
+        }
+      };
+      fetchData();
+      setSingleCouponIsLoading(true);
+    }
+  }, [getCouponData?.data, couponId]);
+
+  console.log(initialValues);
 
   // add Coupon handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
+
+    const date = values?.end_date.split('T')[0];
+
     const finalData = {
-      name: values?.name,
-      start_date: values?.start_date,
-      end_date: values?.end_date,
-      package_duration: values?.package_duration,
-      package_id: values?.package_id,
-      coupon_status: values?.coupon_status,
+      code: values?.name,
+      // start_date: values?.start_date,
+      expiry_date: date,
+      discount_percentage: values?.discount_percentage,
+      package_id:
+        Array.isArray(values?.package_id) &&
+        values.package_id.every((item) => Array.isArray(item))
+          ? values.package_id[0]
+          : values.package_id,
+      status: values?.coupon_status,
     };
 
-    // const date = values?.start_date.split('T')[0];
     // const time = values?.start_date.split('T')[1];
 
     // console.log('Date:', date);
     // console.log('Time:', time);
 
-    console.log(finalData);
-    //   try {
-    //     const response = await addCouponInSuperAdmin(finalData).unwrap();
+    // console.log(finalData);
+    try {
+      const response = await addCouponInSuperAdmin(finalData).unwrap();
+      // console.log(response);
+      if (response) {
+        toast.success(response?.message);
+        getCouponRefetch();
+        resetForm();
+        setOpenModal(!openModal);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
 
-    //     if (response) {
-    //       toast.success(response?.message);
-    //       getCouponRefetch();
-    //       resetForm();
-    //       setOpenModal(!openModal);
-    //     }
-    //   } catch (error) {
-    //     const errorMessage = error?.data?.message;
-
-    //     toast.error(errorMessage);
-    //   } finally {
-    //     setSubmitting(false);
-    //   }
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   // update  Coupon handler
-  //   const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
-  //     setSubmitting(true);
-  //     const editData = {
-  //       name: values?.name,
-  //          start_date: values?.start_date,
-  //   end_date: values?.end_date,
-  //   package_duration: values?.package_duration,
-  //       package_id: values?.package_id?.value || values?.package_id,
-  //       coupon_status: values?.coupon_status?.value || values?.coupon_status,
-  //       coupon_id: couponId,
-  //     };
+  const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+    const editData = {
+      name: values?.name,
+      start_date: values?.start_date,
+      end_date: values?.end_date,
+      discount_percentage: values?.discount_percentage,
+      package_id: values?.package_id?.value || values?.package_id,
+      coupon_status: values?.coupon_status?.value || values?.coupon_status,
+      coupon_id: couponId,
+    };
 
-  //     try {
-  //       const response = await updateCouponInSuperAdmin(editData).unwrap();
-  //       if (response) {
-  //         toast.success(response?.message);
-  //         getCouponRefetch();
-  //         resetForm();
-  //         setCouponId('');
-  //         setEditOpenModal(!editOpenModal);
-  //         setInitialValues({});
-  //       }
-  //     } catch (error) {
-  //       const errorMessage = error?.data?.message;
-  //       toast.error(errorMessage);
-  //     } finally {
-  //       setSubmitting(false);
-  //     }
-  //   };
+    try {
+      const response = await updateCouponInSuperAdmin(editData).unwrap();
+      if (response) {
+        toast.success(response?.message);
+        getCouponRefetch();
+        resetForm();
+        setCouponId('');
+        setEditOpenModal(!editOpenModal);
+        setInitialValues({});
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const togOpenModal = () => {
     setOpenModal(!openModal);
@@ -161,32 +177,46 @@ const CouponManagementInSuperAdmin = () => {
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
-  //    const handleDelete = async (id) => {
-  //       try {
-  //         const result = await deleteCouponInSuperAdmin(id).unwrap();
-  //         if (result) {
-  //           toast.success(result?.message);
-  //           getCouponRefetch();
-  //           setDeleteCouponId('');
-  //           setDeleteModalIsOpen(false);
-  //         }
-  //       } catch (error) {
-  //         const errorMessage = error?.data?.message;
-  //         toast.error(errorMessage);
-  //       } finally {
-  //         //
-  //       }
-  //     };
+  const handleDelete = async (id) => {
+    try {
+      const result = await deleteCouponInSuperAdmin(id).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getCouponRefetch();
+        setDeleteCouponId('');
+        setDeleteModalIsOpen(false);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      //
+    }
+  };
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  //   // Filter data for search option
-  //   const isFilteredData =
-  //     getCouponData?.data?.length > 0 &&
-  //     getCouponData?.data.filter((item) =>
-  //       item?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
+  // Filter data for search option
+  const isFilteredData =
+    getCouponData?.data?.length > 0 &&
+    getCouponData?.data.filter((item) =>
+      item?.code?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+  const alluniversityHeaderAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <div
+        onClick={() => togEditOpenModal(item._id)}
+        className="text-primary cursor-pointer"
+      >
+        <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+        Edit
+      </div>
+    ),
+  };
 
   return (
     <Layout>
@@ -217,24 +247,27 @@ const CouponManagementInSuperAdmin = () => {
                 </CardHeader>
                 <CardBody>
                   <div className="sqdk-pricing-table">
-                    {/* {getCouponIsLoading ? (
+                    {getCouponIsLoading ? (
                       <LoaderSpiner />
-                    ) : ( */}
-                    <>
-                      <CardBody>
-                        <CommonTableComponent
-                          headers={couponHeaders}
-                          //   data={'isFilteredData' ? 'isFilteredData' : []}
-                          currentPage={currentPage}
-                          setCurrentPage={setCurrentPage}
-                          perPageData={perPageData}
-                          searchTerm={searchTerm}
-                          handleSearchChange={handleSearchChange}
-                          emptyMessage="No Data found yet."
-                        />
-                      </CardBody>
-                    </>
-                    {/* )} */}
+                    ) : (
+                      <>
+                        <CardBody>
+                          <CommonTableComponent
+                            headers={[
+                              ...couponHeaders,
+                              alluniversityHeaderAction,
+                            ]}
+                            data={isFilteredData ? isFilteredData : []}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            perPageData={perPageData}
+                            searchTerm={searchTerm}
+                            handleSearchChange={handleSearchChange}
+                            emptyMessage="No Data found yet."
+                          />
+                        </CardBody>
+                      </>
+                    )}
                   </div>
                 </CardBody>
               </Card>
@@ -263,7 +296,7 @@ const CouponManagementInSuperAdmin = () => {
                 modalHeader={'Update Coupon'}
                 submitButton={'Update Coupon'}
                 initialValues={initialValues}
-                handleSubmit={'handleUpdateSubmit'}
+                handleSubmit={handleUpdateSubmit}
                 isLoading={singleCouponIsLoading}
               />
             }
@@ -274,8 +307,8 @@ const CouponManagementInSuperAdmin = () => {
                   setDeleteCouponId(''), setDeleteModalIsOpen(false)
                 )}
                 id={deleteCouponId}
-                handleDelete={'handleDelete'}
-                isloading={'deleteCouponInSuperIsLoading'}
+                handleDelete={handleDelete}
+                isloading={deleteCouponInSuperIsLoading}
               />
             }
           </div>

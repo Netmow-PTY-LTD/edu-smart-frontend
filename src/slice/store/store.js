@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import { agentApplicationService } from '../services/agent/agentApplicationService';
+import { agentEarningsService } from '../services/agent/agentEarningsService';
 import { agentSettingsService } from '../services/agent/agentSettingsService';
 import { studentDocRelatedServiceForAgent } from '../services/agent/studentDocRelatedServiceForAgent';
+import { applicationService } from '../services/common/applicationService';
+import { paymentService } from '../services/common/paymentService';
 import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
@@ -10,10 +14,13 @@ import { publicPackageService } from '../services/public/package/publicPackageSe
 import { publicStudentService } from '../services/public/student/publicStudentService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
 import { studentSubmitDocumentService } from '../services/student/studentSubmitDocumentService';
+import { superAdminAgentService } from '../services/super admin/agentService';
+import { couponService } from '../services/super admin/couponService';
 import { courseCategoriesService } from '../services/super admin/courseCategoriesService';
 import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
 import { departmentService } from '../services/super admin/departmentService';
+import { hotOfferService } from '../services/super admin/hotOfferService';
 import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
@@ -23,12 +30,6 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
-import { hotOfferService } from '../services/super admin/hotOfferService';
-import { superAdminAgentService } from '../services/super admin/agentService';
-import { agentEarningsService } from '../services/agent/agentEarningsService';
-import { paymentService } from '../services/common/paymentService';
-import { applicationService } from '../services/common/applicationService';
-import { agentApplicationService } from '../services/agent/agentApplicationService';
 
 export const store = configureStore({
   reducer: {
@@ -71,6 +72,7 @@ export const store = configureStore({
     [hotOfferService.reducerPath]: hotOfferService.reducer,
     [applicationService.reducerPath]: applicationService.reducer,
     [agentApplicationService.reducerPath]: agentApplicationService.reducer,
+    [couponService.reducerPath]: couponService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -101,6 +103,7 @@ export const store = configureStore({
       .concat(agentEarningsService.middleware)
       .concat(paymentService.middleware)
       .concat(applicationService.middleware)
+      .concat(couponService.middleware)
       .concat(agentApplicationService.middleware),
 });
 

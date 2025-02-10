@@ -1,12 +1,15 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useCreateApplicationMutation } from '@/slice/services/common/applicationService';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useGetSingleCourseQuery,
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
 import { useRouter } from 'next/router';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Accordion,
   AccordionBody,
@@ -19,10 +22,7 @@ import {
   Container,
   Row,
 } from 'reactstrap';
-import CourseForm from '../course-form';
-import { toast, ToastContainer } from 'react-toastify';
-import { useCreateApplicationMutation } from '@/slice/services/common/applicationService';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import AppliedCourseForm from '../course-form/applied-course-form';
 
 const SingleUniversityCourse = () => {
   const router = useRouter();
@@ -286,7 +286,8 @@ const SingleUniversityCourse = () => {
                     </CardBody>
                   </Card>
                 ) : (
-                  <CourseForm setStep={setStep} step={step} />
+                  // <CourseForm setStep={setStep} step={step} />
+                  <AppliedCourseForm setStep={setStep} step={step} />
                 )}
               </>
             )}

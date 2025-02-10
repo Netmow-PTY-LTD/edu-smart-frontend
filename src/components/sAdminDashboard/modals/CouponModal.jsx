@@ -1,4 +1,5 @@
 import MultipleSelectField from '@/components/common/formField/MultipleSelectField';
+import NumberField from '@/components/common/formField/NumberField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
@@ -37,7 +38,7 @@ const CouponModal = ({
       const allPackageIds = getAllPackageData.data.map((item) => item._id);
 
       const allPackageOption = {
-        label: 'All Package',
+        label: 'Select All',
         value: allPackageIds,
       };
 
@@ -72,7 +73,7 @@ const CouponModal = ({
     { label: '1 Year', value: '1_year' },
   ];
 
-  console.log(initialValues);
+  // console.log(allPackages);
 
   return (
     <Modal isOpen={open} toggle={close} centered size="xl">
@@ -96,13 +97,12 @@ const CouponModal = ({
                       <TextField label="Coupon Code" name="name" />
                     </Col>
                     <Col xl={6}>
-                      <MultipleSelectField
-                        field={{ name: 'package_id' }}
-                        label="Select Package"
-                        options={allPackages}
-                        form={{ setFieldValue, values }}
+                      <NumberField
+                        name={'discount_percentage'}
+                        label={'Discount Percentage'}
                       />
                     </Col>
+
                     <Col xl={6}>
                       <TimeField
                         field={{
@@ -127,15 +127,14 @@ const CouponModal = ({
                         }}
                       />
                     </Col>
-
                     <Col xl={6}>
-                      <SingleSelectField
-                        name={'package_duration'}
-                        label={'Package Duration'}
-                        options={durationOptions}
+                      <MultipleSelectField
+                        field={{ name: 'package_id' }}
+                        label="Select Package"
+                        options={allPackages}
+                        form={{ setFieldValue, values }}
                       />
                     </Col>
-
                     <Col xl={6}>
                       <SingleSelectField
                         name={'coupon_status'}

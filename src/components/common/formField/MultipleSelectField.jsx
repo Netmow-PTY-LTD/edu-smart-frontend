@@ -4,9 +4,17 @@ import Select from 'react-select';
 
 const MultipleSelectField = ({ field, form, label, options, ...props }) => {
   const handleChange = (selectedOptions) => {
+    // console.log(selectedOptions);
+
     form.setFieldValue(
       field.name,
-      selectedOptions ? selectedOptions.map((option) => option.value) : []
+      selectedOptions
+        ? selectedOptions.map((option) =>
+            option?.label === 'Select All'
+              ? selectedOptions[0]?.value
+              : option?.value
+          )
+        : []
     );
   };
 
