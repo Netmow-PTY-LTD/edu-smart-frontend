@@ -51,6 +51,7 @@ const AllCourseForSuperAdmin = ({
     price: '',
     gst: '',
     agent_commission: '',
+    university_price: '',
     description: '',
     department: '',
     category: '',
@@ -59,7 +60,7 @@ const AllCourseForSuperAdmin = ({
     entry_requirements: [''],
     english_requirements: [''],
     program_duration: '',
-    image: '',
+    image: null,
   });
 
   const [
@@ -128,6 +129,9 @@ const AllCourseForSuperAdmin = ({
           const brochureFile = await convertImageUrlToFile(
             getSingleCourseData?.brochure?.url
           );
+          const imageFiles = await convertImageUrlToFile(
+            getSingleCourseData?.image.url
+          );
 
           setInitialValues({
             name: getSingleCourseData?.name || '',
@@ -135,6 +139,7 @@ const AllCourseForSuperAdmin = ({
             price: getSingleCourseData?.price || '',
             gst: getSingleCourseData?.gst || '',
             agent_commission: getSingleCourseData?.agent_commission || '',
+            university_price: getSingleCourseData?.university_price || '',
             department: getSingleCourseData?.department?._id
               ? {
                   label: getSingleCourseData?.department?.name,
@@ -155,7 +160,7 @@ const AllCourseForSuperAdmin = ({
             english_requirements:
               getSingleCourseData?.english_requirements || '',
             program_duration: getSingleCourseData?.program_duration || '',
-            image: getSingleCourseData?.image || '',
+            image: imageFiles || '',
           });
 
           setEditModalIsOpen(true);
@@ -283,6 +288,7 @@ const AllCourseForSuperAdmin = ({
       price: '',
       gst: '',
       agent_commission: '',
+      university_price: '',
       description: '',
       department: '',
       category: '',
@@ -291,7 +297,7 @@ const AllCourseForSuperAdmin = ({
       entry_requirements: [''],
       english_requirements: [''],
       program_duration: '',
-      image: '',
+      image: null,
     });
     setFilePreview(null);
     setEditModalIsOpen(false);
@@ -312,6 +318,7 @@ const AllCourseForSuperAdmin = ({
       department_id: values?.department?.value,
       category_id: values?.category?.value,
       brochure: values?.brochure,
+      university_price: values?.university_price,
       document_requirements: [
         {
           title: values?.document_requirements.title,
@@ -321,22 +328,37 @@ const AllCourseForSuperAdmin = ({
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
+      image: values?.image,
     };
+
+    console.log('update data ===>', allData);
 
     try {
       const finalData = new FormData();
+
       Object.entries(allData).forEach(([key, value]) => {
-        if (key === 'entry_requirements' || key === 'english_requirements') {
-          if (Array.isArray(value)) {
-            value.forEach((item, index) => {
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            if (
+              key === 'entry_requirements' ||
+              key === 'english_requirements'
+            ) {
               finalData.append(`${key}[${index}]`, item);
-            });
-          }
+            } else if (key === 'document_requirements') {
+              finalData.append(`${key}[${index}][title]`, item.title);
+              finalData.append(
+                `${key}[${index}][description]`,
+                item.description
+              );
+              finalData.append(
+                `${key}[${index}][isRequired]`,
+                item.isRequired ?? true
+              );
+            }
+          });
         } else {
           finalData.append(key, value);
         }
-
-        console.log(key, value);
       });
       const result = await updateCourse(finalData).unwrap();
       if (result) {
@@ -402,7 +424,6 @@ const AllCourseForSuperAdmin = ({
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  console.log(isfilteredData);
   // Define table headers with custom render functions
   const headers = [
     {

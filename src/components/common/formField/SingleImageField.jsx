@@ -16,7 +16,7 @@ const isValidImage = (file) => {
 
 const SingleImageField = ({ field, form, label, ...props }) => {
   const [previewImage, setPreviewImage] = useState(null);
-
+  console.log(previewImage);
   useEffect(() => {
     const file = form.values[field.name];
 
