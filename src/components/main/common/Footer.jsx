@@ -28,6 +28,11 @@ export default function Footer() {
                 levels to achieve their goals and reach their full potential,
                 making learning more accessible, flexible, and engaging.
               </p>
+              <div className="address-main">
+                <b>Address: </b> Parklane OUG Block B1 Block B2, Jalan 1/152,
+                Taman Perindustrian Oug, 58200 Kuala Lumpur, Wilayah Persekutuan
+                Kuala Lumpur
+              </div>
             </Col>
             <Col lg={2} md={12}>
               <h3>Quick Links</h3>

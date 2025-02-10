@@ -1,4 +1,8 @@
-import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import {
+  useGetAllUniversityQuery,
+  useGetSingleCourseQuery,
+  useGetsingleUniversityQuery,
+} from '@/slice/services/public/university/publicUniveristyService';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -6,13 +10,20 @@ import React from 'react';
 import MobileNav from '../mobileNav';
 import { useState } from 'react';
 import { edulogo } from '@/utils/common/data';
+import { useRouter } from 'next/router';
 
 export default function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
   const toggleMobileNav = () => {
     setShowMobileNav(!showMobileNav);
   };
+  const router = useRouter();
+  const { universityId } = router.query;
+  //console.log(universityId);
   const { data: universityData } = useGetAllUniversityQuery();
+  const { data: singleUniversityData } =
+    useGetsingleUniversityQuery(universityId);
+  //console.log(singleUniversityData);
   return (
     <>
       <header className="header">
@@ -94,6 +105,49 @@ export default function Header() {
               </Link>
               <nav className="main-nav">
                 <ul className="nav-list">
+                  <li>
+                    <Link href="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link href="/">About</Link>
+                  </li>
+                  <li className=" menu-item-has-children">
+                    <Link href="#" className="nav-link">
+                      <span>Courses</span>
+                      <svg
+                        width="11"
+                        height="6"
+                        viewBox="0 0 11 6"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
+                          stroke="var(--color--secondary)"
+                          strokeWidth="1.10198"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
+                    <ul className="sub-menu">
+                      {singleUniversityData?.data?.courses?.length > 0 &&
+                        singleUniversityData?.data?.courses?.map(
+                          (item, index) => (
+                            <li key={index}>
+                              <Link
+                                href={`/university/${item?.university}/course/${item?._id}`}
+                              >
+                                {item.name}
+                              </Link>
+                            </li>
+                          )
+                        )}
+                      {/* <li>
+                        <Link href={`/courses`}>View All Courses</Link>
+                      </li> */}
+                    </ul>
+                  </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
                       <span>Universities</span>

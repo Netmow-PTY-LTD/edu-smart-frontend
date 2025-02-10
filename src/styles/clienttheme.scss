@@ -8211,7 +8211,7 @@ img.staff-img {
 
 .university-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
 }
 
@@ -8221,12 +8221,18 @@ img.staff-img {
   font-size: 24px;
   font-weight: 700;
   line-height: normal;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 .address {
   display: flex;
-  align-items: center;
   gap: 10px;
+  height: 50px;
+  margin-bottom: 12px;
 }
 
 .address svg {
@@ -8237,6 +8243,7 @@ img.staff-img {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
 .university-info-item {
@@ -8257,26 +8264,58 @@ img.staff-img {
 .address span {
   color: var(--Black, #1c1c1c);
   font-family: Lora;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 170%;
-  /* 30.6px */
+  line-height: 140%;
 }
 
 .university-card-content {
   padding: 15px 0;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  margin-top: 15px;
+}
+
+.university-card-image {
+  width: 100%;
 }
 
 .university-card-image img {
   width: 100%;
   aspect-ratio: 1/0.6;
   object-fit: cover;
-  border-radius: 24px;
-  border: 1px solid #000;
+  border-radius: 10px;
+  border: 1px solid #1c1c1c;
+}
+
+@media (max-width: 991px) {
+  .university-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .university-card-content h3 {
+    height: auto;
+  }
+
+  .address {
+    height: auto;
+  }
+}
+
+@media (max-width: 575px) {
+  .university-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 // Agent Home Mission section
+
+.course-card__image img {
+  width: 100%;
+  aspect-ratio: 1/0.7;
+  object-fit: cover;
+  border-radius: 10px;
+}

@@ -38,9 +38,10 @@ const SingleSelectField = ({
                 user_role: selectedOption?.value,
               }));
             }
+
             form.setFieldValue(
               name,
-              selectedOption ? selectedOption?.label : null
+              name === 'country' ? selectedOption?.label : selectedOption?.value
             );
           };
 

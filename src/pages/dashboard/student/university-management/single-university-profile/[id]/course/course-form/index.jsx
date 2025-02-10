@@ -12,7 +12,7 @@ import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -173,6 +173,8 @@ export default function CourseForm({ setStep, step }) {
       if (singleStudentData?.data) {
         setLoading(true);
 
+        console.log(singleStudentData?.data);
+
         const documentPromises = singleStudentData?.data?.documents?.map(
           async (student) => {
             if (student?.title === 'academic_certificate') {
@@ -239,6 +241,8 @@ export default function CourseForm({ setStep, step }) {
           {}
         );
 
+        console.log(newValues);
+
         setInitialValues((prev) => ({
           ...prev,
           ...newValues,
@@ -268,6 +272,8 @@ export default function CourseForm({ setStep, step }) {
 
   const handleAddSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    console.log(values);
 
     try {
       if (
@@ -305,8 +311,10 @@ export default function CourseForm({ setStep, step }) {
           }
         });
         const result = await submitStudentDocument(finalData).unwrap();
+        // console.log(result);
         if (result?.success) {
-          toast.success(result?.message);
+          console.log('check');
+          toast.success(result?.message || 'Document Submit Successfully.');
           singleStudentRefetch();
           router.push(
             `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
@@ -314,12 +322,15 @@ export default function CourseForm({ setStep, step }) {
         }
       }
     } catch (error) {
+      // console.log(error?.data?.message);
       const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
+      toast.error(errorMessage || 'Failed. Please Try Again.');
     } finally {
       setSubmitting(false);
     }
   };
+
+  console.log(initialValues);
 
   return (
     <>
@@ -367,7 +378,7 @@ export default function CourseForm({ setStep, step }) {
                                     name="photograph"
                                     label="Upload Photograph"
                                     handleImageChange={handleImageChange}
-                                    disabled={!!values.photograph}
+                                    // disabled={!!values.photograph}
                                   />
                                 </div>
                                 {photographPreviewImage && (
@@ -390,7 +401,7 @@ export default function CourseForm({ setStep, step }) {
                                     name="passport"
                                     label="Upload Passport Image"
                                     handleImageChange={handleImageChange}
-                                    disabled={!!values.passport}
+                                    // disabled={!!values.passport}
                                   />
                                 </div>
                                 {passportPreviewImage && (
@@ -410,7 +421,7 @@ export default function CourseForm({ setStep, step }) {
                                     form={{ setFieldValue, values }}
                                     label={'Offer Letter'}
                                     field={{ name: 'offer_letter' }}
-                                    disabled={!!values.offer_letter}
+                                    // disabled={!!values.offer_letter}
                                   />
                                 </div>
                               </Col>
@@ -420,7 +431,7 @@ export default function CourseForm({ setStep, step }) {
                                     form={{ setFieldValue, values }}
                                     label={'Medical Certificate'}
                                     field={{ name: 'medical_certificate' }}
-                                    disabled={!!values.medical_certificate}
+                                    // disabled={!!values.medical_certificate}
                                   />
                                 </div>
                               </Col>
@@ -431,10 +442,10 @@ export default function CourseForm({ setStep, step }) {
                                     'Academic Certificates and Transcripts'
                                   }
                                   field={{ name: 'academic_certificate' }}
-                                  disabled={
-                                    values.academic_certificate &&
-                                    values.academic_certificate.length > 0
-                                  }
+                                  // disabled={
+                                  //   values.academic_certificate &&
+                                  //   values.academic_certificate.length > 0
+                                  // }
                                 />
                               </Col>
 
@@ -444,7 +455,7 @@ export default function CourseForm({ setStep, step }) {
                                     form={{ setFieldValue, values }}
                                     label={'Personal Bond'}
                                     field={{ name: 'personal_bond' }}
-                                    disabled={!!values.personal_bond}
+                                    // disabled={!!values.personal_bond}
                                   />
                                 </div>
                               </Col>
@@ -454,7 +465,7 @@ export default function CourseForm({ setStep, step }) {
                                     form={{ setFieldValue, values }}
                                     label={'No Objection Certificate'}
                                     field={{ name: 'noc' }}
-                                    disabled={!!values.noc}
+                                    // disabled={!!values.noc}
                                   />
                                 </div>
                               </Col>
@@ -464,7 +475,7 @@ export default function CourseForm({ setStep, step }) {
                                     form={{ setFieldValue, values }}
                                     label={'Letter of Eligibility'}
                                     field={{ name: 'letter_of_eligibility' }}
-                                    disabled={!!values.letter_of_eligibility}
+                                    // disabled={!!values.letter_of_eligibility}
                                   />
                                 </div>
                               </Col>
@@ -476,9 +487,9 @@ export default function CourseForm({ setStep, step }) {
                                     field={{
                                       name: 'english_language_certificate',
                                     }}
-                                    disabled={
-                                      !!values.english_language_certificate
-                                    }
+                                    // disabled={
+                                    //   !!values.english_language_certificate
+                                    // }
                                   />
                                 </div>
                               </Col>
@@ -501,146 +512,6 @@ export default function CourseForm({ setStep, step }) {
                   );
                 }}
               </Formik>
-
-              {/* <Formik
-                initialValues={initialValues}
-                onSubmit={handleAddSubmit}
-                enableReinitialize
-              >
-                {({ isSubmitting, setFieldValue, values }) => {
-                  return (
-                    <Form>
-                      <Row>
-                        <Col lg={12}>
-                          <div className="ps-0">
-                            <Row>
-                              <Col md={6} xl={6}>
-                                <h4 className="text-secondary-alt fs-2 mb-3">
-                                  Passport Size Photograph
-                                </h4>
-                                <div className="mb-2 profile-img">
-                                  <ImageField
-                                    name="photograph"
-                                    label="Upload Photograph"
-                                    handleImageChange={handleImageChange}
-                                  />
-                                </div>
-                                {photographPreviewImage && (
-                                  <div className="img-preview">
-                                    <Image
-                                      src={photographPreviewImage || ''}
-                                      alt="Sponsor Logo"
-                                      width={200}
-                                      height={200}
-                                    />
-                                  </div>
-                                )}
-                              </Col>
-                              <Col lg={6}>
-                                <h4 className="text-secondary-alt fs-2 mb-3">
-                                  Passport
-                                </h4>
-                                <div className="mb-2 profile-img">
-                                  <ImageField
-                                    name="passport"
-                                    label="Upload Passport Image"
-                                    handleImageChange={handleImageChange}
-                                  />
-                                </div>
-                                {passportPreviewImage && (
-                                  <div className="img-preview mb-3">
-                                    <Image
-                                      src={passportPreviewImage || ''}
-                                      alt="Sponsor Logo"
-                                      width={200}
-                                      height={200}
-                                    />
-                                  </div>
-                                )}
-                              </Col>
-                              <Col lg={6}>
-                                <div className="mb-3">
-                                  <SingleFileUpload
-                                    form={{ setFieldValue, values }}
-                                    label={'Offer Letter'}
-                                    field={{ name: 'offer_letter' }}
-                                  />
-                                </div>
-                              </Col>
-                              <Col lg={6}>
-                                <div className="mb-3">
-                                  <SingleFileUpload
-                                    form={{ setFieldValue, values }}
-                                    label={'Medical Certificate'}
-                                    field={{ name: 'medical_certificate' }}
-                                  />
-                                </div>
-                              </Col>
-                              <Col lg={12}>
-                                <MultipleFileUpload
-                                  form={{ setFieldValue, values }}
-                                  label={'Academic Certificates and Transcripts'}
-                                  field={{ name: 'academic_certificate' }}
-                                />
-                              </Col>
-  
-                              <Col lg={6}>
-                                <div className="mb-3">
-                                  <SingleFileUpload
-                                    form={{ setFieldValue, values }}
-                                    label={'Personal Bond'}
-                                    field={{ name: 'personal_bond' }}
-                                  />
-                                </div>
-                              </Col>
-                              <Col lg={6}>
-                                <div className="mb-3">
-                                  <SingleFileUpload
-                                    form={{ setFieldValue, values }}
-                                    label={'No Objection Certificate'}
-                                    field={{ name: 'noc' }}
-                                  />
-                                </div>
-                              </Col>
-                              <Col lg={6}>
-                                <div className="mb-3">
-                                  <SingleFileUpload
-                                    form={{ setFieldValue, values }}
-                                    label={'Letter of Eligibility'}
-                                    field={{ name: 'letter_of_eligibility' }}
-                                  />
-                                </div>
-                              </Col>
-                              <Col lg={6}>
-                                <div className="mb-3">
-                                  <SingleFileUpload
-                                    form={{ setFieldValue, values }}
-                                    label={'Proof of English proficiency'}
-                                    field={{
-                                      name: 'english_language_certificate',
-                                    }}
-                                  />
-                                </div>
-                              </Col>
-  
-                              <Col md={12} xl={12}>
-                                <div className="my-4 text-center">
-                                  <SubmitButton
-                                    isSubmitting={isSubmitting}
-                                    formSubmit={'Complete'}
-                                  >
-                                    {'Complete'}
-                                  </SubmitButton>
-                                </div>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </Row>
-                    </Form>
-                  );
-                }}
-              </Formik> */}
             </div>
           </CardBody>
         )}

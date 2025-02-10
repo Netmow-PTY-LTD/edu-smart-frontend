@@ -390,8 +390,8 @@ const Register = () => {
         <div className="branding-area">
           <div className="container">
             <div className="brand-logo">
-              <Link href="/university">
-                <Image src={brandlogo} width={500} height={500} alt="Logo" />
+              <Link href="/">
+                <Image src={brandlogo} width={300} height={80} alt="Logo" />
               </Link>
             </div>
           </div>

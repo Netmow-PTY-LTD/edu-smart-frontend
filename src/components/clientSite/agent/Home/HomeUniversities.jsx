@@ -16,7 +16,7 @@ export default function HomeUniversities() {
         </div>
         <div className="university-grid">
           {universityData?.data?.length > 0 &&
-            universityData?.data?.map((item, index) => (
+            universityData?.data?.slice(0, 4).map((item, index) => (
               <div className="university-card" key={index}>
                 <div className="university-card-image">
                   <img
@@ -49,7 +49,7 @@ export default function HomeUniversities() {
                       {item?.city ? item?.city : ''},{' '}
                       {item?.state ? item?.state : ''},{' '}
                       {item?.zip ? item?.zip : ''},{' '}
-                      {item?.country ? item?.country : ''},{' '}
+                      {item?.country ? item?.country : ''}{' '}
                     </span>
                   </div>
                   <div className="university-info">
@@ -128,7 +128,8 @@ export default function HomeUniversities() {
         </div>
         <div className="d-flex justify-content-center align-item-center mt-5">
           <Link href="/university" className="popular-coureses-button">
-            Explore All Universities <i class="ri-arrow-right-line ms-1"></i>
+            Explore All Universities{' '}
+            <i className="ri-arrow-right-line ms-1"></i>
           </Link>
         </div>
       </div>
