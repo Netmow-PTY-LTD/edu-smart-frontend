@@ -138,11 +138,16 @@ const CourseModalForm = ({
                     {({ remove, push }) => (
                       <div>
                         {values.document_requirements?.map((item, index) => (
-                          <Row key={index} className="align-items-center">
-                            <Col md={5}>
+                          <Row
+                            key={index}
+                            className="align-items-center mb-3   "
+                          >
+                            {/* Document Title Field */}
+                            <Col md={10}>
                               <div className="mb-3">
                                 <label
                                   htmlFor={`document_requirements[${index}].title`}
+                                  className="form-label fw-bold"
                                 >
                                   {`Document Title ${index + 1}`}
                                 </label>
@@ -171,36 +176,60 @@ const CourseModalForm = ({
                               </div>
                             </Col>
 
-                            <Col md={5}>
+                            {/* Required Checkbox */}
+                            <Col md={2} className="d-flex align-items-center">
+                              <div className="form-check mt-4">
+                                <Field
+                                  type="checkbox"
+                                  name={`document_requirements[${index}].isRequired`}
+                                  className="form-check-input"
+                                  id={`document_requirements[${index}].isRequired`}
+                                />
+                                <label
+                                  htmlFor={`document_requirements[${index}].isRequired`}
+                                  className="form-check-label ms-2 fw-bold"
+                                >
+                                  Required
+                                </label>
+                              </div>
+                            </Col>
+
+                            {/* Document Description Field */}
+                            <Col md={12}>
                               <div className="mb-3">
                                 <label
                                   htmlFor={`document_requirements[${index}].description`}
+                                  className="form-label fw-bold"
                                 >
                                   {`Document Description ${index + 1}`}
                                 </label>
                                 <Field
+                                  as="textarea"
+                                  rows={4}
                                   name={`document_requirements[${index}].description`}
-                                  placeholder="Enter description"
+                                  placeholder="Enter document description"
                                   className="form-control"
                                 />
                               </div>
                             </Col>
 
+                            {/* Remove Button */}
                             {index > 0 && (
-                              <Col md={2}>
+                              <Col md={12} className="text-end">
                                 <Button
                                   type="button"
                                   onClick={() => remove(index)}
                                   className="third-btn mt-3"
                                 >
-                                  <i className="ri-delete-bin-fill"></i>
+                                  <i className="ri-delete-bin-line me-2"></i>{' '}
                                 </Button>
                               </Col>
                             )}
                           </Row>
                         ))}
 
-                        <div className="d-flex align-items-center justify-content-center mb-4">
+                        {/* Add New Document Button */}
+                        <div className="d-flex justify-content-center mt-4">
                           <Button
                             type="button"
                             onClick={() => push({ title: '', description: '' })}

@@ -56,10 +56,11 @@ const AllCourseForSuperAdmin = ({
     department: '',
     category: '',
     brochure: null,
-    document_requirements: [{ title: '', description: '' }],
+    document_requirements: [{ title: '', description: '', isRequired: false }],
     entry_requirements: [''],
     english_requirements: [''],
     program_duration: '',
+
     image: null,
   });
 
