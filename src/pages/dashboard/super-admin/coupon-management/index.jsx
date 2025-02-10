@@ -60,16 +60,21 @@ const CouponManagementInSuperAdmin = () => {
 
         console.log(singleCouponData);
 
+        const allPackagesData =
+          singleCouponData?.packages?.length > 0 &&
+          singleCouponData?.packages.map((item) => ({
+            label: item?.name,
+            value: item?._id,
+          }));
+
+        console.log(allPackagesData);
+
         try {
           setInitialValues({
             name: singleCouponData?.code || '',
-            start_date: singleCouponData?.createdAt || '',
+            start_date: singleCouponData?.start_date || '',
             end_date: singleCouponData?.expiry_date || '',
-            package_id:
-              {
-                label: singleCouponData?.package?.name || '',
-                value: singleCouponData?.package?._id || '',
-              } || '',
+            package_id: allPackagesData || '',
             offer_percentage: singleCouponData?.offer_percentage || 0,
             discount_percentage: singleCouponData?.discount_percentage || '',
             coupon_status:
@@ -93,14 +98,15 @@ const CouponManagementInSuperAdmin = () => {
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
 
-    const date = values?.end_date.split('T')[0];
+    const startDate = values?.end_date.split('T')[0];
+    const endDate = values?.start_date.split('T')[0];
 
     const finalData = {
       code: values?.name,
-      // start_date: values?.start_date,
-      expiry_date: date,
+      start_date: startDate,
+      expiry_date: endDate,
       discount_percentage: values?.discount_percentage,
-      package_id:
+      packages:
         Array.isArray(values?.package_id) &&
         values.package_id.every((item) => Array.isArray(item))
           ? values.package_id[0]
@@ -108,12 +114,8 @@ const CouponManagementInSuperAdmin = () => {
       status: values?.coupon_status,
     };
 
-    // const time = values?.start_date.split('T')[1];
-
-    // console.log('Date:', date);
-    // console.log('Time:', time);
-
     // console.log(finalData);
+
     try {
       const response = await addCouponInSuperAdmin(finalData).unwrap();
       // console.log(response);
@@ -135,6 +137,7 @@ const CouponManagementInSuperAdmin = () => {
   // update  Coupon handler
   const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
+
     const editData = {
       name: values?.name,
       start_date: values?.start_date,
@@ -145,22 +148,24 @@ const CouponManagementInSuperAdmin = () => {
       coupon_id: couponId,
     };
 
-    try {
-      const response = await updateCouponInSuperAdmin(editData).unwrap();
-      if (response) {
-        toast.success(response?.message);
-        getCouponRefetch();
-        resetForm();
-        setCouponId('');
-        setEditOpenModal(!editOpenModal);
-        setInitialValues({});
-      }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
-    }
+    console.log(values);
+
+    // try {
+    //   const response = await updateCouponInSuperAdmin(editData).unwrap();
+    //   if (response) {
+    //     toast.success(response?.message);
+    //     getCouponRefetch();
+    //     resetForm();
+    //     setCouponId('');
+    //     setEditOpenModal(!editOpenModal);
+    //     setInitialValues({});
+    //   }
+    // } catch (error) {
+    //   const errorMessage = error?.data?.message;
+    //   toast.error(errorMessage);
+    // } finally {
+    //   setSubmitting(false);
+    // }
   };
 
   const togOpenModal = () => {
@@ -204,7 +209,7 @@ const CouponManagementInSuperAdmin = () => {
       item?.code?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const alluniversityHeaderAction = {
+  const allCouponHeaderAction = {
     title: 'Action',
     key: 'actions',
     render: (item) => (
@@ -253,10 +258,7 @@ const CouponManagementInSuperAdmin = () => {
                       <>
                         <CardBody>
                           <CommonTableComponent
-                            headers={[
-                              ...couponHeaders,
-                              alluniversityHeaderAction,
-                            ]}
+                            headers={[...couponHeaders, allCouponHeaderAction]}
                             data={isFilteredData ? isFilteredData : []}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}

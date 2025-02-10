@@ -35,16 +35,16 @@ const CouponModal = ({
         value: item._id,
       }));
 
-      const allPackageIds = getAllPackageData.data.map((item) => item._id);
+      // const allPackageIds = getAllPackageData.data.map((item) => item._id);
 
-      const allPackageOption = {
-        label: 'Select All',
-        value: allPackageIds,
-      };
+      // const allPackageOption = {
+      //   label: 'Select All',
+      //   value: allPackageIds,
+      // };
 
-      const allPackages = [allPackageOption, ...mappedData];
+      // const allPackages = [allPackageOption, ...mappedData];
 
-      setAllPackages(allPackages);
+      setAllPackages(mappedData);
     }
   }, [getAllPackageData?.data]);
 

@@ -693,7 +693,7 @@ const couponHeaders = [
     render: (item) => (
       <div className="d-flex align-items-center">
         <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item.createdAt ? item.createdAt.split('T')[0] : '-'}`}
+          {`${item.start_date ? item.start_date.split('T')[0] : '-'}`}
         </h5>
       </div>
     ),
@@ -710,42 +710,43 @@ const couponHeaders = [
     ),
   },
 
-  {
-    title: 'Coupon Duration',
-    key: 'coupon_duration',
-    render: (item) => {
-      const createdDate = item.createdAt.split('T')[0];
-      const expiryDate = item.expiry_date.split('T')[0];
+  // {
+  //   title: 'Coupon Duration',
+  //   key: 'coupon_duration',
+  //   render: (item) => {
+  //     const createdDate = item.start_date.split('T')[0];
+  //     const expiryDate = item.expiry_date.split('T')[0];
+  //     console.log(createdDate);
+  //     console.log(expiryDate);
+  //     const createdAt = new Date(createdDate);
+  //     const expiryAt = new Date(expiryDate);
 
-      const createdAt = new Date(createdDate);
-      const expiryAt = new Date(expiryDate);
+  //     let years = expiryAt.getFullYear() - createdAt.getFullYear();
+  //     let months = expiryAt.getMonth() - createdAt.getMonth();
+  //     let days = expiryAt.getDate() - createdAt.getDate();
 
-      let years = expiryAt.getFullYear() - createdAt.getFullYear();
-      let months = expiryAt.getMonth() - createdAt.getMonth();
-      let days = expiryAt.getDate() - createdAt.getDate();
+  //     if (days < 0) {
+  //       months--;
+  //       days += new Date(
+  //         expiryAt.getFullYear(),
+  //         expiryAt.getMonth(),
+  //         0
+  //       ).getDate();
+  //     }
+  //     if (months < 0) {
+  //       years--;
+  //       months += 12;
+  //     }
 
-      if (days < 0) {
-        months--;
-        days += new Date(
-          expiryAt.getFullYear(),
-          expiryAt.getMonth(),
-          0
-        ).getDate();
-      }
-      if (months < 0) {
-        years--;
-        months += 12;
-      }
+  //     const duration = `${years > 0 ? `${years} year${years > 1 ? 's' : ''}` : ''} ${months > 0 ? `${months} month${months > 1 ? 's' : ''}` : ''} ${days > 0 ? `${days} day${days > 1 ? 's' : ''}` : ''}`;
 
-      const duration = `${years > 0 ? `${years} year${years > 1 ? 's' : ''}` : ''} ${months > 0 ? `${months} month${months > 1 ? 's' : ''}` : ''} ${days > 0 ? `${days} day${days > 1 ? 's' : ''}` : ''}`;
-
-      return (
-        <span className="d-flex flex-column text-capitalize">
-          {` ${duration.trim() || '-'}`}
-        </span>
-      );
-    },
-  },
+  //     return (
+  //       <span className="d-flex flex-column text-capitalize">
+  //         {` ${duration.trim() || '-'}`}
+  //       </span>
+  //     );
+  //   },
+  // },
   {
     title: 'Status',
     key: 'status',
