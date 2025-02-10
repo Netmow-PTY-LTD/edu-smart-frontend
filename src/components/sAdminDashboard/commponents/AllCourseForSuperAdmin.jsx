@@ -54,9 +54,11 @@ const AllCourseForSuperAdmin = ({
     department: '',
     category: '',
     brochure: null,
+    document_requirements: [{ title: '', description: '' }],
     entry_requirements: [''],
     english_requirements: [''],
     program_duration: '',
+    image: '',
   });
 
   const [
@@ -76,6 +78,7 @@ const AllCourseForSuperAdmin = ({
     refetch: getCourseRefetch,
   } = useGetCourseQuery(university_id, { skip: !university_id });
 
+  console.log('get course data ===>', getCourseData);
   const [
     updateCourse,
     {
@@ -147,9 +150,12 @@ const AllCourseForSuperAdmin = ({
             brochure: brochureFile || '',
             description: getSingleCourseData?.description || '',
             entry_requirements: getSingleCourseData?.entry_requirements || '',
+            document_requirements:
+              getSingleCourseData?.document_requirements || '',
             english_requirements:
               getSingleCourseData?.english_requirements || '',
             program_duration: getSingleCourseData?.program_duration || '',
+            image: getSingleCourseData?.image || '',
           });
 
           setEditModalIsOpen(true);
@@ -164,25 +170,46 @@ const AllCourseForSuperAdmin = ({
   }, [getCourseData?.data, courseIdForEdit]);
 
   // Validation schema using Yup
-  const validationSchema = Yup.object({
-    name: Yup.string()
-      .max(50, 'maximum use 50 letters')
-      .required('Name is required'),
-    department: Yup.string().required('department is required'),
-    category: Yup.string().required('category is required'),
-    available_seats: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('available_seats is required'),
-    price: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('price is required'),
-    gst: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('gst is required'),
-    agent_commission: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('Agent commission is required'),
-    description: Yup.string().required('description is required'),
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().trim().required('Course Name is required'),
+    available_seats: Yup.number()
+      .typeError('Available Seats must be a number')
+      .min(1, 'Available Seats must be at least 1')
+      .required('Available Seats is required'),
+    department: Yup.string().required('Department selection is required'),
+    category: Yup.string().required('Course Category selection is required'),
+    price: Yup.number()
+      .typeError('Course Fee must be a number')
+      .min(0, 'Course Fee cannot be negative')
+      .required('Course Fee is required'),
+    gst: Yup.number()
+      .typeError('GST must be a number')
+      .min(0, 'GST cannot be negative')
+      .max(100, 'GST cannot be more than 100%'),
+    agent_commission: Yup.number()
+      .typeError('Agent Commission must be a number')
+      .min(0, 'Commission cannot be negative')
+      .max(100, 'Commission cannot be more than 100%'),
+    program_duration: Yup.string()
+      .trim()
+      .required('Program Duration is required'),
+    brochure: Yup.mixed().required('Brochure file is required'),
+    description: Yup.string().trim().required('Course Description is required'),
+
+    document_requirements: Yup.array().of(
+      Yup.object().shape({
+        title: Yup.string().trim().required('Document title is required'),
+        description: Yup.string().trim(),
+      })
+    ),
+
+    entry_requirements: Yup.array().of(
+      Yup.string().trim().required('Entry requirement is required')
+    ),
+
+    english_requirements: Yup.array().of(
+      Yup.string().trim().required('English requirement is required')
+    ),
   });
 
   // Handle form submission
@@ -196,10 +223,9 @@ const AllCourseForSuperAdmin = ({
       category_id: values?.category,
     };
 
-    // console.log(allData);
-
     try {
       const finalData = new FormData();
+
       Object.entries(allData).forEach(([key, value]) => {
         if (key === 'entry_requirements' || key === 'english_requirements') {
           if (Array.isArray(value)) {
@@ -210,10 +236,20 @@ const AllCourseForSuperAdmin = ({
         } else {
           finalData.append(key, value);
         }
+        // if (key === 'document_requirements') {
+        //   if (Array.isArray(value)) {
+        //     value.forEach((item, index) => {
+        //       finalData.append(`${key}[${index}][${item.title}]`, item);
+        //     });
+        //   }
+        // } else {
+        //   finalData.append(key, value);
+        // }
       });
 
       const result = await addCourse(finalData).unwrap();
       if (result) {
+        console.log(result);
         toast.success(result?.message);
         getCourseRefetch();
         setAddModalIsOpen(!addModalIsOpen);
@@ -242,9 +278,11 @@ const AllCourseForSuperAdmin = ({
       department: '',
       category: '',
       brochure: null,
+      document_requirements: [{ title: '', description: '' }],
       entry_requirements: [''],
       english_requirements: [''],
       program_duration: '',
+      image: '',
     });
     setFilePreview(null);
     setEditModalIsOpen(false);
@@ -265,6 +303,12 @@ const AllCourseForSuperAdmin = ({
       department_id: values?.department?.value,
       category_id: values?.category?.value,
       brochure: values?.brochure,
+      document_requirements: [
+        {
+          title: values?.document_requirements.title,
+          description: values?.document_requirements.description,
+        },
+      ],
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
@@ -282,6 +326,8 @@ const AllCourseForSuperAdmin = ({
         } else {
           finalData.append(key, value);
         }
+
+        console.log(key, value);
       });
       const result = await updateCourse(finalData).unwrap();
       if (result) {
