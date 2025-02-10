@@ -50,7 +50,7 @@ const AllCourseForSuperAdmin = ({
     available_seats: '',
     price: '',
     gst: '',
-    agent_commission: '',
+    agent_commission_percentage: '',
     university_price: '',
     description: '',
     department: '',
@@ -139,7 +139,8 @@ const AllCourseForSuperAdmin = ({
             available_seats: getSingleCourseData?.available_seats || '',
             price: getSingleCourseData?.price || '',
             gst: getSingleCourseData?.gst || '',
-            agent_commission: getSingleCourseData?.agent_commission || '',
+            agent_commission_percentage:
+              getSingleCourseData?.agent_commission_percentage || '',
             university_price: getSingleCourseData?.university_price || '',
             department: getSingleCourseData?.department?._id
               ? {
@@ -196,7 +197,7 @@ const AllCourseForSuperAdmin = ({
       .typeError('GST must be a number')
       .min(0, 'GST cannot be negative')
       .max(100, 'GST cannot be more than 100%'),
-    agent_commission: Yup.number()
+    agent_commission_percentage: Yup.number()
       .typeError('Agent Commission must be a number')
       .min(0, 'Commission cannot be negative')
       .max(100, 'Commission cannot be more than 100%'),
@@ -253,7 +254,7 @@ const AllCourseForSuperAdmin = ({
               );
               finalData.append(
                 `${key}[${index}][isRequired]`,
-                item.isRequired ?? true
+                item.isRequired ?? false
               );
             }
           });
@@ -288,13 +289,15 @@ const AllCourseForSuperAdmin = ({
       available_seats: '',
       price: '',
       gst: '',
-      agent_commission: '',
+      agent_commission_percentage: '',
       university_price: '',
       description: '',
       department: '',
       category: '',
       brochure: null,
-      document_requirements: [{ title: '', description: '' }],
+      document_requirements: [
+        { title: '', description: '', isRequired: false },
+      ],
       entry_requirements: [''],
       english_requirements: [''],
       program_duration: '',
@@ -312,7 +315,7 @@ const AllCourseForSuperAdmin = ({
       available_seats: values?.available_seats,
       price: values?.price,
       gst: values?.gst,
-      agent_commission: values?.agent_commission,
+      agent_commission_percentage: values?.agent_commission_percentage,
       description: values?.description,
       course_id: courseIdForEdit,
       university_id: university_id,
@@ -324,6 +327,7 @@ const AllCourseForSuperAdmin = ({
         {
           title: values?.document_requirements.title,
           description: values?.document_requirements.description,
+          isRequired: values?.document_requirements.isRequired,
         },
       ],
       entry_requirements: values?.entry_requirements,
@@ -353,7 +357,7 @@ const AllCourseForSuperAdmin = ({
               );
               finalData.append(
                 `${key}[${index}][isRequired]`,
-                item.isRequired ?? true
+                item.isRequired ?? false
               );
             }
           });
@@ -491,10 +495,10 @@ const AllCourseForSuperAdmin = ({
     },
     {
       title: 'Agent Commission (%)',
-      key: 'agent_commission',
+      key: 'agent_commission_percentage',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.agent_commission}
+          {item?.agent_commission_percentage}
         </span>
       ),
     },

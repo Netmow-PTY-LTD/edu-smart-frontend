@@ -94,7 +94,7 @@ const CourseModalForm = ({
                 <Col xl={6}>
                   <div className="mb-3">
                     <NumberField
-                      name="agent_commission"
+                      name="agent_commission_percentage"
                       label="Agent Commision (%)"
                     />
                   </div>
@@ -133,6 +133,105 @@ const CourseModalForm = ({
                     <TextArea name="description" label="Course Description" />
                   </div>
                 </Col>
+                {/* <Col xl={12}>
+                  <FieldArray name="document_requirements">
+                    {({ remove, push }) => (
+                      <div>
+                        {values.document_requirements?.map((item, index) => (
+                          <Row key={index} className="align-items-center">
+                            <Col md={12}>
+                              <div className="mb-3">
+                                <label
+                                  htmlFor={`document_requirements[${index}].title`}
+                                >
+                                  {`Document Title ${index + 1}`}
+                                </label>
+                                <Field
+                                  name={`document_requirements[${index}].title`}
+                                  placeholder="Enter document title"
+                                  className={`form-control ${
+                                    errors.document_requirements?.[index]
+                                      ?.title &&
+                                    touched.document_requirements?.[index]
+                                      ?.title
+                                      ? 'is-invalid'
+                                      : ''
+                                  }`}
+                                />
+                                {errors.document_requirements?.[index]?.title &&
+                                  touched.document_requirements?.[index]
+                                    ?.title && (
+                                    <div className="invalid-feedback">
+                                      {
+                                        errors.document_requirements[index]
+                                          .title
+                                      }
+                                    </div>
+                                  )}
+
+                                <div className="form-check mt-2">
+                                  <Field
+                                    type="checkbox"
+                                    name={`document_requirements[${index}].isRequired`}
+                                    className="form-check-input"
+                                    id={`document_requirements[${index}].isRequired`}
+                                  />
+                                  <label
+                                    htmlFor={`document_requirements[${index}].isRequired`}
+                                    className="form-check-label ms-2"
+                                  >
+                                    Required
+                                  </label>
+                                </div>
+                              </div>
+                            </Col>
+
+                            <Col md={12}>
+                              <div className="mb-3">
+                                <label
+                                  htmlFor={`document_requirements[${index}].description`}
+                                >
+                                  {`Document Description ${index + 1}`}
+                                </label>
+
+                                <Field
+                                  as="textarea"
+                                  rows={5}
+                                  name={`document_requirements[${index}].description`}
+                                  placeholder="Enter description"
+                                  className="form-control"
+                                />
+                              </div>
+                            </Col>
+
+                            {index > 0 && (
+                              <Col md={2}>
+                                <Button
+                                  type="button"
+                                  onClick={() => remove(index)}
+                                  className="third-btn mt-3"
+                                >
+                                  <i className="ri-delete-bin-fill"></i>
+                                </Button>
+                              </Col>
+                            )}
+                          </Row>
+                        ))}
+
+                        <div className="d-flex align-items-center justify-content-center mb-4">
+                          <Button
+                            type="button"
+                            onClick={() => push({ title: '', description: '' })}
+                            className="button d-flex align-items-center"
+                          >
+                            <i className="ri-add-line fw-bold fs-1"></i>
+                            <span>Add New Document</span>
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </FieldArray>
+                </Col> */}
                 <Col xl={12}>
                   <FieldArray name="document_requirements">
                     {({ remove, push }) => (
