@@ -6,6 +6,8 @@ import { useUpgradePackageForAgentMutation } from '@/slice/services/agent/agentE
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
+  useCheckCouponVerifyMutation,
+  useGetAllActiveCouponQuery,
   useGetAllHotOfferQuery,
   useGetAllPackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
@@ -30,7 +32,6 @@ const UpgradePackageInAgentdashboard = () => {
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState('');
   const [couponAmount, setTotalCouponAmount] = useState('');
-  const couponName = 'edusmart2025';
   const router = useRouter();
 
   const payment_status = router.query?.payment_status;
@@ -40,6 +41,11 @@ const UpgradePackageInAgentdashboard = () => {
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const [upgradePackageForAgent] = useUpgradePackageForAgentMutation();
 
+  const [checkCouponVerify, { data: matchedCouponData }] =
+    useCheckCouponVerifyMutation();
+
+  // console.log(matchedCouponData);
+
   const { data: userInfodata, refetch: userInfoRefetch } =
     useGetUserInfoQuery();
   const {
@@ -47,6 +53,12 @@ const UpgradePackageInAgentdashboard = () => {
     isLoading: getAllPackageIsLoading,
     refetch: getAllPackageRefetch,
   } = useGetAllPackageQuery();
+
+  const {
+    data: getAllActiveCouponData,
+    isLoading: getAllActiveCouponIsLoading,
+    refetch: getAllActiveCouponRefetch,
+  } = useGetAllActiveCouponQuery();
 
   const {
     data: getAllHotOfferData,
@@ -170,32 +182,71 @@ const UpgradePackageInAgentdashboard = () => {
   };
 
   const handleCouponSubmit = () => {
-    const matchedCouponCode = couponName;
+    const verifyCoupon = async () => {
+      try {
+        // Await the response and unwrap to get the value directly
+        const response = await checkCouponVerify({
+          code: couponCode,
+          package_id: upgradePackageId,
+        }).unwrap();
 
-    if (!couponCode) {
-      toast.error('Coupon code is required.');
-      setCouponError('Coupon code is required.');
-      return;
-    }
-    if (couponCode !== matchedCouponCode) {
-      toast.error('Invalid coupon code.');
-      setCouponError('Invalid coupon code.');
-      return;
-    }
+        // Extract package duration and price
+        const packageDuration = response?.data?.package_duration?.split('_')[0];
+        const packagePrice = response?.data?.packages[0]?.price;
+        const discountPercentage = response?.data?.discount_percentage;
 
-    if (couponCode === matchedCouponCode) {
-      toast.success('Coupon applied successfully.');
-      const singlePackageData =
-        getAllPackageData?.data?.length > 0 &&
-        getAllPackageData?.data.find((item) => item?._id === upgradePackageId);
-      // console.log(singlePackageData);
-      const couponCalculation = 12 * singlePackageData?.price;
-      setTotalCouponAmount(couponCalculation);
-      console.log(couponCalculation);
-    } else {
-      toast.error('Not A Valid Coupon');
-      setCouponError('Not A Valid Coupon');
-    }
+        // Log the extracted values for debugging
+        console.log('Package Duration:', packageDuration);
+        console.log('Package Price:', packagePrice);
+        console.log('Discount Percentage:', discountPercentage);
+
+        if (packageDuration && packagePrice && discountPercentage) {
+          // Perform calculations if data is available
+          const priceCalculation = packagePrice * packageDuration; // Total price before discount
+          console.log('Price Calculation:', priceCalculation);
+
+          const couponCalculation =
+            (priceCalculation * discountPercentage) / 100; // Calculate the discount
+          console.log('Coupon Calculation (Discount):', couponCalculation);
+
+          const totalCalculation = priceCalculation - couponCalculation; // Subtract the discount from the total price
+          console.log('Total Calculation (After Discount):', totalCalculation);
+
+          // Now you can use the totalCalculation as needed
+        } else {
+          console.log('Missing required data for calculation');
+        }
+      } catch (error) {
+        toast.error('Something went wrong');
+        console.error('Error:', error);
+      }
+    };
+
+    verifyCoupon();
+
+    // console.log(upgradePackageId);
+    // console.log(matchedPackage);
+
+    // if (!couponCode) {
+    //   toast.error('Coupon code is required.');
+    //   setCouponError('Coupon code is required.');
+    //   return;
+    // }
+
+    // if (matchedPackage) {
+    //   toast.success('Coupon applied successfully.');
+
+    //   const singlePackageData =
+    //     getAllPackageData?.data?.length > 0 &&
+    //     getAllPackageData?.data.find((item) => item?._id === upgradePackageId);
+    //   // console.log(singlePackageData);
+    //   const couponCalculation = 12 * singlePackageData?.price;
+    //   setTotalCouponAmount(couponCalculation);
+    //   console.log(couponCalculation);
+    // } else {
+    //   toast.error('Not A Valid Coupon');
+    //   setCouponError('Not A Valid Coupon');
+    // }
   };
 
   return (

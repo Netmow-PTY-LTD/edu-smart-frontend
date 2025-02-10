@@ -59,7 +59,7 @@ const CouponModal = ({
     },
   ];
   const durationOptions = [
-    { label: '1 Month', value: '1_month' },
+    { label: '1 Month', value: '1_months' },
     { label: '2 Months', value: '2_months' },
     { label: '3 Months', value: '3_months' },
     { label: '4 Months', value: '4_months' },
@@ -70,13 +70,13 @@ const CouponModal = ({
     { label: '9 Months', value: '9_months' },
     { label: '10 Months', value: '10_months' },
     { label: '11 Months', value: '11_months' },
-    { label: '1 Year', value: '1_year' },
+    { label: '1 Year', value: '12_months' },
   ];
 
   // console.log(allPackages);
 
   return (
-    <Modal isOpen={open} toggle={close} centered size="xl">
+    <Modal isOpen={open} centered size="xl">
       <ToastContainer />
       <ModalHeader toggle={close}>{modalHeader}</ModalHeader>
       {singleCouponIsLoading ? (
@@ -133,6 +133,13 @@ const CouponModal = ({
                         label="Select Package"
                         options={allPackages}
                         form={{ setFieldValue, values }}
+                      />
+                    </Col>
+                    <Col xl={6}>
+                      <SingleSelectField
+                        name={'package_duration'}
+                        label={'Package Duration'}
+                        options={durationOptions}
                       />
                     </Col>
                     <Col xl={6}>

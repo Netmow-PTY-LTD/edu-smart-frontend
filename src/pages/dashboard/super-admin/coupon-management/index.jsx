@@ -33,6 +33,7 @@ const CouponManagementInSuperAdmin = () => {
     package_id: null,
     discount_percentage: '',
     coupon_status: '',
+    package_duration: '',
   });
 
   const [addCouponInSuperAdmin] = useAddCouponInSuperAdminMutation();
@@ -41,6 +42,7 @@ const CouponManagementInSuperAdmin = () => {
     deleteCouponInSuperAdmin,
     { isLoading: deleteCouponInSuperIsLoading },
   ] = useDeleteCouponInSuperAdminMutation();
+
   const {
     data: getCouponData,
     isLoading: getCouponIsLoading,
@@ -76,6 +78,7 @@ const CouponManagementInSuperAdmin = () => {
             end_date: singleCouponData?.expiry_date || '',
             package_id: allPackagesData || '',
             offer_percentage: singleCouponData?.offer_percentage || 0,
+            package_duration: singleCouponData?.package_duration || 0,
             discount_percentage: singleCouponData?.discount_percentage || '',
             coupon_status:
               {
@@ -98,23 +101,20 @@ const CouponManagementInSuperAdmin = () => {
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
 
-    const startDate = values?.end_date.split('T')[0];
-    const endDate = values?.start_date.split('T')[0];
+    const startDate = values?.start_date.split('T')[0];
+    const endDate = values?.end_date.split('T')[0];
 
     const finalData = {
       code: values?.name,
       start_date: startDate,
       expiry_date: endDate,
+      package_duration: values?.package_duration,
       discount_percentage: values?.discount_percentage,
-      packages:
-        Array.isArray(values?.package_id) &&
-        values.package_id.every((item) => Array.isArray(item))
-          ? values.package_id[0]
-          : values.package_id,
+      packages: values.package_id,
       status: values?.coupon_status,
     };
 
-    // console.log(finalData);
+    console.log(finalData);
 
     try {
       const response = await addCouponInSuperAdmin(finalData).unwrap();
@@ -137,35 +137,43 @@ const CouponManagementInSuperAdmin = () => {
   // update  Coupon handler
   const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-
-    const editData = {
-      name: values?.name,
-      start_date: values?.start_date,
-      end_date: values?.end_date,
-      discount_percentage: values?.discount_percentage,
-      package_id: values?.package_id?.value || values?.package_id,
-      coupon_status: values?.coupon_status?.value || values?.coupon_status,
-      coupon_id: couponId,
-    };
+    const startDate = values?.start_date.split('T')[0];
+    const endDate = values?.end_date.split('T')[0];
 
     console.log(values);
 
-    // try {
-    //   const response = await updateCouponInSuperAdmin(editData).unwrap();
-    //   if (response) {
-    //     toast.success(response?.message);
-    //     getCouponRefetch();
-    //     resetForm();
-    //     setCouponId('');
-    //     setEditOpenModal(!editOpenModal);
-    //     setInitialValues({});
-    //   }
-    // } catch (error) {
-    //   const errorMessage = error?.data?.message;
-    //   toast.error(errorMessage);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    const editData = {
+      code: values?.name,
+      start_date: startDate,
+      expiry_date: endDate,
+      package_duration: values?.package_duration,
+      discount_percentage: values?.discount_percentage,
+      packages:
+        typeof values?.package_id?.[0] === 'object'
+          ? values?.package_id.map((item) => item?.value)
+          : values?.package_id,
+      status: values?.coupon_status?.value || values?.coupon_status,
+      coupon_id: couponId,
+    };
+
+    console.log(editData);
+
+    try {
+      const response = await updateCouponInSuperAdmin(editData).unwrap();
+      if (response) {
+        toast.success(response?.message);
+        getCouponRefetch();
+        resetForm();
+        setCouponId('');
+        setEditOpenModal(!editOpenModal);
+        setInitialValues({});
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const togOpenModal = () => {

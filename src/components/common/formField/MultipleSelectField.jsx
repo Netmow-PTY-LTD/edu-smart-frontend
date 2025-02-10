@@ -1,16 +1,19 @@
 import { ErrorMessage } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Select from 'react-select';
 
 const MultipleSelectField = ({ field, form, label, options, ...props }) => {
-  const [allValues, setAllValues] = useState(null);
-
-  useEffect(() => {
-    setAllValues(form.values.package_id);
-  }, [form.values.package_id]);
+  // useEffect(() => {
+  //   form.setFieldValue(
+  //     field.name,
+  //     form.values.package_id
+  //       ? form.values.package_id.map((option) => console.log(option?.value))
+  //       : []
+  //   );
+  // }, []);
 
   const handleChange = (selectedOptions) => {
-    console.log(selectedOptions);
+    // console.log(selectedOptions);
 
     // form.setFieldValue(
     //   field.name,
@@ -25,13 +28,9 @@ const MultipleSelectField = ({ field, form, label, options, ...props }) => {
 
     form.setFieldValue(
       field.name,
-      selectedOptions
-        ? selectedOptions.map((option) => console.log(option?.value))
-        : []
+      selectedOptions ? selectedOptions.map((option) => option?.value) : []
     );
   };
-
-  console.log(allValues);
 
   return (
     <div>
@@ -43,7 +42,6 @@ const MultipleSelectField = ({ field, form, label, options, ...props }) => {
         {...props}
         id={field?.name}
         name={field?.name}
-        value={allValues}
         onChange={handleChange}
         options={options}
         classNamePrefix="select"
