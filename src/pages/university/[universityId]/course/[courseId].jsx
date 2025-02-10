@@ -3,7 +3,7 @@ import Loader from '@/components/constants/Loader/Loader';
 import { useGetSingleCourseQuery } from '@/slice/services/public/university/publicUniveristyService';
 
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Accordion,
   AccordionBody,
@@ -14,8 +14,10 @@ import {
   Container,
   Row,
 } from 'reactstrap';
+import Cookies from 'js-cookie';
 
 const SingleCoursePageInFrontSite = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState('');
   const router = useRouter();
   const { universityId, courseId } = router.query;
   const { data, isLoading, error } = useGetSingleCourseQuery({
@@ -25,7 +27,7 @@ const SingleCoursePageInFrontSite = () => {
 
   const courseDetail = data?.data || {};
 
-  const [open, setOpen] = useState('');
+  const [open, setOpen] = useState('1');
   const toggle = (id) => {
     if (open === id) {
       setOpen();
@@ -46,6 +48,42 @@ const SingleCoursePageInFrontSite = () => {
     program_duration,
     status,
   } = courseDetail;
+
+  const token = Cookies.get('token');
+  const role = Cookies.get('role');
+
+  useEffect(() => {
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, [token]);
+
+  const handleConfirmApplication = (id) => {
+    // Determine the user's role from cookies
+    const role = Cookies.get('role');
+
+    // Initialize the destination variable
+    let destination = '';
+
+    // Set the destination based on the user's role
+    if (role === 'student') {
+      destination = `/dashboard/student/university-management/single-university-profile/${universityId}/course/${id}`;
+    } else if (role === 'agent') {
+      destination = `/dashboard/agent/university-management/single-university-profile/${universityId}/course/${id}`;
+    }
+
+    console.log(destination);
+
+    // Check if the user is authenticated
+    if (isAuthenticated) {
+      // Redirect to the destination
+      router.push(destination);
+    } else {
+      // Redirect to the login page with the intended destination as a query parameter
+      router.push(`/auth/register?courseId=${id}`);
+    }
+  };
+
   return (
     <UniversityLayout>
       <Container className="my-5">
@@ -90,7 +128,7 @@ const SingleCoursePageInFrontSite = () => {
                 <div className="ms-lg-3">
                   <Accordion flush open={open} toggle={toggle}>
                     <AccordionItem>
-                      <AccordionHeader targetId="1">
+                      <AccordionHeader targetId="1" onClick={() => toggle('1')}>
                         Entry Requirements
                       </AccordionHeader>
                       <AccordionBody accordionId="1">
@@ -104,7 +142,7 @@ const SingleCoursePageInFrontSite = () => {
                       </AccordionBody>
                     </AccordionItem>
                     <AccordionItem>
-                      <AccordionHeader targetId="2">
+                      <AccordionHeader targetId="2" onClick={() => toggle('2')}>
                         English Requirements
                       </AccordionHeader>
                       <AccordionBody accordionId="2">
@@ -123,7 +161,10 @@ const SingleCoursePageInFrontSite = () => {
             </Row>
             <Row>
               <Col className="d-flex justify-content-center my-3">
-                <button className="button py-3 px-4">
+                <button
+                  className="button py-3 px-4"
+                  onClick={() => handleConfirmApplication(courseId)}
+                >
                   Confirm Application
                 </button>
               </Col>

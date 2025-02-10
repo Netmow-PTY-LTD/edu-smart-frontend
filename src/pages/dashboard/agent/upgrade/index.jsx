@@ -123,10 +123,36 @@ const UpgradePackageInAgentdashboard = () => {
     userInfoRefetch,
   ]);
 
+  // const handleUpgrade = (id) => {
+  //   setUpgradePackageId(id);
+  //   setOpenPaymentModal(!openPaymentModal);
+  // };
+
   const handleUpgrade = (id) => {
     setUpgradePackageId(id);
-    setOpenPaymentModal(!openPaymentModal);
+    setOpenPaymentModal(true);
   };
+
+  const handleUpgradeNew = (id) => {
+    setUpgradePackageId(id);
+    setOpenPaymentModal(true);
+  };
+
+  useEffect(() => {
+    if (userInfodata?.data?.package_choice) {
+      const selectedPackage = getAllPackageData?.data?.find(
+        (item) => item._id === userInfodata?.data?.package_choice
+      );
+
+      console.log(selectedPackage?.price);
+
+      if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
+        handleUpgradeNew(userInfodata?.data?.package_choice);
+      } else {
+        setOpenPaymentModal(false);
+      }
+    }
+  }, [userInfodata?.data?.package_choice, getAllPackageData]);
 
   const sslCommerzPaymentHandler = async () => {
     const price = 15000;

@@ -12,6 +12,7 @@ import {
   studentAndLogoDataForAgentDashboard,
   studentsHeadersWithLogoLinkInAgent,
 } from '@/utils/common/data';
+import { useRouter } from 'next/router';
 
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
@@ -22,6 +23,8 @@ const AgentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
+
+  const router = useRouter();
 
   const {
     data: allStudentForAgentData,
@@ -47,6 +50,13 @@ const AgentDashboard = () => {
   //     // window.location.href = '/auth/login';
   //   }
   // }, []);
+
+  console.log(userInfodata?.data?.package_choice);
+
+  if (userInfodata?.data?.package_choice) {
+    console.log('working');
+    router.push('/dashboard/agent/upgrade');
+  }
 
   return (
     <Layout>
