@@ -72,7 +72,7 @@ const AddUniversityFromSuperAdmin = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log('formData', values);
+    // console.log('formData', values);
 
     try {
       const finalData = new FormData();

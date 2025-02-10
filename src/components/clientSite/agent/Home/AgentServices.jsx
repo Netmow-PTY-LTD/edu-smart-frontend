@@ -1,8 +1,7 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 
-const OurServices = () => {
+const AgentServices = () => {
   return (
     <div
       className="bg-black ourServices-section"
@@ -52,9 +51,9 @@ const OurServices = () => {
                 your global education journey seamless.
               </p>
               <div>
-                <Link href="/contact" className="btn">
-                  Contact Us Now <i className="ri-arrow-right-line"></i>{' '}
-                </Link>
+                <button className="btn">
+                  Contact Us Now <i class="ri-arrow-right-line"></i>{' '}
+                </button>
               </div>
             </div>
             <figure>
@@ -81,9 +80,9 @@ const OurServices = () => {
         >
           <div>
             <p>Choosing the right Institute & program to securing your visa</p>
-            {/* <button className="button">
+            <button className="button">
               Apply Online <i class="ri-arrow-right-line"></i>
-            </button> */}
+            </button>
           </div>
           {/* vector */}
           <figure className="paralla-vector">
@@ -108,4 +107,4 @@ const OurServices = () => {
   );
 };
 
-export default OurServices;
+export default AgentServices;

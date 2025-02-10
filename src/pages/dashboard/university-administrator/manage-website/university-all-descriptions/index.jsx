@@ -1,4 +1,3 @@
-
 import Layout from '@/components/layout';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -10,13 +9,19 @@ const UniversityAllDescriptions = () => {
   const validationSchema = Yup.object({});
 
   const onSubmit = (e) => {
-    console.log(e);
+    // console.log(e);
   };
 
   const descriptionFields = [
-    { name: 'course_section_description', label: 'Course Section Description *' },
+    {
+      name: 'course_section_description',
+      label: 'Course Section Description *',
+    },
     { name: 'faq_section_description', label: 'FAQ Section Description *' },
-    { name: 'review_section_description', label: 'Review Section Description *' },
+    {
+      name: 'review_section_description',
+      label: 'Review Section Description *',
+    },
   ];
 
   return (

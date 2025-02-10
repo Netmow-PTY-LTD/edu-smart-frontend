@@ -196,7 +196,7 @@ const AllCourseForSuperAdmin = ({
       category_id: values?.category,
     };
 
-    console.log(allData);
+    // console.log(allData);
 
     try {
       const finalData = new FormData();

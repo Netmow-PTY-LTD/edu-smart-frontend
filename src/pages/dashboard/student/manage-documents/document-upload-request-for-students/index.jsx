@@ -94,7 +94,7 @@ const AllUploadDocumentsForStudents = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    console.log(values);
+    // console.log(values);
     const updatedata = {
       ...values,
       id: docId,

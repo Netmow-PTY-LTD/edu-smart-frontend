@@ -1332,8 +1332,21 @@ a.video-player {
   line-height: normal;
 }
 
+.hero-search-form label {
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 170%;
+}
+
 .hero-search-form .form-select {
   background-color: #fff !important;
+  color: var(--Black, #1c1c1c);
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 170%;
 }
 
 @media (max-width: 991px) {
@@ -9856,4 +9869,9 @@ textarea.form-control {
 
 .table-responsive {
   min-height: 120px;
+}
+
+.address-main {
+  color: var(--color--primary);
+  margin-top: 30px;
 }

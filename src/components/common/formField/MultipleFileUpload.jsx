@@ -1,39 +1,20 @@
+import { allowedFileTypes } from '@/utils/common/data';
 import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const MultipleFileUpload = ({ field, form, label, ...props }) => {
   const [filePreviews, setFilePreviews] = useState([]);
   const [fileNames, setFileNames] = useState([]);
-  const validTypes = [
-    'application/pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    'application/msword',
-    'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp',
-    'image/bmp',
-    'image/tiff',
-  ];
 
-  const isValidFile = (file) => {
-    return validTypes.includes(file?.type);
-  };
+  const isValidFile = (file) => allowedFileTypes.includes(file?.type);
 
   useEffect(() => {
     const files = form.values[field.name] || [];
-
+    // console.log(files);
     if (files?.length > 0) {
+      // console.log('check');
       const validFiles = files.filter(isValidFile);
-      setFilePreviews(
-        validFiles.map((file) =>
-          file.type === 'application/pdf' || file.type.startsWith('image/')
-            ? URL.createObjectURL(file)
-            : null
-        )
-      );
+      setFilePreviews(validFiles.map((file) => URL.createObjectURL(file)));
       setFileNames(validFiles.map((file) => file.name));
     }
   }, [form.values, field.name]);
@@ -62,6 +43,8 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
       const newFileNames = validFiles.map((file) => file.name);
 
+      console.log(newFilePreviews);
+
       setFilePreviews((prevPreviews) => [...prevPreviews, ...newFilePreviews]);
       setFileNames((prevNames) => [...prevNames, ...newFileNames]);
 
@@ -82,7 +65,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
     form.setFieldValue(field.name, updatedFiles);
   };
 
-  // console.log(filePreviews);
+  console.log(filePreviews);
 
   return (
     <div>
@@ -98,6 +81,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
         className="form-control"
         multiple
         onChange={handleFileChange}
+        accept="application/pdf"
       />
 
       <div className="my-4">
@@ -109,7 +93,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
                   <div className="pdf-preview">
                     <object
                       data={preview}
-                      type="application/pdf"
+                      type={'application/pdf'}
                       width="200"
                       height="200"
                     />
