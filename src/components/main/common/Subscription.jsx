@@ -1,5 +1,6 @@
 import { useSendSubscriptionEmailMutation } from '@/slice/services/public/newsLetter/newsLetterSubscriptionPublic';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 const SubscriptionForm = () => {
@@ -10,17 +11,28 @@ const SubscriptionForm = () => {
       .required('Email is required'),
   });
 
-  //  `https://calendar.miyn.app/test4.php?to=shadik.netmow@gmail.com&message=Text&code=12124`
   const initialValues = { email: '' };
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    console.log('Form submitted with:', values.email);
-    const SubscriptionLetterData = {
+    const subscriptionLetterData = {
       ...values,
-      content: 'Hello World',
+      content: '/news-letter',
     };
 
-    setSubmitting(false);
-    resetForm();
+    try {
+      const result = await sendSubscriptionLetter(
+        subscriptionLetterData
+      ).unwrap();
+      console.log(result);
+      if (result) {
+        toast.success(result?.message);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+      resetForm();
+    }
   };
 
   return (
