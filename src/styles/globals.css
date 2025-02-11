@@ -10027,6 +10027,12 @@ textarea.form-control {
   gap: 5px;
 }
 
+@media (max-width: 991px) {
+  .single-coupon {
+    width: calc((100% - 40px) / 3);
+  }
+}
+
 /* Page Banner */
 
 .page-banner {

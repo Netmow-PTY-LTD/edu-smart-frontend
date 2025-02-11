@@ -43,7 +43,7 @@ export default function Footer() {
                     <Link href="/university/courses">All Courses</Link>
                   </li>
                   <li>
-                    <Link href="/universities">Universities</Link>
+                    <Link href="/university">Universities</Link>
                   </li>
                   <li>
                     <Link href="/blogs">Blogs</Link>

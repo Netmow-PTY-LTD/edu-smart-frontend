@@ -124,6 +124,12 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/students',
     },
     {
+      id: 'contact-messages',
+      label: 'Contact Messages',
+      icon: 'ri-group-fill',
+      link: '/dashboard/super-admin/contact-messages',
+    },
+    {
       id: 'settings',
       label: 'Settings',
       icon: 'ri-settings-3-line',
