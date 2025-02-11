@@ -15,7 +15,7 @@ const SubscriptionForm = () => {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     const subscriptionLetterData = {
       ...values,
-      content: '/news-letter',
+      content: process.env.NEXT_PUBLIC_BASE_URL_PROD,
     };
 
     try {
