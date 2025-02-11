@@ -6,6 +6,8 @@ import Flatpickr from 'react-flatpickr';
 const TimeField = ({ field, form, label, ...props }) => {
   const flatpickrRef = useRef(null);
 
+  console.log(form);
+
   const handleChange = (selectedDates) => {
     console.log(selectedDates);
     form.setFieldValue(

@@ -26,6 +26,7 @@ import {
 
 const UpgradePackageInAgentdashboard = () => {
   const [upgradePackageId, setUpgradePackageId] = useState('');
+  const [upgradePackageName, setUpgradePackageName] = useState('');
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [upgradePackageIsLoading, setUpgradePackageIsLoading] = useState(false);
   const [applyPackageIsLoading, setApplyPackageIsLoading] = useState(false);
@@ -35,6 +36,8 @@ const UpgradePackageInAgentdashboard = () => {
   const [couponError, setCouponError] = useState('');
   const [couponAmount, setTotalCouponAmount] = useState('');
   const [couponDuration, setCouponDuration] = useState('');
+  const [totalPricePackage, setTotalPricePackage] = useState('');
+  const [pricePackage, setPricePackage] = useState('');
 
   const router = useRouter();
 
@@ -43,7 +46,10 @@ const UpgradePackageInAgentdashboard = () => {
   const package_id = router.query?.package_id;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
-  const [upgradePackageForAgent] = useUpgradePackageForAgentMutation();
+  const [
+    upgradePackageForAgent,
+    { isLoading: upgradePackageForAgentIsLoading },
+  ] = useUpgradePackageForAgentMutation();
   const [checkCouponVerify] = useCheckCouponVerifyMutation();
 
   const { data: userInfodata, refetch: userInfoRefetch } =
@@ -127,13 +133,16 @@ const UpgradePackageInAgentdashboard = () => {
     userInfoRefetch,
   ]);
 
-  const handleUpgrade = (id) => {
-    setUpgradePackageId(id);
+  const handleUpgrade = (data) => {
+    console.log(data);
+    setPricePackage(data?.price);
+    setUpgradePackageName(data?.name);
+    setUpgradePackageId(data?.id);
     setOpenPaymentModal(!openPaymentModal);
   };
 
   const sslCommerzPaymentHandler = async () => {
-    const price = 15000;
+    const price = couponAmount ? couponAmount : pricePackage;
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=failed`
@@ -192,29 +201,19 @@ const UpgradePackageInAgentdashboard = () => {
       const [duration] = package_duration.split('_').map(Number);
       const discount = parseFloat(discount_percentage);
 
-      if (isNaN(duration) || isNaN(packagePrice?.price) || isNaN(discount)) {
-        throw new Error('Invalid data received from the server.');
-      }
-
       const totalPrice = packagePrice?.price * duration;
+      setTotalPricePackage(totalPrice.toFixed(2));
       const discountAmount = (totalPrice * discount) / 100;
       const totalAmount = (totalPrice - discountAmount).toFixed(2);
 
-      if (!totalAmount) {
-        throw new Error(
-          'Total amount is invalid. Please check the calculation.'
-        );
-      }
-
       setCouponDuration(duration);
-      setTotalCouponAmount(totalAmount);
+      setTotalCouponAmount(parseFloat(totalAmount));
       toast.success('Applied Coupon Successfully');
       setApplyPackageIsLoading(true);
     } catch (error) {
-      setApplyPackageIsLoading(true);
+      setApplyPackageIsLoading(false);
       toast.error(error?.data?.message || 'Invalid Coupon.');
       setCouponError(error?.data?.message || 'Invalid Coupon.');
-      setApplyPackageIsLoading(false);
     } finally {
       setApplyPackageIsLoading(false);
     }
@@ -261,7 +260,13 @@ const UpgradePackageInAgentdashboard = () => {
                           <SinglePackageComponent
                             key={index}
                             data={item}
-                            handleUpgrade={handleUpgrade}
+                            handleUpgrade={() =>
+                              handleUpgrade({
+                                price: item?.price,
+                                name: item?.name,
+                                id: item?._id,
+                              })
+                            }
                             style={
                               item?._id ===
                               userInfodata?.data?.agent_package?.package?._id
@@ -313,10 +318,13 @@ const UpgradePackageInAgentdashboard = () => {
                   setOpenPaymentModal(!openPaymentModal);
                 }}
               >
-                Select Payment Option
+                Select Payment Option {}
               </ModalHeader>
               <ModalBody>
                 <Card>
+                  <div className="text-center fs-1 text-primary fw-medium">
+                    {upgradePackageName ?? ''}
+                  </div>
                   <div className="m-4">
                     <label htmlFor="couponCode" className="form-label fs-3">
                       Do You Have A Coupon?
@@ -369,24 +377,43 @@ const UpgradePackageInAgentdashboard = () => {
                       <div className="text-danger mt-2">{couponError}</div>
                     )}
                     {couponAmount && (
-                      <div className="my-3 text-primary fs-2 fw-semibold text-center text-capitalize">
-                        Total amount : {couponAmount}{' '}
-                        {couponAmount != null &&
-                          couponAmount !== '' &&
-                          couponAmount !== undefined &&
-                          'MYR'}
+                      <div className="d-flex flex-column my-3 text-primary fs-2 fw-semibold text-center text-capitalize">
+                        <span>
+                          Package Price : {totalPricePackage} {''}
+                          {totalPricePackage != null &&
+                            totalPricePackage !== '' &&
+                            totalPricePackage !== undefined &&
+                            'MYR'}
+                        </span>
+                        <span>
+                          Discount Amount : {totalPricePackage - couponAmount}
+                        </span>
+                        <span>
+                          Payment amount : {couponAmount}{' '}
+                          {couponAmount != null &&
+                            couponAmount !== '' &&
+                            couponAmount !== undefined &&
+                            'MYR'}
+                        </span>
                       </div>
                     )}
 
                     {couponAmount === '0.00' && (
-                      <div
-                        onClick={() => handleUpgradePackageWithCoupon()}
-                        className="my-3 text-primary fs-2 fw-semibold text-center"
-                      >
+                      <div className="my-3 text-primary fs-2 fw-semibold text-center">
                         <div className="text-primary fs-2 fw-semibold text-center mb-2">
                           Get It for FREE with Our Exclusive Coupon!
                         </div>
-                        <button className="button px-4 py-2">Continue</button>
+                        {upgradePackageForAgentIsLoading ? (
+                          <Loader />
+                        ) : (
+                          <button
+                            disabled={upgradePackageForAgentIsLoading}
+                            onClick={() => handleUpgradePackageWithCoupon()}
+                            className="button px-4 py-2"
+                          >
+                            Continue
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>

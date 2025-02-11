@@ -71,6 +71,9 @@ const CouponManagementInSuperAdmin = () => {
 
         console.log(allPackagesData);
 
+        // const utcDate = new Date(singleCouponData?.start_date);
+        // const startLocalDate = utcDate.toLocaleString();
+
         try {
           setInitialValues({
             name: singleCouponData?.code || '',
