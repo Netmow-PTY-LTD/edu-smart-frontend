@@ -30,6 +30,7 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
+import { documentService } from '../services/super admin/documentService';
 
 export const store = configureStore({
   reducer: {
@@ -73,6 +74,7 @@ export const store = configureStore({
     [applicationService.reducerPath]: applicationService.reducer,
     [agentApplicationService.reducerPath]: agentApplicationService.reducer,
     [couponService.reducerPath]: couponService.reducer,
+    [documentService.reducerPath]: documentService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -104,7 +106,8 @@ export const store = configureStore({
       .concat(paymentService.middleware)
       .concat(applicationService.middleware)
       .concat(couponService.middleware)
-      .concat(agentApplicationService.middleware),
+      .concat(agentApplicationService.middleware)
+      .concat(documentService.middleware),
 });
 
 setupListeners(store.dispatch);

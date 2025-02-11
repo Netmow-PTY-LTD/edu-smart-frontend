@@ -25,6 +25,7 @@ import {
 import * as Yup from 'yup';
 import CourseModalForm from '../modals/CourseModalForm';
 import Image from 'next/image';
+import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 
 const AllCourseForSuperAdmin = ({
   university_id,
@@ -56,11 +57,10 @@ const AllCourseForSuperAdmin = ({
     department: '',
     category: '',
     brochure: null,
-    document_requirements: [{ title: '', description: '', isRequired: false }],
+    document_requirements: [],
     entry_requirements: [''],
     english_requirements: [''],
     program_duration: '',
-
     image: null,
   });
 
@@ -80,6 +80,19 @@ const AllCourseForSuperAdmin = ({
     isLoading: getCourseIsLoading,
     refetch: getCourseRefetch,
   } = useGetCourseQuery(university_id, { skip: !university_id });
+
+  // document Related api
+  const {
+    data: getDocumentData,
+    error: getDocumentError,
+    isLoading: getDocumentIsLoading,
+    refetch: getDocuemtnRefetch,
+  } = useGetDocumentInSuperAdminQuery();
+
+  const documentOptions = getDocumentData?.data?.map((item) => ({
+    value: item._id,
+    label: item.title,
+  }));
 
   const [
     updateCourse,
@@ -211,21 +224,25 @@ const AllCourseForSuperAdmin = ({
     program_duration: Yup.string().required('Program Duration is required'),
     brochure: Yup.mixed().required('Brochure file is required'),
     image: Yup.mixed().required('Course Picture is required'),
+    document_select: Yup.array()
+      .min(0, 'At least one document type must be selected')
+      .optional(),
     description: Yup.string()
       .min(20, 'Description must be at least 20 characters')
       .required('Course Description is required'),
 
-    document_requirements: Yup.array()
-      .of(
-        Yup.object().shape({
-          title: Yup.string().required('Document Title is required'),
-          description: Yup.string()
-            .min(5, 'Document Description must be at least 5 characters')
-            .required('Document Description is required'),
-          isRequired: Yup.boolean(),
-        })
-      )
-      .min(1, 'At least one document requirement is required'),
+    // document_requirements: Yup.array()
+    //   .of(
+    //     Yup.object().shape({
+    //       title: Yup.string().required('Document Title is required'),
+    //       description: Yup.string()
+    //         .min(5, 'Document Description must be at least 5 characters')
+    //         .required('Document Description is required'),
+    //       isRequired: Yup.boolean(),
+    //     })
+    //   )
+    //   .min(1, 'At least one document requirement is required'),
+    document_requirements: Yup.array().optional(),
 
     entry_requirements: Yup.array()
       .of(Yup.string().required('Entry requirement is required'))
@@ -239,14 +256,22 @@ const AllCourseForSuperAdmin = ({
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+    const filteredData = getDocumentData?.data
+      ?.filter((doc) => values.document_select.includes(doc._id))
+      .map((item) => ({
+        title: item.title,
+        description: item.description,
+        isRequired: false,
+      }));
+
     const allData = {
       ...values,
       university_id: university_id,
       department_id: values?.department,
       category_id: values?.category,
+      document_requirements: [...filteredData, ...values.document_requirements],
     };
 
-    console.log(values);
     try {
       const finalData = new FormData();
 
@@ -277,7 +302,6 @@ const AllCourseForSuperAdmin = ({
 
       const result = await addCourse(finalData).unwrap();
       if (result) {
-        console.log(result);
         toast.success(result?.message);
         getCourseRefetch();
         setAddModalIsOpen(!addModalIsOpen);
@@ -291,11 +315,8 @@ const AllCourseForSuperAdmin = ({
   };
 
   const handleEditButtonClick = (itemId) => {
-    console.log('edit coursse modal item==>', itemId);
     setCourseIdForEdit(itemId);
   };
-
-  console.log('courseIdForEdit ===> ', courseIdForEdit);
 
   const handleEditModalClose = () => {
     setCourseIdForEdit(null);
@@ -326,6 +347,20 @@ const AllCourseForSuperAdmin = ({
   const handleUpdateCourse = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
+    const filteredData = getDocumentData?.data
+      ?.filter((doc) => values.document_select.includes(doc._id))
+      .map((item) => ({
+        title: item.title,
+        description: item.description,
+        isRequired: false,
+      }));
+
+    const documentRequirements = values?.document_requirements?.map((item) => ({
+      title: item.title,
+      description: item.description,
+      isRequired: item.isRequired,
+    }));
+
     const allData = {
       name: values?.name,
       available_seats: values?.available_seats,
@@ -339,17 +374,11 @@ const AllCourseForSuperAdmin = ({
       category_id: values?.category?.value,
       brochure: values?.brochure,
       university_price: values?.university_price,
-      document_requirements: [
-        {
-          title: values?.document_requirements.title,
-          description: values?.document_requirements.description,
-          isRequired: values?.document_requirements.isRequired,
-        },
-      ],
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
       image: values?.image,
+      document_requirements: [...filteredData, ...documentRequirements],
     };
 
     try {
@@ -580,6 +609,7 @@ const AllCourseForSuperAdmin = ({
               Add New
             </button>
             <CourseModalForm
+              SelectOption={documentOptions}
               formHeader={'Add New'}
               isOpen={addModalIsOpen}
               onClose={() => {
@@ -619,6 +649,7 @@ const AllCourseForSuperAdmin = ({
 
       {/* for update Course */}
       <CourseModalForm
+        SelectOption={documentOptions}
         formHeader="Update Data"
         isOpen={editModalIsOpen}
         onClose={handleEditModalClose}

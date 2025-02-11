@@ -1,3 +1,4 @@
+import MultipleSelectField from '@/components/common/formField/MultipleSelectField';
 import NumberField from '@/components/common/formField/NumberField';
 import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
 import SingleImageField from '@/components/common/formField/SingleImageField';
@@ -7,7 +8,16 @@ import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import React from 'react';
-import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from 'reactstrap';
 
 // ModalForm Component
 const CourseModalForm = ({
@@ -24,6 +34,7 @@ const CourseModalForm = ({
   handleFileChange,
   filePreview,
   setFilePreview,
+  SelectOption,
 }) => {
   return (
     <Modal isOpen={isOpen} centered size="xl">
@@ -135,6 +146,13 @@ const CourseModalForm = ({
                 </Col>
 
                 <Col xl={12}>
+                  <MultipleSelectField
+                    field={{ name: 'document_select' }}
+                    label="Select Existing Document Type"
+                    options={SelectOption}
+                    form={{ setFieldValue, values }}
+                  />
+                  {/* <h1 className="text-center mt-2">New Document</h1> */}
                   <FieldArray name="document_requirements">
                     {({ remove, push }) => (
                       <div>
@@ -143,7 +161,6 @@ const CourseModalForm = ({
                             key={index}
                             className="align-items-center mb-3   "
                           >
-                            {/* Document Title Field */}
                             <Col md={10}>
                               <div className="mb-3">
                                 <label
@@ -177,7 +194,6 @@ const CourseModalForm = ({
                               </div>
                             </Col>
 
-                            {/* Required Checkbox */}
                             <Col md={2} className="d-flex align-items-center">
                               <div className="form-check mt-4">
                                 <Field
@@ -195,7 +211,6 @@ const CourseModalForm = ({
                               </div>
                             </Col>
 
-                            {/* Document Description Field */}
                             <Col md={12}>
                               <div className="mb-3">
                                 <label
@@ -206,7 +221,7 @@ const CourseModalForm = ({
                                 </label>
                                 <Field
                                   as="textarea"
-                                  rows={4}
+                                  rows={3}
                                   name={`document_requirements[${index}].description`}
                                   placeholder="Enter document description"
                                   className="form-control"
@@ -214,22 +229,18 @@ const CourseModalForm = ({
                               </div>
                             </Col>
 
-                            {/* Remove Button */}
-                            {index > 0 && (
-                              <Col md={12} className="text-end">
-                                <Button
-                                  type="button"
-                                  onClick={() => remove(index)}
-                                  className="third-btn mt-3"
-                                >
-                                  <i className="ri-delete-bin-line me-2"></i>{' '}
-                                </Button>
-                              </Col>
-                            )}
+                            <Col md={12} className="text-end">
+                              <Button
+                                type="button"
+                                onClick={() => remove(index)}
+                                className="third-btn mt-3"
+                              >
+                                <i className="ri-delete-bin-line me-2"></i>{' '}
+                              </Button>
+                            </Col>
                           </Row>
                         ))}
 
-                        {/* Add New Document Button */}
                         <div className="d-flex justify-content-center mt-4">
                           <Button
                             type="button"
@@ -243,13 +254,14 @@ const CourseModalForm = ({
                             className="button d-flex align-items-center"
                           >
                             <i className="ri-add-line fw-bold fs-1"></i>
-                            <span>Add New Document</span>
+                            <span>Add New Document Requirement</span>
                           </Button>
                         </div>
                       </div>
                     )}
                   </FieldArray>
                 </Col>
+
                 <Col xl={12}>
                   <FieldArray name="entry_requirements">
                     {({ remove, push }) => (
