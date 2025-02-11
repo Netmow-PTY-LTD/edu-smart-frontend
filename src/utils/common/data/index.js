@@ -586,6 +586,17 @@ const studentApplicationsHeaders = [
     ),
   },
   {
+    title: 'Student Name',
+    key: 'student_name',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.student?._id
+          ? item?.student?.first_name + ' ' + item?.student?.last_name
+          : '-'}
+      </span>
+    ),
+  },
+  {
     title: 'Applied By',
     key: 'applied_by',
     render: (item) => (
@@ -597,12 +608,21 @@ const studentApplicationsHeaders = [
     ),
   },
   {
+    title: 'Price',
+    key: 'price',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.payment_price ? item?.payment_price : '-'}
+      </span>
+    ),
+  },
+  {
     title: 'Payment Status',
     key: 'payment_status',
     render: (item) => (
       <>
         <span
-          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'unpaid' ? 'bg-danger-subtle text-danger' : ''}`}
+          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
         >
           {item?.payment_status ?? '-'}
         </span>
