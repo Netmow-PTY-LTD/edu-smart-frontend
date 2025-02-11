@@ -25,6 +25,7 @@ import {
 import * as Yup from 'yup';
 import CourseModalForm from '../modals/CourseModalForm';
 import Image from 'next/image';
+import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 
 const AllCourseForSuperAdmin = ({
   university_id,
@@ -56,11 +57,10 @@ const AllCourseForSuperAdmin = ({
     department: '',
     category: '',
     brochure: null,
-    document_requirements: [{ title: '', description: '', isRequired: false }],
+    document_requirements: [],
     entry_requirements: [''],
     english_requirements: [''],
     program_duration: '',
-
     image: null,
   });
 
@@ -80,6 +80,20 @@ const AllCourseForSuperAdmin = ({
     isLoading: getCourseIsLoading,
     refetch: getCourseRefetch,
   } = useGetCourseQuery(university_id, { skip: !university_id });
+
+  // document Related api
+  const {
+    data: getDocumentData,
+    error: getDocumentError,
+    isLoading: getDocumentIsLoading,
+    refetch: getDocuemtnRefetch,
+  } = useGetDocumentInSuperAdminQuery();
+  console.log('document data ==>', getDocumentData);
+
+  const documentOptions = getDocumentData?.data?.map((item) => ({
+    value: item._id,
+    label: item.title,
+  }));
 
   const [
     updateCourse,
@@ -139,6 +153,13 @@ const AllCourseForSuperAdmin = ({
               getSingleCourseData?.image.url
             );
           }
+          console.log(
+            'from document_requirement==>',
+            getSingleCourseData.document_requirements?.map((item) => ({
+              label: item.title,
+              value: item.title,
+            }))
+          );
 
           setInitialValues({
             name: getSingleCourseData?.name || '',
@@ -239,18 +260,29 @@ const AllCourseForSuperAdmin = ({
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+    const filteredData = getDocumentData?.data
+      ?.filter((doc) => values.document_select.includes(doc._id))
+      .map((item) => ({
+        title: item.title,
+        description: item.description,
+        isRequired: false,
+      }));
+
+    // console.log('filtered data=>', filteredData);
     const allData = {
       ...values,
       university_id: university_id,
       department_id: values?.department,
       category_id: values?.category,
+      document_requirements: [...filteredData, ...values.document_requirements],
     };
-
-    console.log(values);
+    console.log(allData);
     try {
       const finalData = new FormData();
 
       Object.entries(allData).forEach(([key, value]) => {
+        // console.log('final data key value', value);
+
         if (Array.isArray(value)) {
           value.forEach((item, index) => {
             if (
@@ -580,6 +612,7 @@ const AllCourseForSuperAdmin = ({
               Add New
             </button>
             <CourseModalForm
+              SelectOption={documentOptions}
               formHeader={'Add New'}
               isOpen={addModalIsOpen}
               onClose={() => {
@@ -587,7 +620,7 @@ const AllCourseForSuperAdmin = ({
               }}
               onSubmit={handleSubmit}
               initialValues={initialValues}
-              validationSchema={validationSchema}
+              // validationSchema={validationSchema}
               formSubmit={'Submit'}
               allDepartmentName={allDepartmentName}
               allCategoryName={allCategoryName}
@@ -619,6 +652,7 @@ const AllCourseForSuperAdmin = ({
 
       {/* for update Course */}
       <CourseModalForm
+        SelectOption={documentOptions}
         formHeader="Update Data"
         isOpen={editModalIsOpen}
         onClose={handleEditModalClose}
