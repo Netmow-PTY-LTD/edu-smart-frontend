@@ -13,11 +13,15 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
 
   useEffect(() => {
     const file = form.values[field.name];
-    console.log(file?.type);
+
     if (file && isValidFile(file)) {
       setFileName(file.name);
       setFileType(file.type);
-      if (file.type === 'application/pdf' || file.type === 'application/octet-stream' || file.type.startsWith('image/')) {
+      if (
+        file.type === 'application/pdf' ||
+        file.type === 'application/octet-stream' ||
+        file.type.startsWith('image/')
+      ) {
         setFilePreview(URL.createObjectURL(file));
         form?.setFieldValue(field?.name, file);
       } else {
@@ -27,7 +31,7 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
       setFilePreview(null);
       form?.setFieldValue(field?.name, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [field.name]);
 
   const handleFileChange = (e) => {
@@ -54,8 +58,6 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
     setFileType(null);
     form.setFieldValue(field.name, null);
   };
-
-  console.log(filePreview);
 
   return (
     <div>

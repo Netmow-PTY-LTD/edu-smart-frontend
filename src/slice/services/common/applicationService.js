@@ -30,6 +30,12 @@ export const applicationService = createApi({
         method: 'GET',
       }),
     }),
+    getRecentApplications: builder.query({
+      query: () => ({
+        url: '/application/recent',
+        method: 'GET',
+      }),
+    }),
     getApplication: builder.query({
       query: (id) => ({
         url: `/application/${id}`,
@@ -68,4 +74,5 @@ export const {
   useGetAllEmgsStatusQuery,
   useGetEmgsStatusTimelineQuery,
   useAddEmgsTimelineMutation,
+  useGetRecentApplicationsQuery,
 } = applicationService;
