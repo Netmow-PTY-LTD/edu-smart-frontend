@@ -24,6 +24,7 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 import CourseModalForm from '../modals/CourseModalForm';
+import Image from 'next/image';
 
 const AllCourseForSuperAdmin = ({
   university_id,
@@ -49,14 +50,18 @@ const AllCourseForSuperAdmin = ({
     available_seats: '',
     price: '',
     gst: '',
-    agent_commission: '',
+    agent_commission_percentage: '',
+    university_price: '',
     description: '',
     department: '',
     category: '',
     brochure: null,
+    document_requirements: [{ title: '', description: '', isRequired: false }],
     entry_requirements: [''],
     english_requirements: [''],
     program_duration: '',
+
+    image: null,
   });
 
   const [
@@ -122,16 +127,27 @@ const AllCourseForSuperAdmin = ({
 
       const fetchData = async () => {
         try {
-          const brochureFile = await convertImageUrlToFile(
-            getSingleCourseData?.brochure?.url
-          );
+          let brochureFile = null;
+          if ('brochure' in getSingleCourseData) {
+            brochureFile = await convertImageUrlToFile(
+              getSingleCourseData?.brochure?.url
+            );
+          }
+          let imageFiles = null;
+          if ('image' in getSingleCourseData) {
+            imageFiles = await convertImageUrlToFile(
+              getSingleCourseData?.image.url
+            );
+          }
 
           setInitialValues({
             name: getSingleCourseData?.name || '',
             available_seats: getSingleCourseData?.available_seats || '',
             price: getSingleCourseData?.price || '',
             gst: getSingleCourseData?.gst || '',
-            agent_commission: getSingleCourseData?.agent_commission || '',
+            agent_commission_percentage:
+              getSingleCourseData?.agent_commission_percentage || '',
+            university_price: getSingleCourseData?.university_price || '',
             department: getSingleCourseData?.department?._id
               ? {
                   label: getSingleCourseData?.department?.name,
@@ -147,15 +163,18 @@ const AllCourseForSuperAdmin = ({
             brochure: brochureFile || '',
             description: getSingleCourseData?.description || '',
             entry_requirements: getSingleCourseData?.entry_requirements || '',
+            document_requirements:
+              getSingleCourseData?.document_requirements || '',
             english_requirements:
               getSingleCourseData?.english_requirements || '',
             program_duration: getSingleCourseData?.program_duration || '',
+            image: imageFiles || '',
           });
 
           setEditModalIsOpen(true);
           setFilePreview(brochureFile?.name);
         } catch (error) {
-          // console.error('Error loading data:', error);
+          console.error('Error loading data:', error);
         }
       };
 
@@ -163,32 +182,63 @@ const AllCourseForSuperAdmin = ({
     }
   }, [getCourseData?.data, courseIdForEdit]);
 
-  // Validation schema using Yup
-  const validationSchema = Yup.object({
-    name: Yup.string()
-      .max(50, 'maximum use 50 letters')
-      .required('Name is required'),
-    department: Yup.string().required('department is required'),
-    category: Yup.string().required('category is required'),
-    available_seats: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('available_seats is required'),
-    price: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('price is required'),
-    gst: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('gst is required'),
-    agent_commission: Yup.string()
-      .max(12, 'maximum use 12 letters')
-      .required('Agent commission is required'),
-    description: Yup.string().required('description is required'),
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Course Name is required'),
+    available_seats: Yup.number()
+      .typeError('Available Seats must be a number')
+      .min(1, 'At least 1 seat is required')
+      .required('Available Seats is required'),
+    department: Yup.string().required('Department selection is required'),
+    category: Yup.string().required('Course Category selection is required'),
+    price: Yup.number()
+      .typeError('Course Fee must be a number')
+      .min(0, 'Course Fee cannot be negative')
+      .required('Course Fee is required'),
+    university_price: Yup.number()
+      .typeError('University Fee must be a number')
+      .min(0, 'University Fee cannot be negative')
+      .required('University Fee is required'),
+    gst: Yup.number()
+      .typeError('GST must be a number')
+      .min(0, 'GST cannot be negative')
+      .max(100, 'GST cannot be more than 100%')
+      .required('GST is required'),
+    agent_commission_percentage: Yup.number()
+      .typeError('Agent Commission must be a number')
+      .min(0, 'Agent Commission cannot be negative')
+      .max(100, 'Agent Commission cannot be more than 100%')
+      .required('Agent Commission is required'),
+    program_duration: Yup.string().required('Program Duration is required'),
+    brochure: Yup.mixed().required('Brochure file is required'),
+    image: Yup.mixed().required('Course Picture is required'),
+    description: Yup.string()
+      .min(20, 'Description must be at least 20 characters')
+      .required('Course Description is required'),
+
+    document_requirements: Yup.array()
+      .of(
+        Yup.object().shape({
+          title: Yup.string().required('Document Title is required'),
+          description: Yup.string()
+            .min(5, 'Document Description must be at least 5 characters')
+            .required('Document Description is required'),
+          isRequired: Yup.boolean(),
+        })
+      )
+      .min(1, 'At least one document requirement is required'),
+
+    entry_requirements: Yup.array()
+      .of(Yup.string().required('Entry requirement is required'))
+      .min(1, 'At least one entry requirement is required'),
+
+    english_requirements: Yup.array()
+      .of(Yup.string().required('English requirement is required'))
+      .min(1, 'At least one English requirement is required'),
   });
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
     const allData = {
       ...values,
       university_id: university_id,
@@ -196,17 +246,30 @@ const AllCourseForSuperAdmin = ({
       category_id: values?.category,
     };
 
-    // console.log(allData);
-
+    console.log(values);
     try {
       const finalData = new FormData();
+
       Object.entries(allData).forEach(([key, value]) => {
-        if (key === 'entry_requirements' || key === 'english_requirements') {
-          if (Array.isArray(value)) {
-            value.forEach((item, index) => {
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            if (
+              key === 'entry_requirements' ||
+              key === 'english_requirements'
+            ) {
               finalData.append(`${key}[${index}]`, item);
-            });
-          }
+            } else if (key === 'document_requirements') {
+              finalData.append(`${key}[${index}][title]`, item.title);
+              finalData.append(
+                `${key}[${index}][description]`,
+                item.description
+              );
+              finalData.append(
+                `${key}[${index}][isRequired]`,
+                item.isRequired ?? false
+              );
+            }
+          });
         } else {
           finalData.append(key, value);
         }
@@ -214,6 +277,7 @@ const AllCourseForSuperAdmin = ({
 
       const result = await addCourse(finalData).unwrap();
       if (result) {
+        console.log(result);
         toast.success(result?.message);
         getCourseRefetch();
         setAddModalIsOpen(!addModalIsOpen);
@@ -227,8 +291,11 @@ const AllCourseForSuperAdmin = ({
   };
 
   const handleEditButtonClick = (itemId) => {
+    console.log('edit coursse modal item==>', itemId);
     setCourseIdForEdit(itemId);
   };
+
+  console.log('courseIdForEdit ===> ', courseIdForEdit);
 
   const handleEditModalClose = () => {
     setCourseIdForEdit(null);
@@ -237,14 +304,20 @@ const AllCourseForSuperAdmin = ({
       available_seats: '',
       price: '',
       gst: '',
-      agent_commission: '',
+      agent_commission_percentage: '',
+      university_price: '',
       description: '',
       department: '',
       category: '',
       brochure: null,
+      document_requirements: [
+        { title: '', description: '', isRequired: false },
+      ],
       entry_requirements: [''],
       english_requirements: [''],
       program_duration: '',
+
+      image: null,
     });
     setFilePreview(null);
     setEditModalIsOpen(false);
@@ -258,27 +331,50 @@ const AllCourseForSuperAdmin = ({
       available_seats: values?.available_seats,
       price: values?.price,
       gst: values?.gst,
-      agent_commission: values?.agent_commission,
+      agent_commission_percentage: values?.agent_commission_percentage,
       description: values?.description,
       course_id: courseIdForEdit,
       university_id: university_id,
       department_id: values?.department?.value,
       category_id: values?.category?.value,
       brochure: values?.brochure,
+      university_price: values?.university_price,
+      document_requirements: [
+        {
+          title: values?.document_requirements.title,
+          description: values?.document_requirements.description,
+          isRequired: values?.document_requirements.isRequired,
+        },
+      ],
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
+      image: values?.image,
     };
 
     try {
       const finalData = new FormData();
+
       Object.entries(allData).forEach(([key, value]) => {
-        if (key === 'entry_requirements' || key === 'english_requirements') {
-          if (Array.isArray(value)) {
-            value.forEach((item, index) => {
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            if (
+              key === 'entry_requirements' ||
+              key === 'english_requirements'
+            ) {
               finalData.append(`${key}[${index}]`, item);
-            });
-          }
+            } else if (key === 'document_requirements') {
+              finalData.append(`${key}[${index}][title]`, item.title);
+              finalData.append(
+                `${key}[${index}][description]`,
+                item.description
+              );
+              finalData.append(
+                `${key}[${index}][isRequired]`,
+                item.isRequired ?? false
+              );
+            }
+          });
         } else {
           finalData.append(key, value);
         }
@@ -357,6 +453,25 @@ const AllCourseForSuperAdmin = ({
       ),
     },
 
+    {
+      title: 'Course Picture',
+      key: 'img',
+      render: (item, index) => (
+        <div className="d-flex flex-column text-capitalize">
+          {item.image && (
+            <Image
+              src={item.image.url}
+              alt={`Course ${index + 1}`}
+              width={40}
+              height={40}
+              className="mt-2 rounded"
+              style={{ objectFit: 'cover' }}
+            />
+          )}
+        </div>
+      ),
+    },
+
     { title: 'Course Name', key: 'name' },
     {
       title: 'Available Seats',
@@ -377,6 +492,15 @@ const AllCourseForSuperAdmin = ({
       ),
     },
     {
+      title: 'University Fee',
+      key: 'university_price',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.price}
+        </span>
+      ),
+    },
+    {
       title: 'GST In Course Fee (%)',
       key: 'gst',
       render: (item, index) => (
@@ -385,10 +509,10 @@ const AllCourseForSuperAdmin = ({
     },
     {
       title: 'Agent Commission (%)',
-      key: 'agent_commission',
+      key: 'agent_commission_percentage',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.agent_commission}
+          {item?.agent_commission_percentage}
         </span>
       ),
     },
@@ -463,7 +587,7 @@ const AllCourseForSuperAdmin = ({
               }}
               onSubmit={handleSubmit}
               initialValues={initialValues}
-              // validationSchema={validationSchema}
+              validationSchema={validationSchema}
               formSubmit={'Submit'}
               allDepartmentName={allDepartmentName}
               allCategoryName={allCategoryName}
