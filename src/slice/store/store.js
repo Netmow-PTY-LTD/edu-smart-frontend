@@ -8,7 +8,8 @@ import { applicationService } from '../services/common/applicationService';
 import { paymentService } from '../services/common/paymentService';
 import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
-import { publicAgentService } from '../services/public/agent/publicAgentService';
+
+import { applicationServiceNew } from '../services/public/application/applicationServiceNew';
 import { authService } from '../services/public/auth/authService';
 import { publicPackageService } from '../services/public/package/publicPackageService';
 import { publicStudentService } from '../services/public/student/publicStudentService';
@@ -23,6 +24,7 @@ import { departmentService } from '../services/super admin/departmentService';
 import { hotOfferService } from '../services/super admin/hotOfferService';
 import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
+import { requiredService } from '../services/super admin/requiredService';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
@@ -31,6 +33,8 @@ import { universityAdministrationGalleryService } from '../services/university-a
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
 import { documentService } from '../services/super admin/documentService';
+import { contactUsService } from '../services/public/contact-us/contactUsService';
+import { publicAgentService } from '../services/public/agent/publicAgentService';
 
 export const store = configureStore({
   reducer: {
@@ -75,6 +79,9 @@ export const store = configureStore({
     [agentApplicationService.reducerPath]: agentApplicationService.reducer,
     [couponService.reducerPath]: couponService.reducer,
     [documentService.reducerPath]: documentService.reducer,
+    [contactUsService.reducerPath]: contactUsService.reducer,
+    [requiredService.reducerPath]: requiredService.reducer,
+    [applicationServiceNew.reducerPath]: applicationServiceNew.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -107,7 +114,11 @@ export const store = configureStore({
       .concat(applicationService.middleware)
       .concat(couponService.middleware)
       .concat(agentApplicationService.middleware)
-      .concat(documentService.middleware),
+      .concat(documentService.middleware)
+      .concat(contactUsService.middleware)
+      .concat(requiredService.middleware)
+      .concat(applicationServiceNew.middleware)
+      .concat(agentApplicationService.middleware),
 });
 
 setupListeners(store.dispatch);

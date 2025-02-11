@@ -1,8 +1,12 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useCreateApplicationMutation } from '@/slice/services/common/applicationService';
+
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import {
+  useCreateApplicationMutation,
+  useUpdateApplicationStatusMutation,
+} from '@/slice/services/public/application/applicationServiceNew';
 import {
   useGetSingleCourseQuery,
   useGetsingleUniversityQuery,
@@ -28,8 +32,12 @@ const SingleUniversityCourse = () => {
   const router = useRouter();
   const [open, setOpen] = useState('1');
   const [step, setStep] = useState(1);
+  const [buttonType, setButtonType] = useState('');
   const university_id = router.query.id;
   const course_id = router.query.courseId;
+
+  // console.log(university_id);
+  // console.log(course_id);
 
   const {
     data: getSingleUniversityDataForStudent,
@@ -49,8 +57,31 @@ const SingleUniversityCourse = () => {
     course_id: course_id,
   });
 
-  const [createApplication, { isLoading: createApplicationIsLoading }] =
-    useCreateApplicationMutation();
+  const [
+    createApplication,
+    { data: createApplicationData, isLoading: createApplicationIsLoading },
+  ] = useCreateApplicationMutation();
+
+  const [
+    updateApplicationStatus,
+    {
+      data: updateApplicationStatusData,
+      isLoading: updateApplicationStatusIsLoading,
+    },
+  ] = useUpdateApplicationStatusMutation();
+
+  useEffect(() => {
+    if (updateApplicationStatusData?.success) {
+      toast.success('Application created successfully');
+      router.push(`/dashboard/student/applications`);
+    } else if (updateApplicationStatusData?.error) {
+      toast.error('Application failed');
+    }
+  }, [
+    router,
+    updateApplicationStatusData?.error,
+    updateApplicationStatusData?.success,
+  ]);
 
   useEffect(() => {
     if (university_id) {
@@ -59,70 +90,62 @@ const SingleUniversityCourse = () => {
   }, [getSingleUniversityForStudentRefetch, university_id]);
 
   useEffect(() => {
+    if (createApplicationData?.success) {
+      toast.success(createApplicationData?.message);
+      if (buttonType === 'Proceed to Payment') {
+        router.push(
+          `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
+        );
+      } else {
+        router.push(`/dashboard/student/applications`);
+      }
+    }
+  }, [
+    buttonType,
+    course_id,
+    createApplicationData?.data?._id,
+    createApplicationData?.message,
+    createApplicationData?.success,
+    router,
+    university_id,
+  ]);
+
+  useEffect(() => {
     const requestToCreateApplication = async (
-      course_id,
-      student_id,
-      payment_price,
-      payment_gst,
-      payment_status,
-      transaction_id
+      transaction_id,
+      application_id
     ) => {
+      console.log(transaction_id);
+      console.log(application_id);
       try {
-        const response = await createApplication({
-          course_id,
-          student_id,
-          payment_price,
-          payment_gst,
-          payment_status,
+        const response = await updateApplicationStatus({
+          status: 'paid',
           transaction_id,
+          application_id,
         }).unwrap();
         // console.log(response);
         if (response.success) {
           toast.success('Application created successfully');
-          window.location.href = `/dashboard/student/applications`;
+          router.push(`/dashboard/student/applications`);
         } else {
           toast.error('Application failed');
         }
       } catch (error) {
-        toast.error('Something went wrong while creating application');
+        // toast.error('Something went wrong while creating application');
       }
     };
+
     if (
       router?.query?.payment_status === 'success' &&
       router?.query?.transaction_id &&
-      getSingleCourseData?.data?._id &&
-      getSingleCourseData?.data?.price >= 0 &&
-      getSingleCourseData?.data?.gst >= 0 &&
-      getSingleCourseData?.data?.agent_commission > 0 &&
       userInfoData?.data?._id
     ) {
-      const course_id = getSingleCourseData?.data?._id;
-      const student_id = userInfoData?.data?._id;
-      const payment_price = getSingleCourseData?.data?.price;
-      const payment_gst = getSingleCourseData?.data?.gst;
-      const payment_status =
-        router?.query?.payment_status === 'success' ? 'paid' : 'unpaid';
       const transaction_id = router?.query?.transaction_id;
+      const application_id = router?.query?.application_id;
       toast.success('Payment Successfull');
-      requestToCreateApplication(
-        course_id,
-        student_id,
-        payment_price,
-        payment_gst,
-        payment_status,
-        transaction_id
-      );
+      requestToCreateApplication(transaction_id, application_id);
     }
-  }, [
-    createApplication,
-    getSingleCourseData?.data?._id,
-    getSingleCourseData?.data?.agent_commission,
-    getSingleCourseData?.data?.gst,
-    getSingleCourseData?.data?.price,
-    router?.query?.payment_status,
-    router?.query?.transaction_id,
-    userInfoData?.data?._id,
-  ]);
+  }, [router, updateApplicationStatus, userInfoData?.data?._id]);
 
   useEffect(() => {
     if (router?.query?.payment_status === 'faild') {
@@ -156,6 +179,70 @@ const SingleUniversityCourse = () => {
         console.error('Error downloading the file:', error);
       });
   };
+
+  const handleAddSubmit = async (values, { setSubmitting }, actionType) => {
+    setSubmitting(true);
+    setButtonType(actionType);
+
+    try {
+      console.log('Form Submitted with action:', actionType);
+      console.log('Form Values:', values);
+
+      const addData = {
+        course_id: getSingleCourseData?.data?._id,
+        student_id: userInfoData?.data?._id,
+        applied_by: userInfoData?.data?._id,
+        payment_price: getSingleCourseData?.data?.price,
+        payment_gst: getSingleCourseData?.data?.gst,
+        payment_status: 'pending',
+        ...values,
+      };
+
+      const finalData = new FormData();
+      for (const [key, value] of Object.entries(addData)) {
+        if (Array.isArray(value)) {
+          value.forEach((file, index) => {
+            finalData.append(`${key}[${index}]`, file);
+          });
+        } else {
+          finalData.append(key, value);
+        }
+      }
+
+      // Log FormData for debugging
+      for (const [key, value] of finalData.entries()) {
+        console.log(`${key}: ${value instanceof File ? value.name : value}`);
+      }
+
+      // Submit the form data to the API
+      const response = await createApplication(finalData).unwrap();
+
+      if (response.success) {
+        toast.success('Application created successfully');
+        if (actionType === 'Proceed to Payment') {
+          router.push(
+            `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options`
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+      // toast.error(error.message || 'An error occurred during submission');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const initialValues = getSingleCourseData?.data?.document_requirements.reduce(
+    (acc, item) => {
+      const fieldName = item.title.toLowerCase().replace(/\s+/g, '_');
+      acc[fieldName] = [];
+      return acc;
+    },
+    {}
+  );
+
+  console.log(getSingleCourseData?.data?.document_requirements);
 
   return (
     <Layout>
@@ -287,7 +374,15 @@ const SingleUniversityCourse = () => {
                   </Card>
                 ) : (
                   // <CourseForm setStep={setStep} step={step} />
-                  <AppliedCourseForm setStep={setStep} step={step} />
+                  <AppliedCourseForm
+                    setStep={setStep}
+                    step={step}
+                    documentRequirements={
+                      getSingleCourseData?.data?.document_requirements
+                    }
+                    handleAddSubmit={handleAddSubmit}
+                    initialValues={initialValues}
+                  />
                 )}
               </>
             )}

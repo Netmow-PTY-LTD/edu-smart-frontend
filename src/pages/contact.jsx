@@ -1,16 +1,48 @@
 import PageBanner from '@/components/main/common/PageBanner';
 import MainLayout from '@/components/main/layout';
-import React from 'react';
+import { useCreateContactMutation } from '@/slice/services/public/contact-us/contactUsService';
+import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const [createContact, { isLoading, isError, isSuccess }] =
+    useCreateContactMutation();
+
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await createContact(formData).unwrap();
+      //console.log('Success:', response);
+      toast.success(response?.message);
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error) {
+      //console.error('Error:', error);
+      toast.error('Failed to send message.');
+    }
+  };
+
   return (
     <MainLayout>
       <PageBanner
         title="Contact Us"
         bgImage="/assets/images/agent/agent_slider_bg.png"
       />
-
+      <ToastContainer />
       <section className="contact-content">
         <div className="container">
           <Row>
@@ -88,7 +120,7 @@ export default function Contact() {
             </Col>
             <Col lg={6}>
               <div className="contact-form-main">
-                <form action="">
+                <form onSubmit={handleSubmit}>
                   <div className="form-wrapper-main">
                     <div className="form-group mb-4">
                       <label htmlFor="name">Name</label>
@@ -98,6 +130,9 @@ export default function Contact() {
                         name="name"
                         className="form-control"
                         placeholder="Your Name"
+                        value={formData?.name}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="form-group mb-4">
@@ -108,16 +143,22 @@ export default function Contact() {
                         name="email"
                         className="form-control"
                         placeholder="Your Email"
+                        value={formData?.email}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="form-group mb-4">
-                      <label htmlFor="password">Phone</label>
+                      <label htmlFor="phone">Phone</label>
                       <input
                         type="text"
-                        id="password"
-                        name="password"
+                        id="phone"
+                        name="phone"
                         className="form-control"
                         placeholder="Your Phone"
+                        // value={formData?.phone}
+                        onChange={handleChange}
+                        required
                       />
                     </div>
                     <div className="form-group mb-4">
@@ -128,13 +169,19 @@ export default function Contact() {
                         className="form-control"
                         rows={5}
                         cols={10}
+                        onChange={handleChange}
+                        required
                       >
                         Write your message
                       </textarea>
                     </div>
                     <div className="form-group text-center">
-                      <button type="submit" className="btn-send">
-                        Send Message
+                      <button
+                        type="submit"
+                        className="btn-send"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? 'Sending...' : 'Send Message'}
                       </button>
                     </div>
                   </div>
