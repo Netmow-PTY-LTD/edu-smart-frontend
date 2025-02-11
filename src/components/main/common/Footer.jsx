@@ -39,9 +39,9 @@ export default function Footer() {
               <h3>Quick Links</h3>
               <div className="footer-menu">
                 <ul>
-                  <li>
+                  {/* <li>
                     <Link href="/university/courses">All Courses</Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link href="/university">Universities</Link>
                   </li>
