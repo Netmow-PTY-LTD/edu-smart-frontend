@@ -1,76 +1,43 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
-import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
+import StudentApplicationEmgsStatusTimeline from '@/components/StudentDashboard/components/StudentApplicationEmgsStatusTimeline';
 import {
-  superAdminNameAndLogoData,
-  universityHeadersWithoutAction,
-} from '@/utils/common/data';
-
-import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+  useGetApplicationsQuery,
+  useGetRecentApplicationsQuery,
+} from '@/slice/services/common/applicationService';
+import { studentApplicationsHeaders } from '@/utils/common/data';
+import React from 'react';
 import {
   Card,
   CardBody,
   CardHeader,
+  Col,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Row,
   UncontrolledDropdown,
 } from 'reactstrap';
 
-const RecentApplicationForSuperAdmin = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
-  const [allSubscriptionData, setAllSubscriptionData] = useState('');
-  const perPageData = 10;
+export default function RecentApplicationForSuperAdmin() {
+  const [activeTab, setActiveTab] = React.useState('1');
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [currentTimeline, setCurrentTimeline] = React.useState('');
+  const perPageData = 9;
 
-  const {
-    data: getUniversityData,
-    error: getUniversityError,
-    isLoading: getUniversityIsLoading,
-    refetch: getUniversityRefetch,
-  } = useGetUniversityQuery();
-  const {
-    data: getRecentApplicationData,
-    error: getRecentApplicationError,
-    isLoading: getRecentApplicationIsLoading,
-    refetch: getRecentApplicationRefetch,
-  } = useGetRecentApplicationsQuery();
-
-  console.log('Get Recent Application data===>', getRecentApplicationData);
-  const handleSubscription = async (id) => {
-    try {
-      // const result = await updateSubscription(id).unwrap();
-      // if (result) {
-      //   toast.success(result?.message);
-      //   getUniversityRefetch();
-      // }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      //
-    }
+  const { data: recentApplicationData, isLoading: recentApplicationLoading } =
+    useGetRecentApplicationsQuery();
+  const handleViewEmgsStatus = (id) => {
+    setCurrentTimeline(id);
+    setActiveTab('2');
   };
 
-  // search input change function
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
-  // Filter data for search option
-  const isfilteredData =
-    getUniversityData?.data?.length > 0 &&
-    getUniversityData?.data.filter((item) =>
-      item?.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-  const allSubscriberHeaderAction = {
+  const EmgsStatusActionData = {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      <UncontrolledDropdown className="card-header-dropdown">
+      <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
           className="text-reset dropdown-btn"
@@ -80,65 +47,70 @@ const RecentApplicationForSuperAdmin = () => {
             <i className="ri-more-fill align-middle"></i>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+        <DropdownMenu className="ms-2">
           <DropdownItem>
-            <i class="ri-check-double-fill me-2"></i>
-            Subscribe
-          </DropdownItem>
-          <DropdownItem>
-            <i class="ri-close-line me-2"></i>
-            Unsubscribe
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View EMGS Status
+            </div>
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
   };
 
-  useEffect(() => {
-    setAllSubscriptionData([
-      superAdminNameAndLogoData, // it changable
-      ...universityHeadersWithoutAction, // it changable
-      allSubscriberHeaderAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Layout>
-      <div className="page-content">
-        <div className="container-fluid">
+      {recentApplicationLoading ? (
+        <LoaderSpiner />
+      ) : activeTab === '1' ? (
+        <div className="page-content">
           <div className="h-100">
-            <ToastContainer />
-            {getUniversityIsLoading ? (
-              <LoaderSpiner />
-            ) : (
-              <Card>
-                <CardHeader className="d-flex justify-content-between align-items-center">
-                  <SearchComponent
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                  />
-                </CardHeader>
-
-                <CardBody>
-                  <CommonTableComponent
-                    headers={allSubscriptionData}
-                    data={isfilteredData ? isfilteredData : []}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    perPageData={perPageData}
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                    emptyMessage="No Data found yet."
-                  />
-                </CardBody>
-              </Card>
-            )}
+            <div className="container-fluid">
+              <div>
+                <Row>
+                  <Col xl={12}>
+                    <Card>
+                      <CardHeader className="text-primary fw-semibold fs-2">
+                        Student's University Applications
+                      </CardHeader>
+                      <CardBody className="mh-100">
+                        <CommonTableComponent
+                          headers={[
+                            ...studentApplicationsHeaders,
+                            EmgsStatusActionData,
+                          ]}
+                          data={recentApplicationData?.data || []}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                          perPageData={perPageData}
+                          emptyMessage="No Data found yet."
+                        />
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="page-content">
+          <div className="h-100">
+            <div className="container-fluid">
+              <div>
+                <StudentApplicationEmgsStatusTimeline
+                  setActiveTab={setActiveTab}
+                  currentTimeline={currentTimeline}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
-};
-
-export default RecentApplicationForSuperAdmin;
+}

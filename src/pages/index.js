@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import StudyAbroadBanner from '@/components/main/home/StudyAbroadBanner';
 import PopularCourses from '@/components/main/home/PopularCourses';
 import BlogSection from '@/components/main/home/BlogSection';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSubscribeNewsLetterMutation } from '@/slice/services/public/newsLetter/newsLetterSubscriptionPublic';
 import { toast } from 'react-toastify';
 
