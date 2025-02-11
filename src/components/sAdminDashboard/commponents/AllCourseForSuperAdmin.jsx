@@ -255,7 +255,7 @@ const AllCourseForSuperAdmin = ({
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
     const filteredData = getDocumentData?.data
-      ?.filter((doc) => values.document_select.includes(doc._id))
+      ?.filter((doc) => values.document_select?.includes(doc._id))
       .map((item) => ({
         title: item.title,
         description: item.description,
@@ -346,7 +346,7 @@ const AllCourseForSuperAdmin = ({
     setSubmitting(true);
 
     const filteredData = getDocumentData?.data
-      ?.filter((doc) => values.document_select.includes(doc._id))
+      ?.filter((doc) => values.document_select?.includes(doc._id))
       .map((item) => ({
         title: item.title,
         description: item.description,
