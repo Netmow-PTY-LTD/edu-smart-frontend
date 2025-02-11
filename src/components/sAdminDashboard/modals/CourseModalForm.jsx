@@ -1,12 +1,23 @@
+import MultipleSelectField from '@/components/common/formField/MultipleSelectField';
 import NumberField from '@/components/common/formField/NumberField';
 import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
+import SingleImageField from '@/components/common/formField/SingleImageField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import React from 'react';
-import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from 'reactstrap';
 
 // ModalForm Component
 const CourseModalForm = ({
@@ -23,6 +34,7 @@ const CourseModalForm = ({
   handleFileChange,
   filePreview,
   setFilePreview,
+  SelectOption,
 }) => {
   return (
     <Modal isOpen={isOpen} centered size="xl">
@@ -79,13 +91,21 @@ const CourseModalForm = ({
                 </Col>
                 <Col xl={6}>
                   <div className="mb-3">
+                    <NumberField
+                      name="university_price"
+                      label="University Fee"
+                    />
+                  </div>
+                </Col>
+                <Col xl={6}>
+                  <div className="mb-3">
                     <NumberField name="gst" label="GST In Course Fee (%)" />
                   </div>
                 </Col>
                 <Col xl={6}>
                   <div className="mb-3">
                     <NumberField
-                      name="agent_commission"
+                      name="agent_commission_percentage"
                       label="Agent Commision (%)"
                     />
                   </div>
@@ -113,10 +133,135 @@ const CourseModalForm = ({
                   </div>
                 </Col>
                 <Col xl={12}>
+                  <SingleImageField
+                    field={{ name: 'image' }}
+                    form={{ setFieldValue, values }}
+                    label="Uploaded Course Picture"
+                  />
+                </Col>
+                <Col xl={12}>
                   <div className="mb-3">
                     <TextArea name="description" label="Course Description" />
                   </div>
                 </Col>
+
+                <Col xl={12}>
+                  <MultipleSelectField
+                    field={{ name: 'document_select' }}
+                    label="Select Existing Document Type"
+                    options={SelectOption}
+                    form={{ setFieldValue, values }}
+                  />
+                  {/* <h1 className="text-center mt-2">New Document</h1> */}
+                  <FieldArray name="document_requirements">
+                    {({ remove, push }) => (
+                      <div>
+                        {values.document_requirements?.map((item, index) => (
+                          <Row
+                            key={index}
+                            className="align-items-center mb-3   "
+                          >
+                            <Col md={10}>
+                              <div className="mb-3">
+                                <label
+                                  htmlFor={`document_requirements[${index}].title`}
+                                  className="form-label fw-bold"
+                                >
+                                  {`Document Title ${index + 1}`}
+                                </label>
+                                <Field
+                                  name={`document_requirements[${index}].title`}
+                                  placeholder="Enter document title"
+                                  className={`form-control ${
+                                    errors.document_requirements?.[index]
+                                      ?.title &&
+                                    touched.document_requirements?.[index]
+                                      ?.title
+                                      ? 'is-invalid'
+                                      : ''
+                                  }`}
+                                />
+                                {errors.document_requirements?.[index]?.title &&
+                                  touched.document_requirements?.[index]
+                                    ?.title && (
+                                    <div className="invalid-feedback">
+                                      {
+                                        errors.document_requirements[index]
+                                          .title
+                                      }
+                                    </div>
+                                  )}
+                              </div>
+                            </Col>
+
+                            <Col md={2} className="d-flex align-items-center">
+                              <div className="form-check mt-4">
+                                <Field
+                                  type="checkbox"
+                                  name={`document_requirements[${index}].isRequired`}
+                                  className="form-check-input"
+                                  id={`document_requirements[${index}].isRequired`}
+                                />
+                                <label
+                                  htmlFor={`document_requirements[${index}].isRequired`}
+                                  className="form-check-label ms-2 fw-bold"
+                                >
+                                  Required
+                                </label>
+                              </div>
+                            </Col>
+
+                            <Col md={12}>
+                              <div className="mb-3">
+                                <label
+                                  htmlFor={`document_requirements[${index}].description`}
+                                  className="form-label fw-bold"
+                                >
+                                  {`Document Description ${index + 1}`}
+                                </label>
+                                <Field
+                                  as="textarea"
+                                  rows={3}
+                                  name={`document_requirements[${index}].description`}
+                                  placeholder="Enter document description"
+                                  className="form-control"
+                                />
+                              </div>
+                            </Col>
+
+                            <Col md={12} className="text-end">
+                              <Button
+                                type="button"
+                                onClick={() => remove(index)}
+                                className="third-btn mt-3"
+                              >
+                                <i className="ri-delete-bin-line me-2"></i>{' '}
+                              </Button>
+                            </Col>
+                          </Row>
+                        ))}
+
+                        <div className="d-flex justify-content-center mt-4">
+                          <Button
+                            type="button"
+                            onClick={() =>
+                              push({
+                                title: '',
+                                description: '',
+                                isRequired: false,
+                              })
+                            }
+                            className="button d-flex align-items-center"
+                          >
+                            <i className="ri-add-line fw-bold fs-1"></i>
+                            <span>Add New Document Requirement</span>
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </FieldArray>
+                </Col>
+
                 <Col xl={12}>
                   <FieldArray name="entry_requirements">
                     {({ remove, push }) => (
@@ -181,7 +326,6 @@ const CourseModalForm = ({
                 <Col xl={12}>
                   <FieldArray name="english_requirements">
                     {({ remove, push }) => (
-                      // console.log(values),
                       <div>
                         {values.english_requirements?.map((item, index) => (
                           <Row key={index} className="align-items-center">

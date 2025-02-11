@@ -8,6 +8,7 @@ const SuperAdminSidebarData = () => {
   const [isUniversities, setIsUniversities] = useState(false);
   const [isUniversity, setIsUniversity] = useState(false);
   const [isUniManagement, setIsUniManagement] = useState(false);
+  const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
@@ -35,6 +36,9 @@ const SuperAdminSidebarData = () => {
       setIsUniversities(false);
     }
     if (iscurrentState !== 'University') {
+      setIsUniversity(false);
+    }
+    if (iscurrentState !== 'subscription') {
       setIsUniversity(false);
     }
   }, [iscurrentState]);
@@ -71,6 +75,13 @@ const SuperAdminSidebarData = () => {
           label: 'Add University',
           icon: 'ri-school-fill',
           link: '/dashboard/super-admin/university-management/add-university',
+          parentId: 'universities',
+        },
+        {
+          id: 'recent-application',
+          label: 'Recent Application',
+          icon: 'ri-school-fill',
+          link: '/dashboard/super-admin/university-management/recent-application',
           parentId: 'universities',
         },
       ],
@@ -179,6 +190,28 @@ const SuperAdminSidebarData = () => {
           link: '/dashboard/super-admin/settings/password',
           pathName: '/dashboard/super-admin/settings/password',
           parentId: 'settings',
+        },
+      ],
+    },
+    {
+      id: 'subscription',
+      label: 'Subscription',
+      icon: 'ri-rss-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setSubscriptionManagement(!isSubscriptionManagement);
+        setIscurrentState('subscription');
+      },
+      stateVariables: isSubscriptionManagement,
+      subItems: [
+        {
+          id: 'subscriptionList',
+          label: 'Subscription List',
+          icon: 'ri-rss-line',
+          link: '/dashboard/super-admin/subscription/subscription-list',
+          pathName: '/dashboard/super-admin/subscription/subscription-list',
+          parentId: 'subscription',
         },
       ],
     },

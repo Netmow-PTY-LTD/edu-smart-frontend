@@ -6,7 +6,8 @@ export const courseService = createApi({
   reducerPath: 'courseService',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      `${serverInfo?.base_url_prod}` + '/api/v1/university/admin/university',
+      // `${serverInfo?.base_url_prod}` + '/api/v1/university/admin/university',
+      `${serverInfo?.base_url_prod}` + '/api/v1/super/university',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
