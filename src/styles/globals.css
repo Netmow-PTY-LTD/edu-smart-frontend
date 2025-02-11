@@ -3396,6 +3396,10 @@ a.play-btn {
   color: #ffffff;
 } */
 
+.sqdk-single-pricing-table .icon {
+  flex-shrink: 0;
+}
+
 .pricing-table-heading h4 {
   font-weight: 700;
   font-size: 2.6rem;
@@ -9874,4 +9878,32 @@ textarea.form-control {
 .address-main {
   color: var(--color--primary);
   margin-top: 30px;
+}
+
+/* Packages Main */
+
+.packages-main {
+  padding: 8rem 0;
+}
+
+.packages-heading {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.packages-heading h2 {
+  font-size: 38px;
+  color: #1c1c1c;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-family: 'Poppins';
+  margin-bottom: 1.5rem;
+}
+
+.packages-heading p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #000;
+  font-family: 'Poppins';
 }

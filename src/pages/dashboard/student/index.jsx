@@ -12,6 +12,7 @@ import {
 } from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -21,6 +22,7 @@ const StudentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
     useState('');
+  const router = useRouter();
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
   const { data: universityData, isLoading: universityIsLoading } =
@@ -46,6 +48,19 @@ const StudentDashboard = () => {
       ...universityHeadersWithoutAction.slice(0, -1),
     ]);
   }, []);
+
+  useEffect(() => {
+    const course_choice = Cookies.get('course_choice');
+    const universityId = Cookies.get('universityId');
+
+    if (course_choice && universityId) {
+      router.push(
+        `/dashboard/student/university-management/single-university-profile/${universityId}/course/${course_choice}`
+      );
+      Cookies.remove('course_choice');
+      Cookies.remove('universityId');
+    }
+  }, [router]);
 
   return (
     <Layout>
