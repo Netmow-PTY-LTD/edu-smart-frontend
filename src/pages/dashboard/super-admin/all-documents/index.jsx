@@ -1,13 +1,131 @@
+import CommonTableComponent from '@/components/common/CommonTableComponent';
+import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
-import React, { useState } from 'react';
+import RequiredDocemtsModal from '@/components/sAdminDashboard/modals/requireDocuments';
+import {
+  useAddRequiredDocumentInSuperAdminMutation,
+  useDeleteRequiredDocumentInSuperAdminMutation,
+  useGetRequiredDocumentInSuperAdminQuery,
+  useUpdateRequiredDocumentInSuperAdminMutation,
+} from '@/slice/services/super admin/requiredService';
+import { documentHeaders } from '@/utils/common/data';
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
+import * as Yup from 'yup';
 
 const AllDocumentsInSuperAdmin = () => {
   const [openModal, setOpenModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [couponId, setDocumentId] = useState('');
+  const [requiredDocumentId, setRequiredDocumentId] = useState('');
+  const [deleteRequiredDocumentId, setDeleteRequiredDocumentId] = useState('');
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState('');
   const [editOpenModal, setEditOpenModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const perPageData = 9;
+
+  const [initialValues, setInitialValues] = useState({
+    title: '',
+    description: '',
+  });
+
+  const [addRequiredDocumentInSuperAdmin] =
+    useAddRequiredDocumentInSuperAdminMutation();
+  const [
+    updateRequiredDocumentInSuperAdmin,
+    { isLoading: updateRequiredDocumentInSuperAdminIsLoading },
+  ] = useUpdateRequiredDocumentInSuperAdminMutation();
+  const [
+    deleteRequiredDocumentInSuperAdmin,
+    { isLoading: deleteRequiredDocumentInSuperIsLoading },
+  ] = useDeleteRequiredDocumentInSuperAdminMutation();
+
+  const {
+    data: getRequiredDocumentData,
+    isLoading: getRequiredDocumentIsLoading,
+    refetch: getRequiredDocumentRefetch,
+  } = useGetRequiredDocumentInSuperAdminQuery();
+
+  const validationSchema = Yup.object({});
+
+  useEffect(() => {
+    if (getRequiredDocumentData?.data?.length > 0 && requiredDocumentId) {
+      const fetchData = async () => {
+        const singleCouponData = getRequiredDocumentData?.data?.find(
+          (item) => item?._id === requiredDocumentId
+        );
+
+        console.log(singleCouponData);
+
+        try {
+          setInitialValues({
+            title: singleCouponData?.title || '',
+            description: singleCouponData?.description || '',
+          });
+        } catch (error) {
+          console.error('Error loading data:', error);
+        }
+      };
+      fetchData();
+    }
+  }, [getRequiredDocumentData?.data, requiredDocumentId]);
+
+  // add RequiredDocument handler
+  const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+
+    // console.log(values);
+
+    try {
+      const response = await addRequiredDocumentInSuperAdmin(values).unwrap();
+
+      if (response) {
+        toast.success(response?.message);
+        getRequiredDocumentRefetch();
+        resetForm();
+        setOpenModal(!openModal);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // update  RequiredDocument handler
+  const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+
+    const editData = {
+      title: values?.title,
+      description: values?.description,
+      RequiredDocument_id: requiredDocumentId,
+    };
+
+    console.log(editData);
+
+    try {
+      const response =
+        await updateRequiredDocumentInSuperAdmin(editData).unwrap();
+      if (response) {
+        toast.success(response?.message);
+        getRequiredDocumentRefetch();
+        resetForm();
+        setRequiredDocumentId('');
+        setEditOpenModal(!editOpenModal);
+        setInitialValues({});
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const togOpenModal = () => {
     setOpenModal(!openModal);
   };
@@ -15,12 +133,41 @@ const AllDocumentsInSuperAdmin = () => {
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
+  // Filter data for search option
+  const isFilteredData =
+    getRequiredDocumentData?.data?.length > 0 &&
+    getRequiredDocumentData?.data.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
   const togEditOpenModal = (id) => {
-    setDocumentId(id);
+    setRequiredDocumentId(id);
     setEditOpenModal(!editOpenModal);
   };
 
-  const allCouponHeaderAction = {
+  const togDeleteModal = (itemId) => {
+    setDeleteRequiredDocumentId(itemId);
+    setDeleteModalIsOpen(!deleteModalIsOpen);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const result = await deleteRequiredDocumentInSuperAdmin(id).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getRequiredDocumentRefetch();
+        setDeleteRequiredDocumentId('');
+        setDeleteModalIsOpen(false);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      //
+    }
+  };
+
+  const allDocumentHeaderAction = {
     title: 'Action',
     key: 'actions',
     render: (item) => (
@@ -39,22 +186,23 @@ const AllDocumentsInSuperAdmin = () => {
       <div className="page-content">
         <div className="container-fluid">
           <div className="h-100">
+            <ToastContainer />
             <div className="d-flex align-items-center justify-content-between mb-4">
               <div>
                 <h1 className="text-secondary-alt fw-semibold d-flex align-items-center">
-                  All Coupon
+                  Document Required List
                 </h1>
               </div>
               <div onClick={togOpenModal}>
                 <button className="button px-4 py-2">
-                  Add New Coupon <i className="ri-add-line fw-bolder"></i>
+                  Add New <i className="ri-add-line fw-bolder"></i>
                 </button>
               </div>
             </div>
             <div>
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
-                  <h2>All Agents</h2>
+                  <h2>All Documents Type</h2>
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
@@ -62,15 +210,15 @@ const AllDocumentsInSuperAdmin = () => {
                 </CardHeader>
                 <CardBody>
                   <div className="sqdk-pricing-table">
-                    {/* {getCouponIsLoading ? (
+                    {/* {getDocumentIsLoading ? (
                       <LoaderSpiner />
                     ) : ( */}
                     <>
                       <CardBody>
-                        {/* <CommonTableComponent
+                        <CommonTableComponent
                           headers={[
-                            ...couponHeaders,
-                            alluniversityHeaderAction,
+                            ...documentHeaders,
+                            allDocumentHeaderAction,
                           ]}
                           data={isFilteredData ? isFilteredData : []}
                           currentPage={currentPage}
@@ -79,7 +227,7 @@ const AllDocumentsInSuperAdmin = () => {
                           searchTerm={searchTerm}
                           handleSearchChange={handleSearchChange}
                           emptyMessage="No Data found yet."
-                        /> */}
+                        />
                       </CardBody>
                     </>
                     {/* )} */}
@@ -87,6 +235,47 @@ const AllDocumentsInSuperAdmin = () => {
                 </CardBody>
               </Card>
             </div>
+
+            {
+              // Add Document
+              <RequiredDocemtsModal
+                open={openModal}
+                close={togOpenModal}
+                modalHeader={'Add New Document'}
+                submitButton={'Add Document'}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                handleSubmit={handleAddSubmit}
+              />
+            }
+
+            {
+              // edit Coupon
+              <RequiredDocemtsModal
+                open={editOpenModal}
+                close={() => (
+                  setRequiredDocumentId(''),
+                  setEditOpenModal(!editOpenModal),
+                  setInitialValues({})
+                )}
+                modalHeader={'Update Coupon'}
+                submitButton={'Update Coupon'}
+                initialValues={initialValues}
+                handleSubmit={handleUpdateSubmit}
+                isLoading={updateRequiredDocumentInSuperAdminIsLoading}
+              />
+            }
+            {
+              <DeleteModal
+                Open={deleteModalIsOpen}
+                close={() => (
+                  setDeleteRequiredDocumentId(''), setDeleteModalIsOpen(false)
+                )}
+                id={deleteRequiredDocumentId}
+                handleDelete={handleDelete}
+                isloading={deleteRequiredDocumentInSuperIsLoading}
+              />
+            }
           </div>
         </div>
       </div>

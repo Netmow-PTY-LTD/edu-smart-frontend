@@ -7,8 +7,12 @@ const CourseCard = ({ course }) => {
     <div class="course-card">
       <figure class="course-card__image">
         <Image
-          src={course?.image}
-          alt="MBA in International Business at Harvard University"
+          src={
+            course?.image?.url
+              ? course?.image?.url
+              : '/assets/images/landing/popularCourse/course2.png'
+          }
+          alt={course?.name ? course?.name : ''}
           width={500}
           height={300}
         />

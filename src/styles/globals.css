@@ -501,6 +501,7 @@ table td {
   background-color: #fff;
   position: relative;
   z-index: 99;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.04);
 }
 .header-bottom-content {
   display: flex;
@@ -3410,7 +3411,7 @@ a.play-btn {
 
 .price {
   text-align: center;
-  margin: 3.2rem 0 3.4rem;
+  margin: 2.2rem 0 2.4rem;
 }
 
 .price p span {
@@ -3448,9 +3449,9 @@ a.play-btn {
   color: #162a73;
 }
 
-.pricing-lists {
+/* .pricing-lists {
   margin-top: 2.8rem;
-}
+} */
 .pricing-lists ul {
   padding-left: 0;
 }
@@ -9906,4 +9907,280 @@ textarea.form-control {
   font-weight: 400;
   color: #000;
   font-family: 'Poppins';
+}
+
+/* Course Details Front Website */
+
+.course-details-main {
+  background-color: #fff;
+  padding: 67px 0;
+}
+
+.course-details-main h2 {
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: clamp(28px, 3vw, 40px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.course-details-main h4 {
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin: 20px 0;
+}
+
+.course-act {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 170%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #b5d336;
+  background: #fcfef6;
+}
+
+.description-text {
+  color: var(--Black, #1c1c1c);
+  font-family: Poppins;
+  font-size: clamp(15px, 2vw, 20px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%; /* 34px */
+  margin: 30px 0;
+}
+
+.btn-download {
+  padding: 14px 24px;
+  background-color: #13c9bf;
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 170%;
+  border-radius: 12px;
+}
+
+.btn-confirm-apply {
+  padding: 14px 24px;
+  background-color: #b5d336;
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 170%;
+  border-radius: 12px;
+}
+
+.course-requirements-main {
+  margin-top: 81px;
+}
+
+.course-img img {
+  border-radius: 24px;
+  border: 1px solid #1c1c1c;
+}
+
+@media (max-width: 991px) {
+  .course-details-main {
+    padding: 50px 0;
+  }
+
+  .course-requirements-main {
+    margin-top: 40px;
+  }
+
+  .course-img {
+    margin-top: 20px;
+  }
+}
+
+/* Coupon Packages */
+
+.coupon-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.single-coupon {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  width: calc((100% - 60px) / 4);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+@media (max-width: 991px) {
+  .single-coupon {
+    width: calc((100% - 40px) / 3);
+  }
+}
+
+/* Page Banner */
+
+.page-banner {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 150px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.page-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+}
+
+.page-banner-content h1 {
+  font-size: clamp(30px, 4vw, 50px);
+  color: #fff;
+  text-align: center;
+}
+
+/* About Page */
+
+.about-content-main {
+  padding: 7rem 0;
+}
+
+.about-content-main h2 {
+  color: #1c1c1c;
+  font-size: clamp(22px, 3vw, 40px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.about-content-main .edu-about-text {
+  color: #1c1c1c;
+  font-size: clamp(14px, 1vw, 20px);
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 20px 0 30px;
+}
+
+.btn-contact-main {
+  padding: 14px 24px;
+  background-color: #13c9bf;
+  border-radius: 12px;
+  color: #1c1c1c;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 600;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-img {
+  padding-left: 30px;
+}
+
+.ed-about-content {
+  padding-right: 50px;
+}
+
+.about-img img {
+  border-radius: 24px;
+}
+
+@media (max-width: 991px) {
+  .page-banner {
+    padding: 60px 0;
+  }
+  .about-content-main {
+    padding: 3rem 0;
+  }
+  .ed-about-content {
+    padding-right: 0;
+  }
+
+  .about-img {
+    padding-left: 0;
+    margin-top: 30px;
+  }
+}
+
+/* Contact Us */
+
+.contact-content {
+  padding: 7rem 0;
+}
+
+.contact-text-content {
+  padding-right: 65px;
+}
+
+.contact-text-content h2 {
+  color: #1c1c1c;
+  font-size: clamp(22px, 3vw, 40px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.contact-text-content .contact-text {
+  color: #1c1c1c;
+  font-size: clamp(14px, 1vw, 20px);
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 20px 0 30px;
+}
+
+.contact-text-content .contact-info {
+  font-weight: 600;
+  color: #1c1c1c;
+  font-size: clamp(15px, 2vw, 20px);
+}
+
+.contact-form-main label {
+  font-size: clamp(16px, 1vw, 20px);
+  margin-bottom: 10px;
+}
+
+.btn-send {
+  padding: 15px 20px;
+  background-color: #b5d336;
+  border-radius: 12px;
+  outline: none;
+  color: #1c1c1c;
+  font-size: clamp(12px, 1.5vw, 18px);
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .contact-content {
+    padding: 4rem 0;
+  }
+
+  .contact-text-content {
+    padding-right: 0;
+  }
+
+  .contact-form-main {
+    margin-top: 30px;
+  }
 }

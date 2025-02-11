@@ -35,7 +35,7 @@ const Sidebar = ({ layoutType }) => {
                 : userInfodata?.data?.role === 'student'
                   ? '/dashboard/student'
                   : userInfodata?.data?.role === 'super_admin'
-                    ? '/dashboard/super_admin'
+                    ? '/dashboard/super-admin'
                     : userInfodata?.data?.role === 'university_administration'
                       ? '/dashboard/university_administration'
                       : '/'

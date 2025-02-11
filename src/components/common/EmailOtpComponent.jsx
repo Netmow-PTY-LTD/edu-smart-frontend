@@ -57,7 +57,6 @@ const EmailOtpComponent = ({
       });
     };
   }, [otp.length, setOtp]);
-  
 
   const handleResentOtp = () => {
     //dispatch(sendOtp({ email: userEmail, subdomain }));
@@ -73,7 +72,7 @@ const EmailOtpComponent = ({
         </div>
         <div className="col-lg-6">
           <div className="p-4">
-            <div className="p-lg-5">
+            <div className="p-4 p-lg-5">
               <div className="mb-4 p-4">
                 <div className="avatar-lg mx-auto">
                   <div className="avatar-title bg-primary-alt text-primary display-5 rounded-circle">

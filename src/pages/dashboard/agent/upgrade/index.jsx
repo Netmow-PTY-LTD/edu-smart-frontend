@@ -141,9 +141,12 @@ const UpgradePackageInAgentdashboard = () => {
     setOpenPaymentModal(!openPaymentModal);
   };
 
-  const handleUpgradeNew = (id) => {
-    setUpgradePackageId(id);
+  const handleUpgradeNew = (data) => {
+    console.log(data);
+    setUpgradePackageId(data?.id);
     setOpenPaymentModal(true);
+    setPricePackage(data?.price);
+    setUpgradePackageName(data?.name);
   };
 
   useEffect(() => {
