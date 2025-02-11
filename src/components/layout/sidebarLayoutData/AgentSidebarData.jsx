@@ -146,6 +146,12 @@ const AgentSidebarData = () => {
         },
       ],
     },
+    {
+      id: 'applications',
+      label: 'Applications',
+      icon: 'ri-list-check-3',
+      link: '/dashboard/agent/applications',
+    },
 
     // {
     //   id: 'managedocument',
