@@ -33,6 +33,7 @@ import { universityAdministrationGalleryService } from '../services/university-a
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
 import { documentService } from '../services/super admin/documentService';
+import { contactUsService } from '../services/public/contact-us/contactUsService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 
 export const store = configureStore({
@@ -78,6 +79,7 @@ export const store = configureStore({
     [agentApplicationService.reducerPath]: agentApplicationService.reducer,
     [couponService.reducerPath]: couponService.reducer,
     [documentService.reducerPath]: documentService.reducer,
+    [contactUsService.reducerPath]: contactUsService.reducer,
     [requiredService.reducerPath]: requiredService.reducer,
     [applicationServiceNew.reducerPath]: applicationServiceNew.reducer,
   },
@@ -113,6 +115,7 @@ export const store = configureStore({
       .concat(couponService.middleware)
       .concat(agentApplicationService.middleware)
       .concat(documentService.middleware)
+      .concat(contactUsService.middleware)
       .concat(requiredService.middleware)
       .concat(applicationServiceNew.middleware)
       .concat(agentApplicationService.middleware),
