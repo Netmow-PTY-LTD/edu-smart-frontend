@@ -120,8 +120,6 @@ const AllCourseForSuperAdmin = ({
   }, [allDepartmentData, allCategoryData]);
 
   useEffect(() => {
-    console.log('getCourseData?.data', getCourseData?.data);
-    console.log('courseIdForEdit', courseIdForEdit);
     if (getCourseData?.data && courseIdForEdit) {
       const getSingleCourseData =
         getCourseData?.data?.length > 0 &&
