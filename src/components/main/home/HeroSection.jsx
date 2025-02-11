@@ -51,7 +51,6 @@ export default function HeroSection() {
 
   const handleCourseChange = (e) => {
     setSelectedCourse(e.target.value);
-    console.log(selectedCourse);
   };
 
   const handleSubmit = (e) => {
@@ -88,7 +87,7 @@ export default function HeroSection() {
               </p>
               <div className="hero-cta">
                 <Link
-                  href="/auth/register"
+                  href="/packages"
                   className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                 >
                   Join us as agent
