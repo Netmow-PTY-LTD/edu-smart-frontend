@@ -11,6 +11,7 @@ export default function ContactMessages() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -29,6 +30,8 @@ export default function ContactMessages() {
         setLoading(false);
       });
   }, []);
+
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const contactMessageHeaders = [
     {
@@ -83,7 +86,7 @@ export default function ContactMessages() {
     },
   ];
 
-  console.log(data);
+  //console.log(data);
 
   return (
     <Layout>
@@ -92,7 +95,10 @@ export default function ContactMessages() {
           <Card>
             <CardHeader className="d-flex justify-content-between align-items-center">
               <h2>Contact Messages</h2>
-              <SearchComponent />
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+              />
             </CardHeader>
             <CardBody>
               <div className="sqdk-pricing-table">
@@ -102,6 +108,8 @@ export default function ContactMessages() {
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
                 />
               </div>
             </CardBody>
