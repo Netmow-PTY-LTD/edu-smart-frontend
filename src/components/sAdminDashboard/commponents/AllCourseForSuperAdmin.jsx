@@ -124,6 +124,10 @@ const AllCourseForSuperAdmin = ({
       const getSingleCourseData =
         getCourseData?.data?.length > 0 &&
         getCourseData?.data.find((item) => item?._id === courseIdForEdit);
+      console.log(
+        'get single Course=>',
+        getSingleCourseData.document_requirements
+      );
 
       const fetchData = async () => {
         try {
@@ -176,12 +180,11 @@ const AllCourseForSuperAdmin = ({
     }
   }, [getCourseData?.data, courseIdForEdit]);
 
-  // Validation schema using Yup
   const validationSchema = Yup.object().shape({
-    name: Yup.string().trim().required('Course Name is required'),
+    name: Yup.string().required('Course Name is required'),
     available_seats: Yup.number()
       .typeError('Available Seats must be a number')
-      .min(1, 'Available Seats must be at least 1')
+      .min(1, 'At least 1 seat is required')
       .required('Available Seats is required'),
     department: Yup.string().required('Department selection is required'),
     category: Yup.string().required('Course Category selection is required'),
@@ -190,44 +193,50 @@ const AllCourseForSuperAdmin = ({
       .min(0, 'Course Fee cannot be negative')
       .required('Course Fee is required'),
     university_price: Yup.number()
-      .typeError('Course Fee must be a number')
-      .min(0, 'Course Fee cannot be negative')
-      .required('Course Fee is required'),
+      .typeError('University Fee must be a number')
+      .min(0, 'University Fee cannot be negative')
+      .required('University Fee is required'),
     gst: Yup.number()
       .typeError('GST must be a number')
       .min(0, 'GST cannot be negative')
-      .max(100, 'GST cannot be more than 100%'),
+      .max(100, 'GST cannot be more than 100%')
+      .required('GST is required'),
     agent_commission_percentage: Yup.number()
       .typeError('Agent Commission must be a number')
-      .min(0, 'Commission cannot be negative')
-      .max(100, 'Commission cannot be more than 100%'),
-    program_duration: Yup.string()
-      .trim()
-      .required('Program Duration is required'),
+      .min(0, 'Agent Commission cannot be negative')
+      .max(100, 'Agent Commission cannot be more than 100%')
+      .required('Agent Commission is required'),
+    program_duration: Yup.string().required('Program Duration is required'),
     brochure: Yup.mixed().required('Brochure file is required'),
-    description: Yup.string().trim().required('Course Description is required'),
+    image: Yup.mixed().required('Course Picture is required'),
+    description: Yup.string()
+      .min(20, 'Description must be at least 20 characters')
+      .required('Course Description is required'),
 
-    document_requirements: Yup.array().of(
-      Yup.object().shape({
-        title: Yup.string().trim().required('Document title is required'),
-        description: Yup.string().trim(),
-      })
-    ),
+    document_requirements: Yup.array()
+      .of(
+        Yup.object().shape({
+          title: Yup.string().required('Document Title is required'),
+          description: Yup.string()
+            .min(5, 'Document Description must be at least 5 characters')
+            .required('Document Description is required'),
+          isRequired: Yup.boolean(),
+        })
+      )
+      .min(1, 'At least one document requirement is required'),
 
-    entry_requirements: Yup.array().of(
-      Yup.string().trim().required('Entry requirement is required')
-    ),
+    entry_requirements: Yup.array()
+      .of(Yup.string().required('Entry requirement is required'))
+      .min(1, 'At least one entry requirement is required'),
 
-    english_requirements: Yup.array().of(
-      Yup.string().trim().required('English requirement is required')
-    ),
+    english_requirements: Yup.array()
+      .of(Yup.string().required('English requirement is required'))
+      .min(1, 'At least one English requirement is required'),
   });
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-    console.log('values from handle Submit==>', values);
     const allData = {
       ...values,
       university_id: university_id,
@@ -235,6 +244,7 @@ const AllCourseForSuperAdmin = ({
       category_id: values?.category,
     };
 
+    console.log(values);
     try {
       const finalData = new FormData();
 
@@ -279,6 +289,7 @@ const AllCourseForSuperAdmin = ({
   };
 
   const handleEditButtonClick = (itemId) => {
+    console.log('edit coursse modal item==>', itemId);
     setCourseIdForEdit(itemId);
   };
 
@@ -301,6 +312,7 @@ const AllCourseForSuperAdmin = ({
       entry_requirements: [''],
       english_requirements: [''],
       program_duration: '',
+
       image: null,
     });
     setFilePreview(null);
@@ -335,8 +347,6 @@ const AllCourseForSuperAdmin = ({
       program_duration: values?.program_duration,
       image: values?.image,
     };
-
-    console.log('update data ===>', allData);
 
     try {
       const finalData = new FormData();
@@ -573,7 +583,7 @@ const AllCourseForSuperAdmin = ({
               }}
               onSubmit={handleSubmit}
               initialValues={initialValues}
-              // validationSchema={validationSchema}
+              validationSchema={validationSchema}
               formSubmit={'Submit'}
               allDepartmentName={allDepartmentName}
               allCategoryName={allCategoryName}
