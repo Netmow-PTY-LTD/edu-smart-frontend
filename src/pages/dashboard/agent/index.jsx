@@ -54,7 +54,7 @@ const AgentDashboard = () => {
   console.log(userInfodata?.data?.package_choice);
 
   if (userInfodata?.data?.package_choice) {
-    console.log('working');
+    //console.log('working');
     router.push('/dashboard/agent/upgrade');
   }
 

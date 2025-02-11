@@ -37,6 +37,7 @@ const SingleCoursePageInFrontSite = () => {
   };
 
   const {
+    image,
     name,
     description,
     entry_requirements,
@@ -80,7 +81,7 @@ const SingleCoursePageInFrontSite = () => {
       router.push(destination);
     } else {
       // Redirect to the login page with the intended destination as a query parameter
-      router.push(`/auth/register?courseId=${id}`);
+      router.push(`/auth/register?universityId=${universityId}&courseId=${id}`);
     }
   };
 
@@ -96,6 +97,7 @@ const SingleCoursePageInFrontSite = () => {
             <Row>
               <Col xs={12} md={6} className="mb-4">
                 <div className="me-lg-3">
+                  <img src={image?.url ? image?.url : ''} alt="" />
                   <h2 className="fs-1">{name}</h2>
                   <p> {department?.name}</p>
                   <hr />

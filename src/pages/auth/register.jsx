@@ -210,6 +210,7 @@ const Register = () => {
   const searchParams = useSearchParams();
   const package_choice = searchParams.get('packageId');
   const course_choice = searchParams.get('courseId');
+  const universityId = searchParams.get('universityId');
 
   //console.log('Package ID:', packageChoice);
 
@@ -250,7 +251,7 @@ const Register = () => {
     }
   }, [package_choice]);
 
-  console.log(initialValues);
+  //console.log(initialValues);
 
   var initialStepValidationSchema;
   if (package_choice) {
@@ -358,7 +359,6 @@ const Register = () => {
   };
 
   const handleStudentRegistrationSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     setSubmitting(true);
 
     // console.log('student', values);
@@ -384,6 +384,8 @@ const Register = () => {
 
         if (resLogin) {
           toast.success(resLogin?.message);
+          Cookies.set('course_choice', course_choice, { expires: 1 });
+          Cookies.set('universityId', universityId, { expires: 1 });
         }
       }
     } catch (error) {
@@ -428,7 +430,7 @@ const Register = () => {
     }
   };
 
-  console.log(initialValues);
+  //console.log(initialValues);
 
   return (
     <>

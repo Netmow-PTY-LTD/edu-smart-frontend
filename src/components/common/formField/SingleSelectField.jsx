@@ -18,7 +18,7 @@ const SingleSelectField = ({
 
       <Field name={name}>
         {({ field, form }) => {
-          console.log('field ', field.value);
+          //console.log('field ', field.value);
           const selectedOption =
             options?.length > 0
               ? options.find((option) => {
@@ -30,7 +30,7 @@ const SingleSelectField = ({
                 })
               : null;
 
-          console.log(selectedOption);
+          //console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
             if (setInitialValues) {
