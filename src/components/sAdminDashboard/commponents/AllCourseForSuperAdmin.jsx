@@ -224,9 +224,7 @@ const AllCourseForSuperAdmin = ({
     program_duration: Yup.string().required('Program Duration is required'),
     brochure: Yup.mixed().required('Brochure file is required'),
     image: Yup.mixed().required('Course Picture is required'),
-    document_select: Yup.array()
-      .min(0, 'At least one document type must be selected')
-      .optional(),
+    document_select: Yup.array().optional(),
     description: Yup.string()
       .min(20, 'Description must be at least 20 characters')
       .required('Course Description is required'),
