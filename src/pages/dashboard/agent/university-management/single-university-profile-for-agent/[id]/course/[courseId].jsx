@@ -176,16 +176,16 @@ const SingleUniversityCourse = () => {
                           </Accordion>
                         </div>
                       </Col>
-                      {/* <Col lg={12}>
-                          <div className="d-flex justify-content-center">
-                            <button
-                              onClick={() => setStep(step + 1)}
-                              className="button py-3 px-5"
-                            >
-                              For Apply
-                            </button>
-                          </div>
-                        </Col> */}
+                      <Col lg={12}>
+                        <div className="d-flex justify-content-center">
+                          <button
+                            // onClick={() => setStep(step + 1)}
+                            className="button py-3 px-5"
+                          >
+                            Continue For Apply
+                          </button>
+                        </div>
+                      </Col>
                     </Row>
                   </CardBody>
                 </Card>

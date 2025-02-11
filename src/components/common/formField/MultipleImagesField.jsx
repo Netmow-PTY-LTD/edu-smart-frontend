@@ -4,7 +4,18 @@ import React, { useEffect, useState } from 'react';
 
 // Helper function to validate file types
 const isValidImage = (file) => {
-  const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  const validTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'application/jpeg',
+    'application/jpg',
+    'application/png',
+    'application/gif',
+    'application/webp',
+    'application/octet-stream',
+  ];
   return validTypes.includes(file.type);
 };
 
