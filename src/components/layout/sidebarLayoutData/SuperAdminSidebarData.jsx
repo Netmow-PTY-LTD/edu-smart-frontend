@@ -110,12 +110,12 @@ const SuperAdminSidebarData = () => {
       icon: 'ri-fire-fill',
       link: '/dashboard/super-admin/hot-offer',
     },
-    // {
-    //   id: 'agents',
-    //   label: 'Agents',
-    //   icon: 'ri-group-2-fill',
-    //   link: '/dashboard/super-admin/agents',
-    // },
+    {
+      id: 'agents',
+      label: 'Agents',
+      icon: 'ri-group-2-fill',
+      link: '/dashboard/super-admin/agents',
+    },
 
     {
       id: 'students',

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 
 export const applicationServiceNew = createApi({
-  reducerPath: 'publicAgentService',
+  reducerPath: 'applicationServiceNew',
   baseQuery: fetchBaseQuery({
     baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1',
     prepareHeaders: (headers) => {
