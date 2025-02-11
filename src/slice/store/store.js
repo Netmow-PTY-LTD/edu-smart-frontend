@@ -9,6 +9,7 @@ import { paymentService } from '../services/common/paymentService';
 import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
+import { applicationServiceNew } from '../services/public/application/applicationServiceNew';
 import { authService } from '../services/public/auth/authService';
 import { publicPackageService } from '../services/public/package/publicPackageService';
 import { publicStudentService } from '../services/public/student/publicStudentService';
@@ -75,6 +76,7 @@ export const store = configureStore({
     [agentApplicationService.reducerPath]: agentApplicationService.reducer,
     [couponService.reducerPath]: couponService.reducer,
     [requiredService.reducerPath]: requiredService.reducer,
+    [applicationServiceNew.reducerPath]: applicationServiceNew.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -107,6 +109,7 @@ export const store = configureStore({
       .concat(applicationService.middleware)
       .concat(couponService.middleware)
       .concat(requiredService.middleware)
+      .concat(applicationServiceNew.middleware)
       .concat(agentApplicationService.middleware),
 });
 

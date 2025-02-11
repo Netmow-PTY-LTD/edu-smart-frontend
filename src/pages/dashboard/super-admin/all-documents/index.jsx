@@ -10,7 +10,7 @@ import {
   useUpdateRequiredDocumentInSuperAdminMutation,
 } from '@/slice/services/super admin/requiredService';
 import { documentHeaders } from '@/utils/common/data';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
@@ -49,6 +49,28 @@ const AllDocumentsInSuperAdmin = () => {
 
   const validationSchema = Yup.object({});
 
+  useEffect(() => {
+    if (getRequiredDocumentData?.data?.length > 0 && requiredDocumentId) {
+      const fetchData = async () => {
+        const singleCouponData = getRequiredDocumentData?.data?.find(
+          (item) => item?._id === requiredDocumentId
+        );
+
+        console.log(singleCouponData);
+
+        try {
+          setInitialValues({
+            title: singleCouponData?.title || '',
+            description: singleCouponData?.description || '',
+          });
+        } catch (error) {
+          console.error('Error loading data:', error);
+        }
+      };
+      fetchData();
+    }
+  }, [getRequiredDocumentData?.data, requiredDocumentId]);
+
   // add RequiredDocument handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
@@ -76,24 +98,10 @@ const AllDocumentsInSuperAdmin = () => {
   // update  RequiredDocument handler
   const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-    const startDate = values?.start_date.split('T')[0];
-    const endDate = values?.end_date.split('T')[0];
-
-    console.log(values);
 
     const editData = {
-      code: values?.name,
-      start_date: startDate,
-      expiry_date: endDate,
-      package_duration: values?.package_duration,
-      discount_percentage: values?.discount_percentage,
-      packages:
-        typeof values?.package_id?.[0] === 'object'
-          ? values?.package_id.map((item) => item?.value)
-          : values?.package_id,
-      status:
-        values?.RequiredDocument_status?.value ||
-        values?.RequiredDocument_status,
+      title: values?.title,
+      description: values?.description,
       RequiredDocument_id: requiredDocumentId,
     };
 

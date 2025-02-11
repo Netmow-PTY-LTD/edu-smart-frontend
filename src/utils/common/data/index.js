@@ -1192,18 +1192,25 @@ const departmentHeaders = [
 ];
 
 const allowedFileTypes = [
-  'application/pdf',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/msword',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/octet-stream',
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/webp',
-  'image/bmp',
-  'image/tiff',
+  'application/pdf', // PDF
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+  'application/msword', // .doc
+  'application/vnd.ms-excel', // .xls
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+  'application/octet-stream', // Binary files (generic)
+  'image/jpeg', // JPEG images
+  'image/png', // PNG images
+  'image/gif', // GIF images
+  'image/webp', // WebP images
+  'image/bmp', // BMP images
+  'image/tiff', // TIFF images
+  'application/rtf', // RTF files
+  'text/plain', // Plain text files (.txt)
+  'text/csv', // CSV files
+  'application/vnd.ms-powerpoint', // PowerPoint files (.ppt)
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint files (.pptx)
+  'image/svg+xml', // SVG images
+  'image/x-icon', // ICO images (favicons)
 ];
 
 export {
