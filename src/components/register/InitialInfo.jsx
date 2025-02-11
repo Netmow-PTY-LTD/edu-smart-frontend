@@ -1,12 +1,14 @@
 import { Form, Formik } from 'formik';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 import CheckboxField from '../common/formField/CheckBoxField';
 import EmailFieldWithVerification from '../common/formField/EmailFieldWithVerification';
 import PasswordField from '../common/formField/PasswordField';
 import SingleSelectField from '../common/formField/SingleSelectField';
 import SubmitButton from '../common/formField/SubmitButton';
+import { usePathname, useSearchParams } from 'next/navigation';
+import Select from 'react-select';
 
 const InitialInfo = ({
   initialValues,
@@ -31,6 +33,10 @@ const InitialInfo = ({
     },
   ];
 
+  console.log(initialValues?.user_role);
+
+  const user_role_new = initialValues?.user_role?.value;
+
   return (
     <>
       <div className="row justify-content-center g-0">
@@ -47,6 +53,7 @@ const InitialInfo = ({
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
+                enableReinitialize
               >
                 {({ isSubmitting }) => (
                   <Form>
@@ -58,6 +65,7 @@ const InitialInfo = ({
                             label="Select User"
                             options={roleOptions}
                             setInitialValues={setInitialValues}
+                            user_role={'tuhin'}
                           />
                         </div>
                       </Col>
@@ -93,21 +101,7 @@ const InitialInfo = ({
                 )}
               </Formik>
               {/* Social registration part */}
-              {/* <div className="d-flex align-items-center justify-content-center gap-5 my-4">
-                <button
-                  onClick={'googleRegistrationHandler'}
-                  className="button  px-3 py-1"
-                >
-                  <i className="ri-google-fill me-2"></i>Register with Google
-                </button>
-                <button
-                  onClick={'linkedinRegistrationHandler'}
-                  className="button  px-3 py-1"
-                >
-                  <i className="ri-linkedin-box-fill me-2"></i> Register with
-                  Linkedin
-                </button>
-              </div> */}
+
               {/* register part */}
               <div className="mt-5 fs-2 text-start">
                 <p className="mb-0 fw-medium">

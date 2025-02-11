@@ -20,6 +20,7 @@ import {
 import { brandlogo } from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import { toast, ToastContainer } from 'react-toastify';
+import { useSearchParams } from 'next/navigation';
 // import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
 const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
@@ -206,6 +207,13 @@ const Register = () => {
     // }
   }, [LoginData]);
 
+  const searchParams = useSearchParams();
+  const package_choice = searchParams.get('packageId');
+  const course_choice = searchParams.get('courseId');
+  const universityId = searchParams.get('universityId');
+
+  //console.log('Package ID:', packageChoice);
+
   const [initialValues, setInitialValues] = useState({
     email: '',
     password: '',
@@ -225,14 +233,46 @@ const Register = () => {
     user_role: '',
   });
 
-  const initialStepValidationSchema = Yup.object({
-    user_role: Yup.string().required('Please Select User First'),
-    email: Yup.string().required('Email is required'),
-    password: Yup.string().required('Password is required'),
-    terms_and_conditions: Yup.boolean()
-      .oneOf([true], 'You must accept the terms and conditions')
-      .required('terms_and_conditions is required'),
-  });
+  useEffect(() => {
+    if (course_choice) {
+      setInitialValues((prev) => ({
+        ...prev,
+        user_role: 'Student',
+      }));
+    }
+  }, [course_choice]);
+
+  useEffect(() => {
+    if (package_choice) {
+      setInitialValues((prev) => ({
+        ...prev,
+        user_role: 'Agent',
+      }));
+    }
+  }, [package_choice]);
+
+  //console.log(initialValues);
+
+  var initialStepValidationSchema;
+  if (package_choice) {
+    initialStepValidationSchema = Yup.object({
+      //user_role: Yup.string().required('Please Select User First'),
+      email: Yup.string().required('Email is required'),
+      password: Yup.string().required('Password is required'),
+      terms_and_conditions: Yup.boolean()
+        .oneOf([true], 'You must accept the terms and conditions')
+        .required('terms_and_conditions is required'),
+    });
+  } else {
+    initialStepValidationSchema = Yup.object({
+      user_role: Yup.string().required('Please Select User First'),
+      email: Yup.string().required('Email is required'),
+      password: Yup.string().required('Password is required'),
+      terms_and_conditions: Yup.boolean()
+        .oneOf([true], 'You must accept the terms and conditions')
+        .required('terms_and_conditions is required'),
+    });
+  }
 
   const agentRegistrationValidationSchema = Yup.object({
     first_name: Yup.string().required('First Name is required'),
@@ -259,13 +299,16 @@ const Register = () => {
   });
 
   const handleAgentSubmit = async (values, { setSubmitting }) => {
+    console.log(values);
     setSubmitting(true);
 
     try {
+      const updatedValues = { ...values, email: values?.email, package_choice };
+      console.log(updatedValues);
       if (checkExistingUser) {
         toast.error('Email already exists');
       } else {
-        const res = await generateOtp({ email: values?.email }).unwrap();
+        const res = await generateOtp(updatedValues).unwrap();
         if (res) {
           setCheckExistingUser('');
           setInitialValues(values);
@@ -287,10 +330,13 @@ const Register = () => {
     // console.log('agent', values);
 
     try {
-      const resRegister = await agentRegister({
+      const updatedRegisterValues = {
         ...values,
         confirm_password: values?.password,
-      }).unwrap();
+        package_choice,
+      };
+
+      const resRegister = await agentRegister(updatedRegisterValues).unwrap();
 
       if (resRegister) {
         toast.success(resRegister?.message);
@@ -318,10 +364,15 @@ const Register = () => {
     // console.log('student', values);
 
     try {
-      const resRegister = await studentRegister({
+      const updatedStudentRegisterValues = {
         ...values,
         confirm_password: values?.password,
-      }).unwrap();
+        course_choice,
+      };
+      console.log(updatedStudentRegisterValues);
+      const resRegister = await studentRegister(
+        updatedStudentRegisterValues
+      ).unwrap();
 
       if (resRegister) {
         toast.success(resRegister?.message);
@@ -333,6 +384,8 @@ const Register = () => {
 
         if (resLogin) {
           toast.success(resLogin?.message);
+          Cookies.set('course_choice', course_choice, { expires: 1 });
+          Cookies.set('universityId', universityId, { expires: 1 });
         }
       }
     } catch (error) {
@@ -377,7 +430,7 @@ const Register = () => {
     }
   };
 
-  // console.log(initialValues);
+  //console.log(initialValues);
 
   return (
     <>
