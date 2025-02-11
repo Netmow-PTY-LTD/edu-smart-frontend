@@ -3,7 +3,10 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import MainLayout from '@/components/main/layout';
 import PackagesMain from '@/components/main/packages/PackagesMain';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { useGetAllPackageQuery } from '@/slice/services/public/package/publicPackageService';
+import {
+  useGetAllActiveCouponQuery,
+  useGetAllPackageQuery,
+} from '@/slice/services/public/package/publicPackageService';
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -16,6 +19,10 @@ export default function Packages() {
   );
 
   //console.log(userInfodata);
+
+  const { data: allCouponData } = useGetAllActiveCouponQuery();
+
+  console.log(allCouponData?.data);
 
   const {
     data: getAllPackageData,
@@ -71,6 +78,59 @@ export default function Packages() {
                 )}
               </>
             )}
+          </div>
+          <p className="text-center fs-1 text-black fw-semibold my-5">
+            Use following coupons to get discount
+          </p>
+          <div className="coupon-area">
+            {allCouponData?.data?.length > 0 &&
+              allCouponData?.data?.map((coupon, i) => (
+                <div className="single-coupon" key={i}>
+                  <div className="coupon-code">
+                    <b>Code:</b>{' '}
+                    <b>
+                      {''}
+                      {coupon?.code}
+                    </b>
+                  </div>
+                  <div className="coupon-discount">
+                    <b>Discount: </b>
+                    {''}
+                    {coupon?.discount_percentage}%
+                  </div>
+                  <div className="coupon-packages">
+                    <b>Packages:</b>{' '}
+                    {coupon?.packages?.length > 0
+                      ? coupon?.packages?.map((pkg, i) => (
+                          <span key={i}>
+                            {pkg?.name}
+                            {i !== coupon?.packages?.length - 1 ? ', ' : ''}
+                          </span>
+                        ))
+                      : null}
+                  </div>
+                  <div className="coupon-expiry-date">
+                    <b>Expiry Date:</b>{' '}
+                    {coupon?.expiry_date &&
+                      new Date(coupon?.expiry_date).toLocaleDateString(
+                        'en-GB',
+                        {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        }
+                      )}
+                  </div>
+                  {coupon?.package_duration && (
+                    <div className="package-duration">
+                      <b>Package Duration:</b>{' '}
+                      <span>
+                        {coupon?.package_duration?.replace(/_/g, ' ')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
           </div>
         </div>
       </section>

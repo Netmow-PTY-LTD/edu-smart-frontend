@@ -1,5 +1,5 @@
 import Footer from '@/components/main/common/Footer';
-import Header from './common/Header';
+import Header from '@/components/main/common/Header';
 
 export default function UniversityLayout({ children }) {
   return (

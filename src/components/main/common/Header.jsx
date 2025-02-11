@@ -158,6 +158,11 @@ export default function Header() {
                       <span>Contact</span>
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/packages" className="nav-link">
+                      <span>Join as agent</span>
+                    </Link>
+                  </li>
                 </ul>
               </nav>
               <div className="d-flex gap-3">
