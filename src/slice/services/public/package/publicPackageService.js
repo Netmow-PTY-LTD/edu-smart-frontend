@@ -39,6 +39,23 @@ export const publicPackageService = createApi({
         };
       },
     }),
+    getAllActiveCoupon: builder.query({
+      query: () => {
+        return {
+          url: `/coupons/active`,
+          method: 'GET',
+        };
+      },
+    }),
+    checkCouponVerify: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/coupons/verify`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -46,4 +63,6 @@ export const {
   useGetSinglePackageQuery,
   useGetAllPackageQuery,
   useGetAllHotOfferQuery,
+  useGetAllActiveCouponQuery,
+  useCheckCouponVerifyMutation,
 } = publicPackageService;
