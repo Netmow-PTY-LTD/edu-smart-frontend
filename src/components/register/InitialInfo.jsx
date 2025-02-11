@@ -46,7 +46,7 @@ const InitialInfo = ({
           </div>
         </div>
         <div className="col-lg-6">
-          <div className="p-lg-5">
+          <div className="p-4 p-lg-5">
             <h5 className="fs-1 fw-semibold mb-5">Register To EduSmart</h5>
             <div>
               <Formik

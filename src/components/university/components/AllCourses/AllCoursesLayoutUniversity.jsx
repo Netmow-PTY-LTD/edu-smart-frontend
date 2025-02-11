@@ -206,14 +206,14 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
       {getSingleUniversityCourseIsLoadingForStudent ? (
         <LoaderSpiner />
       ) : (
-        <Col className="mt-lg-0 mt-4" lg={9} md={8} sm={12}>
+        <Col className="mt-lg-0 mt-4 ps-lg-5" lg={9} md={8} sm={12}>
           <Row>
             {selectedData.length > 0 ? (
               selectedData?.map((item, index) => (
                 <Col lg={4} md={6} sm={12} className="mb-4" key={index}>
                   <div className="faculty-item" key={index}>
                     <Image
-                      src={`${item?.logo ? item.logo : 'https://res.cloudinary.com/ddm9zna39/image/upload/v1734502893/edu-smart/ckb38cu824zmnbv6ajgw.png'}`}
+                      src={`${item?.image?.url ? item?.image?.url : 'https://res.cloudinary.com/ddm9zna39/image/upload/v1734502893/edu-smart/ckb38cu824zmnbv6ajgw.png'}`}
                       width={500}
                       height={500}
                       alt={item.name}
