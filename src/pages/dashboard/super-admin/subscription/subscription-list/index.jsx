@@ -2,6 +2,7 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useGetNewsLetterSubscriptionInSuperAdminQuery } from '@/slice/services/super admin/newsLetterSubscription';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
   superAdminNameAndLogoData,
@@ -32,6 +33,15 @@ const AllSubscriptionForSuperAdmin = () => {
     isLoading: getUniversityIsLoading,
     refetch: getUniversityRefetch,
   } = useGetUniversityQuery();
+
+  const {
+    data: getSubscriptionData,
+    error: getSubscriptionError,
+    isLoading: getSubscriptionIsLoading,
+    refetch: getSubscriptionRefetch,
+  } = useGetNewsLetterSubscriptionInSuperAdminQuery();
+
+  console.log('Get Subscription===>', getSubscriptionData);
 
   const handleSubscription = async (id) => {
     try {
