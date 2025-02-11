@@ -120,23 +120,27 @@ const AllCourseForSuperAdmin = ({
   }, [allDepartmentData, allCategoryData]);
 
   useEffect(() => {
+    console.log('getCourseData?.data', getCourseData?.data);
+    console.log('courseIdForEdit', courseIdForEdit);
     if (getCourseData?.data && courseIdForEdit) {
       const getSingleCourseData =
         getCourseData?.data?.length > 0 &&
         getCourseData?.data.find((item) => item?._id === courseIdForEdit);
-      console.log(
-        'get single Course=>',
-        getSingleCourseData.document_requirements
-      );
 
       const fetchData = async () => {
         try {
-          const brochureFile = await convertImageUrlToFile(
-            getSingleCourseData?.brochure?.url
-          );
-          const imageFiles = await convertImageUrlToFile(
-            getSingleCourseData?.image.url
-          );
+          let brochureFile = null;
+          if ('brochure' in getSingleCourseData) {
+            brochureFile = await convertImageUrlToFile(
+              getSingleCourseData?.brochure?.url
+            );
+          }
+          let imageFiles = null;
+          if ('image' in getSingleCourseData) {
+            imageFiles = await convertImageUrlToFile(
+              getSingleCourseData?.image.url
+            );
+          }
 
           setInitialValues({
             name: getSingleCourseData?.name || '',
@@ -172,7 +176,7 @@ const AllCourseForSuperAdmin = ({
           setEditModalIsOpen(true);
           setFilePreview(brochureFile?.name);
         } catch (error) {
-          // console.error('Error loading data:', error);
+          console.error('Error loading data:', error);
         }
       };
 
@@ -292,6 +296,8 @@ const AllCourseForSuperAdmin = ({
     console.log('edit coursse modal item==>', itemId);
     setCourseIdForEdit(itemId);
   };
+
+  console.log('courseIdForEdit ===> ', courseIdForEdit);
 
   const handleEditModalClose = () => {
     setCourseIdForEdit(null);
