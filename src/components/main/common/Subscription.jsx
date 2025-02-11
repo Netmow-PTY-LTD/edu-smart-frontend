@@ -1,42 +1,38 @@
+import { useSendSubscriptionEmailMutation } from '@/slice/services/public/newsLetter/newsLetterSubscriptionPublic';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 const SubscriptionForm = () => {
+  const [sendSubscriptionLetter, { data }] = useSendSubscriptionEmailMutation();
   const ValidationSchema = Yup.object({
     email: Yup.string()
       .email('Invalid email address')
       .required('Email is required'),
   });
 
-  //  `https://calendar.miyn.app/test4.php?to=shadik.netmow@gmail.com&message=Text&code=12124`
   const initialValues = { email: '' };
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    console.log('Form submitted with:', values.email);
-    // const subscribelink = `/subscribe/${values.email}/randomCode=1245255/status=pending`;
-    // const code = Math.random();
+    const subscriptionLetterData = {
+      ...values,
+      content: process.env.NEXT_PUBLIC_BASE_URL_PROD_FRONTEND,
+    };
 
-    // try {
-    //   const res = await fetch(
-    //     `https://calendar.miyn.app/test4.php?to=${values.email}&message="Text"&code=${code}&status="pending"`,
-    //     {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     }
-    //   );
-
-    //   if (!res.ok) {
-    //     throw new Error(`HTTP error! Status: ${res.status}`);
-    //   }
-
-    //   const data = await res.json();
-    //   console.log('Success:', data);
-    // } catch (error) {
-    //   console.error('Request failed:', error.message);
-    // }
-    setSubmitting(false);
-    resetForm();
+    try {
+      const result = await sendSubscriptionLetter(
+        subscriptionLetterData
+      ).unwrap();
+      console.log(result);
+      if (result) {
+        toast.success(result?.message);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+      resetForm();
+    }
   };
 
   return (

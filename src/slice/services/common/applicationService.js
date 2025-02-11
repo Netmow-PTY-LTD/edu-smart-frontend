@@ -32,7 +32,7 @@ export const applicationService = createApi({
     }),
     getRecentApplications: builder.query({
       query: () => ({
-        url: '/application/recent',
+        url: '/applications/recent',
         method: 'GET',
       }),
     }),

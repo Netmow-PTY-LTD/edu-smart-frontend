@@ -33,6 +33,8 @@ import { universityAdministrationGalleryService } from '../services/university-a
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
 import { documentService } from '../services/super admin/documentService';
+import { newsLetterSubscriptionPublic } from '../services/public/newsLetter/newsLetterSubscriptionPublic';
+import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLetterSubscription';
 import { contactUsService } from '../services/public/contact-us/contactUsService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
 
@@ -115,6 +117,8 @@ export const store = configureStore({
       .concat(couponService.middleware)
       .concat(agentApplicationService.middleware)
       .concat(documentService.middleware)
+      .concat(newsLetterSubscriptionPublic.middleware)
+      .concat(newsLetterSubscriptionSuperAdmin.middleware)
       .concat(contactUsService.middleware)
       .concat(requiredService.middleware)
       .concat(applicationServiceNew.middleware)

@@ -2,14 +2,10 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import {
-  superAdminNameAndLogoData,
-  universityHeadersWithoutAction,
-} from '@/utils/common/data';
+import { useGetNewsLetterSubscriptionInSuperAdminQuery } from '@/slice/services/super admin/newsLetterSubscription';
 
 import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -27,35 +23,20 @@ const AllSubscriptionForSuperAdmin = () => {
   const perPageData = 10;
 
   const {
-    data: getUniversityData,
-    error: getUniversityError,
-    isLoading: getUniversityIsLoading,
-    refetch: getUniversityRefetch,
-  } = useGetUniversityQuery();
-
-  const handleSubscription = async (id) => {
-    try {
-      // const result = await updateSubscription(id).unwrap();
-      // if (result) {
-      //   toast.success(result?.message);
-      //   getUniversityRefetch();
-      // }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      //
-    }
-  };
+    data: getSubscriptionData,
+    error: getSubscriptionError,
+    isLoading: getSubscriptionIsLoading,
+    refetch: getSubscriptionRefetch,
+  } = useGetNewsLetterSubscriptionInSuperAdminQuery();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const isfilteredData =
-    getUniversityData?.data?.length > 0 &&
-    getUniversityData?.data.filter((item) =>
-      item?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    getSubscriptionData?.data?.length > 0 &&
+    getSubscriptionData?.data.filter((item) =>
+      item?.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const allSubscriberHeaderAction = {
@@ -85,11 +66,36 @@ const AllSubscriptionForSuperAdmin = () => {
       </UncontrolledDropdown>
     ),
   };
+  const subscriptionHeadersWithoutAction = [
+    {
+      title: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Verification',
+      key: 'isVerified',
+      render: (item) => (
+        <div>
+          {item.isVerified ? (
+            <p>Valid Subscriber</p>
+          ) : (
+            <p>Invalid Subscriber</p>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <div>{item.status ? <p>Active</p> : <p>Inactive</p>}</div>
+      ),
+    },
+  ];
 
   useEffect(() => {
     setAllSubscriptionData([
-      superAdminNameAndLogoData, // it changable
-      ...universityHeadersWithoutAction, // it changable
+      ...subscriptionHeadersWithoutAction,
       allSubscriberHeaderAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,7 +107,7 @@ const AllSubscriptionForSuperAdmin = () => {
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
-            {getUniversityIsLoading ? (
+            {getSubscriptionIsLoading ? (
               <LoaderSpiner />
             ) : (
               <Card>
