@@ -762,6 +762,31 @@ const couponHeaders = [
   },
 ];
 
+const documentHeaders = [
+  {
+    title: 'Title',
+    key: 'title',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item.title ?? '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+];
+
 const studentAndLogoDataForAgentDashboard = {
   title: 'Logo - Name',
   key: 'logo',
@@ -1196,6 +1221,7 @@ export {
   couponHeaders,
   courseHeaders,
   departmentHeaders,
+  documentHeaders,
   edulogo,
   EmgsStatusListHeaders,
   footerLogo,

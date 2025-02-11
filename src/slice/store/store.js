@@ -23,6 +23,7 @@ import { departmentService } from '../services/super admin/departmentService';
 import { hotOfferService } from '../services/super admin/hotOfferService';
 import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
+import { requiredService } from '../services/super admin/requiredService';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
@@ -73,6 +74,7 @@ export const store = configureStore({
     [applicationService.reducerPath]: applicationService.reducer,
     [agentApplicationService.reducerPath]: agentApplicationService.reducer,
     [couponService.reducerPath]: couponService.reducer,
+    [requiredService.reducerPath]: requiredService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -104,6 +106,7 @@ export const store = configureStore({
       .concat(paymentService.middleware)
       .concat(applicationService.middleware)
       .concat(couponService.middleware)
+      .concat(requiredService.middleware)
       .concat(agentApplicationService.middleware),
 });
 
