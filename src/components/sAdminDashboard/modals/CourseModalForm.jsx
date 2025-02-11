@@ -1,3 +1,4 @@
+import MultipleSelectField from '@/components/common/formField/MultipleSelectField';
 import NumberField from '@/components/common/formField/NumberField';
 import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
 import SingleImageField from '@/components/common/formField/SingleImageField';
@@ -25,6 +26,12 @@ const CourseModalForm = ({
   filePreview,
   setFilePreview,
 }) => {
+  const options = [
+    { value: 'iphone', label: 'iPhone 15' },
+    { value: 'samsung', label: 'Samsung Galaxy S24' },
+    { value: 'pixel', label: 'Google Pixel 8' },
+    { value: 'oneplus', label: 'OnePlus 12' },
+  ];
   return (
     <Modal isOpen={isOpen} centered size="xl">
       <ModalHeader toggle={onClose}>
@@ -135,6 +142,12 @@ const CourseModalForm = ({
                 </Col>
 
                 <Col xl={12}>
+                  <MultipleSelectField
+                    field={{ name: 'document' }}
+                    label="Select Existing Document"
+                    options={options}
+                    form={{ setFieldValue, values }}
+                  />
                   <FieldArray name="document_requirements">
                     {({ remove, push }) => (
                       <div>
