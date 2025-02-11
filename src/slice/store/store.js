@@ -8,7 +8,7 @@ import { applicationService } from '../services/common/applicationService';
 import { paymentService } from '../services/common/paymentService';
 import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
-import { publicAgentService } from '../services/public/agent/publicAgentService';
+
 import { applicationServiceNew } from '../services/public/application/applicationServiceNew';
 import { authService } from '../services/public/auth/authService';
 import { publicPackageService } from '../services/public/package/publicPackageService';
@@ -33,6 +33,7 @@ import { universityAdministrationGalleryService } from '../services/university-a
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
 import { documentService } from '../services/super admin/documentService';
+import { publicAgentService } from '../services/public/agent/publicAgentService';
 
 export const store = configureStore({
   reducer: {

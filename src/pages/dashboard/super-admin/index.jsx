@@ -5,6 +5,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
+
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
@@ -28,8 +29,8 @@ const SuperAdminDashboard = () => {
     useGetUserInfoQuery();
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();
-  const { data: allAgentsData, isLoading: allAgentsIsLoading } =
-    useGetAllAgentQuery();
+  // const { data: allAgentsData, isLoading: allAgentsIsLoading } =
+  //   useGetAllAgentQuery();
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
 
@@ -55,7 +56,7 @@ const SuperAdminDashboard = () => {
       <div className="page-content">
         <div className="container-fluid">
           {getUniversityIsLoading ||
-          allAgentsIsLoading ||
+          // allAgentsIsLoading ||
           allStudentsIsLoading ||
           userInfoIsLoading ? (
             <LoaderSpiner />
@@ -68,7 +69,7 @@ const SuperAdminDashboard = () => {
                     <DashBoardCountOptions
                       userInfoData={userInfodata?.data}
                       firstElementData={getUniversityData?.data?.length}
-                      secondElementData={allAgentsData?.data?.length}
+                      secondElementData={'allAgentsData?.data?.length'}
                       thirdElementData={allStudentsData?.data?.length}
                       gstAndCurrencyData={''}
                       fourthElementData={''}
@@ -91,7 +92,7 @@ const SuperAdminDashboard = () => {
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
                         headers={agentsHeaders}
-                        data={allAgentsData?.data ? allAgentsData?.data : []}
+                        // data={allAgentsData?.data ? allAgentsData?.data : []}
                       />
                     </Col>
                     <Col xxl={6}>
