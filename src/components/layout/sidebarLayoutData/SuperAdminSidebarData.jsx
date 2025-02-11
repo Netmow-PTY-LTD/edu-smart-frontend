@@ -88,7 +88,7 @@ const SuperAdminSidebarData = () => {
     },
     {
       id: 'alldocuments',
-      label: 'All Documents',
+      label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
       link: '/dashboard/super-admin/all-documents',
     },
