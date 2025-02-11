@@ -19,7 +19,6 @@ export default function ContactMessages() {
         },
       })
       .then((response) => {
-        console.log(response.data);
         setData(response.data?.data);
         setLoading(false);
       })
