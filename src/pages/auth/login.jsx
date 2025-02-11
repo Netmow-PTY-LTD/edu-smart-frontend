@@ -1,4 +1,3 @@
-import CheckboxField from '@/components/common/formField/CheckBoxField';
 import EmailField from '@/components/common/formField/EmailField';
 import PasswordField from '@/components/common/formField/PasswordField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
@@ -328,10 +327,10 @@ const Login = () => {
                                       />
                                     </Col>
                                     <Col xl={12}>
-                                      <CheckboxField
+                                      {/* <CheckboxField
                                         name="remember_me"
                                         label={'Remember Me'}
-                                      />
+                                      /> */}
                                     </Col>
                                   </Row>
                                   <div className="hstack gap-2 justify-content-start mx-auto mt-5 mb-2">

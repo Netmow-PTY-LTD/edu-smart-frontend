@@ -76,10 +76,22 @@ const SuperAdminSidebarData = () => {
       ],
     },
     {
+      id: 'alldocuments',
+      label: 'All Documents',
+      icon: 'ri-file-copy-2-fill',
+      link: '/dashboard/super-admin/all-documents',
+    },
+    {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
       link: '/dashboard/super-admin/packages',
+    },
+    {
+      id: 'coupon',
+      label: 'Coupon Management',
+      icon: 'ri-coupon-3-fill',
+      link: '/dashboard/super-admin/coupon-management',
     },
     {
       id: 'hotoffer',

@@ -176,7 +176,6 @@ const HotOfferForSuperAdmin = () => {
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
-
             <div className="d-flex align-items-center justify-content-between mb-4">
               <div>
                 <h1 className="text-secondary-alt fw-semibold d-flex align-items-center">

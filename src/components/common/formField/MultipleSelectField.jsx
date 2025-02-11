@@ -1,54 +1,56 @@
 import { ErrorMessage } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Select from 'react-select';
 
-// Custom Multiple Select component for Formik
 const MultipleSelectField = ({ field, form, label, options, ...props }) => {
-  // Handle change to update Formik state
+  // useEffect(() => {
+  //   form.setFieldValue(
+  //     field.name,
+  //     form.values.package_id
+  //       ? form.values.package_id.map((option) => console.log(option?.value))
+  //       : []
+  //   );
+  // }, []);
+
   const handleChange = (selectedOptions) => {
+    // console.log(selectedOptions);
+
+    // form.setFieldValue(
+    //   field.name,
+    //   selectedOptions
+    //     ? selectedOptions.map((option) =>
+    //         option?.label === 'Select All'
+    //           ? selectedOptions[0]?.value
+    //           : option?.value
+    //       )
+    //     : []
+    // );
+
     form.setFieldValue(
       field.name,
-      selectedOptions ? selectedOptions.map((option) => option.value) : []
+      selectedOptions ? selectedOptions.map((option) => option?.value) : []
     );
   };
 
   return (
     <div>
-      <label htmlFor={field.name} className="form-label fs-2">
+      <label htmlFor={field?.name} className="form-label fs-2 mb-3">
         {label || 'Select'}
       </label>
 
-      {/* with custom style */}
       <Select
         {...props}
-        id={field.name}
-        name={field.name}
-        value={
-          options
-            ? options.filter((option) => field.value.includes(option.value))
-            : []
-        }
+        id={field?.name}
+        name={field?.name}
         onChange={handleChange}
         options={options}
-        className="form-control"
         classNamePrefix="select"
         isMulti
         isClearable={true}
-        styles={{
-          control: (base) => ({
-            ...base,
-            borderRadius: '5px', // Customize border radius
-            borderColor: '#ccc', // Customize border color
-          }),
-          menu: (base) => ({
-            ...base,
-            maxHeight: '200px', // Customize max height
-          }),
-        }}
       />
 
       <ErrorMessage
-        name={field.name}
+        name={field?.name}
         component="div"
         style={{ color: 'red' }}
       />

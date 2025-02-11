@@ -358,9 +358,10 @@ body.modal-open {
     color: var(--#{$prefix}body-color);
     //border-color: var(--#{$prefix}border-color);
     background-color: #e9f1fa;
+    
     border: 1px solid var(--color--secondary);
     border-radius: 1rem;
-    height: 48px;
+    min-height: 4.8rem;
     &:hover,
     &:focus {
       // border-color: var(--#{$prefix}primary);
@@ -368,8 +369,9 @@ body.modal-open {
     }
 
     .css-1p3m7a8-multiValue {
-      color: var(--#{$prefix}white);
-      background-color: #e9f1fa;
+      // color: var(--#{$prefix}white);
+      color: #e9f1fa;
+      background-color: #435590;
       .css-wsp0cs-MultiValueGeneric {
         color: var(--#{$prefix}white);
       }
@@ -388,11 +390,11 @@ body.modal-open {
     background-color: #e9f1fa;
     color: var(--#{$prefix}body-color);
     border-color: var(--color--primary);
-    height: 48px;
+    min-height: 4.8rem;
 
     .css-1p3m7a8-multiValue {
-      color: var(--#{$prefix}white);
-      background-color: #e9f1fa;
+      color: #e9f1fa;
+      background-color: #435590;
       .css-wsp0cs-MultiValueGeneric {
         color: var(--#{$prefix}white);
       }

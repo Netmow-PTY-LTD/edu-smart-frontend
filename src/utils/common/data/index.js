@@ -675,6 +675,93 @@ const agentsHeaders = [
   },
 ];
 
+const couponHeaders = [
+  {
+    title: 'Coupon Code',
+    key: 'code',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item.code ?? '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+  {
+    title: 'Start Date',
+    key: 'start_date',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item.start_date ? item.start_date.split('T')[0] : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+  {
+    title: 'End Date',
+    key: 'End_date',
+    render: (item) => (
+      <div className="d-flex align-items-center">
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {`${item.expiry_date ? item.expiry_date.split('T')[0] : '-'}`}
+        </h5>
+      </div>
+    ),
+  },
+
+  // {
+  //   title: 'Coupon Duration',
+  //   key: 'coupon_duration',
+  //   render: (item) => {
+  //     const createdDate = item.start_date.split('T')[0];
+  //     const expiryDate = item.expiry_date.split('T')[0];
+  //     console.log(createdDate);
+  //     console.log(expiryDate);
+  //     const createdAt = new Date(createdDate);
+  //     const expiryAt = new Date(expiryDate);
+
+  //     let years = expiryAt.getFullYear() - createdAt.getFullYear();
+  //     let months = expiryAt.getMonth() - createdAt.getMonth();
+  //     let days = expiryAt.getDate() - createdAt.getDate();
+
+  //     if (days < 0) {
+  //       months--;
+  //       days += new Date(
+  //         expiryAt.getFullYear(),
+  //         expiryAt.getMonth(),
+  //         0
+  //       ).getDate();
+  //     }
+  //     if (months < 0) {
+  //       years--;
+  //       months += 12;
+  //     }
+
+  //     const duration = `${years > 0 ? `${years} year${years > 1 ? 's' : ''}` : ''} ${months > 0 ? `${months} month${months > 1 ? 's' : ''}` : ''} ${days > 0 ? `${days} day${days > 1 ? 's' : ''}` : ''}`;
+
+  //     return (
+  //       <span className="d-flex flex-column text-capitalize">
+  //         {` ${duration.trim() || '-'}`}
+  //       </span>
+  //     );
+  //   },
+  // },
+  {
+    title: 'Status',
+    key: 'status',
+    render: (item) => (
+      <>
+        <span
+          className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+        >
+          {item?.status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+];
+
 const studentAndLogoDataForAgentDashboard = {
   title: 'Logo - Name',
   key: 'logo',
@@ -1106,6 +1193,7 @@ export {
   allowedFileTypes,
   brandlogo,
   categoryHeaders,
+  couponHeaders,
   courseHeaders,
   departmentHeaders,
   edulogo,
