@@ -31,7 +31,6 @@ const MultipleSelectField = ({ field, form, label, options, ...props }) => {
       selectedOptions ? selectedOptions.map((option) => option?.value) : []
     );
   };
-  console.log('from multiple select', options);
 
   return (
     <div>
