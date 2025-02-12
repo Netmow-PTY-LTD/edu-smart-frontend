@@ -162,7 +162,7 @@ const CourseModalForm = ({
                               key={index}
                               className="align-items-center mt-4 mb-4"
                             >
-                              <Col xs={12} md={5}>
+                              <Col xs={12} md={12} lg={5}>
                                 <div className="mb-3">
                                   <label
                                     htmlFor={`document_requirements[${index}].title`}
@@ -196,7 +196,7 @@ const CourseModalForm = ({
                                 </div>
                               </Col>
 
-                              <Col xs={12} md={5}>
+                              <Col xs={12} md={12} lg={5}>
                                 <div className="mb-3">
                                   <label
                                     htmlFor={`document_requirements[${index}].description`}
@@ -214,7 +214,8 @@ const CourseModalForm = ({
 
                               <Col
                                 xs={12}
-                                md={2}
+                                md={4}
+                                lg={2}
                                 className="d-flex justify-content-md-center align-items-center flex-column flex-md-row"
                               >
                                 <div className="form-check mt-3 mt-md-4 me-md-4">
