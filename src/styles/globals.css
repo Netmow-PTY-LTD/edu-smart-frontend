@@ -3342,7 +3342,7 @@ a.play-btn {
   box-shadow: 0px 0.9rem 2.6rem rgba(136, 136, 136, 0.04);
   background: #ffffff;
   border-radius: 1rem;
-  width: calc((100% - 7.5rem) / 4);
+  width: calc((100% - 7.5rem) / 3);
 }
 /* .sqdk-single-pricing-table:nth-child(1) {
   border-radius: 2rem 0 0 2rem;
@@ -3482,7 +3482,7 @@ a.play-btn {
   }
 
   .sqdk-single-pricing-table {
-    width: calc((100% - 5rem) / 3);
+    width: calc((100% - 5rem) / 2);
   }
 }
 
@@ -3491,9 +3491,10 @@ a.play-btn {
     height: auto;
     margin-bottom: 0;
   }
-  .sqdk-single-pricing-table {
+
+  /* .sqdk-single-pricing-table {
     width: calc((100% - 2.5rem) / 2);
-  }
+  } */
 
   .sqdk-single-pricing-table {
     padding: 3.5rem 1.5rem 3.5rem 1.5rem;
@@ -9894,7 +9895,7 @@ textarea.form-control {
 }
 
 .packages-heading h2 {
-  font-size: 38px;
+  font-size: clamp(24px, 2vw, 38px);
   color: #1c1c1c;
   font-weight: 600;
   text-transform: capitalize;
@@ -9903,10 +9904,16 @@ textarea.form-control {
 }
 
 .packages-heading p {
-  font-size: 15px;
+  font-size: clamp(12px, 1vw, 15px);
   font-weight: 400;
   color: #000;
   font-family: 'Poppins';
+}
+
+@media (max-width: 991px) {
+  .packages-main {
+    padding: 4rem 0;
+  }
 }
 
 /* Course Details Front Website */
@@ -10030,6 +10037,18 @@ textarea.form-control {
 @media (max-width: 991px) {
   .single-coupon {
     width: calc((100% - 40px) / 3);
+  }
+}
+
+@media (max-width: 767px) {
+  .single-coupon {
+    width: calc((100% - 40px) / 2);
+  }
+}
+
+@media (max-width: 575px) {
+  .single-coupon {
+    width: 100%;
   }
 }
 
