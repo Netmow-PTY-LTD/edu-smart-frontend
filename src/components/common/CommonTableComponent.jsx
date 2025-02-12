@@ -10,6 +10,7 @@ const CommonTableComponent = ({
   perPageData,
   emptyMessage,
 }) => {
+  console.log(data);
   // Pagination logic
   const startIdx = currentPage * perPageData;
   const endIdx = Math.min((currentPage + 1) * perPageData, data?.length);
@@ -18,7 +19,7 @@ const CommonTableComponent = ({
   return (
     <div>
       <div className="table-responsive mb-5">
-        <table className="table table-hover table-centered align-middle table-nowrap">
+        <table className="table table-hover table-centered align-middle">
           {/* Table Headers */}
           <thead className="fs-2 bg-light">
             <tr>

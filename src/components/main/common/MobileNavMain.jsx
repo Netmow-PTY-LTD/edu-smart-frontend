@@ -170,6 +170,11 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
               <span>Contact</span>
             </Link>
           </li>
+          <li>
+            <Link href="/packages" className="nav-link">
+              <span>Join as agent</span>
+            </Link>
+          </li>
           <li className="px-3 mt-4">
             <Link
               href={`/auth/login`}

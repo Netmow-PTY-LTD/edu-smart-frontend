@@ -1,8 +1,5 @@
 // blog Card
 .blog-card {
-  max-width: 513px;
-  margin: 0 auto;
-
   .blog-card__body {
     display: flex;
     flex-direction: column;
@@ -14,7 +11,7 @@
       .blog-card__title {
         color: var(--Black, #1c1c1c);
         font-family: Lora;
-        font-size: 24px !important;
+        font-size: clamp(18px, 1vw, 24px) !important;
         font-weight: 700;
         line-height: 30.72px;
         text-align: left;
@@ -26,7 +23,7 @@
     p {
       color: var(--Black, #1c1c1c);
       font-family: Poppins;
-      font-size: 18px;
+      font-size: clamp(14px, 1vw, 18px);
       font-style: normal;
       font-weight: 400;
       line-height: 170%;
@@ -41,7 +38,7 @@
     gap: 10px;
     margin-top: 21px;
 
-    button {
+    a {
       color: var(--Black, #1c1c1c);
       font-family: Lora;
       font-size: 20px;
@@ -109,7 +106,7 @@
     }
 
     footer {
-      button {
+      a {
         font-size: 16px;
         padding: 6px 12px;
       }
