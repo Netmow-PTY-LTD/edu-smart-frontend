@@ -12,9 +12,10 @@ import {
   studentAndLogoDataForAgentDashboard,
   studentsHeadersWithLogoLinkInAgent,
 } from '@/utils/common/data';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
@@ -51,12 +52,25 @@ const AgentDashboard = () => {
   //   }
   // }, []);
 
-  console.log(userInfodata?.data?.package_choice);
+  //console.log(userInfodata?.data?.package_choice);
 
   if (userInfodata?.data?.package_choice) {
     //console.log('working');
     router.push('/dashboard/agent/upgrade');
   }
+
+  useEffect(() => {
+    const course_choice = Cookies.get('course_choice');
+    const universityId = Cookies.get('universityId');
+
+    if (course_choice && universityId) {
+      router.push(
+        `/dashboard/agent/university-management/single-university-profile-for-agent/${universityId}/course/${course_choice}`
+      );
+      Cookies.remove('course_choice');
+      Cookies.remove('universityId');
+    }
+  }, [router]);
 
   return (
     <Layout>

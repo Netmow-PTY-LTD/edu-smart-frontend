@@ -45,9 +45,9 @@ export default function Footer() {
                   <li>
                     <Link href="/university">Universities</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href="/blogs">Blogs</Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link href="/about">About</Link>
                   </li>
