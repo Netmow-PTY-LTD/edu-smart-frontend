@@ -12,7 +12,7 @@ const AgentSidebarData = () => {
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
-
+  const [isPaymentReport, setIsPaymentReport] = useState(false);
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');
@@ -251,6 +251,36 @@ const AgentSidebarData = () => {
           link: '/dashboard/agent/settings/password',
           pathName: '/dashboard/agent/settings/password',
           parentId: 'settings',
+        },
+      ],
+    },
+    {
+      id: 'payment-report',
+      label: 'Payment Report',
+      icon: 'ri-bank-card-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+        setIscurrentState('payment-report');
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'package-payment',
+          label: 'Package Payment',
+          icon: 'ri-red-packet-line',
+          link: '/dashboard/agent/payment-report/package-payment',
+          pathName: '/dashboard/agent/payment-report/package-payment',
+          parentId: 'payment-report',
+        },
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link: '/dashboard/agent/payment-report/application-payment',
+          pathName: '/dashboard/agent/payment-report/application-payment',
+          parentId: 'payment-report',
         },
       ],
     },
