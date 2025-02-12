@@ -53,7 +53,7 @@ export default function UniversitySliderList({ university_id }) {
   const [deleteUniversitySlider] = useDeleteUniversitySliderMutation();
 
   const validationSchema = Yup.object({
-    title: Yup.string().required('Titlle is required'),
+    title: Yup.string().required('Title is required'),
     sub_title: Yup.string().required('Sub-title is required'),
     description: Yup.string().required('Description is required'),
     button_1_text: Yup.string().required('Button 1 text is required'),
@@ -198,9 +198,8 @@ export default function UniversitySliderList({ university_id }) {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-
     {
-      title: 'Slider Picture',
+      title: 'Picture',
       key: 'image',
       render: (item, index) => {
         // console.log(item?.image?.url);
@@ -220,10 +219,34 @@ export default function UniversitySliderList({ university_id }) {
     { title: 'Title', key: 'title' },
     { title: 'Sub Title', key: 'sub_title' },
     { title: 'Description', key: 'description' },
-    { title: 'Button One Text', key: 'button_1_text' },
-    { title: 'Button One Link', key: 'button_1_link' },
-    { title: 'Button Two Text', key: 'button_2_text' },
-    { title: 'Button Two Link', key: 'button_2_link' },
+    {
+      title: 'Button One',
+      key: 'button_1_text',
+      render: (item) => {
+        return (
+          <span className="d-flex flex-column">
+            {item?.button_1_text}
+            {item?.button_1_link ? ' (' + item?.button_1_link + ')' : ''}
+          </span>
+        );
+      },
+    },
+    {
+      title: 'Button Two',
+      key: 'button_2_text',
+      render: (item) => {
+        return (
+          <span className="d-flex flex-column">
+            {item?.button_2_text}
+            {item?.button_2_link ? ' (' + item?.button_2_link + ')' : ''}
+          </span>
+        );
+      },
+    },
+    // { title: 'Button One Text', key: 'button_1_text' },
+    // { title: 'Button One Link', key: 'button_1_link' },
+    // { title: 'Button Two Text', key: 'button_2_text' },
+    // { title: 'Button Two Link', key: 'button_2_link' }
 
     {
       title: 'Action',
@@ -294,7 +317,7 @@ export default function UniversitySliderList({ university_id }) {
                   setAddModalIsOpen(!addModalIsOpen);
                 }}
               >
-                Add Slider info
+                Add Slider Info
               </button>
             </div>
             <SearchComponent
@@ -315,7 +338,7 @@ export default function UniversitySliderList({ university_id }) {
 
       {/* creating slider */}
       <UniversitysliderModalForm
-        formHeader={'Add Slider info'}
+        formHeader={'Add Slider Info'}
         onClose={() => {
           setAddModalIsOpen(!addModalIsOpen);
         }}
@@ -323,21 +346,21 @@ export default function UniversitySliderList({ university_id }) {
         onSubmit={handleSliderSubmit}
         initialValues={initialValues}
         validationSchema={validationSchema}
-        formSubmit={'Add Slider info'}
+        formSubmit={'Add'}
         setInitialValues={setInitialValues}
       />
 
       {/* For updating slider */}
 
       <UniversitysliderModalForm
-        formHeader={'Edit Slider info'}
+        formHeader={'Edit Slider Info'}
         onClose={() => {
           setEditModalIsOpen(!editModalIsOpen);
         }}
         isOpen={editModalIsOpen}
         onSubmit={handleUpdateSlider}
         initialValues={initialValues}
-        formSubmit={'Update Slider info'}
+        formSubmit={'Update'}
         setInitialValues={setInitialValues}
       />
     </Col>

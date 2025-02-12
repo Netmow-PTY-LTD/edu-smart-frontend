@@ -16,6 +16,8 @@ const TimeField = ({ field, form, label, ...props }) => {
     );
   };
 
+  console.log(form);
+  
   return (
     <div>
       <label htmlFor={field.name} className="form-label fs-2 mb-3">
