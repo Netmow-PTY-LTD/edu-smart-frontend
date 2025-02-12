@@ -54,6 +54,12 @@ export const applicationService = createApi({
         method: 'GET',
       }),
     }),
+    checkApplicationIsValid: builder.query({
+      query: ({ course_id, student_id }) => ({
+        url: `/application/${course_id}/verify/${student_id}`,
+        method: 'GET',
+      }),
+    }),
     addEmgsTimeline: builder.mutation({
       query: (data) => {
         const id = data.get('id');
@@ -64,6 +70,7 @@ export const applicationService = createApi({
         };
       },
     }),
+    
   }),
 });
 
@@ -75,4 +82,5 @@ export const {
   useGetEmgsStatusTimelineQuery,
   useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
+  useCheckApplicationIsValidQuery
 } = applicationService;
