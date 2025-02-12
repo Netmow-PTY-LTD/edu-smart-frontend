@@ -4,11 +4,14 @@ import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
 import Layout from '@/components/layout';
+import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
 import { useAddBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Card, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -18,6 +21,8 @@ export default function AddBlog() {
     description: '',
     image: null,
   });
+
+  const router = useRouter();
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
@@ -30,11 +35,19 @@ export default function AddBlog() {
   //   setFieldValue("image", file); // set it in Formik state
   // };
 
+  const {
+    data: allBlogs,
+    isLoading: isAllBlogsLoading,
+    error: allBlogsError,
+    refetch: allBlogsRefetch,
+  } = useGetAllBlogsQuery();
+
   const [addBlog] = useAddBlogMutation();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setSubmitting(true);
+
     try {
-      setSubmitting(true);
       const formData = new FormData();
 
       Object.keys(values).forEach((key) => {
@@ -49,11 +62,15 @@ export default function AddBlog() {
       }
 
       const result = await addBlog(formData).unwrap();
-      if (result?.success) {
-        toast.success('Blog Added Successfully');
+      if (result) {
+        toast.success(result?.success);
+        resetForm();
+        setTimeout(() => {
+          router.push('/dashboard/super-admin/blog/blog-list');
+        }, 2000);
       }
     } catch (error) {
-      toast.error(error?.message);
+      toast.error(error?.message || 'Something went wrong');
     } finally {
       setSubmitting(false);
     }
@@ -62,6 +79,7 @@ export default function AddBlog() {
     <Layout>
       <div className="page-content">
         <h1>Add Blog</h1>
+        <ToastContainer />
         <div className="">
           <Card className="p-4 p-md-5 add-university-card">
             <Formik

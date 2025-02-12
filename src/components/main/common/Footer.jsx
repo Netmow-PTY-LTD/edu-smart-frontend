@@ -79,10 +79,10 @@ export default function Footer() {
               by <Link href="/">EduSmart</Link>
             </p>
           </div>
-          <div className="footer-bottom-middle">
+          {/* <div className="footer-bottom-middle">
             <Link href="#">Terms of Service</Link>
             <Link href="#">Privacy Policy</Link>
-          </div>
+          </div> */}
           <div className="footer-bottom-right">
             <Link href="#" className="fb">
               <svg

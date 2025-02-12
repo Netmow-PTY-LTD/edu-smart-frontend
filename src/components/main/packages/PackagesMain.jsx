@@ -18,6 +18,9 @@ const PackagesMain = ({
     router.push(`/auth/register?packageId=${id}`);
   };
 
+  console.log(selectPackage);
+  console.log(data?._id);
+
   return (
     <>
       <div
@@ -111,6 +114,7 @@ const PackagesMain = ({
           <div
             className="d-flex align-items-center justify-content-center button hstack fw-semibold p-3"
             onClick={() => handleSelectPackage(data?._id)}
+            style={{ cursor: 'pointer' }}
           >
             Select a Package
           </div>
@@ -126,6 +130,7 @@ const PackagesMain = ({
           <div
             onClick={() => handleUpgrade(data._id)}
             className="d-flex align-items-center justify-content-center button hstack py-2"
+            style={{ cursor: 'pointer' }}
           >
             <span className="text-center fw-medium">Upgrade</span>
           </div>
