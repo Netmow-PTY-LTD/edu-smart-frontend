@@ -39,33 +39,33 @@ const AllSubscriptionForSuperAdmin = () => {
       item?.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const allSubscriberHeaderAction = {
-    title: 'Action',
-    key: 'actions',
-    render: (item) => (
-      <UncontrolledDropdown direction="end">
-        <DropdownToggle
-          tag="a"
-          className="text-reset dropdown-btn"
-          role="button"
-        >
-          <span className="button px-3">
-            <i className="ri-more-fill align-middle"></i>
-          </span>
-        </DropdownToggle>
-        <DropdownMenu className="ms-3">
-          <DropdownItem className="fw-medium">
-            <i class="ri-check-double-fill me-2 text-success fw-bold"></i>
-            Subscribe
-          </DropdownItem>
-          <DropdownItem className="fw-medium">
-            <i class="ri-close-line me-2 text-danger fw-bold"></i>
-            Unsubscribe
-          </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    ),
-  };
+  // const allSubscriberHeaderAction = {
+  //   title: 'Action',
+  //   key: 'actions',
+  //   render: (item) => (
+  //     <UncontrolledDropdown direction="end">
+  //       <DropdownToggle
+  //         tag="a"
+  //         className="text-reset dropdown-btn"
+  //         role="button"
+  //       >
+  //         <span className="button px-3">
+  //           <i className="ri-more-fill align-middle"></i>
+  //         </span>
+  //       </DropdownToggle>
+  //       <DropdownMenu className="ms-3">
+  //         <DropdownItem className="fw-medium">
+  //           <i class="ri-check-double-fill me-2 text-success fw-bold"></i>
+  //           Subscribe
+  //         </DropdownItem>
+  //         <DropdownItem className="fw-medium">
+  //           <i class="ri-close-line me-2 text-danger fw-bold"></i>
+  //           Unsubscribe
+  //         </DropdownItem>
+  //       </DropdownMenu>
+  //     </UncontrolledDropdown>
+  //   ),
+  // };
   const subscriptionHeadersWithoutAction = [
     {
       title: 'email',
@@ -96,7 +96,7 @@ const AllSubscriptionForSuperAdmin = () => {
   useEffect(() => {
     setAllSubscriptionData([
       ...subscriptionHeadersWithoutAction,
-      allSubscriberHeaderAction,
+      // allSubscriberHeaderAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
