@@ -2,19 +2,10 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetNewsLetterSubscriptionInSuperAdminQuery } from '@/slice/services/super admin/newsLetterSubscription';
-
+import { useGetApplicationPaymentReportQuery } from '@/slice/services/common/paymentReportServices';
 import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const ApplicationPaymentForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,109 +18,94 @@ const ApplicationPaymentForSuperAdmin = () => {
     error: getApplicationPaymentDataError,
     isLoading: getApplicationPaymentDataLoading,
     refetch: getApplicationPaymentDataRefetch,
-  } = useGetNewsLetterSubscriptionInSuperAdminQuery();
+  } = useGetApplicationPaymentReportQuery();
+
+  console.log(getApplicationPaymentData);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
-  const isfilteredData =
-    getApplicationPaymentData?.data?.length > 0 &&
-    getApplicationPaymentData?.data.filter((item) =>
-      item?.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-  // const applicationPaymentHeaderAction = {
-  //   title: 'Action',
-  //   key: 'actions',
-  //   render: (item) => (
-  //     <UncontrolledDropdown className="card-header-dropdown">
-  //       <DropdownToggle
-  //         tag="a"
-  //         className="text-reset dropdown-btn"
-  //         role="button"
-  //       >
-  //         <span className="button px-3">
-  //           <i className="ri-more-fill align-middle"></i>
-  //         </span>
-  //       </DropdownToggle>
-  //       <DropdownMenu className="dropdown-menu dropdown-menu-end">
-  //         <DropdownItem>
-  //           <i class="ri-check-double-fill me-2"></i>
-  //           Subscribe
-  //         </DropdownItem>
-  //         <DropdownItem>
-  //           <i class="ri-close-line me-2"></i>
-  //           Unsubscribe
-  //         </DropdownItem>
-  //       </DropdownMenu>
-  //     </UncontrolledDropdown>
-  //   ),
-  // };
+  const filteredData = getApplicationPaymentData?.data?.filter((item) => {
+    const fullName =
+      `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
+    return fullName?.includes(searchTerm.toLowerCase());
+  });
 
   const applicationHeadersWithoutAction = [
     {
       title: 'Student Name',
-      key: 'studentName',
+      key: 'student',
+      render: (item) => (
+        <div>
+          {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
+        </div>
+      ),
     },
     {
       title: 'Application ID',
-      key: 'applicationId',
+      key: 'application',
+      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
     },
     {
       title: 'Applied By',
-      key: 'appliedBy',
+      key: 'applied_by',
+      render: (item) => (
+        <div>
+          {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
+            'N/A'}
+        </div>
+      ),
     },
     {
       title: 'Paid Amount',
-      key: 'paidAmount',
+      key: 'paid_amount',
     },
     {
       title: 'University Price',
-      key: 'universityPrice',
+      key: 'university_price',
     },
     {
       title: 'Agent Package',
-      key: 'agentPackage',
-      render: (item) => <div>{item.agentPackage ?? 'N/A'}</div>,
+      key: 'package',
+      render: (item) => <div>{item.agentPackage?.package?.name ?? 'N/A'}</div>,
     },
     {
       title: 'Package Commission %',
-      key: 'packageCommissionPercentage',
-      render: (item) => <div>{item.packageCommissionPercentage ?? 'N/A'}</div>,
+      key: 'agent_package',
+      render: (item) => (
+        <div>{item.agentPackage?.package?.commission ?? 'N/A'}</div>
+      ),
     },
     {
       title: 'Hot Offer Commission %',
-      key: 'hotOfferCommissionPercentage',
-      render: (item) => <div>{item.hotOfferCommissionPercentage ?? 'N/A'}</div>,
+      key: 'hot_offer',
+      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
     },
     {
       title: 'Package Commission Amount',
-      key: 'packageCommissionAmount',
+      key: 'agent_commission',
     },
     {
       title: 'Hot Offer Commission Amount',
-      key: 'hotOfferCommissionAmount',
+      key: 'agent_commision_by_hot_offer',
     },
     {
       title: 'Super Admin Profit',
-      key: 'superAdminProfit',
+      key: 'super_admin_profit',
     },
     {
       title: 'Payment Date',
-      key: 'paymentDate',
+      key: 'payment_date',
     },
     {
       title: 'Payment Method',
-      key: 'paymentMethod',
+      key: 'payment_method',
     },
   ];
 
   useEffect(() => {
-    setApplicationPaymentData([
-      ...applicationHeadersWithoutAction,
-      // applicationPaymentHeaderAction,
-    ]);
+    setApplicationPaymentData([...applicationHeadersWithoutAction]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -139,7 +115,7 @@ const ApplicationPaymentForSuperAdmin = () => {
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
-            {!getApplicationPaymentDataLoading ? (
+            {getApplicationPaymentDataLoading ? (
               <LoaderSpiner />
             ) : (
               <Card>
@@ -153,7 +129,7 @@ const ApplicationPaymentForSuperAdmin = () => {
                 <CardBody>
                   <CommonTableComponent
                     headers={applicationPaymentData}
-                    data={isfilteredData ? isfilteredData : []}
+                    data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
                     perPageData={perPageData}

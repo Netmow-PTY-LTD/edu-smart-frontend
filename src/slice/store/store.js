@@ -37,6 +37,7 @@ import { newsLetterSubscriptionPublic } from '../services/public/newsLetter/news
 import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLetterSubscription';
 import { contactUsService } from '../services/public/contact-us/contactUsService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
+import { paymentReportService } from '../services/common/paymentReportServices';
 
 export const store = configureStore({
   reducer: {
@@ -84,6 +85,7 @@ export const store = configureStore({
     [contactUsService.reducerPath]: contactUsService.reducer,
     [requiredService.reducerPath]: requiredService.reducer,
     [applicationServiceNew.reducerPath]: applicationServiceNew.reducer,
+    [paymentReportService.reducerPath]: paymentReportService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -122,7 +124,8 @@ export const store = configureStore({
       .concat(contactUsService.middleware)
       .concat(requiredService.middleware)
       .concat(applicationServiceNew.middleware)
-      .concat(agentApplicationService.middleware),
+      .concat(agentApplicationService.middleware)
+      .concat(paymentReportService.middleware),
 });
 
 setupListeners(store.dispatch);
