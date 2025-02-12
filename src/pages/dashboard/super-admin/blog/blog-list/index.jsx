@@ -2,10 +2,9 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import {
-  useDeleteContactMessageMutation,
-  useGetAllContactMessagesQuery,
-} from '@/slice/services/super admin/contactUsService';
+import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
+import { useDeleteBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -16,35 +15,39 @@ export default function ContactMessages() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const {
-    data: allContactMessages,
-    isLoading: isAllContactMessagesLoading,
-    error: allContactMessagesError,
-    refetch: allContactMessagesRefetch,
-  } = useGetAllContactMessagesQuery();
+    data: allBlogs,
+    isLoading: isAllBlogsLoading,
+    error: allBlogsError,
+    refetch: allBlogsRefetch,
+  } = useGetAllBlogsQuery();
+
+  console.log(allBlogs?.data);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const filteredData =
-    allContactMessages?.data?.length > 0 &&
-    allContactMessages?.data.filter((item) =>
-      item?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    allBlogs?.data?.length > 0 &&
+    allBlogs?.data.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const [
-    deleteContactMessage,
-    {
-      data: deleteContactMessageData,
-      error: deleteContactMessageError,
-      isLoading: deleteContactMessageIsLoading,
-    },
-  ] = useDeleteContactMessageMutation();
+  console.log(filteredData);
 
-  const handleDeleteContactMessage = async (id) => {
+  const [
+    deleteBlog,
+    {
+      data: deleteBlogData,
+      error: deleteBlogError,
+      isLoading: deleteBlogIsLoading,
+    },
+  ] = useDeleteBlogMutation();
+
+  const handleDeleteBlog = async (id) => {
     try {
-      const result = await deleteContactMessage(id).unwrap();
+      const result = await deleteBlog(id).unwrap();
       if (result) {
         toast.success(result?.message);
-        allContactMessagesRefetch();
+        allBlogsRefetch();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -54,7 +57,7 @@ export default function ContactMessages() {
     }
   };
 
-  const contactMessageHeaders = [
+  const blogListHeaders = [
     {
       title: 'SN',
       key: 'sn',
@@ -65,52 +68,47 @@ export default function ContactMessages() {
       ),
     },
     {
-      title: 'Name',
-      key: 'name',
+      title: 'Title',
+      key: 'title',
       render: (item) => (
         <h5 className="fs-14 fw-medium text-capitalize">
-          {item?.name ? item?.name : ''}
+          {item?.title ? item?.title : ''}
         </h5>
       ),
     },
     {
-      title: 'Email',
-      key: 'email',
+      title: 'Description',
+      key: 'description',
       render: (item) => (
-        <h5 className="fs-14 fw-medium">{item?.email ? item?.email : ''}</h5>
+        <h5 className="fs-14 fw-medium">
+          {item?.description ? item?.description : ''}
+        </h5>
       ),
     },
     {
-      title: 'Phone',
-      key: 'phone',
+      title: 'Image',
+      key: 'image',
       render: (item) => (
         <>
-          <span className={`fs-14 fw-medium`}>
-            {item?.phone ? item?.phone : ''}
-          </span>
-        </>
-      ),
-    },
-
-    {
-      title: 'Message',
-      key: 'message',
-      render: (item) => (
-        <>
-          <span className={`fs-14 fw-medium`}>
-            {item?.message ? item?.message : ''}
-          </span>
+          <div>
+            <Image
+              src={item?.image?.url ? item?.image?.url : ''}
+              width={80}
+              height={80}
+              alt="image"
+            />
+          </div>
         </>
       ),
     },
 
     {
       title: 'Action',
-      key: 'actions',
+      key: 'action',
       render: (item) => (
         <div
           className="text-danger fw-medium cursor-pointer"
-          onClick={() => handleDeleteContactMessage(item?._id)}
+          onClick={() => handleDeleteBlog(item?._id)}
         >
           <i className="ri-close-circle-fill align-start me-2 "></i>
           Delete
@@ -123,12 +121,12 @@ export default function ContactMessages() {
       <div className="page-content">
         <div className="container">
           <ToastContainer />
-          {isAllContactMessagesLoading ? (
+          {isAllBlogsLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                <h2>Contact Messages</h2>
+                <h2>Blog List</h2>
                 <SearchComponent
                   searchTerm={searchTerm}
                   handleSearchChange={handleSearchChange}
@@ -137,7 +135,7 @@ export default function ContactMessages() {
               <CardBody>
                 <div className="contact-message-table">
                   <CommonTableComponent
-                    headers={contactMessageHeaders}
+                    headers={blogListHeaders}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

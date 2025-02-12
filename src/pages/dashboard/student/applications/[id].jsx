@@ -63,7 +63,12 @@ const SingleApplicationsPage = () => {
                       (item, index) => (
                         <div key={index} className="col-md-4 mb-4">
                           <h5 className="fs-2 text-capitalize text-primary fw-semibold">
-                            {item?.title.split('[')[0]}
+                          {item?.title
+                              .split('[')[0]
+                              .split('_')
+                              .join(' ')
+                              .split('/')
+                              .join(' ')}
                           </h5>
                           {item?.files?.length > 0 &&
                             item?.files.map((file, fileIndex) => (

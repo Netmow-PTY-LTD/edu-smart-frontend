@@ -42,6 +42,7 @@ const SingleCoursePageInFrontSite = () => {
     description,
     entry_requirements,
     english_requirements,
+    document_requirements,
     brochure,
     department,
     available_seats,
@@ -66,7 +67,7 @@ const SingleCoursePageInFrontSite = () => {
     if (role === 'student') {
       destination = `/dashboard/student/university-management/single-university-profile/${universityId}/course/${id}`;
     } else if (role === 'agent') {
-      destination = `/dashboard/agent/university-management/single-university-profile/${universityId}/course/${id}`;
+      destination = `/dashboard/agent/university-management/single-university-profile-for-agent/${universityId}/course/${id}`;
     }
 
     //console.log(destination);
@@ -77,6 +78,8 @@ const SingleCoursePageInFrontSite = () => {
       router.push(`/auth/register?universityId=${universityId}&courseId=${id}`);
     }
   };
+
+  //console.log(document_requirements);
 
   return (
     <UniversityLayout>
@@ -204,6 +207,19 @@ const SingleCoursePageInFrontSite = () => {
                           </AccordionBody>
                         </AccordionItem>
                       </Accordion>
+                    </div>
+                    <div className="document-requirements">
+                      <h3>Required Documents for this course:</h3>
+                      {document_requirements?.map((doc, i) => {
+                        return (
+                          <>
+                            <h4>{doc?.title ? doc?.title : ''}</h4>
+                            <div className="doc-description">
+                              {doc?.description ? doc?.description : ''}
+                            </div>
+                          </>
+                        );
+                      })}
                     </div>
                   </div>
                 </Col>

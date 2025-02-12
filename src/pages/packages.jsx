@@ -7,28 +7,38 @@ import {
   useGetAllActiveCouponQuery,
   useGetAllPackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 export default function Packages() {
   const { data: userInfodata, refetch: userInfoRefetch } =
     useGetUserInfoQuery();
 
-  const [selectPackage, setSelectPackage] = useState(
-    userInfodata?.data?.agent_package?.package?._id || null
-  );
+  const [selectPackage, setSelectPackage] = useState(null);
 
   //console.log(userInfodata);
 
   const { data: allCouponData } = useGetAllActiveCouponQuery();
 
-  console.log(allCouponData?.data);
+  console.log(userInfodata?.data?.agent_package?.package?._id);
 
   const {
     data: getAllPackageData,
     isLoading: getAllPackageIsLoading,
     refetch: getAllPackageRefetch,
   } = useGetAllPackageQuery();
+
+  useEffect(() => {
+    const selectedPackage = getAllPackageData?.data?.find(
+      (item) => item?._id === userInfodata?.data?.agent_package?.package?._id
+    );
+    //console.log(selectedPackage);
+    setSelectPackage(selectedPackage);
+  }, [
+    getAllPackageData?.data,
+    userInfodata?.data?.agent_package?.package?._id,
+  ]);
+
   return (
     <MainLayout>
       <section className="packages-main">
@@ -46,30 +56,33 @@ export default function Packages() {
             </p>
           </div>
 
-          <div className="d-flex justify-content-center align-items-center my-5 gap-5 flex-wrap">
+          <div className="d-flex justify-content-center my-5 gap-5 flex-wrap">
             {getAllPackageIsLoading ? (
               <LoaderSpiner />
             ) : (
               <>
                 {getAllPackageData?.data?.length > 0 ? (
-                  getAllPackageData?.data.map((item, index) => (
-                    <PackagesMain
-                      key={index}
-                      data={item}
-                      style={
-                        item?._id ===
-                        userInfodata?.data?.agent_package?.package?._id
-                          ? { border: '5px solid #13C9BF' }
-                          : {}
-                      }
-                      unselectedPackage={
-                        item?.price <
-                        userInfodata?.data?.agent_package?.package?.price
-                      }
-                      selectPackage={selectPackage}
-                      setSelectPackage={setSelectPackage}
-                    />
-                  ))
+                  getAllPackageData?.data.map((item, index) => {
+                    console.log(item?._id);
+                    return (
+                      <PackagesMain
+                        key={index}
+                        data={item}
+                        style={
+                          item?._id ===
+                          userInfodata?.data?.agent_package?.package?._id
+                            ? { border: '5px solid #13C9BF' }
+                            : {}
+                        }
+                        unselectedPackage={
+                          item?.price <
+                          userInfodata?.data?.agent_package?.package?.price
+                        }
+                        selectPackage={selectPackage}
+                        setSelectPackage={setSelectPackage}
+                      />
+                    );
+                  })
                 ) : (
                   <div className="d-flex flex-column justify-content-center align-items-center text-center text-capitalize">
                     <h1 className="text-primary">No package found right now</h1>

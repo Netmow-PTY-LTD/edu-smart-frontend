@@ -45,9 +45,9 @@ export default function Footer() {
                   <li>
                     <Link href="/university">Universities</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href="/blogs">Blogs</Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link href="/about">About</Link>
                   </li>
@@ -80,8 +80,8 @@ export default function Footer() {
             </p>
           </div>
           <div className="footer-bottom-middle">
-            <Link href="#">Terms of Service</Link>
-            <Link href="#">Privacy Policy</Link>
+            <Link href="/terms-service">Terms of Service</Link>
+            <Link href="/privacy-policy">Privacy Policy</Link>
           </div>
           <div className="footer-bottom-right">
             <Link href="#" className="fb">

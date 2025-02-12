@@ -10,6 +10,7 @@ const CommonTableComponent = ({
   perPageData,
   emptyMessage,
 }) => {
+  console.log(data);
   // Pagination logic
   const startIdx = currentPage * perPageData;
   const endIdx = Math.min((currentPage + 1) * perPageData, data?.length);
@@ -41,7 +42,9 @@ const CommonTableComponent = ({
                       <td key={header.key}>
                         {header.render
                           ? header.render(item, rowIndex)
-                          : item[header.key] || '-'}
+                          : `${header.key}` in item
+                            ? item[header.key]
+                            : '-'}
                       </td>
                     ))}
                 </tr>

@@ -9,7 +9,9 @@ const SuperAdminSidebarData = () => {
   const [isUniversity, setIsUniversity] = useState(false);
   const [isUniManagement, setIsUniManagement] = useState(false);
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
+  const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
+  const [isBlogs, setIsBlogs] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -77,14 +79,13 @@ const SuperAdminSidebarData = () => {
           link: '/dashboard/super-admin/university-management/add-university',
           parentId: 'universities',
         },
-        {
-          id: 'recent-application',
-          label: 'Recent Application',
-          icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/recent-application',
-          parentId: 'universities',
-        },
       ],
+    },
+    {
+      id: 'recent-application',
+      label: 'Recent Application',
+      icon: 'ri-article-fill',
+      link: '/dashboard/super-admin/recent-application',
     },
     {
       id: 'alldocuments',
@@ -124,11 +125,42 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/students',
     },
     {
+      id: 'blogs',
+      label: 'Blogs',
+      icon: 'ri-school-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsBlogs(!isBlogs);
+        setIscurrentState('Blogs');
+        updateIconSidebar(e);
+      },
+      stateVariables: isBlogs,
+      subItems: [
+        {
+          id: 'addblog',
+          label: 'Add Blog',
+          icon: 'ri-school-fill',
+          link: '/dashboard/super-admin/blog/add-blog',
+          parentId: 'blogs',
+        },
+
+        {
+          id: 'allblogs',
+          label: 'Blogs List',
+          icon: 'ri-school-fill',
+          link: '/dashboard/super-admin/blog/blog-list',
+          parentId: 'blogs',
+        },
+      ],
+    },
+    {
       id: 'contact-messages',
       label: 'Contact Messages',
       icon: 'ri-group-fill',
       link: '/dashboard/super-admin/contact-messages',
     },
+
     {
       id: 'settings',
       label: 'Settings',
@@ -218,6 +250,36 @@ const SuperAdminSidebarData = () => {
           link: '/dashboard/super-admin/subscription/subscription-list',
           pathName: '/dashboard/super-admin/subscription/subscription-list',
           parentId: 'subscription',
+        },
+      ],
+    },
+    {
+      id: 'payment-report',
+      label: 'Payment Report',
+      icon: 'ri-bank-card-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+        setIscurrentState('payment-report');
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'package-payment',
+          label: 'Package Payment',
+          icon: 'ri-red-packet-line',
+          link: '/dashboard/super-admin/payment-report/package-payment',
+          pathName: '/dashboard/super-admin/payment-report/package-payment',
+          parentId: 'payment-report',
+        },
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link: '/dashboard/super-admin/payment-report/application-payment',
+          pathName: '/dashboard/super-admin/payment-report/application-payment',
+          parentId: 'payment-report',
         },
       ],
     },

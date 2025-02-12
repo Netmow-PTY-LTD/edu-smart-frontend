@@ -48,7 +48,9 @@ const UniversityProfileOverview = ({
         <Col xl={6}>
           <div>
             <Card>
-              <CardHeader></CardHeader>
+              <CardHeader className="fs-2 fw-semibold">
+                All Course Categories
+              </CardHeader>
               <CardBody>
                 <CommonTableComponent
                   headers={categoryHeaders}
@@ -65,7 +67,7 @@ const UniversityProfileOverview = ({
         <Col xl={6}>
           <div>
             <Card>
-              <CardHeader></CardHeader>
+              <CardHeader className="fs-2 fw-semibold">All Courses</CardHeader>
               <CardBody>
                 <CommonTableComponent
                   headers={courseHeaders}
