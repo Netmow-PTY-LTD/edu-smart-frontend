@@ -37,6 +37,9 @@ import { newsLetterSubscriptionPublic } from '../services/public/newsLetter/news
 import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLetterSubscription';
 import { contactUsService } from '../services/public/contact-us/contactUsService';
 import { publicAgentService } from '../services/public/agent/publicAgentService';
+import { superAdminContactService } from '../services/super admin/contactUsService';
+import { superAdminBlogServices } from '../services/super admin/superAdminBlogServices';
+import { publicBlogServices } from '../services/public/blogs/publicBlogsServices';
 
 export const store = configureStore({
   reducer: {
@@ -84,6 +87,9 @@ export const store = configureStore({
     [contactUsService.reducerPath]: contactUsService.reducer,
     [requiredService.reducerPath]: requiredService.reducer,
     [applicationServiceNew.reducerPath]: applicationServiceNew.reducer,
+    [superAdminContactService.reducerPath]: superAdminContactService.reducer,
+    [superAdminBlogServices.reducerPath]: superAdminBlogServices.reducer,
+    [publicBlogServices.reducerPath]: publicBlogServices.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -122,7 +128,10 @@ export const store = configureStore({
       .concat(contactUsService.middleware)
       .concat(requiredService.middleware)
       .concat(applicationServiceNew.middleware)
-      .concat(agentApplicationService.middleware),
+      .concat(agentApplicationService.middleware)
+      .concat(superAdminContactService.middleware)
+      .concat(superAdminBlogServices.middleware)
+      .concat(publicBlogServices.middleware),
 });
 
 setupListeners(store.dispatch);
