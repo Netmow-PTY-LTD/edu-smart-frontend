@@ -255,7 +255,7 @@ const CouponManagementInSuperAdmin = () => {
             <div>
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
-                  <h2>All Agents</h2>
+                  <h2>Coupon List</h2>
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
