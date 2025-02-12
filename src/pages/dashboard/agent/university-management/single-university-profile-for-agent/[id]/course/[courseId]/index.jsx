@@ -3,7 +3,10 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 
 import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { useCheckApplicationIsValidQuery } from '@/slice/services/common/applicationService';
+import {
+  useCheckApplicationIsValidQuery,
+  useGetApplicationsQuery,
+} from '@/slice/services/common/applicationService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useCreateApplicationMutation,
@@ -42,45 +45,39 @@ const SingleUniversityCourse = () => {
   const university_id = router.query.id;
   const course_id = router.query.courseId;
 
-  const {
-    data: allStudentForAgentData,
-    error: allStudentForAgentError,
-    isLoading: allStudentForAgentIsLoading,
-    refetch: allStudentForAgentRefetch,
-  } = useAllStudentForAgentQuery();
+  const { data: userInfoData, isLoading: userInfoLoading } =
+    useGetUserInfoQuery();
+
+  const { data: allStudentForAgentData, refetch: allStudentForAgentRefetch } =
+    useAllStudentForAgentQuery();
+
+  const { refetch: applicationDataRefetch } = useGetApplicationsQuery();
+  const selectedIsStudent = Cookies.get('selectedStudent');
+  console.log(selectedIsStudent);
 
   const {
-    data: checkApplicationIsValidData,
     error: checkApplicationIsValidError,
     isLoading: checkApplicationIsValidIsLoading,
-    refetch: checkApplicationIsValidRefetch,
   } = useCheckApplicationIsValidQuery(
     {
       course_id: course_id,
-      student_id: Cookies.get('selectedStudent'),
+      student_id: selectedStudent,
     },
     {
-      skip: !course_id || !Cookies.get('selectedStudent'),
+      skip: !course_id || !selectedIsStudent || selectedIsStudent.trim() === '',
     }
   );
 
   const {
     data: getSingleUniversityDataForStudent,
-    isLoading: getSingleUniversityIsLoadingForStudent,
     refetch: getSingleUniversityForStudentRefetch,
   } = useGetsingleUniversityQuery(university_id);
 
-  const { data: userInfoData, isLoading: userInfoLoading } =
-    useGetUserInfoQuery();
-
-  const {
-    data: getSingleCourseData,
-    isLoading: getSingleCourseIsLoading,
-    refetch: getSingleCourseRefetch,
-  } = useGetSingleCourseQuery({
-    university_id: university_id,
-    course_id: course_id,
-  });
+  const { data: getSingleCourseData, isLoading: getSingleCourseIsLoading } =
+    useGetSingleCourseQuery({
+      university_id: university_id,
+      course_id: course_id,
+    });
 
   const [
     createApplication,
@@ -95,7 +92,14 @@ const SingleUniversityCourse = () => {
     },
   ] = useUpdateApplicationStatusMutation();
 
-  // console.log(allStudentForAgentData?.data);
+  useEffect(() => {
+    if (router?.query?.payment_status === 'faild') {
+      toast.error('Payment Failed');
+    }
+    if (router?.query?.payment_status === 'cancel') {
+      toast.error('Payment Cancelled');
+    }
+  }, [router?.query?.payment_status]);
 
   useEffect(() => {
     if (allStudentForAgentData?.data?.length > 0) {
@@ -107,37 +111,45 @@ const SingleUniversityCourse = () => {
     }
   }, [allStudentForAgentData]);
 
-  // console.log(studentsData);
+  useEffect(() => {
+    if (university_id) {
+      getSingleUniversityForStudentRefetch(university_id);
+    }
+  }, [getSingleUniversityForStudentRefetch, university_id]);
+
+  useEffect(() => {
+    if (router?.query?.payment_status && router?.query?.transaction_id) {
+      console.log('check status');
+      ('');
+    } else {
+      if (
+        checkApplicationIsValidError?.data?.message ===
+        'Invalid ObjectId. The provided id is not a valid MongoDB ObjectId.'
+      ) {
+        ('');
+      } else {
+        toast.error(checkApplicationIsValidError?.data?.message);
+      }
+    }
+  }, [
+    checkApplicationIsValidError?.data?.message,
+    router?.query?.payment_status,
+    router?.query?.transaction_id,
+  ]);
 
   useEffect(() => {
     if (updateApplicationStatusData?.success) {
       toast.success('Application Payment successfull');
+      applicationDataRefetch();
       router.push(`/dashboard/agent/applications`);
     } else if (updateApplicationStatusData?.error) {
       toast.error('Application failed');
     }
   }, [
+    applicationDataRefetch,
     router,
     updateApplicationStatusData?.error,
     updateApplicationStatusData?.success,
-  ]);
-
-  useEffect(() => {
-    if (university_id) {
-      getSingleUniversityForStudentRefetch(university_id);
-    }
-    if (
-      checkApplicationIsValidError?.data?.message ===
-      'Invalid ObjectId. The provided id is not a valid MongoDB ObjectId.'
-    ) {
-      ('');
-    } else {
-      toast.error(checkApplicationIsValidError?.data?.message);
-    }
-  }, [
-    checkApplicationIsValidError,
-    getSingleUniversityForStudentRefetch,
-    university_id,
   ]);
 
   useEffect(() => {
@@ -148,10 +160,12 @@ const SingleUniversityCourse = () => {
           `/dashboard/agent/university-management/single-university-profile-for-agent/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
         );
       } else {
+        applicationDataRefetch();
         router.push(`/dashboard/agent/applications`);
       }
     }
   }, [
+    applicationDataRefetch,
     buttonType,
     course_id,
     createApplicationData?.data?._id,
@@ -166,23 +180,14 @@ const SingleUniversityCourse = () => {
       transaction_id,
       application_id
     ) => {
-      console.log(transaction_id);
-      console.log(application_id);
       try {
-        const response = await updateApplicationStatus({
+        updateApplicationStatus({
           status: 'paid',
           transaction_id,
           application_id,
-        }).unwrap();
-        // console.log(response);
-        if (response.success) {
-          toast.success('Application created successfully');
-          router.push(`/dashboard/agent/applications`);
-        } else {
-          toast.error('Application failed');
-        }
+        });
       } catch (error) {
-        // toast.error('Something went wrong while creating application');
+        //
       }
     };
 
@@ -199,20 +204,59 @@ const SingleUniversityCourse = () => {
     }
   }, [router, updateApplicationStatus, userInfoData?.data?._id]);
 
-  useEffect(() => {
-    if (router?.query?.payment_status === 'faild') {
-      toast.error('Payment Failed');
-    }
-    if (router?.query?.payment_status === 'cancel') {
-      toast.error('Payment Cancelled');
-    }
-  }, [router?.query?.payment_status]);
+  const handleAddSubmit = async (values, { setSubmitting }, actionType) => {
+    setSubmitting(true);
+    setButtonType(actionType);
 
-  const toggle = (id) => {
-    if (open === id) {
-      setOpen();
-    } else {
-      setOpen(id);
+    const addData = {
+      course_id: getSingleCourseData?.data?._id,
+      student_id: Cookies.get('selectedStudent') || null,
+      applied_by: userInfoData?.data?._id,
+      payment_price: getSingleCourseData?.data?.price,
+      payment_gst: getSingleCourseData?.data?.gst,
+      payment_status: 'pending',
+      ...values,
+    };
+
+    const finalData = new FormData();
+    for (const [key, value] of Object.entries(addData)) {
+      if (Array.isArray(value)) {
+        value.forEach((file, index) => {
+          finalData.append(`${key}[${index}]`, file);
+        });
+      } else {
+        finalData.append(key, value);
+      }
+    }
+
+    // for (const [key, value] of finalData.entries()) {
+    //   console.log(`${key}: ${value instanceof File ? value.name : value}`);
+    // }
+
+    try {
+      createApplication(finalData).unwrap();
+    } catch (error) {
+      console.error('Error during submission:', error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const initialValues = getSingleCourseData?.data?.document_requirements.reduce(
+    (acc, item) => {
+      const fieldName = item.title.toLowerCase().replace(/\s+/g, '_');
+      acc[fieldName] = [];
+      return acc;
+    },
+    {}
+  );
+
+  const handleChange = (selectedOption) => {
+    const selectedValue = selectedOption ? selectedOption.value : null;
+    Cookies.set('selectedStudent', selectedValue);
+    setSelectedStudent(selectedValue);
+    if (selectedValue) {
+      allStudentForAgentRefetch();
     }
   };
 
@@ -232,88 +276,13 @@ const SingleUniversityCourse = () => {
       });
   };
 
-  console.log(Cookies.get('selectedStudent'));
-
-  const handleAddSubmit = async (values, { setSubmitting }, actionType) => {
-    setSubmitting(true);
-    setButtonType(actionType);
-
-    try {
-      console.log('Form Submitted with action:', actionType);
-      console.log('Form Values:', values);
-
-      const addData = {
-        course_id: getSingleCourseData?.data?._id,
-        student_id: Cookies.get('selectedStudent') || null,
-        applied_by: userInfoData?.data?._id,
-        payment_price: getSingleCourseData?.data?.price,
-        payment_gst: getSingleCourseData?.data?.gst,
-        payment_status: 'pending',
-        ...values,
-      };
-
-      const finalData = new FormData();
-      for (const [key, value] of Object.entries(addData)) {
-        if (Array.isArray(value)) {
-          value.forEach((file, index) => {
-            finalData.append(`${key}[${index}]`, file);
-          });
-        } else {
-          finalData.append(key, value);
-        }
-      }
-
-      // Log FormData for debugging
-      for (const [key, value] of finalData.entries()) {
-        console.log(`${key}: ${value instanceof File ? value.name : value}`);
-      }
-
-      // Submit the form data to the API
-      const response = await createApplication(finalData).unwrap();
-
-      if (response.success) {
-        toast.success('Application created successfully');
-        if (actionType === 'Proceed to Payment') {
-          router.push(
-            `/dashboard/agent/university-management/single-university-profile-for-agent/${university_id}/course/${course_id}/payment-options`
-          );
-        }
-      }
-    } catch (error) {
-      console.error('Error during submission:', error);
-      // toast.error(error.message || 'An error occurred during submission');
-    } finally {
-      setSubmitting(false);
+  const toggle = (id) => {
+    if (open === id) {
+      setOpen();
+    } else {
+      setOpen(id);
     }
   };
-
-  const initialValues = getSingleCourseData?.data?.document_requirements.reduce(
-    (acc, item) => {
-      const fieldName = item.title.toLowerCase().replace(/\s+/g, '_');
-      acc[fieldName] = [];
-      return acc;
-    },
-    {}
-  );
-
-  console.log(getSingleCourseData?.data?.document_requirements);
-
-  const handleChange = (selectedOption) => {
-    // console.log(selectedOption);
-    const selectedValue = selectedOption ? selectedOption.value : null;
-
-    // Set in cookies
-    Cookies.set('selectedStudent', selectedValue); // Adjust expiration time if needed
-
-    // Set in state
-    setSelectedStudent(selectedValue);
-
-    if (selectedValue) {
-      allStudentForAgentRefetch();
-    }
-  };
-
-  console.log(getSingleCourseData?.data);
 
   return (
     <Layout>
@@ -367,8 +336,8 @@ const SingleUniversityCourse = () => {
                         the Halatuju 4 Program Perakaunan published by Malaysian
                         Institute of Accountants.`}
                             </div>
-                            <div class="d-flex gap-4 flex-wrap">
-                              <div class="available-seats course-act">
+                            <div className="d-flex gap-4 flex-wrap">
+                              <div className="available-seats course-act">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="23"
@@ -402,7 +371,7 @@ const SingleUniversityCourse = () => {
                                   {getSingleCourseData?.data?.available_seats}
                                 </b>
                               </div>
-                              <div class="program-duration course-act">
+                              <div className="program-duration course-act">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="23"
@@ -411,8 +380,8 @@ const SingleUniversityCourse = () => {
                                   fill="none"
                                 >
                                   <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
                                     d="M10.8194 0.595562C11.0894 0.468146 11.3995 0.468146 11.6695 0.595562L21.8917 5.42095C22.2555 5.59271 22.4889 5.96784 22.4889 6.38096C22.4889 6.79406 22.2555 7.1692 21.8917 7.34095L19.4222 8.50671V14.694C19.4222 14.9062 19.3706 15.1387 19.2404 15.3546C18.9023 15.9155 16.532 19.5 11.2444 19.5C5.95694 19.5 3.58653 15.9155 3.24847 15.3546C3.11829 15.1387 3.06667 14.9062 3.06667 14.694V8.50671L0.597223 7.34095C0.233373 7.1692 0 6.79406 0 6.38096C0 5.96784 0.233373 5.59271 0.597223 5.42095L10.8194 0.595562ZM5.11111 9.4717V14.4327C5.61187 15.15 7.47606 17.3889 11.2444 17.3889C15.0129 17.3889 16.877 15.15 17.3778 14.4327V9.4717L11.6695 12.1663C11.3995 12.2937 11.0894 12.2937 10.8194 12.1663L5.11111 9.4717ZM3.48091 6.38096L4.51389 6.86857L11.2444 10.0457L17.975 6.86857L19.008 6.38096L11.2444 2.71618L3.48091 6.38096ZM23 9.47222C23 10.3466 22.3135 11.0556 21.4667 11.0556C20.6199 11.0556 19.9333 10.3466 19.9333 9.47222C19.9333 8.5978 20.6199 7.88889 21.4667 7.88889C22.3135 7.88889 23 8.5978 23 9.47222ZM22.4889 12.6389C22.4889 12.0559 22.0312 11.5833 21.4667 11.5833C20.9021 11.5833 20.4444 12.0559 20.4444 12.6389V18.4444C20.4444 19.0274 20.9021 19.5 21.4667 19.5C22.0312 19.5 22.4889 19.0274 22.4889 18.4444V12.6389Z"
                                     fill="#B5D336"
                                   ></path>
@@ -422,7 +391,7 @@ const SingleUniversityCourse = () => {
                                   {getSingleCourseData?.data?.program_duration}
                                 </b>{' '}
                               </div>
-                              <div class="program-duration course-act">
+                              <div className="program-duration course-act">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="23"
@@ -431,8 +400,8 @@ const SingleUniversityCourse = () => {
                                   fill="none"
                                 >
                                   <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
                                     d="M10.8194 0.595562C11.0894 0.468146 11.3995 0.468146 11.6695 0.595562L21.8917 5.42095C22.2555 5.59271 22.4889 5.96784 22.4889 6.38096C22.4889 6.79406 22.2555 7.1692 21.8917 7.34095L19.4222 8.50671V14.694C19.4222 14.9062 19.3706 15.1387 19.2404 15.3546C18.9023 15.9155 16.532 19.5 11.2444 19.5C5.95694 19.5 3.58653 15.9155 3.24847 15.3546C3.11829 15.1387 3.06667 14.9062 3.06667 14.694V8.50671L0.597223 7.34095C0.233373 7.1692 0 6.79406 0 6.38096C0 5.96784 0.233373 5.59271 0.597223 5.42095L10.8194 0.595562ZM5.11111 9.4717V14.4327C5.61187 15.15 7.47606 17.3889 11.2444 17.3889C15.0129 17.3889 16.877 15.15 17.3778 14.4327V9.4717L11.6695 12.1663C11.3995 12.2937 11.0894 12.2937 10.8194 12.1663L5.11111 9.4717ZM3.48091 6.38096L4.51389 6.86857L11.2444 10.0457L17.975 6.86857L19.008 6.38096L11.2444 2.71618L3.48091 6.38096ZM23 9.47222C23 10.3466 22.3135 11.0556 21.4667 11.0556C20.6199 11.0556 19.9333 10.3466 19.9333 9.47222C19.9333 8.5978 20.6199 7.88889 21.4667 7.88889C22.3135 7.88889 23 8.5978 23 9.47222ZM22.4889 12.6389C22.4889 12.0559 22.0312 11.5833 21.4667 11.5833C20.9021 11.5833 20.4444 12.0559 20.4444 12.6389V18.4444C20.4444 19.0274 20.9021 19.5 21.4667 19.5C22.0312 19.5 22.4889 19.0274 22.4889 18.4444V12.6389Z"
                                     fill="#B5D336"
                                   ></path>
