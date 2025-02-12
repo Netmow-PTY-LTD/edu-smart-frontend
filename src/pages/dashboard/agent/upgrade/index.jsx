@@ -558,7 +558,7 @@ const UpgradePackageInAgentdashboard = () => {
                       </div>
                     </CardBody>
                   )}
-                  {!userInfodata?.data?.package_choice && (
+                  {userInfodata?.data?.package_choice && (
                     <CardBody>
                       <div className="w-full text-center d-flex gap-2 justify-content-center">
                         <input
