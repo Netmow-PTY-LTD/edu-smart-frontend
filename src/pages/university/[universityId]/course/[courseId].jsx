@@ -49,6 +49,7 @@ const SingleCoursePageInFrontSite = () => {
     price,
     program_duration,
     status,
+    university,
   } = courseDetail;
 
   const token = Cookies.get('token');
@@ -79,7 +80,7 @@ const SingleCoursePageInFrontSite = () => {
     }
   };
 
-  //console.log(document_requirements);
+  console.log(courseDetail);
 
   return (
     <UniversityLayout>
@@ -96,6 +97,8 @@ const SingleCoursePageInFrontSite = () => {
                   <div className="pe-lg-5">
                     <h2>{name}</h2>
                     <h4> {department?.name}</h4>
+                    <h3 className="university-name">{university?.name}</h3>
+
                     {/* <time dateTime="2024-12-19T12:00:00">
                     Course Admission Last Date||December 19, 2024, 12:00 PM
                   </time> */}
@@ -167,7 +170,7 @@ const SingleCoursePageInFrontSite = () => {
                         className="btn-confirm-apply"
                         onClick={() => handleConfirmApplication(courseId)}
                       >
-                        Confirm Application
+                        Apply Now
                       </button>
                     </div>
                     <div className="course-requirements-main">
