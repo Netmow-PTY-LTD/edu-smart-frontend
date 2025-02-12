@@ -7,7 +7,6 @@ import { useGetAllUniversityQuery } from '@/slice/services/public/university/pub
 import { useGetDocumentRequestForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import {
   studentAndLogoData,
-  studentSubmittedDocumentsHeaderWithoutAction,
   universityHeadersWithoutAction,
 } from '@/utils/common/data';
 
@@ -79,7 +78,7 @@ const StudentDashboard = () => {
                   <Row xxl={12} className="g-5">
                     <Col xxl={12}>
                       <LatestRegistered
-                        tableHead={'All University'}
+                        tableHead={'Recent University'}
                         headers={allRegisteredUniversitydata}
                         data={universityData?.data ? universityData?.data : []}
                       />
@@ -91,13 +90,13 @@ const StudentDashboard = () => {
                         // data={}
                       />
                     </Col> */}
-                    <Col xxl={12}>
+                    {/* <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Document Upload Request'}
                         headers={studentSubmittedDocumentsHeaderWithoutAction}
                         data={getDocumentRequestForStudentData?.data}
                       />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               </Col>

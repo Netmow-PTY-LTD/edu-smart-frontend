@@ -43,7 +43,7 @@ const AllSubscriptionForSuperAdmin = () => {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      <UncontrolledDropdown className="card-header-dropdown">
+      <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
           className="text-reset dropdown-btn"
@@ -53,13 +53,13 @@ const AllSubscriptionForSuperAdmin = () => {
             <i className="ri-more-fill align-middle"></i>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu dropdown-menu-end">
-          <DropdownItem>
-            <i class="ri-check-double-fill me-2"></i>
+        <DropdownMenu className="ms-3">
+          <DropdownItem className="fw-medium">
+            <i class="ri-check-double-fill me-2 text-success fw-bold"></i>
             Subscribe
           </DropdownItem>
-          <DropdownItem>
-            <i class="ri-close-line me-2"></i>
+          <DropdownItem className="fw-medium">
+            <i class="ri-close-line me-2 text-danger fw-bold"></i>
             Unsubscribe
           </DropdownItem>
         </DropdownMenu>
@@ -112,6 +112,9 @@ const AllSubscriptionForSuperAdmin = () => {
             ) : (
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
+                  <div className="text-primary fs-2 fw-semibold">
+                    All Subscription List
+                  </div>
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
