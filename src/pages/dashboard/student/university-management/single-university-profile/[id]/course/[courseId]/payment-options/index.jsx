@@ -27,7 +27,7 @@ export default function StudentApplicationPaymentOption() {
     const price = getSingleCourseData?.data?.price || 0;
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=faild`
+        ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=failed`
         : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=faild`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
@@ -38,7 +38,7 @@ export default function StudentApplicationPaymentOption() {
         ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=cancel`
         : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=cancel`;
     const course_id = courseId;
-    const package_id = '';
+
     const currency = 'MYR';
 
     try {
@@ -48,7 +48,7 @@ export default function StudentApplicationPaymentOption() {
         success_url,
         cancel_url,
         course_id,
-        package_id,
+
         currency,
         application_id,
       }).unwrap();
