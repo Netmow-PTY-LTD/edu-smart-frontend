@@ -9,22 +9,31 @@ import { paymentService } from '../services/common/paymentService';
 import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
 
+import { paymentReportService } from '../services/common/paymentReportServices';
+import { publicAgentService } from '../services/public/agent/publicAgentService';
 import { applicationServiceNew } from '../services/public/application/applicationServiceNew';
 import { authService } from '../services/public/auth/authService';
+import { publicBlogServices } from '../services/public/blogs/publicBlogsServices';
+import { contactUsService } from '../services/public/contact-us/contactUsService';
+import { newsLetterSubscriptionPublic } from '../services/public/newsLetter/newsLetterSubscriptionPublic';
 import { publicPackageService } from '../services/public/package/publicPackageService';
 import { publicStudentService } from '../services/public/student/publicStudentService';
 import { publicUniversityService } from '../services/public/university/publicUniveristyService';
 import { studentSubmitDocumentService } from '../services/student/studentSubmitDocumentService';
 import { superAdminAgentService } from '../services/super admin/agentService';
+import { superAdminContactService } from '../services/super admin/contactUsService';
 import { couponService } from '../services/super admin/couponService';
 import { courseCategoriesService } from '../services/super admin/courseCategoriesService';
 import { courseService } from '../services/super admin/courseService';
 import LayoutReducer from '../services/super admin/dashboardSidebarService';
 import { departmentService } from '../services/super admin/departmentService';
+import { documentService } from '../services/super admin/documentService';
 import { hotOfferService } from '../services/super admin/hotOfferService';
+import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLetterSubscription';
 import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
 import { requiredService } from '../services/super admin/requiredService';
+import { superAdminBlogServices } from '../services/super admin/superAdminBlogServices';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
@@ -32,15 +41,6 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
-import { documentService } from '../services/super admin/documentService';
-import { newsLetterSubscriptionPublic } from '../services/public/newsLetter/newsLetterSubscriptionPublic';
-import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLetterSubscription';
-import { contactUsService } from '../services/public/contact-us/contactUsService';
-import { publicAgentService } from '../services/public/agent/publicAgentService';
-import { paymentReportService } from '../services/common/paymentReportServices';
-import { superAdminContactService } from '../services/super admin/contactUsService';
-import { superAdminBlogServices } from '../services/super admin/superAdminBlogServices';
-import { publicBlogServices } from '../services/public/blogs/publicBlogsServices';
 
 export const store = configureStore({
   reducer: {
@@ -92,6 +92,8 @@ export const store = configureStore({
     [superAdminContactService.reducerPath]: superAdminContactService.reducer,
     [superAdminBlogServices.reducerPath]: superAdminBlogServices.reducer,
     [publicBlogServices.reducerPath]: publicBlogServices.reducer,
+    [newsLetterSubscriptionSuperAdmin.reducerPath]:
+      newsLetterSubscriptionSuperAdmin.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

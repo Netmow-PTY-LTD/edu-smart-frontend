@@ -120,6 +120,9 @@ const ApplicationPaymentForAgent = () => {
             ) : (
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
+                  <div className="text-primary fw-semibold fs-2">
+                    Application Payment Report
+                  </div>
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
