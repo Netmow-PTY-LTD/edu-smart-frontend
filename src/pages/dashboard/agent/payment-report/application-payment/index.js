@@ -3,6 +3,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetApplicationPaymentReportQuery } from '@/slice/services/common/paymentReportServices';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -93,6 +94,9 @@ const ApplicationPaymentForAgent = () => {
     {
       title: 'Payment Date',
       key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+      ),
     },
     {
       title: 'Payment Method',
