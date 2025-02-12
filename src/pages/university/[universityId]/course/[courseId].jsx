@@ -167,7 +167,7 @@ const SingleCoursePageInFrontSite = () => {
                         className="btn-confirm-apply"
                         onClick={() => handleConfirmApplication(courseId)}
                       >
-                        Confirm Application
+                        Apply Now
                       </button>
                     </div>
                     <div className="course-requirements-main">
