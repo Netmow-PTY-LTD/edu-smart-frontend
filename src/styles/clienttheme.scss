@@ -627,11 +627,11 @@ p {
   transform: rotate(45deg) translate(-8px, -8px);
 }
 
-@media (max-width: 1600px) {
-  .main-nav {
-    max-width: 50rem;
-  }
-}
+// @media (max-width: 1600px) {
+//   .main-nav {
+//     max-width: 50rem;
+//   }
+// }
 
 @media (max-width: 991px) {
   .main-nav-temp,

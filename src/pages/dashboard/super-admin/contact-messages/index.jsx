@@ -9,6 +9,9 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 export default function ContactMessages() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const perPageData = 9;
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -28,6 +31,63 @@ export default function ContactMessages() {
       });
   }, []);
 
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+  const contactMessageHeaders = [
+    {
+      title: 'Name',
+      key: 'name',
+      render: (item) => (
+        <h5 className="fs-14 fw-medium text-capitalize">
+          {item?.name ? item?.name : ''}
+        </h5>
+      ),
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <h5 className="fs-14 fw-medium">{item?.email ? item?.email : ''}</h5>
+      ),
+    },
+    {
+      title: 'Phone',
+      key: 'phone',
+      render: (item) => (
+        <>
+          <span className={`fs-14 fw-medium`}>
+            {item?.phone ? item?.phone : ''}
+          </span>
+        </>
+      ),
+    },
+
+    {
+      title: 'Message',
+      key: 'message',
+      render: (item) => (
+        <>
+          <span className={`fs-14 fw-medium`}>
+            {item?.message ? item?.message : ''}
+          </span>
+        </>
+      ),
+    },
+
+    {
+      title: 'Action',
+      key: 'actions',
+      render: (item) => (
+        <div className="text-primary cursor-pointer">
+          <i className="ri-trash align-start me-2 text-muted"></i>
+          Delete
+        </div>
+      ),
+    },
+  ];
+
+  //console.log(data);
+
   return (
     <Layout>
       <div className="page-content">
@@ -35,37 +95,22 @@ export default function ContactMessages() {
           <Card>
             <CardHeader className="d-flex justify-content-between align-items-center">
               <h2>Contact Messages</h2>
-              <SearchComponent />
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+              />
             </CardHeader>
             <CardBody>
               <div className="sqdk-pricing-table">
-                <table
-                  cellPadding="5"
-                  cellSpacing="0"
-                  style={{ width: '100%' }}
-                >
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Message</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data?.length > 0 &&
-                      data?.map((item, i) => (
-                        <tr key={i}>
-                          <td>{i + 1}</td>
-                          <td>{item?.name}</td>
-                          <td>{item?.email}</td>
-                          <td>{item?.phone}</td>
-                          <td>{item?.message}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                <CommonTableComponent
+                  headers={contactMessageHeaders}
+                  data={data ? data : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={perPageData}
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                />
               </div>
             </CardBody>
           </Card>
