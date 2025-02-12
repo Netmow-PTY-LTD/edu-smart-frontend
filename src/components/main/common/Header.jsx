@@ -7,17 +7,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 // import MobileNav from '../mobileNav';
-import { useState } from 'react';
+import Loader from '@/components/constants/Loader/Loader';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { brandlogo } from '@/utils/common/data';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 import MobileNavMain from './MobileNavMain';
 
 export default function Header() {
   const [showMobileNav, setShowMobileNav] = useState(false);
+
+  const { data: userInfoData, isLoading: userInfoLoading } =
+    useGetUserInfoQuery();
+
+  const { data: universityData } = useGetAllUniversityQuery();
+  const { data: allCourses } = useGetAllCoursesQuery();
+
   const toggleMobileNav = () => {
     setShowMobileNav(!showMobileNav);
   };
-  const { data: universityData } = useGetAllUniversityQuery();
-  const { data: allCourses } = useGetAllCoursesQuery();
+
+  const token = Cookies.get('token');
 
   return (
     <>
@@ -165,25 +175,59 @@ export default function Header() {
                   </li>
                 </ul>
               </nav>
-              <div className="d-flex gap-3">
-                <Link
-                  href={`/auth/login`}
-                  className={`fs-20 fw-semibold py-2 px-3 d-none d-lg-block btn-login-main`}
-                >
-                  Login
-                </Link>
-                <Link
-                  href={`/auth/register`}
-                  className={`fs-20 fw-semibold py-2 px-5 d-none d-lg-block btn-register-main`}
-                >
-                  Register
-                </Link>
-                <div className="hamburger-menu" onClick={toggleMobileNav}>
-                  <div className="line line1"></div>
-                  <div className="line line2"></div>
-                  <div className="line line3"></div>
+              {userInfoLoading ? (
+                <Loader />
+              ) : token ? ( // Check if the token exists
+                userInfoData?.data?.role === 'super_admin' ? (
+                  <div className="d-flex gap-3 ">
+                    <Link
+                      type="button"
+                      href={`/dashboard/${userInfoData?.data?.role}`}
+                      className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                ) : userInfoData?.data?.role === 'agent' ? (
+                  <div className="d-flex gap-3 ">
+                    <Link
+                      href={`/dashboard/${userInfoData?.data?.role}`}
+                      className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                ) : userInfoData?.data?.role === 'student' ? (
+                  <div className="d-flex gap-3 ">
+                    <Link
+                      href={`/dashboard/${userInfoData?.data?.role}`}
+                      className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                ) : null
+              ) : (
+                <div className="d-flex gap-3">
+                  <Link
+                    href={`/auth/login`}
+                    className={`fs-20 fw-semibold py-2 px-3 d-none d-lg-block btn-login-main`}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href={`/auth/register`}
+                    className={`fs-20 fw-semibold py-2 px-5 d-none d-lg-block btn-register-main`}
+                  >
+                    Register
+                  </Link>
+                  <div className="hamburger-menu" onClick={toggleMobileNav}>
+                    <div className="line line1"></div>
+                    <div className="line line2"></div>
+                    <div className="line line3"></div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
