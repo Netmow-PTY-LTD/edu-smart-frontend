@@ -202,7 +202,7 @@ const AllDocumentsInSuperAdmin = () => {
             <div>
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
-                  <h2>All Documents Type</h2>
+                  <h2>Document Required List</h2>
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
@@ -258,8 +258,8 @@ const AllDocumentsInSuperAdmin = () => {
                   setEditOpenModal(!editOpenModal),
                   setInitialValues({})
                 )}
-                modalHeader={'Update Coupon'}
-                submitButton={'Update Coupon'}
+                modalHeader={'Update Document'}
+                submitButton={'Update'}
                 initialValues={initialValues}
                 handleSubmit={handleUpdateSubmit}
                 isLoading={updateRequiredDocumentInSuperAdminIsLoading}
