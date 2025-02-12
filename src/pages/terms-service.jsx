@@ -30,25 +30,31 @@ const TermsAndConditions = () => {
 
       <main>
         <div className="container">
-          <style jsx>{`
+          <style>{`
             .terms_and_policy {
-              padding: 5rem 0 10rem;
+              padding: 8rem 0 10rem;
             }
 
             .terms_and_policy h3 {
               color: #000;
-              font-size: 2rem;
+              font-size: 3.8rem;
               font-weight: 600;
               line-height: 1;
               margin: 1rem 0;
             }
 
+            .terms_and_policy h4 {
+              font-size: 28px;
+              color: #000;
+            }
+
             .terms_and_policy p {
               color: #000;
-              font-size: 1.4rem;
+              font-size: 1.8rem;
               font-weight: 400;
               line-height: 2rem;
-              margin-bottom: 3rem;
+              margin-top: 10px;
+              margin-bottom: 1.5rem !important;
             }
 
             .terms_and_policy b {
@@ -60,12 +66,13 @@ const TermsAndConditions = () => {
               text-decoration: underline;
               color: inherit;
             }
+            
           `}</style>
 
           <div className="terms_and_policy">
             <div className="container my-5">
               <h3
-                className="code-line text-primary border-bottom pb-2"
+                className="code-line border-bottom pb-4"
                 data-line-start="0"
                 data-line-end="1"
               >
@@ -78,7 +85,7 @@ const TermsAndConditions = () => {
                 data-line-start="2"
                 data-line-end="3"
               >
-                Effective Date: [Insert Date]
+                Effective Date: 12 February 2025
               </p>
 
               <p

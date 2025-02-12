@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
             <div className="sqdk-page-banner-text-content">
               <h1 className="text-nowrap">Edu Smart : Privacy Policy</h1>
             </div>
-            <div className="sqdk-breadcrumb fs-2">
+            <div className="sqdk-breadcrumb fs-18">
               <ul>
                 <li>
                   <Link href="/">Home</Link>
@@ -30,47 +30,61 @@ const PrivacyPolicy = () => {
 
       <main>
         <div className="container">
-          <style jsx>{`
-            .terms_and_policy {
-              padding: 5rem 0 10rem;
+          <style>{`
+            .privacy_policy {
+              padding: 8rem 0 10rem;
             }
 
-            .terms_and_policy h3 {
+            .privacy_policy h3 {
               color: #000;
-              font-size: 2rem;
+              font-size: 3.8rem;
               font-weight: 600;
               line-height: 1;
               margin: 1rem 0;
             }
 
-            .terms_and_policy p {
+            .privacy_policy h4 {
+              font-size: 28px;
               color: #000;
-              font-size: 1.4rem;
-              font-weight: 400;
-              line-height: 2rem;
-              margin-bottom: 3rem;
             }
 
-            .terms_and_policy b {
+            .privacy_policy p {
+              color: #000;
+              font-size: 1.8rem;
+              font-weight: 400;
+              line-height: 2rem;
+              margin-top: 10px;
+              margin-bottom: 1.5rem !important;
+            }
+
+            .privacy_policy b {
               font-weight: 600;
               margin-bottom: 3rem;
             }
 
-            .terms_and_policy a {
+            .privacy_policy a {
               text-decoration: underline;
               color: inherit;
             }
+            
+             .privacy_policy ul li {
+             font-size: 20px;
+              line-height: 1.5;
+              margin-bottom: 5px;
+             }
           `}</style>
 
           <div className="privacy_policy">
-            <div className="container my-5">
-              <h3 className="text-primary border-bottom pb-2">
+            <div className="container">
+              <h3 className="border-bottom pb-4">
                 <strong>Privacy Policy</strong>
               </h3>
 
-              <p className="fw-bold">Effective Date: [Insert Date]</p>
+              <div className="fw-bold fs-20">
+                Effective Date: 12 February 2025
+              </div>
 
-              <p>
+              <p className="mt-4">
                 At Edusmart, we are committed to protecting and respecting your
                 privacy. This Privacy Policy explains how we collect, use, and
                 protect your personal information when you use our website and
@@ -85,16 +99,16 @@ const PrivacyPolicy = () => {
                 We collect different types of information to provide you with an
                 efficient and personalized experience on our platform:
               </p>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
+              <ul>
+                <li>
                   <strong>Personal Information:</strong> Name, email, phone
                   number, and academic background.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Usage Data:</strong> Pages visited, time spent, and
                   platform interactions.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Cookies & Tracking Technologies:</strong> Used to
                   enhance site performance.
                 </li>
@@ -104,20 +118,20 @@ const PrivacyPolicy = () => {
                 <strong>2. How We Use Your Information</strong>
               </h4>
               <p>We use the collected data for:</p>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
+              <ul>
+                <li>
                   <strong>Providing Services:</strong> Personalized study-abroad
                   guidance.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Communication:</strong> Newsletters and promotional
                   content (opt-out available).
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Improvement of Services:</strong> Analyzing user
                   trends for better offerings.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Security:</strong> Protecting accounts and data
                   integrity.
                 </li>
@@ -127,16 +141,16 @@ const PrivacyPolicy = () => {
                 <strong>3. How We Share Your Information</strong>
               </h4>
               <p>We do not sell or rent your data but may share it with:</p>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
+              <ul>
+                <li>
                   <strong>Service Providers:</strong> Trusted third-party
                   partners like payment processors.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Legal Compliance:</strong> If required by law or
                   regulatory authorities.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Business Transfers:</strong> In the case of mergers or
                   acquisitions.
                 </li>
@@ -154,21 +168,21 @@ const PrivacyPolicy = () => {
                 <strong>5. Your Rights and Choices</strong>
               </h4>
               <p>You have the right to:</p>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
+              <ul>
+                <li>
                   <strong>Access & Update:</strong> Modify your account details.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Opt-Out:</strong> Unsubscribe from marketing emails
                   anytime.
                 </li>
-                <li className="list-group-item">
+                <li>
                   <strong>Data Deletion:</strong> Request account and data
                   removal.
                 </li>
               </ul>
 
-              <h4 className="text-dark mt-4">
+              <h4>
                 <strong>6. Third-Party Links</strong>
               </h4>
               <p>
@@ -213,12 +227,12 @@ const PrivacyPolicy = () => {
                 <strong>11. Contact Us</strong>
               </h4>
               <p>If you have any questions, contact us at:</p>
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
+              <ul>
+                <li>
                   <strong>Email:</strong> support@edusmart.com
                 </li>
-                <li className="list-group-item">
-                  <strong>Phone:</strong> [Insert phone number]
+                <li>
+                  <strong>Phone:</strong> 0123456789
                 </li>
               </ul>
             </div>
