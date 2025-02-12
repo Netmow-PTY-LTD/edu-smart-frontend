@@ -10015,6 +10015,16 @@ textarea.form-control {
   }
 }
 
+.document-requirements h3 {
+  font-size: clamp(22px, 1.5vw, 40px);
+  color: #1c1c1c;
+  font-weight: 700;
+}
+
+.document-requirements {
+  margin-top: 50px;
+}
+
 /* Coupon Packages */
 
 .coupon-area {
