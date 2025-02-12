@@ -13,9 +13,7 @@ const AppliedCourseForm = ({
   validationSchema,
   documentRequirements,
   initialValues,
-
 }) => {
-
   return (
     <Card>
       <div className="card-header">
@@ -77,7 +75,8 @@ const AppliedCourseForm = ({
 
                             <Col md={12} xl={12}>
                               <div className="d-flex align-items-center justify-content-center my-4 gap-3">
-                                <SubmitButton
+                                {/* stop without payment application logic for temporary */}
+                                {/* <SubmitButton
                                   // isSubmitting={isSubmitting}
                                   formSubmit={'Submit Without Payment'}
                                   onClick={() =>
@@ -89,7 +88,7 @@ const AppliedCourseForm = ({
                                   }
                                 >
                                   {'Submit Without Payment'}
-                                </SubmitButton>
+                                </SubmitButton> */}
                                 <SubmitButton
                                   // isSubmitting={isSubmitting}
                                   formSubmit={'Proceed to Payment'}
