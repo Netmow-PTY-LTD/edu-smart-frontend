@@ -68,13 +68,13 @@ const ApplicationPaymentForSuperAdmin = () => {
     {
       title: 'Agent Package',
       key: 'package',
-      render: (item) => <div>{item.agentPackage?.package?.name ?? 'N/A'}</div>,
+      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
     },
     {
       title: 'Package Commission %',
       key: 'agent_package',
       render: (item) => (
-        <div>{item.agentPackage?.package?.commission ?? 'N/A'}</div>
+        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
       ),
     },
     {

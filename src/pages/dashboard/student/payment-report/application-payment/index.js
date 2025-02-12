@@ -62,39 +62,6 @@ const ApplicationPaymentForStudent = () => {
       key: 'paid_amount',
     },
     {
-      title: 'University Price',
-      key: 'university_price',
-    },
-    {
-      title: 'Agent Package',
-      key: 'package',
-      render: (item) => <div>{item.agentPackage?.package?.name ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Package Commission %',
-      key: 'agent_package',
-      render: (item) => (
-        <div>{item.agentPackage?.package?.commission ?? 'N/A'}</div>
-      ),
-    },
-    {
-      title: 'Hot Offer Commission %',
-      key: 'hot_offer',
-      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Package Commission Amount',
-      key: 'agent_commission',
-    },
-    {
-      title: 'Hot Offer Commission Amount',
-      key: 'agent_commision_by_hot_offer',
-    },
-    {
-      title: 'Super Admin Profit',
-      key: 'super_admin_profit',
-    },
-    {
       title: 'Payment Date',
       key: 'payment_date',
     },

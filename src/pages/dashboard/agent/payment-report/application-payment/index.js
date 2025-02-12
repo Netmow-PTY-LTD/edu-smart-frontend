@@ -68,13 +68,13 @@ const ApplicationPaymentForAgent = () => {
     {
       title: 'Agent Package',
       key: 'package',
-      render: (item) => <div>{item.agentPackage?.package?.name ?? 'N/A'}</div>,
+      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
     },
     {
       title: 'Package Commission %',
       key: 'agent_package',
       render: (item) => (
-        <div>{item.agentPackage?.package?.commission ?? 'N/A'}</div>
+        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
       ),
     },
     {
@@ -89,10 +89,6 @@ const ApplicationPaymentForAgent = () => {
     {
       title: 'Hot Offer Commission Amount',
       key: 'agent_commision_by_hot_offer',
-    },
-    {
-      title: 'Super Admin Profit',
-      key: 'super_admin_profit',
     },
     {
       title: 'Payment Date',
