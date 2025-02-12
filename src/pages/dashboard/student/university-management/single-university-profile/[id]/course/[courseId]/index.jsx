@@ -2,6 +2,7 @@ import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCove
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 
+import { useCheckApplicationIsValidQuery } from '@/slice/services/common/applicationService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useCreateApplicationMutation,
@@ -39,14 +40,29 @@ const SingleUniversityCourse = () => {
   // console.log(university_id);
   // console.log(course_id);
 
+  const { data: userInfoData, isLoading: userInfoLoading } =
+    useGetUserInfoQuery();
+
+  const {
+    data: checkApplicationIsValidData,
+    error: checkApplicationIsValidError,
+    isLoading: checkApplicationIsValidIsLoading,
+    refetch: checkApplicationIsValidRefetch,
+  } = useCheckApplicationIsValidQuery(
+    {
+      course_id: course_id,
+      student_id: userInfoData?.data?._id,
+    },
+    {
+      skip: !course_id || !userInfoData?.data?._id,
+    }
+  );
+
   const {
     data: getSingleUniversityDataForStudent,
     isLoading: getSingleUniversityIsLoadingForStudent,
     refetch: getSingleUniversityForStudentRefetch,
   } = useGetsingleUniversityQuery(university_id);
-
-  const { data: userInfoData, isLoading: userInfoLoading } =
-    useGetUserInfoQuery();
 
   const {
     data: getSingleCourseData,
@@ -87,7 +103,19 @@ const SingleUniversityCourse = () => {
     if (university_id) {
       getSingleUniversityForStudentRefetch(university_id);
     }
-  }, [getSingleUniversityForStudentRefetch, university_id]);
+    if (
+      checkApplicationIsValidError?.data?.message ===
+      'Invalid ObjectId. The provided id is not a valid MongoDB ObjectId.'
+    ) {
+      ('');
+    } else {
+      toast.error(checkApplicationIsValidError?.data?.message);
+    }
+  }, [
+    checkApplicationIsValidError?.data?.message,
+    getSingleUniversityForStudentRefetch,
+    university_id,
+  ]);
 
   useEffect(() => {
     if (createApplicationData?.success) {
@@ -360,14 +388,18 @@ const SingleUniversityCourse = () => {
                           </div>
                         </Col>
                         <Col lg={12}>
-                          <div className="d-flex justify-content-center">
-                            <button
-                              onClick={() => setStep(step + 1)}
-                              className="button py-3 px-5"
-                            >
-                              Continue For Apply
-                            </button>
-                          </div>
+                          {checkApplicationIsValidError?.data?.message ? (
+                            ''
+                          ) : (
+                            <div className="d-flex justify-content-center">
+                              <button
+                                onClick={() => setStep(step + 1)}
+                                className="button py-3 px-5"
+                              >
+                                Continue For Apply
+                              </button>
+                            </div>
+                          )}
                         </Col>
                       </Row>
                     </CardBody>
