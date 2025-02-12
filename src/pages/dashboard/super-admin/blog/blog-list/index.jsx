@@ -5,7 +5,7 @@ import Layout from '@/components/layout';
 import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
 import { useDeleteBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
@@ -95,6 +95,7 @@ export default function ContactMessages() {
               src={item?.image?.url ? item?.image?.url : ''}
               width={80}
               height={80}
+              alt="image"
             />
           </div>
         </>
@@ -106,10 +107,10 @@ export default function ContactMessages() {
       key: 'action',
       render: (item) => (
         <div
-          className="text-primary cursor-pointer"
+          className="text-danger fw-medium cursor-pointer"
           onClick={() => handleDeleteBlog(item?._id)}
         >
-          <i className="ri-close-circle-fill align-start me-2 text-muted"></i>
+          <i className="ri-close-circle-fill align-start me-2 "></i>
           Delete
         </div>
       ),
