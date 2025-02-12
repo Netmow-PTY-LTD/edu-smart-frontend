@@ -577,7 +577,7 @@ const AllCourseForSuperAdmin = ({
                 Edit
               </div>
             </DropdownItem>
-            <DropdownItem>
+            {/* <DropdownItem>
               <div
                 onClick={() => handleDeleteButtonClick(item._id)}
                 className="text-primary"
@@ -585,7 +585,7 @@ const AllCourseForSuperAdmin = ({
                 <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
                 Delete
               </div>
-            </DropdownItem>
+            </DropdownItem> */}
           </DropdownMenu>
         </UncontrolledDropdown>
       ),
