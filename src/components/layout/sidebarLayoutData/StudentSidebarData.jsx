@@ -10,7 +10,7 @@ const StudentSidebarData = () => {
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
-
+  const [isPaymentReport, setIsPaymentReport] = useState(false);
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');
@@ -170,6 +170,28 @@ const StudentSidebarData = () => {
           link: '/dashboard/student/settings/password',
           pathName: '/dashboard/student/settings/password',
           parentId: 'settings',
+        },
+      ],
+    },
+    {
+      id: 'payment-report',
+      label: 'Payment Report',
+      icon: 'ri-bank-card-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+        setIscurrentState('payment-report');
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link: '/dashboard/student/payment-report/application-payment',
+          pathName: '/dashboard/student/payment-report/application-payment',
+          parentId: 'payment-report',
         },
       ],
     },
