@@ -70,7 +70,16 @@ export const applicationService = createApi({
         };
       },
     }),
-    
+    updateApplicationStatus: builder.mutation({
+      query: (data) => {
+        const application_id = data.id;
+        return {
+          url: `/super/application/status/${application_id}`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -82,5 +91,6 @@ export const {
   useGetEmgsStatusTimelineQuery,
   useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
-  useCheckApplicationIsValidQuery
+  useCheckApplicationIsValidQuery,
+  useUpdateApplicationStatusMutation,
 } = applicationService;

@@ -3,7 +3,7 @@ import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import StudentApplicationEmgsStatusTimeline from '@/components/StudentDashboard/components/StudentApplicationEmgsStatusTimeline';
-import { useGetApplicationsQuery, useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
+import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {

@@ -77,14 +77,13 @@ const SuperAdminSidebarData = () => {
           link: '/dashboard/super-admin/university-management/add-university',
           parentId: 'universities',
         },
-        {
-          id: 'recent-application',
-          label: 'Recent Application',
-          icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/recent-application',
-          parentId: 'universities',
-        },
       ],
+    },
+    {
+      id: 'recent-application',
+      label: 'Recent Application',
+      icon: 'ri-article-fill',
+      link: '/dashboard/super-admin/recent-application',
     },
     {
       id: 'alldocuments',
