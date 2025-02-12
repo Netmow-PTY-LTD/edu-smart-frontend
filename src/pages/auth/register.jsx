@@ -334,6 +334,7 @@ const Register = () => {
         ...values,
         confirm_password: values?.password,
         package_choice,
+        course_choice,
       };
 
       const resRegister = await agentRegister(updatedRegisterValues).unwrap();
@@ -348,6 +349,8 @@ const Register = () => {
 
         if (resLogin) {
           toast.success(resLogin?.message);
+          Cookies.set('course_choice', course_choice, { expires: 1 });
+          Cookies.set('universityId', universityId, { expires: 1 });
         }
       }
     } catch (error) {
@@ -369,7 +372,6 @@ const Register = () => {
         confirm_password: values?.password,
         course_choice,
       };
-      console.log(updatedStudentRegisterValues);
       const resRegister = await studentRegister(
         updatedStudentRegisterValues
       ).unwrap();

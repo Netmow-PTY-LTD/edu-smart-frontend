@@ -54,12 +54,28 @@ export const applicationService = createApi({
         method: 'GET',
       }),
     }),
+    checkApplicationIsValid: builder.query({
+      query: ({ course_id, student_id }) => ({
+        url: `/application/${course_id}/verify/${student_id}`,
+        method: 'GET',
+      }),
+    }),
     addEmgsTimeline: builder.mutation({
       query: (data) => {
         const id = data.get('id');
         return {
           url: `/application/emgs/status/${id}/timeline`,
           method: 'POST',
+          body: data,
+        };
+      },
+    }),
+    updateApplicationStatus: builder.mutation({
+      query: (data) => {
+        const application_id = data.id;
+        return {
+          url: `/super/application/status/${application_id}`,
+          method: 'PATCH',
           body: data,
         };
       },
@@ -75,4 +91,6 @@ export const {
   useGetEmgsStatusTimelineQuery,
   useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
+  useCheckApplicationIsValidQuery,
+  useUpdateApplicationStatusMutation,
 } = applicationService;

@@ -11,6 +11,7 @@ const SuperAdminSidebarData = () => {
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
+  const [isBlogs, setIsBlogs] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
 
@@ -78,14 +79,13 @@ const SuperAdminSidebarData = () => {
           link: '/dashboard/super-admin/university-management/add-university',
           parentId: 'universities',
         },
-        {
-          id: 'recent-application',
-          label: 'Recent Application',
-          icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/recent-application',
-          parentId: 'universities',
-        },
       ],
+    },
+    {
+      id: 'recent-application',
+      label: 'Recent Application',
+      icon: 'ri-article-fill',
+      link: '/dashboard/super-admin/recent-application',
     },
     {
       id: 'alldocuments',
@@ -125,11 +125,42 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/students',
     },
     {
+      id: 'blogs',
+      label: 'Blogs',
+      icon: 'ri-school-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsBlogs(!isBlogs);
+        setIscurrentState('Blogs');
+        updateIconSidebar(e);
+      },
+      stateVariables: isBlogs,
+      subItems: [
+        {
+          id: 'addblog',
+          label: 'Add Blog',
+          icon: 'ri-school-fill',
+          link: '/dashboard/super-admin/blog/add-blog',
+          parentId: 'blogs',
+        },
+
+        {
+          id: 'allblogs',
+          label: 'Blogs List',
+          icon: 'ri-school-fill',
+          link: '/dashboard/super-admin/blog/blog-list',
+          parentId: 'blogs',
+        },
+      ],
+    },
+    {
       id: 'contact-messages',
       label: 'Contact Messages',
       icon: 'ri-group-fill',
       link: '/dashboard/super-admin/contact-messages',
     },
+
     {
       id: 'settings',
       label: 'Settings',
