@@ -9,6 +9,7 @@ const SuperAdminSidebarData = () => {
   const [isUniversity, setIsUniversity] = useState(false);
   const [isUniManagement, setIsUniManagement] = useState(false);
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
+  const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
@@ -218,6 +219,36 @@ const SuperAdminSidebarData = () => {
           link: '/dashboard/super-admin/subscription/subscription-list',
           pathName: '/dashboard/super-admin/subscription/subscription-list',
           parentId: 'subscription',
+        },
+      ],
+    },
+    {
+      id: 'payment-report',
+      label: 'Payment Report',
+      icon: 'ri-bank-card-line',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+        setIscurrentState('payment-report');
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'package-payment',
+          label: 'Package Payment',
+          icon: 'ri-red-packet-line',
+          link: '/dashboard/super-admin/payment-report/package-payment',
+          pathName: '/dashboard/super-admin/payment-report/package-payment',
+          parentId: 'payment-report',
+        },
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link: '/dashboard/super-admin/payment-report/application-payment',
+          pathName: '/dashboard/super-admin/payment-report/application-payment',
+          parentId: 'payment-report',
         },
       ],
     },
