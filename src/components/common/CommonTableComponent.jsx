@@ -42,7 +42,9 @@ const CommonTableComponent = ({
                       <td key={header.key}>
                         {header.render
                           ? header.render(item, rowIndex)
-                          : item[header.key] || '-'}
+                          : `${header.key}` in item
+                            ? item[header.key]
+                            : '-'}
                       </td>
                     ))}
                 </tr>
