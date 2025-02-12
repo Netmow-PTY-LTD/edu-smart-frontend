@@ -424,6 +424,25 @@ const SingleUniversityCourse = () => {
                                 Download Brochure
                               </button>
                             </div>
+                            <div className="document-requirements">
+                              <h3>Required Documents for this course:</h3>
+                              {getSingleCourseData?.data?.document_requirements
+                                ?.length > 0 &&
+                                getSingleCourseData?.data?.document_requirements?.map(
+                                  (doc, i) => {
+                                    return (
+                                      <>
+                                        <h4>{doc?.title ? doc?.title : ''}</h4>
+                                        <div className="doc-description">
+                                          {doc?.description
+                                            ? doc?.description
+                                            : ''}
+                                        </div>
+                                      </>
+                                    );
+                                  }
+                                )}
+                            </div>
                           </div>
                         </Col>
                         <Col lg={6}>
@@ -476,57 +495,59 @@ const SingleUniversityCourse = () => {
                           </div>
                         </Col>
                       </Row>
-                      {studentsData?.length > 0 && (
-                        <>
-                          <div className="d-flex justify-content-center align-items-center">
-                            <div className="d-flex flex-column justify-content-center w-25">
-                              <div className="mb-3">
-                                <label
-                                  htmlFor="studentSelect"
-                                  className="form-label fs-2"
-                                >
-                                  Select a Student
-                                </label>
-
-                                <ReactSelect
-                                  id="studentSelect"
-                                  className="fs-2"
-                                  options={studentsData.map((student) => ({
-                                    value: student.value,
-                                    label: student.label,
-                                  }))}
-                                  onChange={handleChange}
-                                  placeholder="Choose a student"
-                                  isClearable
-                                  // isMulti
-                                  isSearchable
-                                />
-                              </div>
-
-                              <button
-                                onClick={() => {
-                                  if (selectedStudent) {
-                                    setStep(step + 1);
-                                    // setSelectedStudent([]);
-                                    setSelectedStudent('');
-                                  } else {
-                                    toast.error(
-                                      'Please select a student first.'
-                                    );
-                                  }
-                                }}
-                                className="button py-3 px-5 fs-2"
-                                disabled={
-                                  checkApplicationIsValidIsLoading ||
-                                  checkApplicationIsValidError
-                                }
+                      {/* {studentsData?.length > 0 && ( */}
+                      <>
+                        <div className="d-flex justify-content-center align-items-center">
+                          <div className="d-flex flex-column justify-content-center w-25">
+                            <div className="mb-3">
+                              <label
+                                htmlFor="studentSelect"
+                                className="form-label fs-2"
                               >
-                                Continue For Apply
-                              </button>
+                                Select a Student
+                              </label>
+
+                              <ReactSelect
+                                id="studentSelect"
+                                className="fs-2"
+                                options={
+                                  studentsData && studentsData.length > 0
+                                    ? studentsData.map((student) => ({
+                                        value: student.value,
+                                        label: student.label,
+                                      }))
+                                    : []
+                                }
+                                onChange={handleChange}
+                                placeholder="Choose a student"
+                                isClearable
+                                // isMulti
+                                isSearchable
+                              />
                             </div>
+
+                            <button
+                              onClick={() => {
+                                if (selectedStudent) {
+                                  setStep(step + 1);
+                                  // setSelectedStudent([]);
+                                  setSelectedStudent('');
+                                } else {
+                                  toast.error('Please select a student first.');
+                                }
+                              }}
+                              className="button py-3 px-5 fs-2"
+                              disabled={
+                                checkApplicationIsValidIsLoading ||
+                                checkApplicationIsValidError
+                              }
+                            >
+                              Continue For Apply
+                            </button>
                           </div>
-                        </>
-                      )}
+                        </div>
+                      </>
+                      {/* )} */}
                     </CardBody>
                   </Card>
                 ) : (
