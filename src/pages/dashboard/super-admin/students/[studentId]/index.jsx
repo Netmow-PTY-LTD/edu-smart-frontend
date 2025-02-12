@@ -64,7 +64,7 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -79,8 +79,8 @@ const SingleStudentForSuperAdmin = () => {
                           Documents
                         </span>
                       </NavLink>
-                    </NavItem>
-                    <NavItem className="fs-14">
+                    </NavItem> */}
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -95,7 +95,7 @@ const SingleStudentForSuperAdmin = () => {
                           Document Request
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
 
                     <NavItem className="fs-14">
                       <NavLink
