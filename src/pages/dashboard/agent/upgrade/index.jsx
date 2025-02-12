@@ -10,6 +10,7 @@ import {
   useCheckCouponVerifyMutation,
   useGetAllPackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
 import React, { useEffect, useState } from 'react';
@@ -264,6 +265,68 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
+  //shadik working
+  const token = Cookies.get('token');
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = async () => {
+    const newCheckedState = !isChecked;
+
+    // Show confirmation only when checking the box
+    if (newCheckedState) {
+      const confirmAction = window.confirm(
+        "Are you sure you don't want to upgrade now?"
+      );
+      if (!confirmAction) {
+        return; // Do nothing if the user cancels
+      }
+    }
+
+    setIsChecked(newCheckedState);
+
+    // Close modal if checkbox is checked
+    if (newCheckedState && typeof setOpenPaymentModal === 'function') {
+      setOpenPaymentModal(false);
+    }
+
+    // Determine the correct body based on checkbox state
+    const requestBody = JSON.stringify({
+      package_choice: newCheckedState
+        ? null
+        : userInfodata?.data?.package_choice,
+    });
+
+    try {
+      const response = await fetch(
+        'https://api.edusmart.study/api/v1/agent/package-choice',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`, // Fix capitalization
+          },
+          body: requestBody,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`API call failed with status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+
+  //
+
+  console.log(
+    couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
+  );
+
   console.log(couponAmount);
 
   return (
@@ -400,7 +463,9 @@ const UpgradePackageInAgentdashboard = () => {
                     {couponError && (
                       <div className="text-danger mt-2">{couponError}</div>
                     )}
-                    {couponAmount && (
+                    {couponAmount !== '' &&
+                    couponAmount !== null &&
+                    Number(couponAmount) === 0 ? (
                       <div className="d-flex flex-column my-3 text-primary fs-2 fw-semibold text-center text-capitalize">
                         <span>
                           Package Price : {totalPricePackage} {''}
@@ -410,7 +475,12 @@ const UpgradePackageInAgentdashboard = () => {
                             'MYR'}
                         </span>
                         <span>
-                          Discount Amount : {totalPricePackage - couponAmount}
+                          Discount Amount :{' '}
+                          {(totalPricePackage - couponAmount).toFixed(2)}{' '}
+                          {totalPricePackage != null &&
+                            totalPricePackage !== '' &&
+                            totalPricePackage !== undefined &&
+                            'MYR'}
                         </span>
                         <span>
                           Payment amount : {couponAmount}{' '}
@@ -420,9 +490,38 @@ const UpgradePackageInAgentdashboard = () => {
                             'MYR'}
                         </span>
                       </div>
+                    ) : Number(couponAmount) !== 0 ? (
+                      <div className="d-flex flex-column my-3 text-primary fs-2 fw-semibold text-center text-capitalize">
+                        <span>
+                          Package Price : {totalPricePackage} {''}
+                          {totalPricePackage != null &&
+                            totalPricePackage !== '' &&
+                            totalPricePackage !== undefined &&
+                            'MYR'}
+                        </span>
+                        <span>
+                          Discount Amount :{' '}
+                          {(totalPricePackage - couponAmount).toFixed(2)}{' '}
+                          {totalPricePackage != null &&
+                            totalPricePackage !== '' &&
+                            totalPricePackage !== undefined &&
+                            'MYR'}
+                        </span>
+                        <span>
+                          Payment amount : {couponAmount}{' '}
+                          {couponAmount != null &&
+                            couponAmount !== '' &&
+                            couponAmount !== undefined &&
+                            'MYR'}
+                        </span>
+                      </div>
+                    ) : (
+                      ''
                     )}
 
-                    {couponAmount === '0.00' && (
+                    {couponAmount !== '' &&
+                    couponAmount !== null &&
+                    Number(couponAmount) === 0 ? (
                       <div className="my-3 text-primary fs-2 fw-semibold text-center">
                         <div className="text-primary fs-2 fw-semibold text-center mb-2">
                           Get It for FREE with Our Exclusive Coupon!
@@ -439,10 +538,14 @@ const UpgradePackageInAgentdashboard = () => {
                           </button>
                         )}
                       </div>
+                    ) : (
+                      ''
                     )}
                   </div>
 
-                  {couponAmount === '0.00' ? (
+                  {couponAmount !== '' &&
+                  couponAmount !== null &&
+                  Number(couponAmount) === 0 ? (
                     ''
                   ) : (
                     <CardBody>
@@ -452,6 +555,25 @@ const UpgradePackageInAgentdashboard = () => {
                             sslCommerzPaymentHandler()
                           }
                         />
+                      </div>
+                    </CardBody>
+                  )}
+                  {userInfodata?.data?.package_choice && (
+                    <CardBody>
+                      <div className="w-full text-center d-flex gap-2 justify-content-center">
+                        <input
+                          type="checkbox"
+                          id="no-upgrade"
+                          checked={isChecked}
+                          onChange={handleCheckboxChange}
+                          className="w-5 h-5 mr-2 align-middle"
+                        />
+                        <label
+                          htmlFor="no-upgrade"
+                          className="fs-18 fw-semibold text-primary text-nowrap"
+                        >
+                          Don't want to upgrade now.
+                        </label>
                       </div>
                     </CardBody>
                   )}

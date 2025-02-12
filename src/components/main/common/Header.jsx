@@ -182,7 +182,7 @@ export default function Header() {
                   <div className="d-flex gap-3 ">
                     <Link
                       type="button"
-                      href={`/dashboard/${userInfoData?.data?.role}`}
+                      href={`/dashboard/super-admin`}
                       className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
                     >
                       Dashboard
@@ -191,7 +191,7 @@ export default function Header() {
                 ) : userInfoData?.data?.role === 'agent' ? (
                   <div className="d-flex gap-3 ">
                     <Link
-                      href={`/dashboard/${userInfoData?.data?.role}`}
+                      href={`/dashboard/super-admin`}
                       className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
                     >
                       Dashboard

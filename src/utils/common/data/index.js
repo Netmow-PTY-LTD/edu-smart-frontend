@@ -612,7 +612,9 @@ const studentApplicationsHeaders = [
     key: 'price',
     render: (item) => (
       <span className="d-flex flex-column text-capitalize">
-        {item?.payment_price ? item?.payment_price : '-'}
+        {item?.payment_price
+          ? item.payment_price.toFixed(2) + ' ' + 'MYR'
+          : '-'}
       </span>
     ),
   },
