@@ -42,6 +42,7 @@ const SingleCoursePageInFrontSite = () => {
     description,
     entry_requirements,
     english_requirements,
+    document_requirements,
     brochure,
     department,
     available_seats,
@@ -77,6 +78,8 @@ const SingleCoursePageInFrontSite = () => {
       router.push(`/auth/register?universityId=${universityId}&courseId=${id}`);
     }
   };
+
+  //console.log(document_requirements);
 
   return (
     <UniversityLayout>
@@ -164,7 +167,7 @@ const SingleCoursePageInFrontSite = () => {
                         className="btn-confirm-apply"
                         onClick={() => handleConfirmApplication(courseId)}
                       >
-                        Confirm Application
+                        Apply Now
                       </button>
                     </div>
                     <div className="course-requirements-main">
@@ -204,6 +207,19 @@ const SingleCoursePageInFrontSite = () => {
                           </AccordionBody>
                         </AccordionItem>
                       </Accordion>
+                    </div>
+                    <div className="document-requirements">
+                      <h3>Required Documents for this course:</h3>
+                      {document_requirements?.map((doc, i) => {
+                        return (
+                          <>
+                            <h4>{doc?.title ? doc?.title : ''}</h4>
+                            <div className="doc-description">
+                              {doc?.description ? doc?.description : ''}
+                            </div>
+                          </>
+                        );
+                      })}
                     </div>
                   </div>
                 </Col>
