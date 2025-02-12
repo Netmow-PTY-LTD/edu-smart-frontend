@@ -157,88 +157,91 @@ const CourseModalForm = ({
                     {({ remove, push }) => (
                       <div>
                         {values.document_requirements?.map((item, index) => (
-                          <Row
-                            key={index}
-                            className="align-items-center mb-3   "
-                          >
-                            <Col md={10}>
-                              <div className="mb-3">
-                                <label
-                                  htmlFor={`document_requirements[${index}].title`}
-                                  className="form-label fw-bold"
-                                >
-                                  {`Document Title ${index + 1}`}
-                                </label>
-                                <Field
-                                  name={`document_requirements[${index}].title`}
-                                  placeholder="Enter document title"
-                                  className={`form-control ${
-                                    errors.document_requirements?.[index]
-                                      ?.title &&
+                          <>
+                            <Row
+                              key={index}
+                              className="align-items-center mt-4 mb-4"
+                            >
+                              <Col xs={12} md={12} lg={5}>
+                                <div className="mb-3">
+                                  <label
+                                    htmlFor={`document_requirements[${index}].title`}
+                                    className="form-label fw-bold"
+                                  >
+                                    {`Document Title ${index + 1}`}
+                                  </label>
+                                  <Field
+                                    name={`document_requirements[${index}].title`}
+                                    placeholder="Enter document title"
+                                    className={`form-control ${
+                                      errors.document_requirements?.[index]
+                                        ?.title &&
+                                      touched.document_requirements?.[index]
+                                        ?.title
+                                        ? 'is-invalid'
+                                        : ''
+                                    }`}
+                                  />
+                                  {errors.document_requirements?.[index]
+                                    ?.title &&
                                     touched.document_requirements?.[index]
-                                      ?.title
-                                      ? 'is-invalid'
-                                      : ''
-                                  }`}
-                                />
-                                {errors.document_requirements?.[index]?.title &&
-                                  touched.document_requirements?.[index]
-                                    ?.title && (
-                                    <div className="invalid-feedback">
-                                      {
-                                        errors.document_requirements[index]
-                                          .title
-                                      }
-                                    </div>
-                                  )}
-                              </div>
-                            </Col>
+                                      ?.title && (
+                                      <div className="invalid-feedback">
+                                        {
+                                          errors.document_requirements[index]
+                                            .title
+                                        }
+                                      </div>
+                                    )}
+                                </div>
+                              </Col>
 
-                            <Col md={2} className="d-flex align-items-center">
-                              <div className="form-check mt-4">
-                                <Field
-                                  type="checkbox"
-                                  name={`document_requirements[${index}].isRequired`}
-                                  className="form-check-input"
-                                  id={`document_requirements[${index}].isRequired`}
-                                />
-                                <label
-                                  htmlFor={`document_requirements[${index}].isRequired`}
-                                  className="form-check-label ms-2 fw-bold"
-                                >
-                                  Required
-                                </label>
-                              </div>
-                            </Col>
+                              <Col xs={12} md={12} lg={5}>
+                                <div className="mb-3">
+                                  <label
+                                    htmlFor={`document_requirements[${index}].description`}
+                                    className="form-label fw-bold"
+                                  >
+                                    {`Document Description ${index + 1}`}
+                                  </label>
+                                  <Field
+                                    name={`document_requirements[${index}].description`}
+                                    placeholder="Enter document description"
+                                    className="form-control"
+                                  />
+                                </div>
+                              </Col>
 
-                            <Col md={12}>
-                              <div className="mb-3">
-                                <label
-                                  htmlFor={`document_requirements[${index}].description`}
-                                  className="form-label fw-bold"
-                                >
-                                  {`Document Description ${index + 1}`}
-                                </label>
-                                <Field
-                                  as="textarea"
-                                  rows={3}
-                                  name={`document_requirements[${index}].description`}
-                                  placeholder="Enter document description"
-                                  className="form-control"
-                                />
-                              </div>
-                            </Col>
-
-                            <Col md={12} className="text-end">
-                              <Button
-                                type="button"
-                                onClick={() => remove(index)}
-                                className="third-btn mt-3"
+                              <Col
+                                xs={12}
+                                md={4}
+                                lg={2}
+                                className="d-flex justify-content-md-center align-items-center flex-column flex-md-row"
                               >
-                                <i className="ri-delete-bin-line me-2"></i>{' '}
-                              </Button>
-                            </Col>
-                          </Row>
+                                <div className="form-check mt-3 mt-md-4 me-md-4">
+                                  <Field
+                                    type="checkbox"
+                                    name={`document_requirements[${index}].isRequired`}
+                                    className="form-check-input"
+                                    id={`document_requirements[${index}].isRequired`}
+                                  />
+                                  <label
+                                    htmlFor={`document_requirements[${index}].isRequired`}
+                                    className="form-check-label ms-2 fw-bold"
+                                  >
+                                    Required
+                                  </label>
+                                </div>
+                                <Button
+                                  type="button"
+                                  onClick={() => remove(index)}
+                                  className="third-btn mt-2 mt-md-3"
+                                >
+                                  <i className="ri-delete-bin-line me-2"></i>
+                                </Button>
+                              </Col>
+                            </Row>
+                          </>
                         ))}
 
                         <div className="d-flex justify-content-center mt-4">
