@@ -1090,14 +1090,53 @@ const supperAdminWidgetsData = [
   },
   {
     id: 4,
-    label: 'total income',
+    label: 'Total Receive Amount',
     counter: '55',
     bgcolor: 'warning',
     icon: 'ri-wallet-3-fill',
     link: 'All Charges',
     pathName: '/dashboard/super-admin',
   },
+  {
+    id: 5,
+    label: 'Total University Payout',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-currency-line',
+    link: 'All Charges',
+    pathName: '/dashboard/super-admin',
+  },
+  {
+    id: 6,
+    label: 'Total Agent Payout',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-money-pound-box-line',
+    link: 'All Charges',
+    pathName: '/dashboard/super-admin',
+  },
+
+  {
+    id: 7,
+    label: 'Total Profit',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-wallet-2-line',
+    link: 'All Charges',
+    pathName: '/dashboard/super-admin',
+  },
+
+  // {
+  //   id: 8,
+  //   label: 'total income',
+  //   counter: '55',
+  //   bgcolor: 'warning',
+  //   icon: 'ri-wallet-3-fill',
+  //   link: 'All Charges',
+  //   pathName: '/dashboard/super-admin',
+  // },
 ];
+
 const agentProfileWidgetData = [
   {
     id: 1,

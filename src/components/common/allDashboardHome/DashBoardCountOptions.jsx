@@ -13,11 +13,16 @@ const DashBoardCountOptions = ({
   thirdElementData,
   fourthElementData,
   userInfoData,
+  fithElement,
+  sixthElement,
+  sevenElement,
+  eightElement,
   gstAndCurrencyData,
   paidSum,
   unPaidSum,
   allEarningManagementCommonData,
 }) => {
+  console.log(fithElement);
   return (
     <>
       <Col id="countcart" md={12}>
@@ -85,12 +90,61 @@ const DashBoardCountOptions = ({
                           ) : (
                             ''
                           )}
+
                           {item?.id === 4 ? (
                             <CountUp
                               start={0}
                               prefix={item?.prefix}
                               suffix={item?.suffix}
                               end={fourthElementData}
+                              decimals={item?.decimals}
+                              duration={4}
+                            />
+                          ) : (
+                            ''
+                          )}
+                          {item?.id === 5 ? (
+                            <CountUp
+                              start={0}
+                              prefix={item?.prefix}
+                              suffix={item?.suffix}
+                              end={fithElement}
+                              decimals={item?.decimals}
+                              duration={4}
+                            />
+                          ) : (
+                            ''
+                          )}
+                          {item?.id === 6 ? (
+                            <CountUp
+                              start={0}
+                              prefix={item?.prefix}
+                              suffix={item?.suffix}
+                              end={sixthElement}
+                              decimals={item?.decimals}
+                              duration={4}
+                            />
+                          ) : (
+                            ''
+                          )}
+                          {item?.id === 7 ? (
+                            <CountUp
+                              start={0}
+                              prefix={item?.prefix}
+                              suffix={item?.suffix}
+                              end={sevenElement}
+                              decimals={item?.decimals}
+                              duration={4}
+                            />
+                          ) : (
+                            ''
+                          )}
+                          {item?.id === 8 ? (
+                            <CountUp
+                              start={0}
+                              prefix={item?.prefix}
+                              suffix={item?.suffix}
+                              end={eightElement}
                               decimals={item?.decimals}
                               duration={4}
                             />
