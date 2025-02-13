@@ -51,10 +51,12 @@ const UpgradePackageInAgentdashboard = () => {
     upgradePackageForAgent,
     { isLoading: upgradePackageForAgentIsLoading },
   ] = useUpgradePackageForAgentMutation();
+
   const [checkCouponVerify] = useCheckCouponVerifyMutation();
 
   const { data: userInfodata, refetch: userInfoRefetch } =
     useGetUserInfoQuery();
+
   const {
     data: getAllPackageData,
     isLoading: getAllPackageIsLoading,
@@ -104,6 +106,7 @@ const UpgradePackageInAgentdashboard = () => {
           if (response) {
             toast.success(response?.message);
             userInfoRefetch();
+            setOpenPaymentModal(false);
             setTimeout(() => {
               router.replace(
                 {
@@ -156,6 +159,7 @@ const UpgradePackageInAgentdashboard = () => {
     };
     handlePayment();
   }, [
+    openPaymentModal,
     package_id,
     payment_status,
     router,
@@ -250,9 +254,14 @@ const UpgradePackageInAgentdashboard = () => {
       };
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
+
+      console.log(upgradeResponse);
+      
       if (upgradeResponse) {
+        console.log('checking upgrade');
         toast.success(upgradeResponse?.message);
         userInfoRefetch();
+        setOpenPaymentModal(false);
       }
     } catch (upgradeError) {
       const upgradeErrorMessage =
@@ -321,11 +330,11 @@ const UpgradePackageInAgentdashboard = () => {
 
   //
 
-  console.log(
-    couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
-  );
+  // console.log(
+  //   couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
+  // );
 
-  console.log(couponAmount);
+  // console.log(couponAmount);
 
   return (
     <Layout>

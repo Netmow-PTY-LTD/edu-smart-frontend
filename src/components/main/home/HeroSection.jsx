@@ -92,6 +92,12 @@ export default function HeroSection() {
                 >
                   Join us as agent
                 </Link>
+                <Link
+                  href="/auth/register?userRole=student"
+                  className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
+                >
+                  Join us as student
+                </Link>
                 {/* <Link
                   href="/university/courses"
                   className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
@@ -107,6 +113,7 @@ export default function HeroSection() {
                 src="/assets/images/main/hero-img.png"
                 width={558}
                 height={580}
+                alt="Hero_Image"
               />
             </div>
           </Col>
