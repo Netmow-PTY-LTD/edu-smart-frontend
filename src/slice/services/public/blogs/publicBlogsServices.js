@@ -22,8 +22,8 @@ export const publicBlogServices = createApi({
       }),
     }),
     getSingleBlog: builder.query({
-      query: (id) => ({
-        url: `/blogs/${id}`,
+      query: (slug) => ({
+        url: `/blogs/${slug}`,
         method: 'GET',
       }),
     }),

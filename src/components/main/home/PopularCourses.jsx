@@ -43,7 +43,7 @@ const PopularCourses = () => {
         <article className="popular-coureses-content">
           {allCourses?.data?.length > 0 &&
             allCourses?.data
-              ?.slice(0, 4)
+              ?.slice(0, 6)
               .map((course, i) => <CourseCard course={course} key={i} />)}
         </article>
 

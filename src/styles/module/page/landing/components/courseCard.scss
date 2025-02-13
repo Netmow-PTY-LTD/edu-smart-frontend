@@ -15,10 +15,13 @@
       h6 {
         color: var(--Black, #1c1c1c);
         font-family: Lora;
-        font-size: 18px;
+        font-size: clamp(14px, 1vw, 18px);
         font-style: normal;
         font-weight: 600;
         line-height: 170%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
 
         i {
           color: #13c9bf;
@@ -29,7 +32,7 @@
       h5 {
         color: var(--Black, #1c1c1c);
         font-family: Lora;
-        font-size: 24px;
+        font-size: clamp(18px, 1vw, 30px);
         font-style: normal;
         font-weight: 700;
         line-height: normal;
@@ -44,6 +47,13 @@
       font-weight: 400;
       line-height: 170%;
       margin: 5px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      line-height: 30px;
+      max-height: 95px;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
     }
   }
 
