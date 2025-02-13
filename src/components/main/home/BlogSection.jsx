@@ -18,7 +18,9 @@ const BlogSection = () => {
 
         <article className="blog-content">
           {allBlogs?.data?.length > 0 &&
-            allBlogs?.data?.map((item, i) => <BlogCard blog={item} key={i} />)}
+            allBlogs?.data
+              ?.slice(0, 3)
+              .map((item, i) => <BlogCard blog={item} key={i} />)}
         </article>
 
         {/* <div className="d-flex justify-content-center align-item-center">
