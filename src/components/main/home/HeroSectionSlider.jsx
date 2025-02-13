@@ -8,9 +8,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -92,16 +91,16 @@ export default function HeroSectionSlider() {
               <Col lg={6} md={12}>
                 <div className="hero-text-content">
                   <h1 className="hero-title">
-                    Unleash Your{' '}
-                    <span className="highlighted-text">Career</span>{' '}
-                    Opportunities With EduSmart Free Study{' '}
-                    <span className="highlighted-text">Guideline</span>
+                    Expand Your{' '}
+                    <span className="highlighted-text">Business</span>{' '}
+                    Opportunities With EduSmart{' '}
+                    <span className="highlighted-text">Partnership</span>
                   </h1>
                   <p className="hero-text">
-                    Edusmart is dedicated to empowering students worldwide with
-                    comprehensive guidance for studying abroad. From selecting
-                    the right course to securing your study visa, we make your
-                    journey seamless.
+                    EduSmart is an innovative educational admission marketplace
+                    connecting agents with top universities worldwide. Partner
+                    with us to streamline student enrollments, access exclusive
+                    opportunities, and grow your business.
                   </p>
                   <div className="hero-cta">
                     <Link
@@ -110,12 +109,6 @@ export default function HeroSectionSlider() {
                     >
                       Join us as agent
                     </Link>
-                    {/* <Link
-                  href="/university/courses"
-                  className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
-                >
-                  Explore Courses
-                </Link> */}
                   </div>
                 </div>
               </Col>
@@ -154,13 +147,6 @@ export default function HeroSectionSlider() {
                     >
                       Join us as student
                     </Link>
-
-                    {/* <Link
-                  href="/university/courses"
-                  className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
-                >
-                  Explore Courses
-                </Link> */}
                   </div>
                 </div>
               </Col>
@@ -205,24 +191,6 @@ export default function HeroSectionSlider() {
                       </select>
                     </div>
                   </Col>
-                  {/* <Col lg={3} md={6}>
-                      <div className="form-group mb-3">
-                        <label htmlFor="">Select Department</label>
-                        <select
-                          type="text"
-                          className="form-select"
-                          value={selectedDepartment}
-                          onChange={handleDepartmentChange}
-                          // disabled={!selectedUniversity}
-                        >
-                          <option>Select Department</option>
-                          {departments?.length > 0 &&
-                            departments?.map((item, index) => (
-                              <option key={index}>{item.name}</option>
-                            ))}
-                        </select>
-                      </div>
-                    </Col> */}
 
                   <Col lg={5}>
                     <div className="form-group mb-3">
