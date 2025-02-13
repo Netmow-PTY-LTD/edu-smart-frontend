@@ -8,6 +8,7 @@ import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paym
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useCheckCouponVerifyMutation,
+  useGetAllActiveCouponQuery,
   useGetAllPackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
 import Cookies from 'js-cookie';
@@ -50,6 +51,7 @@ const UpgradePackageInAgentdashboard = () => {
   const paid_amount = router.query.paid_amount;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+  const { data: allCouponData } = useGetAllActiveCouponQuery();
 
   const [
     upgradePackageForAgent,
@@ -420,6 +422,60 @@ const UpgradePackageInAgentdashboard = () => {
                       )}
                     </>
                   )}
+                </div>
+              </Col>
+              <Col lg={10}>
+                <div className="coupon-area">
+                  {allCouponData?.data?.length > 0 &&
+                    allCouponData?.data?.map((coupon, i) => (
+                      <div className="single-coupon" key={i}>
+                        <div className="coupon-code">
+                          <b>Code:</b>{' '}
+                          <b>
+                            {''}
+                            {coupon?.code}
+                          </b>
+                        </div>
+                        <div className="coupon-discount">
+                          <b>Discount: </b>
+                          {''}
+                          {coupon?.discount_percentage}%
+                        </div>
+                        <div className="coupon-packages">
+                          <b>Packages:</b>{' '}
+                          {coupon?.packages?.length > 0
+                            ? coupon?.packages?.map((pkg, i) => (
+                                <span key={i}>
+                                  {pkg?.name}
+                                  {i !== coupon?.packages?.length - 1
+                                    ? ', '
+                                    : ''}
+                                </span>
+                              ))
+                            : null}
+                        </div>
+                        <div className="coupon-expiry-date">
+                          <b>Expiry Date:</b>{' '}
+                          {coupon?.expiry_date &&
+                            new Date(coupon?.expiry_date).toLocaleDateString(
+                              'en-GB',
+                              {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                              }
+                            )}
+                        </div>
+                        {coupon?.package_duration && (
+                          <div className="package-duration">
+                            <b>Package Duration:</b>{' '}
+                            <span>
+                              {coupon?.package_duration?.replace(/_/g, ' ')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
               </Col>
               {/* <Col xl={2}>

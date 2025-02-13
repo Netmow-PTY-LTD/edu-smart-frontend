@@ -238,13 +238,14 @@ export default function Header() {
                   >
                     Register
                   </Link>
-                  <div className="hamburger-menu" onClick={toggleMobileNav}>
-                    <div className="line line1"></div>
-                    <div className="line line2"></div>
-                    <div className="line line3"></div>
-                  </div>
                 </div>
               )}
+
+              <div className="hamburger-menu" onClick={toggleMobileNav}>
+                <div className="line line1"></div>
+                <div className="line line2"></div>
+                <div className="line line3"></div>
+              </div>
             </div>
           </div>
         </div>
