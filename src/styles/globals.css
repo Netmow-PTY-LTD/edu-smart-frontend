@@ -10301,3 +10301,41 @@ textarea.form-control {
   line-height: 170%;
   color: #1c1c1c;
 }
+
+/* Related Course */
+
+.related-course {
+  padding: 5rem 0;
+}
+
+.related-course .team-info h4 {
+  color: var(--Black, #1c1c1c);
+  font-family: Lora;
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-style: normal;
+  font-weight: 600;
+  margin: 0;
+}
+
+.related-course .team-single {
+  margin-top: 25px;
+  border-radius: 1rem;
+  border: 1px solid #b5d336;
+  background: #fcfef6;
+}
+
+.related-course .team-info h4 a {
+  color: var(--Black, #1c1c1c);
+}
+
+.related-course .team-info h5 {
+  font-size: 16px;
+  color: #1c1c1c;
+  margin: 5px 0;
+}
+
+@media (max-width: 991px) {
+  .related-course {
+    padding: 3rem 0;
+  }
+}

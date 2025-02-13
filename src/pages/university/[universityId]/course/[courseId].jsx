@@ -1,6 +1,9 @@
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
 import Loader from '@/components/constants/Loader/Loader';
-import { useGetSingleCourseQuery } from '@/slice/services/public/university/publicUniveristyService';
+import {
+  useGetRelatedCoursesQuery,
+  useGetSingleCourseQuery,
+} from '@/slice/services/public/university/publicUniveristyService';
 
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +18,8 @@ import {
   Row,
 } from 'reactstrap';
 import Cookies from 'js-cookie';
+import CourseCard from '@/components/main/common/CourseCard';
+import Link from 'next/link';
 
 const SingleCoursePageInFrontSite = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
@@ -26,6 +31,8 @@ const SingleCoursePageInFrontSite = () => {
   });
 
   const courseDetail = data?.data || {};
+  const { data: allRelatedCourses } = useGetRelatedCoursesQuery(courseId);
+  console.log(allRelatedCourses?.data);
 
   const [open, setOpen] = useState('1');
   const toggle = (id) => {
@@ -80,7 +87,7 @@ const SingleCoursePageInFrontSite = () => {
     }
   };
 
-  console.log(courseDetail);
+  // console.log(courseDetail);
 
   return (
     <UniversityLayout>
@@ -231,6 +238,45 @@ const SingleCoursePageInFrontSite = () => {
                   <div className="ps-lg-5 course-img">
                     <img src={image?.url ? image?.url : ''} alt={name} />
                   </div>
+                  {allRelatedCourses?.data?.length > 0 && (
+                    <section className="related-course">
+                      <h4>Same Course offered by other universities</h4>
+                      <div className="univ-grid">
+                        {allRelatedCourses?.data?.map((course, i) => (
+                          <div className="team-single" key={i}>
+                            <div className="team-single-inner">
+                              <div className="team-img">
+                                <img
+                                  src={
+                                    course?.image?.url ||
+                                    '/assets/images/users/user-dummy-img.jpg'
+                                  }
+                                  alt={university?.name}
+                                />
+                              </div>
+                              <div className="team-info">
+                                <h4>
+                                  <Link
+                                    href={
+                                      course._id
+                                        ? `/university/${course?.university?._id}/course/${course._id}`
+                                        : '#'
+                                    }
+                                  >
+                                    {course?.university?.name}
+                                  </Link>
+                                </h4>
+                                <h5>{course?.name}</h5>
+                                <div className="team-desc">
+                                  {course?.description}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
                 </Col>
               </Row>
             </>
