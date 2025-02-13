@@ -27,15 +27,11 @@ const InitialInfo = ({
       label: 'Student',
       value: 'Student',
     },
-    {
-      label: 'University',
-      value: 'University',
-    },
+    // {
+    //   label: 'University',
+    //   value: 'University',
+    // },
   ];
-
-  console.log(initialValues?.user_role);
-
-  const user_role_new = initialValues?.user_role?.value;
 
   return (
     <>
