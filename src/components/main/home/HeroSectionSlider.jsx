@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Select from 'react-select';
 
 export default function HeroSectionSlider() {
   const { data: universityData } = useGetAllUniversityQuery();
@@ -26,21 +27,24 @@ export default function HeroSectionSlider() {
   // Get courses based on selected university
 
   // Handlers
-  const handleUniversityChange = (e) => {
-    const uniId = e.target.value;
+  const handleUniversityChange = (selectedOption) => {
+    const uniId = selectedOption?.value;
+
+    // console.log('handle university image==>', e.value);
 
     if (!uniId) {
-      setSelectedUniversity('');
+      //   setSelectedUniversity('');
+      setSelectedUniversity(null);
       setSelectedCourses([]);
-      setSelectedCourse('');
+      setSelectedCourse(null);
       return;
     }
 
-    if (uniId == 'Select University') {
-      setSelectedUniversity(allCourses?.data);
-      setSelectedCourses([]);
-      setSelectedCourse('');
-    }
+    // if (uniId == 'Select University') {
+    //   setSelectedUniversity(allCourses?.data);
+    //   setSelectedCourses([]);
+    //   setSelectedCourse('');
+    // }
 
     setSelectedUniversity(uniId);
     const foundUniversity = universityData?.data?.find(
@@ -50,14 +54,17 @@ export default function HeroSectionSlider() {
     setSelectedCourses(
       foundUniversity?.courses?.length > 0 ? foundUniversity.courses : []
     );
-    setSelectedCourse(''); // Reset selected course
+    // setSelectedCourse(''); // Reset selected course
+    setSelectedCourse(null); // Reset selected course
   };
 
-  const handleCourseChange = (e) => {
-    setSelectedCourse(e.target.value);
+  const handleCourseChange = (selectedOption) => {
+    // setSelectedCourse(e?.target?.value);
+    setSelectedCourse(selectedOption?.value);
   };
 
   const handleSubmit = (e) => {
+    console.log(selectedCourse);
     e.preventDefault();
     if (selectedCourse) {
       router.push(`/university/${selectedUniversity}/course/${selectedCourse}`);
@@ -70,6 +77,37 @@ export default function HeroSectionSlider() {
     selectedUniversity || selectedUniversity !== null
       ? selectedCourses
       : allCourses?.data || [];
+
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      //   '#f8f9fa'
+      backgroundColor: '#FFFFFF', // Light background
+      borderColor: state.isFocused ? '#4CAF50' : '#ccc', // Green focus border
+      borderRadius: '8px',
+      padding: '5px',
+      boxShadow: state.isFocused ? '0 0 5px rgba(76, 175, 80, 0.5)' : 'none',
+      '&:hover': {
+        borderColor: '#4CAF50',
+      },
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isSelected
+        ? '#4CAF50'
+        : state.isFocused
+          ? '#e8f5e9'
+          : 'white',
+      color: state.isSelected ? 'white' : '#333',
+      padding: '10px',
+      cursor: 'pointer',
+    }),
+    menu: (base) => ({
+      ...base,
+      //   borderRadius: '8px',
+      boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+    }),
+  };
 
   return (
     <section className="hero-main">
@@ -173,45 +211,33 @@ export default function HeroSectionSlider() {
                   <Col lg={5}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select University</label>
-                      <select
-                        type="text"
-                        className="form-select"
-                        value={selectedUniversity}
+                      <Select
+                        placeholder="Select University "
+                        styles={customStyles}
                         onChange={handleUniversityChange}
-                      >
-                        <option value="Select University">
-                          Select University
-                        </option>
-                        {universityData?.data?.length > 0 &&
-                          universityData?.data?.map((item, index) => (
-                            <option key={index} value={item._id}>
-                              {item.name}
-                            </option>
-                          ))}
-                      </select>
+                        options={universityData?.data?.map((item) => ({
+                          value: item._id,
+                          label: item.name,
+                        }))}
+                      />
                     </div>
                   </Col>
-
                   <Col lg={5}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select Course</label>
-                      <select
-                        type="text"
-                        className="form-select"
-                        value={selectedCourse}
+                      <Select
+                        placeholder="Select University courses"
+                        styles={customStyles}
                         onChange={handleCourseChange}
-                        // disabled={!selectedDepartment}
-                      >
-                        <option>Select Course</option>
-                        {displayedCourses?.length > 0 &&
-                          displayedCourses?.map((item) => (
-                            <option key={item._id} value={item._id}>
-                              {item?.name}
-                            </option>
-                          ))}
-                      </select>
+                        options={displayedCourses?.map((item) => ({
+                          value: item._id,
+                          label: item.name,
+                        }))}
+                        isDisabled={!selectedUniversity}
+                      />
                     </div>
                   </Col>
+
                   <Col lg={2} className="d-flex align-items-end">
                     <div className="mb-3 w-100">
                       <button
