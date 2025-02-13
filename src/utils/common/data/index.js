@@ -1076,7 +1076,7 @@ const supperAdminWidgetsData = [
     pathName: '/dashboard/super-admin/students',
   },
   {
-    id: 5,
+    id: 4,
     label: 'Total Receive Amount',
     counter: '55',
     bgcolor: 'warning',
@@ -1085,7 +1085,7 @@ const supperAdminWidgetsData = [
     pathName: '/dashboard/super-admin',
   },
   {
-    id: 6,
+    id: 5,
     label: 'Total University Payout',
     counter: '55',
     bgcolor: 'warning',
@@ -1094,7 +1094,7 @@ const supperAdminWidgetsData = [
     pathName: '/dashboard/super-admin',
   },
   {
-    id: 7,
+    id: 6,
     label: 'Total Agent Payout',
     counter: '55',
     bgcolor: 'warning',
