@@ -15,7 +15,7 @@ import {
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
@@ -52,25 +52,44 @@ const AgentDashboard = () => {
   //   }
   // }, []);
 
-  //console.log(userInfodata?.data?.package_choice);
+  console.log(userInfodata?.data?.role);
 
   if (userInfodata?.data?.package_choice) {
     //console.log('working');
     router.push('/dashboard/agent/upgrade');
   }
 
-  useEffect(() => {
-    const course_choice = Cookies.get('course_choice');
-    const universityId = Cookies.get('universityId');
+  const course_choice = Cookies.get('course_choice');
+  const universityId = Cookies.get('universityId');
 
-    if (course_choice && universityId) {
-      router.push(
-        `/dashboard/agent/university-management/single-university-profile-for-agent/${universityId}/course/${course_choice}`
-      );
-      Cookies.remove('course_choice');
-      Cookies.remove('universityId');
-    }
-  }, [router]);
+  console.log(course_choice);
+  console.log(universityId);
+
+  let destination;
+
+  if (userInfodata?.data?.role === 'student') {
+    destination = 'single-university-profile';
+  }
+
+  if (userInfodata?.data?.role === 'agent') {
+    destination = 'single-university-profile-for-agent';
+  }
+
+  console.log(destination);
+
+  if (course_choice && universityId && destination) {
+    console.log('working');
+
+    router.push(
+      `/dashboard/${userInfodata?.data?.role}/university-management/${destination}/${universityId}/course/${course_choice}`
+    );
+    Cookies.remove('course_choice');
+    Cookies.remove('universityId');
+  } else {
+    console.error(
+      'Missing data: Check if userInfodata, course_choice, universityId, or destination is undefined'
+    );
+  }
 
   return (
     <Layout>

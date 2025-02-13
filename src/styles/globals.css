@@ -9942,6 +9942,18 @@ textarea.form-control {
   margin: 20px 0;
 }
 
+.course-details-main .university-name {
+  padding: 15px 20px;
+  border: 1px solid #b5d336;
+  background: #fcfef6;
+  display: inline-block;
+  border-radius: 12px;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 700;
+  color: #1c1c1c;
+  margin-bottom: 15px;
+}
+
 .course-act {
   display: flex;
   align-items: center;

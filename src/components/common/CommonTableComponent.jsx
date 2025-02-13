@@ -10,7 +10,6 @@ const CommonTableComponent = ({
   perPageData,
   emptyMessage,
 }) => {
-  console.log(data);
   // Pagination logic
   const startIdx = currentPage * perPageData;
   const endIdx = Math.min((currentPage + 1) * perPageData, data?.length);
