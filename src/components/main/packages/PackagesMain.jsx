@@ -118,7 +118,7 @@ const PackagesMain = ({
           >
             Select a Package
           </div>
-        ) : selectPackage === data._id ? (
+        ) : selectPackage == data._id ? (
           <div className="px-3 py-1 rounded-3 fw-semibold text-primary bg-info-subtle">
             Currently Using This Package
           </div>
