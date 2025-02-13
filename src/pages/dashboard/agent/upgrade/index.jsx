@@ -178,8 +178,11 @@ const UpgradePackageInAgentdashboard = () => {
     };
     handlePayment();
   }, [
-    openPaymentModal,
+    couponDuration,
+    couponId,
     package_id,
+    paid_amount,
+    payment_method,
     payment_status,
     router,
     transaction_id,
@@ -273,8 +276,8 @@ const UpgradePackageInAgentdashboard = () => {
         package_id: upgradePackageId,
         coupon_duration: couponDuration,
         transaction_id: transaction_id,
-        payment_method: 'used_coupon',
-        paid_amount: pricePackage,
+        payment_method: 'Coupon',
+        paid_amount: couponAmount,
         coupon: couponId,
       };
 

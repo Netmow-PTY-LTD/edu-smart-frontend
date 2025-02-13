@@ -289,7 +289,7 @@ const PackageInvoiceComponent = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-normal">
-                                    {item?.coupon ? item?.coupon : '-'}
+                                    {item?.coupon?._id ? item?.coupon?.code : '-'}
                                   </h3>
                                 </td>
                                 <td>

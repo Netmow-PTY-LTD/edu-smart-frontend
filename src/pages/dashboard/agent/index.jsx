@@ -84,6 +84,7 @@ const AgentDashboard = () => {
     router.push(
       `/dashboard/${userInfodata?.data?.role}/university-management/${destination}/${universityId}/course/${course_choice}`
     );
+
     Cookies.remove('course_choice');
     Cookies.remove('universityId');
     return;
@@ -92,6 +93,28 @@ const AgentDashboard = () => {
       'Missing data: Check if userInfodata, course_choice, universityId, or destination is undefined'
     );
   }
+
+  // if (
+  //   course_choice != null && // Check if course_choice is not null or undefined
+  //   universityId != null && // Check if universityId is not null or undefined
+  //   destination != null && // Check if destination is not null or undefined
+  //   course_choice !== '' && // Ensure course_choice is not an empty string
+  //   universityId !== '' && // Ensure universityId is not an empty string
+  //   destination !== '' // Ensure destination is not an empty string
+  // ) {
+  //   console.log('working');
+
+  //   router.push(
+  //     `/dashboard/${userInfodata?.data?.role}/university-management/${destination}/${universityId}/course/${course_choice}`
+  //   );
+  //   Cookies.remove('course_choice');
+  //   Cookies.remove('universityId');
+  //   return;
+  // } else {
+  //   console.error(
+  //     'Missing data: Check if course_choice, universityId, or destination is null, undefined, or empty'
+  //   );
+  // }
 
   return (
     <Layout>
