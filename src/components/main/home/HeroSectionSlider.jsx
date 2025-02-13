@@ -9,7 +9,12 @@ import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 
-export default function HeroSection() {
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+export default function HeroSectionSlider() {
   const { data: universityData } = useGetAllUniversityQuery();
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState([]);
@@ -71,53 +76,108 @@ export default function HeroSection() {
     <section className="hero-main">
       <ToastContainer />
       <div className="container">
-        <Row>
-          <Col lg={6} md={12}>
-            <div className="hero-text-content">
-              <h1 className="hero-title">
-                Unleash Your <span className="highlighted-text">Career</span>{' '}
-                Opportunities With EduSmart Free Study{' '}
-                <span className="highlighted-text">Guideline</span>
-              </h1>
-              <p className="hero-text">
-                Edusmart is dedicated to empowering students worldwide with
-                comprehensive guidance for studying abroad. From selecting the
-                right course to securing your study visa, we make your journey
-                seamless.
-              </p>
-              <div className="hero-cta">
-                <Link
-                  href="/packages"
-                  className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
-                >
-                  Join us as agent
-                </Link>
-                <Link
-                  href="/auth/register?userRole=student"
-                  className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
-                >
-                  Join us as student
-                </Link>
-                {/* <Link
+        <Swiper
+          pagination={{
+            dynamicBullets: true,
+          }}
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false,
+          }}
+          modules={[Pagination, Autoplay]}
+          className="mySwiper"
+        >
+          <SwiperSlide>
+            <Row>
+              <Col lg={6} md={12}>
+                <div className="hero-text-content">
+                  <h1 className="hero-title">
+                    Unleash Your{' '}
+                    <span className="highlighted-text">Career</span>{' '}
+                    Opportunities With EduSmart Free Study{' '}
+                    <span className="highlighted-text">Guideline</span>
+                  </h1>
+                  <p className="hero-text">
+                    Edusmart is dedicated to empowering students worldwide with
+                    comprehensive guidance for studying abroad. From selecting
+                    the right course to securing your study visa, we make your
+                    journey seamless.
+                  </p>
+                  <div className="hero-cta">
+                    <Link
+                      href="/packages"
+                      className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
+                    >
+                      Join us as agent
+                    </Link>
+                    {/* <Link
                   href="/university/courses"
                   className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                 >
                   Explore Courses
                 </Link> */}
-              </div>
-            </div>
-          </Col>
-          <Col lg={6} md={12}>
-            <div className="hero-img">
-              <Image
-                src="/assets/images/main/hero-img.png"
-                width={558}
-                height={580}
-                alt="Hero_Image"
-              />
-            </div>
-          </Col>
-        </Row>
+                  </div>
+                </div>
+              </Col>
+              <Col lg={6} md={12}>
+                <div className="hero-img">
+                  <Image
+                    src="/assets/images/main/hero-img.png"
+                    width={558}
+                    height={580}
+                    alt="Hero_Image"
+                  />
+                </div>
+              </Col>
+            </Row>
+          </SwiperSlide>
+          <SwiperSlide>
+            <Row>
+              <Col lg={6} md={12}>
+                <div className="hero-text-content">
+                  <h1 className="hero-title">
+                    Unleash Your{' '}
+                    <span className="highlighted-text">Career</span>{' '}
+                    Opportunities With EduSmart Free Study{' '}
+                    <span className="highlighted-text">Guideline</span>
+                  </h1>
+                  <p className="hero-text">
+                    Edusmart is dedicated to empowering students worldwide with
+                    comprehensive guidance for studying abroad. From selecting
+                    the right course to securing your study visa, we make your
+                    journey seamless.
+                  </p>
+                  <div className="hero-cta">
+                    <Link
+                      href="/auth/register?userRole=student"
+                      className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
+                    >
+                      Join us as student
+                    </Link>
+
+                    {/* <Link
+                  href="/university/courses"
+                  className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
+                >
+                  Explore Courses
+                </Link> */}
+                  </div>
+                </div>
+              </Col>
+              <Col lg={6} md={12}>
+                <div className="hero-img">
+                  <Image
+                    src="/assets/images/main/hero-img.png"
+                    width={558}
+                    height={580}
+                    alt="Hero_Image"
+                  />
+                </div>
+              </Col>
+            </Row>
+          </SwiperSlide>
+        </Swiper>
+
         <div className="hero-search-area">
           <h2 className="hero-search-title">Find the best courses for you</h2>
           <div className="hero-search-form">
@@ -146,23 +206,23 @@ export default function HeroSection() {
                     </div>
                   </Col>
                   {/* <Col lg={3} md={6}>
-                    <div className="form-group mb-3">
-                      <label htmlFor="">Select Department</label>
-                      <select
-                        type="text"
-                        className="form-select"
-                        value={selectedDepartment}
-                        onChange={handleDepartmentChange}
-                        // disabled={!selectedUniversity}
-                      >
-                        <option>Select Department</option>
-                        {departments?.length > 0 &&
-                          departments?.map((item, index) => (
-                            <option key={index}>{item.name}</option>
-                          ))}
-                      </select>
-                    </div>
-                  </Col> */}
+                      <div className="form-group mb-3">
+                        <label htmlFor="">Select Department</label>
+                        <select
+                          type="text"
+                          className="form-select"
+                          value={selectedDepartment}
+                          onChange={handleDepartmentChange}
+                          // disabled={!selectedUniversity}
+                        >
+                          <option>Select Department</option>
+                          {departments?.length > 0 &&
+                            departments?.map((item, index) => (
+                              <option key={index}>{item.name}</option>
+                            ))}
+                        </select>
+                      </div>
+                    </Col> */}
 
                   <Col lg={5}>
                     <div className="form-group mb-3">
