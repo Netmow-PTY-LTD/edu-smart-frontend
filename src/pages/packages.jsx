@@ -20,8 +20,6 @@ export default function Packages() {
 
   const { data: allCouponData } = useGetAllActiveCouponQuery();
 
-  console.log(userInfodata?.data?.agent_package?.package?._id);
-
   const {
     data: getAllPackageData,
     isLoading: getAllPackageIsLoading,

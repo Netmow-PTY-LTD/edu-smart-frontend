@@ -39,7 +39,9 @@ const PackagePaymentForSuperAdmin = () => {
       key: 'agent',
       render: (item) => (
         <div>
-          {item?.agent?.first_name + ' ' + item?.agent?.last_name ?? 'N/A'}
+          {item?.agent?.first_name
+            ? item?.agent?.first_name + ' ' + item?.agent?.last_name
+            : '-'}
         </div>
       ),
     },
@@ -83,7 +85,7 @@ const PackagePaymentForSuperAdmin = () => {
             ) : (
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
-                <div className="text-primary fw-semibold fs-2">
+                  <div className="text-primary fw-semibold fs-2">
                     Package Payment Report
                   </div>
                   <SearchComponent

@@ -18,9 +18,6 @@ const PackagesMain = ({
     router.push(`/auth/register?packageId=${id}`);
   };
 
-  console.log(selectPackage);
-  console.log(data?._id);
-
   return (
     <>
       <div
@@ -110,7 +107,7 @@ const PackagesMain = ({
             </li>
           </ul>
         </div>
-        {!selectPackage ? (
+        {!selectPackage?._id ? (
           <div
             className="d-flex align-items-center justify-content-center button hstack fw-semibold p-3"
             onClick={() => handleSelectPackage(data?._id)}
@@ -118,7 +115,7 @@ const PackagesMain = ({
           >
             Select a Package
           </div>
-        ) : selectPackage === data._id ? (
+        ) : selectPackage?._id == data._id ? (
           <div className="px-3 py-1 rounded-3 fw-semibold text-primary bg-info-subtle">
             Currently Using This Package
           </div>

@@ -8,6 +8,7 @@ import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paym
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useCheckCouponVerifyMutation,
+  useGetAllActiveCouponQuery,
   useGetAllPackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
 import Cookies from 'js-cookie';
@@ -39,14 +40,19 @@ const UpgradePackageInAgentdashboard = () => {
   const [couponDuration, setCouponDuration] = useState('');
   const [totalPricePackage, setTotalPricePackage] = useState('');
   const [pricePackage, setPricePackage] = useState('');
+  const [couponId, setCouponId] = useState('');
 
   const router = useRouter();
 
   const payment_status = router.query?.payment_status;
   const transaction_id = router.query?.transaction_id;
   const package_id = router.query?.package_id;
+  const payment_method = router.query.payment_method;
+  const paid_amount = router.query.paid_amount;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+  const { data: allCouponData } = useGetAllActiveCouponQuery();
+
   const [
     upgradePackageForAgent,
     { isLoading: upgradePackageForAgentIsLoading },
@@ -70,8 +76,10 @@ const UpgradePackageInAgentdashboard = () => {
     setOpenPaymentModal(!openPaymentModal);
   };
 
-  const handleUpgradeNew = (packageId) => {
+  const handleUpgradeNew = (data, packageId) => {
+    setUpgradePackageName(data?.name);
     setUpgradePackageId(packageId);
+    setPricePackage(data?.price);
     setOpenPaymentModal(true);
   };
 
@@ -86,7 +94,7 @@ const UpgradePackageInAgentdashboard = () => {
       console.log('Selected package', selectedPackage);
 
       if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
-        handleUpgradeNew(userInfodata?.data?.package_choice);
+        handleUpgradeNew(selectedPackage, userInfodata?.data?.package_choice);
       } else {
         setOpenPaymentModal(false);
       }
@@ -101,10 +109,23 @@ const UpgradePackageInAgentdashboard = () => {
           const finalData = {
             transaction_id: transaction_id,
             package_id: package_id,
+            payment_method: payment_method,
+            paid_amount: paid_amount,
+            coupon_duration: couponDuration,
+            coupon: couponId,
           };
           const response = await upgradePackageForAgent(finalData).unwrap();
           if (response) {
             toast.success(response?.message);
+            setUpgradePackageId('');
+            setUpgradePackageName('');
+            setCouponCode('');
+            setCouponError('');
+            setTotalCouponAmount('');
+            setCouponDuration('');
+            setTotalPricePackage('');
+            setPricePackage('');
+            setCouponId('');
             userInfoRefetch();
             setOpenPaymentModal(false);
             setTimeout(() => {
@@ -159,8 +180,11 @@ const UpgradePackageInAgentdashboard = () => {
     };
     handlePayment();
   }, [
-    openPaymentModal,
+    couponDuration,
+    couponId,
     package_id,
+    paid_amount,
+    payment_method,
     payment_status,
     router,
     transaction_id,
@@ -224,6 +248,8 @@ const UpgradePackageInAgentdashboard = () => {
       const { package_duration, packages, discount_percentage } =
         response?.data || {};
 
+      setCouponId(response?.data?._id);
+
       const [packagePrice] = packages;
       const [duration] = package_duration.split('_').map(Number);
       const discount = parseFloat(discount_percentage);
@@ -251,15 +277,28 @@ const UpgradePackageInAgentdashboard = () => {
       const finalData = {
         package_id: upgradePackageId,
         coupon_duration: couponDuration,
+        transaction_id: transaction_id,
+        payment_method: 'Coupon',
+        paid_amount: couponAmount,
+        coupon: couponId,
       };
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
 
       console.log(upgradeResponse);
-      
+
       if (upgradeResponse) {
         console.log('checking upgrade');
         toast.success(upgradeResponse?.message);
+        setUpgradePackageId('');
+        setUpgradePackageName('');
+        setCouponCode('');
+        setCouponError('');
+        setTotalCouponAmount('');
+        setCouponDuration('');
+        setCouponId('');
+        setTotalPricePackage('');
+        setPricePackage('');
         userInfoRefetch();
         setOpenPaymentModal(false);
       }
@@ -383,6 +422,60 @@ const UpgradePackageInAgentdashboard = () => {
                       )}
                     </>
                   )}
+                </div>
+              </Col>
+              <Col lg={10}>
+                <div className="coupon-area">
+                  {allCouponData?.data?.length > 0 &&
+                    allCouponData?.data?.map((coupon, i) => (
+                      <div className="single-coupon" key={i}>
+                        <div className="coupon-code">
+                          <b>Code:</b>{' '}
+                          <b>
+                            {''}
+                            {coupon?.code}
+                          </b>
+                        </div>
+                        <div className="coupon-discount">
+                          <b>Discount: </b>
+                          {''}
+                          {coupon?.discount_percentage}%
+                        </div>
+                        <div className="coupon-packages">
+                          <b>Packages:</b>{' '}
+                          {coupon?.packages?.length > 0
+                            ? coupon?.packages?.map((pkg, i) => (
+                                <span key={i}>
+                                  {pkg?.name}
+                                  {i !== coupon?.packages?.length - 1
+                                    ? ', '
+                                    : ''}
+                                </span>
+                              ))
+                            : null}
+                        </div>
+                        <div className="coupon-expiry-date">
+                          <b>Expiry Date:</b>{' '}
+                          {coupon?.expiry_date &&
+                            new Date(coupon?.expiry_date).toLocaleDateString(
+                              'en-GB',
+                              {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                              }
+                            )}
+                        </div>
+                        {coupon?.package_duration && (
+                          <div className="package-duration">
+                            <b>Package Duration:</b>{' '}
+                            <span>
+                              {coupon?.package_duration?.replace(/_/g, ' ')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
               </Col>
               {/* <Col xl={2}>
