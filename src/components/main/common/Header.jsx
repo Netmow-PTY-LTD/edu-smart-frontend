@@ -5,7 +5,7 @@ import {
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 // import MobileNav from '../mobileNav';
 import Loader from '@/components/constants/Loader/Loader';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -15,6 +15,7 @@ import { useState } from 'react';
 import MobileNavMain from './MobileNavMain';
 
 export default function Header() {
+  const [isHeaderFixed, setIsHeaderFixed] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
 
   const { data: userInfoData, isLoading: userInfoLoading } =
@@ -27,12 +28,28 @@ export default function Header() {
     setShowMobileNav(!showMobileNav);
   };
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const handleScroll = () => {
+        setIsHeaderFixed(window.scrollY > 50);
+      };
+
+      window.addEventListener('scroll', handleScroll);
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, []);
+
   const token = Cookies.get('token');
 
   return (
     <>
       <header className="header">
-        <div className={`header-bottom`}>
+        <div
+          className={`header-bottom ${isHeaderFixed ? 'sticky-header' : ''}`}
+        >
           <div className="container">
             <div className="header-bottom-content">
               <Link href="/" className="logo">
@@ -75,18 +92,18 @@ export default function Header() {
                     </Link>
                     <ul className="sub-menu">
                       {allCourses?.data?.length > 0 &&
-                        allCourses?.data?.map((item, index) => (
+                        allCourses?.data?.slice(0, 5).map((item, index) => (
                           <li key={index}>
                             <Link
                               href={`/university/${item?.university?._id}/course/${item?._id}`}
                             >
-                              {item.name}
+                              {item?.name}
                             </Link>
                           </li>
                         ))}
-                      {/* <li>
+                      <li>
                         <Link href={`/courses`}>View All Courses</Link>
-                      </li> */}
+                      </li>
                     </ul>
                   </li>
                   <li className="menu-item-has-children">
@@ -113,7 +130,7 @@ export default function Header() {
                         <Link href="#">Universities</Link>
                       </li> */}
                       {universityData?.data?.length > 0 &&
-                        universityData?.data?.map((item, index) => (
+                        universityData?.data?.slice(0, 5).map((item, index) => (
                           <li key={index}>
                             <Link href={`/university/${item?._id}`}>
                               {item.name}
@@ -191,7 +208,7 @@ export default function Header() {
                 ) : userInfoData?.data?.role === 'agent' ? (
                   <div className="d-flex gap-3 ">
                     <Link
-                      href={`/dashboard/super-admin`}
+                      href={`/dashboard/agent`}
                       className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
                     >
                       Dashboard
