@@ -152,7 +152,7 @@ export default function HeroSectionSlider() {
                       href="/packages"
                       className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                     >
-                      Join us as agent
+                      Join as a agent
                     </Link>
                   </div>
                 </div>
@@ -190,7 +190,7 @@ export default function HeroSectionSlider() {
                       href="/auth/register?userRole=student"
                       className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                     >
-                      Join us as student
+                      Join as a student
                     </Link>
                   </div>
                 </div>
