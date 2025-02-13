@@ -28,8 +28,11 @@ const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 const Register = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { query } = router;
   const [step, setStep] = useState(1);
   const [checkExistingUser, setCheckExistingUser] = useState('');
+
+  console.log('from register page==>', query);
 
   const [logIn, { data: LoginData }] = useLogInMutation();
   const [generateOtp] = useGenerateOtpMutation();
@@ -248,8 +251,13 @@ const Register = () => {
         ...prev,
         user_role: 'Agent',
       }));
+    } else if (query?.userRole === 'student') {
+      setInitialValues((prev) => ({
+        ...prev,
+        user_role: 'Student',
+      }));
     }
-  }, [package_choice]);
+  }, [package_choice, query]);
 
   //console.log(initialValues);
 

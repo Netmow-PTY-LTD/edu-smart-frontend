@@ -12,6 +12,7 @@ import BlogSection from '@/components/main/home/BlogSection';
 import { useEffect } from 'react';
 import { useSubscribeNewsLetterMutation } from '@/slice/services/public/newsLetter/newsLetterSubscriptionPublic';
 import { toast } from 'react-toastify';
+import HeroSectionSlider from '@/components/main/home/HeroSectionSlider';
 
 const HomePage = () => {
   const router = useRouter();
@@ -44,7 +45,8 @@ const HomePage = () => {
 
   return (
     <MainLayout>
-      <HeroSection />
+      {/* <HeroSection /> */}
+      <HeroSectionSlider />
       <HomeUniversities />
       <OurServices />
       <PopularCourses />
