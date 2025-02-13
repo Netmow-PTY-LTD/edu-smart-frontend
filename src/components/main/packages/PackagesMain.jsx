@@ -1,5 +1,6 @@
 import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -125,11 +126,12 @@ const PackagesMain = ({
           </div>
         ) : (
           <div
-            onClick={() => handleUpgrade(data._id)}
             className="d-flex align-items-center justify-content-center button hstack py-2"
             style={{ cursor: 'pointer' }}
           >
-            <span className="text-center fw-medium">Upgrade</span>
+            <Link href="/dashboard/agent/upgrade">
+              <span className="text-center fw-medium">Upgrade</span>
+            </Link>
           </div>
         )}
       </div>

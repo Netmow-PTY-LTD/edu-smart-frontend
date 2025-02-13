@@ -82,6 +82,7 @@ const InitialInfo = ({
                         <CheckboxField
                           name="terms_and_conditions"
                           termsText={'I agree to the terms and conditions'}
+                          termsLink={`/terms-service`}
                         />
                       </Col>
                     </Row>

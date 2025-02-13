@@ -1,3 +1,4 @@
+'use client';
 import {
   useGetAllCoursesQuery,
   useGetAllUniversityQuery,
@@ -252,6 +253,7 @@ export default function Header() {
         <MobileNavMain
           showMobileNav={showMobileNav}
           setShowMobileNav={setShowMobileNav}
+          token={token}
         />
       </header>
     </>
