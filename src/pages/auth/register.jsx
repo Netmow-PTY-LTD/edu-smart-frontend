@@ -394,8 +394,21 @@ const Register = () => {
 
         if (resLogin) {
           toast.success(resLogin?.message);
-          Cookies.set('course_choice', course_choice, { expires: 1 });
-          Cookies.set('universityId', universityId, { expires: 1 });
+
+          if (course_choice) {
+            Cookies.set('course_choice', course_choice, { expires: 1 });
+          } else {
+            console.log('course_choice is not present in the URL');
+          }
+
+          if (universityId) {
+            Cookies.set('universityId', universityId, { expires: 1 });
+          } else {
+            console.log('universityId is not present in the URL');
+          }
+
+          // Cookies.set('course_choice', course_choice, { expires: 1 });
+          // Cookies.set('universityId', universityId, { expires: 1 });
         }
       }
     } catch (error) {
