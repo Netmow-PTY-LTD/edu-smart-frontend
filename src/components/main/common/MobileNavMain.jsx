@@ -1,11 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import {
+  useGetAllCoursesQuery,
+  useGetAllUniversityQuery,
+} from '@/slice/services/public/university/publicUniveristyService';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import Loader from '@/components/constants/Loader/Loader';
 
-const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
+const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
+
+  const {
+    data: userInfoData,
+    isLoading: userInfoLoading,
+    refetch: userInfoRefetch,
+  } = useGetUserInfoQuery();
 
   const toggleSubmenu = (menuItem) => {
     setShowSubmenu(menuItem === activeMenuItem ? !showSubmenu : true);
@@ -33,6 +44,8 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
   const courses = universityData?.data?.flatMap(
     (university) => university.courses
   );
+
+  const { data: allCourses } = useGetAllCoursesQuery();
 
   return (
     <section className={`mobile-nav-area ${showMobileNav ? 'active' : ''}`}>
@@ -98,8 +111,8 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
             </Link>
             {showSubmenu && activeMenuItem === 'courses' && (
               <ul className={`sub-menu ${showSubmenu ? 'open' : ''}`}>
-                {courses?.length > 0 ? (
-                  courses?.map((item, index) => (
+                {allCourses?.data?.length > 0 ? (
+                  allCourses?.data?.slice(0, 4).map((item, index) => (
                     <li key={index}>
                       <Link
                         href={`/university/${item?.university}/course/${item?._id}`}
@@ -118,6 +131,9 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
                     </li>
                   </>
                 )}
+                <li>
+                  <Link href="/courses">View All Courses</Link>
+                </li>
               </ul>
             )}
           </li>
@@ -147,7 +163,7 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
             {showSubmenu && activeMenuItem === 'universities' && (
               <ul className={`sub-menu ${showSubmenu ? 'open' : ''}`}>
                 {universityData?.data?.length > 0 ? (
-                  universityData?.data?.map((item, index) => (
+                  universityData?.data?.slice(0, 4).map((item, index) => (
                     <li key={index}>
                       <Link href={`/university/${item?._id}`}>{item.name}</Link>
                     </li>
@@ -162,6 +178,9 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
                     </li>
                   </>
                 )}
+                <li>
+                  <Link href="/university">View All Universities</Link>
+                </li>
               </ul>
             )}
           </li>
@@ -175,22 +194,56 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav }) => {
               <span>Join as agent</span>
             </Link>
           </li>
-          <li className="px-3 mt-4">
-            <Link
-              href={`/auth/login`}
-              className={`button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5 justify-content-center`}
-            >
-              Login
-            </Link>
-          </li>
-          <li className="px-3 mt-4">
-            <Link
-              href={`/auth/register`}
-              className={`button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5 justify-content-center`}
-            >
-              Register
-            </Link>
-          </li>
+          {token ? (
+            userInfoData?.data?.role === 'super_admin' ? (
+              <li className="mx-4">
+                <Link
+                  type="button"
+                  href={`/dashboard/super-admin`}
+                  className="fs-20 fw-semibold py-2 px-3 button text-secondary-alt justify-content-center"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            ) : userInfoData?.data?.role === 'agent' ? (
+              <li className="mx-4">
+                <Link
+                  href={`/dashboard/agent`}
+                  className="fs-20 fw-semibold py-2 px-3 button text-secondary-alt justify-content-center"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            ) : userInfoData?.data?.role === 'student' ? (
+              <li className="mx-4">
+                <Link
+                  href={`/dashboard/student`}
+                  className="fs-20 fw-semibold py-2 px-3 button text-secondary-alt justify-content-center"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            ) : null
+          ) : (
+            <>
+              <li className="px-3 mt-4">
+                <Link
+                  href={`/auth/login`}
+                  className="button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5 justify-content-center"
+                >
+                  Login
+                </Link>
+              </li>
+              <li className="px-3 mt-4">
+                <Link
+                  href={`/auth/register`}
+                  className="button text-secondary-alt text-center fs-20 fw-semibold py-2 px-5 justify-content-center"
+                >
+                  Register
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </section>
