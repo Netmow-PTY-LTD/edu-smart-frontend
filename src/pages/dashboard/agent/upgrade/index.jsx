@@ -61,6 +61,36 @@ const UpgradePackageInAgentdashboard = () => {
     refetch: getAllPackageRefetch,
   } = useGetAllPackageQuery();
 
+  const handleUpgrade = (data) => {
+    setPricePackage(data?.price);
+    setUpgradePackageName(data?.name);
+    setUpgradePackageId(data?.id);
+    setOpenPaymentModal(!openPaymentModal);
+  };
+
+  const handleUpgradeNew = (packageId) => {
+    setUpgradePackageId(packageId);
+    setOpenPaymentModal(true);
+  };
+
+  //console.log('Selected package', userInfodata?.data?.package_choice);
+
+  useEffect(() => {
+    if (userInfodata?.data?.package_choice) {
+      const selectedPackage = getAllPackageData?.data?.find(
+        (item) => item._id === userInfodata?.data?.package_choice
+      );
+
+      console.log('Selected package', selectedPackage);
+
+      if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
+        handleUpgradeNew(userInfodata?.data?.package_choice);
+      } else {
+        setOpenPaymentModal(false);
+      }
+    }
+  }, [userInfodata?.data?.package_choice, getAllPackageData]);
+
   useEffect(() => {
     const handlePayment = async () => {
       setUpgradePackageIsLoading(true);
@@ -133,38 +163,6 @@ const UpgradePackageInAgentdashboard = () => {
     upgradePackageForAgent,
     userInfoRefetch,
   ]);
-
-  const handleUpgrade = (data) => {
-    console.log(data);
-    setPricePackage(data?.price);
-    setUpgradePackageName(data?.name);
-    setUpgradePackageId(data?.id);
-    setOpenPaymentModal(!openPaymentModal);
-  };
-
-  const handleUpgradeNew = (data) => {
-    console.log(data);
-    setUpgradePackageId(data?.id);
-    setOpenPaymentModal(true);
-    setPricePackage(data?.price);
-    setUpgradePackageName(data?.name);
-  };
-
-  useEffect(() => {
-    if (userInfodata?.data?.package_choice) {
-      const selectedPackage = getAllPackageData?.data?.find(
-        (item) => item._id === userInfodata?.data?.package_choice
-      );
-
-      console.log(selectedPackage?.price);
-
-      if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
-        handleUpgradeNew(userInfodata?.data?.package_choice);
-      } else {
-        setOpenPaymentModal(false);
-      }
-    }
-  }, [userInfodata?.data?.package_choice, getAllPackageData]);
 
   const sslCommerzPaymentHandler = async () => {
     const price = couponAmount ? couponAmount : pricePackage;
