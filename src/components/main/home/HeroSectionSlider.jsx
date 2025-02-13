@@ -115,7 +115,7 @@ export default function HeroSectionSlider() {
               <Col lg={6} md={12}>
                 <div className="hero-img">
                   <Image
-                    src="/assets/images/main/hero-img.png"
+                    src="/assets/images/main/hero-agent.png"
                     width={558}
                     height={580}
                     alt="Hero_Image"
