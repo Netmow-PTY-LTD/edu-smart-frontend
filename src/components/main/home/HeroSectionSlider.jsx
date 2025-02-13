@@ -26,14 +26,11 @@ export default function HeroSectionSlider() {
 
   // Get courses based on selected university
 
-  // Handlers
   const handleUniversityChange = (selectedOption) => {
     const uniId = selectedOption?.value;
 
-    // console.log('handle university image==>', e.value);
-
     if (!uniId) {
-      //   setSelectedUniversity('');
+      setSelectedUniversity(null);
       setSelectedUniversity(null);
       setSelectedCourses([]);
       setSelectedCourse(null);
@@ -46,6 +43,7 @@ export default function HeroSectionSlider() {
     //   setSelectedCourse('');
     // }
 
+    // setSelectedCourse(null);
     setSelectedUniversity(uniId);
     const foundUniversity = universityData?.data?.find(
       (uni) => uni._id === uniId
@@ -54,23 +52,33 @@ export default function HeroSectionSlider() {
     setSelectedCourses(
       foundUniversity?.courses?.length > 0 ? foundUniversity.courses : []
     );
-    // setSelectedCourse(''); // Reset selected course
+
     setSelectedCourse(null); // Reset selected course
   };
 
   const handleCourseChange = (selectedOption) => {
-    // setSelectedCourse(e?.target?.value);
     setSelectedCourse(selectedOption?.value);
   };
 
   const handleSubmit = (e) => {
-    console.log(selectedCourse);
     e.preventDefault();
-    if (selectedCourse) {
-      router.push(`/university/${selectedUniversity}/course/${selectedCourse}`);
-    } else {
-      toast.error('Please select a course');
+
+    if (!selectedUniversity && !selectedCourse) {
+      toast.error('Please select a university and university course');
+      return;
     }
+    if (!selectedUniversity) {
+      toast.error('Please select a university');
+      return;
+    }
+
+    if (!selectedCourse) {
+      toast.error('Please select a course');
+      return;
+    }
+
+    // If both values are present, navigate to the course page
+    router.push(`/university/${selectedUniversity}/course/${selectedCourse}`);
   };
 
   const displayedCourses =
@@ -81,7 +89,6 @@ export default function HeroSectionSlider() {
   const customStyles = {
     control: (base, state) => ({
       ...base,
-      //   '#f8f9fa'
       backgroundColor: '#FFFFFF', // Light background
       borderColor: state.isFocused ? '#4CAF50' : '#ccc', // Green focus border
       borderRadius: '8px',
