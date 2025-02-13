@@ -1,4 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import StudentApplicationEmgsStatusTimeline from '@/components/StudentDashboard/components/StudentApplicationEmgsStatusTimeline';
@@ -8,7 +9,7 @@ import {
 } from '@/slice/services/common/applicationService';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -27,6 +28,7 @@ export default function RecentApplicationForSuperAdmin() {
   const [activeTab, setActiveTab] = React.useState('1');
   const [currentPage, setCurrentPage] = React.useState(0);
   const [currentTimeline, setCurrentTimeline] = React.useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const perPageData = 9;
 
   const {
@@ -70,6 +72,26 @@ export default function RecentApplicationForSuperAdmin() {
       toast.error('An error occurred while updating the status.');
     }
   };
+
+  // search input change function
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+  const searchInItem = (item, searchTerm) => {
+    if (typeof item === 'object' && item !== null) {
+      return Object.values(item).some((value) =>
+        searchInItem(value, searchTerm)
+      );
+    }
+
+    return String(item).toLowerCase().includes(searchTerm.toLowerCase());
+  };
+
+  // Filter data for search option
+  const isfilteredData =
+    recentApplicationData?.data?.length > 0 &&
+    recentApplicationData?.data.filter((item) => {
+      return searchInItem(item, searchTerm);
+    });
 
   const EmgsStatusActionData = {
     title: 'Action',
@@ -203,16 +225,29 @@ export default function RecentApplicationForSuperAdmin() {
       ),
     },
     {
+      title: 'Agent Name',
+      key: 'Agent_name',
+      render: (item) => (
+        <Link
+          href={`/dashboard/super-admin/agents/${item?.applied_by?._id}`}
+          className="d-flex flex-column text-capitalize fw-medium"
+        >
+          {item?.applied_by?.role === 'agent'
+            ? `${item?.applied_by?.first_name ? item?.applied_by?.first_name : ''} ${item?.applied_by?.last_name ? item?.applied_by?.last_name : ''}`
+            : ''}
+        </Link>
+      ),
+    },
+    {
       title: 'Applied By',
       key: 'applied_by',
       render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.applied_by?.first_name && item?.applied_by?.last_name
-            ? `${item?.applied_by?.first_name ? item?.applied_by?.first_name : ''} ${item?.applied_by?.last_name ? item?.applied_by?.last_name : ''}`
-            : '-'}
+        <span className="d-flex flex-column text-capitalize fw-medium text-p">
+          {item?.applied_by?.role ? `${item?.applied_by?.role}` : ''}
         </span>
       ),
     },
+
     {
       title: 'Price',
       key: 'price',
@@ -267,6 +302,10 @@ export default function RecentApplicationForSuperAdmin() {
                     <Card>
                       <CardHeader className="text-primary fw-semibold fs-2">
                         Student's University Applications
+                        <SearchComponent
+                          searchTerm={searchTerm}
+                          handleSearchChange={handleSearchChange}
+                        />
                       </CardHeader>
                       <CardBody className="mh-100">
                         <CommonTableComponent
@@ -274,7 +313,7 @@ export default function RecentApplicationForSuperAdmin() {
                             ...studentApplicationsHeaders,
                             EmgsStatusActionData,
                           ]}
-                          data={recentApplicationData?.data || []}
+                          data={isfilteredData || []}
                           currentPage={currentPage}
                           setCurrentPage={setCurrentPage}
                           perPageData={perPageData}
