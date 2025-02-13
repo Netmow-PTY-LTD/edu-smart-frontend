@@ -10098,6 +10098,12 @@ textarea.form-control {
   z-index: -1;
 }
 
+.page-banner-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .page-banner-content h1 {
   font-size: clamp(30px, 4vw, 50px);
   color: #fff;
@@ -10224,4 +10230,33 @@ textarea.form-control {
   .contact-form-main {
     margin-top: 30px;
   }
+}
+
+/* Single Blog */
+
+.blog-img img {
+  width: 100%;
+  aspect-ratio: 1/0.5;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.blog-details-content h2 {
+  font-size: clamp(28px, 4vw, 56px);
+  font-weight: 600;
+  color: #1c1c1c;
+  margin: 30px 0;
+}
+
+.page-banner-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.single-blog-description {
+  font-size: clamp(16px, 4vw, 24px);
+  font-weight: 400;
+  line-height: 170%;
+  color: #1c1c1c;
 }
