@@ -41,6 +41,7 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
+import { superAdminStatsServices } from '../services/super admin/superAdminStatsServices';
 
 export const store = configureStore({
   reducer: {
@@ -94,6 +95,7 @@ export const store = configureStore({
     [publicBlogServices.reducerPath]: publicBlogServices.reducer,
     [newsLetterSubscriptionSuperAdmin.reducerPath]:
       newsLetterSubscriptionSuperAdmin.reducer,
+    [superAdminStatsServices.reducerPath]: superAdminStatsServices.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -136,7 +138,8 @@ export const store = configureStore({
       .concat(paymentReportService.middleware)
       .concat(superAdminContactService.middleware)
       .concat(superAdminBlogServices.middleware)
-      .concat(publicBlogServices.middleware),
+      .concat(publicBlogServices.middleware)
+      .concat(superAdminStatsServices.middleware),
 });
 
 setupListeners(store.dispatch);
