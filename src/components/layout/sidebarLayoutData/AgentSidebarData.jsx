@@ -9,6 +9,7 @@ const AgentSidebarData = () => {
   const [isManageDocument, setIsManageDocument] = useState(false);
   const [isStudentManagement, setIsStudentManagement] = useState(false);
   const [isUinversityManagement, setIsUinversityManagement] = useState(false);
+  const [isInvoices, setIsInvoices] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
@@ -151,6 +152,36 @@ const AgentSidebarData = () => {
       label: 'Applications',
       icon: 'ri-list-check-3',
       link: '/dashboard/agent/applications',
+    },
+
+    {
+      id: 'invoices',
+      label: 'Invoices',
+      icon: 'ri-receipt-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsInvoices(!isInvoices);
+        setIscurrentState('Invoices');
+        updateIconSidebar(e);
+      },
+      stateVariables: isInvoices,
+      subItems: [
+        {
+          id: 'package-invoice',
+          label: 'Package Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/agent/package-invoices',
+          parentId: 'invoices',
+        },
+        {
+          id: 'application-invoice',
+          label: 'Application Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/agent/application-invoices',
+          parentId: 'invoices',
+        },
+      ],
     },
 
     // {

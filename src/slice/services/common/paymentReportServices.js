@@ -23,10 +23,26 @@ export const paymentReportService = createApi({
         };
       },
     }),
+    getSingleApplicationPaymentReport: builder.query({
+      query: (id) => {
+        return {
+          url: `/payment-report/application/${id}`,
+          method: 'GET',
+        };
+      },
+    }),
     getPackagePaymentReport: builder.query({
       query: () => {
         return {
           url: '/payment-report/package',
+          method: 'GET',
+        };
+      },
+    }),
+    getSinglePackagePaymentReport: builder.query({
+      query: (id) => {
+        return {
+          url: `/payment-report/package/${id}`,
           method: 'GET',
         };
       },
@@ -37,4 +53,6 @@ export const paymentReportService = createApi({
 export const {
   useGetApplicationPaymentReportQuery,
   useGetPackagePaymentReportQuery,
+  useGetSingleApplicationPaymentReportQuery,
+  useGetSinglePackagePaymentReportQuery,
 } = paymentReportService;

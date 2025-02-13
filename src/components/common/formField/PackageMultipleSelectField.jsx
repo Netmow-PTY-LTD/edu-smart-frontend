@@ -1,25 +1,30 @@
+import React, { useEffect } from 'react';
 import { ErrorMessage } from 'formik';
-import React from 'react';
 import Select from 'react-select';
 
 const PackageMultipleSelectField = ({ field, form, label, options, ...props }) => {
   const handleChange = (selectedOptions) => {
-    console.log('Selected Options:', selectedOptions);
-    form.setFieldValue(
-      field.name,
-      selectedOptions ? selectedOptions.map((option) => option.value) : []
-    );
+    if (selectedOptions && selectedOptions.some(option => option.value === 'select_all')) {
+      form.setFieldValue(
+        field.name,
+        options.map(option => option.value)
+      );
+    } else {
+      form.setFieldValue(
+        field.name,
+        selectedOptions ? selectedOptions.map((option) => option.value) : []
+      );
+    }
   };
+
+  // Add "Select All" option to the options array
+  const extendedOptions = [{ value: 'select_all', label: 'Select All' }, ...options];
 
   // Extract values from initial values
   const initialValues = form.values[field.name]?.map(item => item.value || item);
 
   // Map initial values to the options format
-  const selectedValues = options.filter(option => initialValues?.includes(option.value));
-
-  console.log('Initial Values:', initialValues);
-  console.log('Options:', options);
-  console.log('Selected Values:', selectedValues);
+  const selectedValues = extendedOptions.filter(option => initialValues?.includes(option.value));
 
   return (
     <div>
@@ -33,7 +38,7 @@ const PackageMultipleSelectField = ({ field, form, label, options, ...props }) =
         name={field.name}
         value={selectedValues}
         onChange={handleChange}
-        options={options}
+        options={extendedOptions}
         classNamePrefix="select"
         isMulti
         isClearable={true}
