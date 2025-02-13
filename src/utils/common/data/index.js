@@ -809,6 +809,19 @@ const documentHeaders = [
   },
 ];
 
+const superAdminData = {
+  first_name: 'Edu',
+  last_name: 'Smart',
+  email: 'super@server.edusmart',
+  phone: '1724603976',
+  address_line_1: 'bima bhaban',
+  address_line_2: 'fulbari',
+  city: 'cybarjaya',
+  state: 'Wilayah Persekutuan',
+  zip: '5800',
+  country: 'Malaysia',
+};
+
 const studentAndLogoDataForAgentDashboard = {
   title: 'Logo - Name',
   key: 'logo',
@@ -1303,6 +1316,7 @@ export {
   studentsHeadersWithLogoLinkInAgent,
   studentsHeadersWithoutAction,
   studentSubmittedDocumentsHeaderWithoutAction,
+  superAdminData,
   superAdminNameAndLogoData,
   supperAdminWidgetsData,
   teamDummyImage,

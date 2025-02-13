@@ -9,6 +9,7 @@ const StudentSidebarData = () => {
   const [isManageDocument, setIsManageDocument] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
+  const [isInvoices, setIsInvoices] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   function updateIconSidebar(e) {
@@ -133,6 +134,36 @@ const StudentSidebarData = () => {
       label: 'Applications',
       icon: 'ri-list-check-3',
       link: '/dashboard/student/applications',
+    },
+
+    {
+      id: 'invoices',
+      label: 'Invoices',
+      icon: 'ri-receipt-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsInvoices(!isInvoices);
+        setIscurrentState('Invoices');
+        updateIconSidebar(e);
+      },
+      stateVariables: isInvoices,
+      subItems: [
+        // {
+        //   id: 'package-invoice',
+        //   label: 'Package Invoices',
+        //   icon: 'ri-receipt-fill',
+        //   link: '/dashboard/student/package-invoices',
+        //   parentId: 'invoices',
+        // },
+        {
+          id: 'application-invoice',
+          label: 'Application Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/student/application-invoices',
+          parentId: 'invoices',
+        },
+      ],
     },
 
     {

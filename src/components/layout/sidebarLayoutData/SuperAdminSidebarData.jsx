@@ -7,7 +7,7 @@ const SuperAdminSidebarData = () => {
   const [isDashboard, setIsDashboard] = useState(false);
   const [isUniversities, setIsUniversities] = useState(false);
   const [isUniversity, setIsUniversity] = useState(false);
-  const [isUniManagement, setIsUniManagement] = useState(false);
+  const [isInvoices, setIsInvoices] = useState(false);
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
@@ -42,6 +42,9 @@ const SuperAdminSidebarData = () => {
     }
     if (iscurrentState !== 'subscription') {
       setIsUniversity(false);
+    }
+    if (iscurrentState !== 'Invoices') {
+      setIsInvoices(false);
     }
   }, [iscurrentState]);
 
@@ -86,6 +89,35 @@ const SuperAdminSidebarData = () => {
       label: 'Recent Application',
       icon: 'ri-article-fill',
       link: '/dashboard/super-admin/recent-application',
+    },
+    {
+      id: 'invoices',
+      label: 'Invoices',
+      icon: 'ri-receipt-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsInvoices(!isInvoices);
+        setIscurrentState('Invoices');
+        updateIconSidebar(e);
+      },
+      stateVariables: isInvoices,
+      subItems: [
+        {
+          id: 'package-invoice',
+          label: 'Package Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/super-admin/package-invoices',
+          parentId: 'invoices',
+        },
+        {
+          id: 'application-invoice',
+          label: 'Application Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/super-admin/application-invoices',
+          parentId: 'invoices',
+        },
+      ],
     },
     {
       id: 'alldocuments',

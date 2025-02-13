@@ -51,15 +51,47 @@ const UpgradePackageInAgentdashboard = () => {
     upgradePackageForAgent,
     { isLoading: upgradePackageForAgentIsLoading },
   ] = useUpgradePackageForAgentMutation();
+
   const [checkCouponVerify] = useCheckCouponVerifyMutation();
 
   const { data: userInfodata, refetch: userInfoRefetch } =
     useGetUserInfoQuery();
+
   const {
     data: getAllPackageData,
     isLoading: getAllPackageIsLoading,
     refetch: getAllPackageRefetch,
   } = useGetAllPackageQuery();
+
+  const handleUpgrade = (data) => {
+    setPricePackage(data?.price);
+    setUpgradePackageName(data?.name);
+    setUpgradePackageId(data?.id);
+    setOpenPaymentModal(!openPaymentModal);
+  };
+
+  const handleUpgradeNew = (packageId) => {
+    setUpgradePackageId(packageId);
+    setOpenPaymentModal(true);
+  };
+
+  //console.log('Selected package', userInfodata?.data?.package_choice);
+
+  useEffect(() => {
+    if (userInfodata?.data?.package_choice) {
+      const selectedPackage = getAllPackageData?.data?.find(
+        (item) => item._id === userInfodata?.data?.package_choice
+      );
+
+      console.log('Selected package', selectedPackage);
+
+      if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
+        handleUpgradeNew(userInfodata?.data?.package_choice);
+      } else {
+        setOpenPaymentModal(false);
+      }
+    }
+  }, [userInfodata?.data?.package_choice, getAllPackageData]);
 
   useEffect(() => {
     const handlePayment = async () => {
@@ -74,6 +106,7 @@ const UpgradePackageInAgentdashboard = () => {
           if (response) {
             toast.success(response?.message);
             userInfoRefetch();
+            setOpenPaymentModal(false);
             setTimeout(() => {
               router.replace(
                 {
@@ -126,6 +159,7 @@ const UpgradePackageInAgentdashboard = () => {
     };
     handlePayment();
   }, [
+    openPaymentModal,
     package_id,
     payment_status,
     router,
@@ -133,38 +167,6 @@ const UpgradePackageInAgentdashboard = () => {
     upgradePackageForAgent,
     userInfoRefetch,
   ]);
-
-  const handleUpgrade = (data) => {
-    console.log(data);
-    setPricePackage(data?.price);
-    setUpgradePackageName(data?.name);
-    setUpgradePackageId(data?.id);
-    setOpenPaymentModal(!openPaymentModal);
-  };
-
-  const handleUpgradeNew = (data) => {
-    console.log(data);
-    setUpgradePackageId(data?.id);
-    setOpenPaymentModal(true);
-    setPricePackage(data?.price);
-    setUpgradePackageName(data?.name);
-  };
-
-  useEffect(() => {
-    if (userInfodata?.data?.package_choice) {
-      const selectedPackage = getAllPackageData?.data?.find(
-        (item) => item._id === userInfodata?.data?.package_choice
-      );
-
-      console.log(selectedPackage?.price);
-
-      if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
-        handleUpgradeNew(userInfodata?.data?.package_choice);
-      } else {
-        setOpenPaymentModal(false);
-      }
-    }
-  }, [userInfodata?.data?.package_choice, getAllPackageData]);
 
   const sslCommerzPaymentHandler = async () => {
     const price = couponAmount ? couponAmount : pricePackage;
@@ -252,9 +254,14 @@ const UpgradePackageInAgentdashboard = () => {
       };
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
+
+      console.log(upgradeResponse);
+      
       if (upgradeResponse) {
+        console.log('checking upgrade');
         toast.success(upgradeResponse?.message);
         userInfoRefetch();
+        setOpenPaymentModal(false);
       }
     } catch (upgradeError) {
       const upgradeErrorMessage =
@@ -323,11 +330,11 @@ const UpgradePackageInAgentdashboard = () => {
 
   //
 
-  console.log(
-    couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
-  );
+  // console.log(
+  //   couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
+  // );
 
-  console.log(couponAmount);
+  // console.log(couponAmount);
 
   return (
     <Layout>
