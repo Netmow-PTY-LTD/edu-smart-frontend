@@ -39,14 +39,18 @@ const UpgradePackageInAgentdashboard = () => {
   const [couponDuration, setCouponDuration] = useState('');
   const [totalPricePackage, setTotalPricePackage] = useState('');
   const [pricePackage, setPricePackage] = useState('');
+  const [couponId, setCouponId] = useState('');
 
   const router = useRouter();
 
   const payment_status = router.query?.payment_status;
   const transaction_id = router.query?.transaction_id;
   const package_id = router.query?.package_id;
+  const payment_method = router.query.payment_method;
+  const paid_amount = router.query.paid_amount;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+
   const [
     upgradePackageForAgent,
     { isLoading: upgradePackageForAgentIsLoading },
@@ -70,8 +74,10 @@ const UpgradePackageInAgentdashboard = () => {
     setOpenPaymentModal(!openPaymentModal);
   };
 
-  const handleUpgradeNew = (packageId) => {
+  const handleUpgradeNew = (data, packageId) => {
+    setUpgradePackageName(data?.name);
     setUpgradePackageId(packageId);
+    setPricePackage(data?.price);
     setOpenPaymentModal(true);
   };
 
@@ -86,7 +92,7 @@ const UpgradePackageInAgentdashboard = () => {
       console.log('Selected package', selectedPackage);
 
       if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
-        handleUpgradeNew(userInfodata?.data?.package_choice);
+        handleUpgradeNew(selectedPackage, userInfodata?.data?.package_choice);
       } else {
         setOpenPaymentModal(false);
       }
@@ -101,10 +107,23 @@ const UpgradePackageInAgentdashboard = () => {
           const finalData = {
             transaction_id: transaction_id,
             package_id: package_id,
+            payment_method: payment_method,
+            paid_amount: paid_amount,
+            coupon_duration: couponDuration,
+            coupon: couponId,
           };
           const response = await upgradePackageForAgent(finalData).unwrap();
           if (response) {
             toast.success(response?.message);
+            setUpgradePackageId('');
+            setUpgradePackageName('');
+            setCouponCode('');
+            setCouponError('');
+            setTotalCouponAmount('');
+            setCouponDuration('');
+            setTotalPricePackage('');
+            setPricePackage('');
+            setCouponId('');
             userInfoRefetch();
             setOpenPaymentModal(false);
             setTimeout(() => {
@@ -224,6 +243,8 @@ const UpgradePackageInAgentdashboard = () => {
       const { package_duration, packages, discount_percentage } =
         response?.data || {};
 
+      setCouponId(response?.data?._id);
+
       const [packagePrice] = packages;
       const [duration] = package_duration.split('_').map(Number);
       const discount = parseFloat(discount_percentage);
@@ -251,15 +272,28 @@ const UpgradePackageInAgentdashboard = () => {
       const finalData = {
         package_id: upgradePackageId,
         coupon_duration: couponDuration,
+        transaction_id: transaction_id,
+        payment_method: 'used_coupon',
+        paid_amount: pricePackage,
+        coupon: couponId,
       };
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
 
       console.log(upgradeResponse);
-      
+
       if (upgradeResponse) {
         console.log('checking upgrade');
         toast.success(upgradeResponse?.message);
+        setUpgradePackageId('');
+        setUpgradePackageName('');
+        setCouponCode('');
+        setCouponError('');
+        setTotalCouponAmount('');
+        setCouponDuration('');
+        setCouponId('');
+        setTotalPricePackage('');
+        setPricePackage('');
         userInfoRefetch();
         setOpenPaymentModal(false);
       }
