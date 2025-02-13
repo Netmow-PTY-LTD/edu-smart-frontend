@@ -57,6 +57,7 @@ const AgentDashboard = () => {
   if (userInfodata?.data?.package_choice) {
     //console.log('working');
     router.push('/dashboard/agent/upgrade');
+    return;
   }
 
   const course_choice = Cookies.get('course_choice');
@@ -85,6 +86,7 @@ const AgentDashboard = () => {
     );
     Cookies.remove('course_choice');
     Cookies.remove('universityId');
+    return;
   } else {
     console.error(
       'Missing data: Check if userInfodata, course_choice, universityId, or destination is undefined'

@@ -6,6 +6,7 @@ import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
+import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
   agentsHeaders,
@@ -32,7 +33,8 @@ const SuperAdminDashboard = () => {
     useGetAllAgentQuery();
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
-
+  const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
+  console.log(totalIncome?.data);
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -70,8 +72,12 @@ const SuperAdminDashboard = () => {
                       firstElementData={getUniversityData?.data?.length}
                       secondElementData={allAgentsData?.data?.length}
                       thirdElementData={allStudentsData?.data?.length}
+                      fourthElementData={totalIncome?.data?.totalReceiveAmount}
+                      fithElement={totalIncome?.data?.totalUniversityPayout}
+                      sixthElement={totalIncome?.data?.totalAgentPayout}
+                      sevenElement={totalIncome?.data?.totalSuperAdminProfit}
+                      eightElement={''}
                       gstAndCurrencyData={''}
-                      fourthElementData={''}
                       paidSum={''}
                       unPaidSum={''}
                     />
