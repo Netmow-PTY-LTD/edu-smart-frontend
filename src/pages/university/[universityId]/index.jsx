@@ -6,35 +6,37 @@ import SponsorHome from '@/components/clientSite/university/SponsorHome';
 import UniversityFAQ from '@/components/clientSite/university/UniversityFAQ';
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
 import UniversityPictureGallery from '@/components/clientSite/university/UniversityPictureGallery';
-import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
+import { useGetsingleUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 export default function SingleUniversityHome() {
-  const [university, setUniversity] = useState(null);
-  const { data: universityData } = useGetAllUniversityQuery();
   const router = useRouter();
   const { universityId } = router.query;
 
-  useEffect(() => {
-    if (universityData?.data?.length > 0) {
-      const university = universityData?.data?.find(
-        (uni) => uni._id === universityId
-      );
-      setUniversity(university);
-    }
-  }, [universityData, universityId]);
+  const { data: singleUniversityData } =
+    useGetsingleUniversityQuery(universityId);
+
+  console.log(singleUniversityData?.data);
 
   return (
-    <UniversityLayout university={university}>
-      <HeroHome university={university} />
-      <AboutUniversity university={university} />
-      <UniversityFaculties universityId={universityId} />
-      <UniversityPictureGallery university={university?.gallery} />
-      <UniversityFAQ university={university?.faqs} />
-      <SponsorHome sponsorData={university?.sponsors} />
+    <UniversityLayout>
+      <HeroHome university={singleUniversityData?.data} />
+      <AboutUniversity university={singleUniversityData?.data} />
+      <UniversityFaculties
+        coursesSubtitle={singleUniversityData?.data?.course_section_description}
+        universityId={universityId}
+      />
+      <UniversityPictureGallery
+        university={singleUniversityData?.data?.gallery}
+      />
+      <UniversityFAQ
+        university={singleUniversityData?.data?.faqs}
+        faqSubtitle={singleUniversityData?.data?.faq_section_description}
+      />
+      <SponsorHome sponsorData={singleUniversityData?.data?.sponsors} />
       {/* <UniversityTestimonials university={university} /> */}
-      <UniversityContact university={university} />
+      <UniversityContact university={singleUniversityData?.data} />
     </UniversityLayout>
   );
 }
