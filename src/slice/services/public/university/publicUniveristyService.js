@@ -64,6 +64,14 @@ export const publicUniversityService = createApi({
         };
       },
     }),
+    getRelatedCourses: builder.query({
+      query: (id) => {
+        return {
+          url: `/courses/related-course/${id}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -73,4 +81,5 @@ export const {
   useFilterUniversityCoursesQuery,
   useGetSingleCourseQuery,
   useGetAllCoursesQuery,
+  useGetRelatedCoursesQuery,
 } = publicUniversityService;
