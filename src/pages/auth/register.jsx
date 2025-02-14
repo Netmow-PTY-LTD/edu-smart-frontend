@@ -19,8 +19,8 @@ import {
 } from '@/slice/services/public/auth/authService';
 import { brandlogo } from '@/utils/common/data';
 import Cookies from 'js-cookie';
-import { toast, ToastContainer } from 'react-toastify';
 import { useSearchParams } from 'next/navigation';
+import { toast, ToastContainer } from 'react-toastify';
 // import eduSmartLogo from '../../../public/assets/images/edusmart_logo.png';
 
 const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
@@ -357,8 +357,21 @@ const Register = () => {
 
         if (resLogin) {
           toast.success(resLogin?.message);
-          Cookies.set('course_choice', course_choice, { expires: 1 });
-          Cookies.set('universityId', universityId, { expires: 1 });
+
+          if (course_choice) {
+            Cookies.set('course_choice', course_choice, { expires: 1 });
+          } else {
+            console.log('course_choice is not present in the URL');
+          }
+
+          if (universityId) {
+            Cookies.set('universityId', universityId, { expires: 1 });
+          } else {
+            console.log('universityId is not present in the URL');
+          }
+
+          // Cookies.set('course_choice', course_choice, { expires: 1 });
+          // Cookies.set('universityId', universityId, { expires: 1 });
         }
       }
     } catch (error) {
@@ -394,8 +407,20 @@ const Register = () => {
 
         if (resLogin) {
           toast.success(resLogin?.message);
-          Cookies.set('course_choice', course_choice, { expires: 1 });
-          Cookies.set('universityId', universityId, { expires: 1 });
+          if (course_choice) {
+            Cookies.set('course_choice', course_choice, { expires: 1 });
+          } else {
+            console.log('course_choice is not present in the URL');
+          }
+
+          if (universityId) {
+            Cookies.set('universityId', universityId, { expires: 1 });
+          } else {
+            console.log('universityId is not present in the URL');
+          }
+
+          // Cookies.set('course_choice', course_choice, { expires: 1 });
+          // Cookies.set('universityId', universityId, { expires: 1 });
         }
       }
     } catch (error) {
