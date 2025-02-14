@@ -66,6 +66,24 @@ export const authService = createApi({
         };
       },
     }),
+    forgetPassword: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/forgot-password`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
+    resetPassword: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/reset-password`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
     subdomain: builder.query({
       query: () => {
         return {
@@ -85,5 +103,7 @@ export const {
   useStudentRegisterMutation,
   useUniversityRegisterMutation,
   useLogInMutation,
+  useForgetPasswordMutation,
+  useResetPasswordMutation,
   useSubdomainQuery,
 } = authService;

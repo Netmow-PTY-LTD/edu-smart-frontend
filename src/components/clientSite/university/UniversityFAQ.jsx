@@ -6,11 +6,11 @@ import {
   AccordionItem,
 } from 'reactstrap';
 
-const UniversityFAQ = ({ university }) => {
+const UniversityFAQ = ({ faqSubtitle, university }) => {
   const [open, setOpen] = useState(1);
 
   const toggle = (id) => {
-    setOpen(open === id ? null : id);
+    setOpen(open === id ? null : String(id));
   };
 
   return (
@@ -19,11 +19,7 @@ const UniversityFAQ = ({ university }) => {
         <div className="container">
           <div className="sec-heading">
             <h3>Frequently Asked Questions</h3>
-            <p>
-              Malaysia started focusing on the development of telecommunication,
-              Telekom Malaysia Berhad (TM) took a leap of faith by establishing
-              the first private-owned higher learning institute.
-            </p>
+            <p>{faqSubtitle ? faqSubtitle : ''}</p>
           </div>
           <div className="faq-container">
             <Accordion className="accordion" open={open} toggle={toggle}>
@@ -33,10 +29,10 @@ const UniversityFAQ = ({ university }) => {
                     key={uni?.title}
                     className="custom-accordionwithicon-plus"
                   >
-                    <AccordionHeader targetId={index + 1}>
+                    <AccordionHeader targetId={String(index + 1)}>
                       {uni?.title}
                     </AccordionHeader>
-                    <AccordionBody accordionId={index + 1}>
+                    <AccordionBody accordionId={String(index + 1)}>
                       {uni?.description}
                     </AccordionBody>
                   </AccordionItem>

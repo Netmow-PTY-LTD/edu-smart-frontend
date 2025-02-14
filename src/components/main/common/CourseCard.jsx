@@ -42,7 +42,7 @@ const CourseCard = ({ course }) => {
             <span>{course?.university?.name}</span>
           </h6>
           <h5 className="course-card__title">{course?.name}</h5>
-          <p>{course?.department?.name}</p>
+          <div className="dept-name">{course?.department?.name}</div>
         </header>
         <p className="course-card__description">
           {truncateText(course?.description, 150)}

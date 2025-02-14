@@ -18,6 +18,7 @@ const CheckboxField = ({ label, name, termsLink, termsText }) => {
             href={termsLink || ''}
             target="_blank"
             rel="noopener noreferrer"
+            className="text-decoration-underline"
           >
             {termsText}
           </Link>

@@ -52,7 +52,7 @@
   padding: 14px 24px;
   color: var(--Black, #1c1c1c);
   font-family: Lora;
-  font-size: 20px;
+  font-size: clamp(15px, 1.2vw, 20px);
   font-style: normal;
   font-weight: 700;
   line-height: 170%;
