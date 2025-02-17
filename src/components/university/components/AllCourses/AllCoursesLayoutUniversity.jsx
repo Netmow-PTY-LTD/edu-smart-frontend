@@ -161,9 +161,9 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
           <h5>Courses By Categories</h5>
 
           {/* Department Filters */}
-          <div>All Departments</div>
+          <h6>All Departments</h6>
           <div
-            style={{ overflow: 'auto', maxHeight: '100px' }}
+            style={{ overflow: 'auto', maxHeight: '200px' }}
             className="d-flex flex-column align-items-start justify-content-start mt-3 gap-3"
           >
             {universitData?.departments?.map((dept) => (
@@ -181,9 +181,9 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
           </div>
           <hr />
           {/* Program Filters */}
-          <div>All Programs</div>
+          <h6 className="pt-2">All Programs</h6>
           <div
-            style={{ overflow: 'auto', maxHeight: '100px' }}
+            style={{ overflow: 'auto', maxHeight: '200px' }}
             className="d-flex flex-column align-items-start justify-content-start gap-3 mt-3"
           >
             {universitData?.categories?.map((program) => (

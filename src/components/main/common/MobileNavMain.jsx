@@ -11,12 +11,17 @@ import Loader from '@/components/constants/Loader/Loader';
 const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
+  const [isClient, setIsClient] = useState(false); // Track client-side rendering
 
   const {
     data: userInfoData,
     isLoading: userInfoLoading,
     refetch: userInfoRefetch,
   } = useGetUserInfoQuery();
+
+  const { data: universityData } = useGetAllUniversityQuery();
+
+  const { data: allCourses } = useGetAllCoursesQuery();
 
   const toggleSubmenu = (menuItem) => {
     setShowSubmenu(menuItem === activeMenuItem ? !showSubmenu : true);
@@ -39,13 +44,13 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
     };
   }, [navRef, setShowMobileNav]);
 
-  const { data: universityData } = useGetAllUniversityQuery();
+  useEffect(() => {
+    setIsClient(true); // Set to true after hydration
+  }, []);
 
-  const courses = universityData?.data?.flatMap(
-    (university) => university.courses
-  );
-
-  const { data: allCourses } = useGetAllCoursesQuery();
+  if (!isClient) {
+    return null; // Prevent rendering before hydration
+  }
 
   return (
     <section className={`mobile-nav-area ${showMobileNav ? 'active' : ''}`}>

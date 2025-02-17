@@ -72,7 +72,7 @@ export default function Header() {
                             <Link
                               href={`/university/${item?.university?._id}/course/${item?._id}`}
                             >
-                              {item.name}
+                              {item?.name}
                             </Link>
                           </li>
                         ))}

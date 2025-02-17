@@ -23,7 +23,7 @@ const EmailFieldWithVerification = ({
             // console.log(res);
             setIsVerify(true);
             setCheckExistingUser(field.value);
-            toast.error('Email already exists');
+            // toast.error('Email already exists');
           }
         } catch (error) {
           setIsVerify(false);
@@ -39,7 +39,11 @@ const EmailFieldWithVerification = ({
 
   return (
     <div className="mb-3 pb-3">
-      {label && <label htmlFor={field.name}>{label}</label>}
+      {label && (
+        <label htmlFor={field.name} className="form-label fs-2 mb-3">
+          {label}
+        </label>
+      )}
 
       <input
         {...field}
@@ -53,9 +57,12 @@ const EmailFieldWithVerification = ({
       )}
       {isVerify && (
         <div>
-          <i className="ri-checkbox-circle-fill third-color fw-bold fs-1">
+          {/* <i className="ri-checkbox-circle-fill third-color fw-bold fs-2 text-danger d-flex gap-2">
             {LoginData?.message}
-          </i>
+          </i> */}
+          <span className="fs-2 d-flex gap-2" style={{ color: 'red' }}>
+            {LoginData?.message}
+          </span>
         </div>
       )}
     </div>

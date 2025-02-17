@@ -546,7 +546,7 @@ const Register = () => {
             <div className="row">
               <div className="col-lg-12">
                 <div className="text-center">
-                  <p className="mb-0 fs-4">
+                  <p className="mb-0 fs-3">
                     &copy; {new Date().getFullYear()} EduSmart. Crafted with{' '}
                     <i className="mdi mdi-heart text-danger"></i> by Inleads IT
                   </p>
