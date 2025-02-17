@@ -66,7 +66,7 @@ const SingleStudentForAgent = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    {/* <NavItem className="fs-14">
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -81,8 +81,8 @@ const SingleStudentForAgent = () => {
                           Documents
                         </span>
                       </NavLink>
-                    </NavItem> */}
-                    {/* <NavItem className="fs-14">
+                    </NavItem>
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -97,7 +97,7 @@ const SingleStudentForAgent = () => {
                           Document Request
                         </span>
                       </NavLink>
-                    </NavItem> */}
+                    </NavItem>
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -142,7 +142,7 @@ const SingleStudentForAgent = () => {
                     </Col>
                   </div>
                 )}
-                {/* {activeTab === '2' && (
+                {activeTab === '2' && (
                   <div style={{ marginTop: '50px' }}>
                     <DocumentPage
                       student_id={student_id}
@@ -151,8 +151,8 @@ const SingleStudentForAgent = () => {
                       sigleStudentIsLoading={getSingleStudenIsLoadingForStudent}
                     />
                   </div>
-                )} */}
-                {/* {activeTab === '3' && (
+                )}
+                {activeTab === '3' && (
                   <div style={{ marginTop: '50px' }}>
                     <DocumentRequestPage
                       student_id={student_id}
@@ -161,7 +161,7 @@ const SingleStudentForAgent = () => {
                       sigleStudentIsLoading={getSingleStudenIsLoadingForStudent}
                     />
                   </div>
-                )} */}
+                )}
                 {activeTab === '4' && (
                   <div>
                     <AppliedUniversityPage id={student_id} />
