@@ -1,10 +1,12 @@
 import EmailField from '@/components/common/formField/EmailField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
+import { useForgetPasswordMutation } from '@/slice/services/public/auth/authService';
 import { brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -17,14 +19,26 @@ export default function ForgetPassword() {
     email: Yup.string().required('Email is required'),
   });
 
-  const handleForgotPassword = () => {
-    console.log('working');
+  const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
+
+  const handleForgotPassword = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    try {
+      const response = await forgetPassword({ email: values.email }).unwrap();
+      toast.success(response?.message);
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error(error?.data?.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="auth-page-wrapper auth-bg-cover pt-5 pb-2 d-flex flex-column justify-content-center align-items-center min-vh-100">
       <div className="bg-overlay "></div>
       {/* <!-- auth-page content --> */}
+      <ToastContainer />
       <div className="branding-area">
         <div className="container">
           <div className="brand-logo">
@@ -37,9 +51,6 @@ export default function ForgetPassword() {
               />
             </Link>
           </div>
-          {/* <h2 className="text-black fw-bold mt-4 fs-20 text-center">
-              Login To EduSmart
-            </h2> */}
         </div>
       </div>
       <div className="auth-page-content overflow-hidden pt-lg-5">
@@ -78,8 +89,8 @@ export default function ForgetPassword() {
                               </Row>
                               <div className="hstack gap-2 justify-content-start mx-auto mb-2">
                                 <SubmitButton
-                                  isSubmitting={isSubmitting}
-                                  formSubmit={'Send'}
+                                  isSubmitting={isSubmitting || isLoading}
+                                  formSubmit="Send"
                                 >
                                   {'Send'}
                                 </SubmitButton>
@@ -88,17 +99,6 @@ export default function ForgetPassword() {
                           )}
                         </Formik>
                       </div>
-                      {/* <div className="d-flex align-items-center justify-content-center gap-5 my-4">
-                          <button className="button text-white px-3 py-1">
-                            <i className="ri-google-fill me-2"></i>Login with
-                            Google
-                          </button>
-                          <button className="button text-white px-3 py-1">
-                            <i className="ri-linkedin-box-fill me-2"></i> Login
-                            with Linkedin
-                          </button>
-                        </div> */}
-
                       <div className="mt-5 fs-2 text-center">
                         <p className="mb-0">
                           Don't have an account ?{' '}
@@ -111,16 +111,6 @@ export default function ForgetPassword() {
                           </Link>{' '}
                         </p>
                       </div>
-
-                      {/* <div className="mt-4 d-flex justify-content-center">
-                            <GoogleLogin
-                              onSuccess={(credentialResponse) => {
-                                handleGoogleLogin(credentialResponse);
-                              }}
-                              auto_select={true}
-                              useOneTap={true}
-                            />
-                          </div> */}
                     </div>
                   </div>
                   {/* <!-- end col --> */}
