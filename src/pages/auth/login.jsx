@@ -325,6 +325,11 @@ const Login = () => {
                                         name="password"
                                         label="Password"
                                       />
+                                      <div className="text-end">
+                                        <Link href="/auth/forget-password">
+                                          Forgot Password?
+                                        </Link>
+                                      </div>
                                     </Col>
                                     <Col xl={12}>
                                       {/* <CheckboxField
@@ -333,7 +338,7 @@ const Login = () => {
                                       /> */}
                                     </Col>
                                   </Row>
-                                  <div className="hstack gap-2 justify-content-start mx-auto mt-5 mb-2">
+                                  <div className="hstack gap-2 justify-content-start mx-auto mt-4 mb-2">
                                     <SubmitButton
                                       isSubmitting={isSubmitting}
                                       formSubmit={'Login'}
