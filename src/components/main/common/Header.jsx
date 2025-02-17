@@ -1,4 +1,3 @@
-'use client';
 import {
   useGetAllCoursesQuery,
   useGetAllUniversityQuery,
@@ -91,21 +90,27 @@ export default function Header() {
                         />
                       </svg>
                     </Link>
-                    <ul className="sub-menu">
-                      {allCourses?.data?.length > 0 &&
-                        allCourses?.data?.slice(0, 5).map((item, index) => (
-                          <li key={index}>
-                            <Link
-                              href={`/university/${item?.university?._id}/course/${item?._id}`}
-                            >
-                              {item?.name}
-                            </Link>
-                          </li>
-                        ))}
-                      <li>
-                        <Link href={`/courses`}>View All Courses</Link>
-                      </li>
-                    </ul>
+
+                    <div className="sub-menu">
+                      <ul>
+                        {allCourses?.data?.length > 0 &&
+                          allCourses?.data?.slice(0, 10).map((item, index) => (
+                            <li key={index}>
+                              <Link
+                                href={`/university/${item?.university?._id}/course/${item?._id}`}
+                              >
+                                {item?.name}
+                              </Link>
+                            </li>
+                          ))}
+                      </ul>
+                      <Link
+                        href={`/courses`}
+                        className="button px-3 py-3 rounded-0 justify-content-center"
+                      >
+                        View All Courses
+                      </Link>
+                    </div>
                   </li>
                   <li className="menu-item-has-children">
                     <Link href="#" className="nav-link">
@@ -126,61 +131,27 @@ export default function Header() {
                         />
                       </svg>
                     </Link>
-                    <ul className="sub-menu">
-                      {/* <li>
-                        <Link href="#">Universities</Link>
-                      </li> */}
-                      {universityData?.data?.length > 0 &&
-                        universityData?.data?.slice(0, 5).map((item, index) => (
-                          <li key={index}>
-                            <Link href={`/university/${item?._id}`}>
-                              {item.name}
-                            </Link>
-                          </li>
-                        ))}
-                      <li>
-                        <Link href={`/university`}>View All Universities</Link>
-                      </li>
-                    </ul>
-                  </li>
-                  {/* <li className="menu-item-has-children">
-                    <Link href="#" className="nav-link">
-                      <span>Students</span>
-                      <svg
-                        width="11"
-                        height="6"
-                        viewBox="0 0 11 6"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                    <div className="sub-menu">
+                      <ul>
+                        {universityData?.data?.length > 0 &&
+                          universityData?.data
+                            ?.slice(0, 10)
+                            .map((item, index) => (
+                              <li key={index}>
+                                <Link href={`/university/${item?._id}`}>
+                                  {item.name}
+                                </Link>
+                              </li>
+                            ))}
+                      </ul>
+                      <Link
+                        href={`/university`}
+                        className="button px-3 py-3 rounded-0 justify-content-center"
                       >
-                        <path
-                          d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
-                          stroke="var(--color--secondary)"
-                          strokeWidth="1.10198"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-                    <ul className="sub-menu">
-                      {universityData?.data?.length > 0 &&
-                        universityData?.data?.map((item, index) => (
-                          <li key={index}>
-                            <Link href={`/university/${item?._id}`}>
-                              {item.name}
-                            </Link>
-                          </li>
-                        ))}
-                      <li>
-                        <Link href={`/university`}>View All Universities</Link>
-                      </li>
-                    </ul>
-                  </li> */}
-                  {/* <li>
-                    <Link href="/agent/blogs" className="nav-link">
-                      <span>Blogs</span>
-                    </Link>
-                  </li> */}
+                        View All Universities
+                      </Link>
+                    </div>
+                  </li>
                   <li>
                     <Link href="/contact" className="nav-link">
                       <span>Contact</span>

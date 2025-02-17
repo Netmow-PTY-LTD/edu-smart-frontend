@@ -125,14 +125,12 @@ const PackagesMain = ({
             Can't Downgrade This Package
           </div>
         ) : (
-          <div
+          <Link
+            href="/dashboard/agent/upgrade"
             className="d-flex align-items-center justify-content-center button hstack py-2"
-            style={{ cursor: 'pointer' }}
           >
-            <Link href="/dashboard/agent/upgrade">
-              <span className="text-center fw-medium">Upgrade</span>
-            </Link>
-          </div>
+            <span className="text-center fw-medium">Upgrade</span>
+          </Link>
         )}
       </div>
     </>

@@ -249,7 +249,7 @@ p {
 .sec-heading p {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  font-size: 1.4rem;
+  font-size: clamp(1.4rem, 1vw, 1.6rem);
   line-height: 3.1rem;
   text-align: center;
   color: var(--color--secondary);
@@ -7825,6 +7825,24 @@ img.staff-img {
   border-bottom: 1px solid #fff;
 }
 
+.faculty-tab-navs h6 {
+  font-family: 'Lora', serif;
+  color: #1c1c1c;
+  font-size: clamp(16px, 0.8vw, 20px);
+  font-weight: 600;
+  line-height: 1;
+  padding-bottom: 10px;
+}
+
+.faculty-tab-navs label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(14px, 1vw, 16px);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
 .faculty-tab-navs .inner {
   display: flex;
   flex-direction: column;
@@ -7875,7 +7893,7 @@ img.staff-img {
 .faculty-item h3 {
   color: #fff;
   font-family: Lora;
-  font-size: 20px;
+  font-size: clamp(18px, 1.5vw, 24px);
   font-style: normal;
   font-weight: 700;
   line-height: 1;
@@ -7885,7 +7903,7 @@ img.staff-img {
 .faculty-item .fc-desc {
   color: #fff;
   font-family: Poppins;
-  font-size: 16px;
+  font-size: clamp(13px, 0.7vw, 16px);
   font-weight: 400;
   line-height: 150%;
 }
@@ -8206,7 +8224,7 @@ img.staff-img {
 // Agent Home University section
 
 .home-university {
-  padding: 100px 0;
+  padding: 5rem 0;
   background: #fff;
 }
 
@@ -8219,10 +8237,10 @@ img.staff-img {
 .university-card-content h3 {
   color: var(--Black, #1c1c1c);
   font-family: Lora;
-  font-size: 24px;
+  font-size: clamp(18px, 1.5vw, 24px);
   font-weight: 700;
   line-height: normal;
-  height: 60px;
+  height: 46px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8232,8 +8250,8 @@ img.staff-img {
 .address {
   display: flex;
   gap: 10px;
-  height: 50px;
-  margin-bottom: 12px;
+  height: 40px;
+  margin-bottom: 18px;
 }
 
 .address svg {
@@ -8256,7 +8274,7 @@ img.staff-img {
   padding: 8px 12px;
   color: var(--Black, #1c1c1c);
   font-family: Lora;
-  font-size: 16px;
+  font-size: clamp(13px, 1vw, 16px);
   font-style: normal;
   font-weight: 700;
   line-height: 170%;
@@ -8265,17 +8283,17 @@ img.staff-img {
 .address span {
   color: var(--Black, #1c1c1c);
   font-family: Lora;
-  font-size: 16px;
+  font-size: clamp(13px, 1vw, 16px);
   font-style: normal;
   font-weight: 500;
   line-height: 140%;
 }
 
 .university-card-content {
-  padding: 15px 0;
+  padding: 8px 0 15px;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .university-card-image {
@@ -8290,7 +8308,16 @@ img.staff-img {
   border: 1px solid #1c1c1c;
 }
 
+@media (max-width: 1600px) {
+  .university-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 991px) {
+  .home-university {
+    padding: 3rem 0 5rem;
+  }
   .university-grid {
     grid-template-columns: repeat(2, 1fr);
   }
