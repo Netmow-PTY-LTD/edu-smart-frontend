@@ -1,5 +1,4 @@
 import UniversityLayout from '@/components/clientSite/university/UniversityLayout';
-import Loader from '@/components/constants/Loader/Loader';
 import {
   useGetRelatedCoursesQuery,
   useGetSingleCourseQuery,
@@ -18,8 +17,8 @@ import {
   Row,
 } from 'reactstrap';
 import Cookies from 'js-cookie';
-import CourseCard from '@/components/main/common/CourseCard';
 import Link from 'next/link';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 
 const SingleCoursePageInFrontSite = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
@@ -95,7 +94,7 @@ const SingleCoursePageInFrontSite = () => {
         <Container>
           {isLoading ? (
             <div className="d-flex justify-content-center my-5">
-              <Loader />
+              <LoaderSpiner />
             </div>
           ) : (
             <>
@@ -251,7 +250,7 @@ const SingleCoursePageInFrontSite = () => {
                                     course?.image?.url ||
                                     '/assets/images/users/user-dummy-img.jpg'
                                   }
-                                  alt={university?.name}
+                                  alt={course?.name}
                                 />
                               </div>
                               <div className="team-info">

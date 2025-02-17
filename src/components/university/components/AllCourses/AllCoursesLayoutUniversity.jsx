@@ -248,7 +248,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
           <Row>
             {selectedData.length > 0 && (
               <Pagination size="lg" className="mt-5 ">
-                <PaginationItem disabled={currentPage === 1}>
+                {/* <PaginationItem disabled={currentPage === 1}>
                   <PaginationLink
                     first
                     href="#"
@@ -257,7 +257,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
                       handlePageChange(1);
                     }}
                   />
-                </PaginationItem>
+                </PaginationItem> */}
                 <PaginationItem disabled={currentPage === 1}>
                   <PaginationLink
                     previous
@@ -293,7 +293,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
                     }}
                   />
                 </PaginationItem>
-                <PaginationItem disabled={currentPage === totalPages}>
+                {/* <PaginationItem disabled={currentPage === totalPages}>
                   <PaginationLink
                     last
                     href="#"
@@ -302,7 +302,7 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
                       handlePageChange(totalPages);
                     }}
                   />
-                </PaginationItem>
+                </PaginationItem> */}
               </Pagination>
             )}
           </Row>

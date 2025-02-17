@@ -10126,7 +10126,7 @@ textarea.form-control {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  padding: 150px 0;
+  padding: 100px 0;
   position: relative;
   z-index: 1;
 }
@@ -10203,7 +10203,7 @@ textarea.form-control {
 
 @media (max-width: 991px) {
   .page-banner {
-    padding: 60px 0;
+    padding: 50px 0;
   }
   .about-content-main {
     padding: 3rem 0;
