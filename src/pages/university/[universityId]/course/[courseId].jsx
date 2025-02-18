@@ -19,6 +19,7 @@ import {
 import Cookies from 'js-cookie';
 import Link from 'next/link';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import CourseCard from '@/components/main/common/CourseCard';
 
 const SingleCoursePageInFrontSite = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
@@ -31,7 +32,7 @@ const SingleCoursePageInFrontSite = () => {
 
   const courseDetail = data?.data || {};
   const { data: allRelatedCourses } = useGetRelatedCoursesQuery(courseId);
-  console.log(allRelatedCourses?.data);
+  //console.log(allRelatedCourses?.data);
 
   const [open, setOpen] = useState('1');
   const toggle = (id) => {
@@ -86,7 +87,7 @@ const SingleCoursePageInFrontSite = () => {
     }
   };
 
-  // console.log(courseDetail);
+  //console.log(courseDetail);
 
   return (
     <UniversityLayout>
@@ -101,6 +102,21 @@ const SingleCoursePageInFrontSite = () => {
               <Row>
                 <Col md={12} lg={6} className="mb-4">
                   <div className="pe-lg-5">
+                    <Link href="/courses" className="back-to-archive">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="21"
+                        height="16"
+                        viewBox="0 0 21 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M19.0415 9C19.5938 9 20.0415 8.55228 20.0415 8C20.0415 7.44772 19.5938 7 19.0415 7V9ZM0.334397 7.29289C-0.0561272 7.68342 -0.0561272 8.31658 0.334397 8.70711L6.69836 15.0711C7.08888 15.4616 7.72205 15.4616 8.11257 15.0711C8.5031 14.6805 8.5031 14.0474 8.11257 13.6569L2.45572 8L8.11257 2.34315C8.5031 1.95262 8.5031 1.31946 8.11257 0.928932C7.72205 0.538408 7.08888 0.538408 6.69836 0.928932L0.334397 7.29289ZM19.0415 7L1.0415 7V9L19.0415 9V7Z"
+                          fill="#1C1C1C"
+                        />
+                      </svg>
+                      <span>Back To Archive</span>
+                    </Link>
                     <h2>{name}</h2>
                     <h4> {department?.name}</h4>
                     <h3 className="university-name">{university?.name}</h3>
@@ -179,106 +195,122 @@ const SingleCoursePageInFrontSite = () => {
                         Apply Now
                       </button>
                     </div>
-                    <div className="course-requirements-main">
-                      <Accordion flush open={open} toggle={toggle}>
-                        <AccordionItem>
-                          <AccordionHeader
-                            targetId="1"
-                            onClick={() => toggle('1')}
-                          >
-                            Entry Requirements
-                          </AccordionHeader>
-                          <AccordionBody accordionId="1">
-                            <ul>
-                              {entry_requirements?.map((req, index) => (
-                                <li key={index}>
-                                  {index + 1}. {req}{' '}
-                                </li>
-                              ))}
-                            </ul>
-                          </AccordionBody>
-                        </AccordionItem>
-                        <AccordionItem>
-                          <AccordionHeader
-                            targetId="2"
-                            onClick={() => toggle('2')}
-                          >
-                            English Requirements
-                          </AccordionHeader>
-                          <AccordionBody accordionId="2">
-                            <ul>
-                              {english_requirements?.map((req, index) => (
-                                <p key={index}>
-                                  {index + 1}. {req}{' '}
-                                </p>
-                              ))}
-                            </ul>
-                          </AccordionBody>
-                        </AccordionItem>
-                      </Accordion>
-                    </div>
-                    <div className="document-requirements">
-                      <h3>Required Documents for this course:</h3>
-                      {document_requirements?.map((doc, i) => {
-                        return (
-                          <>
-                            <h4>{doc?.title ? doc?.title : ''}</h4>
-                            <div className="doc-description">
-                              {doc?.description ? doc?.description : ''}
-                            </div>
-                          </>
-                        );
-                      })}
-                    </div>
                   </div>
                 </Col>
-
                 <Col md={12} lg={6} className="mb-4">
                   <div className="ps-lg-5 course-img">
                     <img src={image?.url ? image?.url : ''} alt={name} />
-                  </div>
-                  {allRelatedCourses?.data?.length > 0 && (
-                    <section className="related-course">
-                      <h4>Same Course offered by other universities</h4>
-                      <div className="univ-grid">
-                        {allRelatedCourses?.data?.map((course, i) => (
-                          <div className="team-single" key={i}>
-                            <div className="team-single-inner">
-                              <div className="team-img">
-                                <img
-                                  src={
-                                    course?.image?.url ||
-                                    '/assets/images/users/user-dummy-img.jpg'
-                                  }
-                                  alt={course?.name}
-                                />
-                              </div>
-                              <div className="team-info">
-                                <h4>
-                                  <Link
-                                    href={
-                                      course._id
-                                        ? `/university/${course?.university?._id}/course/${course._id}`
-                                        : '#'
+                    {/* {allRelatedCourses?.data?.length > 0 && (
+                      <section className="related-course">
+                        <h4>Same Course offered by other universities</h4>
+                        <div className="univ-grid">
+                          {allRelatedCourses?.data?.map((course, i) => (
+                            <div className="team-single" key={i}>
+                              <div className="team-single-inner">
+                                <div className="team-img">
+                                  <img
+                                    src={
+                                      course?.image?.url ||
+                                      '/assets/images/users/user-dummy-img.jpg'
                                     }
-                                  >
-                                    {course?.university?.name}
-                                  </Link>
-                                </h4>
-                                <h5>{course?.name}</h5>
-                                <div className="team-desc">
-                                  {course?.description}
+                                    alt={course?.name}
+                                  />
+                                </div>
+                                <div className="team-info">
+                                  <h4>
+                                    <Link
+                                      href={
+                                        course._id
+                                          ? `/university/${course?.university?._id}/course/${course._id}`
+                                          : '#'
+                                      }
+                                    >
+                                      {course?.university?.name}
+                                    </Link>
+                                  </h4>
+                                  <h5>{course?.name}</h5>
+                                  <div className="team-desc">
+                                    {course?.description}
+                                  </div>
                                 </div>
                               </div>
                             </div>
+                          ))}
+                        </div>
+                      </section>
+                    )} */}
+                  </div>
+                </Col>
+                <Col md={12} lg={6} className="mb-4">
+                  <div className="course-requirements-main">
+                    <Accordion flush open={open} toggle={toggle}>
+                      <AccordionItem>
+                        <AccordionHeader
+                          targetId="1"
+                          onClick={() => toggle('1')}
+                        >
+                          Entry Requirements
+                        </AccordionHeader>
+                        <AccordionBody accordionId="1">
+                          <ul>
+                            {entry_requirements?.map((req, index) => (
+                              <li key={index}>
+                                {index + 1}. {req}{' '}
+                              </li>
+                            ))}
+                          </ul>
+                        </AccordionBody>
+                      </AccordionItem>
+                      <AccordionItem>
+                        <AccordionHeader
+                          targetId="2"
+                          onClick={() => toggle('2')}
+                        >
+                          English Requirements
+                        </AccordionHeader>
+                        <AccordionBody accordionId="2">
+                          <ul>
+                            {english_requirements?.map((req, index) => (
+                              <p key={index}>
+                                {index + 1}. {req}{' '}
+                              </p>
+                            ))}
+                          </ul>
+                        </AccordionBody>
+                      </AccordionItem>
+                    </Accordion>
+                  </div>
+                </Col>
+                <Col md={12} lg={6} className="mb-4">
+                  <div className="document-requirements">
+                    <h3>Required Documents for this course:</h3>
+                    {document_requirements?.map((doc, i) => {
+                      return (
+                        <>
+                          <h4>{doc?.title ? doc?.title : ''}</h4>
+                          <div className="doc-description">
+                            {doc?.description ? doc?.description : ''}
                           </div>
-                        ))}
-                      </div>
-                    </section>
-                  )}
+                        </>
+                      );
+                    })}
+                  </div>
                 </Col>
               </Row>
             </>
+          )}
+          {allRelatedCourses?.data?.length > 0 && (
+            <section className="related-course">
+              <div className="section-heading">
+                <h3>Want to Explore More?</h3>
+                <h2>Explore Similar Courses Offered by Other Universities</h2>
+              </div>
+              <div className="univ-grid">
+                {allRelatedCourses?.data?.map((course, i) => (
+                  <CourseCard course={course} key={i} />
+                ))}
+              </div>
+            </section>
           )}
         </Container>
       </section>

@@ -9966,6 +9966,19 @@ textarea.form-control {
   padding: 67px 0;
 }
 
+.back-to-archive {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--Black, #1c1c1c);
+  font-family: Poppins;
+  font-size: clamp(14px, 0.9vw, 20px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 170%;
+  margin-bottom: 20px;
+}
+
 .course-details-main h2 {
   color: var(--Black, #1c1c1c);
   font-family: Lora;
@@ -10048,7 +10061,7 @@ textarea.form-control {
 }
 
 .course-requirements-main {
-  margin-top: 81px;
+  margin-top: 30px;
 }
 
 .course-img img {
@@ -10077,10 +10090,10 @@ textarea.form-control {
 }
 
 .document-requirements {
-  background-color: #b5d336;
+  background-color: #f6f6f6;
   padding: 1.5rem 2rem;
   border-radius: 15px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 /* Coupon Packages */
