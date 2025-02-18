@@ -1,12 +1,13 @@
-
-
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import { agentsHeaders } from '@/utils/common/data';
+import {
+  agentNameAndImageHeaderDataForAdmissionManager,
+  agentsHeaders,
+} from '@/utils/common/data';
 
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -52,7 +53,10 @@ const AllAgentsPage = () => {
                 </CardHeader>
                 <CardBody className="p-4">
                   <CommonTableComponent
-                    headers={agentsHeaders}
+                    headers={[
+                      agentNameAndImageHeaderDataForAdmissionManager,
+                      ...agentsHeaders,
+                    ]}
                     data={isFilteredData ? isFilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

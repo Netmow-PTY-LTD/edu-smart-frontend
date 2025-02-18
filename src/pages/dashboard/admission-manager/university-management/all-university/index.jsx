@@ -8,8 +8,8 @@ import {
   useGetUniversityQuery,
 } from '@/slice/services/super admin/universityService';
 import {
-  superAdminNameAndLogoData,
-  universityHeadersWithoutAction,
+  universityHeadersData,
+  universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
 } from '@/utils/common/data';
 
 import Link from 'next/link';
@@ -130,8 +130,8 @@ const AllUniversityForSuperAdmin = () => {
 
   useEffect(() => {
     setAllRegisteredUniversitydata([
-      superAdminNameAndLogoData,
-      ...universityHeadersWithoutAction,
+      universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
+      ...universityHeadersData,
       alluniversityHeaderAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps

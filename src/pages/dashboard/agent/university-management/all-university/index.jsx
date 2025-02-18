@@ -4,8 +4,8 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import {
-  agentNameAndLogoData,
-  universityHeadersWithoutAction,
+  universityHeadersData,
+  universityLogoAndNameHeaderDataForAgentDashboard,
 } from '@/utils/common/data';
 
 import React, { useEffect, useState } from 'react';
@@ -39,8 +39,8 @@ const AllUniversityForAgent = () => {
 
   useEffect(() => {
     setAllRegisteredUniversitydata([
-      agentNameAndLogoData,
-      ...universityHeadersWithoutAction.slice(0, -1),
+      universityLogoAndNameHeaderDataForAgentDashboard,
+      ...universityHeadersData.slice(0, -1),
     ]);
   }, []);
 

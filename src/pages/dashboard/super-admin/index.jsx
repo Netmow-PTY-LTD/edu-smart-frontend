@@ -9,10 +9,12 @@ import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStu
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
+  agentNameAndImageHeaderDataForSuperAdmin,
   agentsHeaders,
-  studentsHeadersWithLogoLink,
-  superAdminNameAndLogoData,
-  universityHeadersWithoutAction,
+  studentImageAndNameHeaderDataForAdmissionManager,
+  studentsHeaders,
+  universityHeadersData,
+  universityLogoAndNameHeaderDataForSuperAdminDashboard,
 } from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
@@ -47,8 +49,8 @@ const SuperAdminDashboard = () => {
 
   useEffect(() => {
     setAllRegisteredUniversitydata([
-      superAdminNameAndLogoData,
-      ...universityHeadersWithoutAction,
+      universityLogoAndNameHeaderDataForSuperAdminDashboard,
+      ...universityHeadersData,
     ]);
   }, []);
 
@@ -96,14 +98,20 @@ const SuperAdminDashboard = () => {
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
-                        headers={agentsHeaders}
+                        headers={[
+                          agentNameAndImageHeaderDataForSuperAdmin,
+                          ...agentsHeaders,
+                        ]}
                         data={allAgentsData?.data ? allAgentsData?.data : []}
                       />
                     </Col>
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
-                        headers={studentsHeadersWithLogoLink}
+                        headers={[
+                          studentImageAndNameHeaderDataForAdmissionManager,
+                          ...studentsHeaders,
+                        ]}
                         data={
                           allStudentsData?.data ? allStudentsData?.data : []
                         }

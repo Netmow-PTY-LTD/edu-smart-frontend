@@ -6,8 +6,8 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import { useGetDocumentRequestForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import {
-  studentAndLogoData,
-  universityHeadersWithoutAction,
+  studentImageAndNameHeaderDataForStudentDashboard,
+  universityHeadersData,
 } from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
@@ -43,8 +43,8 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     setAllRegisteredUniversitydata([
-      studentAndLogoData,
-      ...universityHeadersWithoutAction.slice(0, -1),
+      studentImageAndNameHeaderDataForStudentDashboard,
+      ...universityHeadersData.slice(0, -1),
     ]);
   }, []);
 

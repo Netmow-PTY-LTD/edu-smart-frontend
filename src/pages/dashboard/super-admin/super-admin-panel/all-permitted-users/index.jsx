@@ -1,25 +1,15 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
-import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SelectUserModalForSuperAdmin from '@/components/sAdminDashboard/modals/SelectUserModalForSuperAdmin';
-import AdmissionManagerModal from '@/components/sAdminDashboard/modals/SelectUserModalForSuperAdmin';
 
-import {
-  useDeleteUniversityMutation,
-  useGetUniversityQuery,
-} from '@/slice/services/super admin/universityService';
-import {
-  superAdminNameAndLogoData,
-  universityHeadersWithoutAction,
-  userDummyImage,
-} from '@/utils/common/data';
+import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,

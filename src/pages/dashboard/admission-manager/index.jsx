@@ -3,16 +3,17 @@ import LatestRegistered from '@/components/common/allDashboardHome/LatestRegiste
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
+  agentNameAndImageHeaderDataForAdmissionManager,
   agentsHeaders,
-  studentsHeadersWithLogoLink,
-  superAdminNameAndLogoData,
-  universityHeadersWithoutAction,
+  studentImageAndNameHeaderDataForAdmissionManager,
+  studentsHeaders,
+  universityHeadersData,
+  universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
 } from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
@@ -23,8 +24,6 @@ import { Col, Row } from 'reactstrap';
 
 const AdmissionManagerDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
 
   const userInfodata = {
     data: {
@@ -34,6 +33,7 @@ const AdmissionManagerDashboard = () => {
 
   // const { data: userInfodata, isLoading: userInfoIsLoading } =
   //   useGetUserInfoQuery();
+
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();
   const { data: allAgentsData, isLoading: allAgentsIsLoading } =
@@ -41,7 +41,9 @@ const AdmissionManagerDashboard = () => {
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
+
   console.log(totalIncome?.data);
+
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -50,13 +52,6 @@ const AdmissionManagerDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
-  }, []);
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      superAdminNameAndLogoData,
-      ...universityHeadersWithoutAction,
-    ]);
   }, []);
 
   return (
@@ -87,7 +82,10 @@ const AdmissionManagerDashboard = () => {
                     <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered University'}
-                        headers={allRegisteredUniversitydata}
+                        headers={[
+                          universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
+                          ...universityHeadersData,
+                        ]}
                         data={
                           getUniversityData?.data ? getUniversityData?.data : []
                         }
@@ -96,14 +94,20 @@ const AdmissionManagerDashboard = () => {
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
-                        headers={agentsHeaders}
+                        headers={[
+                          agentNameAndImageHeaderDataForAdmissionManager,
+                          ...agentsHeaders,
+                        ]}
                         data={allAgentsData?.data ? allAgentsData?.data : []}
                       />
                     </Col>
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
-                        headers={studentsHeadersWithLogoLink}
+                        headers={[
+                          studentImageAndNameHeaderDataForAdmissionManager,
+                          ...studentsHeaders,
+                        ]}
                         data={
                           allStudentsData?.data ? allStudentsData?.data : []
                         }

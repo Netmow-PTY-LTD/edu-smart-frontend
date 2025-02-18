@@ -12,7 +12,7 @@ const profileBg = '/profile_bg.jpg';
 const hot_offer_image = '/Hot Offer.png';
 const footerShape = '/footer-shape.png';
 
-const agentNameAndLogoData = {
+const universityLogoAndNameHeaderDataForAgentDashboard = {
   title: 'Logo - Name',
   key: 'logo',
   render: (item) => (
@@ -44,7 +44,8 @@ const agentNameAndLogoData = {
     </div>
   ),
 };
-const superAdminNameAndLogoData = {
+
+const universityLogoAndNameHeaderDataForSuperAdminDashboard = {
   title: 'Logo - Name',
   key: 'logo',
   render: (item) => (
@@ -77,7 +78,40 @@ const superAdminNameAndLogoData = {
   ),
 };
 
-const studentAndLogoData = {
+const universityLogoAndNameHeaderDataForAdmissionManagerDashboard = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/admission-manager/university-management/single-university-profile/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/admission-manager/university-management/single-university-profile/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.name} `}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+
+const studentImageAndNameHeaderDataForStudentDashboard = {
   title: 'Logo - Name',
   key: 'logo',
   render: (item) => (
@@ -111,7 +145,7 @@ const studentAndLogoData = {
 };
 
 // all univeresity header
-const universityHeadersWithoutAction = [
+const universityHeadersData = [
   {
     title: 'Description',
     key: 'description',
@@ -163,52 +197,6 @@ const universityHeadersWithoutAction = [
           {item?.status ?? '-'}
         </span>
       </>
-    ),
-  },
-];
-
-// all agent header
-const agentsHeadersWithoutAction = [
-  {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
-          <Link href={``} className="text-reset">
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link href={``} className="text-reset">
-              {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  },
-
-  { title: 'Email', key: 'email' },
-  { title: 'Phone', key: 'phone' },
-  {
-    title: 'Country',
-    key: 'country',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.country ? <span>{item.country}</span> : '-'}
-      </span>
     ),
   },
 ];
@@ -306,105 +294,124 @@ const studentSubmittedDocumentsHeaderWithoutAction = [
   },
 ];
 
-// all student header
-const studentsHeadersWithoutAction = [
-  {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
-          <Link href={``} className="text-reset">
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link href={``} className="text-reset">
-              {item?.first_name && item?.last_name
-                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-                : '-'}
-            </Link>
-          </h5>
-        </div>
+const studentImageAndNameHeaderDataForSuperAdmin = {
+  title: 'Name',
+  key: 'profile_image',
+  render: (item) => (
+    <div className="d-flex align-items-center ">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/super-admin/students/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
       </div>
-    ),
-  },
-
-  {
-    title: 'Agent',
-    key: 'agent',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.agent?.first_name && item?.agent?.last_name
-          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
-          : '-'}
-      </span>
-    ),
-  },
-  { title: 'Email', key: 'email' },
-  { title: 'Phone', key: 'phone' },
-  {
-    title: 'Country',
-    key: 'country',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.country ? <span>{item.country}</span> : '-'}
-      </span>
-    ),
-  },
-];
-
-const studentsHeadersWithLogoLink = [
-  {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
           <Link
             href={`/dashboard/super-admin/students/${item?._id}`}
             className="text-reset"
           >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
+            {item?.first_name && item?.last_name
+              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+              : '-'}
           </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/super-admin/students/${item?._id}`}
-              className="text-reset"
-            >
-              {item?.first_name && item?.last_name
-                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-                : '-'}
-            </Link>
-          </h5>
-        </div>
+        </h5>
       </div>
-    ),
-  },
+    </div>
+  ),
+};
 
+const studentImageAndNameHeaderDataForAdmissionManager = {
+  title: 'Name',
+  key: 'profile_image',
+  render: (item) => (
+    <div className="d-flex align-items-center ">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/admission-manager/students/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/admission-manager/students/${item?._id}`}
+            className="text-reset"
+          >
+            {item?.first_name && item?.last_name
+              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+              : '-'}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+
+const studentsImageAndNameHeaderDataInAgentDashboard = {
+  title: 'Logo - Name',
+  key: 'logo',
+  render: (item) => (
+    <div className="d-flex align-items-center me-5">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
+            className="text-reset"
+          >
+            {item?.first_name && item?.last_name
+              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+              : '-'}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+
+const studentsHeaders = [
   {
     title: 'Agent',
     key: 'agent',
@@ -646,44 +653,81 @@ const studentApplicationsHeaders = [
   },
 ];
 
-const agentsHeaders = [
-  {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
+const agentNameAndImageHeaderDataForSuperAdmin = {
+  title: 'Name',
+  key: 'profile_image',
+  render: (item) => (
+    <div className="d-flex align-items-center">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/super-admin/agents/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize text-wrap">
           <Link
             href={`/dashboard/super-admin/agents/${item?._id}`}
             className="text-reset"
           >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
+            {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
           </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/super-admin/agents/${item?._id}`}
-              className="text-reset"
-            >
-              {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
-            </Link>
-          </h5>
-        </div>
+        </h5>
       </div>
-    ),
-  },
+    </div>
+  ),
+};
 
+const agentNameAndImageHeaderDataForAdmissionManager = {
+  title: 'Name',
+  key: 'profile_image',
+  render: (item) => (
+    <div className="d-flex align-items-center">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/admission-manager/agents/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize text-wrap">
+          <Link
+            href={`/dashboard/admission-manager/agents/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+
+const agentsHeaders = [
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone' },
   {
@@ -821,105 +865,6 @@ const superAdminData = {
   zip: '5800',
   country: 'Malaysia',
 };
-
-const studentAndLogoDataForAgentDashboard = {
-  title: 'Logo - Name',
-  key: 'logo',
-  render: (item) => (
-    <div className="d-flex align-items-center me-5">
-      <div className="flex-shrink-0 me-1">
-        <Link
-          href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
-          className="text-reset"
-        >
-          <Image
-            src={
-              item?.profile_image?.url
-                ? item?.profile_image?.url
-                : `${userDummyImage}`
-            }
-            alt="User"
-            height={60}
-            width={60}
-            className="avatar-md p-1 me-3 align-middle rounded-circle"
-          />
-        </Link>
-      </div>
-      <div>
-        <h5 className="fs-14 fw-medium text-capitalize">
-          <Link
-            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
-            className="text-reset"
-          >
-            {item?.first_name && item?.last_name
-              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-              : '-'}
-          </Link>
-        </h5>
-      </div>
-    </div>
-  ),
-};
-const studentsHeadersWithLogoLinkInAgent = [
-  {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/agent/student-management/single-student-for-agent/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link href={``} className="text-reset">
-              {item?.first_name && item?.last_name
-                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-                : '-'}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  },
-
-  {
-    title: 'Agent',
-    key: 'agent',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.agent?.first_name && item?.agent?.last_name
-          ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
-          : '-'}
-      </span>
-    ),
-  },
-  { title: 'Email', key: 'email' },
-  { title: 'Phone', key: 'phone' },
-  {
-    title: 'Country',
-    key: 'country',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.country ? <span>{item.country}</span> : '-'}
-      </span>
-    ),
-  },
-];
 
 // university department header
 const allDepartmentsWithoutAction = [
@@ -1136,6 +1081,7 @@ const supperAdminWidgetsData = [
   //   pathName: '/dashboard/super-admin',
   // },
 ];
+
 const admissionManagerWidgetsData = [
   {
     id: 1,
@@ -1319,11 +1265,12 @@ const allowedFileTypes = [
 ];
 
 export {
+  admissionManagerWidgetsData,
   agentEarnigsHeaders,
-  agentNameAndLogoData,
+  agentNameAndImageHeaderDataForAdmissionManager,
+  agentNameAndImageHeaderDataForSuperAdmin,
   agentProfileWidgetData,
   agentsHeaders,
-  agentsHeadersWithoutAction,
   allCourseCategoryWithoutAction,
   allCoursesWithoutAction,
   allDepartmentsWithoutAction,
@@ -1340,18 +1287,19 @@ export {
   footerShape,
   hot_offer_image,
   profileBg,
-  studentAndLogoData,
-  studentAndLogoDataForAgentDashboard,
   studentApplicationsHeaders,
-  studentsHeadersWithLogoLink,
-  studentsHeadersWithLogoLinkInAgent,
-  studentsHeadersWithoutAction,
+  studentImageAndNameHeaderDataForAdmissionManager,
+  studentImageAndNameHeaderDataForStudentDashboard,
+  studentImageAndNameHeaderDataForSuperAdmin,
+  studentsHeaders,
+  studentsImageAndNameHeaderDataInAgentDashboard,
   studentSubmittedDocumentsHeaderWithoutAction,
   superAdminData,
-  superAdminNameAndLogoData,
   supperAdminWidgetsData,
   teamDummyImage,
-  universityHeadersWithoutAction,
+  universityHeadersData,
+  universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
+  universityLogoAndNameHeaderDataForAgentDashboard,
+  universityLogoAndNameHeaderDataForSuperAdminDashboard,
   userDummyImage,
-  admissionManagerWidgetsData,
 };
