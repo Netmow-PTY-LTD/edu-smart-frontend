@@ -14,17 +14,24 @@ import AgentSidebarData from '../sidebarLayoutData/AgentSidebarData';
 import StudentSidebarData from '../sidebarLayoutData/StudentSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
 import UniversityAdministratorSidebarData from '../sidebarLayoutData/UniversitySidebardata';
+import AdmissionManagerSidebarData from '../sidebarLayoutData/AdmissionManagerData';
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const superAdminSidebarData = SuperAdminSidebarData().props.children;
   const studentSidebarData = StudentSidebarData().props.children;
   const agentSidebarData = AgentSidebarData().props.children;
   const universitySidebarData =
     UniversityAdministratorSidebarData().props.children;
-  const router = useRouter();
+  const admissionManagerSidebarData =
+    AdmissionManagerSidebarData().props.children;
 
-  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
+  // const { data: userInfodata } = useGetUserInfoQuery();
+
+  const userInfodata = {
+    data: { role: 'admission_manager' },
+  };
 
   const selectLayoutState = (state) => state.Layout;
   const selectLayoutProperties = createSelector(
@@ -200,7 +207,11 @@ const VerticalLayout = (props) => {
             ? agentSidebarData
             : userInfodata?.data?.role === 'university_administrator'
               ? universitySidebarData
-              : []
+              : userInfodata?.data?.role === 'admission_manager'
+                ? admissionManagerSidebarData
+                : userInfodata?.data?.role === 'accountant'
+                  ? universitySidebarData
+                  : []
       ).map((item, key) => {
         return (
           <React.Fragment key={key}>

@@ -25,8 +25,15 @@ const AdmissionManagerDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
     useState('');
-  const { data: userInfodata, isLoading: userInfoIsLoading } =
-    useGetUserInfoQuery();
+
+  const userInfodata = {
+    data: {
+      role: 'admission_manager',
+    },
+  };
+
+  // const { data: userInfodata, isLoading: userInfoIsLoading } =
+  //   useGetUserInfoQuery();
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();
   const { data: allAgentsData, isLoading: allAgentsIsLoading } =
@@ -58,8 +65,9 @@ const AdmissionManagerDashboard = () => {
         <div className="container-fluid">
           {getUniversityIsLoading ||
           allAgentsIsLoading ||
-          allStudentsIsLoading ||
-          userInfoIsLoading ? (
+          allStudentsIsLoading ? (
+            //  ||
+            // userInfoIsLoading
             <LoaderSpiner />
           ) : (
             <Row>
@@ -72,14 +80,6 @@ const AdmissionManagerDashboard = () => {
                       firstElementData={getUniversityData?.data?.length}
                       secondElementData={allAgentsData?.data?.length}
                       thirdElementData={allStudentsData?.data?.length}
-                      fourthElementData={totalIncome?.data?.totalReceiveAmount}
-                      fithElement={totalIncome?.data?.totalUniversityPayout}
-                      sixthElement={totalIncome?.data?.totalAgentPayout}
-                      sevenElement={totalIncome?.data?.totalSuperAdminProfit}
-                      eightElement={''}
-                      gstAndCurrencyData={''}
-                      paidSum={''}
-                      unPaidSum={''}
                     />
                   </Row>
 

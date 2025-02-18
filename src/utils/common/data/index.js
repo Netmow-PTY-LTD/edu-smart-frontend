@@ -1136,6 +1136,37 @@ const supperAdminWidgetsData = [
   //   pathName: '/dashboard/super-admin',
   // },
 ];
+const admissionManagerWidgetsData = [
+  {
+    id: 1,
+    label: 'Registered UNIVERSITIES',
+    counter: '4',
+    bgcolor: 'info',
+    icon: 'ri-school-fill',
+    link: 'View all',
+    pathName:
+      '/dashboard/admission-manager/university-management/all-university',
+  },
+
+  {
+    id: 2,
+    label: 'registered agents',
+    counter: '25',
+    bgcolor: 'info',
+    icon: 'ri-group-2-fill',
+    link: 'View all',
+    pathName: '/dashboard/admission-manager/agents',
+  },
+  {
+    id: 3,
+    label: 'registered students',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-group-fill',
+    link: 'View  all',
+    pathName: '/dashboard/admission-manager/students',
+  },
+];
 
 const agentProfileWidgetData = [
   {
@@ -1322,4 +1353,5 @@ export {
   teamDummyImage,
   universityHeadersWithoutAction,
   userDummyImage,
+  admissionManagerWidgetsData,
 };
