@@ -33,7 +33,7 @@ export default function ResetPassword() {
       .required('Required'),
   });
 
-  const handleResetPassword = async (values, { setSubmitting }) => {
+  const handleResetPassword = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     try {
       const response = await resetPassword({
@@ -42,7 +42,10 @@ export default function ResetPassword() {
         confirm_password: values.confirm_password,
       }).unwrap();
       toast.success(response?.message);
-      router.push('/auth/login');
+      resetForm();
+      setTimeout(() => {
+        router.push('/auth/login');
+      }, 5000);
     } catch (error) {
       console.error('Error:', error);
       toast.error(error?.data?.message);

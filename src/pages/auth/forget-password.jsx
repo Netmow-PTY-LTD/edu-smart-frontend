@@ -21,11 +21,12 @@ export default function ForgetPassword() {
 
   const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
 
-  const handleForgotPassword = async (values, { setSubmitting }) => {
+  const handleForgotPassword = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
     try {
       const response = await forgetPassword({ email: values.email }).unwrap();
       toast.success(response?.message);
+      resetForm();
     } catch (error) {
       console.error('Error:', error);
       toast.error(error?.data?.message);
