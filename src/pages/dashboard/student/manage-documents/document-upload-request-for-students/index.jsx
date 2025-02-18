@@ -3,11 +3,13 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
+import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import {
   useGetDocumentRequestForStudentQuery,
   useSubmitSingleDocumentForStudentMutation,
 } from '@/slice/services/student/studentSubmitDocumentService';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+
+import { cureentUser } from '@/utils/currentUserHandler';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -18,6 +20,7 @@ const AllUploadDocumentsForStudents = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
+  const currentUser = cureentUser();
   const [
     AllUploadDocumentsForStudentsData,
     setAllUploadDocumentsForStudentsData,
@@ -29,6 +32,13 @@ const AllUploadDocumentsForStudents = () => {
     document: '',
   });
 
+  const {
+    data: getSingleStudentDocRequest,
+    isLoading: getSingleStudentDocRequestIsLoading,
+    refetch: getSingleStudentDocRequestRefetch,
+  } = useGetSingleUserDocRequestQuery({ student_id: currentUser?.id });
+
+  console.log(getSingleStudentDocRequest);
   const {
     data: getDocumentRequestForStudentData,
     isLoading: getDocumentRequestForStudentIsLoading,
@@ -74,10 +84,111 @@ const AllUploadDocumentsForStudents = () => {
 
   // Filter data for search option
   const isfilteredData =
-    getDocumentRequestForStudentData?.data?.length > 0 &&
-    getDocumentRequestForStudentData?.data.filter((item) =>
+    getSingleStudentDocRequest?.data?.length > 0 &&
+    getSingleStudentDocRequest?.data.filter((item) =>
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  const studentSubmittedDocumentsHeaderWithoutAction = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Name',
+      key: 'name',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Agent',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Agent Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.description ? item?.description : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
 
   useEffect(() => {
     setAllUploadDocumentsForStudentsData([
@@ -151,7 +262,7 @@ const AllUploadDocumentsForStudents = () => {
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                Uploaded Docs
+                Document Uploaded Request
                 <SearchComponent
                   searchTerm={searchTerm}
                   handleSearchChange={handleSearchChange}

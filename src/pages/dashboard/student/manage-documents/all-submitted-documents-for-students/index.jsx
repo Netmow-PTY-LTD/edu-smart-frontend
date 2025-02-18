@@ -50,19 +50,29 @@ const AllSubmittedDocumentsForStudents = () => {
       title: 'Preview',
       key: 'preview',
       render: (item) => (
-        <Link target="_blank" href={`${item?.file[0]?.url}`}>
-          {item?.file[0]?.url?.endsWith('.pdf') ? (
+        <Link target="_blank" href={`${item?.file && item?.file[0]?.url}`}>
+          {item?.file && item?.file[0]?.url?.endsWith('.pdf') ? (
             <div>Open File</div>
           ) : (
+            // <Image
+            //   src={
+            //     typeof item?.file && item?.file[0]?.url === 'string'
+            //       ? item?.file && item?.file[0]?.url
+            //       : URL.createObjectURL(new Blob([item?.file?.url]))
+            //   }
+            //   alt="file"
+            //   width={80}
+            //   height={50}
+            // />
             <Image
               src={
-                typeof item?.file[0]?.url === 'string'
-                  ? item?.file[0]?.url
-                  : URL.createObjectURL(new Blob([item?.file?.url]))
+                typeof item?.file?.[0]?.url === 'string'
+                  ? item.file[0].url
+                  : URL.createObjectURL(new Blob([item?.file?.[0]?.url || '']))
               }
-              alt="file"
               width={80}
               height={50}
+              alt="file"
             />
           )}
         </Link>
