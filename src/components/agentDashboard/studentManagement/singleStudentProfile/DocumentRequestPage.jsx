@@ -8,6 +8,7 @@ import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import DocumentRequestModalForm from './modal/DocumentRequestModalForm';
 import { useCreateUserDocRequestForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
+import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 
 const DocumentRequestPage = ({
   student_id,
@@ -24,8 +25,16 @@ const DocumentRequestPage = ({
   });
   const perPageData = 10;
 
-  console.log('single Student data ==>', getSingleStudent);
   const [createDocumentRequest] = useCreateUserDocRequestForAgentMutation();
+  const { data: getSingleStudentDocRequest } = useGetSingleUserDocRequestQuery(
+    {
+      student_id: student_id,
+    },
+    {
+      skip: !student_id,
+    }
+  );
+  console.log('get single student doc request==>', getSingleStudentDocRequest);
 
   const [
     AllUploadDocumentsForStudentsData,
