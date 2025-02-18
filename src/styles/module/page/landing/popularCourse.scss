@@ -4,6 +4,10 @@
   padding: 100px 0;
   background: #fff;
 
+  @media (max-width: 991px) {
+    padding: 40px 0;
+  }
+
   .container {
     // container code area
 
@@ -42,6 +46,7 @@
 
       @media (max-width: 767px) {
         grid-template-columns: minmax(300px, 1fr);
+        gap: 20px;
       }
     }
   }
