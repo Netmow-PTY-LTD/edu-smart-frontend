@@ -33,15 +33,16 @@ import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLe
 import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
 import { requiredService } from '../services/super admin/requiredService';
+import { staffMemberService } from '../services/super admin/staffMemberService';
 import { superAdminBlogServices } from '../services/super admin/superAdminBlogServices';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
+import { superAdminStatsServices } from '../services/super admin/superAdminStatsServices';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
 import { universityAdministrationFaqService } from '../services/university-administration/api/universityAdministrationFaqService';
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
-import { superAdminStatsServices } from '../services/super admin/superAdminStatsServices';
 
 export const store = configureStore({
   reducer: {
@@ -96,6 +97,7 @@ export const store = configureStore({
     [newsLetterSubscriptionSuperAdmin.reducerPath]:
       newsLetterSubscriptionSuperAdmin.reducer,
     [superAdminStatsServices.reducerPath]: superAdminStatsServices.reducer,
+    [staffMemberService.reducerPath]: staffMemberService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -139,6 +141,7 @@ export const store = configureStore({
       .concat(superAdminContactService.middleware)
       .concat(superAdminBlogServices.middleware)
       .concat(publicBlogServices.middleware)
+      .concat(staffMemberService.middleware)
       .concat(superAdminStatsServices.middleware),
 });
 

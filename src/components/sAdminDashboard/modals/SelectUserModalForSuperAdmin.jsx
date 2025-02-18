@@ -18,24 +18,37 @@ const SelectUserModalForSuperAdmin = ({
   setInitialValues,
   validationSchema,
   handleSubmit,
-  handleImageChange,
   setImagePreview,
   submitBtn,
   openModal,
   closeModal,
   modalTitle,
+  imagePreview,
 }) => {
   const options = useMemo(() => countryList().getData(), []);
+
   const roleOptions = [
     {
       label: 'Admission Manager',
-      value: 'Addmission_anager',
+      value: 'admission_manager',
     },
     {
       label: 'Accountant',
-      value: 'Accountant',
+      value: 'accountant',
     },
   ];
+
+  const handleImageChange = (e, setFieldValue, fieldName) => {
+    const file = e.target.files[0];
+    // console.log(file);
+    console.log(file);
+    if (file) {
+      setFieldValue(fieldName, file);
+
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+    }
+  };
   return (
     <Modal isOpen={openModal} toggle={() => closeModal()} centered size="xl">
       <ModalHeader toggle={() => closeModal()}>{modalTitle}</ModalHeader>
@@ -59,7 +72,7 @@ const SelectUserModalForSuperAdmin = ({
                       >
                         <div className="mb-3 profile-user">
                           <Image
-                            src={brandlogo}
+                            src={imagePreview || brandlogo}
                             alt="Profile Photo"
                             width={200}
                             height={200}
@@ -75,7 +88,7 @@ const SelectUserModalForSuperAdmin = ({
                           className="btn btn-danger w-100 mt-4 fw-semibold fs-14"
                           onClick={() => {
                             setImagePreview(null);
-                            setFieldValue('profile_image', null);
+                            setFieldValue('image', null);
                           }}
                         >
                           Remove
@@ -139,7 +152,6 @@ const SelectUserModalForSuperAdmin = ({
                                 name="select_role"
                                 label="Select Role"
                                 options={roleOptions}
-                                setInitialValues={setInitialValues}
                               />
                             </div>
                           </Col>

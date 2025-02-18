@@ -3,6 +3,7 @@ import LatestRegistered from '@/components/common/allDashboardHome/LatestRegiste
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
@@ -25,14 +26,14 @@ import { Col, Row } from 'reactstrap';
 const AdmissionManagerDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const userInfodata = {
-    data: {
-      role: 'admission_manager',
-    },
-  };
+  // const userInfodata = {
+  //   data: {
+  //     role: 'admission_manager',
+  //   },
+  // };
 
-  // const { data: userInfodata, isLoading: userInfoIsLoading } =
-  //   useGetUserInfoQuery();
+  const { data: userInfodata, isLoading: userInfoIsLoading } =
+    useGetUserInfoQuery();
 
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();

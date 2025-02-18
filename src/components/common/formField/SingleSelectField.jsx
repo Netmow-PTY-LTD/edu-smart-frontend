@@ -34,7 +34,7 @@ const SingleSelectField = ({
           // console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
-            // console.log(selectedOption?.value);
+            // console.log(selectedOption);
             if (setInitialValues) {
               setInitialValues((prev) => ({
                 ...prev,

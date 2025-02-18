@@ -3,13 +3,15 @@ import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
 import SelectUserModalForSuperAdmin from '@/components/sAdminDashboard/modals/SelectUserModalForSuperAdmin';
-
+import {
+  useAddStaffMemberInSuperAdminMutation,
+  useGetStaffMemberInSuperAdminQuery,
+} from '@/slice/services/super admin/staffMemberService';
 import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
-
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -19,6 +21,7 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
 } from 'reactstrap';
+import * as Yup from 'yup';
 
 const AllPermittedUserForSuperAdmin = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -27,8 +30,7 @@ const AllPermittedUserForSuperAdmin = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [permittedUserIdForDelete, setPermittedUserIdForDelete] =
     useState(null);
-  const [allPermittedUserHeaderdata, setAllPermittedUserHeaderdata] =
-    useState('');
+  const [imagePreview, setImagePreview] = useState(null);
   const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
@@ -47,12 +49,21 @@ const AllPermittedUserForSuperAdmin = () => {
     country: '',
   });
 
-  //   const {
-  //     data: getPermittedUserData,
-  //     error: getPermittedUserError,
-  //     isLoading: getPermittedUserIsLoading,
-  //     refetch: getPermittedUserRefetch,
-  //   } = useGetPermittedUserQuery();
+  const [
+    addStaffMemberInSuperAdmin,
+    {
+      data: addStaffMemberData,
+      error: addStaffMemberError,
+      isLoading: addStaffMemberIsLoading,
+    },
+  ] = useAddStaffMemberInSuperAdminMutation();
+
+  const {
+    data: getAllStaffMemberData,
+    error: getAllStaffMemberError,
+    isLoading: getAllStaffMemberIsLoading,
+    refetch: getAllStaffMemberRefetch,
+  } = useGetStaffMemberInSuperAdminQuery();
 
   //   const [
   //     deletePermittedUser,
@@ -62,6 +73,52 @@ const AllPermittedUserForSuperAdmin = () => {
   //       isLoading: deletePermittedUserIsLoading,
   //     },
   //   ] = useDeletePermittedUserMutation();
+
+  const validationSchema = Yup.object({
+    image: Yup.mixed().required('Image is required'),
+    first_name: Yup.string().required('First Name is required'),
+    last_name: Yup.string().required('Last Name is required'),
+    address: Yup.string().required('Address is required'),
+    phone: Yup.string().required('Contact number is required'),
+    email: Yup.string()
+      .email('Invalid email format')
+      .required('Email is required'),
+    password: Yup.string().required('Password is required'),
+    confirm_password: Yup.string()
+      .required('Confirm password is required')
+      .oneOf([Yup.ref('password'), null], `Passwords doesn't matched`),
+    country: Yup.string().required('Country is required'),
+    select_role: Yup.string().required('Role is required'),
+    city: Yup.string().required('City is required'),
+    state: Yup.string().required('State is required'),
+    zip: Yup.number().required('Zip is required'),
+  });
+
+  // Handle form submission
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    console.log('formData', values);
+
+    try {
+      const finalData = new FormData();
+      Object.entries(values).forEach(([key, value]) => {
+        finalData.append(key, value);
+      });
+      const result = await addStaffMemberInSuperAdmin(finalData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getAllStaffMemberRefetch();
+        setImagePreview(null);
+        setAddModalIsOpen(false);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleDeleteButtonClick = (itemId) => {
     setPermittedUserIdForDelete(itemId);
@@ -88,11 +145,13 @@ const AllPermittedUserForSuperAdmin = () => {
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
-  //   const isfilteredData =
-  //     getPermittedUserData?.data?.length > 0 &&
-  //     getPermittedUserData?.data.filter((item) =>
-  //       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
+  const isfilteredData =
+    getAllStaffMemberData?.data?.length > 0 &&
+    getAllStaffMemberData?.data.filter(
+      (item) =>
+        item?.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item?.last_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   const alluniversityHeaderAction = {
     title: 'Action',
@@ -231,11 +290,11 @@ const AllPermittedUserForSuperAdmin = () => {
 
     {
       title: 'User Role',
-      key: 'select_role',
+      key: 'role',
       render: (item) => (
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.select_role ? item?.select_role : '-'}`}
+            {`${item?.role ? item?.role.split('_').join(' ') : '-'}`}
           </h5>
         </div>
       ),
@@ -323,6 +382,10 @@ const AllPermittedUserForSuperAdmin = () => {
                     submitBtn={'Add New'}
                     setInitialValues={setInitialValues}
                     initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    handleSubmit={handleSubmit}
+                    imagePreview={imagePreview}
+                    setImagePreview={setImagePreview}
                   />
                 }
                 <SearchComponent
@@ -337,8 +400,7 @@ const AllPermittedUserForSuperAdmin = () => {
                     ...admissionManagerHeaders,
                     alluniversityHeaderAction,
                   ]}
-                  // data={'isfilteredData' ? 'isfilteredData' : []}
-                  data={[]}
+                  data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
