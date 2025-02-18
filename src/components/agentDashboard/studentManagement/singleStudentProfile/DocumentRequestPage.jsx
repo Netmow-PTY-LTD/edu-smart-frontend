@@ -1,12 +1,13 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import { useCreateDocRequestForAgentMutation } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import DocumentRequestModalForm from './modal/DocumentRequestModalForm';
+import { useCreateUserDocRequestForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
 
 const DocumentRequestPage = ({
   student_id,
@@ -23,7 +24,8 @@ const DocumentRequestPage = ({
   });
   const perPageData = 10;
 
-  const [createDocumentRequest] = useCreateDocRequestForAgentMutation();
+  console.log('single Student data ==>', getSingleStudent);
+  const [createDocumentRequest] = useCreateUserDocRequestForAgentMutation();
 
   const [
     AllUploadDocumentsForStudentsData,
@@ -33,6 +35,7 @@ const DocumentRequestPage = ({
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
     description: Yup.string().required('Description is required'),
+    notes: Yup.string(),
   });
 
   useEffect(() => {
@@ -56,7 +59,7 @@ const DocumentRequestPage = ({
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    const updatedData = { ...values, user: student_id };
+    const updatedData = { ...values, student_id: student_id };
 
     console.log(updatedData);
     try {

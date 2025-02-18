@@ -79,6 +79,11 @@ const DocumentRequestModalForm = ({
                           </div>
                         </Col>
                         <Col md={12} xl={12}>
+                          <div className="">
+                            <TextArea name="notes" label="Notes *" />
+                          </div>
+                        </Col>
+                        <Col md={12} xl={12}>
                           <div className="my-4">
                             <SubmitButton
                               isSubmitting={isSubmitting}
