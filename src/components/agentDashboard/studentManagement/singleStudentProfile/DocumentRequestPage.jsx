@@ -10,31 +10,26 @@ import DocumentRequestModalForm from './modal/DocumentRequestModalForm';
 import { useCreateUserDocRequestForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
 import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 
-const DocumentRequestPage = ({
-  student_id,
-  getSingleStudent,
-  refetchSingleStudent,
-  sigleStudentIsLoading,
-}) => {
+const DocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
+    notes: '',
   });
   const perPageData = 10;
 
   const [createDocumentRequest] = useCreateUserDocRequestForAgentMutation();
-  const { data: getSingleStudentDocRequest } = useGetSingleUserDocRequestQuery(
-    {
-      student_id: student_id,
-    },
-    {
-      skip: !student_id,
-    }
+  const {
+    data: getSingleStudentDocRequest,
+    isLoading: getSingleStudentDocRequestIsLoading,
+    refetch: getSingleStudentDocRequestRefetch,
+  } = useGetSingleUserDocRequestQuery(
+    { student_id: student_id },
+    { skip: !student_id }
   );
-  console.log('get single student doc request==>', getSingleStudentDocRequest);
 
   const [
     AllUploadDocumentsForStudentsData,
@@ -58,8 +53,8 @@ const DocumentRequestPage = ({
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const isFilteredData =
-    getSingleStudent?.data?.documents?.length > 0 &&
-    getSingleStudent?.data?.documents?.filter(
+    getSingleStudentDocRequest?.data?.length > 0 &&
+    getSingleStudentDocRequest?.data?.filter(
       (item) =>
         item?.status === 'requested' &&
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -75,7 +70,7 @@ const DocumentRequestPage = ({
       const result = await createDocumentRequest(updatedData).unwrap();
       if (result) {
         toast.success(result?.message);
-        refetchSingleStudent();
+        getSingleStudentDocRequestRefetch();
         setAddModalIsOpen(!addModalIsOpen);
       }
     } catch (error) {
@@ -121,6 +116,15 @@ const DocumentRequestPage = ({
       ),
     },
     {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.notes ? item?.notes : '-'}`}
+        </div>
+      ),
+    },
+    {
       title: 'Status',
       key: 'status',
       render: (item) => (
@@ -145,7 +149,7 @@ const DocumentRequestPage = ({
 
   return (
     <Row>
-      {sigleStudentIsLoading ? (
+      {getSingleStudentDocRequestIsLoading ? (
         <LoaderSpiner />
       ) : (
         <div>

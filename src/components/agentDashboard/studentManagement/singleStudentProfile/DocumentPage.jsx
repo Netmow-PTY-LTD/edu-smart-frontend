@@ -41,6 +41,7 @@ const DocumentPage = ({
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+  console.log(getSingleStudent?.data);
   // console.log(getSingleStudent?.data?.documents[0]?.file[0]?.url);
 
   const docRequestTableHeaderData = [
