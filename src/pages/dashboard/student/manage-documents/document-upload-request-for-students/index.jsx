@@ -166,6 +166,17 @@ const AllUploadDocumentsForStudents = () => {
         </div>
       ),
     },
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.notes ? item?.notes : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
 
     {
       title: 'Status',
