@@ -214,7 +214,7 @@ const VerticalLayout = (props) => {
               >
                 <p
                   onClick={item?.click}
-                  className="nav-link menu-link "
+                  className="nav-link menu-link cursor-pointer"
                   data-bs-toggle="collapse"
                 >
                   <i className={`pe-3 ${item.icon}`}></i>

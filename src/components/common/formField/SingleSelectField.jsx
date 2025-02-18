@@ -18,7 +18,8 @@ const SingleSelectField = ({
 
       <Field name={name}>
         {({ field, form }) => {
-          //console.log('field ', field.value);
+          // console.log('field ', field);
+          // console.log('form ', form);
           const selectedOption =
             options?.length > 0
               ? options.find((option) => {
@@ -30,9 +31,10 @@ const SingleSelectField = ({
                 })
               : null;
 
-          //console.log(selectedOption);
+          // console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
+            // console.log(selectedOption?.value);
             if (setInitialValues) {
               setInitialValues((prev) => ({
                 ...prev,
@@ -40,7 +42,7 @@ const SingleSelectField = ({
               }));
             }
 
-            form.setFieldValue(
+            form?.setFieldValue(
               name,
               name === 'country' ? selectedOption?.label : selectedOption?.value
             );
