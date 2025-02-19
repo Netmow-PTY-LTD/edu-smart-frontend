@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const SingleStudentForSuperAdmin = () => {
+const SingleStudentPageForAdmissionManagerDashboard = () => {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('1');
@@ -159,4 +159,4 @@ const SingleStudentForSuperAdmin = () => {
   );
 };
 
-export default SingleStudentForSuperAdmin;
+export default SingleStudentPageForAdmissionManagerDashboard;

@@ -56,7 +56,8 @@ const Login = () => {
           `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/super-admin`
         );
       }
-    } else if (
+    }
+    if (
       LoginData?.data?.token &&
       LoginData?.data?.role === 'admission_manager'
     ) {
@@ -69,6 +70,19 @@ const Login = () => {
       } else {
         window.location.assign(
           `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/admission-manager`
+        );
+      }
+    }
+    if (LoginData?.data?.token && LoginData?.data?.role === 'accountant') {
+      Cookies.set('token', LoginData?.data?.token, { expires: 7 });
+      Cookies.set('role', LoginData?.data?.role, { expires: 7 });
+      if (appEnvironment === 'development') {
+        window.location.assign(
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/accountant`
+        );
+      } else {
+        window.location.assign(
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/accountant`
         );
       }
     }

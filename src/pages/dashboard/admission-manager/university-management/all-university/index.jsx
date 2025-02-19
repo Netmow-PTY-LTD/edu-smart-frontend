@@ -25,7 +25,7 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-const AllUniversityForSuperAdmin = () => {
+const AllUniversityPageForAdmissionManagerDashboard = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
@@ -193,4 +193,4 @@ const AllUniversityForSuperAdmin = () => {
   );
 };
 
-export default AllUniversityForSuperAdmin;
+export default AllUniversityPageForAdmissionManagerDashboard;

@@ -15,7 +15,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllDocumentsInSuperAdmin = () => {
+const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [requiredDocumentId, setRequiredDocumentId] = useState('');
@@ -283,4 +283,4 @@ const AllDocumentsInSuperAdmin = () => {
   );
 };
 
-export default AllDocumentsInSuperAdmin;
+export default AllRequiredDocumentPageForAdmissionManagerDashboard;

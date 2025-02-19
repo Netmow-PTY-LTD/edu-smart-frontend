@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
-const EditStudentForAgent = () => {
+const EditStudentPageForAdmissionManagerDashboard = () => {
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState(null);
   const [isEditLoading, setIsEditLoading] = useState(false);
@@ -135,4 +135,4 @@ const EditStudentForAgent = () => {
   );
 };
 
-export default EditStudentForAgent;
+export default EditStudentPageForAdmissionManagerDashboard;

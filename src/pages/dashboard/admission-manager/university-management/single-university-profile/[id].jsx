@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const SingleUniversityProfile = () => {
+const SingleUniversityPageForAdmissionManagerDashboard = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('1');
   const [currentPage, setCurrentPage] = useState(0);
@@ -224,4 +224,4 @@ const SingleUniversityProfile = () => {
   );
 };
 
-export default SingleUniversityProfile;
+export default SingleUniversityPageForAdmissionManagerDashboard;

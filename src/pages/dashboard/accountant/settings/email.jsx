@@ -1,15 +1,15 @@
 import Layout from '@/components/layout';
-import BusinessSettings from '@/components/sAdminDashboard/Settings/BusinessSettings';
+import EmailSettings from '@/components/sAdminDashboard/Settings/EmailSettings';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-export default function SuperAdminBusinessSettings() {
+export default function EmailSettingsForAccountantDashboard() {
   return (
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
           <ToastContainer />
-          <BusinessSettings />
+          <EmailSettings />
         </div>
       </div>
     </Layout>

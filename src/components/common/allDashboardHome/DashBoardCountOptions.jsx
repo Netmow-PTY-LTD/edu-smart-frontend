@@ -1,4 +1,5 @@
 import {
+  accountantWidgetsData,
   admissionManagerWidgetsData,
   agentProfileWidgetData,
   supperAdminWidgetsData,
@@ -34,7 +35,9 @@ const DashBoardCountOptions = ({
               ? agentProfileWidgetData
               : userInfoData?.role === 'admission_manager'
                 ? admissionManagerWidgetsData
-                : []
+                : userInfoData?.role === 'accountant'
+                  ? accountantWidgetsData
+                  : []
           ).map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">

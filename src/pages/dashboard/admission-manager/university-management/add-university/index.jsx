@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import * as Yup from 'yup';
 
-const AddUniversityFromSuperAdmin = () => {
+const AddUniversityPageForAdmissionManagerDashboard = () => {
   const router = useRouter();
   const [ssmFilePreview, setSsmFilePreview] = useState(null);
   const [govtFilePreview, setGovtFilePreview] = useState(null);
@@ -120,4 +120,4 @@ const AddUniversityFromSuperAdmin = () => {
   );
 };
 
-export default AddUniversityFromSuperAdmin;
+export default AddUniversityPageForAdmissionManagerDashboard;

@@ -13,10 +13,11 @@ import {
 } from '@/slice/services/super admin/agentService';
 import {
   agentEarnigsHeaders,
-  studentImageAndNameHeaderDataForAdmissionManager,
   studentsHeaders,
+  userDummyImage,
 } from '@/utils/common/data';
 import classnames from 'classnames';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -35,7 +36,7 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-const SingleAgentPageForAdmissionManagerDashboard = () => {
+const SingleAgentPageForAccountantDashboard = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
@@ -146,6 +147,35 @@ const SingleAgentPageForAdmissionManagerDashboard = () => {
     ),
   };
 
+  const studentImageAndNameHeaderData = {
+    title: 'Name',
+    key: 'profile_image',
+    render: (item) => (
+      <div className="d-flex align-items-center ">
+        <div className="flex-shrink-0 me-1">
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </div>
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {item?.first_name && item?.last_name
+              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+              : '-'}
+          </h5>
+        </div>
+      </div>
+    ),
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -232,7 +262,7 @@ const SingleAgentPageForAdmissionManagerDashboard = () => {
                           <CardBody>
                             <CommonTableComponent
                               headers={[
-                                studentImageAndNameHeaderDataForAdmissionManager,
+                                studentImageAndNameHeaderData,
                                 ...studentsHeaders,
                               ]}
                               data={isFilteredData || []}
@@ -286,4 +316,4 @@ const SingleAgentPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default SingleAgentPageForAdmissionManagerDashboard;
+export default SingleAgentPageForAccountantDashboard;

@@ -2,7 +2,7 @@ import Layout from '@/components/layout';
 import UserProfile from '@/components/sAdminDashboard/Settings/UserProfile';
 import React from 'react';
 
-export default function SuperAdminProfileSettings() {
+export default function ProfileSettingsPageForAdmissionManagerDashboard() {
   return (
     <Layout>
       <div className="page-content">

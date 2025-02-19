@@ -1,15 +1,15 @@
 import Layout from '@/components/layout';
-import PaymentSettings from '@/components/sAdminDashboard/Settings/PaymentBox/PaymentSettings';
+import PasswordSettings from '@/components/sAdminDashboard/Settings/PasswordSettings';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-export default function SuperAdminPaymentSettings() {
+export default function PasswordSettingsForAccountantDashboard() {
   return (
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
           <ToastContainer />
-          <PaymentSettings />
+          <PasswordSettings />
         </div>
       </div>
     </Layout>

@@ -11,19 +11,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Row,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
-export default function RecentApplicationPageForAdmissionManagerDashboard() {
+export default function RecentApplicationPageForAccountantDashbaord() {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState('1');
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -93,96 +83,96 @@ export default function RecentApplicationPageForAdmissionManagerDashboard() {
       return searchInItem(item, searchTerm);
     });
 
-  const EmgsStatusActionData = {
-    title: 'Action',
-    key: 'actions',
-    render: (item) => (
-      // console.log(item),
-      <UncontrolledDropdown direction="end">
-        <DropdownToggle
-          tag="a"
-          className="text-reset dropdown-btn"
-          role="button"
-        >
-          <span className="button px-3">
-            <i className="ri-more-fill align-middle"></i>
-          </span>
-        </DropdownToggle>
-        <DropdownMenu className="ms-2">
-          {item?.status === 'pending' ? (
-            <>
-              <DropdownItem>
-                <div
-                  onClick={() =>
-                    handleChangeApplicationStatus({
-                      id: item?._id,
-                      status: 'accepted',
-                    })
-                  }
-                  className="text-primary"
-                >
-                  <i className="ri-check-fill me-2"></i>
-                  accepted
-                </div>
-              </DropdownItem>
-              <DropdownItem>
-                <div
-                  onClick={() =>
-                    handleChangeApplicationStatus({
-                      id: item?._id,
-                      status: 'rejected',
-                    })
-                  }
-                  className="text-primary"
-                >
-                  <i className="ri-close-fill me-2"></i>
-                  rejected
-                </div>
-              </DropdownItem>
-            </>
-          ) : item?.status === 'accepted' ? (
-            // <DropdownItem>
-            //   <div
-            //     // onClick={() => {
-            //     //   setApplicationId(item?._id), setOpenPaymentModal(true);
-            //     // }}
-            //     className="text-primary"
-            //   >
-            //     <i className="ri-bank-card-fill me-2"></i>
-            //     Active
-            //   </div>
-            // </DropdownItem>
-            ''
-          ) : (
-            ''
-          )}
+  // const EmgsStatusActionData = {
+  //   title: 'Action',
+  //   key: 'actions',
+  //   render: (item) => (
+  //     // console.log(item),
+  //     <UncontrolledDropdown direction="end">
+  //       <DropdownToggle
+  //         tag="a"
+  //         className="text-reset dropdown-btn"
+  //         role="button"
+  //       >
+  //         <span className="button px-3">
+  //           <i className="ri-more-fill align-middle"></i>
+  //         </span>
+  //       </DropdownToggle>
+  //       <DropdownMenu className="ms-2">
+  //         {item?.status === 'pending' ? (
+  //           <>
+  //             <DropdownItem>
+  //               <div
+  //                 onClick={() =>
+  //                   handleChangeApplicationStatus({
+  //                     id: item?._id,
+  //                     status: 'accepted',
+  //                   })
+  //                 }
+  //                 className="text-primary"
+  //               >
+  //                 <i className="ri-check-fill me-2"></i>
+  //                 accepted
+  //               </div>
+  //             </DropdownItem>
+  //             <DropdownItem>
+  //               <div
+  //                 onClick={() =>
+  //                   handleChangeApplicationStatus({
+  //                     id: item?._id,
+  //                     status: 'rejected',
+  //                   })
+  //                 }
+  //                 className="text-primary"
+  //               >
+  //                 <i className="ri-close-fill me-2"></i>
+  //                 rejected
+  //               </div>
+  //             </DropdownItem>
+  //           </>
+  //         ) : item?.status === 'accepted' ? (
+  //           // <DropdownItem>
+  //           //   <div
+  //           //     // onClick={() => {
+  //           //     //   setApplicationId(item?._id), setOpenPaymentModal(true);
+  //           //     // }}
+  //           //     className="text-primary"
+  //           //   >
+  //           //     <i className="ri-bank-card-fill me-2"></i>
+  //           //     Active
+  //           //   </div>
+  //           // </DropdownItem>
+  //           ''
+  //         ) : (
+  //           ''
+  //         )}
 
-          <DropdownItem>
-            <div
-              onClick={() =>
-                router.push(
-                  `/dashboard/super-admin/recent-application/${item?._id}`
-                )
-              }
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View Documents
-            </div>
-          </DropdownItem>
-          <DropdownItem>
-            <div
-              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View EMGS Status
-            </div>
-          </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    ),
-  };
+  //         <DropdownItem>
+  //           <div
+  //             onClick={() =>
+  //               router.push(
+  //                 `/dashboard/super-admin/recent-application/${item?._id}`
+  //               )
+  //             }
+  //             className="text-primary"
+  //           >
+  //             <i className="ri-eye-fill me-2"></i>
+  //             View Documents
+  //           </div>
+  //         </DropdownItem>
+  //         <DropdownItem>
+  //           <div
+  //             onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+  //             className="text-primary"
+  //           >
+  //             <i className="ri-eye-fill me-2"></i>
+  //             View EMGS Status
+  //           </div>
+  //         </DropdownItem>
+  //       </DropdownMenu>
+  //     </UncontrolledDropdown>
+  //   ),
+  // };
 
   const studentApplicationsHeaders = [
     {
@@ -311,7 +301,7 @@ export default function RecentApplicationPageForAdmissionManagerDashboard() {
                         <CommonTableComponent
                           headers={[
                             ...studentApplicationsHeaders,
-                            EmgsStatusActionData,
+                            // EmgsStatusActionData,
                           ]}
                           data={isfilteredData || []}
                           currentPage={currentPage}

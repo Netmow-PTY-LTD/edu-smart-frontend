@@ -22,7 +22,7 @@ import {
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
-const AllStudentsPage = () => {
+const AllStudentPageForAdmissionManagerDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
@@ -132,4 +132,4 @@ const AllStudentsPage = () => {
 };
 
 // export default ProtectedRoute(AdminDashboard);
-export default AllStudentsPage;
+export default AllStudentPageForAdmissionManagerDashboard;

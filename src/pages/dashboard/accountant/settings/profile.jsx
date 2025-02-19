@@ -1,13 +1,13 @@
 import Layout from '@/components/layout';
-import DomainDnsSettings from '@/components/sAdminDashboard/Settings/DomainDNSManagement/DomainDnsSettings';
+import UserProfile from '@/components/sAdminDashboard/Settings/UserProfile';
 import React from 'react';
 
-export default function SuperAdminDomainSttings() {
+export default function ProfileSettingsForAccountantDashboard() {
   return (
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
-          <DomainDnsSettings />
+          <UserProfile />
         </div>
       </div>
     </Layout>

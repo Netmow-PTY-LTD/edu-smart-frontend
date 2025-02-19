@@ -332,6 +332,44 @@ const studentImageAndNameHeaderDataForSuperAdmin = {
     </div>
   ),
 };
+const studentImageAndNameHeaderDataForAccountant = {
+  title: 'Name',
+  key: 'profile_image',
+  render: (item) => (
+    <div className="d-flex align-items-center ">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/accountant/students/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize">
+          <Link
+            href={`/dashboard/accountant/students/${item?._id}`}
+            className="text-reset"
+          >
+            {item?.first_name && item?.last_name
+              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
+              : '-'}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
 
 const studentImageAndNameHeaderDataForAdmissionManager = {
   title: 'Name',
@@ -438,6 +476,42 @@ const agentNameAndImageHeaderDataForSuperAdmin = {
         <h5 className="fs-14 fw-medium text-capitalize text-wrap">
           <Link
             href={`/dashboard/super-admin/agents/${item?._id}`}
+            className="text-reset"
+          >
+            {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
+          </Link>
+        </h5>
+      </div>
+    </div>
+  ),
+};
+const agentNameAndImageHeaderDataForAccountantDashboard = {
+  title: 'Name',
+  key: 'profile_image',
+  render: (item) => (
+    <div className="d-flex align-items-center">
+      <div className="flex-shrink-0 me-1">
+        <Link
+          href={`/dashboard/accountant/agents/${item?._id}`}
+          className="text-reset"
+        >
+          <Image
+            src={
+              item?.profile_image?.url
+                ? item?.profile_image?.url
+                : `${userDummyImage}`
+            }
+            alt="User"
+            height={60}
+            width={60}
+            className="avatar-md p-1 me-3 align-middle rounded-circle"
+          />
+        </Link>
+      </div>
+      <div>
+        <h5 className="fs-14 fw-medium text-capitalize text-wrap">
+          <Link
+            href={`/dashboard/accountant/agents/${item?._id}`}
             className="text-reset"
           >
             {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
@@ -1082,6 +1156,56 @@ const supperAdminWidgetsData = [
   // },
 ];
 
+const accountantWidgetsData = [
+  {
+    id: 1,
+    label: 'registered agents',
+    counter: '25',
+    bgcolor: 'info',
+    icon: 'ri-group-2-fill',
+    link: 'View all',
+    pathName: '/dashboard/accountant/agents',
+  },
+
+  {
+    id: 2,
+    label: 'Total Receive Amount',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-wallet-3-fill',
+    link: 'All Charges',
+    pathName: '/dashboard/accountant',
+  },
+  {
+    id: 3,
+    label: 'Total University Payout',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-currency-line',
+    link: 'All Charges',
+    pathName: '/dashboard/accountant',
+  },
+  {
+    id: 4,
+    label: 'Total Agent Payout',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-money-pound-box-line',
+    link: 'All Charges',
+    pathName: '/dashboard/accountant',
+  },
+
+  {
+    id: 5,
+    label: 'Total Profit',
+    counter: '55',
+    bgcolor: 'warning',
+    icon: 'ri-wallet-2-line',
+    link: 'All Charges',
+    pathName: '/dashboard/accountant',
+  },
+];
+
 const admissionManagerWidgetsData = [
   {
     id: 1,
@@ -1265,8 +1389,10 @@ const allowedFileTypes = [
 ];
 
 export {
+  accountantWidgetsData,
   admissionManagerWidgetsData,
   agentEarnigsHeaders,
+  agentNameAndImageHeaderDataForAccountantDashboard,
   agentNameAndImageHeaderDataForAdmissionManager,
   agentNameAndImageHeaderDataForSuperAdmin,
   agentProfileWidgetData,
@@ -1288,6 +1414,7 @@ export {
   hot_offer_image,
   profileBg,
   studentApplicationsHeaders,
+  studentImageAndNameHeaderDataForAccountant,
   studentImageAndNameHeaderDataForAdmissionManager,
   studentImageAndNameHeaderDataForStudentDashboard,
   studentImageAndNameHeaderDataForSuperAdmin,

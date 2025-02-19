@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
-const EditUniversity = () => {
+const EditUniversityPageForAdmissionManagerDashboard = () => {
   const router = useRouter();
   const [ssmFilePreview, setSsmFilePreview] = useState(null);
   const [govtFilePreview, setGovtFilePreview] = useState(null);
@@ -142,4 +142,4 @@ const EditUniversity = () => {
   );
 };
 
-export default EditUniversity;
+export default EditUniversityPageForAdmissionManagerDashboard;

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
+import AccountantSidebarData from '../sidebarLayoutData/AccountantSidebarData';
 import AdmissionManagerSidebarData from '../sidebarLayoutData/AdmissionManagerData';
 import AgentSidebarData from '../sidebarLayoutData/AgentSidebarData';
 import StudentSidebarData from '../sidebarLayoutData/StudentSidebarData';
@@ -26,6 +27,7 @@ const VerticalLayout = (props) => {
     UniversityAdministratorSidebarData().props.children;
   const admissionManagerSidebarData =
     AdmissionManagerSidebarData().props.children;
+  const accountantSidebarData = AccountantSidebarData().props.children;
 
   const { data: userInfodata } = useGetUserInfoQuery();
 
@@ -34,6 +36,7 @@ const VerticalLayout = (props) => {
   // };
 
   const selectLayoutState = (state) => state.Layout;
+
   const selectLayoutProperties = createSelector(
     selectLayoutState,
     (layout) => ({
@@ -210,7 +213,7 @@ const VerticalLayout = (props) => {
               : userInfodata?.data?.role === 'admission_manager'
                 ? admissionManagerSidebarData
                 : userInfodata?.data?.role === 'accountant'
-                  ? universitySidebarData
+                  ? accountantSidebarData
                   : []
       ).map((item, key) => {
         return (
