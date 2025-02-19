@@ -8,7 +8,7 @@ import {
   useGetSinglePackagePaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { superAdminData } from '@/utils/common/data';
+import { brandlogo, superAdminData } from '@/utils/common/data';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -44,7 +44,7 @@ const PackageInvoiceForSuperAdmin = () => {
     error: getSinglePackagePaymentReportDataError,
     isLoading: getSinglePackagePaymentReportDataLoading,
     refetch: getSinglePackagePaymentReportDataRefetch,
-  } = useGetSinglePackagePaymentReportQuery(packageId, { skip: !packageId });
+  } = useGetSinglePackagePaymentReportQuery(packageId);
 
   console.log(packagePaymentData);
   console.log(getSinglePackagePaymentReportData);
@@ -153,8 +153,11 @@ const PackageInvoiceForSuperAdmin = () => {
           <DropdownItem>
             <div
               onClick={() => {
-                setPackageId(item?._id);
-                setOpenInvoiceModal(true);
+                if (item?._id) {
+                  setPackageId(item?._id);
+                  setOpenInvoiceModal(true);
+                  getSinglePackagePaymentReportDataRefetch(item?._id);
+                }
               }}
               className="text-primary"
             >
@@ -226,7 +229,7 @@ const PackageInvoiceForSuperAdmin = () => {
               total={getSinglePackagePaymentReportData?.data?.paid_amount}
               currency={'MYR'}
               payment_status={getSinglePackagePaymentReportData?.data?.status}
-              logoData={'/edusmart-Final-Logo-Final-Logo.png'}
+              logoData={brandlogo}
               invoice_no={getSinglePackagePaymentReportData?.data}
               payment_method={
                 getSinglePackagePaymentReportData?.data?.payment_method

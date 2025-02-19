@@ -24,7 +24,7 @@ const DashBoardCountOptions = ({
   unPaidSum,
   allEarningManagementCommonData,
 }) => {
-  console.log(fithElement);
+  // console.log(fithElement);
   return (
     <>
       <Col id="countcart" md={12}>

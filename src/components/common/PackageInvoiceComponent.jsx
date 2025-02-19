@@ -46,16 +46,16 @@ const PackageInvoiceComponent = ({
       {/* <Container fluid> */}
       {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
+        <ToastContainer />
         <ModalHeader toggle={close} className="">
           Inovice
         </ModalHeader>
         <ModalBody className="p-5">
-          {loading ? (
-            <LoaderSpiner />
-          ) : (
-            <Row>
-              <ToastContainer />
-              <Col>
+          <Row>
+            <Col>
+              {loading ? (
+                <LoaderSpiner />
+              ) : (
                 <Card id="demo">
                   <div className="mb-4">
                     {logoData?.business_setting?.logo ? (
@@ -67,15 +67,6 @@ const PackageInvoiceComponent = ({
                         width={80}
                       />
                     ) : (
-                      // <div
-                      //   style={{
-                      //     height: '80px',
-                      //     width: 'auto',
-                      //     display: 'flex',
-                      //     justifyContent: 'start',
-                      //     alignItems: 'start',
-                      //   }}
-                      // >
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={logoData}
@@ -84,7 +75,6 @@ const PackageInvoiceComponent = ({
                         // height={10}
                         width={'12%'}
                       />
-                      // </div>
                     )}
                   </div>
                   <CardHeader className="border-bottom-dashed ">
@@ -211,7 +201,6 @@ const PackageInvoiceComponent = ({
                         {payment_method}
                       </p>
                     </Col>
-                  
                   </Row>
 
                   <div
@@ -289,7 +278,9 @@ const PackageInvoiceComponent = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-normal">
-                                    {item?.coupon?._id ? item?.coupon?.code : '-'}
+                                    {item?.coupon?._id
+                                      ? item?.coupon?.code
+                                      : '-'}
                                   </h3>
                                 </td>
                                 <td>
@@ -342,49 +333,47 @@ const PackageInvoiceComponent = ({
                     </Table>
                   </div>
                 </Card>
-
-                {/* print and download button section */}
-                <Col xl={12}>
-                  <div className="d-flex align-items-center justify-content-between mb-5">
-                    {payButton === 'yes' ? (
-                      <button
-                        onClick={goToPay}
-                        className="button text-light px-3 p-2 me-3 no-print"
-                        id="invoicepaynow"
-                      >
-                        <i className="ri-bank-card-fill align-bottom me-1"></i>
-                        Pay Now
-                      </button>
-                    ) : (
-                      ''
-                    )}
-
+              )}
+              {/* print and download button section */}
+              <Col xl={12}>
+                <div className="d-flex align-items-center justify-content-between mb-5">
+                  {payButton === 'yes' ? (
                     <button
-                      onClick={printInvoice}
-                      className="button px-5 py-2 no-print"
-                      id="invoiceprintbtn"
+                      onClick={goToPay}
+                      className="button text-light px-3 p-2 me-3 no-print"
+                      id="invoicepaynow"
                     >
-                      <i className="ri-printer-line align-bottom me-2"></i>{' '}
-                      Print
+                      <i className="ri-bank-card-fill align-bottom me-1"></i>
+                      Pay Now
                     </button>
-                    {/* <button
+                  ) : (
+                    ''
+                  )}
+
+                  <button
+                    onClick={printInvoice}
+                    className="button px-5 py-2 no-print"
+                    id="invoiceprintbtn"
+                  >
+                    <i className="ri-printer-line align-bottom me-2"></i> Print
+                  </button>
+                  {/* <button
                       onClick={generatePDF}
                       className="button text-light px-3 p-2 me-3 no-print"
                     >
                       <i className="ri-download-2-line align-bottom me-2"></i>
                       Download
                     </button> */}
-                    <button
-                      onClick={() => close()}
-                      className="d-flex justify-content-end button px-5 py-2 "
-                    >
-                      Close
-                    </button>
-                  </div>
-                </Col>
+                  <button
+                    onClick={() => close()}
+                    className="d-flex justify-content-end button px-5 py-2 "
+                  >
+                    Close
+                  </button>
+                </div>
               </Col>
-            </Row>
-          )}
+            </Col>
+          </Row>
         </ModalBody>
       </Modal>
 
