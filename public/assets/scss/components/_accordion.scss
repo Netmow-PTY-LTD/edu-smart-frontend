@@ -26,7 +26,8 @@
     font-family: 'Lora', sans-serif !important;
     font-size: 20px !important;
     line-height: 26px !important;
-    color: #092a67 !important;
+    // color: #092a67 !important;
+    color: #1c1c1c !important;
     border-radius: 12px !important;
   }
 
@@ -44,6 +45,10 @@
     color: #1c1c1c !important;
     background-color: #f6f6f6 !important;
     border-radius: 12px;
+
+    ul li:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 
   &.accordion-icon-none {
