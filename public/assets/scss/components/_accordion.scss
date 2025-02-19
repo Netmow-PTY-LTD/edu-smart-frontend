@@ -11,7 +11,7 @@
 
   .accordion-item {
     margin-bottom: 0.6rem !important;
-    background-color: #13c9bf !important;
+    background-color: #f6f6f6 !important;
     // border: 1px solid #13c9bf !important;
     border-radius: 12px !important;
   }
@@ -26,12 +26,14 @@
     font-family: 'Lora', sans-serif !important;
     font-size: 20px !important;
     line-height: 26px !important;
-    color: #092a67 !important;
+    // color: #092a67 !important;
+    color: #1c1c1c !important;
     border-radius: 12px !important;
   }
 
   .accordion-button.collapsed {
-    background-color: #e9f1fa !important;
+    // background-color: #e9f1fa !important;
+    background-color: #f6f6f6 !important;
     border-radius: 12px;
   }
 
@@ -41,8 +43,12 @@
     font-size: 18px !important;
     line-height: 30px !important;
     color: #1c1c1c !important;
-    background-color: #13c9bf !important;
+    background-color: #f6f6f6 !important;
     border-radius: 12px;
+
+    ul li:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 
   &.accordion-icon-none {

@@ -1,9 +1,5 @@
 // Course Card
 .course-card {
-  text-align: start;
-  max-width: 513px;
-  margin: 0 auto;
-
   .course-card__body {
     display: flex;
     flex-direction: column;
@@ -67,7 +63,7 @@
     a {
       color: var(--Black, #1c1c1c);
       font-family: Lora;
-      font-size: clamp(15px, 1vw, 20px);
+      font-size: clamp(15px, 0.8vw, 20px);
       font-style: normal;
       font-weight: 700;
       line-height: 170%;
