@@ -77,15 +77,23 @@ const AllUploadDocumentsForStudents = () => {
   // search input change function
 
   useEffect(() => {
-    const requestData = getSingleStudentDocRequest?.data?.find(
-      (item) => item?._id === docId
-    );
+    const fetchFile = async () => {
+      const requestData = getSingleStudentDocRequest?.data?.find(
+        (item) => item?._id === docId
+      );
 
-    setInitialValues({
-      title: requestData?.title || '',
-      document: convertImageUrlToFile(requestData?.files[0]?.url) || '',
-      description: requestData?.description || '',
-    });
+      if (!requestData) return;
+
+      const file = await convertImageUrlToFile(requestData?.files[0]?.url);
+
+      setInitialValues({
+        title: requestData?.title || '',
+        document: file || '',
+        description: requestData?.description || '',
+      });
+    };
+
+    fetchFile();
   }, [getSingleStudentDocRequest, docId]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);

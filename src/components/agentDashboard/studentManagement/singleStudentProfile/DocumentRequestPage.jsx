@@ -24,6 +24,7 @@ import {
   useGetSingleUserDocRequestQuery,
   useUpdateRequestUserDocStatusMutation,
 } from '@/slice/services/common/commonDocumentService';
+import FileViewer from '@/components/common/FileViewer';
 
 const DocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -152,6 +153,19 @@ const DocumentRequestPage = ({ student_id }) => {
       render: (item) => (
         <div className="fs-14 fw-medium text-capitalize">
           {`${item?.notes ? item?.notes : '-'}`}
+        </div>
+      ),
+    },
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
         </div>
       ),
     },
