@@ -1,11 +1,11 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
-import Image from 'next/image';
-import Link from 'next/link';
+
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
@@ -28,6 +28,10 @@ const AllSubmittedDocumentsForStudents = () => {
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
+  console.log(
+    'allSubmittedDocumentForStudentData',
+    allSubmittedDocumentForStudentData
+  );
   // Filter data for search option
   const isFilteredData =
     allSubmittedDocumentForStudentData?.data?.length > 0 &&
@@ -48,35 +52,8 @@ const AllSubmittedDocumentsForStudents = () => {
   const uploadAction = [
     {
       title: 'Preview',
-      key: 'preview',
-      render: (item) => (
-        <Link target="_blank" href={`${item?.file && item?.file[0]?.url}`}>
-          {item?.file && item?.file[0]?.url?.endsWith('.pdf') ? (
-            <div>Open File</div>
-          ) : (
-            // <Image
-            //   src={
-            //     typeof item?.file && item?.file[0]?.url === 'string'
-            //       ? item?.file && item?.file[0]?.url
-            //       : URL.createObjectURL(new Blob([item?.file?.url]))
-            //   }
-            //   alt="file"
-            //   width={80}
-            //   height={50}
-            // />
-            <Image
-              src={
-                typeof item?.file?.[0]?.url === 'string'
-                  ? item.file[0].url
-                  : URL.createObjectURL(new Blob([item?.file?.[0]?.url || '']))
-              }
-              width={80}
-              height={50}
-              alt="file"
-            />
-          )}
-        </Link>
-      ),
+      key: 'files',
+      render: (item) => <FileViewer files={item?.files && item?.files} />,
     },
   ];
 
