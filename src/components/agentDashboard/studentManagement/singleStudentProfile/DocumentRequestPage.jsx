@@ -213,11 +213,6 @@ const DocumentRequestPage = ({ student_id }) => {
         </UncontrolledDropdown>
       ),
     },
-    // {
-    //   title: 'Action',
-    //   key: 'actions',
-    //   render: (item) => <div>Update Status</div>,
-    // },
   ];
 
   useEffect(() => {

@@ -10,7 +10,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
   useEffect(() => {
     const files = form.values[field.name] || [];
-    // console.log(files);
+    console.log(files);
     if (files?.length > 0) {
       // console.log('check');
       const validFiles = files.filter(isValidFile);

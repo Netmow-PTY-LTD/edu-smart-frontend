@@ -1,14 +1,12 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import FileViewer from '@/components/common/FileViewer';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
-import {
-  useGetDocumentRequestForStudentQuery,
-  useSubmitSingleDocumentForStudentMutation,
-  useUpdateSingleDocumentForStudentMutation,
-} from '@/slice/services/student/studentSubmitDocumentService';
+import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
 
 import React, { useEffect, useState } from 'react';
@@ -41,14 +39,6 @@ const AllUploadDocumentsForStudents = () => {
     refetch: getSingleStudentDocRequestRefetch,
   } = useGetSingleUserDocRequestQuery({ student_id: user?.id });
 
-  // const {
-  //   data: getDocumentRequestForStudentData,
-  //   isLoading: getDocumentRequestForStudentIsLoading,
-  //   refetch: getDocumentRequestForStudentRefetch,
-  // } = useGetDocumentRequestForStudentQuery();
-
-  // const [submitSingleDocumentForStudent] =
-  //   useSubmitSingleDocumentForStudentMutation();
   const [submitSingleDocumentForStudent] =
     useUpdateSingleDocumentForStudentMutation();
 
@@ -83,7 +73,21 @@ const AllUploadDocumentsForStudents = () => {
       .max(5, 'You can upload a maximum of 5 documents'),
   });
 
+  console.log('getSingleStudentDocRequest', getSingleStudentDocRequest);
   // search input change function
+
+  useEffect(() => {
+    const requestData = getSingleStudentDocRequest?.data?.find(
+      (item) => item?._id === docId
+    );
+
+    setInitialValues({
+      title: requestData?.title || '',
+      document: convertImageUrlToFile(requestData?.files[0]?.url) || '',
+      description: requestData?.description || '',
+    });
+  }, [getSingleStudentDocRequest, docId]);
+
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
@@ -118,47 +122,7 @@ const AllUploadDocumentsForStudents = () => {
         );
       },
     },
-    {
-      title: 'Name',
-      key: 'name',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Agent',
-      key: 'agent',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
-            ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
-                  : ''
-              } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Agent Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+
     {
       title: 'Description',
       key: 'description',
@@ -180,6 +144,42 @@ const AllUploadDocumentsForStudents = () => {
           </h5>
         </div>
       ),
+    },
+
+    {
+      title: 'Requested By',
+      key: 'requested_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Uploaded Files',
+      key: 'files',
+      render: (item) => <FileViewer files={item?.files && item?.files} />,
     },
 
     {
@@ -225,7 +225,7 @@ const AllUploadDocumentsForStudents = () => {
       ...values,
       id: docId,
     };
-    console.log(updatedata);
+
     try {
       const finalData = new FormData();
       Object.entries(updatedata).forEach(([key, value]) => {
@@ -242,7 +242,7 @@ const AllUploadDocumentsForStudents = () => {
       const result = await submitSingleDocumentForStudent(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getDocumentRequestForStudentRefetch();
+        getSingleStudentDocRequestRefetch();
         setOpenModal(!openModal);
       }
     } catch (error) {
