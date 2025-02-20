@@ -97,8 +97,8 @@ const InvoicesComponentForMultipleData = ({
                             {addressData?.role === 'admin'
                               ? addressData?.organisation_name
                               : addressData?.first_name +
-                                ' ' +
-                                addressData?.last_name}
+                              ' ' +
+                              addressData?.last_name}
                           </p>
                           <p className="text-muted  mb-1">
                             {addressData?.email}
@@ -225,62 +225,53 @@ const InvoicesComponentForMultipleData = ({
                           <th scope="col">SL</th>
                           <th scope="col">Application ID</th>
                           <th scope="col">Student</th>
-                          <th scope="col">University</th>
-                          <th scope="col">Department</th>
-                          <th scope="col">Course</th>
-                          <th scope="col">Course Fee</th>
+                          <th scope="col">Course Details</th>
+                          <th scope="col">Amount</th>
                         </tr>
                       </thead>
                       <tbody>
                         {tableData?.length > 0 && tableData
                           ? tableData?.map((item, key) => (
-                              <tr key={key}>
-                                <th scope="row" className="">
-                                  {key + 1}
-                                </th>
+                            <tr key={key}>
+                              <th scope="row" className="">
+                                {key + 1}
+                              </th>
 
-                                <td>
-                                  <div className="py-4">
-                                    <h3 className=" my-1 fw-normal text-uppercase">
-                                      {item?.application?._id ?? '-'}
-                                    </h3>
-                                  </div>
-                                </td>
-
-                                <td>
-                                  <h3 className=" my-1 fw-medium text-uppercase  ">
-                                    {item?.student?.first_name +
-                                      ' ' +
-                                      item?.student?.last_name ?? '-'}
-                                  </h3>
-                                </td>
-
-                                <td>
+                              <td>
+                                <div className="py-4">
                                   <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.university
-                                      ?.name ?? '-'}
+                                    {item?.application?._id ?? '-'}
+                                    <br />
+                                    {'EMGS FEE'}
                                   </h3>
-                                </td>
-                                <td>
-                                  <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.department
-                                      ?.name ?? '-'}
-                                  </h3>
-                                </td>
+                                </div>
+                              </td>
 
-                                <td>
-                                  <h3 className=" my-1 fw-normal">
-                                    {item?.application?.course?.name ?? '-'}
-                                  </h3>
-                                </td>
-                                <td>
-                                  <h3 className="my-1 fw-normal">
-                                    {item?.application?.course?.price ?? '-'}{' '}
-                                    {currency}
-                                  </h3>
-                                </td>
-                              </tr>
-                            ))
+                              <td>
+                                <h3 className=" my-1 fw-medium text-uppercase  ">
+                                  {item?.student?.first_name +
+                                    ' ' +
+                                    item?.student?.last_name ?? '-'}
+                                </h3>
+                              </td>
+
+                              <td>
+                                <h3 className=" my-1 fw-normal text-uppercase">
+                                  {item?.application?.course?.university?.name ?? '-'}
+                                  <br />
+                                  {item?.application?.course?.department?.name ?? '-'}
+                                  <br />
+                                  {item?.application?.course?.name ?? '-'}
+                                </h3>
+                              </td>
+                              <td>
+                                <h3 className="my-1 fw-normal">
+                                  {item?.application?.course?.price ?? '-'}{' '}
+                                  {currency}
+                                </h3>
+                              </td>
+                            </tr>
+                          ))
                           : ''}
                       </tbody>
                     </Table>
@@ -320,6 +311,29 @@ const InvoicesComponentForMultipleData = ({
                       </tbody>
                     </Table>
                   </div>
+
+                  <div className="border-top border-top-dashed mx-5 my-5 fs-2">
+                    <Table
+                      className="table table-borderless table-nowrap align-middle mb-0 ms-auto"
+                    >
+                      <tbody id="invoicetotalsections">
+                        <tr>
+                          <th className="">Balance Payable: <br />
+                            <span style={{ fontSize: '12px' }}>
+                              (Payment is required after EMGS processing.)
+                            </span>
+
+                          </th>
+                          <th className="text-end ">
+                            {total} {currency}
+                          </th>
+                        </tr>
+
+                      </tbody>
+                    </Table>
+                  </div>
+
+
                 </Card>
 
                 {/* print and download button section */}
