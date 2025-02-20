@@ -273,7 +273,7 @@ const AllUploadDocumentsForStudents = () => {
       <div className="page-content">
         <div className="h-100">
           <ToastContainer />
-          {getDocumentRequestForStudentIsLoading ? (
+          {getSingleStudentDocRequestIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>

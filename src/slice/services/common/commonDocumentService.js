@@ -68,11 +68,11 @@ export const commonDocumentService = createApi({
       },
     }),
 
-    uploadRequestUserDoc: builder.mutation({
+    updateRequestUserDocStatus: builder.mutation({
       query: (body) => {
         const user_document_id = body.user_document_id;
         return {
-          url: `/user/upload/${user_document_id}`,
+          url: `user/update/status/${user_document_id}`,
           method: 'PATCH',
           body,
         };
@@ -86,6 +86,6 @@ export const {
   useGetAllUserDocRequestQuery,
   useGetSingleApplicationDocRequestQuery,
   useGetSingleUserDocRequestQuery,
-  useUploadRequestUserDocMutation,
+  useUpdateRequestUserDocStatusMutation,
   useUploadRequestApplicationDocMutation,
 } = commonDocumentService;

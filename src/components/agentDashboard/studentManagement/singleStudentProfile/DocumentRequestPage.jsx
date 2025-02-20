@@ -4,14 +4,31 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 import * as Yup from 'yup';
 import DocumentRequestModalForm from './modal/DocumentRequestModalForm';
-import { useCreateUserDocRequestForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
-import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import {
+  useCreateUserDocRequestForAgentMutation,
+  useUpdateUserDocStatusForAgentMutation,
+} from '@/slice/services/agent/agentDocumentServices';
+import {
+  useGetSingleUserDocRequestQuery,
+  useUpdateRequestUserDocStatusMutation,
+} from '@/slice/services/common/commonDocumentService';
 
 const DocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [docId, setDocId] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [initialValues, setInitialValues] = useState({
@@ -22,6 +39,8 @@ const DocumentRequestPage = ({ student_id }) => {
   const perPageData = 10;
 
   const [createDocumentRequest] = useCreateUserDocRequestForAgentMutation();
+  const [updateDocumentRequest] = useUpdateUserDocStatusForAgentMutation();
+
   const {
     data: getSingleStudentDocRequest,
     isLoading: getSingleStudentDocRequestIsLoading,
@@ -42,13 +61,6 @@ const DocumentRequestPage = ({ student_id }) => {
     notes: Yup.string(),
   });
 
-  useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
-      ...documentRequestHeaderWithoutAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -65,7 +77,6 @@ const DocumentRequestPage = ({ student_id }) => {
 
     const updatedData = { ...values, student_id: student_id };
 
-    console.log(updatedData);
     try {
       const result = await createDocumentRequest(updatedData).unwrap();
       if (result) {
@@ -79,6 +90,26 @@ const DocumentRequestPage = ({ student_id }) => {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleStatusChange = async (user_document_id, status) => {
+    const updatedDataStatus = { user_document_id, status };
+    console.log(updatedDataStatus);
+    try {
+      const result = await updateDocumentRequest(updatedDataStatus).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleStudentDocRequestRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    }
+  };
+
+  const togModal = (id) => {
+    setDocId(id);
+    setOpenModal(!openModal);
   };
 
   const documentRequestHeaderWithoutAction = [
@@ -145,7 +176,56 @@ const DocumentRequestPage = ({ student_id }) => {
         </span>
       ),
     },
+    {
+      title: 'Action',
+      key: 'actions',
+      render: (item) => (
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <div
+                className="text-primary"
+                onClick={() => handleStatusChange(item?._id, 'accepted')}
+              >
+                <i class="ri-check-double-line me-2 text-success"></i>
+                Accepted
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                className="text-primary"
+                onClick={() => handleStatusChange(item?._id, 'rejected')}
+              >
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Rejected
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      ),
+    },
+    // {
+    //   title: 'Action',
+    //   key: 'actions',
+    //   render: (item) => <div>Update Status</div>,
+    // },
   ];
+
+  useEffect(() => {
+    setAllUploadDocumentsForStudentsData([
+      ...documentRequestHeaderWithoutAction,
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Row>
@@ -194,6 +274,16 @@ const DocumentRequestPage = ({ student_id }) => {
           </Card>
         </div>
       )}
+      {/* {
+        <StatusUpdateForm
+          initialValues={initialValues}
+          OpenModal={openModal}
+          toggle={togModal}
+          handleAddSubmit={handleSubmit}
+          submitBtn={'Upload'}
+          validationSchema={validationSchema}
+        />
+      } */}
     </Row>
   );
 };
