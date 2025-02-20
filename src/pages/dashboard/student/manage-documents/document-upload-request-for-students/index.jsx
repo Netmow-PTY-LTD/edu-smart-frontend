@@ -7,20 +7,22 @@ import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonD
 import {
   useGetDocumentRequestForStudentQuery,
   useSubmitSingleDocumentForStudentMutation,
+  useUpdateSingleDocumentForStudentMutation,
 } from '@/slice/services/student/studentSubmitDocumentService';
+import { currentUser } from '@/utils/currentUserHandler';
 
-import { cureentUser } from '@/utils/currentUserHandler';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
 const AllUploadDocumentsForStudents = () => {
+  const user = currentUser();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
-  const currentUser = cureentUser();
+
   const [
     AllUploadDocumentsForStudentsData,
     setAllUploadDocumentsForStudentsData,
@@ -30,23 +32,25 @@ const AllUploadDocumentsForStudents = () => {
   const [initialValues, setInitialValues] = useState({
     title: '',
     document: '',
+    description: '',
   });
 
   const {
     data: getSingleStudentDocRequest,
     isLoading: getSingleStudentDocRequestIsLoading,
     refetch: getSingleStudentDocRequestRefetch,
-  } = useGetSingleUserDocRequestQuery({ student_id: currentUser?.id });
+  } = useGetSingleUserDocRequestQuery({ student_id: user?.id });
 
-  console.log(getSingleStudentDocRequest);
-  const {
-    data: getDocumentRequestForStudentData,
-    isLoading: getDocumentRequestForStudentIsLoading,
-    refetch: getDocumentRequestForStudentRefetch,
-  } = useGetDocumentRequestForStudentQuery();
+  // const {
+  //   data: getDocumentRequestForStudentData,
+  //   isLoading: getDocumentRequestForStudentIsLoading,
+  //   refetch: getDocumentRequestForStudentRefetch,
+  // } = useGetDocumentRequestForStudentQuery();
 
+  // const [submitSingleDocumentForStudent] =
+  //   useSubmitSingleDocumentForStudentMutation();
   const [submitSingleDocumentForStudent] =
-    useSubmitSingleDocumentForStudentMutation();
+    useUpdateSingleDocumentForStudentMutation();
 
   const validationSchema = Yup.object({
     document: Yup.array()
@@ -216,11 +220,12 @@ const AllUploadDocumentsForStudents = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    // console.log(values);
+
     const updatedata = {
       ...values,
       id: docId,
     };
+    console.log(updatedata);
     try {
       const finalData = new FormData();
       Object.entries(updatedata).forEach(([key, value]) => {

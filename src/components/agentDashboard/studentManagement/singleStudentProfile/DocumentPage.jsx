@@ -3,6 +3,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useUpdateDocStatusForAgentMutation } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -28,7 +29,9 @@ const DocumentPage = ({
   const perPageData = 10;
 
   const [updateDocStatus] = useUpdateDocStatusForAgentMutation();
-
+  // Single Student submited  document
+  const { data: allSubmitedDoc } = useAllSubmittedDocumentForStudentQuery();
+  console.log(allSubmitedDoc);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 

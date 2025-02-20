@@ -73,7 +73,7 @@ export const commonDocumentService = createApi({
         const user_document_id = body.user_document_id;
         return {
           url: `/user/upload/${user_document_id}`,
-          method: 'POST',
+          method: 'PATCH',
           body,
         };
       },
