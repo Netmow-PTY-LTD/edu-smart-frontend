@@ -278,7 +278,7 @@ const AllUploadDocumentsForStudents = () => {
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                Document Uploaded Request
+                <h1> Document Uploaded Request</h1>
                 <SearchComponent
                   searchTerm={searchTerm}
                   handleSearchChange={handleSearchChange}
