@@ -1,9 +1,7 @@
 // Course Modal Form
-import MultipleSelectField from '@/components/common/formField/MultipleSelectField';
-import MultipleSelectFieldAccessories from '@/components/common/formField/MultipleSelectFieldAccessories';
+import CreatableSelect from 'react-select/creatable';
 import NumberField from '@/components/common/formField/NumberField';
 import NumberFieldForCourse from '@/components/common/formField/NumberFieldForCourse';
-import PackageMultipleSelectField from '@/components/common/formField/PackageMultipleSelectField';
 import PackageMultipleSelectFieldTest from '@/components/common/formField/PackageMultipleSelectFieldTest';
 import SingleFileUpload from '@/components/common/formField/SingleFileUpload';
 import SingleImageField from '@/components/common/formField/SingleImageField';
@@ -25,7 +23,6 @@ import {
   Row,
 } from 'reactstrap';
 
-
 // ModalForm Component
 const CourseModalFormTest = ({
   formHeader,
@@ -38,15 +35,11 @@ const CourseModalFormTest = ({
   allDepartmentName,
   allCategoryName,
   setInitialValues,
-  handleFileChange,
   filePreview,
-  setFilePreview,
   SelectOption,
   SetCheckFreeAcommodation,
   checkFreeAcommodation,
 }) => {
-
-
   const accessoryOptions = [
     { value: 'laptop', label: 'Laptop' },
     { value: 'charger', label: 'Charger' },
@@ -55,10 +48,6 @@ const CourseModalFormTest = ({
     { value: 'mouse', label: 'Mouse' },
     { value: 'keyboard', label: 'Keyboard' },
   ];
-
-
-
-
 
   return (
     <Modal isOpen={isOpen} centered size="xl">
@@ -71,20 +60,13 @@ const CourseModalFormTest = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-
-
-
-
           {({ isSubmitting, setFieldValue, values, errors, touched }) => {
-
             useEffect(() => {
               const after_emgs_fee = values.university_price - values.price;
               setFieldValue('after_emgs_fee', after_emgs_fee);
             }, [values.university_price, values.price, setFieldValue]);
 
-
-
-            return ((
+            return (
               <Form>
                 <Row>
                   <Col xl={6}>
@@ -131,22 +113,15 @@ const CourseModalFormTest = ({
                   </Col>
                   <Col xl={6}>
                     <div className="mb-3">
-                      <NumberFieldForCourse
-                        name="price"
-                        label="EMGS Fee"
-                      />
+                      <NumberFieldForCourse name="price" label="EMGS Fee" />
                     </div>
                   </Col>
 
                   <Col xl={6} hidden>
                     <div className="mb-3">
-                      <NumberFieldForCourse
-                        name="emgs_fee"
-                        label="EMGS Fee"
-                      />
+                      <NumberFieldForCourse name="emgs_fee" label="EMGS Fee" />
                     </div>
                   </Col>
-
 
                   <Col xl={6}>
                     <div className="mb-3">
@@ -156,7 +131,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
 
                   <Col xl={6}>
                     <div className="mb-3">
@@ -210,12 +184,16 @@ const CourseModalFormTest = ({
                   </Col>
  */}
 
-
-
                   <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Scholarship</label>
-                      <Field type="checkbox" name="scholarship_on_tuition_fee" className="form-check-input" />
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Scholarship
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="scholarship_on_tuition_fee"
+                        className="form-check-input"
+                      />
                     </div>
                   </Col>
 
@@ -225,14 +203,23 @@ const CourseModalFormTest = ({
                         <>
                           <Col xl={6}>
                             <div className="mb-3">
-                              <label className="form-label fs-2 mb-3 me-3">Scholarship Auto Deduct</label>
-                              <Field type="checkbox" name="scholarship_auto_deduct" className="form-check-input" />
+                              <label className="form-label fs-2 mb-3 me-3">
+                                Scholarship Auto Deduct
+                              </label>
+                              <Field
+                                type="checkbox"
+                                name="scholarship_auto_deduct"
+                                className="form-check-input"
+                              />
                             </div>
                           </Col>
 
                           <Col xl={6}>
                             <div className="mb-3">
-                              <NumberFieldForCourse name="scholarship_amount" label="Scholarship Amount" />
+                              <NumberFieldForCourse
+                                name="scholarship_amount"
+                                label="Scholarship Amount"
+                              />
                             </div>
                           </Col>
                         </>
@@ -240,55 +227,64 @@ const CourseModalFormTest = ({
                     }
                   </Field>
 
-
-
-
-
                   <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Free Accommodation</label>
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Free Accommodation
+                      </label>
                       <Field
                         type="checkbox"
                         name="checkFreeAcommodation"
                         checked={checkFreeAcommodation} // Bind to state
-                        className="form-check-input" onChange={() => SetCheckFreeAcommodation(!checkFreeAcommodation)}
+                        className="form-check-input"
+                        onChange={() =>
+                          SetCheckFreeAcommodation(!checkFreeAcommodation)
+                        }
                         //value={checkFreeAcommodation}
                         value={checkFreeAcommodation}
-                        />
+                      />
                     </div>
                   </Col>
 
-
-                  {
-                    checkFreeAcommodation ? <>
+                  {checkFreeAcommodation ? (
+                    <>
                       <Col xl={6}>
                         <div className="mb-3">
                           <Field name="accommodation_start_date">
                             {({ field, form }) => (
-                              <TimeFieldCourse field={field} form={form} label="Accommodation Start Date" />
+                              <TimeFieldCourse
+                                field={field}
+                                form={form}
+                                label="Accommodation Start Date"
+                              />
                             )}
                           </Field>
                         </div>
                       </Col>
-
 
                       <Col xl={6}>
                         <div className="mb-3">
                           <Field name="accommodation_end_date">
                             {({ field, form }) => (
-                              <TimeFieldCourse field={field} form={form} label="Accommodation End Date" />
+                              <TimeFieldCourse
+                                field={field}
+                                form={form}
+                                label="Accommodation End Date"
+                              />
                             )}
                           </Field>
                         </div>
                       </Col>
-
-                    </> : ''
-                  }
-
+                    </>
+                  ) : (
+                    ''
+                  )}
 
                   <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Free Accessories</label>
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Free Accessories
+                      </label>
                       <Field
                         type="checkbox"
                         name="free_accessories"
@@ -298,41 +294,75 @@ const CourseModalFormTest = ({
                   </Col>
 
                   <Field name="free_accessories">
-                    {({ field, form }) => (
-                      field.value && ( // Show only if free_accessories is checked
+                    {({ field, form }) =>
+                      field.value && (
                         <Col xl={12}>
                           <div className="mb-3">
-                            <label className="form-label fs-2 mb-3">Accessories</label>
-                            <MultipleSelectFieldAccessories
+                            <label className="form-label fs-2 mb-3">
+                              Accessories
+                            </label>
+                            <CreatableSelect
+                              isMulti
                               name="accessories"
-                              options={accessoryOptions} // List of available accessories
+                              options={accessoryOptions} // List of predefined accessories
                               className="basic-multi-select"
                               classNamePrefix="select"
+                              value={form.values.accessories?.map((acc) => ({
+                                label: acc,
+                                value: acc,
+                              }))}
+                              onChange={(selectedOptions) => {
+                                const selectedValues = selectedOptions.map(
+                                  (option) => option.value
+                                );
+                                form.setFieldValue(
+                                  'accessories',
+                                  selectedValues
+                                );
+                              }}
+                              onCreateOption={(inputValue) => {
+                                // Add the newly created value to the list
+                                const newOption = {
+                                  label: inputValue,
+                                  value: inputValue,
+                                };
+                                form.setFieldValue('accessories', [
+                                  ...form.values.accessories,
+                                  inputValue,
+                                ]);
+                              }}
                             />
                           </div>
                         </Col>
                       )
-                    )}
+                    }
                   </Field>
 
-
                   <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Commision Auto Deduct</label>
-                      <Field type="checkbox" name="auto_deduct" className="form-check-input" />
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Commision Auto Deduct
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="auto_deduct"
+                        className="form-check-input"
+                      />
                     </div>
                   </Col>
 
                   <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Free Air Ticket</label>
-                      <Field type="checkbox" name="free_air_ticket" className="form-check-input" />
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Free Air Ticket
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="free_air_ticket"
+                        className="form-check-input"
+                      />
                     </div>
                   </Col>
-
-
-
-
 
                   <Col xl={12}>
                     <div className="mb-5 profile-img">
@@ -361,7 +391,6 @@ const CourseModalFormTest = ({
                     </div>
                   </Col>
 
-
                   <Col xl={12}>
                     {/* 
                   <PackageMultipleSelectFieldTest
@@ -371,8 +400,6 @@ const CourseModalFormTest = ({
                       form={{ setFieldValue, values }}
                     />
                    */}
-
-
 
                     <FieldArray name="document_requirements">
                       {({ remove, push }) => (
@@ -388,12 +415,16 @@ const CourseModalFormTest = ({
                           {Array.isArray(values.document_requirements) &&
                             values.document_requirements.length > 0 &&
                             values.document_requirements
-                              .filter(item => item?.document_list_id) // This filters out items with undefined or empty document_list_id
+                              .filter((item) => item?.document_list_id) // This filters out items with undefined or empty document_list_id
                               .map((item, index) => {
-                                const isManual = item.document_list_id?.startsWith('manual_');
+                                const isManual =
+                                  item.document_list_id?.startsWith('manual_');
 
                                 return (
-                                  <Row key={item.document_list_id} className="align-items-center mt-4 mb-4">
+                                  <Row
+                                    key={item.document_list_id}
+                                    className="align-items-center mt-4 mb-4"
+                                  >
                                     {/* Title (Editable) */}
                                     <Col xs={12} md={12} lg={4}>
                                       <div className="mb-3">
@@ -446,7 +477,11 @@ const CourseModalFormTest = ({
                                           name={`document_requirements[${index}].isRequired`}
                                           className="form-check-input"
                                           id={`document_requirements[${index}].isRequired`}
-                                          checked={values.document_requirements?.[index]?.isRequired ?? false} // Ensure default is false
+                                          checked={
+                                            values.document_requirements?.[
+                                              index
+                                            ]?.isRequired ?? false
+                                          } // Ensure default is false
                                         />
                                         <label
                                           htmlFor={`document_requirements[${index}].isRequired`}
@@ -456,7 +491,6 @@ const CourseModalFormTest = ({
                                         </label>
                                       </div>
                                       {isManual && (
-
                                         <Button
                                           type="button"
                                           onClick={() => remove(index)}
@@ -465,7 +499,6 @@ const CourseModalFormTest = ({
                                           <i className="ri-delete-bin-line me-2"></i>
                                         </Button>
                                       )}
-
                                     </Col>
                                   </Row>
                                 );
@@ -493,9 +526,7 @@ const CourseModalFormTest = ({
                         </>
                       )}
                     </FieldArray>
-
                   </Col>
-
 
                   <Col xl={12}>
                     <FieldArray name="entry_requirements">
@@ -506,20 +537,22 @@ const CourseModalFormTest = ({
                             <Row key={index} className="align-items-center">
                               <Col md={11}>
                                 <div className="mb-3">
-                                  <label htmlFor={`entry_requirements[${index}]`}>
+                                  <label
+                                    htmlFor={`entry_requirements[${index}]`}
+                                  >
                                     {`Entry Requirements ${index + 1}`}
                                   </label>
-
 
                                   <Field
                                     name={`entry_requirements[${index}]`}
                                     label={`Entry requirements ${index + 1}`}
                                     placeholder="Enter Text Here"
-                                    className={`form-control ${errors.entry_requirements?.[index] &&
+                                    className={`form-control ${
+                                      errors.entry_requirements?.[index] &&
                                       touched.entry_requirements?.[index]
-                                      ? 'is-invalid'
-                                      : ''
-                                      }`}
+                                        ? 'is-invalid'
+                                        : ''
+                                    }`}
                                   />
                                   {errors.entry_requirements?.[index] &&
                                     touched.entry_requirements?.[index] && (
@@ -572,16 +605,16 @@ const CourseModalFormTest = ({
                                     {`English Requirements ${index + 1}`}
                                   </label>
 
-
                                   <Field
                                     name={`english_requirements[${index}]`}
                                     label={`Entry requirements ${index + 1}`}
                                     placeholder="Enter Text Here"
-                                    className={`form-control ${errors.english_requirements?.[index] &&
+                                    className={`form-control ${
+                                      errors.english_requirements?.[index] &&
                                       touched.english_requirements?.[index]
-                                      ? 'is-invalid'
-                                      : ''
-                                      }`}
+                                        ? 'is-invalid'
+                                        : ''
+                                    }`}
                                   />
                                   {errors.english_requirements?.[index] &&
                                     touched.english_requirements?.[index] && (
@@ -622,17 +655,19 @@ const CourseModalFormTest = ({
                   </Col>
                 </Row>
                 <div className="hstack d-flex mx-auto justify-content-start mt-4"></div>
-                <SubmitButton isSubmitting={isSubmitting} formSubmit={formSubmit}>
+                <SubmitButton
+                  isSubmitting={isSubmitting}
+                  formSubmit={formSubmit}
+                >
                   {formSubmit}
                 </SubmitButton>
               </Form>
-            ));
+            );
           }}
         </Formik>
       </ModalBody>
     </Modal>
   );
 };
-
 
 export default CourseModalFormTest;

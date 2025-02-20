@@ -76,22 +76,46 @@ export default function RecentApplicationForSuperAdmin() {
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  const searchInItem = (item, searchTerm) => {
-    if (typeof item === 'object' && item !== null) {
-      return Object.values(item).some((value) =>
-        searchInItem(value, searchTerm)
-      );
-    }
+  // const searchInItem = (item, searchTerm) => {
+  //   if (typeof item === 'object' && item !== null) {
+  //     return Object.values(item).some((value) =>
+  //       searchInItem(value, searchTerm)
+  //     );
+  //   }
 
-    return String(item).toLowerCase().includes(searchTerm.toLowerCase());
-  };
+  //   return String(item).toLowerCase().includes(searchTerm.toLowerCase());
+  // };
 
-  // Filter data for search option
-  const isfilteredData =
-    recentApplicationData?.data?.length > 0 &&
-    recentApplicationData?.data.filter((item) => {
-      return searchInItem(item, searchTerm);
-    });
+  // // Filter data for search option
+  // const isfilteredData =
+  //   recentApplicationData?.data?.length > 0 &&
+  //   recentApplicationData?.data.filter((item) => {
+  //     return searchInItem(item, searchTerm);
+  //   });
+
+
+    const searchInItem = (item, searchTerm) => {
+      if (!searchTerm) return true; // If no search term, return all items
+    
+      console.log(item)
+      console.log(searchTerm)
+
+      if (typeof item === 'object' && item !== null) {
+        return Object.values(item).some((value) => searchInItem(value, searchTerm));
+      }
+    
+      return String(item).toLowerCase().includes(searchTerm.toLowerCase());
+    };
+    
+    // Ensure full search even if searchTerm is empty
+    const isfilteredData =
+      recentApplicationData?.data?.length > 0
+        ? recentApplicationData.data.filter((item) => searchInItem(item, searchTerm))
+        : [];
+    
+
+
+
 
   const EmgsStatusActionData = {
     title: 'Action',
@@ -198,6 +222,15 @@ export default function RecentApplicationForSuperAdmin() {
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
           {item?.university?.name ? item?.university?.name : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Application Id',
+      key: '_id',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?._id ? item?._id : '-'}
         </span>
       ),
     },
