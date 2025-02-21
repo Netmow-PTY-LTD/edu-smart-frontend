@@ -49,6 +49,7 @@ const UpgradePackageInAgentdashboard = () => {
   const package_id = router.query?.package_id;
   const payment_method = router.query.payment_method;
   const paid_amount = router.query.paid_amount;
+  const coupon_id = router.query.coupon_id;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const { data: allCouponData } = useGetAllActiveCouponQuery();
@@ -112,7 +113,11 @@ const UpgradePackageInAgentdashboard = () => {
             payment_method: payment_method,
             paid_amount: paid_amount,
             coupon_duration: couponDuration,
-            coupon: couponId,
+            coupon: couponId
+              ? couponId
+              : coupon_id && coupon_id != 'none'
+                ? coupon_id
+                : '',
           };
           const response = await upgradePackageForAgent(finalData).unwrap();
           if (response) {
@@ -182,6 +187,7 @@ const UpgradePackageInAgentdashboard = () => {
   }, [
     couponDuration,
     couponId,
+    coupon_id,
     package_id,
     paid_amount,
     payment_method,
@@ -200,8 +206,8 @@ const UpgradePackageInAgentdashboard = () => {
         : `https://edusmart.study/dashboard/agent/upgrade?payment_status=failed`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`
-        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`;
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`;
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
@@ -235,6 +241,8 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
+  console.log(couponId);
+
   const handleCouponSubmit = async () => {
     if (!couponCode) {
       toast.error('Coupon code is required.');
@@ -249,8 +257,6 @@ const UpgradePackageInAgentdashboard = () => {
         code: couponCode,
         package_id: upgradePackageId,
       }).unwrap();
-
-      console.log('Coupon verification response:', response);
 
       const { package_duration, packages, discount_percentage } =
         response?.data || {};
@@ -326,24 +332,19 @@ const UpgradePackageInAgentdashboard = () => {
   const handleCheckboxChange = async () => {
     const newCheckedState = !isChecked;
 
-    // Show confirmation only when checking the box
     if (newCheckedState) {
       const confirmAction = window.confirm(
         "Are you sure you don't want to upgrade now?"
       );
       if (!confirmAction) {
-        return; // Do nothing if the user cancels
+        return;
       }
     }
-
     setIsChecked(newCheckedState);
 
-    // Close modal if checkbox is checked
     if (newCheckedState && typeof setOpenPaymentModal === 'function') {
       setOpenPaymentModal(false);
     }
-
-    // Determine the correct body based on checkbox state
     const requestBody = JSON.stringify({
       package_choice: newCheckedState
         ? null
@@ -373,14 +374,6 @@ const UpgradePackageInAgentdashboard = () => {
       console.error('Error:', error.message);
     }
   };
-
-  //
-
-  // console.log(
-  //   couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
-  // );
-
-  // console.log(couponAmount);
 
   return (
     <Layout>
@@ -536,6 +529,7 @@ const UpgradePackageInAgentdashboard = () => {
                           } else {
                             setTotalCouponAmount('');
                             setCouponCode('');
+                            setCouponId('');
                           }
                         }}
                         onPaste={(e) => {
@@ -545,6 +539,7 @@ const UpgradePackageInAgentdashboard = () => {
                           } else {
                             setTotalCouponAmount('');
                             setCouponCode('');
+                            setCouponId('');
                           }
                         }}
                         placeholder="Enter coupon code"

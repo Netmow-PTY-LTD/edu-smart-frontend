@@ -1404,7 +1404,7 @@ const packagePaymentInvoieHeadersWithoutAction = [
     title: 'Agent Name',
     key: 'agent',
     render: (item) => (
-      <div>
+      <div className="text-capitalize">
         {item?.agent?.first_name || item?.agent?.last_name
           ? `${item.agent.first_name} ${item.agent.last_name}`
           : '-'}
@@ -1423,7 +1423,7 @@ const packagePaymentInvoieHeadersWithoutAction = [
     key: 'package_amount',
     render: (item) => (
       <div>
-        {item?.agent_package?.package?.price ?? 'N/A'} {'MYR'}
+        {(item?.agent_package?.package?.price || 0).toFixed(2) ?? 'N/A'} {'MYR'}
       </div>
     ),
   },
@@ -1448,7 +1448,7 @@ const packagePaymentInvoieHeadersWithoutAction = [
     key: 'paid_amount',
     render: (item) => (
       <div>
-        {item?.paid_amount ?? 'N/A'} {'MYR'}
+        {(item?.paid_amount || 0).toFixed(2) ?? 'N/A'} {'MYR'}
       </div>
     ),
   },
@@ -1471,9 +1471,15 @@ const packagePaymentInvoieHeadersWithoutAction = [
       </p>
     ),
   },
+
   {
     title: 'Payment Method',
     key: 'payment_method',
+    render: (item) => (
+      <div className="text-capitalize">
+        {item?.payment_method ? item?.payment_method : '-'}
+      </div>
+    ),
   },
 ];
 

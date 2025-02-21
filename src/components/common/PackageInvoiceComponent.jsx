@@ -35,7 +35,9 @@ const PackageInvoiceComponent = ({
   payment_status,
   invoice_no,
   payment_method,
+  paymentData,
 }) => {
+  // console.log(paymentData);
   return (
     <>
       {/* <Layout> */}
@@ -216,10 +218,10 @@ const PackageInvoiceComponent = ({
                           <th scope="col">SL</th>
                           <th scope="col">Package Name</th>
                           <th scope="col">Package Duration</th>
-                          <th scope="col">Package Price</th>
-                          <th scope="col">Discount</th>
                           <th scope="col">Coupon</th>
-                          <th scope="col">Amount</th>
+                          <th scope="col">Package Price</th>
+                          <th scope="col">Duration</th>
+                          <th scope="col">Total Price</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -256,38 +258,47 @@ const PackageInvoiceComponent = ({
                                 </td>
 
                                 <td>
-                                  <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.agent_package?.package?.price != null
-                                      ? item?.agent_package?.package?.price
-                                      : '-'}{' '}
-                                    {currency}
-                                  </h3>
-                                </td>
-                                <td>
-                                  <h3 className=" my-1 fw-normal text-uppercase">
-                                    <h3>
-                                      {item?.agent_package?.package?.price !=
-                                        null && item?.paid_amount != null
-                                        ? item.agent_package.package.price -
-                                          item.paid_amount
-                                        : '-'}{' '}
-                                      {currency}
-                                    </h3>
-                                  </h3>
-                                </td>
-
-                                <td>
                                   <h3 className=" my-1 fw-normal">
                                     {item?.coupon?._id
                                       ? item?.coupon?.code
                                       : '-'}
                                   </h3>
                                 </td>
+
+                                <td>
+                                  <h3 className=" my-1 fw-normal text-uppercase">
+                                    {item?.agent_package?.package?.price != null
+                                      ? (
+                                          item?.agent_package?.package?.price ||
+                                          0
+                                        ).toFixed(2)
+                                      : '-'}{' '}
+                                    {currency}
+                                  </h3>
+                                </td>
+
+                                <td>
+                                  <h3 className=" my-1 fw-normal text-capitalize">
+                                    <h3>
+                                      {item?.coupon?.package_duration
+                                        ? item?.coupon?.package_duration
+                                            .split('_')
+                                            .join(' ')
+                                        : '-'}{' '}
+                                    </h3>
+                                  </h3>
+                                </td>
+
                                 <td>
                                   <h3 className="my-1 fw-normal">
-                                    {item?.paid_amount != null
-                                      ? item?.paid_amount
-                                      : '-'}{' '}
+                                    {(() => {
+                                      return (
+                                        item?.agent_package?.package?.price *
+                                        item?.coupon?.package_duration.split(
+                                          '_'
+                                        )[0]
+                                      ).toFixed(2);
+                                    })()}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -307,26 +318,39 @@ const PackageInvoiceComponent = ({
                         <tr>
                           <th className="">Sub Total :</th>
                           <th className="text-end ">
-                            {subtotal} {currency}
+                            {subtotal?.toFixed(2)} {currency}
                           </th>
                         </tr>
 
-                        {gst ? (
-                          <tr>
-                            <th>GST :</th>
-                            <th className="text-end ">
-                              {gst} {currency}
-                            </th>
-                          </tr>
-                        ) : (
-                          ''
-                        )}
+                        <tr className="border-top border-top-dashed">
+                          <th scope="row">Discount :</th>
+                          <th className="text-end">
+                            {/* {paymentData?.agent_package?.package?.price !=
+                              null && paymentData?.paid_amount != null
+                              ? (() => {
+                                  const price =
+                                    paymentData?.agent_package?.package
+                                      ?.price || 0;
+                                  const paidAmount =
+                                    paymentData?.paid_amount || 0;
+                                  const discount = price - paidAmount;
+                                  const formattedDiscount = discount.toFixed(2);
+                                  return `${formattedDiscount} ${currency}`;
+                                })()
+                              : '-'} */}
+                            {(
+                              (subtotal *
+                                paymentData?.coupon?.discount_percentage) /
+                              100
+                            ).toFixed(2)}{' '}
+                            {currency}
+                          </th>
+                        </tr>
 
                         <tr className="border-top border-top-dashed ">
                           <th scope="row">Total Amount :</th>
-
                           <th className="text-end">
-                            {total} {currency}
+                            {total?.toFixed(2)} {currency}
                           </th>
                         </tr>
                       </tbody>
