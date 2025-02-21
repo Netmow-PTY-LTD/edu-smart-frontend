@@ -97,7 +97,10 @@ export default function Header() {
                           allCourses?.data?.slice(0, 10).map((item, index) => (
                             <li key={index}>
                               <Link
-                                href={`/university/${item?.university?._id}/course/${item?._id}`}
+                                // href={`/university/${item?.university?._id}/course/${item?._id}`}
+                                href={
+                                  item?._id ? `/courses?id=${item?._id}` : '#'
+                                }
                               >
                                 {item?.name}
                               </Link>

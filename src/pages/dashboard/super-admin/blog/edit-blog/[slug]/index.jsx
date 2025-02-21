@@ -1,21 +1,25 @@
-import ImageField from '@/components/common/formField/ImageField';
 import SingleImageField from '@/components/common/formField/SingleImageField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import Layout from '@/components/layout';
-import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
-import { useAddBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
+import {
+  useGetAllBlogsQuery,
+  useGetSingleBlogQuery,
+} from '@/slice/services/public/blogs/publicBlogsServices';
+import { useUpdateBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Card, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
-export default function AddBlog() {
+export default function EditBlog() {
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
@@ -23,6 +27,32 @@ export default function AddBlog() {
   });
 
   const router = useRouter();
+  const { slug } = router.query;
+
+  const { data: getSingleBlogData, refetch: singleBlogDataRefetch } =
+    useGetSingleBlogQuery(slug);
+  const { data: getAllBlogData, refetch: allBlogDataRefetch } =
+    useGetAllBlogsQuery();
+  const blogId = getSingleBlogData?.data?._id;
+  const [updateBlog] = useUpdateBlogMutation();
+
+  // Set the initial values when getSingleBlogData is fetched
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      if (getSingleBlogData?.data) {
+        const imageFiles = await convertImageUrlToFile(
+          getSingleBlogData?.data?.image?.url
+        );
+
+        setInitialValues({
+          title: getSingleBlogData?.data?.title || '',
+          description: getSingleBlogData?.data?.description || '',
+          image: imageFiles || null,
+        });
+      }
+    };
+    fetchBlogData();
+  }, [getSingleBlogData]);
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
@@ -30,44 +60,36 @@ export default function AddBlog() {
     image: Yup.mixed().required('Blog Image is required'),
   });
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0]; // get the selected file
-  //   setFieldValue("image", file); // set it in Formik state
-  // };
-
-  const {
-    data: allBlogs,
-    isLoading: isAllBlogsLoading,
-    error: allBlogsError,
-    refetch: allBlogsRefetch,
-  } = useGetAllBlogsQuery();
-
-  const { data: getAllBlogData, refetch: allBlogDataRefetch } =
-    useGetAllBlogsQuery();
-  const [addBlog] = useAddBlogMutation();
-
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleUpdateBlog = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    const updatedBlogData = {
+      ...values,
+      id: blogId, // Pass the blogId so we know which blog to update
+    };
+
+    //console.log(updatedBlogData);
 
     try {
       const formData = new FormData();
-
-      Object.keys(values).forEach((key) => {
+      Object.keys(updatedBlogData).forEach((key) => {
+        // If it's not an image, append it to formData
         if (key !== 'image') {
-          formData.append(key, values[key]);
+          formData.append(key, updatedBlogData[key]);
         }
       });
 
-      // Explicitly append the image field to formData
+      // If there's an image, append it separately to formData
       if (values.image) {
-        formData.append('image', values.image); // 'image' is the key expected by the backend
+        formData.append('image', values.image);
       }
 
-      const result = await addBlog(formData).unwrap();
+      // Call the mutation and pass formData as the payload
+      const result = await updateBlog({ id: blogId, formData }).unwrap();
+
       if (result) {
         toast.success(result?.message);
         allBlogDataRefetch();
-        resetForm();
         setTimeout(() => {
           router.push('/dashboard/super-admin/blog/blog-list');
         }, 2000);
@@ -78,17 +100,20 @@ export default function AddBlog() {
       setSubmitting(false);
     }
   };
+
+  //console.log(getSingleBlogData?.data?.image?.url);
+
   return (
     <Layout>
       <div className="page-content">
-        <h1>Add Blog</h1>
+        <h1 className="mb-4">Edit Blog</h1>
         <ToastContainer />
         <div className="">
           <Card className="p-4 p-md-5 add-university-card">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={handleSubmit}
+              onSubmit={handleUpdateBlog}
               enableReinitialize={true}
             >
               {({ isSubmitting, values, setFieldValue }) => (
@@ -108,7 +133,7 @@ export default function AddBlog() {
                       <div className="">
                         <SingleImageField
                           form={{ setFieldValue, values }}
-                          label="Upload Image"
+                          label="Update Image"
                           field={{ name: 'image' }}
                         />
                       </div>
