@@ -1,5 +1,6 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import Link from 'next/link';
@@ -175,9 +176,9 @@ const StudentDocumentUploadRquestForAgent = () => {
             </CardHeader>
             <CardBody>
               {allDocumentRequestForAgentIsLoading ? (
-                <div>Loading...</div>
+                <LoaderSpiner />
               ) : allDocumentRequestForAgentError ? (
-                <div>Error loading data.</div>
+                <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
                   headers={docRequestTableHeaderDataWithoutAction}
