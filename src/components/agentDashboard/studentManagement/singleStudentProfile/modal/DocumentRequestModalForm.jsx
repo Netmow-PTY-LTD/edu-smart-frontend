@@ -103,7 +103,13 @@ const DocumentRequestModalForm = ({
                           </Col>
                         </>
                       )}
-
+                      <Col md={12} xl={12}>
+                        <p>
+                          <span className="text-success fw-semibold">NB:</span>{' '}
+                          If you need new Document request write into select
+                          field.
+                        </p>
+                      </Col>
                       {/* Submit Button */}
                       <Col md={12} xl={12}>
                         <div className="my-4">

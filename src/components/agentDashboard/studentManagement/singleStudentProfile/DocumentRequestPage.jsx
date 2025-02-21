@@ -19,10 +19,7 @@ import {
   useCreateUserDocRequestForAgentMutation,
   useUpdateUserDocStatusForAgentMutation,
 } from '@/slice/services/agent/agentDocumentServices';
-import {
-  useGetSingleUserDocRequestQuery,
-  useUpdateRequestUserDocStatusMutation,
-} from '@/slice/services/common/commonDocumentService';
+import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import FileViewer from '@/components/common/FileViewer';
 import StatusUpdateForm from './modal/StatusUpdateForm';
 
