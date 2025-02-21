@@ -46,7 +46,7 @@ export const commonDocumentService = createApi({
         };
       },
     }),
-    getAllApplicationDocument: builder.query({
+    getAllApplicationSubmittedDocument: builder.query({
       query: () => {
         return {
           url: '/all/application',
@@ -54,7 +54,7 @@ export const commonDocumentService = createApi({
         };
       },
     }),
-    getSingleApplicationDocument: builder.query({
+    getSingleApplicationSubmittedDocument: builder.query({
       query: (body) => {
         const application_id = body.application_id;
         return {
@@ -97,7 +97,7 @@ export const commonDocumentService = createApi({
       },
     }),
 
-    getAllUserDocument: builder.query({
+    getAllUserSubmittedDocument: builder.query({
       query: () => {
         return {
           url: '/all/user',
@@ -105,7 +105,7 @@ export const commonDocumentService = createApi({
         };
       },
     }),
-    getSingleUserDocument: builder.query({
+    getSingleUserSubmittedDocument: builder.query({
       query: (body) => {
         const student_id = body.student_id;
         return {
@@ -124,8 +124,8 @@ export const {
   useGetSingleUserDocRequestQuery,
   useUpdateRequestUserDocStatusMutation,
   useUploadRequestApplicationDocMutation,
-  useGetAllApplicationDocumentQuery,
-  useGetAllUserDocumentQuery,
-  useGetSingleApplicationDocumentQuery,
-  useGetSingleUserDocumentQuery,
+  useGetAllApplicationSubmittedDocumentQuery,
+  useGetAllUserSubmittedDocumentQuery,
+  useGetSingleApplicationSubmittedDocumentQuery,
+  useGetSingleUserSubmittedDocumentQuery,
 } = commonDocumentService;

@@ -113,7 +113,7 @@ const DocumentRequestPage = ({ student_id }) => {
     setOpenModal(!openModal);
   };
 
-  const documentRequestHeaderWithoutAction = [
+  const docRequestTableHeaderDataWithAction = [
     {
       title: 'SN',
       key: 'sn',
@@ -231,7 +231,7 @@ const DocumentRequestPage = ({ student_id }) => {
 
   useEffect(() => {
     setAllUploadDocumentsForStudentsData([
-      ...documentRequestHeaderWithoutAction,
+      ...docRequestTableHeaderDataWithAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
