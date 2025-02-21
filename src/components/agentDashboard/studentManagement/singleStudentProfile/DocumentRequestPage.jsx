@@ -78,22 +78,22 @@ const DocumentRequestPage = ({ student_id }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    console.log(values);
+
     const updatedData = { ...values, student_id: student_id };
 
-    // try {
-    //   const result = await createDocumentRequest(updatedData).unwrap();
-    //   if (result) {
-    //     toast.success(result?.message);
-    //     getSingleStudentDocRequestRefetch();
-    //     setAddModalIsOpen(!addModalIsOpen);
-    //   }
-    // } catch (error) {
-    //   const errorMessage = error?.data?.message;
-    //   toast.error(errorMessage);
-    // } finally {
-    //   setSubmitting(false);
-    // }
+    try {
+      const result = await createDocumentRequest(updatedData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleStudentDocRequestRefetch();
+        setAddModalIsOpen(!addModalIsOpen);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleStatusChange = async (user_document_id, status) => {
@@ -117,7 +117,6 @@ const DocumentRequestPage = ({ student_id }) => {
       user_document_id: docId,
       status: 'rejected',
     };
-    console.log(updatedDataStatus);
 
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
@@ -329,7 +328,9 @@ const DocumentRequestPage = ({ student_id }) => {
           toggle={togModal}
           handleAddSubmit={handleRejectStatus}
           submitBtn={'Send Notes'}
-          // validationSchema={validationSchema}
+          validationSchema={Yup.object({
+            notes: Yup.string().required('Notes is required'),
+          })}
         />
       }
     </Row>
