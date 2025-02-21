@@ -184,11 +184,12 @@ const DocumentRequestPage = ({ student_id }) => {
       title: 'Notes',
       key: 'notes',
       render: (item) => (
-        <div
-          style={{ color: '#007BFF' }}
-          className="fs-14 fw-medium text-capitalize"
-        >
-          {`${item?.notes ? item?.notes : '-'}`}
+        <div className="fs-14 fw-medium text-capitalize">
+          {item?.notes ? (
+            <span style={{ color: '#007BFF' }}>{item?.notes}</span>
+          ) : (
+            'No notes yet'
+          )}
         </div>
       ),
     },
