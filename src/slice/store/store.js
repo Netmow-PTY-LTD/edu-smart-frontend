@@ -36,7 +36,6 @@ import { requiredService } from '../services/super admin/requiredService';
 import { staffMemberService } from '../services/super admin/staffMemberService';
 import { superAdminBlogServices } from '../services/super admin/superAdminBlogServices';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
-import { superAdminStatsServices } from '../services/super admin/superAdminStatsServices';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
 import { universityAdministrationFaqService } from '../services/university-administration/api/universityAdministrationFaqService';
