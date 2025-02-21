@@ -273,7 +273,6 @@ export default function CourseForm({ setStep, step }) {
   const handleAddSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log(values);
 
     try {
       if (

@@ -2,6 +2,7 @@ import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCove
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
+import AllCourseForSuperAdminTest from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdminTest';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import ManageUniversityForSuperAdmin from '@/components/sAdminDashboard/commponents/ManageUniversityForSuperAdmin';
@@ -202,7 +203,7 @@ const SingleUniversityProfile = () => {
                       />
                     )}
                     {activeTab === '4' && (
-                      <AllCourseForSuperAdmin
+                      <AllCourseForSuperAdminTest
                         university_id={university_id}
                         allDepartmentData={getDepartmentData?.data}
                         allCategoryData={getAllCategoriesData?.data}

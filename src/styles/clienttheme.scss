@@ -7890,6 +7890,10 @@ img.staff-img {
   border-radius: 10px;
 }
 
+.faculty-item {
+  padding: 0 12px 20px;
+}
+
 .faculty-item h3 {
   color: #fff;
   font-family: Lora;
@@ -7906,6 +7910,13 @@ img.staff-img {
   font-size: clamp(13px, 0.7vw, 16px);
   font-weight: 400;
   line-height: 150%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  // line-height: 20px;
+  max-height: 60px;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .faculty-item a:hover {
@@ -7916,6 +7927,21 @@ img.staff-img {
 .faculty-content .page-link {
   font-size: 20px;
   padding: 10px 20px;
+}
+
+.university-faculties .page-link {
+  font-size: 20px;
+  padding: 8px 20px;
+  background-color: var(--color--secondary) !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 5px;
+}
+
+.university-faculties .active > .page-link {
+  background-color: var(--color--primary) !important;
+  color: var(--color--secondary) !important;
+  font-weight: 700;
 }
 
 @media (max-width: 1199px) {

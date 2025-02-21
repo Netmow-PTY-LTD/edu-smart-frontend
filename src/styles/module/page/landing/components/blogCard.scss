@@ -11,7 +11,7 @@
       .blog-card__title {
         color: var(--Black, #1c1c1c);
         font-family: Lora;
-        font-size: clamp(18px, 1vw, 24px);
+        font-size: clamp(18px, 1.5vw, 24px);
         font-weight: 700;
         text-align: left;
         text-underline-position: from-font;
@@ -30,7 +30,7 @@
     p {
       color: var(--Black, #1c1c1c);
       font-family: Poppins;
-      font-size: clamp(14px, 1vw, 18px);
+      font-size: clamp(14px, 0.8vw, 18px);
       font-style: normal;
       font-weight: 400;
       line-height: 170%;
@@ -48,7 +48,7 @@
     a {
       color: var(--Black, #1c1c1c);
       font-family: Lora;
-      font-size: 20px;
+      font-size: clamp(14px, 0.9vw, 20px);
       font-style: normal;
       font-weight: 700;
       line-height: 170%;
