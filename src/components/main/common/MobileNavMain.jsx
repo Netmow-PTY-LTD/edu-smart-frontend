@@ -45,15 +45,18 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
   }, [navRef, setShowMobileNav]);
 
   useEffect(() => {
-    setIsClient(true); // Set to true after hydration
+    setIsClient(true);
   }, []);
 
   if (!isClient) {
-    return null; // Prevent rendering before hydration
+    return null;
   }
 
   return (
-    <section className={`mobile-nav-area ${showMobileNav ? 'active' : ''}`}>
+    <section
+      className={`mobile-nav-area ${showMobileNav ? 'active' : ''}`}
+      ref={navRef}
+    >
       <div className="mobile-nav-header-temp">
         <Link href="/" className="logo-container">
           <img src="/Edusmart-White-Logo.png" alt="Logo" />
@@ -117,12 +120,13 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
             {showSubmenu && activeMenuItem === 'courses' && (
               <ul className={`sub-menu ${showSubmenu ? 'open' : ''}`}>
                 {allCourses?.data?.length > 0 ? (
-                  allCourses?.data?.slice(0, 4).map((item, index) => (
+                  allCourses?.data?.slice(0, 10).map((item, index) => (
                     <li key={index}>
                       <Link
-                        href={`/university/${item?.university}/course/${item?._id}`}
+                        // href={`/university/${item?.university}/course/${item?._id}`}
+                        href={`/courses?id=${item?._id}`}
                       >
-                        {item.name}
+                        {item?.name}
                       </Link>
                     </li>
                   ))
@@ -168,9 +172,11 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
             {showSubmenu && activeMenuItem === 'universities' && (
               <ul className={`sub-menu ${showSubmenu ? 'open' : ''}`}>
                 {universityData?.data?.length > 0 ? (
-                  universityData?.data?.slice(0, 4).map((item, index) => (
+                  universityData?.data?.slice(0, 10).map((item, index) => (
                     <li key={index}>
-                      <Link href={`/university/${item?._id}`}>{item.name}</Link>
+                      <Link href={`/university/${item?._id}`}>
+                        {item?.name}
+                      </Link>
                     </li>
                   ))
                 ) : (

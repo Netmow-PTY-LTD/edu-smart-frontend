@@ -31,10 +31,11 @@ export const superAdminBlogServices = createApi({
       }),
     }),
     updateBlog: builder.mutation({
-      query: (id) => {
+      query: ({ id, formData }) => {
         return {
           url: `/blog/${id}`,
           method: 'PATCH',
+          body: formData,
         };
       },
     }),

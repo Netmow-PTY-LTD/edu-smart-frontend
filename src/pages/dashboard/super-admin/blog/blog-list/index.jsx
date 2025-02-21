@@ -5,9 +5,19 @@ import Layout from '@/components/layout';
 import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
 import { useDeleteBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from 'reactstrap';
+import DOMPurify from 'dompurify';
 
 export default function ContactMessages() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -20,8 +30,6 @@ export default function ContactMessages() {
     error: allBlogsError,
     refetch: allBlogsRefetch,
   } = useGetAllBlogsQuery();
-
-  console.log(allBlogs?.data);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -57,6 +65,13 @@ export default function ContactMessages() {
     }
   };
 
+  const truncateText = (text, maxLength) => {
+    const textContent = DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
+    return textContent.length > maxLength
+      ? textContent.substring(0, maxLength) + '...'
+      : textContent;
+  };
+
   const blogListHeaders = [
     {
       title: 'SN',
@@ -81,7 +96,7 @@ export default function ContactMessages() {
       key: 'description',
       render: (item) => (
         <h5 className="fs-14 fw-medium">
-          {item?.description ? item?.description : ''}
+          {item?.description ? truncateText(item?.description, 150) : ''}
         </h5>
       ),
     },
@@ -106,13 +121,47 @@ export default function ContactMessages() {
       title: 'Action',
       key: 'action',
       render: (item) => (
-        <div
-          className="text-danger fw-medium cursor-pointer"
-          onClick={() => handleDeleteBlog(item?._id)}
-        >
-          <i className="ri-close-circle-fill align-start me-2 "></i>
-          Delete
-        </div>
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <Link
+                href={`/blog/${item?.slug}`}
+                className="text-secondary fw-medium cursor-pointer"
+                target="_blank"
+              >
+                <i className="ri-eye-fill align-start me-2 "></i>
+                View
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
+              <Link
+                href={`/dashboard/super-admin/blog/edit-blog/${item?.slug}`}
+                className="text-secondary fw-medium cursor-pointer"
+              >
+                <i className="ri-pencil-fill align-start me-2 "></i>
+                Edit
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                className="text-danger fw-medium cursor-pointer"
+                onClick={() => handleDeleteBlog(item?._id)}
+              >
+                <i className="ri-close-circle-fill align-start me-2 "></i>
+                Delete
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       ),
     },
   ];

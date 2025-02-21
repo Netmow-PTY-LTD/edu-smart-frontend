@@ -43,7 +43,13 @@ const Sidebar = ({ layoutType }) => {
             className="logo logo-light "
           >
             <span className="logo-sm me-4">
-              <Image priority={true} src={mainlogo} alt="" height="22" />
+              <Image
+                priority={true}
+                src={'/assets/images/logo-sm.png'}
+                alt=""
+                width={35}
+                height={35}
+              />
             </span>
             <span className="logo-lg">
               <Image priority={true} src={mainlogo} alt="" height="50" />
