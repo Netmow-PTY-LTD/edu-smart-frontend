@@ -83,11 +83,15 @@ const AllUploadDocumentsForStudents = () => {
 
       if (!requestData) return;
 
-      const file = await convertImageUrlToFile(requestData?.files[0]?.url);
+      const files = await Promise.all(
+        requestData?.files?.map(
+          async (file) => await convertImageUrlToFile(file.url)
+        )
+      );
 
       setInitialValues({
         title: requestData?.title || '',
-        document: file || '',
+        document: files || '',
         description: requestData?.description || '',
       });
     };
@@ -314,7 +318,7 @@ const AllUploadDocumentsForStudents = () => {
             toggle={togModal}
             handleAddSubmit={handleSubmit}
             submitBtn={'Upload'}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
           />
         }
       </div>

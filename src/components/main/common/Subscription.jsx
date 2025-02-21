@@ -22,7 +22,7 @@ const SubscriptionForm = () => {
       const result = await sendSubscriptionLetter(
         subscriptionLetterData
       ).unwrap();
-      console.log(result);
+
       if (result) {
         toast.success(result?.message);
       }
