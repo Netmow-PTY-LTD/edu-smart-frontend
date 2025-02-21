@@ -30,8 +30,6 @@ const AllDocumentForAgentDashboard = () => {
     refetch: allSubmittedDocumentForAgentRefetch,
   } = useGetAllUserSubmittedDocumentQuery();
 
-  console.log(allSubmittedDocumentForAgentData);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 

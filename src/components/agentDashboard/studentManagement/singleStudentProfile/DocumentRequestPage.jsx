@@ -24,6 +24,7 @@ import {
   useUpdateRequestUserDocStatusMutation,
 } from '@/slice/services/common/commonDocumentService';
 import FileViewer from '@/components/common/FileViewer';
+import StatusUpdateForm from './modal/StatusUpdateForm';
 
 const DocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -91,8 +92,12 @@ const DocumentRequestPage = ({ student_id }) => {
   };
 
   const handleStatusChange = async (user_document_id, status) => {
+    if (status === 'rejected') {
+      togModal(user_document_id);
+      return;
+    }
     const updatedDataStatus = { user_document_id, status };
-    console.log(updatedDataStatus);
+
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -105,8 +110,30 @@ const DocumentRequestPage = ({ student_id }) => {
     }
   };
 
-  const togModal = (id) => {
-    setDocId(id);
+  const handleRejectStatus = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    const updatedDataStatus = {
+      ...values,
+      user_document_id: docId,
+      status: 'rejected',
+    };
+    console.log(updatedDataStatus);
+
+    try {
+      const result = await updateDocumentRequest(updatedDataStatus).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleStudentDocRequestRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    }
+  };
+
+  const togModal = (user_document_id) => {
+    setDocId(user_document_id);
     setOpenModal(!openModal);
   };
 
@@ -144,15 +171,7 @@ const DocumentRequestPage = ({ student_id }) => {
         </div>
       ),
     },
-    {
-      title: 'Notes',
-      key: 'notes',
-      render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {`${item?.notes ? item?.notes : '-'}`}
-        </div>
-      ),
-    },
+
     {
       title: 'Submitted Files',
       key: 'files',
@@ -163,6 +182,15 @@ const DocumentRequestPage = ({ student_id }) => {
           ) : (
             'No submission files yet'
           )}
+        </div>
+      ),
+    },
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.notes ? item?.notes : '-'}`}
         </div>
       ),
     },
@@ -212,10 +240,7 @@ const DocumentRequestPage = ({ student_id }) => {
               </div>
             </DropdownItem>
             <DropdownItem>
-              <div
-                className="text-primary"
-                onClick={() => handleStatusChange(item?._id, 'rejected')}
-              >
+              <div className="text-primary" onClick={() => togModal(item?._id)}>
                 <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
                 Rejected
               </div>
@@ -280,16 +305,16 @@ const DocumentRequestPage = ({ student_id }) => {
           </Card>
         </div>
       )}
-      {/* {
+      {
         <StatusUpdateForm
-          initialValues={initialValues}
+          initialValues={{ notes: '' }}
           OpenModal={openModal}
           toggle={togModal}
-          handleAddSubmit={handleSubmit}
-          submitBtn={'Upload'}
-          validationSchema={validationSchema}
+          handleAddSubmit={handleRejectStatus}
+          submitBtn={'Send Notes'}
+          // validationSchema={validationSchema}
         />
-      } */}
+      }
     </Row>
   );
 };

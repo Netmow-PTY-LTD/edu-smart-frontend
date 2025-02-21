@@ -24,7 +24,7 @@ const StatusUpdateForm = ({
     <>
       <Modal isOpen={OpenModal} toggle={toggle} size="lg" centered>
         <ModalHeader toggle={toggle}>
-          <h5>Upload Document</h5>
+          <h5>Document Rejected Notes</h5>
         </ModalHeader>
         <ModalBody>
           <Card>
@@ -43,8 +43,8 @@ const StatusUpdateForm = ({
                           <TextField
                             as="textarea"
                             rows={4}
-                            name={'description'}
-                            label={'Description'}
+                            name={'notes'}
+                            label={'Notes'}
                           />
                         </Col>
 

@@ -16,6 +16,8 @@ import TextField from '@/components/common/formField/TextField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import TextArea from '@/components/common/formField/TextAreaField';
+import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
+import SingleSelectFieldForAgent from './SingleSelectFieldForAgent';
 
 const DocumentRequestModalForm = ({
   formHeader,
@@ -27,6 +29,10 @@ const DocumentRequestModalForm = ({
   formSubmit,
   setInitialValues,
 }) => {
+  const { data: documentData, isLoading: documentLoading } =
+    useGetDocumentInSuperAdminQuery();
+
+  console.log(documentData);
   const options = [
     { value: 'photograph', label: 'Photograph' },
     { value: 'passport', label: 'Passport' },
@@ -62,7 +68,7 @@ const DocumentRequestModalForm = ({
                       <Row>
                         <Col md={12} xl={12}>
                           <div className="mb-4">
-                            <SingleSelectField
+                            <SingleSelectFieldForAgent
                               options={options}
                               name="title"
                               label="Document Title *"
