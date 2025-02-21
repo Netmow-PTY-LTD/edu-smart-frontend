@@ -876,6 +876,18 @@ const AllCourseForSuperAdminTest = ({
                 <i className="ri-pencil-fill align-start me-2 text-muted"></i>
                 Edit
               </div>
+              <div
+                onClick={() =>
+                  window.open(
+                    `/university/${item?.university_id}/course/${item?._id}`,
+                    '_blank'
+                  )
+                }
+                className="text-primary"
+              >
+                <i className="ri-eye-fill align-start me-2 text-muted"></i>
+                View Course
+              </div>
             </DropdownItem>
             {/* <DropdownItem>
              <div
