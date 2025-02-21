@@ -185,36 +185,36 @@ const AgentSidebarData = () => {
       ],
     },
 
-    // {
-    //   id: 'managedocument',
-    //   label: 'Manage Documents',
-    //   icon: 'ri-article-fill',
-    //   link: '/#',
-    //   click: function (e) {
-    //     e.preventDefault();
-    //     setIsManageDocument(!isManageDocument);
-    //     setIscurrentState('Manage Document');
-    //   },
-    //   stateVariables: isManageDocument,
-    //   subItems: [
-    //     {
-    //       id: 'alldocument',
-    //       label: 'All Document',
-    //       link: '/dashboard/agent/manage-documents/all-document-for-agent',
-    //       icon: 'ri-file-fill',
-    //       pathName: '/dashboard/agent/manage-documents/all-document-for-agent',
-    //       parentId: 'managedocument',
-    //     },
-    //     {
-    //       id: 'documentuploadrequest',
-    //       label: 'Doc Upload Request',
-    //       link: '/dashboard/agent/manage-documents/document-upload-request',
-    //       icon: 'ri-file-list-3-fill',
-    //       pathName: '/dashboard/agent/manage-documents/document-upload-request',
-    //       parentId: 'managedocument',
-    //     },
-    //   ],
-    // },
+    {
+      id: 'managedocument',
+      label: 'Manage Documents',
+      icon: 'ri-article-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsManageDocument(!isManageDocument);
+        setIscurrentState('Manage Document');
+      },
+      stateVariables: isManageDocument,
+      subItems: [
+        {
+          id: 'alldocument',
+          label: 'All Document',
+          link: '/dashboard/agent/manage-documents/all-document-for-agent',
+          icon: 'ri-file-fill',
+          pathName: '/dashboard/agent/manage-documents/all-document-for-agent',
+          parentId: 'managedocument',
+        },
+        {
+          id: 'documentuploadrequest',
+          label: 'Doc Upload Request',
+          link: '/dashboard/agent/manage-documents/document-upload-request',
+          icon: 'ri-file-list-3-fill',
+          pathName: '/dashboard/agent/manage-documents/document-upload-request',
+          parentId: 'managedocument',
+        },
+      ],
+    },
     {
       id: 'earnings',
       label: 'Earnings',

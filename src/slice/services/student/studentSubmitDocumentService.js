@@ -37,7 +37,7 @@ export const studentSubmitDocumentService = createApi({
         const id = body?.get('id');
         return {
           url: `/document/${id}`,
-          method: 'POST',
+          method: 'PATCH',
           body: body,
         };
       },

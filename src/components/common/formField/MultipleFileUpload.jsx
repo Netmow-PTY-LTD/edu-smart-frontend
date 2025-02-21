@@ -10,9 +10,8 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
   useEffect(() => {
     const files = form.values[field.name] || [];
-    // console.log(files);
+
     if (files?.length > 0) {
-      // console.log('check');
       const validFiles = files.filter(isValidFile);
       setFilePreviews(validFiles.map((file) => URL.createObjectURL(file)));
       setFileNames(validFiles.map((file) => file.name));
@@ -64,8 +63,6 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
     form.setFieldValue(field.name, updatedFiles);
   };
-
-  console.log(filePreviews);
 
   return (
     <div>

@@ -1,4 +1,3 @@
-import MultipleFileUpload from '@/components/common/formField/MultipleFileUpload';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
 import { Form, Formik } from 'formik';
@@ -13,7 +12,7 @@ import {
   Row,
 } from 'reactstrap';
 
-const SingleDocUploadForm = ({
+const StatusUpdateForm = ({
   initialValues,
   OpenModal,
   toggle,
@@ -25,7 +24,7 @@ const SingleDocUploadForm = ({
     <>
       <Modal isOpen={OpenModal} toggle={toggle} size="lg" centered>
         <ModalHeader toggle={toggle}>
-          <h5>Upload Document</h5>
+          <h5>Document Rejected Notes</h5>
         </ModalHeader>
         <ModalBody>
           <Card>
@@ -41,23 +40,14 @@ const SingleDocUploadForm = ({
                     <Form>
                       <Row>
                         <Col lg={12}>
-                          <TextField name={'title'} label={'Title'} />
-                        </Col>
-                        <Col lg={12}>
                           <TextField
                             as="textarea"
                             rows={4}
-                            name={'description'}
-                            label={'Description'}
+                            name={'notes'}
+                            label={'Notes'}
                           />
                         </Col>
-                        <Col lg={12}>
-                          <MultipleFileUpload
-                            form={{ setFieldValue, values }}
-                            label={'Document'}
-                            field={{ name: 'document' }}
-                          />
-                        </Col>
+
                         <Col md={12} xl={12}>
                           <div className="my-4 text-center">
                             <SubmitButton
@@ -79,4 +69,4 @@ const SingleDocUploadForm = ({
   );
 };
 
-export default SingleDocUploadForm;
+export default StatusUpdateForm;
