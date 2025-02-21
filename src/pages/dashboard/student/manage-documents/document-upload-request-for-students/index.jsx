@@ -73,7 +73,6 @@ const AllUploadDocumentsForStudents = () => {
       .max(5, 'You can upload a maximum of 5 documents'),
   });
 
-  console.log('getSingleStudentDocRequest', getSingleStudentDocRequest);
   // search input change function
 
   useEffect(() => {
@@ -315,7 +314,7 @@ const AllUploadDocumentsForStudents = () => {
             toggle={togModal}
             handleAddSubmit={handleSubmit}
             submitBtn={'Upload'}
-            validationSchema={validationSchema}
+            // validationSchema={validationSchema}
           />
         }
       </div>
