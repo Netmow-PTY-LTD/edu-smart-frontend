@@ -35,7 +35,7 @@ const DocumentRequestPage = ({ student_id }) => {
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
-    notes: '',
+    // notes: '',
   });
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
@@ -63,8 +63,8 @@ const DocumentRequestPage = ({ student_id }) => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
-    description: Yup.string().required('Description is required'),
-    notes: Yup.string(),
+    description: Yup.string(),
+    // notes: Yup.string(),
   });
 
   // search input change function
@@ -78,22 +78,22 @@ const DocumentRequestPage = ({ student_id }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
+    console.log(values);
     const updatedData = { ...values, student_id: student_id };
 
-    try {
-      const result = await createDocumentRequest(updatedData).unwrap();
-      if (result) {
-        toast.success(result?.message);
-        getSingleStudentDocRequestRefetch();
-        setAddModalIsOpen(!addModalIsOpen);
-      }
-    } catch (error) {
-      const errorMessage = error?.data?.message;
-      toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
-    }
+    // try {
+    //   const result = await createDocumentRequest(updatedData).unwrap();
+    //   if (result) {
+    //     toast.success(result?.message);
+    //     getSingleStudentDocRequestRefetch();
+    //     setAddModalIsOpen(!addModalIsOpen);
+    //   }
+    // } catch (error) {
+    //   const errorMessage = error?.data?.message;
+    //   toast.error(errorMessage);
+    // } finally {
+    //   setSubmitting(false);
+    // }
   };
 
   const handleStatusChange = async (user_document_id, status) => {

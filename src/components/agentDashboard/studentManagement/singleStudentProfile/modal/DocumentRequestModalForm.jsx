@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { Formik, Form } from 'formik';
 import SubmitButton from '@/components/common/formField/SubmitButton';
@@ -20,8 +20,9 @@ const DocumentRequestModalForm = ({
   // Generate document options from API response
   const options =
     documentData?.data?.map((item) => ({
-      value: item.title, // Store title instead of ID for easier comparison
+      value: item.title,
       label: item.title,
+      description: item.description, // Store description for auto-fill
     })) || [];
 
   return (
@@ -35,7 +36,21 @@ const DocumentRequestModalForm = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, values, setFieldValue }) => {
+          {({ isSubmitting, values, setFieldValue, submitForm }) => {
+            // Find selected document from API
+            const selectedDocument = options.find(
+              (option) => option.value === values.title
+            );
+
+            // Auto-fill description when a known document is selected
+            useEffect(() => {
+              if (selectedDocument) {
+                setFieldValue('description', selectedDocument.description);
+              } else {
+                setFieldValue('description', '');
+              }
+            }, [values.title, selectedDocument, setFieldValue, submitForm]);
+
             // Check if a new title is created
             const isNewTitle =
               values.title &&
@@ -75,7 +90,7 @@ const DocumentRequestModalForm = ({
                         </div>
                       </Col>
 
-                      {/* Show "Description" & "Notes" when a new title is created or "Others" is selected */}
+                      {/* Show "Description" & "Notes" when a new title is created */}
                       {isNewTitle && (
                         <>
                           <Col md={12} xl={12}>
@@ -86,11 +101,6 @@ const DocumentRequestModalForm = ({
                               />
                             </div>
                           </Col>
-                          {/* <Col md={12} xl={12}>
-                            <div className="mb-3">
-                              <TextArea name="notes" label="Notes *" />
-                            </div>
-                          </Col> */}
                         </>
                       )}
 
