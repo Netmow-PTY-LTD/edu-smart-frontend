@@ -14,6 +14,7 @@ export const commonDocumentService = createApi({
       return headers;
     },
   }),
+
   endpoints: (builder) => ({
     // ---------------- Application Document Base endpoint --------------------
 
