@@ -26,7 +26,10 @@ const SingleSelectField = ({
                   // console.log(option.value);
                   return (
                     option.label === field?.value ||
-                    option.label === field?.value?.label
+                    option.label === field?.value?.label ||
+                    option.value === field?.value?.value ||
+                    option.value === field?.value?.label ||
+                    option.value === field?.value
                   );
                 })
               : null;

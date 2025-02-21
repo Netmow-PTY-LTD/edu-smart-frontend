@@ -61,6 +61,8 @@ const CourseModalFormTest = ({
           onSubmit={onSubmit}
         >
           {({ isSubmitting, setFieldValue, values, errors, touched }) => {
+            
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
               const after_emgs_fee = values.university_price - values.price;
               setFieldValue('after_emgs_fee', after_emgs_fee);
@@ -392,7 +394,7 @@ const CourseModalFormTest = ({
                   </Col>
 
                   <Col xl={12}>
-                    {/* 
+                    {/*
                   <PackageMultipleSelectFieldTest
                       field={{ name: 'document_select' }}
                       label="Select Existing Document Type"

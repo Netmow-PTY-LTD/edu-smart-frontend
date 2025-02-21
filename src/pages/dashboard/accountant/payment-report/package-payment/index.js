@@ -3,7 +3,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetPackagePaymentReportQuery } from '@/slice/services/common/paymentReportServices';
-import moment from 'moment';
+import { packagePaymentReportHeadersWithoutAction } from '@/utils/common/data';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -32,42 +32,6 @@ const PackagePaymentReportPageForAccountantDashboard = () => {
     return fullName?.includes(searchTerm.toLowerCase());
   });
 
-  const packagePaymentHeadersWithoutAction = [
-    {
-      title: 'Agent Name',
-      key: 'agent',
-      render: (item) => (
-        <div>
-          {item?.agent?.first_name
-            ? item?.agent?.first_name + ' ' + item?.agent?.last_name
-            : '-'}
-        </div>
-      ),
-    },
-    {
-      title: 'Package Name',
-      key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
-    },
-    {
-      title: 'Paid Amount',
-      key: 'paid_amount',
-    },
-    {
-      title: 'Payment Method',
-      key: 'payment_method',
-    },
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
-      render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
-      ),
-    },
-  ];
-
   return (
     <Layout>
       <div className="page-content">
@@ -75,7 +39,7 @@ const PackagePaymentReportPageForAccountantDashboard = () => {
           <div className="h-100">
             <ToastContainer />
             {packagePaymentDataLoading ? (
-              <LoaderSpiner />
+              <LoaderSpiner />  
             ) : (
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
@@ -90,7 +54,7 @@ const PackagePaymentReportPageForAccountantDashboard = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={[...packagePaymentHeadersWithoutAction]}
+                    headers={[...packagePaymentReportHeadersWithoutAction]}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

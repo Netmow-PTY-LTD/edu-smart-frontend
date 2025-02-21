@@ -1,7 +1,7 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import AllCourseForSuperAdmin from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdmin';
+import AllCourseForSuperAdminTest from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdminTest';
 import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
 import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
 import ManageUniversityForSuperAdmin from '@/components/sAdminDashboard/commponents/ManageUniversityForSuperAdmin';
@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const SingleUniversityPageForAdmissionManagerDashboard = () => {
+const SingleUniversityProfileForAdmissionManager = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('1');
   const [currentPage, setCurrentPage] = useState(0);
@@ -202,7 +202,7 @@ const SingleUniversityPageForAdmissionManagerDashboard = () => {
                       />
                     )}
                     {activeTab === '4' && (
-                      <AllCourseForSuperAdmin
+                      <AllCourseForSuperAdminTest
                         university_id={university_id}
                         allDepartmentData={getDepartmentData?.data}
                         allCategoryData={getAllCategoriesData?.data}
@@ -224,4 +224,4 @@ const SingleUniversityPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default SingleUniversityPageForAdmissionManagerDashboard;
+export default SingleUniversityProfileForAdmissionManager;

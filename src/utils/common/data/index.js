@@ -1388,6 +1388,135 @@ const allowedFileTypes = [
   'image/x-icon', // ICO images (favicons)
 ];
 
+const packagePaymentInvoieHeadersWithoutAction = [
+  {
+    title: 'Invoice No',
+    key: 'createdAt',
+    render: (item) => (
+      <div>
+        {item?.createdAt
+          ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
+          : ''}
+      </div>
+    ),
+  },
+  {
+    title: 'Agent Name',
+    key: 'agent',
+    render: (item) => (
+      <div>
+        {item?.agent?.first_name || item?.agent?.last_name
+          ? `${item.agent.first_name} ${item.agent.last_name}`
+          : '-'}
+      </div>
+    ),
+  },
+
+  {
+    title: 'Package Name',
+    key: 'agent_package',
+    render: (item) => <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>,
+  },
+
+  {
+    title: 'Package Amount',
+    key: 'package_amount',
+    render: (item) => (
+      <div>
+        {item?.agent_package?.package?.price ?? 'N/A'} {'MYR'}
+      </div>
+    ),
+  },
+  {
+    title: 'Discount',
+    key: 'discount',
+    render: (item) => {
+      const price = item?.agent_package?.package?.price || 0;
+      const paidAmount = item?.paid_amount || 0;
+      const discount = price - paidAmount;
+      const formattedDiscount = discount.toFixed(2);
+      return (
+        <div>
+          {`${formattedDiscount}`} {'MYR'}
+        </div>
+      );
+    },
+  },
+
+  {
+    title: 'Paid',
+    key: 'paid_amount',
+    render: (item) => (
+      <div>
+        {item?.paid_amount ?? 'N/A'} {'MYR'}
+      </div>
+    ),
+  },
+
+  {
+    title: 'Payment Date',
+    key: 'payment_date',
+    render: (item) => (
+      <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+    ),
+  },
+  {
+    title: 'Payment Status',
+    key: 'payment_status',
+    render: (item) => (
+      <p
+        className={` badge fw-semibold text-center me-4 ${item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+      >
+        <span className="text-uppercase">{item?.status ?? ''}</span>
+      </p>
+    ),
+  },
+  {
+    title: 'Payment Method',
+    key: 'payment_method',
+  },
+];
+
+const packagePaymentReportHeadersWithoutAction = [
+  {
+    title: 'Agent Name',
+    key: 'agent',
+    render: (item) => (
+      <div>
+        {item?.agent?.first_name
+          ? item?.agent?.first_name + ' ' + item?.agent?.last_name
+          : '-'}
+      </div>
+    ),
+  },
+  {
+    title: 'Package Name',
+    key: 'agent_package',
+    render: (item) => <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>,
+  },
+  {
+    title: 'Paid',
+    key: 'paid_amount',
+    render: (item) => (
+      <div>
+        {item?.paid_amount ?? 'N/A'} {'MYR'}
+      </div>
+    ),
+  },
+
+  {
+    title: 'Payment Method',
+    key: 'payment_method',
+  },
+  {
+    title: 'Payment Date',
+    key: 'payment_date',
+    render: (item) => (
+      <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+    ),
+  },
+];
+
 export {
   accountantWidgetsData,
   admissionManagerWidgetsData,
@@ -1412,6 +1541,8 @@ export {
   footerLogo,
   footerShape,
   hot_offer_image,
+  packagePaymentInvoieHeadersWithoutAction,
+  packagePaymentReportHeadersWithoutAction,
   profileBg,
   studentApplicationsHeaders,
   studentImageAndNameHeaderDataForAccountant,

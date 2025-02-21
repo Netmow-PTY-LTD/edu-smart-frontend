@@ -206,8 +206,11 @@ const UpgradePackageInAgentdashboard = () => {
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
         : `https://edusmart.study/dashboard/agent/upgrade?payment_status=cancel`;
-
+    const transaction_reason = 'agent_package';
     const package_id = upgradePackageId;
+    const currency = 'MYR';
+    const payment_method = 'sslcommerz';
+    const agent_package = null;
 
     try {
       const response = await sslCommerzPaymentIntend({
@@ -216,6 +219,10 @@ const UpgradePackageInAgentdashboard = () => {
         success_url,
         cancel_url,
         package_id,
+        transaction_reason,
+        currency,
+        payment_method,
+        agent_package,
       }).unwrap();
 
       if (response.success && response?.data?.gatewayPageURL) {
