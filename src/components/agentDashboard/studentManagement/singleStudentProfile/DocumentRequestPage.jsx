@@ -1,7 +1,6 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -67,10 +66,8 @@ const DocumentRequestPage = ({ student_id }) => {
 
   const isFilteredData =
     getSingleStudentDocRequest?.data?.length > 0 &&
-    getSingleStudentDocRequest?.data?.filter(
-      (item) =>
-        item?.status === 'requested' &&
-        item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    getSingleStudentDocRequest?.data?.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const handleSubmit = async (values, { setSubmitting }) => {

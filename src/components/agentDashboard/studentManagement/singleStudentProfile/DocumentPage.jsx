@@ -7,7 +7,7 @@ import { useGetSingleUserSubmittedDocumentQuery } from '@/slice/services/common/
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
-const DocumentPage = ({ student_id, sigleStudentIsLoading }) => {
+const DocumentPage = ({ student_id }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
@@ -19,6 +19,7 @@ const DocumentPage = ({ student_id, sigleStudentIsLoading }) => {
   } = useGetSingleUserSubmittedDocumentQuery({
     student_id,
   });
+
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
   // Filter data for search option
   const isFilteredData =

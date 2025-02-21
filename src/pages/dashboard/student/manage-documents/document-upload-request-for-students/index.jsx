@@ -232,6 +232,7 @@ const AllUploadDocumentsForStudents = () => {
     const updatedata = {
       ...values,
       id: docId,
+      status: 'submitted',
     };
 
     try {

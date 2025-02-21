@@ -5,6 +5,7 @@ import Layout from '@/components/layout';
 import { useAllSubmittedDocumentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetAllUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
 import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import {
   Card,

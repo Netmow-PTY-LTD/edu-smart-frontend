@@ -1,4 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
