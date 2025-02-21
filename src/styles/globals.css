@@ -10113,6 +10113,10 @@ textarea.form-control {
   line-height: 130%;
 }
 
+.course-offers-list ul li svg {
+  flex-shrink: 0;
+}
+
 .terms-conditions {
   display: flex;
   align-items: center;

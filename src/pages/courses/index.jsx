@@ -2,6 +2,7 @@ import CourseCard from '@/components/main/common/CourseCard';
 import PageBanner from '@/components/main/common/PageBanner';
 import MainLayout from '@/components/main/layout';
 import { useGetAllCoursesQuery } from '@/slice/services/public/university/publicUniveristyService';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 export default function AllCourses() {
@@ -10,6 +11,21 @@ export default function AllCourses() {
   const [visibleCourses, setVisibleCourses] = useState(6);
 
   const { data: allCourses } = useGetAllCoursesQuery();
+  const params = useSearchParams();
+  const courseId = params.get('id');
+
+  const course = allCourses?.data?.find((item) => item?._id === courseId);
+
+  useEffect(() => {
+    if (course) {
+      setSearchTerm(course?.name);
+    }
+  }, [course]);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   useEffect(() => {
     const filteredData = (
       allCourses?.data && allCourses?.data.length > 0
@@ -25,15 +41,11 @@ export default function AllCourses() {
     setFilteredCourses(filteredData);
   }, [allCourses?.data, searchTerm]);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
   const loadMore = () => {
     setVisibleCourses((prevVisibleCourses) => prevVisibleCourses + 6);
   };
 
-  console.log(filteredCourses);
+  //console.log(filteredCourses);
 
   return (
     <MainLayout>
