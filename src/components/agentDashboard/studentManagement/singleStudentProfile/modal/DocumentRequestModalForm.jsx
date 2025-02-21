@@ -1,23 +1,11 @@
 import React from 'react';
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  FormGroup,
-  Label,
-  Input,
-  Row,
-  Col,
-} from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { Formik, Field, Form } from 'formik';
-import TextField from '@/components/common/formField/TextField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import TextArea from '@/components/common/formField/TextAreaField';
-import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 import SingleSelectFieldForAgent from './SingleSelectFieldForAgent';
+import { useGetAllDocumentListQuery } from '@/slice/services/common/commonDocumentService';
 
 const DocumentRequestModalForm = ({
   formHeader,
@@ -30,24 +18,28 @@ const DocumentRequestModalForm = ({
   setInitialValues,
 }) => {
   const { data: documentData, isLoading: documentLoading } =
-    useGetDocumentInSuperAdminQuery();
+    useGetAllDocumentListQuery();
 
-  console.log(documentData);
-  const options = [
-    { value: 'photograph', label: 'Photograph' },
-    { value: 'passport', label: 'Passport' },
-    { value: 'offer_letter', label: 'Offer Letter' },
-    { value: 'medical_certificate', label: 'Medical Certificate' },
-    { value: 'academic_certificate', label: 'Academic Certificate' },
-    { value: 'personal_bond', label: 'Personal Bond' },
-    { value: 'noc', label: 'NOC' },
-    { value: 'letter_of_eligibility', label: 'Letter of Eligibility' },
-    {
-      value: 'english_language_certificate',
-      label: 'English Language Certificate',
-    },
-    { value: 'others', label: 'Others' },
-  ];
+  console.log();
+  const options = documentData.data.map((item) => ({
+    value: item._id,
+    label: item.title,
+  }));
+  // const options = [
+  //   { value: 'photograph', label: 'Photograph' },
+  //   { value: 'passport', label: 'Passport' },
+  //   { value: 'offer_letter', label: 'Offer Letter' },
+  //   { value: 'medical_certificate', label: 'Medical Certificate' },
+  //   { value: 'academic_certificate', label: 'Academic Certificate' },
+  //   { value: 'personal_bond', label: 'Personal Bond' },
+  //   { value: 'noc', label: 'NOC' },
+  //   { value: 'letter_of_eligibility', label: 'Letter of Eligibility' },
+  //   {
+  //     value: 'english_language_certificate',
+  //     label: 'English Language Certificate',
+  //   },
+  //   { value: 'others', label: 'Others' },
+  // ];
   return (
     <div>
       <Modal isOpen={isOpen} centered size="md">

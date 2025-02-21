@@ -37,6 +37,11 @@ const DocumentRequestPage = ({ student_id }) => {
     description: '',
     notes: '',
   });
+
+  const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
+    notes: '',
+  });
+
   const perPageData = 10;
 
   const [createDocumentRequest] = useCreateUserDocRequestForAgentMutation();
@@ -92,12 +97,7 @@ const DocumentRequestPage = ({ student_id }) => {
   };
 
   const handleStatusChange = async (user_document_id, status) => {
-    if (status === 'rejected') {
-      togModal(user_document_id);
-      return;
-    }
     const updatedDataStatus = { user_document_id, status };
-
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -112,7 +112,6 @@ const DocumentRequestPage = ({ student_id }) => {
 
   const handleRejectStatus = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
     const updatedDataStatus = {
       ...values,
       user_document_id: docId,
@@ -189,7 +188,10 @@ const DocumentRequestPage = ({ student_id }) => {
       title: 'Notes',
       key: 'notes',
       render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
+        <div
+          style={{ color: '#007BFF' }}
+          className="fs-14 fw-medium text-capitalize"
+        >
           {`${item?.notes ? item?.notes : '-'}`}
         </div>
       ),
@@ -233,7 +235,13 @@ const DocumentRequestPage = ({ student_id }) => {
             <DropdownItem>
               <div
                 className="text-primary"
-                onClick={() => handleStatusChange(item?._id, 'accepted')}
+                onClick={() => {
+                  if (item?.status === 'submitted') {
+                    handleStatusChange(item?._id, 'accepted');
+                  } else {
+                    toast.error('Document must be submitted first');
+                  }
+                }}
               >
                 <i class="ri-check-double-line me-2 text-success"></i>
                 Accepted
@@ -252,11 +260,20 @@ const DocumentRequestPage = ({ student_id }) => {
   ];
 
   useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
+    if (!getSingleStudentDocRequest?.data) return;
+
+    const singleDocument = getSingleStudentDocRequest.data.find(
+      (item) => item._id === docId
+    );
+
+    if (singleDocument) {
+      setRejectStatusInitialValues({ notes: singleDocument?.notes || '' });
+    }
+
+    setAllUploadDocumentsForStudentsData(() => [
       ...docRequestTableHeaderDataWithAction,
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getSingleStudentDocRequest, docId]);
 
   return (
     <Row>
@@ -307,7 +324,7 @@ const DocumentRequestPage = ({ student_id }) => {
       )}
       {
         <StatusUpdateForm
-          initialValues={{ notes: '' }}
+          initialValues={rejectStatusInitialValues}
           OpenModal={openModal}
           toggle={togModal}
           handleAddSubmit={handleRejectStatus}

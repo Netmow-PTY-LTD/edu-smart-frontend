@@ -115,6 +115,16 @@ export const commonDocumentService = createApi({
         };
       },
     }),
+
+    // ---------------- document list  endpoint --------------------
+    getAllDocumentList: builder.query({
+      query: () => {
+        return {
+          url: '/list',
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -129,4 +139,5 @@ export const {
   useGetAllUserSubmittedDocumentQuery,
   useGetSingleApplicationSubmittedDocumentQuery,
   useGetSingleUserSubmittedDocumentQuery,
+  useGetAllDocumentListQuery,
 } = commonDocumentService;
