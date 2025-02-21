@@ -42,6 +42,8 @@ export default function AddBlog() {
     refetch: allBlogsRefetch,
   } = useGetAllBlogsQuery();
 
+  const { data: getAllBlogData, refetch: allBlogDataRefetch } =
+    useGetAllBlogsQuery();
   const [addBlog] = useAddBlogMutation();
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -63,7 +65,8 @@ export default function AddBlog() {
 
       const result = await addBlog(formData).unwrap();
       if (result) {
-        toast.success(result?.success);
+        toast.success(result?.message);
+        allBlogDataRefetch();
         resetForm();
         setTimeout(() => {
           router.push('/dashboard/super-admin/blog/blog-list');

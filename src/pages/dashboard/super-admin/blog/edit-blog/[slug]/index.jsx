@@ -1,4 +1,3 @@
-import ImageField from '@/components/common/formField/ImageField';
 import SingleImageField from '@/components/common/formField/SingleImageField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
@@ -30,7 +29,10 @@ export default function EditBlog() {
   const router = useRouter();
   const { slug } = router.query;
 
-  const { data: getSingleBlogData } = useGetSingleBlogQuery(slug);
+  const { data: getSingleBlogData, refetch: singleBlogDataRefetch } =
+    useGetSingleBlogQuery(slug);
+  const { data: getAllBlogData, refetch: allBlogDataRefetch } =
+    useGetAllBlogsQuery();
   const blogId = getSingleBlogData?.data?._id;
   const [updateBlog] = useUpdateBlogMutation();
 
@@ -58,32 +60,36 @@ export default function EditBlog() {
     image: Yup.mixed().required('Blog Image is required'),
   });
 
-  const handleUpdateBlog = async (values, { setSubmitting, resetForm }) => {
+  const handleUpdateBlog = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
     const updatedBlogData = {
       ...values,
-      id: blogId,
+      id: blogId, // Pass the blogId so we know which blog to update
     };
 
-    console.log(updatedBlogData);
+    //console.log(updatedBlogData);
 
     try {
       const formData = new FormData();
       Object.keys(updatedBlogData).forEach((key) => {
+        // If it's not an image, append it to formData
         if (key !== 'image') {
-          formData.append(key, values[key]);
+          formData.append(key, updatedBlogData[key]);
         }
       });
 
-      // Handle the image separately
+      // If there's an image, append it separately to formData
       if (values.image) {
         formData.append('image', values.image);
       }
 
-      const result = await updateBlog(blogId).unwrap();
+      // Call the mutation and pass formData as the payload
+      const result = await updateBlog({ id: blogId, formData }).unwrap();
+
       if (result) {
-        toast.success(result?.success);
-        resetForm();
+        toast.success(result?.message);
+        allBlogDataRefetch();
         setTimeout(() => {
           router.push('/dashboard/super-admin/blog/blog-list');
         }, 2000);

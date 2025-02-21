@@ -67,6 +67,7 @@ const SingleCoursePageInFrontSite = () => {
     accessories,
     scholarship_amount,
     tuition_fee,
+    after_emgs_fee,
     status,
     university,
   } = courseDetail;
@@ -264,9 +265,9 @@ const SingleCoursePageInFrontSite = () => {
                         </svg>
                         <b>
                           Balance Payable:{' '}
-                          {(tuition_fee || university_price) - emgs_fee || ''}{' '}
-                          MYR
-                        </b>{' '}
+                          {/* {(tuition_fee || university_price) - emgs_fee || ''}{' '} */}
+                          {after_emgs_fee} MYR
+                        </b>
                       </div>
                     </div>
                     <div className="description-text">{description}</div>
