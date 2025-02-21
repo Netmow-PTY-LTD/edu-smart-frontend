@@ -3,12 +3,13 @@ import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
-
+import { useGetSingleUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
+import { currentUser } from '@/utils/currentUserHandler';
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllSubmittedDocumentsForStudents = () => {
+  const user = currentUser();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [
@@ -18,23 +19,18 @@ const AllSubmittedDocumentsForStudents = () => {
   const perPageData = 10;
 
   const {
-    data: allSubmittedDocumentForStudentData,
-    error: allSubmittedDocumentForStudentError,
-    isLoading: allSubmittedDocumentForStudentIsLoading,
-    refetch: allSubmittedDocumentForStudentRefetch,
-  } = useAllSubmittedDocumentForStudentQuery();
+    data: singleStudentAllSubmittedDoc,
+    isLoading: getSingleStudentDocLoading,
+    isFetching: getSingleStudenDocRefetch,
+  } = useGetSingleUserSubmittedDocumentQuery({ student_id: user?.id });
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  console.log(
-    'allSubmittedDocumentForStudentData',
-    allSubmittedDocumentForStudentData
-  );
   // Filter data for search option
   const isFilteredData =
-    allSubmittedDocumentForStudentData?.data?.length > 0 &&
-    allSubmittedDocumentForStudentData?.data.filter(
+    singleStudentAllSubmittedDoc?.data?.length > 0 &&
+    singleStudentAllSubmittedDoc?.data.filter(
       (item) =>
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -131,7 +127,7 @@ const AllSubmittedDocumentsForStudents = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          {allSubmittedDocumentForStudentIsLoading ? (
+          {getSingleStudentDocLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>
