@@ -1,4 +1,6 @@
 import {
+  accountantWidgetsData,
+  admissionManagerWidgetsData,
   agentProfileWidgetData,
   supperAdminWidgetsData,
 } from '@/utils/common/data';
@@ -22,7 +24,7 @@ const DashBoardCountOptions = ({
   unPaidSum,
   allEarningManagementCommonData,
 }) => {
-  console.log(fithElement);
+  // console.log(fithElement);
   return (
     <>
       <Col id="countcart" md={12}>
@@ -31,7 +33,11 @@ const DashBoardCountOptions = ({
             ? supperAdminWidgetsData
             : userInfoData?.role === 'agent_profile'
               ? agentProfileWidgetData
-              : []
+              : userInfoData?.role === 'admission_manager'
+                ? admissionManagerWidgetsData
+                : userInfoData?.role === 'accountant'
+                  ? accountantWidgetsData
+                  : []
           ).map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">

@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 const CountrySelectField = ({ name, label, options, ...props }) => {
   return (
-    <div className='mb-4'>
+    <div className="mb-4">
       <label htmlFor={name} className="form-label fs-2 mb-3">
         {label || 'Select'}
       </label>
@@ -23,6 +23,7 @@ const CountrySelectField = ({ name, label, options, ...props }) => {
           // console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
+            console.log(selectedOption);
             form.setFieldValue(
               name,
               selectedOption ? selectedOption.label : null

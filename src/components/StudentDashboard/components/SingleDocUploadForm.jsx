@@ -44,6 +44,14 @@ const SingleDocUploadForm = ({
                           <TextField name={'title'} label={'Title'} />
                         </Col>
                         <Col lg={12}>
+                          <TextField
+                            as="textarea"
+                            rows={4}
+                            name={'description'}
+                            label={'Description'}
+                          />
+                        </Col>
+                        <Col lg={12}>
                           <MultipleFileUpload
                             form={{ setFieldValue, values }}
                             label={'Document'}

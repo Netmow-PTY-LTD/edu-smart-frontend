@@ -13,7 +13,8 @@ import {
 } from '@/slice/services/super admin/agentService';
 import {
   agentEarnigsHeaders,
-  studentsHeadersWithLogoLink,
+  studentImageAndNameHeaderDataForSuperAdmin,
+  studentsHeaders,
 } from '@/utils/common/data';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -230,7 +231,10 @@ const SingleAgentInSuperAdminDashboard = () => {
                           </CardHeader>
                           <CardBody>
                             <CommonTableComponent
-                              headers={[...studentsHeadersWithLogoLink]}
+                              headers={[
+                                studentImageAndNameHeaderDataForSuperAdmin,
+                                ...studentsHeaders,
+                              ]}
                               data={isFilteredData || []}
                               currentPage={currentPage}
                               setCurrentPage={setCurrentPage}

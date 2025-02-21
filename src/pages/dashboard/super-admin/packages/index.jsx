@@ -27,12 +27,15 @@ const PackagePageInSuperAdmin = () => {
     name: '',
     price: '',
     duration: '',
+    monthly_minimum_files: '',
     yearly_bonus: '',
     yearly_bonus_amount: '',
+    yearly_bonus_minimum_files: '',
     commission: '',
     family_trip: '',
     family_trip_duration: '',
-    minimum_files: '',
+    family_trip_minimum_files: '',
+    family_trip_note: '',
     icon: null,
   });
 
@@ -91,6 +94,8 @@ const PackagePageInSuperAdmin = () => {
           setInitialValues({
             name: getSinglePackageData?.data?.name || '',
             price: getSinglePackageData?.data?.price || 0,
+            monthly_minimum_files:
+              getSinglePackageData?.data?.monthly_minimum_files || 0,
             duration:
               {
                 label: getSinglePackageData?.data?.duration,
@@ -103,6 +108,8 @@ const PackagePageInSuperAdmin = () => {
               } || '',
             yearly_bonus_amount:
               getSinglePackageData?.data?.yearly_bonus_amount || '',
+            yearly_bonus_minimum_files:
+              getSinglePackageData?.data?.yearly_bonus_minimum_files || '',
             commission: getSinglePackageData?.data?.commission || '',
             family_trip:
               {
@@ -110,11 +117,11 @@ const PackagePageInSuperAdmin = () => {
                 value: getSinglePackageData?.data?.family_trip,
               } || '',
             family_trip_duration:
-              {
-                label: getSinglePackageData?.data?.family_trip_duration,
-                value: getSinglePackageData?.data?.family_trip_duration,
-              } || '',
-            minimum_files: getSinglePackageData?.data?.minimum_files || '',
+              getSinglePackageData?.data?.family_trip_duration || '',
+            family_trip_minimum_files:
+              getSinglePackageData?.data?.family_trip_minimum_files || '',
+            family_trip_note:
+              getSinglePackageData?.data?.family_trip_note || '',
             icon: file,
           });
         } catch (error) {
@@ -125,6 +132,8 @@ const PackagePageInSuperAdmin = () => {
     }
   }, [getSinglePackageData?.data, packageId]);
 
+  console.log(initialValues);
+
   const validationSchema = Yup.object({});
 
   // add package handler
@@ -133,6 +142,8 @@ const PackagePageInSuperAdmin = () => {
     const editData = {
       ...values,
     };
+
+    console.log(editData);
 
     try {
       const finalData = new FormData();
@@ -162,6 +173,7 @@ const PackagePageInSuperAdmin = () => {
     const editData = {
       name: values?.name || '',
       price: values?.price || 0,
+      monthly_minimum_files: values?.monthly_minimum_files || 0,
       duration: values?.duration?.value || values?.duration || '',
       yearly_bonus: values?.yearly_bonus?.value
         ? values?.yearly_bonus?.value
@@ -173,6 +185,7 @@ const PackagePageInSuperAdmin = () => {
               ? values?.yearly_bonus
               : '',
       yearly_bonus_amount: values?.yearly_bonus_amount || '',
+      yearly_bonus_minimum_files: values?.yearly_bonus_minimum_files || '',
       commission: values?.commission || '',
       family_trip: values?.family_trip?.value
         ? values?.family_trip?.value
@@ -183,14 +196,14 @@ const PackagePageInSuperAdmin = () => {
             : values?.family_trip === false
               ? values?.family_trip
               : '',
-      family_trip_duration:
-        values?.family_trip_duration?.value ||
-        values?.family_trip_duration ||
-        '',
-      minimum_files: values?.minimum_files || '',
+      family_trip_duration: values?.family_trip_duration || '',
+      family_trip_minimum_files: values?.family_trip_minimum_files || '',
+      family_trip_note: values?.family_trip_note || '',
       icon: values?.icon,
       package_id: packageId,
     };
+
+    console.log(editData);
 
     try {
       const finalData = new FormData();

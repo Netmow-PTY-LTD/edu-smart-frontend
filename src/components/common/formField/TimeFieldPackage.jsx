@@ -6,18 +6,13 @@ import Flatpickr from 'react-flatpickr';
 const TimeField = ({ field, form, label, ...props }) => {
   const flatpickrRef = useRef(null);
 
-  console.log(form);
-
   const handleChange = (selectedDates) => {
-    console.log(selectedDates);
     form.setFieldValue(
       field.name,
       selectedDates.length ? selectedDates[0].toISOString().slice(0, 19) : null
     );
   };
 
-  console.log(form);
-  
   return (
     <div>
       <label htmlFor={field.name} className="form-label fs-2 mb-3">

@@ -9,7 +9,7 @@ const LatestRegistered = ({ data, headers, tableHead }) => {
 
   return (
     <Card>
-      <CardHeader className="align-items-center d-flex fw-semibold">
+      <CardHeader className="align-items-center d-flex fw-semibold ">
         {tableHead}
       </CardHeader>
 

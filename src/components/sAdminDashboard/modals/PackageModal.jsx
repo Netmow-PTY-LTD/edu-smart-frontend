@@ -2,6 +2,7 @@ import NumberField from '@/components/common/formField/NumberField';
 import SingleImageField from '@/components/common/formField/SingleImageField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
+import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import CurrencyList from 'currency-list';
@@ -78,28 +79,40 @@ const PackageModal = ({
                     <Col xl={6}>
                       <NumberField label="Package Price" name="price" />
                     </Col>
-                    <Col xl={6}>
+                    <Col xl={4}>
                       <SingleSelectField
                         name={'duration'}
                         label={'Package Duration'}
                         options={durationOptions}
                       />
                     </Col>
-                    <Col xl={6}>
+                    <Col xl={4}>
+                      <NumberField
+                        label="Monthly Minimum Files Target"
+                        name="monthly_minimum_files"
+                      />
+                    </Col>
+                    <Col xl={4}>
+                      <NumberField label="Commission (%)" name="commission" />
+                    </Col>
+                    <Col xl={4}>
                       <SingleSelectField
                         name={'yearly_bonus'}
                         label={'Yearly Bonus'}
                         options={booleanOptions}
                       />
                     </Col>
-                    <Col xl={6}>
+                    <Col xl={4}>
                       <NumberField
                         label="Yearly Bonus Amount"
                         name="yearly_bonus_amount"
                       />
                     </Col>
-                    <Col xl={6}>
-                      <NumberField label="Commission (%)" name="commission" />
+                    <Col xl={4}>
+                      <NumberField
+                        label="Yearly Total Minimum Files"
+                        name="yearly_bonus_minimum_files"
+                      />
                     </Col>
                     <Col xl={4}>
                       <SingleSelectField
@@ -108,15 +121,24 @@ const PackageModal = ({
                         options={booleanOptions}
                       />
                     </Col>
+
                     <Col xl={4}>
-                      <SingleSelectField
-                        name={'family_trip_duration'}
-                        label={'Family Trip Duration'}
-                        options={durationOptions}
+                      <TextField
+                        label="Family Trip Duration"
+                        name="family_trip_duration"
                       />
                     </Col>
                     <Col xl={4}>
-                      <NumberField label="Minimum Files" name="minimum_files" />
+                      <NumberField
+                        label="Yearly Total Minimum Files"
+                        name="family_trip_minimum_files"
+                      />
+                    </Col>
+                    <Col xl={12}>
+                      <TextArea
+                        label="Family Trip Note"
+                        name="family_trip_note"
+                      />
                     </Col>
                     <Col xl={12}>
                       <SingleImageField

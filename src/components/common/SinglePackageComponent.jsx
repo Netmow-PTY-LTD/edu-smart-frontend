@@ -65,37 +65,75 @@ const SinglePackageComponent = ({
             <li className="d-flex align-items-center gap-2">
               <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
-                Commission {data?.commission}%
+                Minimum Files For Monthly {data?.monthly_minimum_files}
               </span>
             </li>
             <li className="d-flex align-items-center gap-2">
               <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
-                Minimum Files {data?.minimum_files}
+                Commission {data?.commission}%
               </span>
             </li>
+
             <li className="d-flex align-items-center gap-2">
               <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
                 Auto Commission Deduct
               </span>
             </li>
-            <li className="d-flex align-items-center gap-2">
-              {data?.yearly_bonus === true ? (
-                <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-              ) : (
+            {data?.yearly_bonus === true ? (
+              <>
+                <li className="d-flex align-items-center gap-2">
+                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                  <span className="text-primary fw-semibold">Yearly Bonus</span>
+                </li>
+                <li className="d-flex align-items-center gap-2">
+                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                  <span className="text-primary fw-semibold">
+                    Minimum Files For Yearly Bonus{' '}
+                    {data?.yearly_bonus_minimum_files}
+                  </span>
+                </li>
+                {/* <li className="d-flex align-items-center gap-2">
+                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                  <span className="text-primary fw-semibold">
+                    Yearly Bonus Amount {data?.yearly_bonus_amount}
+                  </span>
+                </li> */}
+              </>
+            ) : (
+              <li className="d-flex align-items-center gap-2">
                 <i className="ri-close-circle-fill text-danger fs-1"></i>
-              )}
-              <span className="text-primary fw-semibold">Yearly Bonus</span>
-            </li>
-            <li className="d-flex align-items-center gap-2">
-              {data?.family_trip === true ? (
-                <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-              ) : (
+                <span className="text-primary fw-semibold">Yearly Bonus</span>
+              </li>
+            )}
+
+            {data?.family_trip === true ? (
+              <>
+                <li className="d-flex align-items-center gap-2">
+                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                  <span className="text-primary fw-semibold">Family Trip</span>
+                </li>
+                <li className="d-flex align-items-center gap-2">
+                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                  <span className="text-primary fw-semibold">
+                    Minimum Files For Family Trip{' '}
+                    {data?.family_trip_minimum_files}
+                  </span>
+                </li>
+                {/* <li className="d-flex align-items-center gap-2">
+                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                  <span className="text-primary fw-semibold">
+                    {data?.family_trip_duration} Family Trip
+                  </span>
+                </li> */}
+              </>
+            ) : (
+              <li className="d-flex align-items-center gap-2">
                 <i className="ri-close-circle-fill text-danger fs-1"></i>
-              )}
-              <span className="text-primary fw-semibold">Family Trip</span>
-            </li>
+                <span className="text-primary fw-semibold">Family Trip</span>
+              </li>
+            )}
           </ul>
         </div>
         {updatePackage ? (

@@ -4,8 +4,8 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import {
-  studentAndLogoData,
-  universityHeadersWithoutAction,
+  studentImageAndNameHeaderDataForStudentDashboard,
+  universityHeadersData,
 } from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -32,8 +32,8 @@ const AllUniversityForStudent = () => {
 
   useEffect(() => {
     setAllRegisteredUniversitydata([
-      studentAndLogoData,
-      ...universityHeadersWithoutAction,
+      studentImageAndNameHeaderDataForStudentDashboard,
+      ...universityHeadersData,
     ]);
   }, []);
 

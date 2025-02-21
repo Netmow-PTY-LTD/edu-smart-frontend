@@ -8,8 +8,11 @@ import {
   useGetSinglePackagePaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { superAdminData } from '@/utils/common/data';
-import moment from 'moment';
+import {
+  brandlogo,
+  packagePaymentInvoieHeadersWithoutAction,
+  superAdminData,
+} from '@/utils/common/data';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import {
@@ -44,7 +47,7 @@ const PackageInvoiceForSuperAdmin = () => {
     error: getSinglePackagePaymentReportDataError,
     isLoading: getSinglePackagePaymentReportDataLoading,
     refetch: getSinglePackagePaymentReportDataRefetch,
-  } = useGetSinglePackagePaymentReportQuery(packageId, { skip: !packageId });
+  } = useGetSinglePackagePaymentReportQuery(packageId);
 
   console.log(packagePaymentData);
   console.log(getSinglePackagePaymentReportData);
@@ -58,81 +61,6 @@ const PackageInvoiceForSuperAdmin = () => {
       `${item?.agent?.first_name || ''} ${item?.agent?.last_name || ''}`.toLowerCase();
     return fullName?.includes(searchTerm.toLowerCase());
   });
-
-  const packagePaymentHeadersWithoutAction = [
-    {
-      title: 'Invoice No',
-      key: 'createdAt',
-      render: (item) => (
-        <div>
-          {item?.createdAt
-            ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-            : ''}
-        </div>
-      ),
-    },
-    {
-      title: 'Agent Name',
-      key: 'agent',
-      render: (item) => (
-        <div>
-          {item?.agent?.first_name || item?.agent?.last_name
-            ? `${item.agent.first_name} ${item.agent.last_name}`
-            : '-'}
-        </div>
-      ),
-    },
-
-    {
-      title: 'Package Name',
-      key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
-    },
-
-    {
-      title: 'Package Amount',
-      key: 'package_amount',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.price ?? 'N/A'}</div>
-      ),
-    },
-    {
-      title: 'Discount ',
-      key: 'discount',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.price - item?.paid_amount}</div>
-      ),
-    },
-    {
-      title: 'Paid ',
-      key: 'paid_amount',
-    },
-
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
-      render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
-      ),
-    },
-    {
-      title: 'Payment Status',
-      key: 'payment_status',
-      render: (item) => (
-        <p
-          className={` badge fw-semibold text-center me-4 ${item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
-        >
-          <span className="text-uppercase">{item?.status ?? ''}</span>
-        </p>
-      ),
-    },
-    {
-      title: 'Payment Method',
-      key: 'payment_method',
-    },
-  ];
 
   const ActionData = {
     title: 'Action',
@@ -153,8 +81,11 @@ const PackageInvoiceForSuperAdmin = () => {
           <DropdownItem>
             <div
               onClick={() => {
-                setPackageId(item?._id);
-                setOpenInvoiceModal(true);
+                if (item?._id) {
+                  setPackageId(item?._id);
+                  setOpenInvoiceModal(true);
+                  getSinglePackagePaymentReportDataRefetch(item?._id);
+                }
               }}
               className="text-primary"
             >
@@ -194,7 +125,7 @@ const PackageInvoiceForSuperAdmin = () => {
                 <CardBody>
                   <CommonTableComponent
                     headers={[
-                      ...packagePaymentHeadersWithoutAction,
+                      ...packagePaymentInvoieHeadersWithoutAction,
                       ActionData,
                     ]}
                     data={filteredData ? filteredData : []}
@@ -222,15 +153,24 @@ const PackageInvoiceForSuperAdmin = () => {
               }
               tableData={[getSinglePackagePaymentReportData?.data]}
               printInvoice={printInvoice}
-              subtotal={getSinglePackagePaymentReportData?.data?.paid_amount}
+              subtotal={
+                getSinglePackagePaymentReportData?.data?.agent_package?.package
+                  ?.price *
+                  getSinglePackagePaymentReportData?.data?.coupon?.package_duration.split(
+                    '_'
+                  )[0] ||
+                getSinglePackagePaymentReportData?.data?.agent_package?.package
+                  ?.price
+              }
               total={getSinglePackagePaymentReportData?.data?.paid_amount}
               currency={'MYR'}
               payment_status={getSinglePackagePaymentReportData?.data?.status}
-              logoData={'/edusmart-Final-Logo-Final-Logo.png'}
+              logoData={brandlogo}
               invoice_no={getSinglePackagePaymentReportData?.data}
               payment_method={
                 getSinglePackagePaymentReportData?.data?.payment_method
               }
+              paymentData={getSinglePackagePaymentReportData?.data}
             />
           }
         </div>
