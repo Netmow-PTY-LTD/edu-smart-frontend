@@ -2,20 +2,10 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
-import { useAllSubmittedDocumentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetAllUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllDocumentForAgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,7 +50,7 @@ const AllDocumentForAgentDashboard = () => {
         <span className="d-flex flex-column text-capitalize">
           {item?.user?.first_name && item?.user?.last_name ? (
             <Link
-              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}`}
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
               className="text-primary text-decoration-none"
             >
               {`${item?.user?.first_name} ${item?.user?.last_name}`}

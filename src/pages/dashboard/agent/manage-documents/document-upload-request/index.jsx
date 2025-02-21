@@ -51,7 +51,7 @@ const StudentDocumentUploadRquestForAgent = () => {
         <span className="d-flex flex-column text-capitalize">
           {item?.user?.first_name && item?.user?.last_name ? (
             <Link
-              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}`}
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=3`}
               className="text-primary text-decoration-none"
             >
               {`${item?.user?.first_name} ${item?.user?.last_name}`}
