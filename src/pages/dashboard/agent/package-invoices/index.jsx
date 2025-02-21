@@ -156,9 +156,11 @@ const PackageInvoiceForSuperAdmin = () => {
               subtotal={
                 getSinglePackagePaymentReportData?.data?.agent_package?.package
                   ?.price *
-                getSinglePackagePaymentReportData?.data?.coupon?.package_duration.split(
-                  '_'
-                )[0]
+                  getSinglePackagePaymentReportData?.data?.coupon?.package_duration.split(
+                    '_'
+                  )[0] ||
+                getSinglePackagePaymentReportData?.data?.agent_package?.package
+                  ?.price
               }
               total={getSinglePackagePaymentReportData?.data?.paid_amount}
               currency={'MYR'}

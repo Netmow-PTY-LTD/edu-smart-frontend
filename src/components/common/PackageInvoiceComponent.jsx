@@ -294,9 +294,11 @@ const PackageInvoiceComponent = ({
                                     {(() => {
                                       return (
                                         item?.agent_package?.package?.price *
-                                        item?.coupon?.package_duration.split(
-                                          '_'
-                                        )[0]
+                                          item?.coupon?.package_duration.split(
+                                            '_'
+                                          )[0] ||
+                                        item?.agent_package?.package?.price ||
+                                        0
                                       ).toFixed(2);
                                     })()}{' '}
                                     {currency}
@@ -325,23 +327,10 @@ const PackageInvoiceComponent = ({
                         <tr className="border-top border-top-dashed">
                           <th scope="row">Discount :</th>
                           <th className="text-end">
-                            {/* {paymentData?.agent_package?.package?.price !=
-                              null && paymentData?.paid_amount != null
-                              ? (() => {
-                                  const price =
-                                    paymentData?.agent_package?.package
-                                      ?.price || 0;
-                                  const paidAmount =
-                                    paymentData?.paid_amount || 0;
-                                  const discount = price - paidAmount;
-                                  const formattedDiscount = discount.toFixed(2);
-                                  return `${formattedDiscount} ${currency}`;
-                                })()
-                              : '-'} */}
                             {(
                               (subtotal *
                                 paymentData?.coupon?.discount_percentage) /
-                              100
+                                100 || 0
                             ).toFixed(2)}{' '}
                             {currency}
                           </th>

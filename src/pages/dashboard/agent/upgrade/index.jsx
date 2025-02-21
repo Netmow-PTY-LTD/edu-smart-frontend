@@ -298,10 +298,7 @@ const UpgradePackageInAgentdashboard = () => {
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
 
-      console.log(upgradeResponse);
-
       if (upgradeResponse) {
-        console.log('checking upgrade');
         toast.success(upgradeResponse?.message);
         setUpgradePackageId('');
         setUpgradePackageName('');
@@ -549,18 +546,18 @@ const UpgradePackageInAgentdashboard = () => {
                           }
                         }}
                       />
-                      {applyPackageIsLoading ? (
-                        <Loader />
-                      ) : (
-                        <button
-                          type="button"
-                          className="button px-3 fw-medium"
-                          onClick={() => handleCouponSubmit()}
-                          disabled={applyPackageIsLoading}
-                        >
-                          Apply
-                        </button>
-                      )}
+                      <div className="hstack mx-auto button px-4 py-3 fw-medium">
+                        {applyPackageIsLoading ? (
+                          <Loader />
+                        ) : (
+                          <div
+                            onClick={() => handleCouponSubmit()}
+                            disabled={applyPackageIsLoading}
+                          >
+                            Apply
+                          </div>
+                        )}
+                      </div>
                     </div>
                     {couponError && (
                       <div className="text-danger mt-2">{couponError}</div>
@@ -628,17 +625,19 @@ const UpgradePackageInAgentdashboard = () => {
                         <div className="text-primary fs-2 fw-semibold text-center mb-2">
                           Get It for FREE with Our Exclusive Coupon!
                         </div>
-                        {upgradePackageForAgentIsLoading ? (
-                          <Loader />
-                        ) : (
-                          <button
-                            disabled={upgradePackageForAgentIsLoading}
-                            onClick={() => handleUpgradePackageWithCoupon()}
-                            className="button px-4 py-2"
-                          >
-                            Continue
-                          </button>
-                        )}
+                        <div className="hstack mx-auto d-flex justify-content-center align-items-center button px-3 py-2 w-25">
+                          {upgradePackageForAgentIsLoading ? (
+                            <Loader />
+                          ) : (
+                            <div
+                              disabled={upgradePackageForAgentIsLoading}
+                              onClick={() => handleUpgradePackageWithCoupon()}
+
+                            >
+                              Continue
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ) : (
                       ''
