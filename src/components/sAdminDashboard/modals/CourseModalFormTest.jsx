@@ -62,8 +62,8 @@ const CourseModalFormTest = ({
         >
           {({ isSubmitting, setFieldValue, values, errors, touched }) => {
             useEffect(() => {
-              const after_emgs_fee = values.university_price - values.price;
-              setFieldValue('after_emgs_fee', after_emgs_fee);
+              const after_emgs_fee_get = values.university_price - values.price;
+              setFieldValue('after_emgs_fee', after_emgs_fee_get);
             }, [values.university_price, values.price, setFieldValue]);
 
             return (
@@ -107,7 +107,7 @@ const CourseModalFormTest = ({
                     <div className="mb-3">
                       <NumberFieldForCourse
                         name="university_price"
-                        label="Tution Fee"
+                        label="Tuition Fee"
                       />
                     </div>
                   </Col>
@@ -119,7 +119,11 @@ const CourseModalFormTest = ({
 
                   <Col xl={6} hidden>
                     <div className="mb-3">
-                      <NumberFieldForCourse name="emgs_fee" label="EMGS Fee" />
+                      <NumberFieldForCourse
+                        name="emgs_fee"
+                        label="EMGS Fee"
+                        readOnly
+                      />
                     </div>
                   </Col>
 
@@ -128,6 +132,7 @@ const CourseModalFormTest = ({
                       <NumberFieldForCourse
                         name="after_emgs_fee"
                         label="After Emgs Fee"
+                        readOnly
                       />
                     </div>
                   </Col>
@@ -183,6 +188,32 @@ const CourseModalFormTest = ({
                     </div>
                   </Col>
  */}
+
+                  <Col xl={12}>
+                    <div className="mb-3">
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Commision Auto Deduct
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="auto_deduct"
+                        className="form-check-input"
+                      />
+                    </div>
+                  </Col>
+
+                  <Col xl={12}>
+                    <div className="mb-3">
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Free Air Ticket
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="free_air_ticket"
+                        className="form-check-input"
+                      />
+                    </div>
+                  </Col>
 
                   <Col xl={12}>
                     <div className="mb-3">
@@ -337,32 +368,6 @@ const CourseModalFormTest = ({
                       )
                     }
                   </Field>
-
-                  <Col xl={12}>
-                    <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">
-                        Commision Auto Deduct
-                      </label>
-                      <Field
-                        type="checkbox"
-                        name="auto_deduct"
-                        className="form-check-input"
-                      />
-                    </div>
-                  </Col>
-
-                  <Col xl={12}>
-                    <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">
-                        Free Air Ticket
-                      </label>
-                      <Field
-                        type="checkbox"
-                        name="free_air_ticket"
-                        className="form-check-input"
-                      />
-                    </div>
-                  </Col>
 
                   <Col xl={12}>
                     <div className="mb-5 profile-img">
