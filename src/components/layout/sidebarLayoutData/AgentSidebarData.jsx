@@ -14,6 +14,7 @@ const AgentSidebarData = () => {
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
   const [isPaymentReport, setIsPaymentReport] = useState(false);
+  
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');

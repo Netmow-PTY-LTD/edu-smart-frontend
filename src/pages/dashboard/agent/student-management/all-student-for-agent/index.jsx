@@ -1,17 +1,18 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
   useAllStudentForAgentQuery,
   useDeleteStudentForAgentMutation,
 } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import {
-  studentAndLogoDataForAgentDashboard,
-  studentsHeadersWithoutAction,
+  studentsHeaders,
+  studentsImageAndNameHeaderDataInAgentDashboard,
 } from '@/utils/common/data';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -26,7 +27,6 @@ import {
 const AllStudentsForAgent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [studentHeadersData, setStudentHeadersData] = useState([]);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [studentIdForDelete, setStudentIdForDelete] = useState('');
 
@@ -75,18 +75,6 @@ const AllStudentsForAgent = () => {
       //
     }
   };
-
-  useEffect(() => {
-    if (allStudentForAgentData?.data?.length > 0) {
-      const updatedHeaders = [
-        studentAndLogoDataForAgentDashboard,
-        ...studentsHeadersWithoutAction.slice(1),
-        studentHeaderAction,
-      ];
-      setStudentHeadersData(updatedHeaders);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allStudentForAgentData?.data?.length]);
 
   const studentHeaderAction = {
     title: 'Action',
@@ -156,16 +144,24 @@ const AllStudentsForAgent = () => {
               />
             </CardHeader>
             <CardBody>
-              <CommonTableComponent
-                headers={studentHeadersData}
-                data={isFilteredData ? isFilteredData : []}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                perPageData={perPageData}
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
-                emptyMessage="No Data found yet."
-              />
+              {allStudentForAgentIsLoading ? (
+                <LoaderSpiner />
+              ) : (
+                <CommonTableComponent
+                  headers={[
+                    studentsImageAndNameHeaderDataInAgentDashboard,
+                    ...studentsHeaders,
+                    studentHeaderAction,
+                  ]}
+                  data={isFilteredData ? isFilteredData : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={perPageData}
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                  emptyMessage="No Data found yet."
+                />
+              )}
             </CardBody>
           </Card>
         </div>

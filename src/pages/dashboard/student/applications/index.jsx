@@ -220,6 +220,10 @@ export default function StudentApplications() {
     ),
   };
 
+
+const filteredData= applicationData?.data?.filter((item)=>item?.payment_status !== 'pending');
+
+
   return (
     <Layout>
       {applicationLoading ? (
@@ -245,7 +249,7 @@ export default function StudentApplications() {
                               ...studentApplicationsHeaders,
                               EmgsStatusActionData,
                             ]}
-                            data={applicationData?.data || []}
+                            data={filteredData || []}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             perPageData={perPageData}

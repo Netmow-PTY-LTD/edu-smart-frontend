@@ -33,8 +33,10 @@ import { newsLetterSubscriptionSuperAdmin } from '../services/super admin/newsLe
 import { packageService } from '../services/super admin/packageService';
 import { paymentServices } from '../services/super admin/paymentServices';
 import { requiredService } from '../services/super admin/requiredService';
+import { staffMemberService } from '../services/super admin/staffMemberService';
 import { superAdminBlogServices } from '../services/super admin/superAdminBlogServices';
 import { superAdminSettingsService } from '../services/super admin/superAdminSettingsService';
+import { superAdminStatsServices } from '../services/super admin/superAdminStatsServices';
 import { universityService } from '../services/super admin/universityService';
 import { universityAdministrationDescriptionService } from '../services/university-administration/api/universityAdministrationDescriptionService';
 import { universityAdministrationFaqService } from '../services/university-administration/api/universityAdministrationFaqService';
@@ -100,6 +102,7 @@ export const store = configureStore({
     [superAdminStatsServices.reducerPath]: superAdminStatsServices.reducer,
     [agentDocumentServices.reducerPath]: agentDocumentServices.reducer,
     [commonDocumentService.reducerPath]: commonDocumentService.reducer,
+    [staffMemberService.reducerPath]: staffMemberService.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -145,7 +148,9 @@ export const store = configureStore({
       .concat(publicBlogServices.middleware)
       .concat(superAdminStatsServices.middleware)
       .concat(agentDocumentServices.middleware)
-      .concat(commonDocumentService.middleware),
+      .concat(commonDocumentService.middleware)
+      .concat(staffMemberService.middleware)
+      .concat(superAdminStatsServices.middleware),
 });
 
 setupListeners(store.dispatch);

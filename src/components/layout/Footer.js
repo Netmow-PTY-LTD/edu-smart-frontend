@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
-import brandLogo from '/public/edusmart-Final-Logo-Final-Logo.png';
+
+import { brandlogo } from '@/utils/common/data';
 import Link from 'next/link';
 
 const Footer = () => {
@@ -13,9 +14,9 @@ const Footer = () => {
             <Col sm={6}>
               Copyright &copy; {new Date().getFullYear()} &nbsp; |&nbsp; All
               Rights Reserved by{' '}
-              <Link href="/super-admin">
+              <Link href="">
                 <Image
-                  src={brandLogo}
+                  src={brandlogo}
                   width={100}
                   height={30}
                   alt=""

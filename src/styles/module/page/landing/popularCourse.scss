@@ -4,10 +4,16 @@
   padding: 100px 0;
   background: #fff;
 
+  @media (max-width: 991px) {
+    padding: 40px 0;
+  }
+
   .container {
     // container code area
 
     .popular-coureses-heading {
+      max-width: 1000px;
+      margin: 0 auto;
       h5 {
         color: var(--Secondary-Color, #13c9bf);
         text-align: center;
@@ -42,6 +48,7 @@
 
       @media (max-width: 767px) {
         grid-template-columns: minmax(300px, 1fr);
+        gap: 20px;
       }
     }
   }

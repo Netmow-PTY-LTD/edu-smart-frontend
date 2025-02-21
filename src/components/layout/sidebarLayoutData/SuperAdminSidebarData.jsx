@@ -8,6 +8,7 @@ const SuperAdminSidebarData = () => {
   const [isUniversities, setIsUniversities] = useState(false);
   const [isUniversity, setIsUniversity] = useState(false);
   const [isInvoices, setIsInvoices] = useState(false);
+  const [rolesAndPermission, setRolesAndPermission] = useState(false);
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
@@ -45,6 +46,9 @@ const SuperAdminSidebarData = () => {
     }
     if (iscurrentState !== 'Invoices') {
       setIsInvoices(false);
+    }
+    if (iscurrentState !== 'Roles & Permission') {
+      setRolesAndPermission(false);
     }
   }, [iscurrentState]);
 
@@ -84,6 +88,41 @@ const SuperAdminSidebarData = () => {
         },
       ],
     },
+    // {
+    //   id: 'rolesandermissions',
+    //   label: 'Roles & Permissions',
+    //   icon: 'ri-user-star-fill',
+    //   link: '/#',
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setRolesAndPermission(!rolesAndPermission);
+    //     setIscurrentState('Roles & Permissions');
+    //     updateIconSidebar(e);
+    //   },
+    //   stateVariables: rolesAndPermission,
+    //   subItems: [
+    //     {
+    //       id: 'admissionmanager',
+    //       label: 'Admission Manager',
+    //       icon: 'ri-user-3-fill',
+    //       link: '/dashboard/super-admin/super-admin-panel/admission-manager',
+    //       parentId: 'invoices',
+    //     },
+    //     {
+    //       id: 'accountant',
+    //       label: 'Accountant',
+    //       icon: 'ri-user-6-fill',
+    //       link: '/dashboard/super-admin/super-admin-panel/accountant',
+    //       parentId: 'invoices',
+    //     },
+    //   ],
+    // },
+    {
+      id: 'allpermittedusers',
+      label: 'Roles & Permissions',
+      icon: 'ri-user-star-fill',
+      link: '/dashboard/super-admin/super-admin-panel/all-permitted-users',
+    },
     {
       id: 'recent-application',
       label: 'Recent Application',
@@ -119,6 +158,7 @@ const SuperAdminSidebarData = () => {
         },
       ],
     },
+
     {
       id: 'alldocuments',
       label: 'Document Required List',

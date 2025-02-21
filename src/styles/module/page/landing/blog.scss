@@ -4,6 +4,10 @@
   padding: 100px 0;
   background: #fff;
 
+  @media (max-width: 991px) {
+    padding: 40px 0;
+  }
+
   .container {
     // container code area
 

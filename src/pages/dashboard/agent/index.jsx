@@ -9,8 +9,8 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllHotOfferQuery } from '@/slice/services/public/package/publicPackageService';
 import {
   agentEarnigsHeaders,
-  studentAndLogoDataForAgentDashboard,
-  studentsHeadersWithLogoLinkInAgent,
+  studentsHeaders,
+  studentsImageAndNameHeaderDataInAgentDashboard,
 } from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -133,8 +133,8 @@ const AgentDashboard = () => {
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
                         headers={[
-                          studentAndLogoDataForAgentDashboard,
-                          ...studentsHeadersWithLogoLinkInAgent.slice(1),
+                          studentsImageAndNameHeaderDataInAgentDashboard,
+                          ...studentsHeaders,
                         ]}
                         data={
                           allStudentForAgentData?.data
