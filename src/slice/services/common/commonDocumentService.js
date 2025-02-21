@@ -46,6 +46,24 @@ export const commonDocumentService = createApi({
         };
       },
     }),
+    getAllApplicationDocument: builder.query({
+      query: () => {
+        return {
+          url: '/all/application',
+          method: 'GET',
+        };
+      },
+    }),
+    getSingleApplicationDocument: builder.query({
+      query: (body) => {
+        const application_id = body.application_id;
+        return {
+          url: `/user/single/${application_id}`,
+          method: 'GET',
+        };
+      },
+    }),
+
     // ---------------- User or Student Base document  endpoint --------------------
 
     getAllUserDocRequest: builder.query({
@@ -78,6 +96,24 @@ export const commonDocumentService = createApi({
         };
       },
     }),
+
+    getAllUserDocument: builder.query({
+      query: () => {
+        return {
+          url: '/all/user',
+          method: 'GET',
+        };
+      },
+    }),
+    getSingleUserDocument: builder.query({
+      query: (body) => {
+        const student_id = body.student_id;
+        return {
+          url: `/user/single/${student_id}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -88,4 +124,8 @@ export const {
   useGetSingleUserDocRequestQuery,
   useUpdateRequestUserDocStatusMutation,
   useUploadRequestApplicationDocMutation,
+  useGetAllApplicationDocumentQuery,
+  useGetAllUserDocumentQuery,
+  useGetSingleApplicationDocumentQuery,
+  useGetSingleUserDocumentQuery,
 } = commonDocumentService;
