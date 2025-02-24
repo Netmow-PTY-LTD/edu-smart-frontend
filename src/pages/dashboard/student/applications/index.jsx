@@ -122,7 +122,9 @@ export default function StudentApplications() {
   ]);
 
   const sslCommerzPaymentHandler = async () => {
-    const price = singleGetApplicationData?.data?.course?.price;
+    const price =
+      singleGetApplicationData?.data?.course?.emgs_fee ||
+      singleGetApplicationData?.data?.course?.price;
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/student/applications/?payment_status=faild`
@@ -220,9 +222,9 @@ export default function StudentApplications() {
     ),
   };
 
-
-const filteredData= applicationData?.data?.filter((item)=>item?.payment_status !== 'pending');
-
+  const filteredData = applicationData?.data?.filter(
+    (item) => item?.payment_status !== 'pending'
+  );
 
   return (
     <Layout>
