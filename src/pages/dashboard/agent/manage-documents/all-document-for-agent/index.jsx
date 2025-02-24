@@ -1,18 +1,11 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
-import { useAllSubmittedDocumentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+import { useGetAllUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
+import Link from 'next/link';
 import React, { useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllDocumentForAgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,9 +18,7 @@ const AllDocumentForAgentDashboard = () => {
     error: allSubmittedDocumentForAgentError,
     isLoading: allSubmittedDocumentForAgentIsLoading,
     refetch: allSubmittedDocumentForAgentRefetch,
-  } = useAllSubmittedDocumentForAgentQuery();
-
-  // console.log(allSubmittedDocumentForAgentData);
+  } = useGetAllUserSubmittedDocumentQuery();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -41,55 +32,88 @@ const AllDocumentForAgentDashboard = () => {
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const actionHeader = [
+  const docRequestTableHeaderDataWithoutAction = [
     {
-      title: 'Actions',
-      key: 'actions',
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
       render: (item) => {
-        const status = item?.status;
+        const newTitle = item?.title?.replace(/_/g, ' ');
 
-        // console.log(status);
-        const validStatuses = ['accepted', 'rejected', 'pending', 'requested'];
-
-        if (validStatuses.includes(status)) {
-          return (
-            <UncontrolledDropdown className="card-header-dropdown">
-              <DropdownToggle
-                tag="a"
-                className="text-reset dropdown-btn"
-                role="button"
-              >
-                <span className="button px-3">
-                  <i className="ri-more-fill align-middle"></i>
-                </span>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu dropdown-menu-end">
-                {status === 'accepted' && (
-                  <DropdownItem>
-                    <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-                    Accepted
-                  </DropdownItem>
-                )}
-                {/* {status === 'rejected' && (
-                  <DropdownItem>
-                    <i className="ri-refresh-fill align-start me-2 text-muted fw-bold"></i>
-                    Reconsider
-                  </DropdownItem>
-                )} */}
-
-                {status === 'requested' && (
-                  <DropdownItem>
-                    <i className="ri-question-fill align-start me-2 text-muted fw-bold"></i>
-                    Review Request
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          );
-        }
-
-        return null;
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
       },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
     },
   ];
 
@@ -108,7 +132,7 @@ const AllDocumentForAgentDashboard = () => {
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={studentSubmittedDocumentsHeaderWithoutAction}
+                  headers={docRequestTableHeaderDataWithoutAction}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}

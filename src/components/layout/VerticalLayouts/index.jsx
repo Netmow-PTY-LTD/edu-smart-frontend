@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
+import AccountantSidebarData from '../sidebarLayoutData/AccountantSidebarData';
+import AdmissionManagerSidebarData from '../sidebarLayoutData/AdmissionManagerData';
 import AgentSidebarData from '../sidebarLayoutData/AgentSidebarData';
 import StudentSidebarData from '../sidebarLayoutData/StudentSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
@@ -17,16 +19,24 @@ import UniversityAdministratorSidebarData from '../sidebarLayoutData/UniversityS
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const superAdminSidebarData = SuperAdminSidebarData().props.children;
   const studentSidebarData = StudentSidebarData().props.children;
   const agentSidebarData = AgentSidebarData().props.children;
   const universitySidebarData =
     UniversityAdministratorSidebarData().props.children;
-  const router = useRouter();
+  const admissionManagerSidebarData =
+    AdmissionManagerSidebarData().props.children;
+  const accountantSidebarData = AccountantSidebarData().props.children;
 
-  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
+  const { data: userInfodata } = useGetUserInfoQuery();
+
+  // const userInfodata = {
+  //   data: { role: 'admission_manager' },
+  // };
 
   const selectLayoutState = (state) => state.Layout;
+
   const selectLayoutProperties = createSelector(
     selectLayoutState,
     (layout) => ({
@@ -200,7 +210,11 @@ const VerticalLayout = (props) => {
             ? agentSidebarData
             : userInfodata?.data?.role === 'university_administrator'
               ? universitySidebarData
-              : []
+              : userInfodata?.data?.role === 'admission_manager'
+                ? admissionManagerSidebarData
+                : userInfodata?.data?.role === 'accountant'
+                  ? accountantSidebarData
+                  : []
       ).map((item, key) => {
         return (
           <React.Fragment key={key}>
@@ -214,7 +228,7 @@ const VerticalLayout = (props) => {
               >
                 <p
                   onClick={item?.click}
-                  className="nav-link menu-link "
+                  className="nav-link menu-link cursor-pointer"
                   data-bs-toggle="collapse"
                 >
                   <i className={`pe-3 ${item.icon}`}></i>

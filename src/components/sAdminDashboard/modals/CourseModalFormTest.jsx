@@ -61,6 +61,7 @@ const CourseModalFormTest = ({
           onSubmit={onSubmit}
         >
           {({ isSubmitting, setFieldValue, values, errors, touched }) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
               const after_emgs_fee_get = values.tuition_fee - values.emgs_fee;
               setFieldValue('after_emgs_fee', after_emgs_fee_get);

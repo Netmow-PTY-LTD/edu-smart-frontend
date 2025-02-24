@@ -8,7 +8,7 @@ import {
   useGetSingleApplicationPaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { superAdminData } from '@/utils/common/data';
+import { brandlogo, superAdminData } from '@/utils/common/data';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -44,9 +44,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
     error: getSingleApplicationPaymentReportDataError,
     isLoading: getSingleApplicationPaymentReportDataLoading,
     refetch: getSingleApplicationPaymentReportDataRefetch,
-  } = useGetSingleApplicationPaymentReportQuery(applicationId, {
-    skip: !applicationId,
-  });
+  } = useGetSingleApplicationPaymentReportQuery(applicationId);
 
   console.log(getSingleApplicationPaymentReportData);
 
@@ -142,8 +140,11 @@ const ApplicationInvoiceInSuperAdmin = () => {
           <DropdownItem>
             <div
               onClick={() => {
-                setApplicationId(item?._id);
-                setOpenInvoiceModal(true);
+                if (item?._id) {
+                  setApplicationId(item?._id);
+                  setOpenInvoiceModal(true);
+                  getSingleApplicationPaymentReportDataRefetch(item?._id);
+                }
               }}
               className="text-primary"
             >
@@ -213,7 +214,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
               //   payButton,
               //   goToPay,
               //   chargesType,
-                // invoice=
+              // invoice=
               //   superAdmin,
               subtotal={
                 getSingleApplicationPaymentReportData?.data?.paid_amount
@@ -225,8 +226,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 getSingleApplicationPaymentReportData?.data?.application
                   ?.payment_status
               }
-              logoData={'/edusmart-Final-Logo-Final-Logo.png'}
-              invoice_no ={getSingleApplicationPaymentReportData?.data}
+              logoData={brandlogo}
+              invoice_no={getSingleApplicationPaymentReportData?.data}
             />
           }
         </div>

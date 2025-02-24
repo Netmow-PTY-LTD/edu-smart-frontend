@@ -3,7 +3,10 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
-import { studentsHeadersWithLogoLink } from '@/utils/common/data';
+import {
+  studentImageAndNameHeaderDataForSuperAdmin,
+  studentsHeaders,
+} from '@/utils/common/data';
 import Link from 'next/link';
 
 import React, { useState } from 'react';
@@ -106,7 +109,8 @@ const AllStudentsPage = () => {
                 <CardBody className="p-4">
                   <CommonTableComponent
                     headers={[
-                      ...studentsHeadersWithLogoLink,
+                      studentImageAndNameHeaderDataForSuperAdmin,
+                      ...studentsHeaders,
                       studentHeaderAction,
                     ]}
                     data={isFilteredData ? isFilteredData : []}

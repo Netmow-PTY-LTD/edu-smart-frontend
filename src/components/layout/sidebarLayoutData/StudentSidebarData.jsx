@@ -96,39 +96,39 @@ const StudentSidebarData = () => {
         // },
       ],
     },
-    // {
-    //   id: 'managedocument',
-    //   label: 'Manage Documents',
-    //   icon: 'ri-article-fill',
-    //   link: '/#',
-    //   click: function (e) {
-    //     e.preventDefault();
-    //     setIsManageDocument(!isManageDocument);
-    //     setIscurrentState('Manage Document');
-    //   },
-    //   stateVariables: isManageDocument,
-    //   subItems: [
-    //     {
-    //       id: 'alldocuments',
-    //       label: 'All Documents',
-    //       icon: 'ri-file-list-fill',
-    //       link: '/dashboard/student/manage-documents/all-submitted-documents-for-students',
-    //       pathName:
-    //         '/dashboard/student/manage-documents/all-submitted-documents-for-students',
-    //       parentId: 'managedocument',
-    //     },
+    {
+      id: 'managedocument',
+      label: 'Manage Documents',
+      icon: 'ri-article-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsManageDocument(!isManageDocument);
+        setIscurrentState('Manage Document');
+      },
+      stateVariables: isManageDocument,
+      subItems: [
+        {
+          id: 'alldocuments',
+          label: 'All Documents',
+          icon: 'ri-file-list-fill',
+          link: '/dashboard/student/manage-documents/all-submitted-documents-for-students',
+          pathName:
+            '/dashboard/student/manage-documents/all-submitted-documents-for-students',
+          parentId: 'managedocument',
+        },
 
-    //     {
-    //       id: 'documentuploadrequest',
-    //       label: 'Doc Upload Request',
-    //       link: '/dashboard/student/manage-documents/document-upload-request-for-students',
-    //       icon: 'ri-file-list-3-fill',
-    //       pathName:
-    //         '/dashboard/student/manage-documents/document-upload-request-for-students',
-    //       parentId: 'managedocument',
-    //     },
-    //   ],
-    // },
+        {
+          id: 'documentuploadrequest',
+          label: 'Doc Upload Request',
+          link: '/dashboard/student/manage-documents/document-upload-request-for-students',
+          icon: 'ri-file-list-3-fill',
+          pathName:
+            '/dashboard/student/manage-documents/document-upload-request-for-students',
+          parentId: 'managedocument',
+        },
+      ],
+    },
     {
       id: 'applications',
       label: 'Applications',

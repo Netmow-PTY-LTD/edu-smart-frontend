@@ -35,7 +35,9 @@ const PackageInvoiceComponent = ({
   payment_status,
   invoice_no,
   payment_method,
+  paymentData,
 }) => {
+  // console.log(paymentData);
   return (
     <>
       {/* <Layout> */}
@@ -46,16 +48,16 @@ const PackageInvoiceComponent = ({
       {/* <Container fluid> */}
       {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
+        <ToastContainer />
         <ModalHeader toggle={close} className="">
           Inovice
         </ModalHeader>
         <ModalBody className="p-5">
-          {loading ? (
-            <LoaderSpiner />
-          ) : (
-            <Row>
-              <ToastContainer />
-              <Col>
+          <Row>
+            <Col>
+              {loading ? (
+                <LoaderSpiner />
+              ) : (
                 <Card id="demo">
                   <div className="mb-4">
                     {logoData?.business_setting?.logo ? (
@@ -67,15 +69,6 @@ const PackageInvoiceComponent = ({
                         width={80}
                       />
                     ) : (
-                      // <div
-                      //   style={{
-                      //     height: '80px',
-                      //     width: 'auto',
-                      //     display: 'flex',
-                      //     justifyContent: 'start',
-                      //     alignItems: 'start',
-                      //   }}
-                      // >
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={logoData}
@@ -84,7 +77,6 @@ const PackageInvoiceComponent = ({
                         // height={10}
                         width={'12%'}
                       />
-                      // </div>
                     )}
                   </div>
                   <CardHeader className="border-bottom-dashed ">
@@ -211,7 +203,6 @@ const PackageInvoiceComponent = ({
                         {payment_method}
                       </p>
                     </Col>
-                  
                   </Row>
 
                   <div
@@ -227,10 +218,10 @@ const PackageInvoiceComponent = ({
                           <th scope="col">SL</th>
                           <th scope="col">Package Name</th>
                           <th scope="col">Package Duration</th>
-                          <th scope="col">Package Price</th>
-                          <th scope="col">Discount</th>
                           <th scope="col">Coupon</th>
-                          <th scope="col">Amount</th>
+                          <th scope="col">Package Price</th>
+                          <th scope="col">Duration</th>
+                          <th scope="col">Total Price</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -267,36 +258,49 @@ const PackageInvoiceComponent = ({
                                 </td>
 
                                 <td>
+                                  <h3 className=" my-1 fw-normal">
+                                    {item?.coupon?._id
+                                      ? item?.coupon?.code
+                                      : '-'}
+                                  </h3>
+                                </td>
+
+                                <td>
                                   <h3 className=" my-1 fw-normal text-uppercase">
                                     {item?.agent_package?.package?.price != null
-                                      ? item?.agent_package?.package?.price
+                                      ? (
+                                          item?.agent_package?.package?.price ||
+                                          0
+                                        ).toFixed(2)
                                       : '-'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
+
                                 <td>
-                                  <h3 className=" my-1 fw-normal text-uppercase">
+                                  <h3 className=" my-1 fw-normal text-capitalize">
                                     <h3>
-                                      {item?.agent_package?.package?.price !=
-                                        null && item?.paid_amount != null
-                                        ? item.agent_package.package.price -
-                                          item.paid_amount
+                                      {item?.coupon?.package_duration
+                                        ? item?.coupon?.package_duration
+                                            .split('_')
+                                            .join(' ')
                                         : '-'}{' '}
-                                      {currency}
                                     </h3>
                                   </h3>
                                 </td>
 
                                 <td>
-                                  <h3 className=" my-1 fw-normal">
-                                    {item?.coupon?._id ? item?.coupon?.code : '-'}
-                                  </h3>
-                                </td>
-                                <td>
                                   <h3 className="my-1 fw-normal">
-                                    {item?.paid_amount != null
-                                      ? item?.paid_amount
-                                      : '-'}{' '}
+                                    {(() => {
+                                      return (
+                                        item?.agent_package?.package?.price *
+                                          item?.coupon?.package_duration.split(
+                                            '_'
+                                          )[0] ||
+                                        item?.agent_package?.package?.price ||
+                                        0
+                                      ).toFixed(2);
+                                    })()}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -316,75 +320,73 @@ const PackageInvoiceComponent = ({
                         <tr>
                           <th className="">Sub Total :</th>
                           <th className="text-end ">
-                            {subtotal} {currency}
+                            {subtotal?.toFixed(2)} {currency}
                           </th>
                         </tr>
 
-                        {gst ? (
-                          <tr>
-                            <th>GST :</th>
-                            <th className="text-end ">
-                              {gst} {currency}
-                            </th>
-                          </tr>
-                        ) : (
-                          ''
-                        )}
+                        <tr className="border-top border-top-dashed">
+                          <th scope="row">Discount :</th>
+                          <th className="text-end">
+                            {(
+                              (subtotal *
+                                paymentData?.coupon?.discount_percentage) /
+                                100 || 0
+                            ).toFixed(2)}{' '}
+                            {currency}
+                          </th>
+                        </tr>
 
                         <tr className="border-top border-top-dashed ">
                           <th scope="row">Total Amount :</th>
-
                           <th className="text-end">
-                            {total} {currency}
+                            {total?.toFixed(2)} {currency}
                           </th>
                         </tr>
                       </tbody>
                     </Table>
                   </div>
                 </Card>
-
-                {/* print and download button section */}
-                <Col xl={12}>
-                  <div className="d-flex align-items-center justify-content-between mb-5">
-                    {payButton === 'yes' ? (
-                      <button
-                        onClick={goToPay}
-                        className="button text-light px-3 p-2 me-3 no-print"
-                        id="invoicepaynow"
-                      >
-                        <i className="ri-bank-card-fill align-bottom me-1"></i>
-                        Pay Now
-                      </button>
-                    ) : (
-                      ''
-                    )}
-
+              )}
+              {/* print and download button section */}
+              <Col xl={12}>
+                <div className="d-flex align-items-center justify-content-between mb-5">
+                  {payButton === 'yes' ? (
                     <button
-                      onClick={printInvoice}
-                      className="button px-5 py-2 no-print"
-                      id="invoiceprintbtn"
+                      onClick={goToPay}
+                      className="button text-light px-3 p-2 me-3 no-print"
+                      id="invoicepaynow"
                     >
-                      <i className="ri-printer-line align-bottom me-2"></i>{' '}
-                      Print
+                      <i className="ri-bank-card-fill align-bottom me-1"></i>
+                      Pay Now
                     </button>
-                    {/* <button
+                  ) : (
+                    ''
+                  )}
+
+                  <button
+                    onClick={printInvoice}
+                    className="button px-5 py-2 no-print"
+                    id="invoiceprintbtn"
+                  >
+                    <i className="ri-printer-line align-bottom me-2"></i> Print
+                  </button>
+                  {/* <button
                       onClick={generatePDF}
                       className="button text-light px-3 p-2 me-3 no-print"
                     >
                       <i className="ri-download-2-line align-bottom me-2"></i>
                       Download
                     </button> */}
-                    <button
-                      onClick={() => close()}
-                      className="d-flex justify-content-end button px-5 py-2 "
-                    >
-                      Close
-                    </button>
-                  </div>
-                </Col>
+                  <button
+                    onClick={() => close()}
+                    className="d-flex justify-content-end button px-5 py-2 "
+                  >
+                    Close
+                  </button>
+                </div>
               </Col>
-            </Row>
-          )}
+            </Col>
+          </Row>
         </ModalBody>
       </Modal>
 
