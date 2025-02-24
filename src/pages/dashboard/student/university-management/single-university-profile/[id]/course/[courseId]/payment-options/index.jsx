@@ -24,7 +24,10 @@ export default function StudentApplicationPaymentOption() {
   });
 
   const sslCommerzPaymentHandler = async () => {
-    const price = getSingleCourseData?.data?.price || 0;
+    const price =
+      getSingleCourseData?.data?.emgs_fee ||
+      getSingleCourseData?.data?.price ||
+      0;
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/student/university-management/single-university-profile/${universityId}/course/${courseId}?payment_status=failed`
@@ -40,6 +43,8 @@ export default function StudentApplicationPaymentOption() {
     const course_id = courseId;
 
     const currency = 'MYR';
+    const transaction_reason = 'application_emgs';
+    const payment_method = 'sslcommerz';
 
     try {
       const response = await sslCommerzPaymentIntend({
@@ -48,9 +53,10 @@ export default function StudentApplicationPaymentOption() {
         success_url,
         cancel_url,
         course_id,
-
         currency,
         application_id,
+        transaction_reason,
+        payment_method,
       }).unwrap();
 
       if (response.success && response?.data?.gatewayPageURL) {
