@@ -1386,6 +1386,7 @@ const allowedFileTypes = [
   'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint files (.pptx)
   'image/svg+xml', // SVG images
   'image/x-icon', // ICO images (favicons)
+  'application/jpg',
 ];
 
 const packagePaymentInvoieHeadersWithoutAction = [

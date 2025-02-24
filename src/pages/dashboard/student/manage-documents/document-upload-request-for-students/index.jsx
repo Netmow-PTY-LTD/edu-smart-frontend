@@ -234,6 +234,11 @@ const AllUploadDocumentsForStudents = () => {
   }, []);
 
   const togModal = (id) => {
+    setInitialValues({
+      title: '',
+      document: '',
+      description: '',
+    });
     setDocId(id);
     setOpenModal(!openModal);
   };
