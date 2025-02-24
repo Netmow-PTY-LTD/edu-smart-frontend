@@ -47,9 +47,11 @@ export default function StudentApplicationPaymentOption() {
         faild_url,
         success_url,
         cancel_url,
-        course_id,
-        package_id,
+        transaction_reason: 'application_emgs',
         currency,
+        payment_method: 'sslcommerz',
+        package_id,
+        course_id,
         application_id,
       }).unwrap();
 
