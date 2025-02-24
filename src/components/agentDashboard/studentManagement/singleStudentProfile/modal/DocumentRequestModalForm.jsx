@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import { useGetAllDocumentListQuery } from '@/slice/services/common/commonDocumentService';
@@ -16,6 +16,7 @@ const DocumentRequestModalForm = ({
   formSubmit,
 }) => {
   const { data: documentData } = useGetAllDocumentListQuery();
+  const [customDescriptions, setCustomDescriptions] = useState({});
 
   // Generate document options from API response
   const documentOptions =
@@ -39,65 +40,44 @@ const DocumentRequestModalForm = ({
       <ModalBody>
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting }) => {
-            console.log('values', values);
-
             let formattedData = [];
 
-            if (!values.description) {
-              // If no description, process titles
-              const selectedTitles = values.title
-                ? values.title.split(', ')
-                : [];
+            if (values.titles && values.titles.length > 0) {
+              formattedData = values.titles.map((titleObj) => {
+                const existingDocument = documentOptions.find(
+                  (doc) => doc.value === titleObj.value
+                );
 
-              formattedData =
-                selectedTitles.length > 0
-                  ? selectedTitles.map((title) => {
-                      const document = documentOptions.find(
-                        (doc) => doc.value === title
-                      );
-                      return {
-                        title,
-                        description: document ? document.description : '', // Assign description if available
-                      };
-                    })
-                  : []; // In case no titles are selected, keep it empty
-            } else {
-              // If description is provided, create a single object with title and description
-              formattedData = [
-                { title: values.title, description: values.description },
-              ];
+                return {
+                  title: titleObj.value,
+                  description: existingDocument
+                    ? existingDocument.description
+                    : customDescriptions[titleObj.value] || '',
+                };
+              });
             }
 
-            onSubmit(formattedData); // Pass the formatted array to the submit function
-            // Set submitting to false once submission is complete
+            onSubmit(formattedData);
             setSubmitting(false);
           }}
         >
           {({ isSubmitting, values, setFieldValue }) => {
-            const selectedValues = values.title ? values.title.split(', ') : [];
-            const isSelectAll = selectedValues.includes('select_all');
+            const selectedValues = values.titles || [];
+            const isSelectAll = selectedValues.some(
+              (val) => val.value === 'select_all'
+            );
 
             useEffect(() => {
               if (isSelectAll) {
-                const allTitles = documentOptions.map((opt) => opt.value);
-                setFieldValue('title', allTitles.join(', '));
-
-                const allDescriptions = documentOptions.map(
-                  (opt) => opt.description || ''
-                );
-                setFieldValue('description', allDescriptions.join(', '));
-              } else {
-                const selectedDocument = documentOptions.find(
-                  (option) => option.value === values.title
-                );
-                setFieldValue(
-                  'description',
-                  selectedDocument?.description || ''
-                );
+                const allTitles = documentOptions.map((opt) => ({
+                  value: opt.value,
+                  label: opt.label,
+                }));
+                setFieldValue('titles', allTitles);
               }
-            }, [values.title, isSelectAll, documentOptions, setFieldValue]);
+            }, [isSelectAll, documentOptions, setFieldValue]);
 
             return (
               <Form>
@@ -116,64 +96,63 @@ const DocumentRequestModalForm = ({
                             options={options}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            value={selectedValues.map((val) => ({
-                              label: val,
-                              value: val,
-                            }))}
+                            value={selectedValues}
                             onChange={(selectedOptions) => {
-                              const selectedTitles =
-                                selectedOptions?.map((opt) => opt.value) || [];
-
-                              if (selectedTitles.includes('select_all')) {
-                                const allTitles = documentOptions.map(
-                                  (opt) => opt.value
-                                );
-                                setFieldValue('title', allTitles.join(', '));
-
-                                const allDescriptions = documentOptions.map(
-                                  (opt) => opt.description || ''
-                                );
-                                setFieldValue(
-                                  'description',
-                                  allDescriptions.join(', ')
-                                );
-                              } else {
-                                setFieldValue(
-                                  'title',
-                                  selectedTitles.join(', ')
-                                );
-                              }
+                              setFieldValue('titles', selectedOptions);
                             }}
                             onCreateOption={(inputValue) => {
-                              setFieldValue(
-                                'title',
-                                [...selectedValues, inputValue].join(', ')
-                              );
+                              const newOption = {
+                                value: inputValue,
+                                label: inputValue,
+                              };
+                              setFieldValue('titles', [
+                                ...selectedValues,
+                                newOption,
+                              ]);
+
+                              // Ensure a new description field appears for this new tag
+                              setCustomDescriptions((prev) => ({
+                                ...prev,
+                                [inputValue]: '',
+                              }));
                             }}
                           />
                         </div>
                       </Col>
 
-                      {/* Show "Description" only if a new title is created */}
-                      {!isSelectAll &&
-                        selectedValues.length > 0 &&
-                        !documentOptions.some((opt) =>
-                          selectedValues.includes(opt.value)
-                        ) && (
-                          <Col md={12} xl={12}>
-                            <div className="mb-3">
-                              <TextArea
-                                name="description"
-                                label="Document Description *"
-                              />
-                            </div>
-                          </Col>
-                        )}
+                      {/* Show "Description" field for newly created tags */}
+                      {selectedValues.map((selected) => {
+                        const isNewTag = !documentOptions.some(
+                          (opt) => opt.value === selected.value
+                        );
+
+                        return (
+                          isNewTag && (
+                            <Col md={12} xl={12} key={selected.value}>
+                              <div className="mb-3">
+                                <TextArea
+                                  name={`customDescriptions.${selected.value}`}
+                                  label={`Description for "${selected.label}" *`}
+                                  value={
+                                    customDescriptions[selected.value] || ''
+                                  }
+                                  onChange={(e) => {
+                                    setCustomDescriptions((prev) => ({
+                                      ...prev,
+                                      [selected.value]: e.target.value,
+                                    }));
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )
+                        );
+                      })}
 
                       <Col md={12} xl={12}>
                         <p>
                           <span className="text-success fw-semibold">NB:</span>{' '}
-                          If you need a new document request, write it into the
+                          If you need a new document request, type it into the
                           select field.
                         </p>
                       </Col>
@@ -203,7 +182,213 @@ const DocumentRequestModalForm = ({
 
 export default DocumentRequestModalForm;
 
-// This old file
+// OLD FILE NUMBER -2
+// import React, { useEffect } from 'react';
+// import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
+// import { Formik, Form } from 'formik';
+// import SubmitButton from '@/components/common/formField/SubmitButton';
+// import TextArea from '@/components/common/formField/TextAreaField';
+// import { useGetAllDocumentListQuery } from '@/slice/services/common/commonDocumentService';
+// import CreatableSelect from 'react-select/creatable';
+
+// const DocumentRequestModalForm = ({
+//   formHeader,
+//   isOpen,
+//   onClose,
+//   initialValues,
+//   validationSchema,
+//   onSubmit,
+//   formSubmit,
+// }) => {
+//   const { data: documentData } = useGetAllDocumentListQuery();
+
+//   // Generate document options from API response
+//   const documentOptions =
+//     documentData?.data?.map((item) => ({
+//       value: item.title,
+//       label: item.title,
+//       description: item.description,
+//     })) || [];
+
+//   // Add "Select All" option at the beginning
+//   const options = [
+//     { value: 'select_all', label: 'Select All' },
+//     ...documentOptions,
+//   ];
+
+//   return (
+//     <Modal isOpen={isOpen} centered size="md">
+//       <ModalHeader toggle={onClose} className="fw-semibold text-black">
+//         {formHeader}
+//       </ModalHeader>
+//       <ModalBody>
+//         <Formik
+//           initialValues={initialValues}
+//           validationSchema={validationSchema}
+//           onSubmit={(values, { setSubmitting }) => {
+//             console.log('values', values);
+
+//             let formattedData = [];
+
+//             if (!values.description) {
+//               // If no description, process titles
+//               const selectedTitles = values.title
+//                 ? values.title.split(', ')
+//                 : [];
+
+//               formattedData =
+//                 selectedTitles.length > 0
+//                   ? selectedTitles.map((title) => {
+//                       const document = documentOptions.find(
+//                         (doc) => doc.value === title
+//                       );
+//                       return {
+//                         title,
+//                         description: document ? document.description : '', // Assign description if available
+//                       };
+//                     })
+//                   : []; // In case no titles are selected, keep it empty
+//             } else {
+//               // If description is provided, create a single object with title and description
+//               formattedData = [
+//                 { title: values.title, description: values.description },
+//               ];
+//             }
+
+//             onSubmit(formattedData); // Pass the formatted array to the submit function
+//             // Set submitting to false once submission is complete
+//             setSubmitting(false);
+//           }}
+//         >
+//           {({ isSubmitting, values, setFieldValue }) => {
+//             const selectedValues = values.title ? values.title.split(', ') : [];
+//             const isSelectAll = selectedValues.includes('select_all');
+
+//             useEffect(() => {
+//               if (isSelectAll) {
+//                 const allTitles = documentOptions.map((opt) => opt.value);
+//                 setFieldValue('title', allTitles.join(', '));
+
+//                 const allDescriptions = documentOptions.map(
+//                   (opt) => opt.description || ''
+//                 );
+//                 setFieldValue('description', allDescriptions.join(', '));
+//               } else {
+//                 const selectedDocument = documentOptions.find(
+//                   (option) => option.value === values.title
+//                 );
+//                 setFieldValue(
+//                   'description',
+//                   selectedDocument?.description || ''
+//                 );
+//               }
+//             }, [values.title, isSelectAll, documentOptions, setFieldValue]);
+
+//             return (
+//               <Form>
+//                 <Row>
+//                   <Col lg={12}>
+//                     <Row>
+//                       {/* Title Select Field */}
+//                       <Col md={12} xl={12}>
+//                         <div className="mb-3">
+//                           <label className="form-label mb-2">
+//                             Document Title *
+//                           </label>
+//                           <CreatableSelect
+//                             isClearable
+//                             isMulti
+//                             options={options}
+//                             className="basic-multi-select"
+//                             classNamePrefix="select"
+//                             value={selectedValues.map((val) => ({
+//                               label: val,
+//                               value: val,
+//                             }))}
+//                             onChange={(selectedOptions) => {
+//                               const selectedTitles =
+//                                 selectedOptions?.map((opt) => opt.value) || [];
+
+//                               if (selectedTitles.includes('select_all')) {
+//                                 const allTitles = documentOptions.map(
+//                                   (opt) => opt.value
+//                                 );
+//                                 setFieldValue('title', allTitles.join(', '));
+
+//                                 const allDescriptions = documentOptions.map(
+//                                   (opt) => opt.description || ''
+//                                 );
+//                                 setFieldValue(
+//                                   'description',
+//                                   allDescriptions.join(', ')
+//                                 );
+//                               } else {
+//                                 setFieldValue(
+//                                   'title',
+//                                   selectedTitles.join(', ')
+//                                 );
+//                               }
+//                             }}
+//                             onCreateOption={(inputValue) => {
+//                               setFieldValue(
+//                                 'title',
+//                                 [...selectedValues, inputValue].join(', ')
+//                               );
+//                             }}
+//                           />
+//                         </div>
+//                       </Col>
+
+//                       {/* Show "Description" only if a new title is created */}
+//                       {!isSelectAll &&
+//                         selectedValues.length > 0 &&
+//                         !documentOptions.some((opt) =>
+//                           selectedValues.includes(opt.value)
+//                         ) && (
+//                           <Col md={12} xl={12}>
+//                             <div className="mb-3">
+//                               <TextArea
+//                                 name="description"
+//                                 label={`Document Description for "${values.title}" *`}
+//                               />
+//                             </div>
+//                           </Col>
+//                         )}
+
+//                       <Col md={12} xl={12}>
+//                         <p>
+//                           <span className="text-success fw-semibold">NB:</span>{' '}
+//                           If you need a new document request, write it into the
+//                           select field.
+//                         </p>
+//                       </Col>
+
+//                       {/* Submit Button */}
+//                       <Col md={12} xl={12}>
+//                         <div className="my-4">
+//                           <SubmitButton
+//                             isSubmitting={isSubmitting}
+//                             formSubmit="formSubmit"
+//                           >
+//                             {formSubmit}
+//                           </SubmitButton>
+//                         </div>
+//                       </Col>
+//                     </Row>
+//                   </Col>
+//                 </Row>
+//               </Form>
+//             );
+//           }}
+//         </Formik>
+//       </ModalBody>
+//     </Modal>
+//   );
+// };
+
+// export default DocumentRequestModalForm;
+
+// This old file -1
 // import React, { useEffect } from 'react';
 // import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 // import { Formik, Form } from 'formik';
