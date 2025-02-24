@@ -10,9 +10,9 @@ const NumberFieldForCourse = ({ name, label, form, ...props }) => {
       </label>
       <Field name={name}>
         {({ field, form }) => {
-          const universityPrice = form.values.university_price || 0; // Get university_price
-          const after_emgs_fee = form.values.after_emgs_fee || 0; // Get university_price
-          const price_get = form.values.price || 0; // Get university_price
+          const tuitionFee = form.values.tuition_fee || 0; // Get tuition_fee
+          const after_emgs_fee = form.values.after_emgs_fee || 0; // Get tuition_fee
+          const emgs_get = form.values.emgs_fee || 0; // Get tuition_fee
 
           return (
             <input
@@ -31,11 +31,9 @@ const NumberFieldForCourse = ({ name, label, form, ...props }) => {
                 } else {
                   const numValue = parseFloat(value);
                   if (numValue >= 0) {
-                    if (name === 'price' && numValue > universityPrice) {
-                      form.setFieldValue('price', universityPrice); // Restrict price
-                      form.setFieldValue('emgs_fee', universityPrice);
-                    } else if (name === 'price' && numValue < universityPrice) {
-                      form.setFieldValue('price', numValue);
+                    if (name === 'emgs_fee' && numValue > tuitionFee) {
+                      form.setFieldValue('emgs_fee', tuitionFee); // Restrict price
+                    } else if (name === 'emgs_fee' && numValue < tuitionFee) {
                       form.setFieldValue('emgs_fee', numValue);
                     }
 
@@ -54,8 +52,8 @@ const NumberFieldForCourse = ({ name, label, form, ...props }) => {
                       form.setFieldValue('incentive_amount', numValue); // Restrict price
                     }
 
-                    if (name === 'university_price') {
-                      form.setFieldValue('university_price', numValue); // Restrict price
+                    if (name === 'tuition_fee') {
+                      form.setFieldValue('tuition_fee', numValue); // Restrict price
                     }
                   }
                 }
@@ -66,8 +64,8 @@ const NumberFieldForCourse = ({ name, label, form, ...props }) => {
                   form.setFieldValue(name, '0');
                 }
 
-                if (name === 'university_price' && value < price_get) {
-                  form.setFieldValue('university_price', price_get); // Restrict price
+                if (name === 'tuition_fee' && value < emgs_get) {
+                  form.setFieldValue('tuition_fee', emgs_get); // Restrict price
                   form.setFieldValue('incentive_amount', '0'); // Restrict price
                   toast.error(
                     'Tuition Fee amount cannot be less  than EMGS fee.'

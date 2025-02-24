@@ -61,6 +61,7 @@ const AllCourseForSuperAdminTest = ({
     gst: '',
     agent_commission_percentage: '',
     university_price: '25000',
+    tuition_fee: '25000',
     after_emgs_fee: '22600',
     incentive_amount: '0',
     description: '',
@@ -579,9 +580,9 @@ const AllCourseForSuperAdminTest = ({
     const allData = {
       name: values?.name,
       available_seats: values?.available_seats,
-      price: values?.price || values?.emgs_fee,
+      price: values?.emgs_fee || values?.price,
       gst: values?.gst,
-      emgs_fee: values?.price || values?.emgs_fee,
+      emgs_fee: values?.emgs_fee || values?.price,
       after_emgs_fee: values?.after_emgs_fee,
       agent_commission_percentage: values?.agent_commission_percentage,
       description: values?.description,
@@ -590,8 +591,8 @@ const AllCourseForSuperAdminTest = ({
       department_id: values?.department?.value,
       category_id: values?.category?.value,
       brochure: values?.brochure,
-      university_price: values?.university_price,
-      tuition_fee: values?.university_price,
+      university_price: values?.tuition_fee || values?.university_price,
+      tuition_fee: values?.tuition_fee || values?.university_price,
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
@@ -795,7 +796,7 @@ const AllCourseForSuperAdminTest = ({
     },
     {
       title: 'EMGS Fee',
-      key: 'price',
+      key: 'emgs_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
           {item?.emgs_fee || item?.price}
@@ -813,7 +814,7 @@ const AllCourseForSuperAdminTest = ({
     },
     {
       title: 'Total Fee',
-      key: 'university_price',
+      key: 'tuition_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
           {item?.tuition_fee || item?.university_price}
