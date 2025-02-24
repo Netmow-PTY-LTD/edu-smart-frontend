@@ -763,29 +763,32 @@ const studentApplicationsHeaders = [
     ),
   },
   {
-    title: 'Price',
-    key: 'price',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.payment_price
-          ? item.payment_price.toFixed(2) + ' ' + 'MYR'
-          : '-'}
-      </span>
-    ),
-  },
-  {
-    title: 'Payment Status',
-    key: 'payment_status',
+    title: 'Emgs Payment',
+    key: 'emgs_payment_status',
     render: (item) => (
       <>
         <span
-          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.emgs_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.emgs_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
         >
-          {item?.payment_status ?? '-'}
+          {item?.emgs_payment_status ?? '-'}
         </span>
       </>
     ),
   },
+  {
+    title: 'Tuition Payment',
+    key: 'tuition_fee_payment_status',
+    render: (item) => (
+      <>
+        <span
+          className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.tuition_fee_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.tuition_fee_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+        >
+          {item?.tuition_fee_payment_status ?? '-'}
+        </span>
+      </>
+    ),
+  },
+
   {
     title: 'Status',
     key: 'status',
