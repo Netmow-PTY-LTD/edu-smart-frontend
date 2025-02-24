@@ -42,8 +42,6 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
       const newFileNames = validFiles.map((file) => file.name);
 
-      console.log(newFilePreviews);
-
       setFilePreviews((prevPreviews) => [...prevPreviews, ...newFilePreviews]);
       setFileNames((prevNames) => [...prevNames, ...newFileNames]);
 

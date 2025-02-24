@@ -42,10 +42,15 @@ const SingleDocUploadForm = ({
                     <Form>
                       <Row>
                         <Col lg={12}>
-                          <TextField name={'title'} label={'Title'} />
+                          <TextField
+                            disabled={true}
+                            name={'title'}
+                            label={'Title'}
+                          />
                         </Col>
                         <Col lg={12}>
                           <TextField
+                            disabled={true}
                             as="textarea"
                             rows={4}
                             name={'description'}

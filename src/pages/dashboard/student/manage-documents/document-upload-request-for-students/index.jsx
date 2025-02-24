@@ -193,7 +193,11 @@ const AllUploadDocumentsForStudents = () => {
     {
       title: 'Uploaded Files',
       key: 'files',
-      render: (item) => <FileViewer files={item?.files && item?.files} />,
+      render: (item) => (
+        <div>
+          <FileViewer files={item?.files && item?.files} />
+        </div>
+      ),
     },
 
     {

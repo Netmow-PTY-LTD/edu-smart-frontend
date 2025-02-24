@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import {
@@ -12,7 +13,6 @@ import {
 const FileViewer = ({ files }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-
   const toggle = () => setOpenModal(!openModal);
 
   const handlePreview = (fileUrl) => {
@@ -25,13 +25,13 @@ const FileViewer = ({ files }) => {
   };
 
   return (
-    <div>
+    <div className="flex-inline">
       {/* File Preview Buttons */}
       {files?.length > 0 ? (
         files.map((file, index) => (
           <button
             key={index}
-            className="button px-4 py-2 "
+            className="button me-2 px-4 py-2 "
             onClick={() => handlePreview(file.url)}
           >
             Preview File
@@ -58,16 +58,20 @@ const FileViewer = ({ files }) => {
                     title="PDF Preview"
                   ></iframe>
                 ) : (
-                  <img
+                  <Image
                     src={selectedFile}
                     alt="Preview"
+                    width={500}
+                    height={300}
+                    className="rounded shadow-sm"
                     style={{ maxWidth: '100%', height: 'auto' }}
+                    priority
                   />
                 )
               ) : (
                 <p>No file selected</p>
               )}
-              {/* Download Button at Bottom */}
+
               <div className="text-center p-3">
                 <Link target="_blank" href={selectedFile}>
                   <Button
