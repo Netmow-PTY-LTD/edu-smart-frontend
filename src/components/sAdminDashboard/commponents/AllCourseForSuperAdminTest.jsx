@@ -1,11 +1,9 @@
 // All course Selected
 
-
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-
 
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import {
@@ -32,7 +30,6 @@ import Image from 'next/image';
 import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 import CourseModalFormTest from '../modals/CourseModalFormTest';
 
-
 const AllCourseForSuperAdminTest = ({
   university_id,
   allDepartmentData,
@@ -51,12 +48,9 @@ const AllCourseForSuperAdminTest = ({
   const [price, setPrice] = useState(2400);
   const [checkFreeAcommodation, SetCheckFreeAcommodation] = useState(false);
 
-
   const perPageData = 10;
 
   const currentDate = new Date().toISOString().split('T')[0];
-  console.log(currentDate); // Output: "2025-02-19"
-
 
   // Define initial form values
   const [initialValues, setInitialValues] = useState({
@@ -66,7 +60,10 @@ const AllCourseForSuperAdminTest = ({
     emgs_fee: '2400',
     gst: '',
     agent_commission_percentage: '',
-    university_price: '',
+    university_price: '25000',
+    tuition_fee: '25000',
+    after_emgs_fee: '22600',
+    incentive_amount: '0',
     description: '',
     department: '',
     category: '',
@@ -77,17 +74,16 @@ const AllCourseForSuperAdminTest = ({
     program_duration: '',
     image: null,
     free_accommodation: false,
-    accommodation_start_date: currentDate,  // Set current date as default value
-    accommodation_end_date: currentDate,    // Set current date as default value
+    accommodation_start_date: currentDate, // Set current date as default value
+    accommodation_end_date: currentDate, // Set current date as default value
     free_accessories: false,
     accessories: [],
     scholarship_on_tuition_fee: false,
-    scholarship_amount:'',
-    scholarship_auto_deduct:false,
-    auto_deduct:false,
-    free_air_ticket:false,
+    scholarship_amount: '',
+    scholarship_auto_deduct: false,
+    auto_deduct: false,
+    free_air_ticket: false,
   });
-
 
   // document_list_id:
   const [
@@ -100,14 +96,12 @@ const AllCourseForSuperAdminTest = ({
     },
   ] = useAddCourseMutation();
 
-
   const {
     data: getCourseData,
     error: getCourseError,
     isLoading: getCourseIsLoading,
     refetch: getCourseRefetch,
   } = useGetCourseQuery(university_id, { skip: !university_id });
-
 
   // document Related api
   const {
@@ -117,12 +111,10 @@ const AllCourseForSuperAdminTest = ({
     refetch: getDocuemtnRefetch,
   } = useGetDocumentInSuperAdminQuery();
 
-
   // const documentOptions = getDocumentData?.data?.map((item) => ({
   //   value: item._id,
   //   label: item.title,
   // }));
-
 
   //  const getSingleCourseDataForDocumentData =
   //    getCourseData?.data?.length > 0 &&
@@ -157,8 +149,6 @@ const AllCourseForSuperAdminTest = ({
     getCourseData?.data?.length > 0 &&
     getCourseData?.data.find((item) => item?._id === courseIdForEdit);
 
-  console.log(getSingleCourseDataForDocumentData?.document_requirements);
-
   // Create a new variable to hold the merged data
   let mergedData = [];
 
@@ -169,7 +159,9 @@ const AllCourseForSuperAdminTest = ({
 
     // Ensure document_requirements is valid and contains meaningful data
     if (
-      Array.isArray(getSingleCourseDataForDocumentData?.document_requirements) &&
+      Array.isArray(
+        getSingleCourseDataForDocumentData?.document_requirements
+      ) &&
       getSingleCourseDataForDocumentData.document_requirements.length > 0 &&
       !getSingleCourseDataForDocumentData.document_requirements.includes('') &&
       getSingleCourseDataForDocumentData.document_requirements !== undefined // Check for undefined
@@ -193,24 +185,11 @@ const AllCourseForSuperAdminTest = ({
     console.error('getDocumentData.data is not an array');
   }
 
-  // Output merged data to check
-  console.log('Merged Data:', mergedData);
-
-
-
-
-  // Output merged data to check for duplicates
-  console.log("MERGED DATA", mergedData);
-
   const documentOptions = mergedData?.map((item) => ({
     value: item._id,
     label: item.title,
     description: item.description,
   }));
-
-
-  console.log('merge data==>', documentOptions);
-
 
   const [
     updateCourse,
@@ -222,7 +201,6 @@ const AllCourseForSuperAdminTest = ({
     },
   ] = useUpdateCourseMutation();
 
-
   const [
     deleteCourse,
     {
@@ -232,7 +210,6 @@ const AllCourseForSuperAdminTest = ({
     },
   ] = useDeleteCourseMutation();
 
-
   useEffect(() => {
     const allDept =
       allDepartmentData?.length > 0 &&
@@ -241,7 +218,6 @@ const AllCourseForSuperAdminTest = ({
         value: dept?._id,
       }));
 
-
     const allCategory =
       allCategoryData?.length > 0 &&
       allCategoryData.map((dept) => ({
@@ -249,15 +225,12 @@ const AllCourseForSuperAdminTest = ({
         value: dept?._id,
       }));
 
-
     setAllCategoryName(allCategory ? allCategory : []);
     setAllDepartmentName(allDept ? allDept : []);
   }, [allDepartmentData, allCategoryData]);
 
-
   /* "_id": "67aad711257ff7fa00a36ecf",
             "title": "Academic Transcripts", */
-
 
   useEffect(() => {
     if (getCourseData?.data && courseIdForEdit) {
@@ -265,23 +238,13 @@ const AllCourseForSuperAdminTest = ({
         getCourseData?.data?.length > 0 &&
         getCourseData?.data.find((item) => item?._id === courseIdForEdit);
 
-
       const filterDoc = getSingleCourseData?.document_requirements.map(
         (item) => item?.title
       );
 
-
       // const filterDocInitialData = Array.isArray(getDocumentData)
       //   ? getDocumentData.filter((item) => item.label === filterDoc)
       //   : [];
-
-
-
-      console.log(
-        'Updated getSingleCourseData:',
-        getSingleCourseData.document_requirements
-      );
-
 
       const fetchData = async () => {
         try {
@@ -298,60 +261,80 @@ const AllCourseForSuperAdminTest = ({
             );
           }
 
-
-
           setInitialValues({
             name: getSingleCourseData?.name || '',
             available_seats: getSingleCourseData?.available_seats || '',
-            price: getSingleCourseData?.price || '',
-            emgs_fee: getSingleCourseData?.emgs_fee || '',
-            incentive_amount: getSingleCourseData?.incentive_amount || '',
-            scholarship_on_tuition_fee: getSingleCourseData?.scholarship_on_tuition_fee || '',
-            scholarship_amount: getSingleCourseData?.scholarship_amount || '',
-            scholarship_auto_deduct: getSingleCourseData?.scholarship_auto_deduct || '',
-            auto_deduct: getSingleCourseData?.auto_deduct || '',
-            free_air_ticket: getSingleCourseData?.free_air_ticket || '',
-            free_accommodation: getSingleCourseData?.free_accommodation || '',
-            accommodation_start_date: getSingleCourseData?.accommodation_start_date || '',
-            accommodation_end_date: getSingleCourseData?.accommodation_end_date || '',
-            free_accessories: getSingleCourseData?.free_accessories || '',
+            price:
+              getSingleCourseData?.emgs_fee || getSingleCourseData?.price || 0,
+            emgs_fee:
+              getSingleCourseData?.emgs_fee || getSingleCourseData?.price || 0,
+            //after_emgs_fee: getSingleCourseData?.after_emgs_fee || 0,
+            incentive_amount: getSingleCourseData?.incentive_amount || 0,
+            scholarship_on_tuition_fee:
+              getSingleCourseData?.scholarship_on_tuition_fee || false,
+            scholarship_amount: getSingleCourseData?.scholarship_amount || 0,
+            scholarship_auto_deduct:
+              getSingleCourseData?.scholarship_auto_deduct || false,
+            auto_deduct: getSingleCourseData?.auto_deduct || false,
+            free_air_ticket: getSingleCourseData?.free_air_ticket || false,
+            free_accommodation:
+              getSingleCourseData?.free_accommodation || false,
+            accommodation_start_date:
+              getSingleCourseData?.accommodation_start_date || '',
+            accommodation_end_date:
+              getSingleCourseData?.accommodation_end_date || '',
+            free_accessories: getSingleCourseData?.free_accessories || false,
             accessories: getSingleCourseData?.accessories || [],
-            gst: getSingleCourseData?.gst || '',
+            gst: getSingleCourseData?.gst || 0,
 
             agent_commission_percentage:
-              getSingleCourseData?.agent_commission_percentage || '',
-            university_price: getSingleCourseData?.university_price || '',
-            tution_fee: getSingleCourseData?.tution_fee || '',
+              getSingleCourseData?.agent_commission_percentage || 0,
+            university_price:
+              getSingleCourseData?.tuition_fee ||
+              getSingleCourseData?.university_price ||
+              0,
+            tuition_fee:
+              getSingleCourseData?.tuition_fee ||
+              getSingleCourseData?.university_price ||
+              0,
             department: getSingleCourseData?.department?._id
               ? {
-                label: getSingleCourseData?.department?.name,
-                value: getSingleCourseData?.department?._id,
-              }
+                  label: getSingleCourseData?.department?.name,
+                  value: getSingleCourseData?.department?._id,
+                }
               : '' || '',
             category: getSingleCourseData?.category?._id
               ? {
-                label: getSingleCourseData?.category?.name,
-                value: getSingleCourseData?.category?._id,
-              }
+                  label: getSingleCourseData?.category?.name,
+                  value: getSingleCourseData?.category?._id,
+                }
               : '' || '',
             brochure: brochureFile || '',
             description: getSingleCourseData?.description || '',
             entry_requirements: getSingleCourseData?.entry_requirements || '',
-            document_requirements: getSingleCourseData?.document_requirements
-              ?.filter((value, index, self) =>
-                value?.document_list_id && // Check if document_list_id is defined
-                index === self.findIndex((t) => t.document_list_id === value.document_list_id)
+            document_requirements:
+              getSingleCourseData?.document_requirements?.filter(
+                (value, index, self) =>
+                  value?.document_list_id && // Check if document_list_id is defined
+                  index ===
+                    self.findIndex(
+                      (t) => t.document_list_id === value.document_list_id
+                    )
               ) || [],
             english_requirements:
               getSingleCourseData?.english_requirements || '',
             program_duration: getSingleCourseData?.program_duration || '',
             image: imageFiles || '',
-            document_select: Array.isArray(getSingleCourseData?.document_requirements)
+            document_select: Array.isArray(
+              getSingleCourseData?.document_requirements
+            )
               ? getSingleCourseData.document_requirements
-                .filter((item) => item && item.title && item.document_list_id) // Filter out invalid items
-                .map((item) => ({ label: item.title, value: item.document_list_id }))
+                  .filter((item) => item && item.title && item.document_list_id) // Filter out invalid items
+                  .map((item) => ({
+                    label: item.title,
+                    value: item.document_list_id,
+                  }))
               : [],
-
           });
 
           SetCheckFreeAcommodation(getSingleCourseData?.free_accommodation);
@@ -362,13 +345,9 @@ const AllCourseForSuperAdminTest = ({
         }
       };
 
-
       fetchData();
     }
   }, [getCourseData?.data, courseIdForEdit]);
-
-
-
 
   // validation schema
   const validationSchema = Yup.object().shape({
@@ -405,7 +384,6 @@ const AllCourseForSuperAdminTest = ({
       .min(20, 'Description must be at least 20 characters')
       .required('Course Description is required'),
 
-
     // document_requirements: Yup.array()
     //   .of(
     //     Yup.object().shape({
@@ -419,20 +397,14 @@ const AllCourseForSuperAdminTest = ({
     //   .min(1, 'At least one document requirement is required'),
     document_requirements: Yup.array().optional(),
 
-
     entry_requirements: Yup.array()
       .of(Yup.string().required('Entry requirement is required'))
       .min(1, 'At least one entry requirement is required'),
 
-
     english_requirements: Yup.array()
       .of(Yup.string().required('English requirement is required'))
       .min(1, 'At least one English requirement is required'),
-
-
-
   });
-
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -447,10 +419,8 @@ const AllCourseForSuperAdminTest = ({
         document_list_id: item.document_list_id,
       }));
 
-
     //   const modifiedDocData=[...filteredData, ...values.document_requirements]
     // console.log('from handle submit filtered data==>', filteredData);
-
 
     const allData = {
       ...values,
@@ -460,10 +430,8 @@ const AllCourseForSuperAdminTest = ({
       document_requirements: [...filteredData, ...values.document_requirements],
     };
 
-
     try {
       const finalData = new FormData();
-
 
       //  Object.entries(allData).forEach(([key, value]) => {
       //    if (Array.isArray(value)) {
@@ -501,17 +469,32 @@ const AllCourseForSuperAdminTest = ({
             finalData.append(`${key}[]`, []);
           } else {
             value.forEach((item, index) => {
-              if (key === 'entry_requirements' || key === 'english_requirements') {
+              if (
+                key === 'entry_requirements' ||
+                key === 'english_requirements'
+              ) {
                 finalData.append(`${key}[${index}]`, item);
               } else if (key === 'document_requirements') {
                 // Only append fields that have defined (non-null and non-undefined) values
-                if (item.title != null) finalData.append(`${key}[${index}][title]`, item.title);
-                if (item.description != null) finalData.append(`${key}[${index}][description]`, item.description);
-                if (item.isRequired != null) finalData.append(`${key}[${index}][isRequired]`, item.isRequired);
+                if (item.title != null)
+                  finalData.append(`${key}[${index}][title]`, item.title);
+                if (item.description != null)
+                  finalData.append(
+                    `${key}[${index}][description]`,
+                    item.description
+                  );
+                if (item.isRequired != null)
+                  finalData.append(
+                    `${key}[${index}][isRequired]`,
+                    item.isRequired
+                  );
 
                 // Only append document_list_id if it is neither undefined nor null
                 if (item.document_list_id != null) {
-                  finalData.append(`${key}[${index}][document_list_id]`, item.document_list_id);
+                  finalData.append(
+                    `${key}[${index}][document_list_id]`,
+                    item.document_list_id
+                  );
                 }
               }
             });
@@ -520,9 +503,6 @@ const AllCourseForSuperAdminTest = ({
           finalData.append(key, value);
         }
       });
-
-
-
 
       const result = await addCourse(finalData).unwrap();
       if (result) {
@@ -538,11 +518,9 @@ const AllCourseForSuperAdminTest = ({
     }
   };
 
-
   const handleEditButtonClick = (itemId) => {
     setCourseIdForEdit(itemId);
   };
-
 
   const handleEditModalClose = () => {
     setCourseIdForEdit(null);
@@ -553,7 +531,7 @@ const AllCourseForSuperAdminTest = ({
       gst: '',
       agent_commission_percentage: '',
       university_price: '',
-      tution_fee: '',
+      tuition_fee: '',
       description: '',
       department: '',
       category: '',
@@ -566,27 +544,22 @@ const AllCourseForSuperAdminTest = ({
       program_duration: '',
       image: null,
       free_accommodation: false,
-      accommodation_start_date: '',  // Set current date as default value
-      accommodation_end_date: '',    // Set current date as default value
+      accommodation_start_date: '', // Set current date as default value
+      accommodation_end_date: '', // Set current date as default value
       free_accessories: false,
       accessories: [],
       scholarship_on_tuition_fee: false,
-      scholarship_amount:'',
-      scholarship_auto_deduct:false,
-      auto_deduct:false,
-      free_air_ticket:false,
-
+      scholarship_amount: '',
+      scholarship_auto_deduct: false,
+      auto_deduct: false,
+      free_air_ticket: false,
     });
     setFilePreview(null);
     setEditModalIsOpen(false);
   };
 
-
   const handleUpdateCourse = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-
-    console.log(getDocumentData);
 
     const filteredData = getDocumentData?.data
       ?.filter((doc) => values?.document_select?.includes(doc._id))
@@ -597,7 +570,6 @@ const AllCourseForSuperAdminTest = ({
         isRequired: item.isRequired,
       }));
 
-
     const documentRequirements = values?.document_requirements?.map((item) => ({
       title: item.title,
       description: item.description,
@@ -605,12 +577,13 @@ const AllCourseForSuperAdminTest = ({
       document_list_id: item.document_list_id,
     }));
 
-
     const allData = {
       name: values?.name,
       available_seats: values?.available_seats,
-      price: values?.price,
+      price: values?.emgs_fee || values?.price,
       gst: values?.gst,
+      emgs_fee: values?.emgs_fee || values?.price,
+      after_emgs_fee: values?.after_emgs_fee,
       agent_commission_percentage: values?.agent_commission_percentage,
       description: values?.description,
       course_id: courseIdForEdit,
@@ -618,8 +591,8 @@ const AllCourseForSuperAdminTest = ({
       department_id: values?.department?.value,
       category_id: values?.category?.value,
       brochure: values?.brochure,
-      university_price: values?.university_price,
-      tuition_fee: values?.university_price,
+      university_price: values?.tuition_fee || values?.university_price,
+      tuition_fee: values?.tuition_fee || values?.university_price,
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
@@ -640,14 +613,8 @@ const AllCourseForSuperAdminTest = ({
         accommodation_end_date: values?.accommodation_end_date,
       }),
 
-
       document_requirements: [...filteredData, ...documentRequirements],
     };
-
-
-    console.log("shadik", values.accessories);
-
-
 
     try {
       const finalData = new FormData();
@@ -679,7 +646,6 @@ const AllCourseForSuperAdminTest = ({
       //   }
       // });
 
-
       Object.entries(allData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
           if (key === 'document_requirements' && value.length === 0) {
@@ -690,16 +656,32 @@ const AllCourseForSuperAdminTest = ({
             finalData.append(`${key}[]`, []);
           } else {
             value.forEach((item, index) => {
-              if (key === 'entry_requirements' || key === 'english_requirements' || key === 'accessories') {
+              if (
+                key === 'entry_requirements' ||
+                key === 'english_requirements' ||
+                key === 'accessories'
+              ) {
                 // Append each item in the array as an indexed field
                 finalData.append(`${key}[${index}]`, item);
               } else if (key === 'document_requirements') {
                 // Append only fields that are not null or undefined
-                if (item.title != null) finalData.append(`${key}[${index}][title]`, item.title);
-                if (item.description != null) finalData.append(`${key}[${index}][description]`, item.description);
-                if (item.isRequired != null) finalData.append(`${key}[${index}][isRequired]`, item.isRequired);
+                if (item.title != null)
+                  finalData.append(`${key}[${index}][title]`, item.title);
+                if (item.description != null)
+                  finalData.append(
+                    `${key}[${index}][description]`,
+                    item.description
+                  );
+                if (item.isRequired != null)
+                  finalData.append(
+                    `${key}[${index}][isRequired]`,
+                    item.isRequired
+                  );
                 if (item.document_list_id != null) {
-                  finalData.append(`${key}[${index}][document_list_id]`, item.document_list_id);
+                  finalData.append(
+                    `${key}[${index}][document_list_id]`,
+                    item.document_list_id
+                  );
                 }
               }
             });
@@ -708,11 +690,6 @@ const AllCourseForSuperAdminTest = ({
           finalData.append(key, value);
         }
       });
-      
-
-
-
-
 
       const result = await updateCourse(finalData).unwrap();
       if (result) {
@@ -729,12 +706,10 @@ const AllCourseForSuperAdminTest = ({
     }
   };
 
-
   const handleDeleteButtonClick = (itemId) => {
     setCourseIdForDelete(itemId);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
-
 
   const handleDeleteCourse = async (id) => {
     try {
@@ -755,11 +730,8 @@ const AllCourseForSuperAdminTest = ({
     }
   };
 
-
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
 
   const handleFileChange = (e, setFieldValue) => {
     const file = e.target.files[0];
@@ -771,12 +743,10 @@ const AllCourseForSuperAdminTest = ({
         return;
       }
 
-
       setFieldValue('brochure', file);
       setFilePreview(file.name);
     }
   };
-
 
   // Filter data for search option
   const isfilteredData =
@@ -784,7 +754,6 @@ const AllCourseForSuperAdminTest = ({
     getCourseData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
 
   // Define table headers with custom render functions
   const headers = [
@@ -795,7 +764,6 @@ const AllCourseForSuperAdminTest = ({
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-
 
     {
       title: 'Course Picture',
@@ -816,7 +784,6 @@ const AllCourseForSuperAdminTest = ({
       ),
     },
 
-
     { title: 'Course Name', key: 'name' },
     {
       title: 'Available Seats',
@@ -829,28 +796,28 @@ const AllCourseForSuperAdminTest = ({
     },
     {
       title: 'EMGS Fee',
-      key: 'price',
+      key: 'emgs_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.price}
+          {item?.emgs_fee || item?.price}
         </span>
       ),
     },
     {
-      title: 'Tution Fee',
-      key: 'university_price',
+      title: 'Balance Payable',
+      key: 'after_emgs_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.university_price - item?.price}
+          {item?.after_emgs_fee || item?.price}
         </span>
       ),
     },
     {
       title: 'Total Fee',
-      key: 'university_price+price',
+      key: 'tuition_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.university_price}
+          {item?.tuition_fee || item?.university_price}
         </span>
       ),
     },
@@ -874,9 +841,7 @@ const AllCourseForSuperAdminTest = ({
       title: 'Auto Deduct',
       key: 'auto_deduct',
       render: (item) => (
-        <p className="text-wrap me-5">
-          {item?.auto_deduct ? "Yes" : "No"}
-        </p>
+        <p className="text-wrap me-5">{item?.auto_deduct ? 'Yes' : 'No'}</p>
       ),
     },
     {
@@ -888,7 +853,6 @@ const AllCourseForSuperAdminTest = ({
         </p>
       ),
     },
-
 
     {
       title: 'Action',
@@ -913,6 +877,18 @@ const AllCourseForSuperAdminTest = ({
                 <i className="ri-pencil-fill align-start me-2 text-muted"></i>
                 Edit
               </div>
+              <div
+                onClick={() =>
+                  window.open(
+                    `/university/${item?.university_id}/course/${item?._id}`,
+                    '_blank'
+                  )
+                }
+                className="text-primary"
+              >
+                <i className="ri-eye-fill align-start me-2 text-muted"></i>
+                View Course
+              </div>
             </DropdownItem>
             {/* <DropdownItem>
              <div
@@ -928,9 +904,6 @@ const AllCourseForSuperAdminTest = ({
       ),
     },
   ];
-
-
-  console.log(checkFreeAcommodation);
 
   return (
     <div className="h-100">
@@ -973,7 +946,6 @@ const AllCourseForSuperAdminTest = ({
             />
           </CardHeader>
 
-
           <CardBody>
             <CommonTableComponent
               headers={headers}
@@ -988,7 +960,6 @@ const AllCourseForSuperAdminTest = ({
           </CardBody>
         </Card>
       )}
-
 
       {/* for update Course */}
       <CourseModalFormTest
@@ -1009,7 +980,6 @@ const AllCourseForSuperAdminTest = ({
         checkFreeAcommodation={checkFreeAcommodation}
       />
 
-
       {/* Delete Course */}
       <DeleteModal
         Open={deleteModalIsOpen}
@@ -1021,6 +991,5 @@ const AllCourseForSuperAdminTest = ({
     </div>
   );
 };
-
 
 export default AllCourseForSuperAdminTest;

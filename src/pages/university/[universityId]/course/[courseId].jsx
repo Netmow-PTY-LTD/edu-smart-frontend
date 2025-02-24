@@ -21,6 +21,7 @@ import Link from 'next/link';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import CourseCard from '@/components/main/common/CourseCard';
 import moment from 'moment';
+import { toast, ToastContainer } from 'react-toastify';
 
 const SingleCoursePageInFrontSite = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
@@ -92,9 +93,12 @@ const SingleCoursePageInFrontSite = () => {
     }
 
     //console.log(destination);
-
     if (isAuthenticated) {
-      router.push(destination);
+      if (role === 'student' || role === 'agent') {
+        router.push(destination);
+      } else if (role === 'super_admin') {
+        toast.error('Super Admin is not allowed to apply to course');
+      }
     } else {
       router.push(`/auth/register?universityId=${universityId}&courseId=${id}`);
     }
@@ -107,6 +111,7 @@ const SingleCoursePageInFrontSite = () => {
   return (
     <UniversityLayout>
       <section className="course-details-main">
+        <ToastContainer />
         <Container>
           {isLoading ? (
             <div className="d-flex justify-content-center my-5">
@@ -142,7 +147,7 @@ const SingleCoursePageInFrontSite = () => {
                       >
                         <path
                           d="M4.33339 10.8333V19.4999H10.8334V10.8333H4.33339ZM15.1667 10.8333V19.4999H21.6667V10.8333H15.1667ZM1.12131 8.95369C0.991305 8.48244 1.19172 7.98411 1.60881 7.73494L12.4421 1.23494C12.7834 1.02911 13.2167 1.02911 13.558 1.23494L24.3913 7.73494C24.8084 7.98411 25.0088 8.48244 24.8788 8.95369C24.7488 9.42494 24.3209 9.74994 23.8334 9.74994H2.16672C1.67922 9.74994 1.25131 9.42494 1.12131 8.95369ZM21.6667 20.5833H4.33339C2.54047 20.5833 1.08339 22.0404 1.08339 23.8333C1.08339 24.4291 1.56547 24.9166 2.16672 24.9166H23.8334C24.4346 24.9166 24.9167 24.4291 24.9167 23.8333C24.9167 22.0404 23.4596 20.5833 21.6667 20.5833Z"
-                          fill="#B5D336"
+                          fill="#13C9BF"
                         />
                       </svg>
                       <span>{university?.name}</span>
@@ -244,7 +249,10 @@ const SingleCoursePageInFrontSite = () => {
                             <path d="M10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1" />
                           </g>
                         </svg>
-                        <b>EMGS Fee: {emgs_fee || ''} MYR</b>{' '}
+                        <div className="course-act-text">
+                          <b>EMGS Fee: {emgs_fee || ''} MYR</b>{' '}
+                          <small>(Required to start the application)</small>
+                        </div>
                       </div>
                       <div className="emgs-fees course-act">
                         <svg
@@ -263,11 +271,16 @@ const SingleCoursePageInFrontSite = () => {
                             <path d="M10 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1" />
                           </g>
                         </svg>
-                        <b>
-                          Balance Payable:{' '}
-                          {/* {(tuition_fee || university_price) - emgs_fee || ''}{' '} */}
-                          {after_emgs_fee} MYR
-                        </b>
+                        <div className="course-act-text">
+                          <b>
+                            Balance Payable:{' '}
+                            {/* {(tuition_fee || university_price) - emgs_fee || ''}{' '} */}
+                            {after_emgs_fee} MYR{' '}
+                          </b>
+                          <small>
+                            (Payment is required after EMGS processing)
+                          </small>
+                        </div>
                       </div>
                     </div>
                     <div className="description-text">{description}</div>

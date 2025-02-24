@@ -61,12 +61,11 @@ const CourseModalFormTest = ({
           onSubmit={onSubmit}
         >
           {({ isSubmitting, setFieldValue, values, errors, touched }) => {
-            
             // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
-              const after_emgs_fee = values.university_price - values.price;
-              setFieldValue('after_emgs_fee', after_emgs_fee);
-            }, [values.university_price, values.price, setFieldValue]);
+              const after_emgs_fee_get = values.tuition_fee - values.emgs_fee;
+              setFieldValue('after_emgs_fee', after_emgs_fee_get);
+            }, [values.tuition_fee, values.emgs_fee, setFieldValue]);
 
             return (
               <Form>
@@ -108,18 +107,12 @@ const CourseModalFormTest = ({
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
-                        name="university_price"
-                        label="Tution Fee"
+                        name="tuition_fee"
+                        label="Tuition Fee"
                       />
                     </div>
                   </Col>
                   <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberFieldForCourse name="price" label="EMGS Fee" />
-                    </div>
-                  </Col>
-
-                  <Col xl={6} hidden>
                     <div className="mb-3">
                       <NumberFieldForCourse name="emgs_fee" label="EMGS Fee" />
                     </div>
@@ -130,6 +123,7 @@ const CourseModalFormTest = ({
                       <NumberFieldForCourse
                         name="after_emgs_fee"
                         label="After Emgs Fee"
+                        readOnly
                       />
                     </div>
                   </Col>
@@ -143,19 +137,6 @@ const CourseModalFormTest = ({
                     </div>
                   </Col>
 
-                  {/* <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberField name="gst" label="GST In EMGS Fee (%)" />
-                    </div>
-                  </Col>
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberField
-                        name="agent_commission_percentage"
-                        label="Agent Commision (%)"
-                      />
-                    </div>
-                  </Col> */}
                   <Col xl={12}>
                     <div className="mb-3">
                       <TextField
@@ -165,26 +146,31 @@ const CourseModalFormTest = ({
                     </div>
                   </Col>
 
-                  {/* <Col xl={6}>
+                  <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Scholarship</label>
-                      <Field type="checkbox" name="scholarship_on_tuition_fee" className="form-check-input" />
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Commision Auto Deduct
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="auto_deduct"
+                        className="form-check-input"
+                      />
                     </div>
                   </Col>
 
-                  <Col xl={6}>
+                  <Col xl={12}>
                     <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">Scholarship Auto Deduct</label>
-                      <Field type="checkbox" name="scholarship_auto_deduct" className="form-check-input" />
+                      <label className="form-label fs-2 mb-3 me-3">
+                        Free Air Ticket
+                      </label>
+                      <Field
+                        type="checkbox"
+                        name="free_air_ticket"
+                        className="form-check-input"
+                      />
                     </div>
                   </Col>
-
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberFieldForCourse name="scholarship_amount" label="Scholarship Percentage" />
-                    </div>
-                  </Col>
- */}
 
                   <Col xl={12}>
                     <div className="mb-3">
@@ -242,7 +228,6 @@ const CourseModalFormTest = ({
                         onChange={() =>
                           SetCheckFreeAcommodation(!checkFreeAcommodation)
                         }
-                        //value={checkFreeAcommodation}
                         value={checkFreeAcommodation}
                       />
                     </div>
@@ -341,32 +326,6 @@ const CourseModalFormTest = ({
                   </Field>
 
                   <Col xl={12}>
-                    <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">
-                        Commision Auto Deduct
-                      </label>
-                      <Field
-                        type="checkbox"
-                        name="auto_deduct"
-                        className="form-check-input"
-                      />
-                    </div>
-                  </Col>
-
-                  <Col xl={12}>
-                    <div className="mb-3">
-                      <label className="form-label fs-2 mb-3 me-3">
-                        Free Air Ticket
-                      </label>
-                      <Field
-                        type="checkbox"
-                        name="free_air_ticket"
-                        className="form-check-input"
-                      />
-                    </div>
-                  </Col>
-
-                  <Col xl={12}>
                     <div className="mb-5 profile-img">
                       {filePreview && (
                         <div className="file-preview mb-3">
@@ -394,15 +353,6 @@ const CourseModalFormTest = ({
                   </Col>
 
                   <Col xl={12}>
-                    {/*
-                  <PackageMultipleSelectFieldTest
-                      field={{ name: 'document_select' }}
-                      label="Select Existing Document Type"
-                      options={SelectOption}
-                      form={{ setFieldValue, values }}
-                    />
-                   */}
-
                     <FieldArray name="document_requirements">
                       {({ remove, push }) => (
                         <>
