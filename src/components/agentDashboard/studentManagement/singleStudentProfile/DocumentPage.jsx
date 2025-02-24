@@ -101,7 +101,9 @@ const DocumentPage = ({ student_id }) => {
                   ? 'text-warning'
                   : item?.status === 'requested'
                     ? 'text-primary'
-                    : ''
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
           }`}
         >
           {item?.status ? <span>{item?.status}</span> : '-'}

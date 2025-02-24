@@ -111,7 +111,14 @@ const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
                       />
                     </div>
                   ) : (
-                    <img src={preview} alt="Preview" width="200" height="200" />
+                    <figure className="me-2">
+                      <img
+                        src={preview}
+                        alt="Preview"
+                        width="200"
+                        height="200"
+                      />
+                    </figure>
                   )
                 ) : (
                   <div className="file-name">{fileNames[index]}</div>

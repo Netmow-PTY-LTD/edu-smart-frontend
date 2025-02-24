@@ -1,4 +1,5 @@
 import MultipleFileUpload from '@/components/common/formField/MultipleFileUpload';
+import MultipleFileUploadAcceptAll from '@/components/common/formField/MultipleFileUploadAcceptAll';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextField from '@/components/common/formField/TextField';
 import { Form, Formik } from 'formik';
@@ -52,7 +53,7 @@ const SingleDocUploadForm = ({
                           />
                         </Col>
                         <Col lg={12}>
-                          <MultipleFileUpload
+                          <MultipleFileUploadAcceptAll
                             form={{ setFieldValue, values }}
                             label={'Document'}
                             field={{ name: 'document' }}
