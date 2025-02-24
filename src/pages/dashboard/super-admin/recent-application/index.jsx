@@ -1,4 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
@@ -29,7 +30,10 @@ export default function RecentApplicationForSuperAdmin() {
   const [currentPage, setCurrentPage] = React.useState(0);
   const [currentTimeline, setCurrentTimeline] = React.useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const perPageData = 9;
+  const [emgsInvoiceModal, setEmgsInvoiceModal] = useState(false);
+  const [tuitionInvoiceModal, setTuitionInvoiceModal] = useState(false);
+  const [applicationId, setApplicationId] = useState('');
+  const perPageData = 20;
 
   const {
     data: recentApplicationData,
@@ -51,11 +55,8 @@ export default function RecentApplicationForSuperAdmin() {
   };
 
   const handleChangeApplicationStatus = async (data) => {
-    console.log(data);
-
     try {
       const response = await updateApplicationStatus(data);
-      // console.log(response?.data?.success);
       if (response?.data?.success) {
         toast.success(
           response?.data?.message || 'Application status updated successfully!'
@@ -75,23 +76,6 @@ export default function RecentApplicationForSuperAdmin() {
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
-  // const searchInItem = (item, searchTerm) => {
-  //   if (typeof item === 'object' && item !== null) {
-  //     return Object.values(item).some((value) =>
-  //       searchInItem(value, searchTerm)
-  //     );
-  //   }
-
-  //   return String(item).toLowerCase().includes(searchTerm.toLowerCase());
-  // };
-
-  // // Filter data for search option
-  // const isfilteredData =
-  //   recentApplicationData?.data?.length > 0 &&
-  //   recentApplicationData?.data.filter((item) => {
-  //     return searchInItem(item, searchTerm);
-  //   });
 
   const searchInItem = (item, searchTerm) => {
     if (!searchTerm) return true; // If no search term, return all items
@@ -132,6 +116,49 @@ export default function RecentApplicationForSuperAdmin() {
           </span>
         </DropdownToggle>
         <DropdownMenu className="ms-2">
+          <DropdownItem>
+            <div
+              onClick={() =>
+                router.push(
+                  `/dashboard/super-admin/recent-application/${item?._id}`
+                )
+              }
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Documents
+            </div>
+          </DropdownItem>
+
+          <DropdownItem>
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View EMGS Status
+            </div>
+          </DropdownItem>
+
+          <DropdownItem>
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View EMGS Invoice
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Tuition Invoice
+            </div>
+          </DropdownItem>
+
           {item?.status === 'pending' ? (
             <>
               <DropdownItem>
@@ -145,7 +172,7 @@ export default function RecentApplicationForSuperAdmin() {
                   className="text-primary"
                 >
                   <i className="ri-check-fill me-2"></i>
-                  accepted
+                  Accepted
                 </div>
               </DropdownItem>
               <DropdownItem>
@@ -159,7 +186,7 @@ export default function RecentApplicationForSuperAdmin() {
                   className="text-primary"
                 >
                   <i className="ri-close-fill me-2"></i>
-                  rejected
+                  Rejected
                 </div>
               </DropdownItem>
             </>
@@ -179,29 +206,6 @@ export default function RecentApplicationForSuperAdmin() {
           ) : (
             ''
           )}
-
-          <DropdownItem>
-            <div
-              onClick={() =>
-                router.push(
-                  `/dashboard/super-admin/recent-application/${item?._id}`
-                )
-              }
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View Documents
-            </div>
-          </DropdownItem>
-          <DropdownItem>
-            <div
-              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View EMGS Status
-            </div>
-          </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
@@ -375,6 +379,15 @@ export default function RecentApplicationForSuperAdmin() {
           </div>
         </div>
       )}
+
+      {
+        <InvoicesComponentForMultipleData
+          open={emgsInvoiceModal}
+          close={() => {
+            setApplicationId(''), setEmgsInvoiceModal(false);
+          }}
+        />
+      }
     </Layout>
   );
 }
