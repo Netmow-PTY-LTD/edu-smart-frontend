@@ -95,6 +95,46 @@ const AllDocumentForAgentDashboard = () => {
       ),
     },
     {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Requester Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium ">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
       title: 'Status',
       key: 'status',
       render: (item) => (
@@ -108,7 +148,9 @@ const AllDocumentForAgentDashboard = () => {
                   ? 'text-warning'
                   : item?.status === 'requested'
                     ? 'text-primary'
-                    : ''
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
           }`}
         >
           {item?.status ? <span>{item?.status}</span> : '-'}

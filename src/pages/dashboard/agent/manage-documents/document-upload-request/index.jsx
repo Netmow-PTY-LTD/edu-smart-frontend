@@ -112,7 +112,7 @@ const StudentDocumentUploadRquestForAgent = () => {
       key: 'email',
       render: (item) => (
         <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
+          <h5 className="fs-14 fw-medium">
             {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
           </h5>
         </div>
@@ -154,7 +154,9 @@ const StudentDocumentUploadRquestForAgent = () => {
                   ? 'text-warning'
                   : item?.status === 'requested'
                     ? 'text-primary'
-                    : ''
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
           }`}
         >
           {item?.status ? <span>{item?.status}</span> : '-'}
