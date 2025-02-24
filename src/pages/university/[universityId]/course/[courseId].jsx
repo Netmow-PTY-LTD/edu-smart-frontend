@@ -93,17 +93,14 @@ const SingleCoursePageInFrontSite = () => {
     }
 
     //console.log(destination);
-
-    if (role === 'student' || role === 'agent') {
-      if (isAuthenticated) {
+    if (isAuthenticated) {
+      if (role === 'student' || role === 'agent') {
         router.push(destination);
-      } else {
-        router.push(
-          `/auth/register?universityId=${universityId}&courseId=${id}`
-        );
+      } else if (role === 'super_admin') {
+        toast.error('Super Admin is not allowed to apply to course');
       }
-    } else if (role === 'super_admin') {
-      toast.error('Super Admin is not allowed to apply to course');
+    } else {
+      router.push(`/auth/register?universityId=${universityId}&courseId=${id}`);
     }
   };
 
