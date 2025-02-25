@@ -7,8 +7,8 @@ import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import {
+  useGetAllSubmittedAirTicketDocumentForStudentQuery,
   useUpdateSingleAirTicketDocumentForStudentMutation,
-  useUpdateSingleDocumentForStudentMutation,
 } from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
 import Link from 'next/link';
@@ -20,7 +20,9 @@ import * as Yup from 'yup';
 
 const AllAirTicketUploadDocumentsForStudents = () => {
   const user = currentUser();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermForRequest, setSearchTermForRequest] = useState('');
+  const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
+    useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
@@ -43,8 +45,12 @@ const AllAirTicketUploadDocumentsForStudents = () => {
     refetch: getSingleStudentAirTicketDocRequestRefetch,
   } = useGetSingleUserAirTicketDocumentRequestQuery({ student_id: user?.id });
 
-  // const [submitSingleDocumentForStudent] =
-  //   useUpdateSingleDocumentForStudentMutation();
+  const {
+    data: getSingleStudentAirTicketDocSubmittedData,
+    isLoading: getSingleStudentAirTicketDocSubmittedIsLoading,
+    refetch: getSingleStudentAirTicketDocSubmittedRefetch,
+  } = useGetAllSubmittedAirTicketDocumentForStudentQuery();
+
   const [submitSingleDocumentForStudent] =
     useUpdateSingleAirTicketDocumentForStudentMutation();
 
@@ -106,13 +112,25 @@ const AllAirTicketUploadDocumentsForStudents = () => {
     fetchFile();
   }, [getSingleStudentAirTicketDocRequest, docId]);
 
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  const handleSearchChangeForRequest = (e) =>
+    setSearchTermForRequest(e.target.value);
+  const handleSearchChangeForSubmittedData = (e) =>
+    setSearchTermForSubmitedData(e.target.value);
 
   // Filter data for search option
   const isfilteredData =
     getSingleStudentAirTicketDocRequest?.data?.length > 0 &&
     getSingleStudentAirTicketDocRequest?.data.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+      item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
+    );
+
+  // Filter data for search option
+  const isfilteredDataForSubmittedData =
+    getSingleStudentAirTicketDocSubmittedData?.data?.length > 0 &&
+    getSingleStudentAirTicketDocSubmittedData?.data.filter((item) =>
+      item?.title
+        ?.toLowerCase()
+        .includes(searchTermForSubmitedData.toLowerCase())
     );
 
   const studentSubmittedDocumentsHeaderWithoutAction = [
@@ -440,8 +458,8 @@ const AllAirTicketUploadDocumentsForStudents = () => {
               <CardHeader className="d-flex justify-content-between align-items-center">
                 <h1> Document Uploaded Request</h1>
                 <SearchComponent
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForRequest}
+                  handleSearchChange={handleSearchChangeForRequest}
                 />
               </CardHeader>
               <CardBody>
@@ -451,34 +469,38 @@ const AllAirTicketUploadDocumentsForStudents = () => {
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForRequest}
+                  handleSearchChange={handleSearchChangeForRequest}
                   emptyMessage="No Data found yet."
                 />
               </CardBody>
             </Card>
           )}
 
-          {getSingleStudentAirTicketDocRequestIsLoading ? (
+          {getSingleStudentAirTicketDocSubmittedIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
                 <h1> Air Ticket Document Submitted File</h1>
                 <SearchComponent
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
                 />
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
                   headers={docRequestTableHeaderDataWithoutAction}
-                  data={isfilteredData ? isfilteredData : []}
+                  data={
+                    isfilteredDataForSubmittedData
+                      ? isfilteredDataForSubmittedData
+                      : []
+                  }
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
                   emptyMessage="No Data found yet."
                 />
               </CardBody>

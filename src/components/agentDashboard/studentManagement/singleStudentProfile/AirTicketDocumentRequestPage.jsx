@@ -65,11 +65,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     { skip: !student_id }
   );
 
-  console.log(
-    'getSingleUserAirTicketDocumentRequest',
-    getSingleUserAirTicketDocSubmisionData
-  );
-
   const [
     AllUploadDocumentsForStudentsData,
     setAllUploadDocumentsForStudentsData,
