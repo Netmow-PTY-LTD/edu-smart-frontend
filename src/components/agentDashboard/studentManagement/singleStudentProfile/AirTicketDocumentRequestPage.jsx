@@ -339,6 +339,51 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
           </Card>
         </div>
       )}
+      {getSingleUserAirTicketDocumentRequestIsLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <div>
+          <Card>
+            <ToastContainer />
+            <CardHeader className="d-flex justify-content-between align-items-center">
+              <button
+                className="button py-3 px-4"
+                onClick={() => setAddModalIsOpen(!addModalIsOpen)}
+              >
+                Add Document Request
+              </button>
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+              />
+            </CardHeader>
+            <AirTicketDocumentRequestModalForm
+              formHeader={'Add Document'}
+              isOpen={addModalIsOpen}
+              onClose={() => {
+                setAddModalIsOpen(!addModalIsOpen);
+              }}
+              onSubmit={handleSubmit}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              formSubmit={'Add Document'}
+              setInitialValues={setInitialValues}
+            />
+            <CardBody>
+              <CommonTableComponent
+                headers={AllUploadDocumentsForStudentsData}
+                data={isFilteredData || []}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                perPageData={perPageData}
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                emptyMessage="No Data found yet."
+              />
+            </CardBody>
+          </Card>
+        </div>
+      )}
       {
         <StatusUpdateForm
           initialValues={rejectStatusInitialValues}

@@ -1,37 +1,32 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
-import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import {
-  useGetAllStudentsAirticketDocumentRequestQuery,
-  useGetAllUserDocRequestQuery,
-} from '@/slice/services/common/commonDocumentService';
+import { useGetAllUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const StudentAirtTicketDocumentUploadRquestForAgent = () => {
+const AllDocumentForAgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
   const perPageData = 10;
 
   const {
-    data: getAllStudentsAirticketDocumentRequestData,
-    error: getAllStudentsAirticketDocumentRequestError,
-    isLoading: getAllStudentsAirticketDocumentRequestIsLoading,
-    refetch: getAllStudentsAirticketDocumentRequestRefetch,
-  } = useGetAllStudentsAirticketDocumentRequestQuery();
+    data: allSubmittedDocumentForAgentData,
+    error: allSubmittedDocumentForAgentError,
+    isLoading: allSubmittedDocumentForAgentIsLoading,
+    refetch: allSubmittedDocumentForAgentRefetch,
+  } = useGetAllUserSubmittedDocumentQuery();
 
-  console.log(getAllStudentsAirticketDocumentRequestData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const isFilteredData =
-    getAllStudentsAirticketDocumentRequestData?.data?.length > 0 &&
-    getAllStudentsAirticketDocumentRequestData?.data.filter(
+    allSubmittedDocumentForAgentData?.data?.length > 0 &&
+    allSubmittedDocumentForAgentData?.data.filter(
       (item) =>
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -47,6 +42,7 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         </div>
       ),
     },
+
     {
       title: 'Student Name',
       key: 'user',
@@ -54,7 +50,7 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         <span className="d-flex flex-column text-capitalize">
           {item?.user?.first_name && item?.user?.last_name ? (
             <Link
-              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=3`}
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
               className="text-primary text-decoration-none"
             >
               {`${item?.user?.first_name} ${item?.user?.last_name}`}
@@ -65,7 +61,6 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         </span>
       ),
     },
-
     {
       title: 'Doc Title',
       key: 'title',
@@ -80,6 +75,24 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
           </div>
         );
       },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
     },
     {
       title: 'Requested By',
@@ -115,31 +128,9 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
       key: 'email',
       render: (item) => (
         <div>
-          <h5 className="fs-14 fw-medium">
+          <h5 className="fs-14 fw-medium ">
             {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
           </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Notes',
-      key: 'notes',
-      render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {`${item?.notes ? item?.notes : '-'}`}
-        </div>
-      ),
-    },
-    {
-      title: 'Submitted Files',
-      key: 'files',
-      render: (item) => (
-        <div>
-          {item?.files && item?.files.length > 0 ? (
-            <FileViewer files={item?.files && item?.files} />
-          ) : (
-            'No submission files yet'
-          )}
         </div>
       ),
     },
@@ -171,23 +162,17 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
   return (
     <Layout>
       <div className="page-content">
-        <div className="h-100">
-          <Card>
-            <CardHeader>
-              <h3>
-                All Student Air Ticket Document Upload Requests from Agent
-              </h3>
-              <SearchComponent
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
-              />
-            </CardHeader>
-            <CardBody>
-              {getAllStudentsAirticketDocumentRequestIsLoading ? (
-                <LoaderSpiner />
-              ) : getAllStudentsAirticketDocumentRequestError ? (
-                <div>Error loading data....</div>
-              ) : (
+        <div className="container-fluid">
+          <div className="h-100">
+            <Card>
+              <CardHeader>
+                <h3 className="">All Submitted Documents </h3>
+                <SearchComponent
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                />
+              </CardHeader>
+              <CardBody>
                 <CommonTableComponent
                   headers={docRequestTableHeaderDataWithoutAction}
                   data={isFilteredData ? isFilteredData : []}
@@ -198,13 +183,13 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
                   handleSearchChange={handleSearchChange}
                   emptyMessage="No Data found yet."
                 />
-              )}
-            </CardBody>
-          </Card>
+              </CardBody>
+            </Card>
+          </div>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default StudentAirtTicketDocumentUploadRquestForAgent;
+export default AllDocumentForAgentDashboard;

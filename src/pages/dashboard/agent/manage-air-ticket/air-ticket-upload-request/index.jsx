@@ -3,10 +3,7 @@ import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import {
-  useGetAllStudentsAirticketDocumentRequestQuery,
-  useGetAllUserDocRequestQuery,
-} from '@/slice/services/common/commonDocumentService';
+import { useGetAllStudentsAirticketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -17,12 +14,6 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
 
   const perPageData = 10;
 
-  // const {
-  //   data: allDocumentRequestForAgentData,
-  //   error: allDocumentRequestForAgentError,
-  //   isLoading: allDocumentRequestForAgentIsLoading,
-  //   refetch: allDocumentRequestForAgentRefetch,
-  // } = useGetAllUserDocRequestQuery();
   const {
     data: allDocumentRequestForAgentData,
     error: allDocumentRequestForAgentError,
@@ -30,7 +21,6 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
     refetch: allDocumentRequestForAgentRefetch,
   } = useGetAllStudentsAirticketDocumentRequestQuery();
 
-  console.log(allDocumentRequestForAgentData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 

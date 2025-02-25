@@ -217,17 +217,9 @@ const AgentSidebarData = () => {
           pathName: '/dashboard/agent/manage-documents/document-upload-request',
           parentId: 'managedocument',
         },
-        {
-          id: 'airTicketDocumentuploadrequest',
-          label: 'Air Ticket Doc Upload Request',
-          link: '/dashboard/agent/manage-documents/air-ticket-upload-request',
-          icon: 'ri-file-list-3-fill',
-          pathName:
-            '/dashboard/agent/manage-documents/air-ticket-upload-request',
-          parentId: 'managedocument',
-        },
       ],
     },
+    // ----------------- Future use Manage Air Ticket subitem sidebar -----------------
     // {
     //   id: 'manage-air-ticket',
     //   label: 'Manage Air Ticket',
@@ -251,7 +243,7 @@ const AgentSidebarData = () => {
     //     },
     //     {
     //       id: 'airTicketDocumentuploadrequest',
-    //       label: 'Air Ticket Doc Upload Request',
+    //       label: 'Air Ticket Doc  Request',
     //       link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
     //       icon: 'ri-file-list-3-fill',
     //       pathName:
@@ -260,6 +252,12 @@ const AgentSidebarData = () => {
     //     },
     //   ],
     // },
+    {
+      id: 'airTicketDocumentuploadrequest',
+      label: 'Air Ticket Doc  Request',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
+    },
     {
       id: 'earnings',
       label: 'Earnings',
