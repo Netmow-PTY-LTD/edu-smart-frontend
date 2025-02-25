@@ -64,13 +64,11 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
 
   const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
-    description: Yup.string(),
-    // notes: Yup.string(),
+    description: Yup.string().required('description is required'),
   });
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
   const isFilteredData =
     getSingleUserAirTicketDocumentRequest?.data?.length > 0 &&
     getSingleUserAirTicketDocumentRequest?.data?.filter((item) =>
@@ -78,17 +76,20 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     );
 
   const handleSubmit = async (values) => {
+    console.log('values', values);
+    const updatedata = {
+      ...values,
+      student_id,
+    };
+
     try {
-      // Create an array of API calls for each document request
-      const requests = values.map((item) => {
-        return createDocumentRequest({
-          title: item.title,
-          description: item.description,
-          student_id,
-        }).unwrap();
-      });
+      const result = createDocumentRequest(updatedata).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getSingleUserAirTicketDocumentRequestRefetch();
+        setAddModalIsOpen(false);
+      }
     } catch (error) {
-      // Log error and show error message
       console.error('Error in document request:', error);
       const errorMessage = error?.data?.message || 'Something went wrong!';
       toast.error(errorMessage);

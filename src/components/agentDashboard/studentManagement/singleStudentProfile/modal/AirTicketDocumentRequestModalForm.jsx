@@ -22,7 +22,7 @@ const AirTicketDocumentRequestModalForm = ({
       <ModalBody>
         <Formik
           initialValues={initialValues}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
           {({ isSubmitting, values, setFieldValue }) => {
