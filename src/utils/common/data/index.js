@@ -559,6 +559,25 @@ const agentNameAndImageHeaderDataForAdmissionManager = {
   ),
 };
 
+const agentNameHeaderDataForAdmissionManager = {
+  title: 'Agent',
+  key: 'agent',
+  render: (item) => (
+    <div>
+      <h5 className="fs-14 fw-medium text-capitalize text-wrap">
+        <Link
+          href={`/dashboard/admission-manager/agents/${item?.agent?._id}`}
+          className="text-reset"
+        >
+          {item?.agent?.first_name && item?.agent?.last_name
+            ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
+            : '-'}
+        </Link>
+      </h5>
+    </div>
+  ),
+};
+
 const studentsHeaders = [
   {
     title: 'Agent',
@@ -1534,6 +1553,7 @@ export {
   agentNameAndImageHeaderDataForAccountantDashboard,
   agentNameAndImageHeaderDataForAdmissionManager,
   agentNameAndImageHeaderDataForSuperAdmin,
+  agentNameHeaderDataForAdmissionManager,
   agentProfileWidgetData,
   agentsHeaders,
   allCourseCategoryWithoutAction,

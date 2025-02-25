@@ -2,7 +2,7 @@ import React from 'react';
 
 const SearchComponent = ({ searchTerm, handleSearchChange }) => {
 
-console.log(searchTerm);
+// console.log(searchTerm);
 
   return (
     <>

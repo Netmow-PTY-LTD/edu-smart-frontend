@@ -7,12 +7,12 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import {
-  useAddCourseMutation,
-  useDeleteCourseMutation,
-  useGetCourseQuery,
-  useUpdateCourseMutation,
-} from '@/slice/services/super admin/courseService';
-import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
+  useAddCourseForAdmissionManagerMutation,
+  useDeleteCourseForAdmissionManagerMutation,
+  useGetCourseForAdmissionManagerQuery,
+  useUpdateCourseForAdmissionManagerMutation,
+} from '@/slice/services/admission manager/courseServiceForAdmissionManager';
+import { useGetRequiredDocumentForAdmissionManagerQuery } from '@/slice/services/admission manager/requiredDocumentsServiceForAdmissionManager';
 import { allowedFileTypes } from '@/utils/common/data';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -27,9 +27,9 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 import * as Yup from 'yup';
-import CourseModalFormTest from '../modals/CourseModalFormTest';
+import CourseModalForAdmissionManager from '../modals/CourseModalForAdmissionManager';
 
-const AllCourseForSuperAdminTest = ({
+const CoursesForAdmissionManager = ({
   university_id,
   allDepartmentData,
   allCategoryData,
@@ -85,76 +85,42 @@ const AllCourseForSuperAdminTest = ({
   });
 
   // document_list_id:
-  const [
-    addCourse,
-    {
-      data: addCourseData,
-      error: addCourseError,
-      isLoading: addCourseIsLoading,
-      isSuccess: addCourseIsSuccess,
-    },
-  ] = useAddCourseMutation();
+  const [addCourseForAdmissionManager] =
+    useAddCourseForAdmissionManagerMutation();
 
   const {
-    data: getCourseData,
-    error: getCourseError,
-    isLoading: getCourseIsLoading,
-    refetch: getCourseRefetch,
-  } = useGetCourseQuery(university_id, { skip: !university_id });
+    data: getCourseForAdmissionManagerData,
+    error: getCourseForAdmissionManagerError,
+    isLoading: getCourseForAdmissionManagerIsLoading,
+    refetch: getCourseForAdmissionManagerRefetch,
+  } = useGetCourseForAdmissionManagerQuery(university_id, {
+    skip: !university_id,
+  });
 
   // document Related api
   const {
-    data: getDocumentData,
-    error: getDocumentError,
-    isLoading: getDocumentIsLoading,
-    refetch: getDocuemtnRefetch,
-  } = useGetDocumentInSuperAdminQuery();
-
-  // const documentOptions = getDocumentData?.data?.map((item) => ({
-  //   value: item._id,
-  //   label: item.title,
-  // }));
-
-  //  const getSingleCourseDataForDocumentData =
-  //    getCourseData?.data?.length > 0 &&
-  //    getCourseData?.data.find((item) => item?._id === courseIdForEdit);
-
-  //    console.log(getSingleCourseDataForDocumentData?.document_requirements);
-
-  //    // Create a new variable to hold the merged data
-  //    let mergedData = [];
-
-  //    // Check if getDocumentData has a data property that is an array
-  //    if (getDocumentData && Array.isArray(getDocumentData.data)) {
-  //      // Copy existing data
-  //      mergedData = [...getDocumentData.data];
-
-  //      // Add documentRequirements data with description as _id
-  //      getSingleCourseDataForDocumentData?.document_requirements.forEach((requirement) => {
-  //        // Check if the _id already exists in mergedData
-  //        const existingRequirement = mergedData.find(item => item._id === requirement.document_list_id);
-  //        if (!existingRequirement) {
-  //          mergedData.push({
-  //            ...requirement,
-  //            _id: requirement.document_list_id,
-  //          });
-  //        }
-  //      });
-  //    } else {
-  //      console.error('getDocumentData.data is not an array');
-  //    }
+    data: getRequiredDocumentForAdmissionManagerData,
+    error: getRequiredDocumentForAdmissionManagerError,
+    isLoading: getRequiredDocumentForAdmissionManagerIsLoading,
+    refetch: getRequiredDocumentForAdmissionManagerRefetch,
+  } = useGetRequiredDocumentForAdmissionManagerQuery();
 
   const getSingleCourseDataForDocumentData =
-    getCourseData?.data?.length > 0 &&
-    getCourseData?.data.find((item) => item?._id === courseIdForEdit);
+    getCourseForAdmissionManagerData?.data?.length > 0 &&
+    getCourseForAdmissionManagerData?.data.find(
+      (item) => item?._id === courseIdForEdit
+    );
 
   // Create a new variable to hold the merged data
   let mergedData = [];
 
   // Check if getDocumentData has a data property that is an array
-  if (getDocumentData && Array.isArray(getDocumentData.data)) {
+  if (
+    getRequiredDocumentForAdmissionManagerData &&
+    Array.isArray(getRequiredDocumentForAdmissionManagerData.data)
+  ) {
     // Copy existing data
-    mergedData = [...getDocumentData.data];
+    mergedData = [...getRequiredDocumentForAdmissionManagerData.data];
 
     // Ensure document_requirements is valid and contains meaningful data
     if (
@@ -190,24 +156,17 @@ const AllCourseForSuperAdminTest = ({
     description: item.description,
   }));
 
-  const [
-    updateCourse,
-    {
-      data: editCourseData,
-      error: editCourseError,
-      isLoading: editCourseIsLoading,
-      isSuccess: editCourseIsSuccess,
-    },
-  ] = useUpdateCourseMutation();
+  const [updateCourseForAdmissionManager] =
+    useUpdateCourseForAdmissionManagerMutation();
 
   const [
-    deleteCourse,
+    deleteCourseForAdmissionManager,
     {
-      data: deleteCourseData,
-      error: deleteCourseError,
-      isLoading: deleteCourseIsLoading,
+      data: deleteCourseForAdmissionManagerData,
+      error: deleteCourseForAdmissionManagerError,
+      isLoading: deleteCourseForAdmissionManagerIsLoading,
     },
-  ] = useDeleteCourseMutation();
+  ] = useDeleteCourseForAdmissionManagerMutation();
 
   useEffect(() => {
     const allDept =
@@ -228,22 +187,13 @@ const AllCourseForSuperAdminTest = ({
     setAllDepartmentName(allDept ? allDept : []);
   }, [allDepartmentData, allCategoryData]);
 
-  /* "_id": "67aad711257ff7fa00a36ecf",
-            "title": "Academic Transcripts", */
-
   useEffect(() => {
-    if (getCourseData?.data && courseIdForEdit) {
+    if (getCourseForAdmissionManagerData?.data && courseIdForEdit) {
       const getSingleCourseData =
-        getCourseData?.data?.length > 0 &&
-        getCourseData?.data.find((item) => item?._id === courseIdForEdit);
-
-      const filterDoc = getSingleCourseData?.document_requirements.map(
-        (item) => item?.title
-      );
-
-      // const filterDocInitialData = Array.isArray(getDocumentData)
-      //   ? getDocumentData.filter((item) => item.label === filterDoc)
-      //   : [];
+        getCourseForAdmissionManagerData?.data?.length > 0 &&
+        getCourseForAdmissionManagerData?.data.find(
+          (item) => item?._id === courseIdForEdit
+        );
 
       const fetchData = async () => {
         try {
@@ -267,7 +217,6 @@ const AllCourseForSuperAdminTest = ({
               getSingleCourseData?.emgs_fee || getSingleCourseData?.price || 0,
             emgs_fee:
               getSingleCourseData?.emgs_fee || getSingleCourseData?.price || 0,
-            //after_emgs_fee: getSingleCourseData?.after_emgs_fee || 0,
             incentive_amount: getSingleCourseData?.incentive_amount || 0,
             scholarship_on_tuition_fee:
               getSingleCourseData?.scholarship_on_tuition_fee || false,
@@ -346,7 +295,7 @@ const AllCourseForSuperAdminTest = ({
 
       fetchData();
     }
-  }, [getCourseData?.data, courseIdForEdit]);
+  }, [getCourseForAdmissionManagerData?.data, courseIdForEdit]);
 
   // validation schema
   const validationSchema = Yup.object().shape({
@@ -382,18 +331,6 @@ const AllCourseForSuperAdminTest = ({
     description: Yup.string()
       .min(20, 'Description must be at least 20 characters')
       .required('Course Description is required'),
-
-    // document_requirements: Yup.array()
-    //   .of(
-    //     Yup.object().shape({
-    //       title: Yup.string().required('Document Title is required'),
-    //       description: Yup.string()
-    //         .min(5, 'Document Description must be at least 5 characters')
-    //         .required('Document Description is required'),
-    //       isRequired: Yup.boolean(),
-    //     })
-    //   )
-    //   .min(1, 'At least one document requirement is required'),
     document_requirements: Yup.array().optional(),
 
     entry_requirements: Yup.array()
@@ -407,8 +344,9 @@ const AllCourseForSuperAdminTest = ({
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
+    // console.log('from handle submit==>', values);
     setSubmitting(true);
-    const filteredData = getDocumentData?.data
+    const filteredData = getRequiredDocumentForAdmissionManagerData?.data
       ?.filter((doc) => values.document_requirements?.includes(doc._id))
       .map((item) => ({
         title: item.title,
@@ -416,9 +354,6 @@ const AllCourseForSuperAdminTest = ({
         isRequired: item.isRequired,
         document_list_id: item.document_list_id,
       }));
-
-    //   const modifiedDocData=[...filteredData, ...values.document_requirements]
-    // console.log('from handle submit filtered data==>', filteredData);
 
     const allData = {
       ...values,
@@ -430,35 +365,6 @@ const AllCourseForSuperAdminTest = ({
 
     try {
       const finalData = new FormData();
-
-      //  Object.entries(allData).forEach(([key, value]) => {
-      //    if (Array.isArray(value)) {
-      //      value.forEach((item, index) => {
-      //        if (
-      //          key === 'entry_requirements' ||
-      //          key === 'english_requirements'
-      //        ) {
-      //          finalData.append(`${key}[${index}]`, item);
-      //        } else if (key === 'document_requirements') {
-      //          finalData.append(`${key}[${index}][title]`, item.title);
-      //          finalData.append(
-      //            `${key}[${index}][description]`,
-      //            item.description
-      //          );
-      //          finalData.append(
-      //            `${key}[${index}][isRequired]`,
-      //            item.isRequired ?? false
-      //          );
-      //          finalData.append(
-      //            `${key}[${index}][document_list_id]`,
-      //            item.document_list_id
-      //          );
-      //        }
-      //      });
-      //    } else {
-      //      finalData.append(key, value);
-      //    }
-      //  });
 
       Object.entries(allData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -502,10 +408,10 @@ const AllCourseForSuperAdminTest = ({
         }
       });
 
-      const result = await addCourse(finalData).unwrap();
+      const result = await addCourseForAdmissionManager(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getCourseRefetch();
+        getCourseForAdmissionManagerRefetch();
         setAddModalIsOpen(!addModalIsOpen);
       }
     } catch (error) {
@@ -559,7 +465,7 @@ const AllCourseForSuperAdminTest = ({
   const handleUpdateCourse = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    const filteredData = getDocumentData?.data
+    const filteredData = getRequiredDocumentForAdmissionManagerData?.data
       ?.filter((doc) => values?.document_select?.includes(doc._id))
       .map((item) => ({
         title: item.title,
@@ -605,7 +511,6 @@ const AllCourseForSuperAdminTest = ({
       accessories: values?.accessories,
 
       free_accommodation: checkFreeAcommodation,
-      // Conditionally add accommodation_start_date and accommodation_end_date
       ...(checkFreeAcommodation && {
         accommodation_start_date: values?.accommodation_start_date,
         accommodation_end_date: values?.accommodation_end_date,
@@ -616,33 +521,6 @@ const AllCourseForSuperAdminTest = ({
 
     try {
       const finalData = new FormData();
-
-      // Object.entries(allData).forEach(([key, value]) => {
-      //   if (Array.isArray(value)) {
-      //     if (key === 'document_requirements' && value.length === 0) {
-      //       // Ensure an empty array by appending an empty key
-      //       finalData.append(`${key}[]`, []);
-      //     } else {
-      //       value.forEach((item, index) => {
-      //         if (key === 'entry_requirements' || key === 'english_requirements') {
-      //           finalData.append(`${key}[${index}]`, item);
-      //         } else if (key === 'document_requirements') {
-      //           // Only append fields that have defined (non-null and non-undefined) values
-      //           if (item.title != null) finalData.append(`${key}[${index}][title]`, item.title);
-      //           if (item.description != null) finalData.append(`${key}[${index}][description]`, item.description);
-      //           if (item.isRequired != null) finalData.append(`${key}[${index}][isRequired]`, item.isRequired);
-
-      //           // Only append document_list_id if it is neither undefined nor null
-      //           if (item.document_list_id != null) {
-      //             finalData.append(`${key}[${index}][document_list_id]`, item.document_list_id);
-      //           }
-      //         }
-      //       });
-      //     }
-      //   } else {
-      //     finalData.append(key, value);
-      //   }
-      // });
 
       Object.entries(allData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -689,10 +567,10 @@ const AllCourseForSuperAdminTest = ({
         }
       });
 
-      const result = await updateCourse(finalData).unwrap();
+      const result = await updateCourseForAdmissionManager(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getCourseRefetch();
+        getCourseForAdmissionManagerRefetch();
         handleEditModalClose();
         setCourseIdForEdit(null);
       }
@@ -711,13 +589,13 @@ const AllCourseForSuperAdminTest = ({
 
   const handleDeleteCourse = async (id) => {
     try {
-      const result = await deleteCourse({
+      const result = await deleteCourseForAdmissionManager({
         university_id: university_id,
         course_id: id,
       }).unwrap();
       if (result) {
         toast.success(result?.message);
-        getCourseRefetch();
+        getCourseForAdmissionManagerRefetch();
         handleDeleteButtonClick();
       }
     } catch (error) {
@@ -748,8 +626,8 @@ const AllCourseForSuperAdminTest = ({
 
   // Filter data for search option
   const isfilteredData =
-    getCourseData?.data?.length > 0 &&
-    getCourseData?.data.filter((item) =>
+    getCourseForAdmissionManagerData?.data?.length > 0 &&
+    getCourseForAdmissionManagerData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -819,22 +697,7 @@ const AllCourseForSuperAdminTest = ({
         </span>
       ),
     },
-    // {
-    //   title: 'GST In Course Fee (%)',
-    //   key: 'gst',
-    //   render: (item, index) => (
-    //     <span className="d-flex flex-column text-capitalize">{item?.gst}</span>
-    //   ),
-    // },
-    // {
-    //   title: 'Agent Commission (%)',
-    //   key: 'agent_commission_percentage',
-    //   render: (item, index) => (
-    //     <span className="d-flex flex-column text-capitalize">
-    //       {item?.agent_commission_percentage}
-    //     </span>
-    //   ),
-    // },
+
     {
       title: 'Auto Deduct',
       key: 'auto_deduct',
@@ -866,7 +729,7 @@ const AllCourseForSuperAdminTest = ({
               <i className="ri-more-fill align-middle"></i>
             </span>
           </DropdownToggle>
-          <DropdownMenu className="me-3">
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
             <DropdownItem>
               <div
                 onClick={() => handleEditButtonClick(item?._id)}
@@ -890,15 +753,6 @@ const AllCourseForSuperAdminTest = ({
                 View Course
               </div>
             </DropdownItem>
-            {/* <DropdownItem>
-             <div
-               onClick={() => handleDeleteButtonClick(item._id)}
-               className="text-primary"
-             >
-               <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-               Delete
-             </div>
-           </DropdownItem> */}
           </DropdownMenu>
         </UncontrolledDropdown>
       ),
@@ -908,7 +762,7 @@ const AllCourseForSuperAdminTest = ({
   return (
     <div className="h-100">
       <ToastContainer />
-      {getCourseIsLoading ? (
+      {getCourseForAdmissionManagerIsLoading ? (
         <LoaderSpiner />
       ) : (
         <Card>
@@ -919,9 +773,8 @@ const AllCourseForSuperAdminTest = ({
             >
               Add New
             </button>
-            <CourseModalFormTest
+            <CourseModalForAdmissionManager
               SelectOption={documentOptions}
-              //SelectOption={mergedData}
               formHeader={'Add New'}
               isOpen={addModalIsOpen}
               onClose={() => {
@@ -962,7 +815,7 @@ const AllCourseForSuperAdminTest = ({
       )}
 
       {/* for update Course */}
-      <CourseModalFormTest
+      <CourseModalForAdmissionManager
         SelectOption={documentOptions}
         formHeader="Update Data"
         isOpen={editModalIsOpen}
@@ -986,10 +839,10 @@ const AllCourseForSuperAdminTest = ({
         close={handleDeleteButtonClick}
         id={courseIdForDelete}
         handleDelete={handleDeleteCourse}
-        isloading={deleteCourseIsLoading}
+        isloading={deleteCourseForAdmissionManagerIsLoading}
       />
     </div>
   );
 };
 
-export default AllCourseForSuperAdminTest;
+export default CoursesForAdmissionManager;

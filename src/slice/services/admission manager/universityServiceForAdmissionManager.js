@@ -5,8 +5,7 @@ import Cookies from 'js-cookie';
 export const universityServiceForAdmissionManager = createApi({
   reducerPath: 'universityServiceForAdmissionManager',
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      `${serverInfo?.base_url_prod}` + '/api/v1/university/admission-manager',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/admission-manager',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
