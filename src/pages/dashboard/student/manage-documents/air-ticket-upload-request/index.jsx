@@ -5,7 +5,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
-import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
 
@@ -14,7 +14,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllUploadDocumentsForStudents = () => {
+const AllAirTicketUploadDocumentsForStudents = () => {
   const user = currentUser();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
@@ -34,10 +34,10 @@ const AllUploadDocumentsForStudents = () => {
   });
 
   const {
-    data: getSingleStudentDocRequest,
-    isLoading: getSingleStudentDocRequestIsLoading,
-    refetch: getSingleStudentDocRequestRefetch,
-  } = useGetSingleUserDocRequestQuery({ student_id: user?.id });
+    data: getSingleStudentAirTicketDocRequest,
+    isLoading: getSingleStudentAirTicketDocRequestIsLoading,
+    refetch: getSingleStudentAirTicketDocRequestRefetch,
+  } = useGetSingleUserAirTicketDocumentRequestQuery({ student_id: user?.id });
 
   const [submitSingleDocumentForStudent] =
     useUpdateSingleDocumentForStudentMutation();
@@ -77,7 +77,7 @@ const AllUploadDocumentsForStudents = () => {
 
   useEffect(() => {
     const fetchFile = async () => {
-      const requestData = getSingleStudentDocRequest?.data?.find(
+      const requestData = getSingleStudentAirTicketDocRequest?.data?.find(
         (item) => item?._id === docId
       );
 
@@ -98,14 +98,14 @@ const AllUploadDocumentsForStudents = () => {
     };
 
     fetchFile();
-  }, [getSingleStudentDocRequest, docId]);
+  }, [getSingleStudentAirTicketDocRequest, docId]);
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const isfilteredData =
-    getSingleStudentDocRequest?.data?.length > 0 &&
-    getSingleStudentDocRequest?.data.filter((item) =>
+    getSingleStudentAirTicketDocRequest?.data?.length > 0 &&
+    getSingleStudentAirTicketDocRequest?.data.filter((item) =>
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -269,7 +269,7 @@ const AllUploadDocumentsForStudents = () => {
       const result = await submitSingleDocumentForStudent(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getSingleStudentDocRequestRefetch();
+        getSingleStudentAirTicketDocRequestRefetch();
         setOpenModal(!openModal);
       }
     } catch (error) {
@@ -300,7 +300,7 @@ const AllUploadDocumentsForStudents = () => {
       <div className="page-content">
         <div className="h-100">
           <ToastContainer />
-          {getSingleStudentDocRequestIsLoading ? (
+          {getSingleStudentAirTicketDocRequestIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>
@@ -341,4 +341,4 @@ const AllUploadDocumentsForStudents = () => {
   );
 };
 
-export default AllUploadDocumentsForStudents;
+export default AllAirTicketUploadDocumentsForStudents;

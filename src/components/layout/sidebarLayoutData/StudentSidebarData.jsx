@@ -127,6 +127,15 @@ const StudentSidebarData = () => {
             '/dashboard/student/manage-documents/document-upload-request-for-students',
           parentId: 'managedocument',
         },
+        {
+          id: 'airTicketdocumentuploadrequest',
+          label: 'Air Ticket Doc Upload Request',
+          link: '/dashboard/student/manage-documents/air-ticket-upload-request',
+          icon: 'ri-file-list-3-fill',
+          pathName:
+            '/dashboard/student/manage-documents/air-ticket-upload-request',
+          parentId: 'managedocument',
+        },
       ],
     },
     {
