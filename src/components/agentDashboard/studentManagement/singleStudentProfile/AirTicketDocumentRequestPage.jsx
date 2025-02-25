@@ -78,7 +78,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     );
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
       // Create an array of API calls for each document request
       const requests = values.map((item) => {
@@ -88,21 +87,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
           student_id,
         }).unwrap();
       });
-
-      // Execute all requests in parallel
-      // eslint-disable-next-line no-undef
-      const results = await Promise.all(requests);
-
-      // Handle success for all API calls
-      results.forEach((result) => {
-        if (result) {
-          toast.success(result?.message);
-        }
-      });
-
-      // Refresh data and close modal after all requests are done
-      getSingleUserAirTicketDocumentRequestRefetch();
-      setAddModalIsOpen((prev) => !prev); // Use previous state for reliable toggling
     } catch (error) {
       // Log error and show error message
       console.error('Error in document request:', error);
@@ -346,29 +330,11 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
           <Card>
             <ToastContainer />
             <CardHeader className="d-flex justify-content-between align-items-center">
-              <button
-                className="button py-3 px-4"
-                onClick={() => setAddModalIsOpen(!addModalIsOpen)}
-              >
-                Add Document Request
-              </button>
-              <SearchComponent
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
-              />
+              <div>
+                <h2>All Air Document Submission Files</h2>
+              </div>
             </CardHeader>
-            <AirTicketDocumentRequestModalForm
-              formHeader={'Add Document'}
-              isOpen={addModalIsOpen}
-              onClose={() => {
-                setAddModalIsOpen(!addModalIsOpen);
-              }}
-              onSubmit={handleSubmit}
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              formSubmit={'Add Document'}
-              setInitialValues={setInitialValues}
-            />
+
             <CardBody>
               <CommonTableComponent
                 headers={AllUploadDocumentsForStudentsData}
@@ -384,6 +350,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
           </Card>
         </div>
       )}
+
       {
         <StatusUpdateForm
           initialValues={rejectStatusInitialValues}
