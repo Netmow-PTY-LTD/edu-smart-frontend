@@ -217,40 +217,49 @@ const AgentSidebarData = () => {
           pathName: '/dashboard/agent/manage-documents/document-upload-request',
           parentId: 'managedocument',
         },
-      ],
-    },
-    {
-      id: 'manage-air-ticket',
-      label: 'Manage Air Ticket',
-      icon: 'ri-article-fill',
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsManageAirTicket(!isManageAirTicket);
-        setIscurrentState('Manage Air Ticket');
-      },
-      stateVariables: isManageAirTicket,
-      subItems: [
-        {
-          id: 'allAirTicketDoc',
-          label: 'All Air Ticket Document',
-          link: '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
-          icon: 'ri-file-fill',
-          pathName:
-            '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
-          parentId: 'manage-air-ticket',
-        },
         {
           id: 'airTicketDocumentuploadrequest',
           label: 'Air Ticket Doc Upload Request',
-          link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
+          link: '/dashboard/agent/manage-documents/air-ticket-upload-request',
           icon: 'ri-file-list-3-fill',
           pathName:
-            '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
-          parentId: 'manage-air-ticket',
+            '/dashboard/agent/manage-documents/air-ticket-upload-request',
+          parentId: 'managedocument',
         },
       ],
     },
+    // {
+    //   id: 'manage-air-ticket',
+    //   label: 'Manage Air Ticket',
+    //   icon: 'ri-article-fill',
+    //   link: '/#',
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsManageAirTicket(!isManageAirTicket);
+    //     setIscurrentState('Manage Air Ticket');
+    //   },
+    //   stateVariables: isManageAirTicket,
+    //   subItems: [
+    //     {
+    //       id: 'allAirTicketDoc',
+    //       label: 'All Air Ticket Document',
+    //       link: '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
+    //       icon: 'ri-file-fill',
+    //       pathName:
+    //         '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
+    //       parentId: 'manage-air-ticket',
+    //     },
+    //     {
+    //       id: 'airTicketDocumentuploadrequest',
+    //       label: 'Air Ticket Doc Upload Request',
+    //       link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
+    //       icon: 'ri-file-list-3-fill',
+    //       pathName:
+    //         '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
+    //       parentId: 'manage-air-ticket',
+    //     },
+    //   ],
+    // },
     {
       id: 'earnings',
       label: 'Earnings',
