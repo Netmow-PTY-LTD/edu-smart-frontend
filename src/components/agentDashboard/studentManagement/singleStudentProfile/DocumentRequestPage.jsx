@@ -86,6 +86,7 @@ const DocumentRequestPage = ({ student_id }) => {
       });
 
       // Execute all requests in parallel
+      // eslint-disable-next-line no-undef
       const results = await Promise.all(requests);
 
       // Handle success for all API calls
