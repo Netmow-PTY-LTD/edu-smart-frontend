@@ -33,7 +33,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
-    // notes: '',
   });
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
@@ -52,6 +51,14 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     data: getSingleUserAirTicketDocumentRequest,
     isLoading: getSingleUserAirTicketDocumentRequestIsLoading,
     refetch: getSingleUserAirTicketDocumentRequestRefetch,
+  } = useGetSingleUserAirTicketDocumentRequestQuery(
+    { student_id: student_id },
+    { skip: !student_id }
+  );
+  const {
+    data: getSingleUserAirTicketDocSubmisionData,
+    isLoading: getSingleUserAirTicketDocSubmisionIsLoading,
+    refetch: getSingleUserAirTicketDocSubmisionRefetch,
   } = useGetSingleUserAirTicketDocumentRequestQuery(
     { student_id: student_id },
     { skip: !student_id }
@@ -75,8 +82,8 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const handleSubmit = async (values) => {
-    console.log('values', values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
     const updatedata = {
       ...values,
       student_id,
@@ -93,6 +100,8 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       console.error('Error in document request:', error);
       const errorMessage = error?.data?.message || 'Something went wrong!';
       toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -135,7 +144,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     setOpenModal(!openModal);
   };
 
-  const docRequestTableHeaderDataWithAction = [
+  const docRequestTableHeaderDataWithOutAction = [
     {
       title: 'SN',
       key: 'sn',
@@ -219,6 +228,9 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
         </span>
       ),
     },
+  ];
+
+  const docRequestTableHeaderDataWithAction = [
     {
       title: 'Action',
       key: 'actions',
@@ -273,6 +285,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     }
 
     setAllUploadDocumentsForStudentsData(() => [
+      ...docRequestTableHeaderDataWithOutAction,
       ...docRequestTableHeaderDataWithAction,
     ]);
   }, [getSingleUserAirTicketDocumentRequest, docId]);
@@ -324,7 +337,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
           </Card>
         </div>
       )}
-      {getSingleUserAirTicketDocumentRequestIsLoading ? (
+      {getSingleUserAirTicketDocSubmisionIsLoading ? (
         <LoaderSpiner />
       ) : (
         <div>
@@ -332,13 +345,13 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
             <ToastContainer />
             <CardHeader className="d-flex justify-content-between align-items-center">
               <div>
-                <h2>All Air Document Submission Files</h2>
+                <h2>All Air Ticket Document Submission Files</h2>
               </div>
             </CardHeader>
 
             <CardBody>
               <CommonTableComponent
-                headers={AllUploadDocumentsForStudentsData}
+                headers={docRequestTableHeaderDataWithOutAction}
                 data={isFilteredData || []}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}

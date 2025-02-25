@@ -11,6 +11,7 @@ import {
   useUpdateSingleDocumentForStudentMutation,
 } from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
+import Link from 'next/link';
 
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -300,6 +301,133 @@ const AllAirTicketUploadDocumentsForStudents = () => {
     },
   ];
 
+  const docRequestTableHeaderDataWithoutAction = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Requester Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium ">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
   return (
     <Layout>
       <div className="page-content">
@@ -319,6 +447,32 @@ const AllAirTicketUploadDocumentsForStudents = () => {
               <CardBody>
                 <CommonTableComponent
                   headers={AllUploadDocumentsForStudentsData}
+                  data={isfilteredData ? isfilteredData : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={perPageData}
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                  emptyMessage="No Data found yet."
+                />
+              </CardBody>
+            </Card>
+          )}
+
+          {getSingleStudentAirTicketDocRequestIsLoading ? (
+            <LoaderSpiner />
+          ) : (
+            <Card>
+              <CardHeader className="d-flex justify-content-between align-items-center">
+                <h1> Air Ticket Document Submitted File</h1>
+                <SearchComponent
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                />
+              </CardHeader>
+              <CardBody>
+                <CommonTableComponent
+                  headers={docRequestTableHeaderDataWithoutAction}
                   data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
