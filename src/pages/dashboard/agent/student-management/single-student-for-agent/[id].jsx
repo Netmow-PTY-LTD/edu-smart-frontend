@@ -149,6 +149,38 @@ const SingleStudentForAgent = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '6',
+                        })}
+                        onClick={() => {
+                          toggleTab('6');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Air Ticket Document
+                        </span>
+                      </NavLink>
+                    </NavItem>
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '7',
+                        })}
+                        onClick={() => {
+                          toggleTab('7');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Air Ticket Document Request
+                        </span>
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -179,6 +211,16 @@ const SingleStudentForAgent = () => {
                 {activeTab === '5' && (
                   <div>
                     <ApplicationEmgsStatus student_id={student_id} />
+                  </div>
+                )}
+                {activeTab === '6' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <DocumentRequestPage student_id={student_id} />
+                  </div>
+                )}
+                {activeTab === '7' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <DocumentRequestPage student_id={student_id} />
                   </div>
                 )}
               </Row>
