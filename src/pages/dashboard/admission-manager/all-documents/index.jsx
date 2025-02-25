@@ -4,11 +4,11 @@ import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
 import RequiredDocemtsModal from '@/components/sAdminDashboard/modals/requireDocuments';
 import {
-  useAddRequiredDocumentInSuperAdminMutation,
-  useDeleteRequiredDocumentInSuperAdminMutation,
-  useGetRequiredDocumentInSuperAdminQuery,
-  useUpdateRequiredDocumentInSuperAdminMutation,
-} from '@/slice/services/super admin/requiredService';
+  useAddRequiredDocumentForAdmissionManagerMutation,
+  useDeleteRequiredDocumentForAdmissionManagerMutation,
+  useGetRequiredDocumentForAdmissionManagerQuery,
+  useUpdateRequiredDocumentForAdmissionManagerMutation,
+} from '@/slice/services/admission manager/requiredDocumentsServiceForAdmissionManager';
 import { documentHeaders } from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -30,31 +30,37 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
     description: '',
   });
 
-  const [addRequiredDocumentInSuperAdmin] =
-    useAddRequiredDocumentInSuperAdminMutation();
+  const [addRequiredDocumentForAdmissionManager] =
+    useAddRequiredDocumentForAdmissionManagerMutation();
+
   const [
-    updateRequiredDocumentInSuperAdmin,
-    { isLoading: updateRequiredDocumentInSuperAdminIsLoading },
-  ] = useUpdateRequiredDocumentInSuperAdminMutation();
+    updateRequiredDocumentForAdmissionManager,
+    { isLoading: updateRequiredDocumentForAdmissionManagerIsLoading },
+  ] = useUpdateRequiredDocumentForAdmissionManagerMutation();
+
   const [
-    deleteRequiredDocumentInSuperAdmin,
-    { isLoading: deleteRequiredDocumentInSuperIsLoading },
-  ] = useDeleteRequiredDocumentInSuperAdminMutation();
+    deleteRequiredDocumentForAdmissionManager,
+    { isLoading: deleteRequiredDocumentForAdmissionManagerIsLoading },
+  ] = useDeleteRequiredDocumentForAdmissionManagerMutation();
 
   const {
-    data: getRequiredDocumentData,
-    isLoading: getRequiredDocumentIsLoading,
-    refetch: getRequiredDocumentRefetch,
-  } = useGetRequiredDocumentInSuperAdminQuery();
+    data: getRequiredDocumentForAdmissionManagerData,
+    isLoading: getRequiredDocumentForAdmissionManagerIsLoading,
+    refetch: getRequiredDocumentForAdmissionManagerRefetch,
+  } = useGetRequiredDocumentForAdmissionManagerQuery();
 
   const validationSchema = Yup.object({});
 
   useEffect(() => {
-    if (getRequiredDocumentData?.data?.length > 0 && requiredDocumentId) {
+    if (
+      getRequiredDocumentForAdmissionManagerData?.data?.length > 0 &&
+      requiredDocumentId
+    ) {
       const fetchData = async () => {
-        const singleCouponData = getRequiredDocumentData?.data?.find(
-          (item) => item?._id === requiredDocumentId
-        );
+        const singleCouponData =
+          getRequiredDocumentForAdmissionManagerData?.data?.find(
+            (item) => item?._id === requiredDocumentId
+          );
 
         console.log(singleCouponData);
 
@@ -69,7 +75,7 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
       };
       fetchData();
     }
-  }, [getRequiredDocumentData?.data, requiredDocumentId]);
+  }, [getRequiredDocumentForAdmissionManagerData?.data, requiredDocumentId]);
 
   // add RequiredDocument handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -78,11 +84,12 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
     // console.log(values);
 
     try {
-      const response = await addRequiredDocumentInSuperAdmin(values).unwrap();
+      const response =
+        await addRequiredDocumentForAdmissionManager(values).unwrap();
 
       if (response) {
         toast.success(response?.message);
-        getRequiredDocumentRefetch();
+        getRequiredDocumentForAdmissionManagerRefetch();
         resetForm();
         setOpenModal(!openModal);
       }
@@ -109,10 +116,10 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
 
     try {
       const response =
-        await updateRequiredDocumentInSuperAdmin(editData).unwrap();
+        await updateRequiredDocumentForAdmissionManager(editData).unwrap();
       if (response) {
         toast.success(response?.message);
-        getRequiredDocumentRefetch();
+        getRequiredDocumentForAdmissionManagerRefetch();
         resetForm();
         setRequiredDocumentId('');
         setEditOpenModal(!editOpenModal);
@@ -135,8 +142,8 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
 
   // Filter data for search option
   const isFilteredData =
-    getRequiredDocumentData?.data?.length > 0 &&
-    getRequiredDocumentData?.data.filter((item) =>
+    getRequiredDocumentForAdmissionManagerData?.data?.length > 0 &&
+    getRequiredDocumentForAdmissionManagerData?.data.filter((item) =>
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -152,10 +159,11 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
 
   const handleDelete = async (id) => {
     try {
-      const result = await deleteRequiredDocumentInSuperAdmin(id).unwrap();
+      const result =
+        await deleteRequiredDocumentForAdmissionManager(id).unwrap();
       if (result) {
         toast.success(result?.message);
-        getRequiredDocumentRefetch();
+        getRequiredDocumentForAdmissionManagerRefetch();
         setDeleteRequiredDocumentId('');
         setDeleteModalIsOpen(false);
       }
@@ -262,7 +270,7 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
                 submitButton={'Update'}
                 initialValues={initialValues}
                 handleSubmit={handleUpdateSubmit}
-                isLoading={updateRequiredDocumentInSuperAdminIsLoading}
+                isLoading={updateRequiredDocumentForAdmissionManagerIsLoading}
               />
             }
             {
@@ -273,7 +281,7 @@ const AllRequiredDocumentPageForAdmissionManagerDashboard = () => {
                 )}
                 id={deleteRequiredDocumentId}
                 handleDelete={handleDelete}
-                isloading={deleteRequiredDocumentInSuperIsLoading}
+                isloading={deleteRequiredDocumentForAdmissionManagerIsLoading}
               />
             }
           </div>

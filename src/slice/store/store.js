@@ -9,7 +9,13 @@ import { paymentService } from '../services/common/paymentService';
 import { settingsService } from '../services/common/settingsService';
 import { userInfoService } from '../services/common/userInfoService';
 
-import { superAdminAgentServiceForAdmissionManager } from '../services/admission manager/agentServiceForAdmissionManager';
+import { agentServiceForAdmissionManager } from '../services/admission manager/agentServiceForAdmissionManager';
+import { courseCategoriesServiceForAdmissionManager } from '../services/admission manager/courseCategoriesServiceForAdmissionManager';
+import { courseServiceForAdmissionManager } from '../services/admission manager/courseServiceForAdmissionManager';
+import { departmentServiceForAdmissionManager } from '../services/admission manager/departmentServiceForAdmissionManager';
+import { requiredDocumentsServiceForAdmissionManager } from '../services/admission manager/requiredDocumentsServiceForAdmissionManager';
+import { studentServiceForAdmissionManager } from '../services/admission manager/studentServiceForAdmissionManager';
+import { universityServiceForAdmissionManager } from '../services/admission manager/universityServiceForAdmissionManager';
 import { agentDocumentServices } from '../services/agent/agentDocumentServices';
 import { commonDocumentService } from '../services/common/commonDocumentService';
 import { paymentReportService } from '../services/common/paymentReportServices';
@@ -46,11 +52,6 @@ import { universityAdministrationFaqService } from '../services/university-admin
 import { universityAdministrationGalleryService } from '../services/university-administration/api/universityAdministrationGalleryService';
 import { universityAdministrationSliderService } from '../services/university-administration/api/universityAdministrationSliderService';
 import { universityAdministrationSocialLinkService } from '../services/university-administration/api/universityAdministrationSocialLinkService';
-import { courseCategoriesServiceForAdmissionManager } from '../services/admission manager/courseCategoriesServiceForAdmissionManager';
-import { courseServiceForAdmissionManager } from '../services/admission manager/courseServiceForAdmissionManager';
-import { departmentServiceForAdmissionManager } from '../services/admission manager/departmentServiceForAdmissionManager';
-import { requiredDocumentsServiceForAdmissionManager } from '../services/admission manager/requiredDocumentsServiceForAdmissionManager';
-import { universityServiceForAdmissionManager } from '../services/admission manager/universityServiceForAdmissionManager';
 
 export const store = configureStore({
   reducer: {
@@ -108,8 +109,8 @@ export const store = configureStore({
     [agentDocumentServices.reducerPath]: agentDocumentServices.reducer,
     [commonDocumentService.reducerPath]: commonDocumentService.reducer,
     [staffMemberService.reducerPath]: staffMemberService.reducer,
-    [superAdminAgentServiceForAdmissionManager.reducerPath]:
-      superAdminAgentServiceForAdmissionManager.reducer,
+    [agentServiceForAdmissionManager.reducerPath]:
+      agentServiceForAdmissionManager.reducer,
     [courseCategoriesServiceForAdmissionManager.reducerPath]:
       courseCategoriesServiceForAdmissionManager.reducer,
     [courseServiceForAdmissionManager.reducerPath]:
@@ -120,6 +121,8 @@ export const store = configureStore({
       requiredDocumentsServiceForAdmissionManager.reducer,
     [universityServiceForAdmissionManager.reducerPath]:
       universityServiceForAdmissionManager.reducer,
+    [studentServiceForAdmissionManager.reducerPath]:
+      studentServiceForAdmissionManager.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -167,12 +170,13 @@ export const store = configureStore({
       .concat(agentDocumentServices.middleware)
       .concat(commonDocumentService.middleware)
       .concat(staffMemberService.middleware)
-      .concat(superAdminAgentServiceForAdmissionManager.middleware)
+      .concat(agentServiceForAdmissionManager.middleware)
       .concat(courseCategoriesServiceForAdmissionManager.middleware)
       .concat(courseServiceForAdmissionManager.middleware)
       .concat(departmentServiceForAdmissionManager.middleware)
       .concat(requiredDocumentsServiceForAdmissionManager.middleware)
       .concat(universityServiceForAdmissionManager.middleware)
+      .concat(studentServiceForAdmissionManager.middleware)
       .concat(superAdminStatsServices.middleware),
 });
 

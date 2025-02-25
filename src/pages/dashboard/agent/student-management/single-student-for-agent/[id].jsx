@@ -156,7 +156,7 @@ const SingleStudentForAgent = () => {
                 {activeTab === '1' && (
                   <div style={{ marginTop: '50px' }}>
                     {/* <OverviewPage /> */}
-                    <Col xl={3}>
+                    <Col xl={12}>
                       <AllOverviewInfoCard data={getSingleStudent?.data} />
                     </Col>
                   </div>
