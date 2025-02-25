@@ -91,6 +91,15 @@ export const studentSubmitDocumentService = createApi({
         };
       },
     }),
+    deleteSingleAirTicketDocumentForStudent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/airticket/document/${id}`,
+          method: 'DELETE',
+        };
+      },
+    }),
   }),
 });
 
@@ -100,4 +109,9 @@ export const {
   useGetDocumentRequestForStudentQuery,
   useSubmitSingleDocumentForStudentMutation,
   useUpdateSingleDocumentForStudentMutation,
+  useSubmitStudentAirTicketDocumentMutation,
+  useGetAllSubmittedAirTicketDocumentForStudentQuery,
+  useGetSingleAirTicketDocumentForStudentQuery,
+  useUpdateSingleAirTicketDocumentForStudentMutation,
+  useDeleteSingleAirTicketDocumentForStudentMutation,
 } = studentSubmitDocumentService;

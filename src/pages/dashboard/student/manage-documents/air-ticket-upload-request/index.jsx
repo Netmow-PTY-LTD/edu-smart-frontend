@@ -6,7 +6,10 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
-import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
+import {
+  useUpdateSingleAirTicketDocumentForStudentMutation,
+  useUpdateSingleDocumentForStudentMutation,
+} from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
 
 import React, { useEffect, useState } from 'react';
@@ -39,8 +42,10 @@ const AllAirTicketUploadDocumentsForStudents = () => {
     refetch: getSingleStudentAirTicketDocRequestRefetch,
   } = useGetSingleUserAirTicketDocumentRequestQuery({ student_id: user?.id });
 
+  // const [submitSingleDocumentForStudent] =
+  //   useUpdateSingleDocumentForStudentMutation();
   const [submitSingleDocumentForStudent] =
-    useUpdateSingleDocumentForStudentMutation();
+    useUpdateSingleAirTicketDocumentForStudentMutation();
 
   const validationSchema = Yup.object({
     document: Yup.array()
