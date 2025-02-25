@@ -59,6 +59,28 @@ export const agentDocumentServices = createApi({
         };
       },
     }),
+    //-------------------- User or Student Base End Point ------------------------
+    createUserAirTicketDocRequestForAgent: builder.mutation({
+      query: (body) => {
+        const student_id = body.student_id;
+        return {
+          url: `/documents/airticket/request/${student_id}`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
+
+    updateUserAirTicketDocStatusForAgent: builder.mutation({
+      query: (body) => {
+        const airticket_document_id = body.airticket_document_id;
+        return {
+          url: `/documents/airticket/status/${airticket_document_id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+    }),
   }),
 });
 
@@ -67,4 +89,6 @@ export const {
   useCreateApplicationDocRequestForAgentMutation,
   useUpdateUserDocStatusForAgentMutation,
   useUpdateApplicationDocStatusForAgentMutation,
+  useCreateUserAirTicketDocRequestForAgentMutation,
+  useUpdateUserAirTicketDocStatusForAgentMutation,
 } = agentDocumentServices;

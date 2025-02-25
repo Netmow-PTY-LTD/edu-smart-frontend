@@ -125,6 +125,24 @@ export const commonDocumentService = createApi({
         };
       },
     }),
+    // ---------------- Air Ticket  endpoint --------------------
+    GetAllStudentsAirticketDocumentRequest: builder.query({
+      query: () => {
+        return {
+          url: '/airticket/request',
+          method: 'GET',
+        };
+      },
+    }),
+    getSingleUserAirTicketDocumentRequest: builder.query({
+      query: (body) => {
+        const student_id = body.student_id;
+        return {
+          url: `/airticket/request/${student_id}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
