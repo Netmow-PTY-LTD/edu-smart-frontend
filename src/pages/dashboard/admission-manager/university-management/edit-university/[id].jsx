@@ -2,14 +2,14 @@ import { convertImageUrlToFile } from '@/components/common/helperFunctions/Conve
 import Layout from '@/components/layout';
 import UniversityForm from '@/components/sAdminDashboard/modals/UniversityForm';
 import {
-  useGetUniversityQuery,
-  useUpdateUniversityMutation,
-} from '@/slice/services/super admin/universityService';
+  useGetUniversityForAdmissionManagerQuery,
+  useUpdateUniversityForAdmissionManagerMutation,
+} from '@/slice/services/admission manager/universityServiceForAdmissionManager';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
-const EditUniversityPageForAdmissionManagerDashboard = () => {
+const EditUniversity = () => {
   const router = useRouter();
   const [ssmFilePreview, setSsmFilePreview] = useState(null);
   const [govtFilePreview, setGovtFilePreview] = useState(null);
@@ -36,20 +36,23 @@ const EditUniversityPageForAdmissionManagerDashboard = () => {
 
   console.log(initialValues);
 
-  const [updateUniversity] = useUpdateUniversityMutation();
+  const [updateUniversityForAdmissionManager] =
+    useUpdateUniversityForAdmissionManagerMutation();
 
   const {
-    data: getUniversityData,
-    error: getUniversityError,
-    isLoading: getUniversityIsLoading,
-    refetch: getUniversityRefetch,
-  } = useGetUniversityQuery();
+    data: getUniversityForAdmissionManagerData,
+    error: getUniversityForAdmissionManagerError,
+    isLoading: getUniversityForAdmissionManagerIsLoading,
+    refetch: getUniversityForAdmissionManagerRefetch,
+  } = useGetUniversityForAdmissionManagerQuery();
 
   useEffect(() => {
-    if (getUniversityData?.data && universityId) {
+    if (getUniversityForAdmissionManagerData?.data && universityId) {
       const getSingleUniversityData =
-        getUniversityData?.data?.length > 0 &&
-        getUniversityData?.data.find((item) => item?._id === universityId);
+        getUniversityForAdmissionManagerData?.data?.length > 0 &&
+        getUniversityForAdmissionManagerData?.data.find(
+          (item) => item?._id === universityId
+        );
 
       const fetchData = async () => {
         try {
@@ -82,7 +85,7 @@ const EditUniversityPageForAdmissionManagerDashboard = () => {
 
       fetchData();
     }
-  }, [getUniversityData?.data, universityId]);
+  }, [getUniversityForAdmissionManagerData?.data, universityId]);
 
   // console.log(initialValues);
 
@@ -102,13 +105,14 @@ const EditUniversityPageForAdmissionManagerDashboard = () => {
       Object.entries(finalData).forEach(([key, value]) => {
         editedData.append(key, value);
       });
-      const result = await updateUniversity(editedData).unwrap();
+      const result =
+        await updateUniversityForAdmissionManager(editedData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getUniversityRefetch();
+        getUniversityForAdmissionManagerRefetch();
         setImagePreview(null);
         router.push(
-          '/dashboard/super-admin/university-management/all-university'
+          '/dashboard/admission-manager/university-management/all-university'
         );
       }
     } catch (error) {
@@ -142,4 +146,4 @@ const EditUniversityPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default EditUniversityPageForAdmissionManagerDashboard;
+export default EditUniversity;

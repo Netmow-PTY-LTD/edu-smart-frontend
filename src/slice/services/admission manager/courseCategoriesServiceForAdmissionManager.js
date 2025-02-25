@@ -7,7 +7,7 @@ export const courseCategoriesServiceForAdmissionManager = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       `${serverInfo?.base_url_prod}` +
-      '/api/v1/university/admission-manager/university',
+      '/api/v1/admission-manager/university',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -16,6 +16,7 @@ export const courseCategoriesServiceForAdmissionManager = createApi({
       return headers;
     },
   }),
+
   endpoints: (builder) => ({
     addCourseCategoryForAdmissionManager: builder.mutation({
       query: (body) => {
@@ -68,6 +69,7 @@ export const courseCategoriesServiceForAdmissionManager = createApi({
         };
       },
     }),
+    
     deleteCourseCategoryForAdmissionManager: builder.mutation({
       query: (data) => {
         const category_id = data?.category_id;

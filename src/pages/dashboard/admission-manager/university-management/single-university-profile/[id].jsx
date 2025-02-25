@@ -1,15 +1,15 @@
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import AllCourseForSuperAdminTest from '@/components/sAdminDashboard/commponents/AllCourseForSuperAdminTest';
-import AllDepartmentForSuperAdmin from '@/components/sAdminDashboard/commponents/AllDepartmentForSuperAdmin';
-import CourseCategories from '@/components/sAdminDashboard/commponents/CourseCategories';
+import AllDepartmentForAdmissionManager from '@/components/sAdminDashboard/commponents/AllDepartmentForAdmissionManager';
+import CourseCategoriesForAdmissionManager from '@/components/sAdminDashboard/commponents/CourseCategoriesForAdmissionManager';
+import CoursesForAdmissionManager from '@/components/sAdminDashboard/commponents/CoursesForAdmissionManager';
 import ManageUniversityForSuperAdmin from '@/components/sAdminDashboard/commponents/ManageUniversityForSuperAdmin';
 import UniversityProfileOverview from '@/components/sAdminDashboard/commponents/UniversityProfileOverview';
-import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
-import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
-import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
-import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
+import { useGetAllCourseCategoriesForAdmissionManagerQuery } from '@/slice/services/admission manager/courseCategoriesServiceForAdmissionManager';
+import { useGetCourseForAdmissionManagerQuery } from '@/slice/services/admission manager/courseServiceForAdmissionManager';
+import { useGetDepartmentForAdmissionManagerQuery } from '@/slice/services/admission manager/departmentServiceForAdmissionManager';
+import { useGetSingleUniversityForAdmissionManagerQuery } from '@/slice/services/admission manager/universityServiceForAdmissionManager';
 import {
   categoryHeaders,
   courseHeaders,
@@ -22,7 +22,7 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Col, Container, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const SingleUniversityProfileForAdmissionManager = () => {
+const SingleUniversityProfile = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('1');
   const [currentPage, setCurrentPage] = useState(0);
@@ -30,33 +30,39 @@ const SingleUniversityProfileForAdmissionManager = () => {
   const university_id = router.query.id;
 
   const {
-    data: getSingleUniversityData,
-    isLoading: getSingleUniversityIsLoading,
-    refetch: getSingleUniversityRefetch,
-  } = useGetSingleUniversityQuery(university_id, {
+    data: getSingleUniversityForAdmissionManagerData,
+    isLoading: getSingleUniversityForAdmissionManagerIsLoading,
+    refetch: getSingleUniversityForAdmissionManagerRefetch,
+  } = useGetSingleUniversityForAdmissionManagerQuery(university_id, {
     skip: !university_id,
   });
 
   const {
-    data: getDepartmentData,
-    error: getDepartmentError,
-    isLoading: getDepartmentIsLoading,
-    refetch: getDepartmentRefetch,
-  } = useGetDepartmentQuery(university_id, { skip: !university_id });
+    data: getDepartmentForAdmissionManagerData,
+    error: getDepartmentForAdmissionManagerError,
+    isLoading: getDepartmentForAdmissionManagerIsLoading,
+    refetch: getDepartmentForAdmissionManagerRefetch,
+  } = useGetDepartmentForAdmissionManagerQuery(university_id, {
+    skip: !university_id,
+  });
 
   const {
-    data: getAllCategoriesData,
-    error: getAllCategoriesError,
-    isLoading: getAllCategoriesIsLoading,
-    refetch: getAllCategoriesRefetch,
-  } = useGetAllCourseCategoriesQuery(university_id, { skip: !university_id });
+    data: getAllCourseCategoriesForAdmissionManagerData,
+    error: getAllCourseCategoriesForAdmissionManagerDataError,
+    isLoading: getAllCourseCategoriesForAdmissionManagerDataIsLoading,
+    refetch: getAllCourseCategoriesForAdmissionManagerDataRefetch,
+  } = useGetAllCourseCategoriesForAdmissionManagerQuery(university_id, {
+    skip: !university_id,
+  });
 
   const {
-    data: getCourseData,
-    error: getCourseError,
-    isLoading: getCourseIsLoading,
-    refetch: getCourseRefetch,
-  } = useGetCourseQuery(university_id, { skip: !university_id });
+    data: getCourseForAdmissionManagerData,
+    error: getCourseForAdmissionManagerError,
+    isLoading: getCourseForAdmissionManagerIsLoading,
+    refetch: getCourseForAdmissionManagerRefetch,
+  } = useGetCourseForAdmissionManagerQuery(university_id, {
+    skip: !university_id,
+  });
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -69,14 +75,16 @@ const SingleUniversityProfileForAdmissionManager = () => {
       <Layout>
         <div className="page-content ">
           <ToastContainer />
-          {getSingleUniversityIsLoading ||
-          getDepartmentIsLoading ||
-          getAllCategoriesIsLoading ||
-          getCourseIsLoading ? (
+          {getSingleUniversityForAdmissionManagerIsLoading ||
+          getDepartmentForAdmissionManagerIsLoading ||
+          getAllCourseCategoriesForAdmissionManagerDataIsLoading ||
+          getCourseForAdmissionManagerIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Container fluid>
-              <ProfileBgCover profileData={getSingleUniversityData?.data} />
+              <ProfileBgCover
+                profileData={getSingleUniversityForAdmissionManagerData?.data}
+              />
               <Row className="mt-5 px-3">
                 <Col lg={12} className="mt-5">
                   <div>
@@ -184,28 +192,40 @@ const SingleUniversityProfileForAdmissionManager = () => {
                         headers={departmentHeaders}
                         categoryHeaders={categoryHeaders}
                         courseHeaders={courseHeaders}
-                        profileData={getSingleUniversityData?.data}
-                        allDepartmentData={getDepartmentData?.data}
-                        allCategoryData={getAllCategoriesData?.data}
-                        allCourseData={getCourseData?.data}
+                        profileData={
+                          getSingleUniversityForAdmissionManagerData?.data
+                        }
+                        allDepartmentData={
+                          getDepartmentForAdmissionManagerData?.data
+                        }
+                        allCategoryData={
+                          getAllCourseCategoriesForAdmissionManagerData?.data
+                        }
+                        allCourseData={getCourseForAdmissionManagerData?.data}
                       />
                     )}
                     {activeTab === '2' && (
-                      <AllDepartmentForSuperAdmin
+                      <AllDepartmentForAdmissionManager
                         university_id={university_id}
                       />
                     )}
                     {activeTab === '3' && (
-                      <CourseCategories
+                      <CourseCategoriesForAdmissionManager
                         university_id={university_id}
-                        allDepartmentData={getDepartmentData?.data}
+                        allDepartmentData={
+                          getDepartmentForAdmissionManagerData?.data
+                        }
                       />
                     )}
                     {activeTab === '4' && (
-                      <AllCourseForSuperAdminTest
+                      <CoursesForAdmissionManager
                         university_id={university_id}
-                        allDepartmentData={getDepartmentData?.data}
-                        allCategoryData={getAllCategoriesData?.data}
+                        allDepartmentData={
+                          getDepartmentForAdmissionManagerData?.data
+                        }
+                        allCategoryData={
+                          getAllCourseCategoriesForAdmissionManagerData?.data
+                        }
                       />
                     )}
                     {activeTab === '5' && (
@@ -224,4 +244,4 @@ const SingleUniversityProfileForAdmissionManager = () => {
   );
 };
 
-export default SingleUniversityProfileForAdmissionManager;
+export default SingleUniversityProfile;
