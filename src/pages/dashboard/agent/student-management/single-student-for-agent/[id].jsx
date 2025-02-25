@@ -1,3 +1,4 @@
+import AirTicketDocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AirTicketDocumentRequestPage';
 import ApplicationEmgsStatus from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatus';
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
 import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
@@ -201,7 +202,7 @@ const SingleStudentForAgent = () => {
 
                 {activeTab === '6' && (
                   <div style={{ marginTop: '50px' }}>
-                    <DocumentRequestPage student_id={student_id} />
+                    <AirTicketDocumentRequestPage student_id={student_id} />
                   </div>
                 )}
               </Row>
