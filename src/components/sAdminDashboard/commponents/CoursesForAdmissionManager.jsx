@@ -738,6 +738,8 @@ const CoursesForAdmissionManager = ({
                 <i className="ri-pencil-fill align-start me-2 text-muted"></i>
                 Edit
               </div>
+            </DropdownItem>
+            <DropdownItem>
               <div
                 onClick={() =>
                   window.open(

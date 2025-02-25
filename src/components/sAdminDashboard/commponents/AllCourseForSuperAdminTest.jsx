@@ -12,7 +12,9 @@ import {
   useGetCourseQuery,
   useUpdateCourseMutation,
 } from '@/slice/services/super admin/courseService';
+import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 import { allowedFileTypes } from '@/utils/common/data';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -25,9 +27,6 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 import * as Yup from 'yup';
-import CourseModalForm from '../modals/CourseModalForm';
-import Image from 'next/image';
-import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 import CourseModalFormTest from '../modals/CourseModalFormTest';
 
 const AllCourseForSuperAdminTest = ({
@@ -867,7 +866,7 @@ const AllCourseForSuperAdminTest = ({
               <i className="ri-more-fill align-middle"></i>
             </span>
           </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+          <DropdownMenu className="me-3">
             <DropdownItem>
               <div
                 onClick={() => handleEditButtonClick(item?._id)}
@@ -876,6 +875,8 @@ const AllCourseForSuperAdminTest = ({
                 <i className="ri-pencil-fill align-start me-2 text-muted"></i>
                 Edit
               </div>
+            </DropdownItem>
+            <DropdownItem>
               <div
                 onClick={() =>
                   window.open(
