@@ -306,24 +306,24 @@ const CoursesForAdmissionManager = ({
       .required('Available Seats is required'),
     department: Yup.string().required('Department selection is required'),
     category: Yup.string().required('Course Category selection is required'),
-    price: Yup.number()
-      .typeError('Course Fee must be a number')
-      .min(0, 'Course Fee cannot be negative')
-      .required('Course Fee is required'),
-    university_price: Yup.number()
-      .typeError('University Fee must be a number')
-      .min(0, 'University Fee cannot be negative')
-      .required('University Fee is required'),
-    gst: Yup.number()
-      .typeError('GST must be a number')
-      .min(0, 'GST cannot be negative')
-      .max(100, 'GST cannot be more than 100%')
-      .required('GST is required'),
-    agent_commission_percentage: Yup.number()
-      .typeError('Agent Commission must be a number')
-      .min(0, 'Agent Commission cannot be negative')
-      .max(100, 'Agent Commission cannot be more than 100%')
-      .required('Agent Commission is required'),
+    // price: Yup.number()
+    //   .typeError('Course Fee must be a number')
+    //   .min(0, 'Course Fee cannot be negative')
+    //   .required('Course Fee is required'),
+    // university_price: Yup.number()
+    //   .typeError('University Fee must be a number')
+    //   .min(0, 'University Fee cannot be negative')
+    //   .required('University Fee is required'),
+    // gst: Yup.number()
+    //   .typeError('GST must be a number')
+    //   .min(0, 'GST cannot be negative')
+    //   .max(100, 'GST cannot be more than 100%')
+    //   .required('GST is required'),
+    // agent_commission_percentage: Yup.number()
+    //   .typeError('Agent Commission must be a number')
+    //   .min(0, 'Agent Commission cannot be negative')
+    //   .max(100, 'Agent Commission cannot be more than 100%')
+    //   .required('Agent Commission is required'),
     program_duration: Yup.string().required('Program Duration is required'),
     brochure: Yup.mixed().required('Brochure file is required'),
     image: Yup.mixed().required('Course Picture is required'),
