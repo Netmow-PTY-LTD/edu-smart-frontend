@@ -32,11 +32,30 @@ export const staffMemberService = createApi({
         };
       },
     }),
+    updateStaffMemberInSuperAdmin: builder.mutation({
+      query: (body) => {
+        const user_id = body.get('user_id');
+        return {
+          url: `/staff-members/${user_id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+    }),
     getSingleStaffMemberInSuperAdmin: builder.query({
       query: (id) => {
         return {
           url: `/staff-members/${id}`,
           method: 'GET',
+        };
+      },
+    }),
+    updateStaffMemberStatusInSuperAdmin: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/staff-members/${body?.id}/status`,
+          method: 'POST',
+          body,
         };
       },
     }),
@@ -47,4 +66,6 @@ export const {
   useAddStaffMemberInSuperAdminMutation,
   useGetSingleStaffMemberInSuperAdminQuery,
   useGetStaffMemberInSuperAdminQuery,
+  useUpdateStaffMemberInSuperAdminMutation,
+  useUpdateStaffMemberStatusInSuperAdminMutation,
 } = staffMemberService;

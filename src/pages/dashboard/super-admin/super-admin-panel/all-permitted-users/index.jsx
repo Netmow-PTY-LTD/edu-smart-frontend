@@ -1,16 +1,20 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
 import SelectUserModalForSuperAdmin from '@/components/sAdminDashboard/modals/SelectUserModalForSuperAdmin';
 import {
   useAddStaffMemberInSuperAdminMutation,
+  useGetSingleStaffMemberInSuperAdminQuery,
   useGetStaffMemberInSuperAdminQuery,
+  useUpdateStaffMemberInSuperAdminMutation,
+  useUpdateStaffMemberStatusInSuperAdminMutation,
 } from '@/slice/services/super admin/staffMemberService';
 import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -24,13 +28,15 @@ import {
 import * as Yup from 'yup';
 
 const AllPermittedUserForSuperAdmin = () => {
-  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [userStatusModalIsOpen, setUserStatusModalIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [permittedUserIdForDelete, setPermittedUserIdForDelete] =
     useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [userIdForUpdate, setUserIdForUpdate] = useState('');
   const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
@@ -58,12 +64,39 @@ const AllPermittedUserForSuperAdmin = () => {
     },
   ] = useAddStaffMemberInSuperAdminMutation();
 
+  const [
+    updateStaffMemberInSuperAdmin,
+    {
+      data: updateStaffMemberData,
+      error: updateStaffMemberError,
+      isLoading: updateStaffMemberIsLoading,
+    },
+  ] = useUpdateStaffMemberInSuperAdminMutation();
+
+  const [
+    updateStaffMemberStatusInSuperAdmin,
+    {
+      data: updateStaffMemberStatusData,
+      error: updateStaffMemberStatusError,
+      isLoading: updateStaffMemberStatusIsLoading,
+    },
+  ] = useUpdateStaffMemberStatusInSuperAdminMutation();
+
   const {
     data: getAllStaffMemberData,
     error: getAllStaffMemberError,
     isLoading: getAllStaffMemberIsLoading,
     refetch: getAllStaffMemberRefetch,
   } = useGetStaffMemberInSuperAdminQuery();
+
+  const {
+    data: getSingleStaffMemberInSuperAdminData,
+    error: getSingleStaffMemberInSuperAdminError,
+    isLoading: getSingleStaffMemberInSuperAdminIsLoading,
+    refetch: getSingleStaffMemberInSuperAdminRefetch,
+  } = useGetSingleStaffMemberInSuperAdminQuery(userIdForUpdate, {
+    skip: !userIdForUpdate,
+  });
 
   //   const [
   //     deletePermittedUser,
@@ -94,11 +127,53 @@ const AllPermittedUserForSuperAdmin = () => {
     zip: Yup.number().required('Zip is required'),
   });
 
+  // console.log(getSingleStaffMemberInSuperAdminData?.data);
+
+  useEffect(() => {
+    if (
+      userIdForUpdate !== '' &&
+      getSingleStaffMemberInSuperAdminData?.data?._id
+    ) {
+      const fetchData = async () => {
+        try {
+          const file = await convertImageUrlToFile(
+            getSingleStaffMemberInSuperAdminData?.data?.profile_image?.url
+          );
+
+          setInitialValues({
+            image: file,
+            first_name:
+              getSingleStaffMemberInSuperAdminData?.data?.first_name || '',
+            last_name:
+              getSingleStaffMemberInSuperAdminData?.data?.last_name || '',
+            email: getSingleStaffMemberInSuperAdminData?.data?.email || '',
+            phone: getSingleStaffMemberInSuperAdminData?.data?.phone || '',
+            password: '',
+            confirm_password: '',
+            address:
+              getSingleStaffMemberInSuperAdminData?.data?.address_line_1 || '',
+            select_role: getSingleStaffMemberInSuperAdminData?.data?.role || '',
+            city: getSingleStaffMemberInSuperAdminData?.data?.city || '',
+            state: getSingleStaffMemberInSuperAdminData?.data?.state || '',
+            zip: getSingleStaffMemberInSuperAdminData?.data?.zip || '',
+            country: getSingleStaffMemberInSuperAdminData?.data?.country || '',
+          });
+
+          setImagePreview(URL.createObjectURL(file));
+        } catch (error) {
+          // console.error('Error loading data:', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [getSingleStaffMemberInSuperAdminData?.data, userIdForUpdate]);
+
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log('formData', values);
+    // console.log('formData', values);
 
     try {
       const finalData = new FormData();
@@ -120,26 +195,72 @@ const AllPermittedUserForSuperAdmin = () => {
     }
   };
 
-  const handleDeleteButtonClick = (itemId) => {
-    setPermittedUserIdForDelete(itemId);
-    setDeleteModalIsOpen(!deleteModalIsOpen);
+  const handleUpdateSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    const updatedata = {
+      image: values?.image ?? '',
+      first_name: values?.first_name ?? '',
+      last_name: values?.last_name ?? '',
+      email: values?.email ?? '',
+      phone: values?.phone ?? '',
+      address: values?.address ?? '',
+      role: values?.select_role ?? '',
+      city: values?.city ?? '',
+      state: values?.state ?? '',
+      zip: values?.zip ?? '',
+      country: values?.country ?? '',
+      user_id: userIdForUpdate,
+    };
+
+    // console.log('formData', updatedata);
+
+    try {
+      const finalData = new FormData();
+      Object.entries(updatedata).forEach(([key, value]) => {
+        finalData.append(key, value);
+      });
+      const result = await updateStaffMemberInSuperAdmin(finalData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        getAllStaffMemberRefetch();
+        setImagePreview(null);
+        setUserIdForUpdate('');
+        setUpdateModalIsOpen(false);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  //   const handleDeletePermittedUser = async (id) => {
-  //     try {
-  //       const result = await deletePermittedUser(id).unwrap();
-  //       if (result) {
-  //         toast.success(result?.message);
-  //         getPermittedUserRefetch();
-  //         handleDeleteButtonClick();
-  //       }
-  //     } catch (error) {
-  //       const errorMessage = error?.data?.message;
-  //       toast.error(errorMessage);
-  //     } finally {
-  //       //
-  //     }
-  //   };
+  const handleUserStatusModal = (userData) => {
+    console.log(userData?.id);
+    console.log(userData?.status);
+    setPermittedUserIdForDelete(userData);
+    setUserStatusModalIsOpen(true);
+  };
+
+  const handleChangeUserStatus = async (statusData) => {
+    console.log(statusData);
+    try {
+      const result =
+        await updateStaffMemberStatusInSuperAdmin(statusData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        setPermittedUserIdForDelete('');
+        setUserStatusModalIsOpen(false);
+        getAllStaffMemberRefetch();
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      //
+    }
+  };
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -157,7 +278,7 @@ const AllPermittedUserForSuperAdmin = () => {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      <UncontrolledDropdown className="card-header-dropdown">
+      <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
           className="text-reset dropdown-btn"
@@ -167,77 +288,42 @@ const AllPermittedUserForSuperAdmin = () => {
             <i className="ri-more-fill align-middle"></i>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+        <DropdownMenu className="me-2 ">
           <DropdownItem>
-            <Link
-              href={`/dashboard/super-admin/university-management/edit-university/${item?._id}`}
-              className="text-primary"
+            <div
+              onClick={() => {
+                setUpdateModalIsOpen(true);
+                setUserIdForUpdate(item?._id);
+              }}
+              className="text-primary d-flex align-items-center fw-medium"
             >
-              <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+              <i className="ri-edit-circle-fill align-start me-2 fs-1 text-primary"></i>
               Edit
-            </Link>
+            </div>
           </DropdownItem>
           {item?.status === 'active' ? (
             <DropdownItem>
               <div
-                // onClick={() => {
-                //   if (!item?._id) {
-                //     toast.error('Invalid item ID');
-                //     return;
-                //   }
-
-                //   deletePermittedUser({ id: item._id, status: 'inactive' })
-                //     .then((res) => {
-                //       if (res.error) {
-                //         toast.error(
-                //           res.payload ||
-                //             'Failed to delete the Admission Manager.'
-                //         );
-                //       } else {
-                //         toast.success(
-                //           res.payload?.message ||
-                //             'Admission Manager deleted successfully.'
-                //         );
-                //       }
-                //     })
-                //     .catch(() => toast.error('An unexpected error occurred.'));
-                // }}
-                className="text-primary"
+                onClick={() =>
+                  handleUserStatusModal({ id: item?._id, status: 'inactive' })
+                }
+                className="text-primary d-flex align-items-center fw-medium"
                 aria-label="Inactive Admission Manager"
               >
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                <i className="ri-close-circle-fill align-start me-2 fs-1 text-danger"></i>
                 Inactive
               </div>
             </DropdownItem>
           ) : (
             <DropdownItem>
               <div
-                // onClick={() => {
-                //   if (!item?._id) {
-                //     toast.error('Invalid item ID');
-                //     return;
-                //   }
-
-                //   deletePermittedUser({ id: item._id, status: 'active' })
-                //     .then((res) => {
-                //       if (res.error) {
-                //         toast.error(
-                //           res.payload ||
-                //             'Failed to delete the Admission Manager.'
-                //         );
-                //       } else {
-                //         toast.success(
-                //           res.payload?.message ||
-                //             'Admission Manager deleted successfully.'
-                //         );
-                //       }
-                //     })
-                //     .catch(() => toast.error('An unexpected error occurred.'));
-                // }}
-                className="text-primary"
+                onClick={() =>
+                  handleUserStatusModal({ id: item?._id, status: 'active' })
+                }
+                className="text-primary d-flex align-items-center fw-medium"
                 aria-label="Active Admission Manager"
               >
-                <i className="ri-check-circle-fill align-start me-2 text-success"></i>
+                <i className="ri-checkbox-circle-fill align-start me-2 third-color fs-1"></i>
                 Active
               </div>
             </DropdownItem>
@@ -246,6 +332,8 @@ const AllPermittedUserForSuperAdmin = () => {
       </UncontrolledDropdown>
     ),
   };
+
+  // console.log(userIdForUpdate);
 
   const admissionManagerHeaders = [
     {
@@ -412,13 +500,36 @@ const AllPermittedUserForSuperAdmin = () => {
             </Card>
             {/* )} */}
 
-            {/* Delete University */}
+            {
+              // Update user
+              <SelectUserModalForSuperAdmin
+                openModal={updateModalIsOpen}
+                closeModal={() => {
+                  setUpdateModalIsOpen(false);
+                  setUserIdForUpdate('');
+                }}
+                modalTitle={'Update Permission Role'}
+                submitBtn={'Update Data'}
+                setInitialValues={setInitialValues}
+                initialValues={initialValues}
+                handleSubmit={handleUpdateSubmit}
+                imagePreview={imagePreview}
+                setImagePreview={setImagePreview}
+                isLoading={getSingleStaffMemberInSuperAdminIsLoading}
+              />
+            }
+
+            {/* user active/inactive */}
             <DeleteModal
-              Open={deleteModalIsOpen}
-              close={handleDeleteButtonClick}
+              Open={userStatusModalIsOpen}
+              close={() => {
+                setUserStatusModalIsOpen(false);
+                setPermittedUserIdForDelete('');
+              }}
               id={permittedUserIdForDelete}
-              handleDelete={'handleDeletePermittedUser'}
-              isloading={'deletePermittedUserIsLoading'}
+              handleDelete={handleChangeUserStatus}
+              isloading={updateStaffMemberStatusIsLoading}
+              userStatus={permittedUserIdForDelete?.status}
             />
           </div>
         </div>

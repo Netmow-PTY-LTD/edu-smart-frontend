@@ -19,7 +19,11 @@ const AllOverviewInfoCard = ({ data }) => {
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block text-capitalize">
-                      {data?.name || data?.first_name + ' ' + data?.last_name}
+                      {data?.name
+                        ? data?.name
+                        : data?.first_name
+                          ? data?.first_name + ' ' + data?.last_name
+                          : ''}
                     </span>
                   </td>
                 </tr>
@@ -29,7 +33,7 @@ const AllOverviewInfoCard = ({ data }) => {
                   </th>
                   <td className="text-muted text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
-                    <span className="d-inline-block">{data?.phone}</span>
+                    <span className="d-inline-block">{data?.phone ?? ''}</span>
                   </td>
                 </tr>
 

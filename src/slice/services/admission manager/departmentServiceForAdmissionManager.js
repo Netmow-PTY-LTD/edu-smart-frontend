@@ -7,7 +7,7 @@ export const departmentServiceForAdmissionManager = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       `${serverInfo?.base_url_prod}` +
-      '/api/v1/university/admission-manager/university',
+      '/api/v1/admission-manager/university',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {

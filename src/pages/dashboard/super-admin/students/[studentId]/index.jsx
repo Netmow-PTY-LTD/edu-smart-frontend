@@ -1,3 +1,4 @@
+import ApplicationEmgsStatus from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatus';
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
 import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
 import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
@@ -64,7 +65,7 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    {/* <NavItem className="fs-14">
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -79,8 +80,8 @@ const SingleStudentForSuperAdmin = () => {
                           Documents
                         </span>
                       </NavLink>
-                    </NavItem> */}
-                    {/* <NavItem className="fs-14">
+                    </NavItem>
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -95,7 +96,7 @@ const SingleStudentForSuperAdmin = () => {
                           Document Request
                         </span>
                       </NavLink>
-                    </NavItem> */}
+                    </NavItem>
 
                     <NavItem className="fs-14">
                       <NavLink
@@ -113,6 +114,22 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '5',
+                        })}
+                        onClick={() => {
+                          toggleTab('5');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          EMGS Status
+                        </span>
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -120,7 +137,7 @@ const SingleStudentForSuperAdmin = () => {
                 {activeTab === '1' && (
                   <div style={{ marginTop: '50px' }}>
                     {/* <OverviewPage /> */}
-                    <Col xl={3}>
+                    <Col xl={12}>
                       <AllOverviewInfoCard data={getSingleStudent?.data} />
                     </Col>
                   </div>
@@ -148,6 +165,11 @@ const SingleStudentForSuperAdmin = () => {
                 {activeTab === '4' && (
                   <div>
                     <AppliedUniversityPage id={student_id} />
+                  </div>
+                )}
+                {activeTab === '5' && (
+                  <div>
+                    <ApplicationEmgsStatus student_id={student_id} />
                   </div>
                 )}
               </Row>
