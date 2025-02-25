@@ -81,34 +81,46 @@ const ApplicationInvoiceInSuperAdmin = () => {
         </div>
       ),
     },
+    {
+      title: 'Course',
+      key: 'course_name',
+      render: (item) => <div>{item?.application?.course.name ?? 'N/A'}</div>,
+    },
 
     {
       title: 'Application ID',
       key: 'application',
       render: (item) => <div>{item?._id ?? 'N/A'}</div>,
     },
-
+    // {
+    //   title: 'Payment Date',
+    //   key: 'payment_date',
+    //   render: (item) => (
+    //     <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+    //   ),
+    // },
     {
-      title: 'Paid Amount',
-      key: 'paid_amount',
-    },
-
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
+      title: 'Emgs Payment',
+      key: 'emgs_payment_status',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.emgs_payment_status ?? ''}
+          </span>
+        </p>
       ),
     },
     {
-      title: 'Payment Status',
-      key: 'payment_status',
+      title: 'Tuition Payment',
+      key: 'tuition_fee_payment_status',
       render: (item) => (
         <p
-          className={` badge fw-semibold text-center me-4 ${item?.application?.payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          className={` badge fw-semibold text-center me-4 ${item?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
         >
           <span className="text-uppercase">
-            {item?.application?.payment_status ?? ''}
+            {item?.application?.tuition_fee_payment_status ?? ''}
           </span>
         </p>
       ),
