@@ -29,7 +29,9 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermForRequest, setSearchTermForRequest] = useState('');
+  const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
+    useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [initialValues, setInitialValues] = useState({
     title: '',
@@ -75,12 +77,26 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     description: Yup.string().required('description is required'),
   });
 
-  // search input change function
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
-  const isFilteredData =
+  //  search input change function
+  const handleSearchChangeForRequest = (e) =>
+    setSearchTermForRequest(e.target.value);
+  const handleSearchChangeForSubmittedData = (e) =>
+    setSearchTermForSubmitedData(e.target.value);
+
+  // Filter data for search option
+  const isfilteredData =
     getSingleUserAirTicketDocumentRequest?.data?.length > 0 &&
-    getSingleUserAirTicketDocumentRequest?.data?.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    getSingleUserAirTicketDocumentRequest?.data.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
+    );
+
+  // Filter data for search option
+  const isfilteredDataForSubmittedData =
+    getSingleUserAirTicketDocSubmisionData?.data?.length > 0 &&
+    getSingleUserAirTicketDocSubmisionData?.data.filter((item) =>
+      item?.title
+        ?.toLowerCase()
+        .includes(searchTermForSubmitedData.toLowerCase())
     );
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -308,8 +324,8 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
                 Add Document Request
               </button>
               <SearchComponent
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
+                searchTerm={searchTermForRequest}
+                handleSearchChange={handleSearchChangeForRequest}
               />
             </CardHeader>
             <AirTicketDocumentRequestModalForm
@@ -327,12 +343,12 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
             <CardBody>
               <CommonTableComponent
                 headers={AllUploadDocumentsForStudentsData}
-                data={isFilteredData || []}
+                data={isfilteredData ? isfilteredData : []}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 perPageData={perPageData}
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
+                searchTerm={searchTermForRequest}
+                handleSearchChange={handleSearchChangeForRequest}
                 emptyMessage="No Data found yet."
               />
             </CardBody>
@@ -349,17 +365,25 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
               <div>
                 <h2>All Air Ticket Document Submission Files</h2>
               </div>
+              <SearchComponent
+                searchTerm={searchTermForSubmitedData}
+                handleSearchChange={handleSearchChangeForSubmittedData}
+              />
             </CardHeader>
 
             <CardBody>
               <CommonTableComponent
                 headers={docRequestTableHeaderDataWithOutAction}
-                data={getSingleUserAirTicketDocSubmisionData?.data || []}
+                data={
+                  isfilteredDataForSubmittedData
+                    ? isfilteredDataForSubmittedData
+                    : []
+                }
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 perPageData={perPageData}
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
+                searchTerm={searchTermForSubmitedData}
+                handleSearchChange={handleSearchChangeForSubmittedData}
                 emptyMessage="No Data found yet."
               />
             </CardBody>
