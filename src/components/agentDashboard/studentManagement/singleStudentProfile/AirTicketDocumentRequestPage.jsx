@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 
 import {
   useCreateUserAirTicketDocRequestForAgentMutation,
+  useGetSingleUserAirTicketDocSubmitedFilestForAgentQuery,
   useUpdateUserAirTicketDocStatusForAgentMutation,
 } from '@/slice/services/agent/agentDocumentServices';
 import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
@@ -59,9 +60,14 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     data: getSingleUserAirTicketDocSubmisionData,
     isLoading: getSingleUserAirTicketDocSubmisionIsLoading,
     refetch: getSingleUserAirTicketDocSubmisionRefetch,
-  } = useGetSingleUserAirTicketDocumentRequestQuery(
+  } = useGetSingleUserAirTicketDocSubmitedFilestForAgentQuery(
     { student_id: student_id },
     { skip: !student_id }
+  );
+
+  console.log(
+    'getSingleUserAirTicketDocumentRequest',
+    getSingleUserAirTicketDocSubmisionData
   );
 
   const [
@@ -112,6 +118,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       if (result) {
         toast.success(result?.message);
         getSingleUserAirTicketDocumentRequestRefetch();
+        getSingleUserAirTicketDocSubmisionRefetch();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -352,7 +359,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
             <CardBody>
               <CommonTableComponent
                 headers={docRequestTableHeaderDataWithOutAction}
-                data={isFilteredData || []}
+                data={getSingleUserAirTicketDocSubmisionData?.data || []}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 perPageData={perPageData}

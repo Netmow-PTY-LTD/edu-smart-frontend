@@ -71,6 +71,24 @@ export const agentDocumentServices = createApi({
       },
     }),
 
+    getSingleUserAirTicketDocSubmitedFilestForAgent: builder.query({
+      query: (body) => {
+        const student_id = body.student_id;
+        return {
+          url: `/documents/airticket/single/user/${student_id}`,
+          method: 'GET',
+        };
+      },
+    }),
+    getAllUserAirTicketDocSubmitedFilestForAgent: builder.query({
+      query: (body) => {
+        return {
+          url: `/documents/airticket/all`,
+          method: 'GET',
+        };
+      },
+    }),
+
     updateUserAirTicketDocStatusForAgent: builder.mutation({
       query: (body) => {
         const airticket_document_id = body.airticket_document_id;
@@ -91,4 +109,6 @@ export const {
   useUpdateApplicationDocStatusForAgentMutation,
   useCreateUserAirTicketDocRequestForAgentMutation,
   useUpdateUserAirTicketDocStatusForAgentMutation,
+  useGetAllUserAirTicketDocSubmitedFilestForAgentQuery,
+  useGetSingleUserAirTicketDocSubmitedFilestForAgentQuery,
 } = agentDocumentServices;
