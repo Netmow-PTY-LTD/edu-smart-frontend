@@ -54,6 +54,43 @@ export const studentSubmitDocumentService = createApi({
         method: 'GET',
       }),
     }),
+    /* -------------------- Air Ticket Document ----------------- */
+
+    submitStudentAirTicketDocument: builder.mutation({
+      query: (body) => ({
+        url: '/airticket/document',
+        method: 'POST',
+        body: body,
+      }),
+    }),
+
+    updateSingleAirTicketDocumentForStudent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/airticket/document/${id}`,
+          method: 'PATCH',
+          body: body,
+        };
+      },
+    }),
+
+    getAllSubmittedAirTicketDocumentForStudent: builder.query({
+      query: () => ({
+        url: '/airticket/documents',
+        method: 'GET',
+      }),
+    }),
+
+    getSingleAirTicketDocumentForStudent: builder.query({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/airticket/document/${id}`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
