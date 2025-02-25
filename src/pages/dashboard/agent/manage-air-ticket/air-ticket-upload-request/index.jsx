@@ -3,23 +3,32 @@ import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import {
+  useGetAllStudentsAirticketDocumentRequestQuery,
+  useGetAllUserDocRequestQuery,
+} from '@/slice/services/common/commonDocumentService';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const StudentDocumentUploadRquestForAgent = () => {
+const StudentAirtTicketDocumentUploadRquestForAgent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
   const perPageData = 10;
 
+  // const {
+  //   data: allDocumentRequestForAgentData,
+  //   error: allDocumentRequestForAgentError,
+  //   isLoading: allDocumentRequestForAgentIsLoading,
+  //   refetch: allDocumentRequestForAgentRefetch,
+  // } = useGetAllUserDocRequestQuery();
   const {
     data: allDocumentRequestForAgentData,
     error: allDocumentRequestForAgentError,
     isLoading: allDocumentRequestForAgentIsLoading,
     refetch: allDocumentRequestForAgentRefetch,
-  } = useGetAllUserDocRequestQuery();
+  } = useGetAllStudentsAirticketDocumentRequestQuery();
 
   console.log(allDocumentRequestForAgentData);
   // search input change function
@@ -171,7 +180,9 @@ const StudentDocumentUploadRquestForAgent = () => {
         <div className="h-100">
           <Card>
             <CardHeader>
-              <h3>All Student Document Upload Requests from Agent</h3>
+              <h3>
+                All Student Air Ticket Document Upload Requests from Agent
+              </h3>
               <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
@@ -202,4 +213,4 @@ const StudentDocumentUploadRquestForAgent = () => {
   );
 };
 
-export default StudentDocumentUploadRquestForAgent;
+export default StudentAirtTicketDocumentUploadRquestForAgent;

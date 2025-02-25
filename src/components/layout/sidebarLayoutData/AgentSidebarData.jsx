@@ -242,7 +242,7 @@ const AgentSidebarData = () => {
         },
         {
           id: 'airTicketDocumentuploadrequest',
-          label: 'Doc Upload Request',
+          label: 'Air Ticket Doc Upload Request',
           link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
           icon: 'ri-file-list-3-fill',
           pathName:

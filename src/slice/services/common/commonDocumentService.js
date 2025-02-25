@@ -158,4 +158,6 @@ export const {
   useGetSingleApplicationSubmittedDocumentQuery,
   useGetSingleUserSubmittedDocumentQuery,
   useGetAllDocumentListQuery,
+  useGetAllStudentsAirticketDocumentRequestQuery,
+  useGetSingleUserAirTicketDocumentRequestQuery,
 } = commonDocumentService;
