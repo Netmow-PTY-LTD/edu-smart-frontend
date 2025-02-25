@@ -13,9 +13,12 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPageForRequest, setCurrentPageForRequest] = useState(0);
+  const [currentPageForSubmittedData, setCurrentPageForSubmittedData] =
+    useState(0);
 
-  const perPageData = 10;
+  const perPageDataForRequest = 10;
+  const perPageDataForSubmittedData = 10;
 
   const {
     data: allDocumentRequestForAgentData,
@@ -338,9 +341,9 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
                 <CommonTableComponent
                   headers={docRequestTableHeaderDataWithoutAction}
                   data={isfilteredData ? isfilteredData : []}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
+                  currentPage={currentPageForRequest}
+                  setCurrentPage={setCurrentPageForRequest}
+                  perPageData={perPageDataForRequest}
                   searchTerm={searchTermForRequest}
                   handleSearchChange={handleSearchChangeForRequest}
                   emptyMessage="No Data found yet."
@@ -369,9 +372,9 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
                       ? isfilteredDataForSubmittedData
                       : []
                   }
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
+                  currentPage={currentPageForSubmittedData}
+                  setCurrentPage={setCurrentPageForSubmittedData}
+                  perPageData={perPageDataForSubmittedData}
                   searchTerm={searchTermForSubmitedData}
                   handleSearchChange={handleSearchChangeForSubmittedData}
                   emptyMessage="No Data found yet."

@@ -23,7 +23,12 @@ const AllAirTicketUploadDocumentsForStudents = () => {
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPageForRequest, setCurrentPageForRequest] = useState(0);
+  const [currentPageForSubmittedData, setCurrentPageForSubmittedData] =
+    useState(0);
+
+  const perPageDataForRequest = 10;
+  const perPageDataForSubmittedData = 10;
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
 
@@ -31,7 +36,6 @@ const AllAirTicketUploadDocumentsForStudents = () => {
     AllUploadDocumentsForStudentsData,
     setAllUploadDocumentsForStudentsData,
   ] = useState('');
-  const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
     title: '',
@@ -467,9 +471,9 @@ const AllAirTicketUploadDocumentsForStudents = () => {
                 <CommonTableComponent
                   headers={AllUploadDocumentsForStudentsData}
                   data={isfilteredData ? isfilteredData : []}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
+                  currentPage={currentPageForRequest}
+                  setCurrentPage={setCurrentPageForRequest}
+                  perPageData={perPageDataForRequest}
                   searchTerm={searchTermForRequest}
                   handleSearchChange={handleSearchChangeForRequest}
                   emptyMessage="No Data found yet."
@@ -497,9 +501,9 @@ const AllAirTicketUploadDocumentsForStudents = () => {
                       ? isfilteredDataForSubmittedData
                       : []
                   }
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
+                  currentPage={currentPageForSubmittedData}
+                  setCurrentPage={setCurrentPageForSubmittedData}
+                  perPageData={perPageDataForSubmittedData}
                   searchTerm={searchTermForSubmitedData}
                   handleSearchChange={handleSearchChangeForSubmittedData}
                   emptyMessage="No Data found yet."
