@@ -73,23 +73,37 @@ const DocumentRequestPage = ({ student_id }) => {
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    setSubmitting(true);
-
-    const updatedData = { ...values, student_id: student_id };
-
+  const handleSubmit = async (values) => {
+    console.log(values);
     try {
-      const result = await createDocumentRequest(updatedData).unwrap();
-      if (result) {
-        toast.success(result?.message);
-        getSingleStudentDocRequestRefetch();
-        setAddModalIsOpen(!addModalIsOpen);
-      }
+      // Create an array of API calls for each document request
+      const requests = values.map((item) => {
+        return createDocumentRequest({
+          title: item.title,
+          description: item.description,
+          student_id,
+        }).unwrap();
+      });
+
+      // Execute all requests in parallel
+      // eslint-disable-next-line no-undef
+      const results = await Promise.all(requests);
+
+      // Handle success for all API calls
+      results.forEach((result) => {
+        if (result) {
+          toast.success(result?.message);
+        }
+      });
+
+      // Refresh data and close modal after all requests are done
+      getSingleStudentDocRequestRefetch();
+      setAddModalIsOpen((prev) => !prev); // Use previous state for reliable toggling
     } catch (error) {
-      const errorMessage = error?.data?.message;
+      // Log error and show error message
+      console.error('Error in document request:', error);
+      const errorMessage = error?.data?.message || 'Something went wrong!';
       toast.error(errorMessage);
-    } finally {
-      setSubmitting(false);
     }
   };
 
@@ -207,7 +221,9 @@ const DocumentRequestPage = ({ student_id }) => {
                   ? 'text-warning'
                   : item?.status === 'requested'
                     ? 'text-primary'
-                    : ''
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
           }`}
         >
           {item?.status ? <span>{item?.status}</span> : '-'}

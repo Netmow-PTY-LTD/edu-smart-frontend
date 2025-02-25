@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import { useGetAllDocumentListQuery } from '@/slice/services/common/commonDocumentService';
@@ -16,14 +16,21 @@ const DocumentRequestModalForm = ({
   formSubmit,
 }) => {
   const { data: documentData } = useGetAllDocumentListQuery();
+  const [customDescriptions, setCustomDescriptions] = useState({});
 
   // Generate document options from API response
-  const options =
+  const documentOptions =
     documentData?.data?.map((item) => ({
       value: item.title,
       label: item.title,
-      description: item.description, // Store description for auto-fill
+      description: item.description,
     })) || [];
+
+  // Add "Select All" option at the beginning
+  const options = [
+    { value: 'select_all', label: 'Select All' },
+    ...documentOptions,
+  ];
 
   return (
     <Modal isOpen={isOpen} centered size="md">
@@ -33,28 +40,31 @@ const DocumentRequestModalForm = ({
       <ModalBody>
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
+          // validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            let formattedData = [];
+
+            if (values.titles && values.titles.length > 0) {
+              formattedData = values.titles.map((titleObj) => {
+                const existingDocument = documentOptions.find(
+                  (doc) => doc.value === titleObj.value
+                );
+
+                return {
+                  title: titleObj.value,
+                  description: existingDocument
+                    ? existingDocument.description
+                    : customDescriptions[titleObj.value] || '',
+                };
+              });
+            }
+
+            onSubmit(formattedData);
+            setSubmitting(false);
+          }}
         >
-          {({ isSubmitting, values, setFieldValue, submitForm }) => {
-            // Find selected document from API
-            const selectedDocument = options.find(
-              (option) => option.value === values.title
-            );
-
-            // Auto-fill description when a known document is selected
-            useEffect(() => {
-              if (selectedDocument) {
-                setFieldValue('description', selectedDocument.description);
-              } else {
-                setFieldValue('description', '');
-              }
-            }, [values.title, selectedDocument, setFieldValue, submitForm]);
-
-            // Check if a new title is created
-            const isNewTitle =
-              values.title &&
-              !options.some((option) => option.value === values.title);
+          {({ isSubmitting, values, setFieldValue }) => {
+            const selectedValues = values.titles || [];
 
             return (
               <Form>
@@ -64,52 +74,93 @@ const DocumentRequestModalForm = ({
                       {/* Title Select Field */}
                       <Col md={12} xl={12}>
                         <div className="mb-3">
-                          <label className="form-label  mb-2">
+                          <label className="form-label mb-2">
                             Document Title *
                           </label>
                           <CreatableSelect
                             isClearable
+                            isMulti
                             options={options}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            value={
-                              values.title
-                                ? { label: values.title, value: values.title }
-                                : null
-                            }
-                            onChange={(selectedOption) => {
-                              setFieldValue(
-                                'title',
-                                selectedOption ? selectedOption.value : ''
+                            value={selectedValues}
+                            onChange={(selectedOptions) => {
+                              // Check if "Select All" is chosen
+                              const isSelectAllSelected = selectedOptions.some(
+                                (option) => option.value === 'select_all'
                               );
+
+                              if (isSelectAllSelected) {
+                                // Select all available document options (excluding "Select All" itself)
+                                setFieldValue(
+                                  'titles',
+                                  documentOptions.map((opt) => ({
+                                    value: opt.value,
+                                    label: opt.label,
+                                  }))
+                                );
+                              } else {
+                                // Otherwise, update with selected options
+                                setFieldValue('titles', selectedOptions);
+                              }
                             }}
                             onCreateOption={(inputValue) => {
-                              setFieldValue('title', inputValue);
+                              const newOption = {
+                                value: inputValue,
+                                label: inputValue,
+                              };
+                              setFieldValue('titles', [
+                                ...selectedValues,
+                                newOption,
+                              ]);
+
+                              // Ensure a new description field appears for this new tag
+                              setCustomDescriptions((prev) => ({
+                                ...prev,
+                                [inputValue]: '',
+                              }));
                             }}
                           />
                         </div>
                       </Col>
 
-                      {/* Show "Description" & "Notes" when a new title is created */}
-                      {isNewTitle && (
-                        <>
-                          <Col md={12} xl={12}>
-                            <div className="mb-3">
-                              <TextArea
-                                name="description"
-                                label="Document Description *"
-                              />
-                            </div>
-                          </Col>
-                        </>
-                      )}
+                      {/* Show "Description" field for newly created tags */}
+                      {selectedValues.map((selected) => {
+                        const isNewTag = !documentOptions.some(
+                          (opt) => opt.value === selected.value
+                        );
+
+                        return (
+                          isNewTag && (
+                            <Col md={12} xl={12} key={selected.value}>
+                              <div className="mb-3">
+                                <TextArea
+                                  name={`customDescriptions.${selected.value}`}
+                                  label={`Description for "${selected.label}" *`}
+                                  value={
+                                    customDescriptions[selected.value] || ''
+                                  }
+                                  onChange={(e) => {
+                                    setCustomDescriptions((prev) => ({
+                                      ...prev,
+                                      [selected.value]: e.target.value,
+                                    }));
+                                  }}
+                                />
+                              </div>
+                            </Col>
+                          )
+                        );
+                      })}
+
                       <Col md={12} xl={12}>
                         <p>
                           <span className="text-success fw-semibold">NB:</span>{' '}
-                          If you need new Document request write into select
-                          field.
+                          If you need a new document request, type it into the
+                          select field.
                         </p>
                       </Col>
+
                       {/* Submit Button */}
                       <Col md={12} xl={12}>
                         <div className="my-4">
