@@ -232,19 +232,21 @@ const AgentSidebarData = () => {
       stateVariables: isManageAirTicket,
       subItems: [
         {
-          id: 'alldocument',
-          label: 'All Document',
-          link: '/dashboard/agent/manage-documents/all-document-for-agent',
+          id: 'allAirTicketDoc',
+          label: 'All Air Ticket Document',
+          link: '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
           icon: 'ri-file-fill',
-          pathName: '/dashboard/agent/manage-documents/all-document-for-agent',
+          pathName:
+            '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
           parentId: 'manage-air-ticket',
         },
         {
-          id: 'documentuploadrequest',
+          id: 'airTicketDocumentuploadrequest',
           label: 'Doc Upload Request',
-          link: '/dashboard/agent/manage-documents/document-upload-request',
+          link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
           icon: 'ri-file-list-3-fill',
-          pathName: '/dashboard/agent/manage-documents/document-upload-request',
+          pathName:
+            '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
           parentId: 'manage-air-ticket',
         },
       ],
