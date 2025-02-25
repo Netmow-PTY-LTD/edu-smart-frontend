@@ -13,7 +13,7 @@ import {
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 
-const InvoicesComponentForMultipleData = ({
+const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   addressData,
   billingAddressData,
   tableData,
@@ -46,7 +46,7 @@ const InvoicesComponentForMultipleData = ({
       {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
         <ModalHeader toggle={close} className="">
-          Invoice For EMGS Fee
+          Invoice For Tuition Fee
         </ModalHeader>
         <ModalBody className="p-5">
           {loading ? (
@@ -195,10 +195,11 @@ const InvoicesComponentForMultipleData = ({
                         Payment Status
                       </p>
                       <p
-                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
                       >
                         <span className="text-uppercase">
-                          {invoice_no?.application?.emgs_payment_status ?? '-'}
+                          {invoice_no?.application
+                            ?.tuition_fee_payment_status ?? '-'}
                         </span>
                       </p>
                     </Col>
@@ -207,7 +208,7 @@ const InvoicesComponentForMultipleData = ({
                         INVOICE TYPE
                       </p>
                       <p className=" mb-0 text-uppercase">
-                        <p className=" mb-0 text-uppercase">EMGS FEE</p>
+                        <p className=" mb-0 text-uppercase">TUITION FEE</p>
                       </p>
                     </Col>
                   </Row>
@@ -225,7 +226,7 @@ const InvoicesComponentForMultipleData = ({
                           <th scope="col">SL</th>
                           <th scope="col">Application Details</th>
                           <th scope="col">Student</th>
-                          <th scope="col">Emgs Fee</th>
+                          <th scope="col">Tuition Fee</th>
                           <th scope="col">Amount</th>
                         </tr>
                       </thead>
@@ -266,13 +267,17 @@ const InvoicesComponentForMultipleData = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.emgs_fee ?? '-'}{' '}
+                                    {item?.application?.course?.tuition_fee -
+                                      item?.application?.course?.emgs_fee ??
+                                      '-'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
                                 <td>
                                   <h3 className="my-1 fw-normal">
-                                    {item?.application?.course?.emgs_fee ?? '-'}{' '}
+                                    {item?.application?.course?.tuition_fee -
+                                      item?.application?.course?.emgs_fee ??
+                                      '-'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -292,7 +297,9 @@ const InvoicesComponentForMultipleData = ({
                         <tr>
                           <th className="">Sub Total :</th>
                           <th className="text-end ">
-                            {invoice_no?.emgs_fee_paid_amount} {currency}
+                            {invoice_no?.application?.course?.tuition_fee -
+                              invoice_no?.application?.course?.emgs_fee}{' '}
+                            {currency}
                           </th>
                         </tr>
 
@@ -311,7 +318,9 @@ const InvoicesComponentForMultipleData = ({
                           <th scope="row">Total Amount :</th>
 
                           <th className="text-end">
-                            {invoice_no?.emgs_fee_paid_amount} {currency}
+                            {invoice_no?.application?.course?.tuition_fee -
+                              invoice_no?.application?.course?.emgs_fee}{' '}
+                            {currency}
                           </th>
                         </tr>
                       </tbody>
@@ -357,21 +366,61 @@ const InvoicesComponentForMultipleData = ({
                           - {invoice_no?.emgs_fee_paid_amount} {currency}
                         </div>
                       </div>
-                      <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                        <div className="tc mt-3">
-                          Balance Payable: <br />
-                          <span style={{ fontSize: '12px' }}>
-                            (Payment is required after EMGS processing.)
-                          </span>
-                        </div>
-                        <div className="tc mt-3">
-                          {' '}
-                          {invoice_no?.application?.tuition_fee_amount +
-                            invoice_no?.application?.emgs_fee_amount -
-                            invoice_no?.emgs_fee_paid_amount}{' '}
-                          {currency}
-                        </div>
-                      </div>
+                      {invoice_no?.application?.tuition_fee_payment_status ===
+                      'paid' ? (
+                        <>
+                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                            <div className="tc mt-3">
+                              Balance Payable: <br />
+                              <span style={{ fontSize: '12px' }}>
+                                (Payment is required after EMGS processing.)
+                              </span>
+                            </div>
+                            <div className="tc mt-3">
+                              {' '}
+                              -{' '}
+                              {invoice_no?.application?.tuition_fee_amount +
+                                invoice_no?.application?.emgs_fee_amount -
+                                invoice_no?.emgs_fee_paid_amount}{' '}
+                              {currency}
+                            </div>
+                          </div>
+                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                            <div className="tc mt-3">
+                              Due Amount: <br />
+                            </div>
+                            <div className="tc mt-3 text-end">
+                              {' '}
+                              {'0'} {currency}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                            <div className="tc mt-3">
+                              Balance Payable: <br />
+                              <span style={{ fontSize: '12px' }}>
+                                (Payment is required after EMGS processing.)
+                              </span>
+                            </div>
+                            <div className="tc mt-3">
+                              {' '}
+                              {invoice_no?.application?.tuition_fee_amount +
+                                invoice_no?.application?.emgs_fee_amount -
+                                invoice_no?.emgs_fee_paid_amount}{' '}
+                              {currency}
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={() => close()}
+                            className="d-flex justify-content-end button mt-5 px-5 py-2 "
+                          >
+                            Pay Tuition Fee
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </Card>
@@ -429,4 +478,4 @@ const InvoicesComponentForMultipleData = ({
   );
 };
 
-export default InvoicesComponentForMultipleData;
+export default InvoicesComponentForMultipleDataTuitionFeeStudent;
