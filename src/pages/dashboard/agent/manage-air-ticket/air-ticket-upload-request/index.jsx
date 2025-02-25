@@ -10,7 +10,9 @@ import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const StudentAirtTicketDocumentUploadRquestForAgent = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermForRequest, setSearchTermForRequest] = useState('');
+  const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
+    useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
   const perPageData = 10;
@@ -33,16 +35,26 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
     'allDocumentRequestForAgentData',
     allAirTicketDocumentSubmittedDataForAgentData
   );
-  // search input change function
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  //  search input change function
+  const handleSearchChangeForRequest = (e) =>
+    setSearchTermForRequest(e.target.value);
+  const handleSearchChangeForSubmittedData = (e) =>
+    setSearchTermForSubmitedData(e.target.value);
 
   // Filter data for search option
-  const isFilteredData =
+  const isfilteredData =
     allDocumentRequestForAgentData?.data?.length > 0 &&
-    allDocumentRequestForAgentData?.data.filter(
-      (item) =>
-        item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    allDocumentRequestForAgentData?.data.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
+    );
+
+  // Filter data for search option
+  const isfilteredDataForSubmittedData =
+    allAirTicketDocumentSubmittedDataForAgentData?.data?.length > 0 &&
+    allAirTicketDocumentSubmittedDataForAgentData?.data.filter((item) =>
+      item?.title
+        ?.toLowerCase()
+        .includes(searchTermForSubmitedData.toLowerCase())
     );
 
   const docRequestTableHeaderDataWithoutAction = [
@@ -313,8 +325,8 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
                 All Student Air Ticket Document Upload Requests from Agent
               </h3>
               <SearchComponent
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
+                searchTerm={searchTermForRequest}
+                handleSearchChange={handleSearchChangeForRequest}
               />
             </CardHeader>
             <CardBody>
@@ -325,12 +337,12 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
               ) : (
                 <CommonTableComponent
                   headers={docRequestTableHeaderDataWithoutAction}
-                  data={isFilteredData ? isFilteredData : []}
+                  data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForRequest}
+                  handleSearchChange={handleSearchChangeForRequest}
                   emptyMessage="No Data found yet."
                 />
               )}
@@ -340,8 +352,8 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
             <CardHeader>
               <h3>All Student Air Ticket Document Submission Table</h3>
               <SearchComponent
-                searchTerm={searchTerm}
-                handleSearchChange={handleSearchChange}
+                searchTerm={searchTermForSubmitedData}
+                handleSearchChange={handleSearchChangeForSubmittedData}
               />
             </CardHeader>
             <CardBody>
@@ -352,12 +364,16 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
               ) : (
                 <CommonTableComponent
                   headers={airTicketdocSubmitedTableHeaderDataWithoutAction}
-                  data={allAirTicketDocumentSubmittedDataForAgentData?.data}
+                  data={
+                    isfilteredDataForSubmittedData
+                      ? isfilteredDataForSubmittedData
+                      : []
+                  }
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
                   emptyMessage="No Data found yet."
                 />
               )}
