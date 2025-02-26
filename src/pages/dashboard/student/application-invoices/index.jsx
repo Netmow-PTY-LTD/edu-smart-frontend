@@ -468,16 +468,16 @@ const ApplicationInvoiceInSuperAdmin = () => {
       setOpenInvoiceModalTuition(true);
       getSingleApplicationPaymentReportDataRefetch(query.report_id);
 
-      setTimeout(() => {
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: '',
-          },
-          undefined,
-          { shallow: true }
-        );
-      }, 1000);
+      // setTimeout(() => {
+      //   router.replace(
+      //     {
+      //       pathname: router.pathname,
+      //       query: '',
+      //     },
+      //     undefined,
+      //     { shallow: true }
+      //   );
+      // }, 1000);
 
       if (updateApplicationStatusData) {
         toast.success('Payment is successful!');
@@ -496,6 +496,12 @@ const ApplicationInvoiceInSuperAdmin = () => {
     toastShown,
     router,
   ]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setToastShown(false); // Reset when loading is done, so the toast can be shown again for future payments
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (!isLoading) {

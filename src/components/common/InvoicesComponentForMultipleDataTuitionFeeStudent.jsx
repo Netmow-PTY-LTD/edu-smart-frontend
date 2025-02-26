@@ -39,7 +39,7 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
 
   const sslCommerzPaymentHandler = async () => {
-    const price = invoice_no?.after_emgs_fee || 0;
+    const price = invoice_no?.application?.course?.after_emgs_fee || 0;
     const application_id = invoice_no?.application?._id;
     const course_id = invoice_no?.application?.course?._id;
     const report_id = invoice_no?._id;

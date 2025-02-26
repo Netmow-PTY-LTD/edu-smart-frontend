@@ -220,16 +220,16 @@ const ApplicationInvoiceInSuperAdmin = () => {
       setOpenInvoiceModalTuition(true);
       getSingleApplicationPaymentReportDataRefetch(query.report_id);
 
-      setTimeout(() => {
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: '',
-          },
-          undefined,
-          { shallow: true }
-        );
-      }, 1000);
+      // setTimeout(() => {
+      //   router.replace(
+      //     {
+      //       pathname: router.pathname,
+      //       query: '',
+      //     },
+      //     undefined,
+      //     { shallow: true }
+      //   );
+      // }, 1000);
 
       if (updateApplicationStatusData) {
         toast.success('Payment is successful!');

@@ -39,23 +39,29 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
 
   const sslCommerzPaymentHandler = async () => {
-    const price = invoice_no?.after_emgs_fee || 0;
+    const price =
+      invoice_no?.application?.course?.auto_deduct === true
+        ? invoice_no?.application?.course?.after_emgs_fee -
+          (invoice_no?.application?.incentive_amount *
+            invoice_no?.application?.agent_package_parcentage) /
+            100
+        : invoice_no?.application?.course?.after_emgs_fee;
     const application_id = invoice_no?.application?._id;
     const course_id = invoice_no?.application?.course?._id;
     const report_id = invoice_no?._id;
 
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=failed&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=faild&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=faild&report_id=${report_id}`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=success&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=success&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=success&report_id=${report_id}`;
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=cancel&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=cancel&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=cancel&report_id=${report_id}`;
 
     const currency = 'MYR';
     const transaction_reason = 'application_tuition_fee';
@@ -352,26 +358,43 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                           </th>
                         </tr>
 
-                        {gst ? (
-                          <tr>
-                            <th>GST :</th>
-                            <th className="text-end ">
-                              {gst} {currency}
+                        {invoice_no?.application?.course?.auto_deduct ===
+                        true ? (
+                          <>
+                            <tr className="border-top border-top-dashed ">
+                              <th scope="row">Commission :</th>
+                              <th className="text-end">
+                                -{' '}
+                                {(invoice_no?.application?.incentive_amount *
+                                  invoice_no?.application
+                                    ?.agent_package_parcentage) /
+                                  100}{' '}
+                                {currency}{' '}
+                              </th>
+                            </tr>
+                            <tr className="border-top border-top-dashed ">
+                              <th scope="row">Total Amount :</th>
+                              <th className="text-end">
+                                {invoice_no?.application?.course
+                                  ?.after_emgs_fee -
+                                  (invoice_no?.application?.incentive_amount *
+                                    invoice_no?.application
+                                      ?.agent_package_parcentage) /
+                                    100}{' '}
+                                {currency}
+                              </th>
+                            </tr>
+                          </>
+                        ) : (
+                          <tr className="border-top border-top-dashed ">
+                            <th scope="row">Total Amount :</th>
+                            <th className="text-end">
+                              {invoice_no?.application?.course?.tuition_fee -
+                                invoice_no?.application?.course?.emgs_fee}{' '}
+                              {currency}
                             </th>
                           </tr>
-                        ) : (
-                          ''
                         )}
-
-                        <tr className="border-top border-top-dashed ">
-                          <th scope="row">Total Amount :</th>
-
-                          <th className="text-end">
-                            {invoice_no?.application?.course?.tuition_fee -
-                              invoice_no?.application?.course?.emgs_fee}{' '}
-                            {currency}
-                          </th>
-                        </tr>
                       </tbody>
                     </Table>
                   </div>
@@ -419,49 +442,123 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                       {invoice_no?.application?.tuition_fee_payment_status ===
                       'paid' ? (
                         <>
-                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                            <div className="tc mt-3">
-                              Balance Payable: <br />
-                              <span style={{ fontSize: '12px' }}>
-                                (Payment is required after EMGS processing.)
-                              </span>
+                          {invoice_no?.application?.course?.auto_deduct ===
+                          true ? (
+                            <>
+                              <div className="table-row">
+                                <div className="tc mt-3">
+                                  Commission: <br />
+                                </div>
+                                <div className="tc mt-3">
+                                  {' '}
+                                  -{' '}
+                                  {(invoice_no?.application?.incentive_amount *
+                                    invoice_no?.application
+                                      ?.agent_package_parcentage) /
+                                    100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                              <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                                <div className="tc mt-3">
+                                  Paid Amount: <br />
+                                </div>
+                                <div className="tc mt-3">
+                                  ={' '}
+                                  {invoice_no?.application?.course
+                                    ?.after_emgs_fee -
+                                    (invoice_no?.application?.incentive_amount *
+                                      invoice_no?.application
+                                        ?.agent_package_parcentage) /
+                                      100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                              <div className="tc mt-3">
+                                Balance Payable: <br />
+                                <span style={{ fontSize: '12px' }}>
+                                  (Payment is required after EMGS processing.)
+                                </span>
+                              </div>
+                              <div className="tc mt-3">
+                                {' '}
+                                {
+                                  invoice_no?.application?.course
+                                    ?.after_emgs_fee
+                                }{' '}
+                                {currency}
+                              </div>
                             </div>
-                            <div className="tc mt-3">
-                              {' '}
-                              -{' '}
-                              {
-                                invoice_no?.application?.course?.after_emgs_fee
-                              }{' '}
-                              {currency}
-                            </div>
-                          </div>
+                          )}
                           <div className="table-row border-top border-top-dashed mt-3 fs-2">
                             <div className="tc mt-3">
                               Due Amount: <br />
                             </div>
                             <div className="tc mt-3 text-end">
-                              {' '}
-                              {'0'} {currency}
+                              = {'0.00'} {currency}
                             </div>
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                            <div className="tc mt-3">
-                              Balance Payable: <br />
-                              <span style={{ fontSize: '12px' }}>
-                                (Payment is required after EMGS processing.)
-                              </span>
+                          {invoice_no?.application?.course?.auto_deduct ===
+                          true ? (
+                            <>
+                              <div className="table-row">
+                                <div className="tc mt-3">
+                                  Commission: <br />
+                                </div>
+                                <div className="tc mt-3">
+                                  {' '}
+                                  -{' '}
+                                  {(invoice_no?.application?.incentive_amount *
+                                    invoice_no?.application
+                                      ?.agent_package_parcentage) /
+                                    100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                              <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                                <div className="tc mt-3">
+                                  Balance Payable: <br />
+                                  <span style={{ fontSize: '12px' }}>
+                                    (Payment is required after EMGS processing.)
+                                  </span>
+                                </div>
+                                <div className="tc mt-3">
+                                  {' '}
+                                  {invoice_no?.application?.course
+                                    ?.after_emgs_fee -
+                                    (invoice_no?.application?.incentive_amount *
+                                      invoice_no?.application
+                                        ?.agent_package_parcentage) /
+                                      100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                              <div className="tc mt-3">
+                                Balance Payable: <br />
+                                <span style={{ fontSize: '12px' }}>
+                                  (Payment is required after EMGS processing.)
+                                </span>
+                              </div>
+                              <div className="tc mt-3">
+                                {' '}
+                                {
+                                  invoice_no?.application?.course
+                                    ?.after_emgs_fee
+                                }{' '}
+                                {currency}
+                              </div>
                             </div>
-                            <div className="tc mt-3">
-                              {' '}
-                              {
-                                invoice_no?.application?.course?.after_emgs_fee
-                              }{' '}
-                              {currency}
-                            </div>
-                          </div>
+                          )}
+
                           <button
                             onClick={() => {
                               sslCommerzPaymentHandler(); // Call the payment function
