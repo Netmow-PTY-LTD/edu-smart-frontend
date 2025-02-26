@@ -1,9 +1,9 @@
+import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import StudentApplicationEmgsStatusTimeline from '@/components/StudentDashboard/components/StudentApplicationEmgsStatusTimeline';
 import {
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
@@ -370,7 +370,12 @@ export default function RecentApplicationPageForAdmissionManagerDashboard() {
           <div className="h-100">
             <div className="container-fluid">
               <div>
-                <StudentApplicationEmgsStatusTimeline
+                {/* <StudentApplicationEmgsStatusTimeline
+                  setActiveTab={setActiveTab}
+                  currentTimeline={currentTimeline}
+                /> */}
+
+                <ApplicationEmgsStatusTimeline
                   setActiveTab={setActiveTab}
                   currentTimeline={currentTimeline}
                 />

@@ -80,7 +80,7 @@ const AdmissionManagerDashboard = () => {
                   </Row>
 
                   <Row xxl={12} className="g-5">
-                    <Col xxl={12}>
+                    {/* <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered University'}
                         headers={[
@@ -91,7 +91,7 @@ const AdmissionManagerDashboard = () => {
                           getUniversityData?.data ? getUniversityData?.data : []
                         }
                       />
-                    </Col>
+                    </Col> */}
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}

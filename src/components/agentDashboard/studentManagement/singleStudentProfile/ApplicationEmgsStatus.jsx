@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -13,29 +12,14 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-//import Images
-import avatar5 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-import avatar4 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-import avatar3 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-
-import small2 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-import small3 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-import small4 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-import small6 from '../../../../../public/assets/images/users/user-dummy-img.jpg';
-import {
-  useGetAllEmgsStatusQuery,
-  useGetEmgsStatusTimelineQuery,
-} from '@/slice/services/common/applicationService';
-import ApplicationEmgsStatusTimeline from './ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import {
-  agentEarnigsHeaders,
-  EmgsStatusListHeaders,
-} from '@/utils/common/data';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useGetAllEmgsStatusQuery } from '@/slice/services/common/applicationService';
+import { EmgsStatusListHeaders } from '@/utils/common/data';
+import { ToastContainer } from 'react-toastify';
+import ApplicationEmgsStatusTimeline from './ApplicationEmgsStatusTimeline';
 
 const ApplicationEmgsStatus = ({ student_id }) => {
-  const data = [0, 1, 2, 3, 4, 5];
   const [activeTab, setActiveTab] = useState('1');
   const [currentTimeline, setCurrentTimeline] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
@@ -84,6 +68,7 @@ const ApplicationEmgsStatus = ({ student_id }) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
+          <ToastContainer />
           {activeTab === '1' &&
             (allEmgsStatusLoading ? (
               <LoaderSpiner />
