@@ -5,8 +5,10 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetSingleUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
+import { downloadFiles } from '@/utils/downloadFiles';
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { toast } from 'react-toastify';
+import { Button, Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllSubmittedDocumentsForStudents = () => {
   const user = currentUser();
@@ -155,6 +157,18 @@ const AllSubmittedDocumentsForStudents = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleDownloadAllDocument = () => {
+    if (!singleStudentAllSubmittedDoc?.data) {
+      toast.error('No documents available to download');
+      return;
+    }
+
+    const allFileUrls = singleStudentAllSubmittedDoc.data
+      .flatMap((item) => item.files.map((file) => file.url))
+      .filter(Boolean); // Remove undefined/null values
+    downloadFiles(allFileUrls, 'Downloading all documents...');
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -164,6 +178,12 @@ const AllSubmittedDocumentsForStudents = () => {
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
+                <Button
+                  className="button px-4 py-3 fw-bold"
+                  onClick={handleDownloadAllDocument}
+                >
+                  Download All Document
+                </Button>
                 <h1>Submitted Docs</h1>
                 <SearchComponent
                   searchTerm={searchTerm}

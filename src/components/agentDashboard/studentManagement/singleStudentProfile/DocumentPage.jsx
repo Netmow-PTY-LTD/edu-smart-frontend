@@ -3,10 +3,11 @@ import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetSingleUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
+import { downloadFiles } from '@/utils/downloadFiles';
 
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Row } from 'reactstrap';
 const DocumentPage = ({ student_id }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
@@ -20,6 +21,11 @@ const DocumentPage = ({ student_id }) => {
     student_id,
   });
 
+  console.log(
+    singleStudentAllSubmittedDoc?.data.map((item) =>
+      item.files.map((file) => file.url)
+    )
+  );
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
   // Filter data for search option
   const isFilteredData =
@@ -112,6 +118,18 @@ const DocumentPage = ({ student_id }) => {
     },
   ];
 
+  const handleDownloadAllDocument = () => {
+    if (!singleStudentAllSubmittedDoc?.data) {
+      toast.error('No documents available to download');
+      return;
+    }
+
+    const allFileUrls = singleStudentAllSubmittedDoc.data
+      .flatMap((item) => item.files.map((file) => file.url))
+      .filter(Boolean); // Remove undefined/null values
+    downloadFiles(allFileUrls, 'Downloading all documents...');
+  };
+
   return (
     <Row>
       {getSingleStudentDocLoading ? (
@@ -121,7 +139,13 @@ const DocumentPage = ({ student_id }) => {
           <Card>
             <ToastContainer />
             <CardHeader className="d-flex justify-content-between align-items-center">
-              Submitted Docs
+              <Button
+                className="button px-4 py-3 fw-bold"
+                onClick={handleDownloadAllDocument}
+              >
+                Download All Document
+              </Button>
+              <h1> Student Submitted Docs</h1>
               <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
