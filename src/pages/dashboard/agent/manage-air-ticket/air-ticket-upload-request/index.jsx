@@ -1,14 +1,21 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import FileViewer from '@/components/common/FileViewer';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetAllUserAirTicketDocSubmitedFilestForAgentQuery } from '@/slice/services/agent/agentDocumentServices';
-import { useGetAllStudentsAirticketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
+import {
+  useGetAllStudentsAirticketDocumentRequestQuery,
+  useUpdateSingleAirTicketDocumentForAgentMutation,
+} from '@/slice/services/common/commonDocumentService';
+import { useUpdateSingleAirTicketDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
-
+import * as Yup from 'yup';
 const StudentAirtTicketDocumentUploadRquestForAgent = () => {
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
@@ -16,10 +23,46 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
   const [currentPageForRequest, setCurrentPageForRequest] = useState(0);
   const [currentPageForSubmittedData, setCurrentPageForSubmittedData] =
     useState(0);
-
+  const [openModal, setOpenModal] = useState(false);
+  const [docId, setDocId] = useState('');
   const perPageDataForRequest = 10;
   const perPageDataForSubmittedData = 10;
+  const [initialValues, setInitialValues] = useState({
+    title: '',
+    document: '',
+    description: '',
+  });
 
+  const validationSchema = Yup.object({
+    document: Yup.array()
+      .of(
+        Yup.mixed()
+          .test(
+            'fileFormat',
+            'Only PDF, JPG, PNG files are allowed',
+            (value) => {
+              if (value) {
+                const fileType = value.type;
+                return (
+                  fileType === 'application/pdf' ||
+                  fileType === 'image/jpeg' ||
+                  fileType === 'image/png'
+                );
+              }
+              return false;
+            }
+          )
+          .test('fileSize', 'File size must be 5MB or less', (value) => {
+            if (value) {
+              return value.size <= 5 * 1024 * 1024;
+            }
+            return false;
+          })
+      )
+      .required('Documents are required')
+      .min(1, 'At least one document is required')
+      .max(5, 'You can upload a maximum of 5 documents'),
+  });
   const {
     data: allDocumentRequestForAgentData,
     error: allDocumentRequestForAgentError,
@@ -34,6 +77,8 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
     refetch: allAirTicketDocumentSubmittedForAgentRefetch,
   } = useGetAllUserAirTicketDocSubmitedFilestForAgentQuery();
 
+  const [submitSingleDocumentForAgent] =
+    useUpdateSingleAirTicketDocumentForAgentMutation();
   //  search input change function
   const handleSearchChangeForRequest = (e) =>
     setSearchTermForRequest(e.target.value);
@@ -55,6 +100,77 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         ?.toLowerCase()
         .includes(searchTermForSubmitedData.toLowerCase())
     );
+
+  const togModal = (id) => {
+    setInitialValues({
+      title: '',
+      document: '',
+      description: '',
+    });
+    setDocId(id);
+    setOpenModal(!openModal);
+  };
+
+  useEffect(() => {
+    const fetchFile = async () => {
+      const requestData = allDocumentRequestForAgentData?.data?.find(
+        (item) => item?._id === docId
+      );
+
+      if (!requestData) return;
+
+      // eslint-disable-next-line no-undef
+      const files = await Promise.all(
+        requestData?.files?.map(
+          async (file) => await convertImageUrlToFile(file.url)
+        )
+      );
+
+      setInitialValues({
+        title: requestData?.title || '',
+        document: files || '',
+        description: requestData?.description || '',
+      });
+    };
+
+    fetchFile();
+  }, [allDocumentRequestForAgentData, docId]);
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    const updatedata = {
+      ...values,
+      id: docId,
+      status: 'submitted',
+    };
+
+    try {
+      const finalData = new FormData();
+      Object.entries(updatedata).forEach(([key, value]) => {
+        if (key === 'document') {
+          if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+              finalData.append(`${key}`, item);
+            });
+          }
+        } else {
+          finalData.append(key, value);
+        }
+      });
+      const result = await submitSingleDocumentForAgent(finalData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        allDocumentRequestForAgentData();
+        setOpenModal(!openModal);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const docRequestTableHeaderDataWithoutAction = [
     {
@@ -184,6 +300,23 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
           {item?.status ? <span>{item?.status}</span> : '-'}
         </span>
       ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (item) => {
+        if (item?.requested_by?.role === 'agent') {
+          return <span className="text-capitalize">-</span>;
+        }
+        return (
+          <button
+            onClick={() => togModal(item?._id)}
+            className="button d-flex px-3 py-1"
+          >
+            Upload
+          </button>
+        );
+      },
     },
   ];
 
@@ -378,6 +511,17 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
               )}
             </CardBody>
           </Card>
+
+          {
+            <SingleDocUploadForm
+              initialValues={initialValues}
+              OpenModal={openModal}
+              toggle={togModal}
+              handleAddSubmit={handleSubmit}
+              submitBtn={'Upload'}
+              validationSchema={validationSchema}
+            />
+          }
         </div>
       </div>
     </Layout>

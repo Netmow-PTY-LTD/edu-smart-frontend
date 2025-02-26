@@ -47,6 +47,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     notes: '',
   });
 
+  // item?.requested_by.role === 'super_admin' ? 'Super Admin' : 'Agent'
   const [createDocumentRequest] =
     useCreateUserAirTicketDocRequestForAgentMutation();
 
@@ -256,42 +257,50 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     {
       title: 'Action',
       key: 'actions',
-      render: (item) => (
-        <UncontrolledDropdown direction="end">
-          <DropdownToggle
-            tag="a"
-            className="text-reset dropdown-btn"
-            role="button"
-          >
-            <span className="button px-3">
-              <i className="ri-more-fill align-middle"></i>
-            </span>
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
-            <DropdownItem>
-              <div
-                className="text-primary"
-                onClick={() => {
-                  if (item?.status === 'submitted') {
-                    handleStatusChange(item?._id, 'accepted');
-                  } else {
-                    toast.error('Document must be submitted first');
-                  }
-                }}
-              >
-                <i class="ri-check-double-line me-2 text-success"></i>
-                Accepted
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div className="text-primary" onClick={() => togModal(item?._id)}>
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                Rejected
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      ),
+      render: (item) => {
+        if (item?.requested_by?.role === 'super_admin') {
+          return <span className="text-capitalize">-</span>;
+        }
+        return (
+          <UncontrolledDropdown direction="end">
+            <DropdownToggle
+              tag="a"
+              className="text-reset dropdown-btn"
+              role="button"
+            >
+              <span className="button px-3">
+                <i className="ri-more-fill align-middle"></i>
+              </span>
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu dropdown-menu-end">
+              <DropdownItem>
+                <div
+                  className="text-primary"
+                  onClick={() => {
+                    if (item?.status === 'submitted') {
+                      handleStatusChange(item?._id, 'accepted');
+                    } else {
+                      toast.error('Document must be submitted first');
+                    }
+                  }}
+                >
+                  <i class="ri-check-double-line me-2 text-success"></i>
+                  Accepted
+                </div>
+              </DropdownItem>
+              <DropdownItem>
+                <div
+                  className="text-primary"
+                  onClick={() => togModal(item?._id)}
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Rejected
+                </div>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        );
+      },
     },
   ];
 

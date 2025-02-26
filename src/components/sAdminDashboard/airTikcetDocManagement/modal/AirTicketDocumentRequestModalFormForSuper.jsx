@@ -26,7 +26,8 @@ const AirTicketDocumentRequestModalFormForSuper = ({
   const recentApplicantStudentOptions =
     getAllRecentApplicationsData?.data?.map((item) => ({
       value: item.student._id,
-      label: `${item.student.first_name} ${item.student.last_name} - ${item.course.name}`,
+      label: `${item.student.first_name} ${item.student.last_name}- ${item._id}`,
+      // label: `${item.student.first_name} ${item.student.last_name} - ${item._id}`,
       applicationId: item._id,
     })) || [];
 
