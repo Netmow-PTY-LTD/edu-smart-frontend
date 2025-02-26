@@ -335,7 +335,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}
               >
-                Add Air Ticket Doc Request
+                Add Request
               </button>
               <SearchComponent
                 searchTerm={searchTermForRequest}
