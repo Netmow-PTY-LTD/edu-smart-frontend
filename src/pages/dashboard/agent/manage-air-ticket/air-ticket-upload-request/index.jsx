@@ -591,7 +591,40 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
           <Card>
             <CardHeader>
               <h3 className="fs-1 fw-bold text-primary text-center py-3 ">
-                All Student Air Ticket Document Upload Requests from You
+                Document Submitted
+              </h3>
+              <SearchComponent
+                searchTerm={searchTermForSubmitedData}
+                handleSearchChange={handleSearchChangeForSubmittedData}
+              />
+            </CardHeader>
+            <CardBody>
+              {allAirTicketDocumentSubmittedForAgentIsLoading ? (
+                <LoaderSpiner />
+              ) : allAirTicketDocumentSubmittedForAgentError ? (
+                <div>Error loading data....</div>
+              ) : (
+                <CommonTableComponent
+                  headers={airTicketdocSubmitedTableHeaderDataWithoutAction}
+                  data={
+                    isfilteredDataForSubmittedData
+                      ? isfilteredDataForSubmittedData
+                      : []
+                  }
+                  currentPage={currentPageForSubmittedData}
+                  setCurrentPage={setCurrentPageForSubmittedData}
+                  perPageData={perPageDataForSubmittedData}
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
+                  emptyMessage="No Data found yet."
+                />
+              )}
+            </CardBody>
+          </Card>
+          <Card>
+            <CardHeader>
+              <h3 className="fs-1 fw-bold text-primary text-center py-3 ">
+                Requests from You
               </h3>
               <SearchComponent
                 searchTerm={searchTermForRequestForAgent}
@@ -621,7 +654,7 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
           <Card>
             <CardHeader>
               <h3 className="fs-1 fw-bold text-primary text-center py-3 ">
-                All Student Air Ticket Document Upload Requests from Super Admin
+                Document Requested from Super Admin
               </h3>
               <SearchComponent
                 searchTerm={searchTermForRequestForSuperAdmin}
@@ -646,39 +679,6 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
                   perPageData={perPageDataForRequest}
                   searchTerm={searchTermForRequestForSuperAdmin}
                   handleSearchChange={handleSearchChangeForRequestForSuperAdmin}
-                  emptyMessage="No Data found yet."
-                />
-              )}
-            </CardBody>
-          </Card>
-          <Card>
-            <CardHeader>
-              <h3 className="fs-1 fw-bold text-primary text-center py-3 ">
-                All Student Air Ticket Document Submission Table
-              </h3>
-              <SearchComponent
-                searchTerm={searchTermForSubmitedData}
-                handleSearchChange={handleSearchChangeForSubmittedData}
-              />
-            </CardHeader>
-            <CardBody>
-              {allAirTicketDocumentSubmittedForAgentIsLoading ? (
-                <LoaderSpiner />
-              ) : allAirTicketDocumentSubmittedForAgentError ? (
-                <div>Error loading data....</div>
-              ) : (
-                <CommonTableComponent
-                  headers={airTicketdocSubmitedTableHeaderDataWithoutAction}
-                  data={
-                    isfilteredDataForSubmittedData
-                      ? isfilteredDataForSubmittedData
-                      : []
-                  }
-                  currentPage={currentPageForSubmittedData}
-                  setCurrentPage={setCurrentPageForSubmittedData}
-                  perPageData={perPageDataForSubmittedData}
-                  searchTerm={searchTermForSubmitedData}
-                  handleSearchChange={handleSearchChangeForSubmittedData}
                   emptyMessage="No Data found yet."
                 />
               )}
