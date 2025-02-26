@@ -39,7 +39,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   const perPageDataForRequest = 10;
   const perPageDataForSubmittedData = 10;
   const [initialValues, setInitialValues] = useState({
-    title: '',
+    title: 'Air Ticket', // Set default value
     description: '',
   });
 
@@ -76,7 +76,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   ] = useState('');
 
   const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required'),
+    title: Yup.string(),
     description: Yup.string().required('description is required'),
   });
 
@@ -109,6 +109,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       student_id,
     };
 
+    console.log('updatedata', updatedata);
     try {
       const result = createDocumentRequest(updatedata).unwrap();
       if (result) {
@@ -325,7 +326,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}
               >
-                Add Document Request
+                Add Air Ticket Doc Request
               </button>
               <SearchComponent
                 searchTerm={searchTermForRequest}
@@ -333,7 +334,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
               />
             </CardHeader>
             <AirTicketDocumentRequestModalForm
-              formHeader={'Add Document'}
+              formHeader={'Add Air Ticket Document Request'}
               isOpen={addModalIsOpen}
               onClose={() => {
                 setAddModalIsOpen(!addModalIsOpen);
@@ -341,7 +342,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
               onSubmit={handleSubmit}
               initialValues={initialValues}
               validationSchema={validationSchema}
-              formSubmit={'Add Document'}
+              formSubmit={'Add Request'}
               setInitialValues={setInitialValues}
             />
             <CardBody>
