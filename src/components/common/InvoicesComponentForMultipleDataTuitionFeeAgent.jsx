@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardHeader,
@@ -12,8 +12,9 @@ import {
   Table,
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
+import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 
-const InvoicesComponentForMultipleData = ({
+const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
   addressData,
   billingAddressData,
   tableData,
@@ -35,6 +36,60 @@ const InvoicesComponentForMultipleData = ({
   payment_status,
   invoice_no,
 }) => {
+  const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+
+  const sslCommerzPaymentHandler = async () => {
+    const price =
+      invoice_no?.application?.course?.auto_deduct === true
+        ? invoice_no?.application?.course?.after_emgs_fee -
+          (invoice_no?.application?.incentive_amount *
+            invoice_no?.application?.agent_package_parcentage) /
+            100
+        : invoice_no?.application?.course?.after_emgs_fee;
+    const application_id = invoice_no?.application?._id;
+    const course_id = invoice_no?.application?.course?._id;
+    const report_id = invoice_no?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=faild&report_id=${report_id}`;
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=success&report_id=${report_id}`;
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_tuition_fee';
+    const payment_method = 'sslcommerz';
+
+    try {
+      const response = await sslCommerzPaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      if (response.success && response?.data?.gatewayPageURL) {
+        window.location.href = response?.data?.gatewayPageURL;
+      } else {
+        toast.error('Payment failed');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
   return (
     <>
       {/* <Layout> */}
@@ -46,7 +101,7 @@ const InvoicesComponentForMultipleData = ({
       {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
         <ModalHeader toggle={close} className="">
-          Invoice For EMGS Fee
+          Invoice For Tuition Fee
         </ModalHeader>
         <ModalBody className="p-5">
           {loading ? (
@@ -195,10 +250,11 @@ const InvoicesComponentForMultipleData = ({
                         Payment Status
                       </p>
                       <p
-                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
                       >
                         <span className="text-uppercase">
-                          {invoice_no?.application?.emgs_payment_status ?? '-'}
+                          {invoice_no?.application
+                            ?.tuition_fee_payment_status ?? '-'}
                         </span>
                       </p>
                     </Col>
@@ -207,7 +263,7 @@ const InvoicesComponentForMultipleData = ({
                         INVOICE TYPE
                       </p>
                       <p className=" mb-0 text-uppercase">
-                        <p className=" mb-0 text-uppercase">EMGS FEE</p>
+                        <p className=" mb-0 text-uppercase">TUITION FEE</p>
                       </p>
                     </Col>
                   </Row>
@@ -225,7 +281,7 @@ const InvoicesComponentForMultipleData = ({
                           <th scope="col">SL</th>
                           <th scope="col">Application Details</th>
                           <th scope="col">Student</th>
-                          <th scope="col">Emgs Fee</th>
+                          <th scope="col">Tuition Fee</th>
                           <th scope="col">Amount</th>
                         </tr>
                       </thead>
@@ -266,13 +322,17 @@ const InvoicesComponentForMultipleData = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.emgs_fee ?? '-'}{' '}
+                                    {item?.application?.course?.tuition_fee -
+                                      item?.application?.course?.emgs_fee ??
+                                      '-'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
                                 <td>
                                   <h3 className="my-1 fw-normal">
-                                    {item?.application?.course?.emgs_fee ?? '-'}{' '}
+                                    {item?.application?.course?.tuition_fee -
+                                      item?.application?.course?.emgs_fee ??
+                                      '-'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -292,30 +352,49 @@ const InvoicesComponentForMultipleData = ({
                         <tr>
                           <th className="">Sub Total :</th>
                           <th className="text-end ">
-                            {invoice_no?.application?.course?.emgs_fee}{' '}
+                            {invoice_no?.application?.course?.tuition_fee -
+                              invoice_no?.application?.course?.emgs_fee}{' '}
                             {currency}
                           </th>
                         </tr>
 
-                        {gst ? (
-                          <tr>
-                            <th>GST :</th>
-                            <th className="text-end ">
-                              {gst} {currency}
+                        {invoice_no?.application?.course?.auto_deduct ===
+                        true ? (
+                          <>
+                            <tr className="border-top border-top-dashed ">
+                              <th scope="row">Commission :</th>
+                              <th className="text-end">
+                                -{' '}
+                                {(invoice_no?.application?.incentive_amount *
+                                  invoice_no?.application
+                                    ?.agent_package_parcentage) /
+                                  100}{' '}
+                                {currency}{' '}
+                              </th>
+                            </tr>
+                            <tr className="border-top border-top-dashed ">
+                              <th scope="row">Total Amount :</th>
+                              <th className="text-end">
+                                {invoice_no?.application?.course
+                                  ?.after_emgs_fee -
+                                  (invoice_no?.application?.incentive_amount *
+                                    invoice_no?.application
+                                      ?.agent_package_parcentage) /
+                                    100}{' '}
+                                {currency}
+                              </th>
+                            </tr>
+                          </>
+                        ) : (
+                          <tr className="border-top border-top-dashed ">
+                            <th scope="row">Total Amount :</th>
+                            <th className="text-end">
+                              {invoice_no?.application?.course?.tuition_fee -
+                                invoice_no?.application?.course?.emgs_fee}{' '}
+                              {currency}
                             </th>
                           </tr>
-                        ) : (
-                          ''
                         )}
-
-                        <tr className="border-top border-top-dashed ">
-                          <th scope="row">Total Amount :</th>
-
-                          <th className="text-end">
-                            {invoice_no?.application?.course?.emgs_fee}{' '}
-                            {currency}
-                          </th>
-                        </tr>
                       </tbody>
                     </Table>
                   </div>
@@ -360,19 +439,137 @@ const InvoicesComponentForMultipleData = ({
                           {currency}
                         </div>
                       </div>
-                      <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                        <div className="tc mt-3">
-                          Balance Payable: <br />
-                          <span style={{ fontSize: '12px' }}>
-                            (Payment is required after EMGS processing.)
-                          </span>
-                        </div>
-                        <div className="tc mt-3">
-                          {' '}
-                          {invoice_no?.application?.course?.after_emgs_fee}{' '}
-                          {currency}
-                        </div>
-                      </div>
+                      {invoice_no?.application?.tuition_fee_payment_status ===
+                      'paid' ? (
+                        <>
+                          {invoice_no?.application?.course?.auto_deduct ===
+                          true ? (
+                            <>
+                              <div className="table-row">
+                                <div className="tc mt-3">
+                                  Commission: <br />
+                                </div>
+                                <div className="tc mt-3">
+                                  {' '}
+                                  -{' '}
+                                  {(invoice_no?.application?.incentive_amount *
+                                    invoice_no?.application
+                                      ?.agent_package_parcentage) /
+                                    100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                              <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                                <div className="tc mt-3">
+                                  Paid Amount: <br />
+                                </div>
+                                <div className="tc mt-3">
+                                  ={' '}
+                                  {invoice_no?.application?.course
+                                    ?.after_emgs_fee -
+                                    (invoice_no?.application?.incentive_amount *
+                                      invoice_no?.application
+                                        ?.agent_package_parcentage) /
+                                      100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                              <div className="tc mt-3">
+                                Balance Payable: <br />
+                                <span style={{ fontSize: '12px' }}>
+                                  (Payment is required after EMGS processing.)
+                                </span>
+                              </div>
+                              <div className="tc mt-3">
+                                {' '}
+                                {
+                                  invoice_no?.application?.course
+                                    ?.after_emgs_fee
+                                }{' '}
+                                {currency}
+                              </div>
+                            </div>
+                          )}
+                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                            <div className="tc mt-3">
+                              Due Amount: <br />
+                            </div>
+                            <div className="tc mt-3 text-end">
+                              = {'0.00'} {currency}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {invoice_no?.application?.course?.auto_deduct ===
+                          true ? (
+                            <>
+                              <div className="table-row">
+                                <div className="tc mt-3">
+                                  Commission: <br />
+                                </div>
+                                <div className="tc mt-3">
+                                  {' '}
+                                  -{' '}
+                                  {(invoice_no?.application?.incentive_amount *
+                                    invoice_no?.application
+                                      ?.agent_package_parcentage) /
+                                    100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                              <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                                <div className="tc mt-3">
+                                  Balance Payable: <br />
+                                  <span style={{ fontSize: '12px' }}>
+                                    (Payment is required after EMGS processing.)
+                                  </span>
+                                </div>
+                                <div className="tc mt-3">
+                                  {' '}
+                                  {invoice_no?.application?.course
+                                    ?.after_emgs_fee -
+                                    (invoice_no?.application?.incentive_amount *
+                                      invoice_no?.application
+                                        ?.agent_package_parcentage) /
+                                      100}{' '}
+                                  {currency}
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                              <div className="tc mt-3">
+                                Balance Payable: <br />
+                                <span style={{ fontSize: '12px' }}>
+                                  (Payment is required after EMGS processing.)
+                                </span>
+                              </div>
+                              <div className="tc mt-3">
+                                {' '}
+                                {
+                                  invoice_no?.application?.course
+                                    ?.after_emgs_fee
+                                }{' '}
+                                {currency}
+                              </div>
+                            </div>
+                          )}
+
+                          <button
+                            onClick={() => {
+                              sslCommerzPaymentHandler(); // Call the payment function
+                              //   close(); // Close the modal
+                            }}
+                            className="d-flex justify-content-end button mt-5 px-5 py-2"
+                          >
+                            Pay Tuition Fee
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </Card>
@@ -430,4 +627,4 @@ const InvoicesComponentForMultipleData = ({
   );
 };
 
-export default InvoicesComponentForMultipleData;
+export default InvoicesComponentForMultipleDataTuitionFeeAgent;
