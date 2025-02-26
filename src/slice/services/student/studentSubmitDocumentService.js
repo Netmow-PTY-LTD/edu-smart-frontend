@@ -75,7 +75,7 @@ export const studentSubmitDocumentService = createApi({
       },
     }),
 
-    getAllSubmittedAirTicketDocumentForStudent: builder.query({
+    getAllSubmittedAirTicketDocumentsForStudent: builder.query({
       query: () => ({
         url: '/airticket/documents',
         method: 'GET',
@@ -110,7 +110,7 @@ export const {
   useSubmitSingleDocumentForStudentMutation,
   useUpdateSingleDocumentForStudentMutation,
   useSubmitStudentAirTicketDocumentMutation,
-  useGetAllSubmittedAirTicketDocumentForStudentQuery,
+  useGetAllSubmittedAirTicketDocumentsForStudentQuery,
   useGetSingleAirTicketDocumentForStudentQuery,
   useUpdateSingleAirTicketDocumentForStudentMutation,
   useDeleteSingleAirTicketDocumentForStudentMutation,

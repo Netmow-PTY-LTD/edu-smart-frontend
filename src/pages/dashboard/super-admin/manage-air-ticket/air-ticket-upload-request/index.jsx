@@ -1,10 +1,10 @@
-import AirTicketDocumentRequestModalForm from '@/components/agentDashboard/studentManagement/singleStudentProfile/modal/AirTicketDocumentRequestModalForm';
-import StatusUpdateForm from '@/components/agentDashboard/studentManagement/singleStudentProfile/modal/StatusUpdateForm';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import FileViewer from '@/components/common/FileViewer';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import AirTicketDocumentRequestModalFormForSuper from '@/components/sAdminDashboard/airTikcetDocManagement/modal/AirTicketDocumentRequestModalFormForSuper';
+import StatusUpdateFormForSuper from '@/components/sAdminDashboard/airTikcetDocManagement/modal/StatusUpdateFormForSuper';
 import {
   useCreateUserAirTicketDocRequestForAgentMutation,
   useGetAllUserAirTicketDocSubmitedFilestForAgentQuery,
@@ -87,23 +87,28 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
     );
 
   // Validation
-  const validationSchema = Yup.object({
-    title: Yup.string(),
-    description: Yup.string().required('description is required'),
+
+  const validationSchema = Yup.object().shape({
+    student_id: Yup.string().required('Applicant Student is required'), // Ensure student_id is required
+    description: Yup.string().required('Description is required'), // Ensure description is required
   });
 
   // Status Mutation
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    const updatedata = {
-      ...values,
-      // student_id,
+
+    const airTicketRequestData = {
+      application: values.application_id,
+
+      description: values.description,
+      student_id: values.student_id,
+      title: values.title,
     };
 
-    console.log('updatedata', updatedata);
+    console.log('updatedata', airTicketRequestData);
     try {
-      const result = createDocumentRequest(updatedata).unwrap();
+      const result = createDocumentRequest(airTicketRequestData).unwrap();
       if (result) {
         toast.success(result?.message);
         allDocumentRequestForAgentRefetch();
@@ -476,7 +481,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
                 handleSearchChange={handleSearchChangeForRequest}
               />
             </CardHeader>
-            <AirTicketDocumentRequestModalForm
+            <AirTicketDocumentRequestModalFormForSuper
               formHeader={'Add Air Ticket Document Request'}
               isOpen={addModalIsOpen}
               onClose={() => {
@@ -540,7 +545,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
             </CardBody>
           </Card>
           {
-            <StatusUpdateForm
+            <StatusUpdateFormForSuper
               initialValues={rejectStatusInitialValues}
               OpenModal={openModal}
               toggle={togModal}

@@ -7,7 +7,7 @@ import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import {
-  useGetAllSubmittedAirTicketDocumentForStudentQuery,
+  useGetAllSubmittedAirTicketDocumentsForStudentQuery,
   useUpdateSingleAirTicketDocumentForStudentMutation,
 } from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
@@ -53,7 +53,7 @@ const AllAirTicketUploadDocumentsForStudents = () => {
     data: getSingleStudentAirTicketDocSubmittedData,
     isLoading: getSingleStudentAirTicketDocSubmittedIsLoading,
     refetch: getSingleStudentAirTicketDocSubmittedRefetch,
-  } = useGetAllSubmittedAirTicketDocumentForStudentQuery();
+  } = useGetAllSubmittedAirTicketDocumentsForStudentQuery();
 
   const [submitSingleDocumentForStudent] =
     useUpdateSingleAirTicketDocumentForStudentMutation();

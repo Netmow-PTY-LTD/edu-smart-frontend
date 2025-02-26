@@ -50,6 +50,17 @@ export const documentService = createApi({
         };
       },
     }),
+
+    // -------------------- Document related endpoints ------------
+    createAirTicketDocRequestInSuperAdmin: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/document/list`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
   }),
 });
 
