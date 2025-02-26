@@ -1,8 +1,10 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
+import InvoicesComponentForMultipleDataTuitionFeeAgent from '@/components/common/InvoicesComponentForMultipleDataTuitionFeeAgent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useUpdatePaymentApplicationStatusMutation } from '@/slice/services/common/applicationService';
 import {
   useGetApplicationPaymentReportQuery,
   useGetSingleApplicationPaymentReportQuery,
@@ -10,8 +12,9 @@ import {
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { brandlogo, superAdminData } from '@/utils/common/data';
 import moment from 'moment';
-import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -26,6 +29,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
+  const [openInvoiceModalTuition, setOpenInvoiceModalTuition] = useState(false);
   const [applicationId, setApplicationId] = useState('');
 
   const perPageData = 10;
@@ -92,11 +96,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
     },
 
     {
-      title: 'Paid Amount',
-      key: 'paid_amount',
-    },
-
-    {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
@@ -104,14 +103,27 @@ const ApplicationInvoiceInSuperAdmin = () => {
       ),
     },
     {
-      title: 'Payment Status',
-      key: 'payment_status',
+      title: 'Emgs Payment',
+      key: 'emgs_payment_status',
       render: (item) => (
         <p
-          className={` badge fw-semibold text-center me-4 ${item?.application?.payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          className={` badge fw-semibold text-center me-4 ${item?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
         >
           <span className="text-uppercase">
-            {item?.application?.payment_status ?? ''}
+            {item?.application?.emgs_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Tuition Payment',
+      key: 'tuition_fee_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.tuition_fee_payment_status ?? ''}
           </span>
         </p>
       ),
@@ -150,7 +162,21 @@ const ApplicationInvoiceInSuperAdmin = () => {
               className="text-primary"
             >
               <i className="ri-eye-fill me-2"></i>
-              View Invoice
+              View Emgs Invoice
+            </div>
+
+            <div
+              onClick={() => {
+                if (item?._id) {
+                  setApplicationId(item?._id);
+                  setOpenInvoiceModalTuition(true);
+                  getSingleApplicationPaymentReportDataRefetch(item?._id);
+                }
+              }}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Tuition Invoice
             </div>
           </DropdownItem>
         </DropdownMenu>
@@ -161,6 +187,73 @@ const ApplicationInvoiceInSuperAdmin = () => {
   const printInvoice = () => {
     window.print();
   };
+
+  const router = useRouter();
+  const { query } = router; // Extract URL parameters
+  const [toastShown, setToastShown] = useState(false);
+
+  const [
+    updateApplicationStatus,
+    { data: updateApplicationStatusData, error, isLoading },
+  ] = useUpdatePaymentApplicationStatusMutation();
+
+  useEffect(() => {
+    if (
+      query.payment_status === 'success' &&
+      query.transaction_reason === 'application_tuition_fee'
+    ) {
+      updateApplicationStatus({
+        transaction_id: query.transaction_id,
+        status: 'paid',
+        payment_method: query.payment_method,
+        transaction_reason: query.transaction_reason,
+        id: query.application_id,
+        paid_amount: query.paid_amount,
+      });
+    }
+  }, [query, updateApplicationStatus]);
+
+  useEffect(() => {
+    if (!toastShown && (updateApplicationStatusData || error)) {
+      getApplicationPaymentDataRefetch();
+      setApplicationId(query.report_id);
+      setOpenInvoiceModalTuition(true);
+      getSingleApplicationPaymentReportDataRefetch(query.report_id);
+
+      setTimeout(() => {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: '',
+          },
+          undefined,
+          { shallow: true }
+        );
+      }, 1000);
+
+      if (updateApplicationStatusData) {
+        toast.success('Payment is successful!');
+      } else if (error) {
+        toast.error('Payment update failed!');
+      }
+
+      setToastShown(true); // Prevent multiple toasts
+    }
+  }, [
+    updateApplicationStatusData,
+    error,
+    getApplicationPaymentDataRefetch,
+    getSingleApplicationPaymentReportDataRefetch,
+    query.report_id,
+    toastShown,
+    router,
+  ]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setToastShown(false); // Reset when loading is done, so the toast can be shown again for future payments
+    }
+  }, [isLoading]);
 
   return (
     <Layout>
@@ -203,6 +296,40 @@ const ApplicationInvoiceInSuperAdmin = () => {
               open={openInvoiceModal}
               close={() => {
                 setApplicationId(''), setOpenInvoiceModal(false);
+              }}
+              loading={getSingleApplicationPaymentReportDataLoading}
+              addressData={superAdminData}
+              billingAddressData={
+                getSingleApplicationPaymentReportData?.data?.applied_by
+              }
+              tableData={[getSingleApplicationPaymentReportData?.data]}
+              //   generatePDF,
+              printInvoice={printInvoice}
+              //   payButton,
+              //   goToPay,
+              //   chargesType,
+              //   invoice,
+              //   superAdmin,
+              subtotal={
+                getSingleApplicationPaymentReportData?.data?.paid_amount
+              }
+              //   gst,
+              total={getSingleApplicationPaymentReportData?.data?.paid_amount}
+              currency={'MYR'}
+              payment_status={
+                getSingleApplicationPaymentReportData?.data?.application
+                  ?.payment_status
+              }
+              logoData={brandlogo}
+              invoice_no={getSingleApplicationPaymentReportData?.data}
+            />
+          }
+
+          {
+            <InvoicesComponentForMultipleDataTuitionFeeAgent
+              open={openInvoiceModalTuition}
+              close={() => {
+                setApplicationId(''), setOpenInvoiceModalTuition(false);
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
               addressData={superAdminData}

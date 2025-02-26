@@ -247,14 +247,19 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
+  useUpdateApplicationStatusMutation,
+  useUpdatePaymentApplicationStatusMutation,
+} from '@/slice/services/common/applicationService';
+import {
   useGetApplicationPaymentReportQuery,
   useGetSingleApplicationPaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { brandlogo, superAdminData } from '@/utils/common/data';
 import moment from 'moment';
-import React, { useState } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -431,6 +436,73 @@ const ApplicationInvoiceInSuperAdmin = () => {
     window.print();
   };
 
+  const router = useRouter();
+  const { query } = router; // Extract URL parameters
+  const [toastShown, setToastShown] = useState(false);
+
+  const [
+    updateApplicationStatus,
+    { data: updateApplicationStatusData, error, isLoading },
+  ] = useUpdatePaymentApplicationStatusMutation();
+
+  useEffect(() => {
+    if (
+      query.payment_status === 'success' &&
+      query.transaction_reason === 'application_tuition_fee'
+    ) {
+      updateApplicationStatus({
+        transaction_id: query.transaction_id,
+        status: 'paid',
+        payment_method: query.payment_method,
+        transaction_reason: query.transaction_reason,
+        id: query.application_id,
+        paid_amount: query.paid_amount,
+      });
+    }
+  }, [query, updateApplicationStatus]);
+
+  useEffect(() => {
+    if (!toastShown && (updateApplicationStatusData || error)) {
+      getApplicationPaymentDataRefetch();
+      setApplicationId(query.report_id);
+      setOpenInvoiceModalTuition(true);
+      getSingleApplicationPaymentReportDataRefetch(query.report_id);
+
+      setTimeout(() => {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: '',
+          },
+          undefined,
+          { shallow: true }
+        );
+      }, 1000);
+
+      if (updateApplicationStatusData) {
+        toast.success('Payment is successful!');
+      } else if (error) {
+        toast.error('Payment update failed!');
+      }
+
+      setToastShown(true); // Prevent multiple toasts
+    }
+  }, [
+    updateApplicationStatusData,
+    error,
+    getApplicationPaymentDataRefetch,
+    getSingleApplicationPaymentReportDataRefetch,
+    query.report_id,
+    toastShown,
+    router,
+  ]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setToastShown(false); // Reset when loading is done, so the toast can be shown again for future payments
+    }
+  }, [isLoading]);
+
   return (
     <Layout>
       <div className="page-content">
@@ -533,17 +605,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
               logoData={brandlogo}
               invoice_no={getSingleApplicationPaymentReportData?.data}
             />
-          }
-
-          {
-            <Modal isOpen={''} centered size="md">
-              <ModalHeader toggle={''}>Payment</ModalHeader>
-              <ModalBody>
-                <PaymentOption
-                // sslCommerzPaymentHandler={sslCommerzPaymentHandler}
-                />
-              </ModalBody>
-            </Modal>
           }
         </div>
       </div>
