@@ -34,10 +34,6 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
     refetch: allAirTicketDocumentSubmittedForAgentRefetch,
   } = useGetAllUserAirTicketDocSubmitedFilestForAgentQuery();
 
-  console.log(
-    'allDocumentRequestForAgentData',
-    allAirTicketDocumentSubmittedDataForAgentData
-  );
   //  search input change function
   const handleSearchChangeForRequest = (e) =>
     setSearchTermForRequest(e.target.value);
