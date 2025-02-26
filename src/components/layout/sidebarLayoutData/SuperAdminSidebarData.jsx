@@ -166,6 +166,12 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/all-documents',
     },
     {
+      id: 'airTicketDocumentuploadrequest',
+      label: 'Air Ticket Doc  Request',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/super-admin/manage-air-ticket/air-ticket-upload-request',
+    },
+    {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
