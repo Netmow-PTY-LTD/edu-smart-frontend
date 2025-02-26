@@ -7,6 +7,7 @@ const AgentSidebarData = () => {
   const [isDashboard, setIsDashboard] = useState(false);
   const [isWebsite, setIsWebsite] = useState(false);
   const [isManageDocument, setIsManageDocument] = useState(false);
+  const [isManageAirTicket, setIsManageAirTicket] = useState(false);
   const [isStudentManagement, setIsStudentManagement] = useState(false);
   const [isUinversityManagement, setIsUinversityManagement] = useState(false);
   const [isInvoices, setIsInvoices] = useState(false);
@@ -14,7 +15,7 @@ const AgentSidebarData = () => {
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
   const [isPaymentReport, setIsPaymentReport] = useState(false);
-  
+
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');
@@ -40,6 +41,9 @@ const AgentSidebarData = () => {
 
     if (iscurrentState !== 'Manage Document') {
       setIsManageDocument(false);
+    }
+    if (iscurrentState !== 'Manage Air Ticket') {
+      setIsManageAirTicket(false);
     }
 
     if (iscurrentState !== 'Manage University') {
@@ -214,6 +218,45 @@ const AgentSidebarData = () => {
           parentId: 'managedocument',
         },
       ],
+    },
+    // ----------------- Future use Manage Air Ticket subitem sidebar -----------------
+    // {
+    //   id: 'manage-air-ticket',
+    //   label: 'Manage Air Ticket',
+    //   icon: 'ri-article-fill',
+    //   link: '/#',
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsManageAirTicket(!isManageAirTicket);
+    //     setIscurrentState('Manage Air Ticket');
+    //   },
+    //   stateVariables: isManageAirTicket,
+    //   subItems: [
+    //     {
+    //       id: 'allAirTicketDoc',
+    //       label: 'All Air Ticket Document',
+    //       link: '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
+    //       icon: 'ri-file-fill',
+    //       pathName:
+    //         '/dashboard/agent/manage-air-ticket/all-air-ticket-doc-for-agent',
+    //       parentId: 'manage-air-ticket',
+    //     },
+    //     {
+    //       id: 'airTicketDocumentuploadrequest',
+    //       label: 'Air Ticket Doc  Request',
+    //       link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
+    //       icon: 'ri-file-list-3-fill',
+    //       pathName:
+    //         '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
+    //       parentId: 'manage-air-ticket',
+    //     },
+    //   ],
+    // },
+    {
+      id: 'airTicketDocumentuploadrequest',
+      label: 'Air Ticket Doc  Request',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
     },
     {
       id: 'earnings',

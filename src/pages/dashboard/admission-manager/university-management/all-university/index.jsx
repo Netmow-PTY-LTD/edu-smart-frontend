@@ -4,16 +4,16 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
-  useDeleteUniversityMutation,
-  useGetUniversityQuery,
-} from '@/slice/services/super admin/universityService';
+  useDeleteUniversityForAdmissionManagerMutation,
+  useGetUniversityForAdmissionManagerQuery,
+} from '@/slice/services/admission manager/universityServiceForAdmissionManager';
 import {
   universityHeadersData,
   universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
 } from '@/utils/common/data';
 
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -25,30 +25,29 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-const AllUniversityPageForAdmissionManagerDashboard = () => {
+const AllUniversityForSuperAdmin = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
+
   const perPageData = 10;
 
   const {
-    data: getUniversityData,
-    error: getUniversityError,
-    isLoading: getUniversityIsLoading,
-    refetch: getUniversityRefetch,
-  } = useGetUniversityQuery();
+    data: getUniversityForAdmissionManagerData,
+    error: getUniversityForAdmissionManagerError,
+    isLoading: getUniversityForAdmissionManagerIsLoading,
+    refetch: getUniversityForAdmissionManagerRefetch,
+  } = useGetUniversityForAdmissionManagerQuery();
 
   const [
-    deleteUniversity,
+    deleteUniversityForAdmissionManager,
     {
-      data: deleteUniversityData,
-      error: deleteUniversityError,
-      isLoading: deleteUniversityIsLoading,
+      data: deleteUniversityForAdmissionManagerData,
+      error: deleteUniversityForAdmissionManagerError,
+      isLoading: deleteUniversityForAdmissionManagerIsLoading,
     },
-  ] = useDeleteUniversityMutation();
+  ] = useDeleteUniversityForAdmissionManagerMutation();
 
   const handleDeleteButtonClick = (itemId) => {
     setUniversityIdForDelete(itemId);
@@ -57,10 +56,10 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
 
   const handleDeleteUniversity = async (id) => {
     try {
-      const result = await deleteUniversity(id).unwrap();
+      const result = await deleteUniversityForAdmissionManager(id).unwrap();
       if (result) {
         toast.success(result?.message);
-        getUniversityRefetch();
+        getUniversityForAdmissionManagerRefetch();
         handleDeleteButtonClick();
       }
     } catch (error) {
@@ -76,8 +75,8 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
 
   // Filter data for search option
   const isfilteredData =
-    getUniversityData?.data?.length > 0 &&
-    getUniversityData?.data.filter((item) =>
+    getUniversityForAdmissionManagerData?.data?.length > 0 &&
+    getUniversityForAdmissionManagerData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -98,7 +97,7 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
         <DropdownMenu className="dropdown-menu dropdown-menu-end">
           <DropdownItem>
             <Link
-              href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
+              href={`/dashboard/admission-manager/university-management/single-university-profile/${item?._id}`}
               className="text-primary"
             >
               <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
@@ -107,7 +106,7 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
           </DropdownItem>
           <DropdownItem>
             <Link
-              href={`/dashboard/super-admin/university-management/edit-university/${item?._id}`}
+              href={`/dashboard/admission-manager/university-management/edit-university/${item?._id}`}
               className="text-primary"
             >
               <i className="ri-pencil-fill align-start me-2 text-muted"></i>
@@ -128,29 +127,20 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
     ),
   };
 
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
-      ...universityHeadersData,
-      alluniversityHeaderAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Layout>
       <div className="page-content">
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
-            {getUniversityIsLoading ? (
+            {getUniversityForAdmissionManagerIsLoading ? (
               <LoaderSpiner />
             ) : (
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <Link
                     href={
-                      '/dashboard/super-admin/university-management/add-university'
+                      '/dashboard/admission-manager/university-management/add-university'
                     }
                     className="button px-3 py-2"
                   >
@@ -165,7 +155,11 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={allRegisteredUniversitydata}
+                    headers={[
+                      universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
+                      ...universityHeadersData,
+                      alluniversityHeaderAction,
+                    ]}
                     data={isfilteredData ? isfilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -184,7 +178,7 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
               close={handleDeleteButtonClick}
               id={universityIdForDelete}
               handleDelete={handleDeleteUniversity}
-              isloading={deleteUniversityIsLoading}
+              isloading={deleteUniversityForAdmissionManagerIsLoading}
             />
           </div>
         </div>
@@ -193,4 +187,4 @@ const AllUniversityPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default AllUniversityPageForAdmissionManagerDashboard;
+export default AllUniversityForSuperAdmin;

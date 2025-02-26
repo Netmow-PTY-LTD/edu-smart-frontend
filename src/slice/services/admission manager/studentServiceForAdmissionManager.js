@@ -2,10 +2,10 @@ import { serverInfo } from '@/utils/common/serverInfo';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import Cookies from 'js-cookie';
 
-export const agentServiceForAdmissionManager = createApi({
-  reducerPath: 'agentServiceForAdmissionManager',
+export const studentServiceForAdmissionManager = createApi({
+  reducerPath: 'studentServiceForAdmissionManager',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/admission-manager/agent',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/public/student',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -15,7 +15,7 @@ export const agentServiceForAdmissionManager = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getSingleAgentForAdmissionManager: builder.query({
+    getSingleStudentForAdmissionManager: builder.query({
       query: (id) => ({
         url: `/${id}`,
         method: 'GET',
@@ -24,5 +24,5 @@ export const agentServiceForAdmissionManager = createApi({
   }),
 });
 
-export const { useGetSingleAgentForAdmissionManagerQuery } =
-  agentServiceForAdmissionManager;
+export const { useGetSingleStudentForAdmissionManagerQuery } =
+  studentServiceForAdmissionManager;

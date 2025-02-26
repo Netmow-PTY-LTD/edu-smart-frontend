@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import * as Yup from 'yup';
 
-const AddUniversityPageForAdmissionManagerDashboard = () => {
+const AddUniversityFromSuperAdmin = () => {
   const router = useRouter();
   const [ssmFilePreview, setSsmFilePreview] = useState(null);
   const [govtFilePreview, setGovtFilePreview] = useState(null);
@@ -85,7 +85,7 @@ const AddUniversityPageForAdmissionManagerDashboard = () => {
         getUniversityRefetch();
         setImagePreview(null);
         router.push(
-          '/dashboard/super-admin/university-management/all-university'
+          '/dashboard/admission-manager/university-management/all-university'
         );
       }
     } catch (error) {
@@ -120,4 +120,4 @@ const AddUniversityPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default AddUniversityPageForAdmissionManagerDashboard;
+export default AddUniversityFromSuperAdmin;

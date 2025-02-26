@@ -5,19 +5,30 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
-import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
-import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
+import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
+import {
+  useGetAllSubmittedAirTicketDocumentForStudentQuery,
+  useUpdateSingleAirTicketDocumentForStudentMutation,
+} from '@/slice/services/student/studentSubmitDocumentService';
 import { currentUser } from '@/utils/currentUserHandler';
+import Link from 'next/link';
 
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllUploadDocumentsForStudents = () => {
+const AllAirTicketUploadDocumentsForStudents = () => {
   const user = currentUser();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(0);
+  const [searchTermForRequest, setSearchTermForRequest] = useState('');
+  const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
+    useState('');
+  const [currentPageForRequest, setCurrentPageForRequest] = useState(0);
+  const [currentPageForSubmittedData, setCurrentPageForSubmittedData] =
+    useState(0);
+
+  const perPageDataForRequest = 10;
+  const perPageDataForSubmittedData = 10;
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
 
@@ -25,7 +36,6 @@ const AllUploadDocumentsForStudents = () => {
     AllUploadDocumentsForStudentsData,
     setAllUploadDocumentsForStudentsData,
   ] = useState('');
-  const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
     title: '',
@@ -34,13 +44,19 @@ const AllUploadDocumentsForStudents = () => {
   });
 
   const {
-    data: getSingleStudentDocRequest,
-    isLoading: getSingleStudentDocRequestIsLoading,
-    refetch: getSingleStudentDocRequestRefetch,
-  } = useGetSingleUserDocRequestQuery({ student_id: user?.id });
+    data: getSingleStudentAirTicketDocRequest,
+    isLoading: getSingleStudentAirTicketDocRequestIsLoading,
+    refetch: getSingleStudentAirTicketDocRequestRefetch,
+  } = useGetSingleUserAirTicketDocumentRequestQuery({ student_id: user?.id });
+
+  const {
+    data: getSingleStudentAirTicketDocSubmittedData,
+    isLoading: getSingleStudentAirTicketDocSubmittedIsLoading,
+    refetch: getSingleStudentAirTicketDocSubmittedRefetch,
+  } = useGetAllSubmittedAirTicketDocumentForStudentQuery();
 
   const [submitSingleDocumentForStudent] =
-    useUpdateSingleDocumentForStudentMutation();
+    useUpdateSingleAirTicketDocumentForStudentMutation();
 
   const validationSchema = Yup.object({
     document: Yup.array()
@@ -77,7 +93,7 @@ const AllUploadDocumentsForStudents = () => {
 
   useEffect(() => {
     const fetchFile = async () => {
-      const requestData = getSingleStudentDocRequest?.data?.find(
+      const requestData = getSingleStudentAirTicketDocRequest?.data?.find(
         (item) => item?._id === docId
       );
 
@@ -98,15 +114,28 @@ const AllUploadDocumentsForStudents = () => {
     };
 
     fetchFile();
-  }, [getSingleStudentDocRequest, docId]);
+  }, [getSingleStudentAirTicketDocRequest, docId]);
 
-  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  //  search input change function
+  const handleSearchChangeForRequest = (e) =>
+    setSearchTermForRequest(e.target.value);
+  const handleSearchChangeForSubmittedData = (e) =>
+    setSearchTermForSubmitedData(e.target.value);
 
   // Filter data for search option
   const isfilteredData =
-    getSingleStudentDocRequest?.data?.length > 0 &&
-    getSingleStudentDocRequest?.data.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    getSingleStudentAirTicketDocRequest?.data?.length > 0 &&
+    getSingleStudentAirTicketDocRequest?.data.filter((item) =>
+      item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
+    );
+
+  // Filter data for search option
+  const isfilteredDataForSubmittedData =
+    getSingleStudentAirTicketDocSubmittedData?.data?.length > 0 &&
+    getSingleStudentAirTicketDocSubmittedData?.data.filter((item) =>
+      item?.title
+        ?.toLowerCase()
+        .includes(searchTermForSubmitedData.toLowerCase())
     );
 
   const studentSubmittedDocumentsHeaderWithoutAction = [
@@ -269,7 +298,7 @@ const AllUploadDocumentsForStudents = () => {
       const result = await submitSingleDocumentForStudent(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getSingleStudentDocRequestRefetch();
+        getSingleStudentAirTicketDocRequestRefetch();
         setOpenModal(!openModal);
       }
     } catch (error) {
@@ -295,31 +324,188 @@ const AllUploadDocumentsForStudents = () => {
     },
   ];
 
+  const docRequestTableHeaderDataWithoutAction = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Requester Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium ">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
           <ToastContainer />
-          {getSingleStudentDocRequestIsLoading ? (
+          {getSingleStudentAirTicketDocRequestIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
                 <h1> Document Uploaded Request</h1>
                 <SearchComponent
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  searchTerm={searchTermForRequest}
+                  handleSearchChange={handleSearchChangeForRequest}
                 />
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
                   headers={AllUploadDocumentsForStudentsData}
                   data={isfilteredData ? isfilteredData : []}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
+                  currentPage={currentPageForRequest}
+                  setCurrentPage={setCurrentPageForRequest}
+                  perPageData={perPageDataForRequest}
+                  searchTerm={searchTermForRequest}
+                  handleSearchChange={handleSearchChangeForRequest}
+                  emptyMessage="No Data found yet."
+                />
+              </CardBody>
+            </Card>
+          )}
+
+          {getSingleStudentAirTicketDocSubmittedIsLoading ? (
+            <LoaderSpiner />
+          ) : (
+            <Card>
+              <CardHeader className="d-flex justify-content-between align-items-center">
+                <h1> Air Ticket Document Submitted File</h1>
+                <SearchComponent
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
+                />
+              </CardHeader>
+              <CardBody>
+                <CommonTableComponent
+                  headers={docRequestTableHeaderDataWithoutAction}
+                  data={
+                    isfilteredDataForSubmittedData
+                      ? isfilteredDataForSubmittedData
+                      : []
+                  }
+                  currentPage={currentPageForSubmittedData}
+                  setCurrentPage={setCurrentPageForSubmittedData}
+                  perPageData={perPageDataForSubmittedData}
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
                   emptyMessage="No Data found yet."
                 />
               </CardBody>
@@ -341,4 +527,4 @@ const AllUploadDocumentsForStudents = () => {
   );
 };
 
-export default AllUploadDocumentsForStudents;
+export default AllAirTicketUploadDocumentsForStudents;

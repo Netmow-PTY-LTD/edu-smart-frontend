@@ -4,6 +4,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import {
+  agentNameHeaderDataForAdmissionManager,
   studentImageAndNameHeaderDataForAdmissionManager,
   studentsHeaders,
 } from '@/utils/common/data';
@@ -110,7 +111,8 @@ const AllStudentPageForAdmissionManagerDashboard = () => {
                   <CommonTableComponent
                     headers={[
                       studentImageAndNameHeaderDataForAdmissionManager,
-                      ...studentsHeaders,
+                      agentNameHeaderDataForAdmissionManager,
+                      ...studentsHeaders.slice(1),
                       studentHeaderAction,
                     ]}
                     data={isFilteredData ? isFilteredData : []}
