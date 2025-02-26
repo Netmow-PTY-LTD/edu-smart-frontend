@@ -309,6 +309,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       ...docRequestTableHeaderDataWithOutAction,
       ...docRequestTableHeaderDataWithAction,
     ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSingleUserAirTicketDocumentRequest, docId]);
 
   return (
