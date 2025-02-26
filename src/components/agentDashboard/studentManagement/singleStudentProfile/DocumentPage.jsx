@@ -26,6 +26,7 @@ const DocumentPage = ({ student_id }) => {
       item.files.map((file) => file.url)
     )
   );
+  
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
   // Filter data for search option
   const isFilteredData =
@@ -35,6 +36,21 @@ const DocumentPage = ({ student_id }) => {
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+
+
+  const handleDownloadAllDocument = () => {
+    if (!singleStudentAllSubmittedDoc?.data) {
+      toast.error('No documents available to download');
+      return;
+    }
+
+    const allFileUrls = singleStudentAllSubmittedDoc.data
+      .flatMap((item) => item.files.map((file) => file.url))
+      .filter(Boolean); // Remove undefined/null values
+    downloadFiles(allFileUrls, 'Downloading all documents...');
+  };
+
   const studentSubmittedDocumentsHeaderWithoutAction = [
     {
       title: 'SN',
@@ -117,18 +133,6 @@ const DocumentPage = ({ student_id }) => {
       ),
     },
   ];
-
-  const handleDownloadAllDocument = () => {
-    if (!singleStudentAllSubmittedDoc?.data) {
-      toast.error('No documents available to download');
-      return;
-    }
-
-    const allFileUrls = singleStudentAllSubmittedDoc.data
-      .flatMap((item) => item.files.map((file) => file.url))
-      .filter(Boolean); // Remove undefined/null values
-    downloadFiles(allFileUrls, 'Downloading all documents...');
-  };
 
   return (
     <Row>

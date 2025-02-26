@@ -133,6 +133,22 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '6',
+                        })}
+                        onClick={() => {
+                          toggleTab('6');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Air Ticket Document Request
+                        </span>
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
