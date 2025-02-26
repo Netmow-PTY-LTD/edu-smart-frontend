@@ -211,7 +211,8 @@ const VerticalLayout = (props) => {
             : userInfodata?.data?.role === 'university_administrator'
               ? universitySidebarData
               : userInfodata?.data?.role === 'admission_manager'
-                ? admissionManagerSidebarData
+                ? //  admissionManagerSidebarData
+                  superAdminSidebarData
                 : userInfodata?.data?.role === 'accountant'
                   ? accountantSidebarData
                   : []

@@ -65,11 +65,11 @@ const Login = () => {
       Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/admission-manager`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/super-admin`
         );
       } else {
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/admission-manager`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/super-admin`
         );
       }
     }

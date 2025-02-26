@@ -1,9 +1,8 @@
+import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import StudentApplicationEmgsStatusTimeline from '@/components/StudentDashboard/components/StudentApplicationEmgsStatusTimeline';
 import {
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
@@ -140,7 +139,7 @@ export default function RecentApplicationForSuperAdmin() {
             </div>
           </DropdownItem>
 
-          <DropdownItem>
+          {/* <DropdownItem>
             <div
               onClick={() => handleViewEmgsStatus(item?.emgs_status)}
               className="text-primary"
@@ -157,7 +156,7 @@ export default function RecentApplicationForSuperAdmin() {
               <i className="ri-eye-fill me-2"></i>
               View Tuition Invoice
             </div>
-          </DropdownItem>
+          </DropdownItem> */}
 
           {item?.status === 'pending' ? (
             <>
@@ -370,7 +369,7 @@ export default function RecentApplicationForSuperAdmin() {
           <div className="h-100">
             <div className="container-fluid">
               <div>
-                <StudentApplicationEmgsStatusTimeline
+                <ApplicationEmgsStatusTimeline
                   setActiveTab={setActiveTab}
                   currentTimeline={currentTimeline}
                 />
@@ -379,15 +378,6 @@ export default function RecentApplicationForSuperAdmin() {
           </div>
         </div>
       )}
-
-      {
-        <InvoicesComponentForMultipleData
-          open={emgsInvoiceModal}
-          close={() => {
-            setApplicationId(''), setEmgsInvoiceModal(false);
-          }}
-        />
-      }
     </Layout>
   );
 }

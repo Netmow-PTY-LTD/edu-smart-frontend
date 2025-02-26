@@ -1,7 +1,5 @@
 import ApplicationEmgsStatus from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatus';
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
-import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
-import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
@@ -32,6 +30,8 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
       setActiveTab(tab);
     }
   };
+
+  console.log(getSingleStudentForAdmissionManagerData?.data?.applications);
 
   return (
     <Layout>
@@ -67,6 +67,7 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -75,39 +76,6 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                         })}
                         onClick={() => {
                           toggleTab('2');
-                        }}
-                      >
-                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                        <span className="d-none d-md-inline-block">
-                          Documents
-                        </span>
-                      </NavLink>
-                    </NavItem>
-                    <NavItem className="fs-14">
-                      <NavLink
-                        style={{ cursor: 'pointer' }}
-                        className={classnames({
-                          active: activeTab === '3',
-                        })}
-                        onClick={() => {
-                          toggleTab('3');
-                        }}
-                      >
-                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                        <span className="d-none d-md-inline-block">
-                          Document Request
-                        </span>
-                      </NavLink>
-                    </NavItem>
-
-                    <NavItem className="fs-14">
-                      <NavLink
-                        style={{ cursor: 'pointer' }}
-                        className={classnames({
-                          active: activeTab === '4',
-                        })}
-                        onClick={() => {
-                          toggleTab('4');
                         }}
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
@@ -121,10 +89,10 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          active: activeTab === '5',
+                          active: activeTab === '3',
                         })}
                         onClick={() => {
-                          toggleTab('5');
+                          toggleTab('3');
                         }}
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
@@ -133,14 +101,14 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
-                          active: activeTab === '6',
+                          active: activeTab === '5',
                         })}
                         onClick={() => {
-                          toggleTab('6');
+                          toggleTab('5');
                         }}
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
@@ -148,7 +116,7 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                           Air Ticket Document Request
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -163,41 +131,14 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                     </Col>
                   </div>
                 )}
+
                 {activeTab === '2' && (
-                  <div style={{ marginTop: '50px' }}>
-                    <DocumentPage
-                      student_id={student_id}
-                      getSingleStudent={getSingleStudentForAdmissionManagerData}
-                      refetchSingleStudent={
-                        getSingleStudentForAdmissionManagerRefetch
-                      }
-                      sigleStudentIsLoading={
-                        getSingleStudentForAdmissionManagerIsLoading
-                      }
-                    />
-                  </div>
-                )}
-                {activeTab === '3' && (
-                  <div style={{ marginTop: '50px' }}>
-                    <DocumentRequestPage
-                      student_id={student_id}
-                      getSingleStudent={getSingleStudentForAdmissionManagerData}
-                      refetchSingleStudent={
-                        getSingleStudentForAdmissionManagerRefetch
-                      }
-                      sigleStudentIsLoading={
-                        getSingleStudentForAdmissionManagerIsLoading
-                      }
-                    />
-                  </div>
-                )}
-                {activeTab === '4' && (
                   <div>
                     <AppliedUniversityPage id={student_id} />
                   </div>
                 )}
 
-                {activeTab === '5' && (
+                {activeTab === '3' && (
                   <div>
                     <ApplicationEmgsStatus student_id={student_id} />
                   </div>

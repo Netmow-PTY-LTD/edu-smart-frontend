@@ -32,11 +32,11 @@ const SelectUserModalForSuperAdmin = ({
   const roleOptions = [
     {
       label: 'Admission Manager',
-      value: 'admission_manager',
+      value: 'super_admin',
     },
     {
       label: 'Accountant',
-      value: 'accountant',
+      value: 'super_admin',
     },
   ];
 
