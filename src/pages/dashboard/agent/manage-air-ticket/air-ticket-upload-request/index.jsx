@@ -248,6 +248,15 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
       },
     },
     {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
+        </div>
+      ),
+    },
+    {
       title: 'Requested By',
       key: 'agent',
       render: (item) => (
@@ -266,27 +275,7 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
-    },
 
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
     {
       title: 'Notes',
       key: 'notes',
@@ -432,27 +421,7 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
-    },
 
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
     {
       title: 'Status',
       key: 'status',
@@ -541,24 +510,13 @@ const StudentAirtTicketDocumentUploadRquestForAgent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
-    },
 
     {
-      title: 'Requester Email',
-      key: 'email',
+      title: 'Descriptions',
+      key: 'description',
       render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.description ? item?.description : '-'}`}
         </div>
       ),
     },
