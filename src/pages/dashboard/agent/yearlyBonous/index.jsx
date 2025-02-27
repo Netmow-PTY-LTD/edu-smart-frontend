@@ -1,10 +1,8 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import {
-  useGetAgentFamilyTripQuery,
-  useGetAgentYearlyBonusQuery,
-} from '@/slice/services/agent/agentEarningsService';
+import { useGetAgentYearlyBonusQuery } from '@/slice/services/agent/agentEarningsService';
+
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Progress, Row } from 'reactstrap';
@@ -16,7 +14,7 @@ export default function AgentYarlyBonous() {
   const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
     useGetAgentYearlyBonusQuery();
 
-  console.log('yarly bonous', yearlyBonous);
+  // console.log('yarly bonous', yearlyBonous);
 
   const agentYearlyBonousHeaders = [
     {

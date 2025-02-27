@@ -2,6 +2,7 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
+
 import moment from 'moment';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Progress, Row } from 'reactstrap';
@@ -13,7 +14,7 @@ export default function AgentFamilyTrip() {
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
 
-  console.log('family trip data', familyTrip);
+  // console.log('family trip data', familyTrip);
 
   const agentFamilyTripHeaders = [
     {
