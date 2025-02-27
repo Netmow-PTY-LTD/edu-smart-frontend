@@ -49,10 +49,10 @@ export default function AgentYarlyBonous() {
       ),
     },
     {
-      title: 'Amount ($)',
+      title: 'Amount ',
       key: 'amount',
       render: (item) => (
-        <span className="d-flex flex-column">${item?.amount || '0'}</span>
+        <span className="d-flex flex-column">{item?.amount || '0'}</span>
       ),
     },
     {
@@ -73,31 +73,7 @@ export default function AgentYarlyBonous() {
         </span>
       ),
     },
-    {
-      title: 'Total Target',
-      key: 'target',
-      render: (item) => (
-        <span className="d-flex flex-column">{item?.target || '0'}</span>
-      ),
-    },
-    {
-      title: 'Achieved Target',
-      key: 'target_achieved',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_achieved || '0'}
-        </span>
-      ),
-    },
-    {
-      title: 'Remaining Target',
-      key: 'target_remaining',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_remaining || '0'}
-        </span>
-      ),
-    },
+
     {
       title: 'Target Status',
       key: 'target_status',

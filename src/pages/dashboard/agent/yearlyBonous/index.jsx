@@ -14,7 +14,7 @@ export default function AgentYarlyBonous() {
   const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
     useGetAgentYearlyBonusQuery();
 
-  // console.log('yarly bonous', yearlyBonous);
+  console.log('yarly bonous', yearlyBonous);
 
   const agentYearlyBonousHeaders = [
     {
@@ -58,31 +58,7 @@ export default function AgentYarlyBonous() {
         </span>
       ),
     },
-    {
-      title: 'Total Target',
-      key: 'target',
-      render: (item) => (
-        <span className="d-flex flex-column">{item?.target || '0'}</span>
-      ),
-    },
-    {
-      title: 'Achieved Target',
-      key: 'target_achieved',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_achieved || '0'}
-        </span>
-      ),
-    },
-    {
-      title: 'Remaining Target',
-      key: 'target_remaining',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_remaining || '0'}
-        </span>
-      ),
-    },
+
     {
       title: 'Target Status',
       key: 'target_status',
@@ -107,9 +83,9 @@ export default function AgentYarlyBonous() {
           }
         >
           <span className="fs-12 fw-semibold">
-            {item?.agent_package?.target?.target_achieved || 0}
+            {item?.target_achieved || 0}
             {' / '}
-            {item?.agent_package?.target?.target || 0}
+            {item?.target || 0}
           </span>
         </Progress>
       ),

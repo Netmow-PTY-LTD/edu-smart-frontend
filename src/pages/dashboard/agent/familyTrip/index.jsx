@@ -70,31 +70,7 @@ export default function AgentFamilyTrip() {
         </span>
       ),
     },
-    {
-      title: 'Total Target',
-      key: 'target',
-      render: (item) => (
-        <span className="d-flex flex-column">{item?.target || '0'}</span>
-      ),
-    },
-    {
-      title: 'Achieved Target',
-      key: 'target_achieved',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_achieved || '0'}
-        </span>
-      ),
-    },
-    {
-      title: 'Remaining Target',
-      key: 'target_remaining',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_remaining || '0'}
-        </span>
-      ),
-    },
+
     {
       title: 'Target Status',
       key: 'target_status',

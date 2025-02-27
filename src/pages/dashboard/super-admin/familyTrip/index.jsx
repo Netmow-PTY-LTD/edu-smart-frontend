@@ -50,11 +50,11 @@ export default function AgentFamilyTrip() {
       ),
     },
     {
-      title: 'Package Price ($)',
+      title: 'Package Price ',
       key: 'package_price',
       render: (item) => (
         <span className="d-flex flex-column">
-          ${item?.package?.price || '-'}
+          {item?.package?.price || '-'}
         </span>
       ),
     },
@@ -85,31 +85,7 @@ export default function AgentFamilyTrip() {
         </span>
       ),
     },
-    {
-      title: 'Total Target',
-      key: 'target',
-      render: (item) => (
-        <span className="d-flex flex-column">{item?.target || '0'}</span>
-      ),
-    },
-    {
-      title: 'Achieved Target',
-      key: 'target_achieved',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_achieved || '0'}
-        </span>
-      ),
-    },
-    {
-      title: 'Remaining Target',
-      key: 'target_remaining',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          {item?.target_remaining || '0'}
-        </span>
-      ),
-    },
+
     {
       title: 'Target Status',
       key: 'target_status',
