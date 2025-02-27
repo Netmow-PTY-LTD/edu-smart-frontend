@@ -35,35 +35,35 @@ const AdmissionManagerSidebarData = () => {
       icon: 'ri-dashboard-2-line',
       link: '/dashboard/admission-manager',
     },
-    {
-      id: 'universities',
-      label: 'Universities',
-      icon: 'ri-school-fill',
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsUniversities(!isUniversities);
-        setIscurrentState('Universities');
-        updateIconSidebar(e);
-      },
-      stateVariables: isUniversities,
-      subItems: [
-        {
-          id: 'alluniversity',
-          label: 'All University',
-          icon: 'ri-school-fill',
-          link: '/dashboard/admission-manager/university-management/all-university',
-          parentId: 'universities',
-        },
-        {
-          id: 'adduniversity',
-          label: 'Add University',
-          icon: 'ri-school-fill',
-          link: '/dashboard/admission-manager/university-management/add-university',
-          parentId: 'universities',
-        },
-      ],
-    },
+    // {
+    //   id: 'universities',
+    //   label: 'Universities',
+    //   icon: 'ri-school-fill',
+    //   link: '/#',
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsUniversities(!isUniversities);
+    //     setIscurrentState('Universities');
+    //     updateIconSidebar(e);
+    //   },
+    //   stateVariables: isUniversities,
+    //   subItems: [
+    //     {
+    //       id: 'alluniversity',
+    //       label: 'All University',
+    //       icon: 'ri-school-fill',
+    //       link: '/dashboard/admission-manager/university-management/all-university',
+    //       parentId: 'universities',
+    //     },
+    //     {
+    //       id: 'adduniversity',
+    //       label: 'Add University',
+    //       icon: 'ri-school-fill',
+    //       link: '/dashboard/admission-manager/university-management/add-university',
+    //       parentId: 'universities',
+    //     },
+    //   ],
+    // },
 
     {
       id: 'recent-application',
@@ -72,12 +72,12 @@ const AdmissionManagerSidebarData = () => {
       link: '/dashboard/admission-manager/recent-application',
     },
 
-    {
-      id: 'alldocuments',
-      label: 'Document Required List',
-      icon: 'ri-file-copy-2-fill',
-      link: '/dashboard/admission-manager/all-documents',
-    },
+    // {
+    //   id: 'alldocuments',
+    //   label: 'Document Required List',
+    //   icon: 'ri-file-copy-2-fill',
+    //   link: '/dashboard/admission-manager/all-documents',
+    // },
     {
       id: 'agents',
       label: 'Agents',
@@ -111,22 +111,22 @@ const AdmissionManagerSidebarData = () => {
           pathName: '/dashboard/admission-manager/settings/profile',
           parentId: 'settings',
         },
-        {
-          id: 'changeemail',
-          label: 'Change Email',
-          icon: 'ri-mail-add-fill',
-          link: '/dashboard/admission-manager/settings/email',
-          pathName: '/dashboard/admission-manager/settings/email',
-          parentId: 'settings',
-        },
-        {
-          id: 'changepassword',
-          label: 'Change Password',
-          icon: 'ri-lock-password-fill',
-          link: '/dashboard/admission-manager/settings/password',
-          pathName: '/dashboard/admission-manager/settings/password',
-          parentId: 'settings',
-        },
+        // {
+        //   id: 'changeemail',
+        //   label: 'Change Email',
+        //   icon: 'ri-mail-add-fill',
+        //   link: '/dashboard/admission-manager/settings/email',
+        //   pathName: '/dashboard/admission-manager/settings/email',
+        //   parentId: 'settings',
+        // },
+        // {
+        //   id: 'changepassword',
+        //   label: 'Change Password',
+        //   icon: 'ri-lock-password-fill',
+        //   link: '/dashboard/admission-manager/settings/password',
+        //   pathName: '/dashboard/admission-manager/settings/password',
+        //   parentId: 'settings',
+        // },
       ],
     },
   ];

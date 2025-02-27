@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardHeader,
@@ -12,6 +12,7 @@ import {
   Table,
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
+import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 
 const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   addressData,
@@ -35,6 +36,54 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   payment_status,
   invoice_no,
 }) => {
+  const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+
+  const sslCommerzPaymentHandler = async () => {
+    const price = invoice_no?.application?.course?.after_emgs_fee || 0;
+    const application_id = invoice_no?.application?._id;
+    const course_id = invoice_no?.application?.course?._id;
+    const report_id = invoice_no?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=faild&report_id=${report_id}`;
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=success&report_id=${report_id}`;
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_tuition_fee';
+    const payment_method = 'sslcommerz';
+
+    try {
+      const response = await sslCommerzPaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      if (response.success && response?.data?.gatewayPageURL) {
+        window.location.href = response?.data?.gatewayPageURL;
+      } else {
+        toast.error('Payment failed');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
   return (
     <>
       {/* <Layout> */}
@@ -354,8 +403,8 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                         </div>
                         <div className="tc mt-3">
                           {' '}
-                          {invoice_no?.application?.tuition_fee_amount +
-                            invoice_no?.application?.emgs_fee_amount}{' '}
+                          {invoice_no?.application?.course?.after_emgs_fee +
+                            invoice_no?.application?.course?.emgs_fee}{' '}
                           {currency}
                         </div>
                       </div>
@@ -363,7 +412,8 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                         <div className="tc">Emgs Fee:</div>
                         <div className="tc">
                           {' '}
-                          - {invoice_no?.emgs_fee_paid_amount} {currency}
+                          - {invoice_no?.application?.course?.emgs_fee}{' '}
+                          {currency}
                         </div>
                       </div>
                       {invoice_no?.application?.tuition_fee_payment_status ===
@@ -379,9 +429,9 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                             <div className="tc mt-3">
                               {' '}
                               -{' '}
-                              {invoice_no?.application?.tuition_fee_amount +
-                                invoice_no?.application?.emgs_fee_amount -
-                                invoice_no?.emgs_fee_paid_amount}{' '}
+                              {
+                                invoice_no?.application?.course?.after_emgs_fee
+                              }{' '}
                               {currency}
                             </div>
                           </div>
@@ -406,16 +456,18 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                             </div>
                             <div className="tc mt-3">
                               {' '}
-                              {invoice_no?.application?.tuition_fee_amount +
-                                invoice_no?.application?.emgs_fee_amount -
-                                invoice_no?.emgs_fee_paid_amount}{' '}
+                              {
+                                invoice_no?.application?.course?.after_emgs_fee
+                              }{' '}
                               {currency}
                             </div>
                           </div>
-
                           <button
-                            onClick={() => close()}
-                            className="d-flex justify-content-end button mt-5 px-5 py-2 "
+                            onClick={() => {
+                              sslCommerzPaymentHandler(); // Call the payment function
+                              //   close(); // Close the modal
+                            }}
+                            className="d-flex justify-content-end button mt-5 px-5 py-2"
                           >
                             Pay Tuition Fee
                           </button>
