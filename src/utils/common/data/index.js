@@ -1,12 +1,8 @@
-
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Progress } from 'reactstrap';
-import { useCustomData } from './customeData';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-
-
 
 export const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 export const teamDummyImage = '/assets/images/users/multi-user.jpg';
@@ -17,21 +13,16 @@ export const profileBg = '/profile_bg.jpg';
 export const hot_offer_image = '/Hot Offer.png';
 export const footerShape = '/footer-shape.png';
 
-
 const DataObjectComponent = () => {
   const { data: userInfoData, isLoading, isError } = useGetUserInfoQuery();
 
   if (isLoading) return <div></div>;
   if (isError || !userInfoData?.data?.role) return <div></div>;
 
-  // console.log('ashun', userInfoData?.data?.role);
-
-
   const universityLogoAndNameHeaderDataForAgentDashboard = {
     title: 'Logo - Name',
     key: 'logo',
     render: (item) => (
-      // console.log('ashun test',customeData),
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
@@ -60,7 +51,7 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
-  
+
   const universityLogoAndNameHeaderDataForSuperAdminDashboard = {
     title: 'Logo - Name',
     key: 'logo',
@@ -93,40 +84,7 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
-  
-  const universityLogoAndNameHeaderDataForAdmissionManagerDashboard = {
-    title: 'Logo - Name',
-    key: 'logo',
-    render: (item) => (
-      <div className="d-flex align-items-center me-5">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/admission-manager/university-management/single-university-profile/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={item?.logo?.url ? item?.logo?.url : `${userDummyImage}`}
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/admission-manager/university-management/single-university-profile/${item?._id}`}
-              className="text-reset"
-            >
-              {`${item.name} `}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  };
-  
+
   const studentImageAndNameHeaderDataForStudentDashboard = {
     title: 'Logo - Name',
     key: 'logo',
@@ -159,7 +117,7 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
-  
+
   // all univeresity header
   const universityHeadersData = [
     {
@@ -171,7 +129,7 @@ const DataObjectComponent = () => {
         </p>
       ),
     },
-  
+
     {
       title: 'Address',
       key: 'address',
@@ -216,7 +174,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   //student submitted doc header
   const studentSubmittedDocumentsHeaderWithoutAction = [
     {
@@ -233,10 +191,12 @@ const DataObjectComponent = () => {
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
-  
+
         return (
           <div>
-            <h5 className="fs-14 fw-medium text-capitalize">{newTitle || '-'}</h5>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
           </div>
         );
       },
@@ -263,7 +223,7 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-  
+
     {
       title: 'Agent Email',
       key: 'email',
@@ -286,7 +246,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-  
+
     {
       title: 'Status',
       key: 'status',
@@ -309,7 +269,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const studentImageAndNameHeaderDataForSuperAdmin = {
     title: 'Name',
     key: 'profile_image',
@@ -348,84 +308,6 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
-  const studentImageAndNameHeaderDataForAccountant = {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center ">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/accountant/students/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/accountant/students/${item?._id}`}
-              className="text-reset"
-            >
-              {item?.first_name && item?.last_name
-                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-                : '-'}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  };
-  
-  const studentImageAndNameHeaderDataForAdmissionManager = {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center ">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/admission-manager/students/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            <Link
-              href={`/dashboard/admission-manager/students/${item?._id}`}
-              className="text-reset"
-            >
-              {item?.first_name && item?.last_name
-                ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-                : '-'}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  };
-
 
   const studentsImageAndNameHeaderDataInAgentDashboard = {
     title: 'Logo - Name',
@@ -465,7 +347,7 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
-  
+
   const agentNameAndImageHeaderDataForSuperAdmin = {
     title: 'Name',
     key: 'profile_image',
@@ -502,99 +384,7 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
-  const agentNameAndImageHeaderDataForAccountantDashboard = {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/accountant/agents/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize text-wrap">
-            <Link
-              href={`/dashboard/accountant/agents/${item?._id}`}
-              className="text-reset"
-            >
-              {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  };
-  
-  const agentNameAndImageHeaderDataForAdmissionManager = {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center">
-        <div className="flex-shrink-0 me-1">
-          <Link
-            href={`/dashboard/admission-manager/agents/${item?._id}`}
-            className="text-reset"
-          >
-            <Image
-              src={
-                item?.profile_image?.url
-                  ? item?.profile_image?.url
-                  : `${userDummyImage}`
-              }
-              alt="User"
-              height={60}
-              width={60}
-              className="avatar-md p-1 me-3 align-middle rounded-circle"
-            />
-          </Link>
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize text-wrap">
-            <Link
-              href={`/dashboard/admission-manager/agents/${item?._id}`}
-              className="text-reset"
-            >
-              {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
-            </Link>
-          </h5>
-        </div>
-      </div>
-    ),
-  };
-  
-  const agentNameHeaderDataForAdmissionManager = {
-    title: 'Agent',
-    key: 'agent',
-    render: (item) => (
-      <div>
-        <h5 className="fs-14 fw-medium text-capitalize text-wrap">
-          <Link
-            href={`/dashboard/admission-manager/agents/${item?.agent?._id}`}
-            className="text-reset"
-          >
-            {item?.agent?.first_name && item?.agent?.last_name
-              ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
-              : '-'}
-          </Link>
-        </h5>
-      </div>
-    ),
-  };
-  
+
   const studentsHeaders = [
     {
       title: 'Agent',
@@ -619,7 +409,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const agentEarnigsHeaders = [
     {
       title: 'SN',
@@ -706,7 +496,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const EmgsStatusListHeaders = [
     {
       title: 'SN',
@@ -749,7 +539,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const studentApplicationsHeaders = [
     {
       title: 'SN',
@@ -824,7 +614,7 @@ const DataObjectComponent = () => {
         </>
       ),
     },
-  
+
     {
       title: 'Status',
       key: 'status',
@@ -839,7 +629,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const agentsHeaders = [
     { title: 'Email', key: 'email' },
     { title: 'Phone', key: 'phone' },
@@ -853,7 +643,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const couponHeaders = [
     {
       title: 'Coupon Code',
@@ -888,7 +678,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-  
+
     // {
     //   title: 'Coupon Duration',
     //   key: 'coupon_duration',
@@ -899,11 +689,11 @@ const DataObjectComponent = () => {
     //     console.log(expiryDate);
     //     const createdAt = new Date(createdDate);
     //     const expiryAt = new Date(expiryDate);
-  
+
     //     let years = expiryAt.getFullYear() - createdAt.getFullYear();
     //     let months = expiryAt.getMonth() - createdAt.getMonth();
     //     let days = expiryAt.getDate() - createdAt.getDate();
-  
+
     //     if (days < 0) {
     //       months--;
     //       days += new Date(
@@ -916,9 +706,9 @@ const DataObjectComponent = () => {
     //       years--;
     //       months += 12;
     //     }
-  
+
     //     const duration = `${years > 0 ? `${years} year${years > 1 ? 's' : ''}` : ''} ${months > 0 ? `${months} month${months > 1 ? 's' : ''}` : ''} ${days > 0 ? `${days} day${days > 1 ? 's' : ''}` : ''}`;
-  
+
     //     return (
     //       <span className="d-flex flex-column text-capitalize">
     //         {` ${duration.trim() || '-'}`}
@@ -940,7 +730,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const documentHeaders = [
     {
       title: 'Title',
@@ -965,7 +755,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const superAdminData = {
     first_name: 'Edu',
     last_name: 'Smart',
@@ -978,7 +768,7 @@ const DataObjectComponent = () => {
     zip: '5800',
     country: 'Malaysia',
   };
-  
+
   // university department header
   const allDepartmentsWithoutAction = [
     {
@@ -988,7 +778,7 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize ">{index + 1}</span>
       ),
     },
-  
+
     { title: 'Department Name', key: 'name' },
     {
       title: 'Course Category',
@@ -1020,7 +810,7 @@ const DataObjectComponent = () => {
             ))
           : '-',
     },
-  
+
     {
       title: 'Description',
       key: 'description',
@@ -1031,7 +821,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   // all course header
   const allCourseCategoryWithoutAction = [
     {
@@ -1041,7 +831,7 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-  
+
     { title: 'Course Category ', key: 'name' },
     {
       title: 'Department ',
@@ -1062,7 +852,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const allCoursesWithoutAction = [
     {
       title: 'SN',
@@ -1071,7 +861,7 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-  
+
     { title: 'Course Name', key: 'name' },
     {
       title: 'Available Seats',
@@ -1086,7 +876,9 @@ const DataObjectComponent = () => {
       title: 'Course Fee',
       key: 'price',
       render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{item?.price}</span>
+        <span className="d-flex flex-column text-capitalize">
+          {item?.price}
+        </span>
       ),
     },
     {
@@ -1105,7 +897,7 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-  
+
     {
       title: 'Description',
       key: 'description',
@@ -1116,7 +908,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const supperAdminWidgetsData = [
     {
       id: 1,
@@ -1127,7 +919,7 @@ const DataObjectComponent = () => {
       link: 'View all',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
     },
-  
+
     {
       id: 2,
       label: 'registered agents',
@@ -1173,7 +965,7 @@ const DataObjectComponent = () => {
       link: 'All Charges',
       pathName: '/dashboard/super-admin',
     },
-  
+
     {
       id: 7,
       label: 'Total Profit',
@@ -1183,7 +975,7 @@ const DataObjectComponent = () => {
       link: 'All Charges',
       pathName: '/dashboard/super-admin',
     },
-  
+
     // {
     //   id: 8,
     //   label: 'total income',
@@ -1194,7 +986,7 @@ const DataObjectComponent = () => {
     //   pathName: '/dashboard/super-admin',
     // },
   ];
-  
+
   const accountantWidgetsData = [
     {
       id: 1,
@@ -1203,9 +995,9 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-group-2-fill',
       link: 'View all',
-      pathName: '/dashboard/accountant/agents',
+      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
     },
-  
+
     {
       id: 2,
       label: 'Total Receive Amount',
@@ -1213,7 +1005,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
-      pathName: '/dashboard/accountant',
+      pathName: `/dashboard/${userInfoData?.data?.role}`,
     },
     {
       id: 3,
@@ -1222,7 +1014,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'All Charges',
-      pathName: '/dashboard/accountant',
+      pathName: `/dashboard/${userInfoData?.data?.role}`,
     },
     {
       id: 4,
@@ -1231,9 +1023,9 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
-      pathName: '/dashboard/accountant',
+      pathName: `/dashboard/${userInfoData?.data?.role}`,
     },
-  
+
     {
       id: 5,
       label: 'Total Profit',
@@ -1241,10 +1033,10 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
-      pathName: '/dashboard/accountant',
+      pathName: `/dashboard/${userInfoData?.data?.role}`,
     },
   ];
-  
+
   const admissionManagerWidgetsData = [
     {
       id: 1,
@@ -1254,9 +1046,9 @@ const DataObjectComponent = () => {
       icon: 'ri-school-fill',
       link: 'View all',
       pathName:
-        '/dashboard/admission-manager/university-management/all-university',
+        `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
     },
-  
+
     {
       id: 2,
       label: 'registered agents',
@@ -1264,7 +1056,7 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-group-2-fill',
       link: 'View all',
-      pathName: '/dashboard/admission-manager/agents',
+      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
     },
     {
       id: 3,
@@ -1273,10 +1065,10 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-group-fill',
       link: 'View  all',
-      pathName: '/dashboard/admission-manager/students',
+      pathName: `/dashboard/${userInfoData?.data?.role}/students`,
     },
   ];
-  
+
   const agentProfileWidgetData = [
     {
       id: 1,
@@ -1287,7 +1079,7 @@ const DataObjectComponent = () => {
       link: 'View all',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
     },
-  
+
     {
       id: 2,
       label: 'registered agents',
@@ -1298,7 +1090,7 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents`,
     },
   ];
-  
+
   const courseHeaders = [
     {
       title: 'SN',
@@ -1307,7 +1099,7 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-  
+
     { title: 'Course Name', key: 'name' },
     {
       title: 'Department ',
@@ -1328,7 +1120,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const categoryHeaders = [
     {
       title: 'SN',
@@ -1337,7 +1129,7 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-  
+
     { title: 'Course Category ', key: 'name' },
     {
       title: 'Department ',
@@ -1358,7 +1150,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const departmentHeaders = [
     {
       title: 'SN',
@@ -1367,7 +1159,7 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-  
+
     { title: 'Department Name', key: 'name' },
     {
       title: 'Course Category',
@@ -1393,7 +1185,7 @@ const DataObjectComponent = () => {
             ))
           : '-',
     },
-  
+
     {
       title: 'Description',
       key: 'description',
@@ -1404,30 +1196,30 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const allowedFileTypes = [
-    'application/pdf', // PDF
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-    'application/msword', // .doc
-    'application/vnd.ms-excel', // .xls
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-    'application/octet-stream', // Binary files (generic)
-    'image/jpeg', // JPEG images
-    'image/png', // PNG images
-    'image/gif', // GIF images
-    'image/webp', // WebP images
-    'image/bmp', // BMP images
-    'image/tiff', // TIFF images
-    'application/rtf', // RTF files
-    'text/plain', // Plain text files (.txt)
-    'text/csv', // CSV files
-    'application/vnd.ms-powerpoint', // PowerPoint files (.ppt)
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // PowerPoint files (.pptx)
-    'image/svg+xml', // SVG images
-    'image/x-icon', // ICO images (favicons)
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/msword',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/octet-stream',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/bmp',
+    'image/tiff',
+    'application/rtf',
+    'text/plain',
+    'text/csv',
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'image/svg+xml',
+    'image/x-icon',
     'application/jpg',
   ];
-  
+
   const packagePaymentInvoieHeadersWithoutAction = [
     {
       title: 'Invoice No',
@@ -1451,19 +1243,22 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-  
+
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>,
+      render: (item) => (
+        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
+      ),
     },
-  
+
     {
       title: 'Package Amount',
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? 'N/A'} {'MYR'}
+          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? 'N/A'}{' '}
+          {'MYR'}
         </div>
       ),
     },
@@ -1482,7 +1277,7 @@ const DataObjectComponent = () => {
         );
       },
     },
-  
+
     {
       title: 'Paid',
       key: 'paid_amount',
@@ -1492,7 +1287,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-  
+
     {
       title: 'Payment Date',
       key: 'payment_date',
@@ -1511,7 +1306,7 @@ const DataObjectComponent = () => {
         </p>
       ),
     },
-  
+
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -1522,7 +1317,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const packagePaymentReportHeadersWithoutAction = [
     {
       title: 'Agent Name',
@@ -1538,7 +1333,9 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>,
+      render: (item) => (
+        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
+      ),
     },
     {
       title: 'Paid',
@@ -1549,7 +1346,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-  
+
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -1563,14 +1360,11 @@ const DataObjectComponent = () => {
     },
   ];
 
-  return{
+  return {
     accountantWidgetsData,
     admissionManagerWidgetsData,
     agentEarnigsHeaders,
-    agentNameAndImageHeaderDataForAccountantDashboard,
-    agentNameAndImageHeaderDataForAdmissionManager,
     agentNameAndImageHeaderDataForSuperAdmin,
-    agentNameHeaderDataForAdmissionManager,
     agentProfileWidgetData,
     agentsHeaders,
     allCourseCategoryWithoutAction,
@@ -1592,8 +1386,6 @@ const DataObjectComponent = () => {
     packagePaymentReportHeadersWithoutAction,
     profileBg,
     studentApplicationsHeaders,
-    studentImageAndNameHeaderDataForAccountant,
-    studentImageAndNameHeaderDataForAdmissionManager,
     studentImageAndNameHeaderDataForStudentDashboard,
     studentImageAndNameHeaderDataForSuperAdmin,
     studentsHeaders,
@@ -1603,19 +1395,10 @@ const DataObjectComponent = () => {
     supperAdminWidgetsData,
     teamDummyImage,
     universityHeadersData,
-    universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
     universityLogoAndNameHeaderDataForAgentDashboard,
     universityLogoAndNameHeaderDataForSuperAdminDashboard,
     userDummyImage,
-  }
-}
+  };
+};
 
 export default DataObjectComponent;
-
-
-
-
-
-
-
-

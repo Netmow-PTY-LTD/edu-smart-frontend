@@ -5,15 +5,13 @@ import Layout from '@/components/layout';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import DataObjectComponent from '@/utils/common/data';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllUniversityForAgent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
 
   const {
     universityLogoAndNameHeaderDataForAgentDashboard,
