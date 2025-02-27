@@ -1,11 +1,29 @@
+import { useCustomData } from '@/utils/common/data/customeData';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const AdmissionManagerSidebarData = () => {
+  const history = useRouter();
   //state data
+  const [isDashboard, setIsDashboard] = useState(false);
   const [isUniversities, setIsUniversities] = useState(false);
+  const [isUniversity, setIsUniversity] = useState(false);
+  const [isInvoices, setIsInvoices] = useState(false);
+  const [rolesAndPermission, setRolesAndPermission] = useState(false);
+  const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
+  const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
+  const [isBlogs, setIsBlogs] = useState(false);
 
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
+
+  const customeData = useCustomData();
+
+  const paneltext = customeData.paneltext;
+
+  const hideDiv = customeData.hideforadmissionmanger;
+
+  console.log(customeData);
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
@@ -23,8 +41,23 @@ const AdmissionManagerSidebarData = () => {
 
   useEffect(() => {
     document.body.classList.remove('twocolumn-panel');
+    if (iscurrentState !== 'Dashboard') {
+      setIsDashboard(false);
+    }
     if (iscurrentState !== 'Universities') {
       setIsUniversities(false);
+    }
+    if (iscurrentState !== 'University') {
+      setIsUniversity(false);
+    }
+    if (iscurrentState !== 'subscription') {
+      setIsUniversity(false);
+    }
+    if (iscurrentState !== 'Invoices') {
+      setIsInvoices(false);
+    }
+    if (iscurrentState !== 'Roles & Permission') {
+      setRolesAndPermission(false);
     }
   }, [iscurrentState]);
 
@@ -33,12 +66,13 @@ const AdmissionManagerSidebarData = () => {
       id: 'dashboard',
       label: 'Dashboard',
       icon: 'ri-dashboard-2-line',
-      link: '/dashboard/admission-manager',
+      link: '/dashboard/' + `${paneltext}` + '',
     },
     {
       id: 'universities',
       label: 'Universities',
       icon: 'ri-school-fill',
+      style: `${customeData.hideforadmissionmanger}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();
@@ -52,43 +86,151 @@ const AdmissionManagerSidebarData = () => {
           id: 'alluniversity',
           label: 'All University',
           icon: 'ri-school-fill',
-          link: '/dashboard/admission-manager/university-management/all-university',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/university-management/all-university',
           parentId: 'universities',
         },
         {
           id: 'adduniversity',
           label: 'Add University',
           icon: 'ri-school-fill',
-          link: '/dashboard/admission-manager/university-management/add-university',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/university-management/add-university',
           parentId: 'universities',
         },
       ],
     },
 
     {
+      id: 'allpermittedusers',
+      label: 'Roles & Permissions',
+      icon: 'ri-user-star-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link:
+        '/dashboard/' +
+        `${paneltext}` +
+        '/super-admin-panel/all-permitted-users',
+    },
+    {
       id: 'recent-application',
       label: 'Recent Application',
       icon: 'ri-article-fill',
-      link: '/dashboard/admission-manager/recent-application',
+      link: '/dashboard/' + `${paneltext}` + '/recent-application',
+    },
+    {
+      id: 'invoices',
+      label: 'Invoices',
+      icon: 'ri-receipt-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsInvoices(!isInvoices);
+        setIscurrentState('Invoices');
+        updateIconSidebar(e);
+      },
+      stateVariables: isInvoices,
+      subItems: [
+        {
+          id: 'package-invoice',
+          label: 'Package Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/' + `${paneltext}` + '/package-invoices',
+          parentId: 'invoices',
+        },
+        {
+          id: 'application-invoice',
+          label: 'Application Invoices',
+          icon: 'ri-receipt-fill',
+          link: '/dashboard/' + `${paneltext}` + '/application-invoices',
+          parentId: 'invoices',
+        },
+      ],
     },
 
     {
       id: 'alldocuments',
       label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
-      link: '/dashboard/admission-manager/all-documents',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/dashboard/' + `${paneltext}` + '/all-documents',
+    },
+    {
+      id: 'package',
+      label: 'Packages',
+      icon: 'ri-price-tag-2-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/dashboard/' + `${paneltext}` + '/packages',
+    },
+    {
+      id: 'coupon',
+      label: 'Coupon Management',
+      icon: 'ri-coupon-3-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/dashboard/' + `${paneltext}` + '/coupon-management',
+    },
+    {
+      id: 'hotoffer',
+      label: 'Hot Offers',
+      icon: 'ri-fire-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/dashboard/' + `${paneltext}` + '/hot-offer',
     },
     {
       id: 'agents',
       label: 'Agents',
       icon: 'ri-group-2-fill',
-      link: '/dashboard/admission-manager/agents',
+
+      link: '/dashboard/' + `${paneltext}` + '/agents',
     },
+
     {
       id: 'students',
       label: 'Students',
       icon: 'ri-group-fill',
-      link: '/dashboard/admission-manager/students',
+      link: '/dashboard/' + `${paneltext}` + '/students',
+    },
+    {
+      id: 'blogs',
+      label: 'Blogs',
+      icon: 'ri-school-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsBlogs(!isBlogs);
+        setIscurrentState('Blogs');
+        updateIconSidebar(e);
+      },
+      stateVariables: isBlogs,
+      subItems: [
+        {
+          id: 'addblog',
+          label: 'Add Blog',
+          icon: 'ri-school-fill',
+          link: '/dashboard/' + `${paneltext}` + '/blog/add-blog',
+          parentId: 'blogs',
+        },
+
+        {
+          id: 'allblogs',
+          label: 'Blogs List',
+          icon: 'ri-school-fill',
+          link: '/dashboard/' + `${paneltext}` + '/blog/blog-list',
+          parentId: 'blogs',
+        },
+      ],
+    },
+    {
+      id: 'contact-messages',
+      label: 'Contact Messages',
+      icon: 'ri-group-fill',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/dashboard/' + `${paneltext}` + '/contact-messages',
     },
 
     {
@@ -104,28 +246,104 @@ const AdmissionManagerSidebarData = () => {
       stateVariables: isSettings,
       subItems: [
         {
+          id: 'paymentsettings',
+          label: 'Payment Settings',
+          icon: 'ri-refund-2-fill',
+          style: `${customeData.hideforadmissionmanger}`,
+          link: '/dashboard/' + `${paneltext}` + '/settings/payment',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/payment',
+          parentId: 'settings',
+        },
+        {
           id: 'profilesettings',
           label: 'Profile Settings',
           icon: 'ri-user-settings-fill',
-          link: '/dashboard/admission-manager/settings/profile',
-          pathName: '/dashboard/admission-manager/settings/profile',
+          link: '/dashboard/' + `${paneltext}` + '/settings/profile',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/profile',
           parentId: 'settings',
         },
         {
           id: 'changeemail',
           label: 'Change Email',
           icon: 'ri-mail-add-fill',
-          link: '/dashboard/admission-manager/settings/email',
-          pathName: '/dashboard/admission-manager/settings/email',
+          style: `${customeData.hideforadmissionmanger}`,
+          link: '/dashboard/' + `${paneltext}` + '/settings/email',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/email',
           parentId: 'settings',
         },
         {
           id: 'changepassword',
           label: 'Change Password',
           icon: 'ri-lock-password-fill',
-          link: '/dashboard/admission-manager/settings/password',
-          pathName: '/dashboard/admission-manager/settings/password',
+          style: `${customeData.hideforadmissionmanger}`,
+          link: '/dashboard/' + `${paneltext}` + '/settings/password',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/password',
           parentId: 'settings',
+        },
+      ],
+    },
+    {
+      id: 'subscription',
+      label: 'Subscription',
+      icon: 'ri-rss-line',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setSubscriptionManagement(!isSubscriptionManagement);
+        setIscurrentState('subscription');
+      },
+      stateVariables: isSubscriptionManagement,
+      subItems: [
+        {
+          id: 'subscriptionList',
+          label: 'Subscription List',
+          icon: 'ri-rss-line',
+          link:
+            '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
+          pathName:
+            '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
+          parentId: 'subscription',
+        },
+      ],
+    },
+    {
+      id: 'payment-report',
+      label: 'Payment Report',
+      icon: 'ri-bank-card-line',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+        setIscurrentState('payment-report');
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'package-payment',
+          label: 'Package Payment',
+          icon: 'ri-red-packet-line',
+          link:
+            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
+          pathName:
+            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
+          parentId: 'payment-report',
+        },
+
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/payment-report/application-payment',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/payment-report/application-payment',
+          parentId: 'payment-report',
         },
       ],
     },

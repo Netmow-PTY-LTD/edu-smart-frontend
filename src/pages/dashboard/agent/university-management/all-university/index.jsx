@@ -3,10 +3,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
-import {
-  universityHeadersData,
-  universityLogoAndNameHeaderDataForAgentDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -17,6 +14,11 @@ const AllUniversityForAgent = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
     useState('');
+
+  const {
+    universityLogoAndNameHeaderDataForAgentDashboard,
+    universityHeadersData,
+  } = DataObjectComponent();
 
   const perPageData = 10;
 
@@ -36,13 +38,6 @@ const AllUniversityForAgent = () => {
     getUniversityData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      universityLogoAndNameHeaderDataForAgentDashboard,
-      ...universityHeadersData.slice(0, -1),
-    ]);
-  }, []);
 
   return (
     <Layout>
@@ -64,7 +59,10 @@ const AllUniversityForAgent = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={allRegisteredUniversitydata}
+                    headers={[
+                      universityLogoAndNameHeaderDataForAgentDashboard,
+                      ...universityHeadersData.slice(1),
+                    ]}
                     data={isfilteredData ? isfilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

@@ -3,7 +3,7 @@ import PasswordSettings from '@/components/sAdminDashboard/Settings/PasswordSett
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-export default function PasswordSettingsForAccountantDashboard() {
+export default function SuperAdminPasswordSettings() {
   return (
     <Layout>
       <div className="page-content">

@@ -1,4 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
@@ -11,15 +12,28 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
-export default function RecentApplicationPageForAccountantDashbaord() {
+export default function RecentApplicationForSuperAdmin() {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState('1');
   const [currentPage, setCurrentPage] = React.useState(0);
   const [currentTimeline, setCurrentTimeline] = React.useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const perPageData = 9;
+  const [emgsInvoiceModal, setEmgsInvoiceModal] = useState(false);
+  const [tuitionInvoiceModal, setTuitionInvoiceModal] = useState(false);
+  const [applicationId, setApplicationId] = useState('');
+  const perPageData = 20;
 
   const {
     data: recentApplicationData,
@@ -41,11 +55,8 @@ export default function RecentApplicationPageForAccountantDashbaord() {
   };
 
   const handleChangeApplicationStatus = async (data) => {
-    console.log(data);
-
     try {
       const response = await updateApplicationStatus(data);
-      // console.log(response?.data?.success);
       if (response?.data?.success) {
         toast.success(
           response?.data?.message || 'Application status updated successfully!'
@@ -67,6 +78,11 @@ export default function RecentApplicationPageForAccountantDashbaord() {
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   const searchInItem = (item, searchTerm) => {
+    if (!searchTerm) return true; // If no search term, return all items
+
+    console.log(item);
+    console.log(searchTerm);
+
     if (typeof item === 'object' && item !== null) {
       return Object.values(item).some((value) =>
         searchInItem(value, searchTerm)
@@ -76,103 +92,124 @@ export default function RecentApplicationPageForAccountantDashbaord() {
     return String(item).toLowerCase().includes(searchTerm.toLowerCase());
   };
 
-  // Filter data for search option
+  // Ensure full search even if searchTerm is empty
   const isfilteredData =
-    recentApplicationData?.data?.length > 0 &&
-    recentApplicationData?.data.filter((item) => {
-      return searchInItem(item, searchTerm);
-    });
+    recentApplicationData?.data?.length > 0
+      ? recentApplicationData.data.filter((item) =>
+          searchInItem(item, searchTerm)
+        )
+      : [];
 
-  // const EmgsStatusActionData = {
-  //   title: 'Action',
-  //   key: 'actions',
-  //   render: (item) => (
-  //     // console.log(item),
-  //     <UncontrolledDropdown direction="end">
-  //       <DropdownToggle
-  //         tag="a"
-  //         className="text-reset dropdown-btn"
-  //         role="button"
-  //       >
-  //         <span className="button px-3">
-  //           <i className="ri-more-fill align-middle"></i>
-  //         </span>
-  //       </DropdownToggle>
-  //       <DropdownMenu className="ms-2">
-  //         {item?.status === 'pending' ? (
-  //           <>
-  //             <DropdownItem>
-  //               <div
-  //                 onClick={() =>
-  //                   handleChangeApplicationStatus({
-  //                     id: item?._id,
-  //                     status: 'accepted',
-  //                   })
-  //                 }
-  //                 className="text-primary"
-  //               >
-  //                 <i className="ri-check-fill me-2"></i>
-  //                 accepted
-  //               </div>
-  //             </DropdownItem>
-  //             <DropdownItem>
-  //               <div
-  //                 onClick={() =>
-  //                   handleChangeApplicationStatus({
-  //                     id: item?._id,
-  //                     status: 'rejected',
-  //                   })
-  //                 }
-  //                 className="text-primary"
-  //               >
-  //                 <i className="ri-close-fill me-2"></i>
-  //                 rejected
-  //               </div>
-  //             </DropdownItem>
-  //           </>
-  //         ) : item?.status === 'accepted' ? (
-  //           // <DropdownItem>
-  //           //   <div
-  //           //     // onClick={() => {
-  //           //     //   setApplicationId(item?._id), setOpenPaymentModal(true);
-  //           //     // }}
-  //           //     className="text-primary"
-  //           //   >
-  //           //     <i className="ri-bank-card-fill me-2"></i>
-  //           //     Active
-  //           //   </div>
-  //           // </DropdownItem>
-  //           ''
-  //         ) : (
-  //           ''
-  //         )}
+  const EmgsStatusActionData = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      // console.log(item),
+      <UncontrolledDropdown direction="end">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="ms-2">
+          <DropdownItem>
+            <div
+              onClick={() =>
+                router.push(
+                  `/dashboard/super-admin/recent-application/${item?._id}`
+                )
+              }
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Documents
+            </div>
+          </DropdownItem>
 
-  //         <DropdownItem>
-  //           <div
-  //             onClick={() =>
-  //               router.push(
-  //                 `/dashboard/super-admin/recent-application/${item?._id}`
-  //               )
-  //             }
-  //             className="text-primary"
-  //           >
-  //             <i className="ri-eye-fill me-2"></i>
-  //             View Documents
-  //           </div>
-  //         </DropdownItem>
-  //         <DropdownItem>
-  //           <div
-  //             onClick={() => handleViewEmgsStatus(item?.emgs_status)}
-  //             className="text-primary"
-  //           >
-  //             <i className="ri-eye-fill me-2"></i>
-  //             View EMGS Status
-  //           </div>
-  //         </DropdownItem>
-  //       </DropdownMenu>
-  //     </UncontrolledDropdown>
-  //   ),
-  // };
+          <DropdownItem>
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View EMGS Status
+            </div>
+          </DropdownItem>
+
+          <DropdownItem>
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View EMGS Invoice
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Tuition Invoice
+            </div>
+          </DropdownItem>
+
+          {item?.status === 'pending' ? (
+            <>
+              <DropdownItem>
+                <div
+                  onClick={() =>
+                    handleChangeApplicationStatus({
+                      id: item?._id,
+                      status: 'accepted',
+                    })
+                  }
+                  className="text-primary"
+                >
+                  <i className="ri-check-fill me-2"></i>
+                  Accepted
+                </div>
+              </DropdownItem>
+              <DropdownItem>
+                <div
+                  onClick={() =>
+                    handleChangeApplicationStatus({
+                      id: item?._id,
+                      status: 'rejected',
+                    })
+                  }
+                  className="text-primary"
+                >
+                  <i className="ri-close-fill me-2"></i>
+                  Rejected
+                </div>
+              </DropdownItem>
+            </>
+          ) : item?.status === 'accepted' ? (
+            // <DropdownItem>
+            //   <div
+            //     // onClick={() => {
+            //     //   setApplicationId(item?._id), setOpenPaymentModal(true);
+            //     // }}
+            //     className="text-primary"
+            //   >
+            //     <i className="ri-bank-card-fill me-2"></i>
+            //     Active
+            //   </div>
+            // </DropdownItem>
+            ''
+          ) : (
+            ''
+          )}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
 
   const studentApplicationsHeaders = [
     {
@@ -188,6 +225,15 @@ export default function RecentApplicationPageForAccountantDashbaord() {
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
           {item?.university?.name ? item?.university?.name : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Application Id',
+      key: '_id',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?._id ? item?._id : '-'}
         </span>
       ),
     },
@@ -237,27 +283,29 @@ export default function RecentApplicationPageForAccountantDashbaord() {
         </span>
       ),
     },
-
     {
-      title: 'Price',
-      key: 'price',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.payment_price
-            ? item.payment_price.toFixed(2) + ' ' + 'MYR'
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Payment Status',
-      key: 'payment_status',
+      title: 'Emgs Payment',
+      key: 'emgs_payment_status',
       render: (item) => (
         <>
           <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.payment_status === 'paid' ? 'bg-third-color text-primary' : item?.payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.emgs_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.emgs_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
           >
-            {item?.payment_status ?? '-'}
+            {item?.emgs_payment_status ?? '-'}
+          </span>
+        </>
+      ),
+    },
+
+    {
+      title: 'Tuition Payment',
+      key: 'tuition_fee_payment_status',
+      render: (item) => (
+        <>
+          <span
+            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.tuition_fee_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.tuition_fee_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+          >
+            {item?.tuition_fee_payment_status ?? '-'}
           </span>
         </>
       ),
@@ -301,7 +349,7 @@ export default function RecentApplicationPageForAccountantDashbaord() {
                         <CommonTableComponent
                           headers={[
                             ...studentApplicationsHeaders,
-                            // EmgsStatusActionData,
+                            EmgsStatusActionData,
                           ]}
                           data={isfilteredData || []}
                           currentPage={currentPage}
@@ -331,6 +379,15 @@ export default function RecentApplicationPageForAccountantDashbaord() {
           </div>
         </div>
       )}
+
+      {
+        <InvoicesComponentForMultipleData
+          open={emgsInvoiceModal}
+          close={() => {
+            setApplicationId(''), setEmgsInvoiceModal(false);
+          }}
+        />
+      }
     </Layout>
   );
 }

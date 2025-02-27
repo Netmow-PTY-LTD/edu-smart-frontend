@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, Modal, ModalBody, ModalHeader } from 'reactstrap';
 
-const SingleRecentApplicationPageForAdmissionManagerDashboard = () => {
+const SingleApplicationsPage = () => {
   const router = useRouter();
   const [imageFiles, setImageFiles] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -135,4 +135,4 @@ const SingleRecentApplicationPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default SingleRecentApplicationPageForAdmissionManagerDashboard;
+export default SingleApplicationsPage;

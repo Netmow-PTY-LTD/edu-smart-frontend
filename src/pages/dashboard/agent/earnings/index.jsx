@@ -2,7 +2,8 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetEarningsQuery } from '@/slice/services/agent/agentEarningsService';
-import { agentEarnigsHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 
@@ -12,6 +13,8 @@ export default function Earnings() {
 
   const { data: earningData, isLoading: earningLoading } =
     useGetEarningsQuery();
+
+  const { agentEarnigsHeaders } = DataObjectComponent();
 
   return (
     <Layout>

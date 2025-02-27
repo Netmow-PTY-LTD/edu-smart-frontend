@@ -8,14 +8,7 @@ import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentSe
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import {
-  agentNameAndImageHeaderDataForSuperAdmin,
-  agentsHeaders,
-  studentImageAndNameHeaderDataForAdmissionManager,
-  studentsHeaders,
-  universityHeadersData,
-  universityLogoAndNameHeaderDataForSuperAdminDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
@@ -36,7 +29,18 @@ const SuperAdminDashboard = () => {
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
+
+  const {
+    universityLogoAndNameHeaderDataForSuperAdminDashboard,
+    universityHeadersData,
+    agentNameAndImageHeaderDataForSuperAdmin,
+    agentsHeaders,
+    studentImageAndNameHeaderDataForSuperAdmin,
+    studentsHeaders,
+  } = DataObjectComponent();
+
   console.log(totalIncome?.data);
+
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -45,13 +49,6 @@ const SuperAdminDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
-  }, []);
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      universityLogoAndNameHeaderDataForSuperAdminDashboard,
-      ...universityHeadersData,
-    ]);
   }, []);
 
   return (
@@ -89,7 +86,10 @@ const SuperAdminDashboard = () => {
                     <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered University'}
-                        headers={allRegisteredUniversitydata}
+                        headers={[
+                          universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                          ...universityHeadersData,
+                        ]}
                         data={
                           getUniversityData?.data ? getUniversityData?.data : []
                         }
@@ -109,7 +109,7 @@ const SuperAdminDashboard = () => {
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
                         headers={[
-                          studentImageAndNameHeaderDataForAdmissionManager,
+                          studentImageAndNameHeaderDataForSuperAdmin,
                           ...studentsHeaders,
                         ]}
                         data={
