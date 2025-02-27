@@ -9,18 +9,24 @@ import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStu
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import {
-  agentNameAndImageHeaderDataForAccountantDashboard,
+  agentNameAndImageHeaderDataForSuperAdmin,
   agentsHeaders,
+  studentImageAndNameHeaderDataForAdmissionManager,
+  studentsHeaders,
+  universityHeadersData,
+  universityLogoAndNameHeaderDataForSuperAdminDashboard,
 } from '@/utils/common/data';
+
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
-const AccountantDashboard = () => {
+const SuperAdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
+    useState('');
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
@@ -30,7 +36,7 @@ const AccountantDashboard = () => {
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
-
+  console.log(totalIncome?.data);
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -39,6 +45,13 @@ const AccountantDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
+  }, []);
+
+  useEffect(() => {
+    setAllRegisteredUniversitydata([
+      universityLogoAndNameHeaderDataForSuperAdminDashboard,
+      ...universityHeadersData,
+    ]);
   }, []);
 
   return (
@@ -58,25 +71,50 @@ const AccountantDashboard = () => {
                   <Row>
                     <DashBoardCountOptions
                       userInfoData={userInfodata?.data}
-                      firstElementData={allAgentsData?.data?.length}
-                      secondElementData={totalIncome?.data?.totalReceiveAmount}
-                      thirdElementData={
-                        totalIncome?.data?.totalUniversityPayout
-                      }
-                      fourthElementData={totalIncome?.data?.totalAgentPayout}
-                      fithElement={totalIncome?.data?.totalSuperAdminProfit}
+                      firstElementData={getUniversityData?.data?.length}
+                      secondElementData={allAgentsData?.data?.length}
+                      thirdElementData={allStudentsData?.data?.length}
+                      fourthElementData={totalIncome?.data?.totalReceiveAmount}
+                      fithElement={totalIncome?.data?.totalUniversityPayout}
+                      sixthElement={totalIncome?.data?.totalAgentPayout}
+                      sevenElement={totalIncome?.data?.totalSuperAdminProfit}
+                      eightElement={''}
+                      gstAndCurrencyData={''}
+                      paidSum={''}
+                      unPaidSum={''}
                     />
                   </Row>
 
-                  <Row className="g-5">
+                  <Row xxl={12} className="g-5">
                     <Col xxl={12}>
+                      <LatestRegistered
+                        tableHead={'Latest Registered University'}
+                        headers={allRegisteredUniversitydata}
+                        data={
+                          getUniversityData?.data ? getUniversityData?.data : []
+                        }
+                      />
+                    </Col>
+                    <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
                         headers={[
-                          agentNameAndImageHeaderDataForAccountantDashboard,
+                          agentNameAndImageHeaderDataForSuperAdmin,
                           ...agentsHeaders,
                         ]}
                         data={allAgentsData?.data ? allAgentsData?.data : []}
+                      />
+                    </Col>
+                    <Col xxl={6}>
+                      <LatestRegistered
+                        tableHead={'Latest Registered Students'}
+                        headers={[
+                          studentImageAndNameHeaderDataForAdmissionManager,
+                          ...studentsHeaders,
+                        ]}
+                        data={
+                          allStudentsData?.data ? allStudentsData?.data : []
+                        }
                       />
                     </Col>
                   </Row>
@@ -91,4 +129,4 @@ const AccountantDashboard = () => {
 };
 
 // export default ProtectedRoute(AdminDashboard);
-export default AccountantDashboard;
+export default SuperAdminDashboard;

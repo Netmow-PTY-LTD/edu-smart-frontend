@@ -3,7 +3,7 @@ import EmailSettings from '@/components/sAdminDashboard/Settings/EmailSettings';
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-export default function EmailSettingsForAccountantDashboard() {
+export default function SuperAdminEmailSettings() {
   return (
     <Layout>
       <div className="page-content">

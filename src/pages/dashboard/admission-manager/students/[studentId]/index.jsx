@@ -1,16 +1,18 @@
 import ApplicationEmgsStatus from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatus';
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
+import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
+import DocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentRequestPage';
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetSingleStudentForAdmissionManagerQuery } from '@/slice/services/admission manager/studentServiceForAdmissionManager';
+import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
-const SingleStudentPageForAdmissionManagerDashboard = () => {
+const SingleStudentForSuperAdmin = () => {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('1');
@@ -18,10 +20,10 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
   const student_id = router.query.studentId;
 
   const {
-    data: getSingleStudentForAdmissionManagerData,
-    isLoading: getSingleStudentForAdmissionManagerIsLoading,
-    refetch: getSingleStudentForAdmissionManagerRefetch,
-  } = useGetSingleStudentForAdmissionManagerQuery(student_id, {
+    data: getSingleStudent,
+    isLoading: getSingleStudenIsLoadingForStudent,
+    refetch: getSingleStudenRefetch,
+  } = useSingleStudentForAgentQuery(student_id, {
     skip: !student_id,
   });
 
@@ -31,19 +33,17 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
     }
   };
 
-  console.log(getSingleStudentForAdmissionManagerData?.data?.applications);
+
 
   return (
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          {getSingleStudentForAdmissionManagerIsLoading ? (
+          {getSingleStudenIsLoadingForStudent ? (
             <LoaderSpiner />
           ) : (
             <div className="container-fluid">
-              <ProfileBgCover
-                profileData={getSingleStudentForAdmissionManagerData?.data}
-              />
+              <ProfileBgCover profileData={getSingleStudent?.data} />
               <Row>
                 <div style={{ marginTop: '10rem' }} className="d-flex">
                   <Nav
@@ -101,7 +101,7 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    {/* <NavItem className="fs-14">
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -116,7 +116,7 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                           Air Ticket Document Request
                         </span>
                       </NavLink>
-                    </NavItem> */}
+                    </NavItem>
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -125,20 +125,37 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
                   <div style={{ marginTop: '50px' }}>
                     {/* <OverviewPage /> */}
                     <Col xl={12}>
-                      <AllOverviewInfoCard
-                        data={getSingleStudentForAdmissionManagerData?.data}
-                      />
+                      <AllOverviewInfoCard data={getSingleStudent?.data} />
                     </Col>
                   </div>
                 )}
 
                 {activeTab === '2' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <DocumentPage
+                      student_id={student_id}
+                      getSingleStudent={getSingleStudent}
+                      refetchSingleStudent={getSingleStudenRefetch}
+                      sigleStudentIsLoading={getSingleStudenIsLoadingForStudent}
+                    />
+                  </div>
+                )}
+                {activeTab === '3' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <DocumentRequestPage
+                      student_id={student_id}
+                      getSingleStudent={getSingleStudent}
+                      refetchSingleStudent={getSingleStudenRefetch}
+                      sigleStudentIsLoading={getSingleStudenIsLoadingForStudent}
+                    />
+                  </div>
+                )}
+                {activeTab === '4' && (
                   <div>
                     <AppliedUniversityPage id={student_id} />
                   </div>
                 )}
-
-                {activeTab === '3' && (
+                {activeTab === '5' && (
                   <div>
                     <ApplicationEmgsStatus student_id={student_id} />
                   </div>
@@ -152,4 +169,4 @@ const SingleStudentPageForAdmissionManagerDashboard = () => {
   );
 };
 
-export default SingleStudentPageForAdmissionManagerDashboard;
+export default SingleStudentForSuperAdmin;

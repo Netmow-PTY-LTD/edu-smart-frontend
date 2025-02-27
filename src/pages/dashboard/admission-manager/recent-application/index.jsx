@@ -23,7 +23,7 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-export default function RecentApplicationPageForAdmissionManagerDashboard() {
+export default function RecentApplicationForSuperAdmin() {
   const router = useRouter();
   const [activeTab, setActiveTab] = React.useState('1');
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -250,7 +250,7 @@ export default function RecentApplicationPageForAdmissionManagerDashboard() {
       key: 'student_name',
       render: (item) => (
         <Link
-          href={`/dashboard/admission-manager/students/${item?.student?._id}`}
+          href={`/dashboard/super-admin/students/${item?.student?._id}`}
           className="d-flex flex-column text-capitalize fw-medium"
         >
           {item?.student?._id
@@ -264,7 +264,7 @@ export default function RecentApplicationPageForAdmissionManagerDashboard() {
       key: 'Agent_name',
       render: (item) => (
         <Link
-          href={`/dashboard/admission-manager/agents/${item?.applied_by?._id}`}
+          href={`/dashboard/super-admin/agents/${item?.applied_by?._id}`}
           className="d-flex flex-column text-capitalize fw-medium"
         >
           {item?.applied_by?.role === 'agent'

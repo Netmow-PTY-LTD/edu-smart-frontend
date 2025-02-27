@@ -38,7 +38,7 @@ const DashBoardCountOptions = ({
                 : userInfoData?.role === 'accountant'
                   ? accountantWidgetsData
                   : []
-          ).map((item, key) => (
+          )?.map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">
                 <CardBody>
