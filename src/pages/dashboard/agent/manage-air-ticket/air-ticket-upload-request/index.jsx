@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -138,9 +138,12 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       });
 
       const result = await submitDocument(formData).unwrap();
-      toast.success(result?.message);
-      refetchRequests();
-      refetchSubmitted();
+      if (result.success) {
+        toast.success(result?.message);
+        refetchRequests();
+        refetchSubmitted();
+      }
+
       toggleModal();
     } catch (error) {
       toast.error(error?.data?.message || 'Submission failed');
@@ -202,6 +205,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
+          <ToastContainer />
           {/* Submitted Documents Section */}
           <DocumentSection
             title="Document Submitted"
