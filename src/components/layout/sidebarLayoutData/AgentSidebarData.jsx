@@ -255,7 +255,7 @@ const AgentSidebarData = () => {
     {
       id: 'airTicketDocumentuploadrequest',
       label: 'Air Ticket Doc  Request',
-      icon: 'ri-dashboard-2-line',
+      icon: 'ri-ticket-2-line',
       link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
     },
     {
@@ -267,13 +267,13 @@ const AgentSidebarData = () => {
     {
       id: 'familyTrip',
       label: 'familyTrip',
-      icon: 'ri-dashboard-2-line',
+      icon: 'ri-gift-line',
       link: '/dashboard/agent/familyTrip',
     },
     {
       id: 'yearlyBonous',
       label: 'Yearly Bonous',
-      icon: 'ri-dashboard-2-line',
+      icon: 'ri-percent-line',
       link: '/dashboard/agent/yearlyBonous',
     },
 
