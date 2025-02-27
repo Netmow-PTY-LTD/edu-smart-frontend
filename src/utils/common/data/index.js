@@ -1045,8 +1045,7 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-school-fill',
       link: 'View all',
-      pathName:
-        `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
     },
 
     {

@@ -36,7 +36,15 @@ const SuperAdminDashboard = () => {
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
+
+
+
+
+  
   console.log(totalIncome?.data);
+
+
+
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -45,13 +53,6 @@ const SuperAdminDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
-  }, []);
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      universityLogoAndNameHeaderDataForSuperAdminDashboard,
-      ...universityHeadersData,
-    ]);
   }, []);
 
   return (
@@ -89,7 +90,10 @@ const SuperAdminDashboard = () => {
                     <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered University'}
-                        headers={allRegisteredUniversitydata}
+                        headers={[
+                          universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                          ...universityHeadersData,
+                        ]}
                         data={
                           getUniversityData?.data ? getUniversityData?.data : []
                         }
