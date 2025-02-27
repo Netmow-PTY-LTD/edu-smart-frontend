@@ -1,6 +1,5 @@
 import FileViewer from '@/components/common/FileViewer';
 import Link from 'next/link';
-import { DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 export const AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN = [
   {
@@ -43,6 +42,15 @@ export const AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN = [
         </div>
       );
     },
+  },
+  {
+    title: 'Description',
+    key: 'description',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.description ? item?.description : '-'}
+      </span>
+    ),
   },
   {
     title: 'Requested By',

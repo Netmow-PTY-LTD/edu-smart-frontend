@@ -1,5 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import FileViewer from '@/components/common/FileViewer';
+
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
@@ -133,6 +133,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
         toast.success(result?.message);
+        setOpenModal(false);
         allDocumentRequestForAgentRefetch();
         allAirTicketDocumentSubmittedForAgentRefetch();
       }
@@ -154,6 +155,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result.success) {
         toast.success(result?.message);
+        setOpenModal(false);
         allDocumentRequestForAgentRefetch();
       }
     } catch (error) {
