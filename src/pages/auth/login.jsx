@@ -65,11 +65,11 @@ const Login = () => {
       Cookies.set('role', LoginData?.data?.role, { expires: 7 });
       if (appEnvironment === 'development') {
         window.location.assign(
-          `${window.location.protocol}//${'localhost:3005'}/dashboard/admission-managers`
+          `${window.location.protocol}//${'localhost:3005'}/dashboard/admission-manager`
         );
       } else {
         window.location.assign(
-          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/admission-managers`
+          `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/admission-manager`
         );
       }
     }
@@ -283,8 +283,6 @@ const Login = () => {
       setSubmitting(false);
     }
   };
-
-  
 
   return (
     <>
