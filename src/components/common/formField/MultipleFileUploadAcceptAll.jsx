@@ -1,12 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-import { allowedFileTypes } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
   const [filePreviews, setFilePreviews] = useState([]);
   const [fileNames, setFileNames] = useState([]);
-  console.log(form);
+
+  const { allowedFileTypes } = DataObjectComponent();
+
   const isValidFile = (file) =>
     allowedFileTypes ? allowedFileTypes.includes(file?.type) : true;
 
@@ -26,6 +28,7 @@ const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
       );
       setFileNames(validFiles.map((file) => file.name));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values, field.name]);
 
   const handleFileChange = (e) => {

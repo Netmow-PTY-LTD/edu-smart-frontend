@@ -13,7 +13,7 @@ import {
   useUpdateCourseForAdmissionManagerMutation,
 } from '@/slice/services/admission manager/courseServiceForAdmissionManager';
 import { useGetRequiredDocumentForAdmissionManagerQuery } from '@/slice/services/admission manager/requiredDocumentsServiceForAdmissionManager';
-import { allowedFileTypes } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -83,6 +83,8 @@ const CoursesForAdmissionManager = ({
     auto_deduct: false,
     free_air_ticket: false,
   });
+
+  const { allowedFileTypes } = DataObjectComponent();
 
   // document_list_id:
   const [addCourseForAdmissionManager] =

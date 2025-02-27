@@ -7,7 +7,7 @@ import {
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
-import Link from 'next/link';
+import DataObjectComponent from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -33,6 +33,8 @@ export default function RecentApplicationForSuperAdmin() {
   const [tuitionInvoiceModal, setTuitionInvoiceModal] = useState(false);
   const [applicationId, setApplicationId] = useState('');
   const perPageData = 20;
+
+  const { studentApplicationsHeaders } = DataObjectComponent();
 
   const {
     data: recentApplicationData,
@@ -209,120 +211,6 @@ export default function RecentApplicationForSuperAdmin() {
       </UncontrolledDropdown>
     ),
   };
-
-  const studentApplicationsHeaders = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-    {
-      title: 'University',
-      key: 'university',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.university?.name ? item?.university?.name : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Application Id',
-      key: '_id',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?._id ? item?._id : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Course',
-      key: 'course',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.course?.name ? item?.course?.name : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Student Name',
-      key: 'student_name',
-      render: (item) => (
-        <Link
-          href={`/dashboard/super-admin/students/${item?.student?._id}`}
-          className="d-flex flex-column text-capitalize fw-medium"
-        >
-          {item?.student?._id
-            ? item?.student?.first_name + ' ' + item?.student?.last_name
-            : '-'}
-        </Link>
-      ),
-    },
-    {
-      title: 'Agent Name',
-      key: 'Agent_name',
-      render: (item) => (
-        <Link
-          href={`/dashboard/super-admin/agents/${item?.applied_by?._id}`}
-          className="d-flex flex-column text-capitalize fw-medium"
-        >
-          {item?.applied_by?.role === 'agent'
-            ? `${item?.applied_by?.first_name ? item?.applied_by?.first_name : ''} ${item?.applied_by?.last_name ? item?.applied_by?.last_name : ''}`
-            : ''}
-        </Link>
-      ),
-    },
-    {
-      title: 'Applied By',
-      key: 'applied_by',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize fw-medium text-p">
-          {item?.applied_by?.role ? `${item?.applied_by?.role}` : ''}
-        </span>
-      ),
-    },
-    {
-      title: 'Emgs Payment',
-      key: 'emgs_payment_status',
-      render: (item) => (
-        <>
-          <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.emgs_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.emgs_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
-          >
-            {item?.emgs_payment_status ?? '-'}
-          </span>
-        </>
-      ),
-    },
-
-    {
-      title: 'Tuition Payment',
-      key: 'tuition_fee_payment_status',
-      render: (item) => (
-        <>
-          <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.tuition_fee_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.tuition_fee_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
-          >
-            {item?.tuition_fee_payment_status ?? '-'}
-          </span>
-        </>
-      ),
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      render: (item) => (
-        <>
-          <span
-            className={`fw-semibold px-4 py-1 rounded-4 text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
-          >
-            {item?.status ?? '-'}
-          </span>
-        </>
-      ),
-    },
-  ];
 
   return (
     <Layout>

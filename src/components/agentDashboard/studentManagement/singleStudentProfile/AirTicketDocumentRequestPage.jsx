@@ -21,9 +21,9 @@ import {
   useUpdateUserAirTicketDocStatusForAgentMutation,
 } from '@/slice/services/agent/agentDocumentServices';
 import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
-import FileViewer from '@/components/common/FileViewer';
-import StatusUpdateForm from './modal/StatusUpdateForm';
+import DataObjectComponent from '@/utils/common/data';
 import AirTicketDocumentRequestModalForm from './modal/AirTicketDocumentRequestModalForm';
+import StatusUpdateForm from './modal/StatusUpdateForm';
 
 const AirTicketDocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -42,6 +42,8 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     title: '',
     description: '',
   });
+
+  const { docRequestTableHeaderDataWithOutAction } = DataObjectComponent();
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
     notes: '',
@@ -165,92 +167,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     setOpenModal(!openModal);
   };
 
-  const docRequestTableHeaderDataWithOutAction = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Title',
-      key: 'title',
-      render: (item) => {
-        const newTitle = item?.title?.replace(/_/g, ' ');
-
-        return (
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
-              {newTitle || '-'}
-            </h5>
-          </div>
-        );
-      },
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {`${item?.description ? item?.description : '-'}`}
-        </div>
-      ),
-    },
-
-    {
-      title: 'Submitted Files',
-      key: 'files',
-      render: (item) => (
-        <div>
-          {item?.files && item?.files.length > 0 ? (
-            <FileViewer files={item?.files && item?.files} />
-          ) : (
-            'No submission files yet'
-          )}
-        </div>
-      ),
-    },
-    {
-      title: 'Notes',
-      key: 'notes',
-      render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {item?.notes ? (
-            <span style={{ color: '#007BFF' }}>{item?.notes}</span>
-          ) : (
-            'No notes yet'
-          )}
-        </div>
-      ),
-    },
-    {
-      title: 'Status',
-      key: 'status',
-      render: (item) => (
-        <span
-          className={`d-flex flex-column text-capitalize fw-semibold ${
-            item?.status === 'accepted'
-              ? 'text-success'
-              : item?.status === 'rejected'
-                ? 'text-danger'
-                : item?.status === 'pending'
-                  ? 'text-warning'
-                  : item?.status === 'requested'
-                    ? 'text-primary'
-                    : item?.status === 'submitted'
-                      ? 'text-info'
-                      : ''
-          }`}
-        >
-          {item?.status ? <span>{item?.status}</span> : '-'}
-        </span>
-      ),
-    },
-  ];
-
   const docRequestTableHeaderDataWithAction = [
     {
       title: 'Action',
@@ -304,11 +220,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     if (singleDocument) {
       setRejectStatusInitialValues({ notes: singleDocument?.notes || '' });
     }
-
-    setAllUploadDocumentsForStudentsData(() => [
-      ...docRequestTableHeaderDataWithOutAction,
-      ...docRequestTableHeaderDataWithAction,
-    ]);
   }, [getSingleUserAirTicketDocumentRequest, docId]);
 
   return (
@@ -345,7 +256,10 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
             />
             <CardBody>
               <CommonTableComponent
-                headers={AllUploadDocumentsForStudentsData}
+                headers={[
+                  ...docRequestTableHeaderDataWithOutAction,
+                  ...docRequestTableHeaderDataWithAction,
+                ]}
                 data={isfilteredData ? isfilteredData : []}
                 currentPage={currentPageForRequest}
                 setCurrentPage={setCurrentPageForRequest}

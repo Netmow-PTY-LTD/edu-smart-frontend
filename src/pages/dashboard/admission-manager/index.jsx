@@ -31,8 +31,6 @@ const SuperAdminDashboard = () => {
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
 
   const {
-    universityLogoAndNameHeaderDataForSuperAdminDashboard,
-    universityHeadersData,
     agentNameAndImageHeaderDataForSuperAdmin,
     agentsHeaders,
     studentImageAndNameHeaderDataForSuperAdmin,
@@ -83,18 +81,6 @@ const SuperAdminDashboard = () => {
                   </Row>
 
                   <Row xxl={12} className="g-5">
-                    {/* <Col xxl={12}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered University'}
-                        headers={[
-                          universityLogoAndNameHeaderDataForSuperAdminDashboard,
-                          ...universityHeadersData,
-                        ]}
-                        data={
-                          getUniversityData?.data ? getUniversityData?.data : []
-                        }
-                      />
-                    </Col> */}
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}

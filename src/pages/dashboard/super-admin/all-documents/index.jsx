@@ -9,7 +9,7 @@ import {
   useGetRequiredDocumentInSuperAdminQuery,
   useUpdateRequiredDocumentInSuperAdminMutation,
 } from '@/slice/services/super admin/requiredService';
-import { documentHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -29,6 +29,8 @@ const AllDocumentsInSuperAdmin = () => {
     title: '',
     description: '',
   });
+
+  const { documentHeaders } = DataObjectComponent();
 
   const [addRequiredDocumentInSuperAdmin] =
     useAddRequiredDocumentInSuperAdminMutation();

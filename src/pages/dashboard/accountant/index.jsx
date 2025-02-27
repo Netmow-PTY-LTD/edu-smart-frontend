@@ -8,14 +8,7 @@ import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentSe
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import {
-  agentNameAndImageHeaderDataForSuperAdmin,
-  agentsHeaders,
-  studentImageAndNameHeaderDataForAdmissionManager,
-  studentsHeaders,
-  universityHeadersData,
-  universityLogoAndNameHeaderDataForSuperAdminDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
@@ -25,8 +18,7 @@ import { Col, Row } from 'reactstrap';
 
 const SuperAdminDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
+
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
@@ -37,13 +29,14 @@ const SuperAdminDashboard = () => {
     useGetAllStudentQuery();
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
 
-
-
-
-  
-  console.log(totalIncome?.data);
-
-
+  const {
+    universityLogoAndNameHeaderDataForSuperAdminDashboard,
+    universityHeadersData,
+    agentNameAndImageHeaderDataForSuperAdmin,
+    studentImageAndNameHeaderDataForAdmissionManager,
+    agentsHeaders,
+    studentsHeaders,
+  } = DataObjectComponent();
 
   useEffect(() => {
     const token = Cookies.get('token');

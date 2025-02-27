@@ -22,8 +22,6 @@ const SuperAdminDashboard = () => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
@@ -43,7 +41,6 @@ const SuperAdminDashboard = () => {
     studentsHeaders,
   } = DataObjectComponent();
 
-  console.log(totalIncome?.data);
 
   useEffect(() => {
     const token = Cookies.get('token');

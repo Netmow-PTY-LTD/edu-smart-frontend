@@ -10,7 +10,7 @@ import {
   useGetCouponInSuperAdminQuery,
   useUpdateCouponInSuperAdminMutation,
 } from '@/slice/services/super admin/couponService';
-import { couponHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -35,6 +35,8 @@ const CouponManagementInSuperAdmin = () => {
     coupon_status: '',
     package_duration: '',
   });
+
+  const { couponHeaders } = DataObjectComponent();
 
   const [addCouponInSuperAdmin] = useAddCouponInSuperAdminMutation();
   const [updateCouponInSuperAdmin] = useUpdateCouponInSuperAdminMutation();
