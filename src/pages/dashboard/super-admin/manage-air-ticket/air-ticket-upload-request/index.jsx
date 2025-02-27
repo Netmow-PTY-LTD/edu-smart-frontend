@@ -110,10 +110,10 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
       title: values.title,
     };
 
-    console.log('updatedata', airTicketRequestData);
     try {
-      const result = createDocumentRequest(airTicketRequestData).unwrap();
-      if (result) {
+      const result = await createDocumentRequest(airTicketRequestData).unwrap();
+      if (result.success) {
+        console.log(result);
         toast.success(result?.message);
         allDocumentRequestForAgentRefetch();
         setAddModalIsOpen(false);
@@ -131,7 +131,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
     const updatedDataStatus = { airticket_document_id, status };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
-      if (result) {
+      if (result.success) {
         toast.success(result?.message);
         setOpenModal(false);
         allDocumentRequestForAgentRefetch();
