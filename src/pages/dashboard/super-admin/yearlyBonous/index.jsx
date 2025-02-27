@@ -33,6 +33,22 @@ export default function AgentYarlyBonous() {
       ),
     },
     {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.agent?.first_name || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <span className="d-flex flex-column">{item?.agent?.email || '-'}</span>
+      ),
+    },
+    {
       title: 'Amount ($)',
       key: 'amount',
       render: (item) => (
