@@ -17,7 +17,7 @@ import {
 } from '@/utils/common/data/superAdminData';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -213,6 +213,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   return (
     <Layout>
       <div className="page-content">
+        <ToastContainer />
         <div className="h-100">
           <Card>
             <CardHeader>
