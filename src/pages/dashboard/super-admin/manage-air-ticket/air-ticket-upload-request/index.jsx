@@ -471,7 +471,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}
               >
-                Add Air Ticket Doc Request
+                Create Request
               </button>
               <h3>
                 All Student Air Ticket Document Upload Requests from Agent
@@ -482,7 +482,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
               />
             </CardHeader>
             <AirTicketDocumentRequestModalFormForSuper
-              formHeader={'Add Air Ticket Document Request'}
+              formHeader={'Add Request'}
               isOpen={addModalIsOpen}
               onClose={() => {
                 setAddModalIsOpen(!addModalIsOpen);

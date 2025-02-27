@@ -1,20 +1,27 @@
+import React, { useEffect, useState } from 'react';
+import * as Yup from 'yup';
+import Link from 'next/link';
+import { Card, CardBody, CardHeader } from 'reactstrap';
+import { toast } from 'react-toastify';
+
+// components
+import Layout from '@/components/layout';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import FileViewer from '@/components/common/FileViewer';
-import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
+
+// helpers
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+
+// services
 import { useGetAllUserAirTicketDocSubmitedFilestForAgentQuery } from '@/slice/services/agent/agentDocumentServices';
 import {
   useGetAllStudentsAirticketDocumentRequestQuery,
   useUpdateSingleAirTicketDocumentForAgentMutation,
 } from '@/slice/services/common/commonDocumentService';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { Card, CardBody, CardHeader } from 'reactstrap';
-import * as Yup from 'yup';
+
 const StudentAirtTicketDocumentUploadRquestForAgent = () => {
   const [searchTermForRequestForAgent, setSearchTermForRequestForAgent] =
     useState('');
