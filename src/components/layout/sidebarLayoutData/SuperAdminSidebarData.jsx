@@ -190,6 +190,18 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/hot-offer',
     },
     {
+      id: 'familyTrip',
+      label: 'familyTrip',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/super-admin/familyTrip',
+    },
+    {
+      id: 'yearlyBonous',
+      label: 'Yearly Bonous',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/super-admin/yearlyBonous',
+    },
+    {
       id: 'agents',
       label: 'Agents',
       icon: 'ri-group-2-fill',
