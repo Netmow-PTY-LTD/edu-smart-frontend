@@ -6,13 +6,13 @@ import React, { useEffect, useState } from 'react';
 const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
   const [filePreviews, setFilePreviews] = useState([]);
   const [fileNames, setFileNames] = useState([]);
-  console.log(form);
+
   const isValidFile = (file) =>
     allowedFileTypes ? allowedFileTypes.includes(file?.type) : true;
 
   useEffect(() => {
     const files = form.values[field.name] || [];
-    console.log('files', files);
+
     if (files?.length > 0) {
       const validFiles = files.filter(isValidFile);
       setFilePreviews(
@@ -81,7 +81,6 @@ const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
     form.setFieldValue(field.name, updatedFiles);
   };
 
-  console.log('filePreviews', filePreviews);
   return (
     <div>
       <label htmlFor={field.name} className="form-label fs-2">
