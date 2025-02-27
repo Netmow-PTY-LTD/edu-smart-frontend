@@ -264,6 +264,18 @@ const AgentSidebarData = () => {
       icon: 'ri-dashboard-2-line',
       link: '/dashboard/agent/earnings',
     },
+    {
+      id: 'familyTrip',
+      label: 'familyTrip',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/agent/familyTrip',
+    },
+    {
+      id: 'yearlyBonous',
+      label: 'Yearly Bonous',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/agent/yearlyBonous',
+    },
 
     {
       id: 'settings',
