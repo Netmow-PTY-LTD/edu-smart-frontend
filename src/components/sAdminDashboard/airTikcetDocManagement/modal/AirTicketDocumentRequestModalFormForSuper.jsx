@@ -74,7 +74,7 @@ const AirTicketDocumentRequestModalFormForSuper = ({
                             }}
                             value={
                               recentApplicantStudentOptions.find(
-                                (opt) => opt.value === values.student_id
+                                (opt) => opt.value === values?.student_id
                               ) || null
                             }
                           />
