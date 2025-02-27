@@ -147,7 +147,7 @@ const DocumentPage = ({ student_id }) => {
                 className="button px-4 py-3 fw-bold"
                 onClick={handleDownloadAllDocument}
               >
-                Download All Document
+                Download All Doc
               </Button>
               <h1> Student Submitted Docs</h1>
               <SearchComponent

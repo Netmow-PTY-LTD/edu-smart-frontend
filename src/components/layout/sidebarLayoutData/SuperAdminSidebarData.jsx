@@ -166,6 +166,12 @@ const SuperAdminSidebarData = () => {
       link: '/dashboard/super-admin/all-documents',
     },
     {
+      id: 'airTicketDocumentuploadrequest',
+      label: 'Air Ticket Doc  Request',
+      icon: 'ri-ticket-2-line',
+      link: '/dashboard/super-admin/manage-air-ticket/air-ticket-upload-request',
+    },
+    {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
@@ -182,6 +188,18 @@ const SuperAdminSidebarData = () => {
       label: 'Hot Offers',
       icon: 'ri-fire-fill',
       link: '/dashboard/super-admin/hot-offer',
+    },
+    {
+      id: 'familyTrip',
+      label: 'familyTrip',
+      icon: 'ri-gift-line',
+      link: '/dashboard/super-admin/familyTrip',
+    },
+    {
+      id: 'yearlyBonous',
+      label: 'Yearly Bonous',
+      icon: 'ri-percent-line',
+      link: '/dashboard/super-admin/yearlyBonous',
     },
     {
       id: 'agents',
