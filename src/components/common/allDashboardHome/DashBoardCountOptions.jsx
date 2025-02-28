@@ -1,9 +1,4 @@
-import {
-  accountantWidgetsData,
-  admissionManagerWidgetsData,
-  agentProfileWidgetData,
-  supperAdminWidgetsData,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import Link from 'next/link';
 import React from 'react';
 import CountUp from 'react-countup';
@@ -24,7 +19,13 @@ const DashBoardCountOptions = ({
   unPaidSum,
   allEarningManagementCommonData,
 }) => {
-  // console.log(fithElement);
+  const {
+    supperAdminWidgetsData,
+    agentProfileWidgetData,
+    admissionManagerWidgetsData,
+    accountantWidgetsData,
+  } = DataObjectComponent();
+
   return (
     <>
       <Col id="countcart" md={12}>
@@ -38,7 +39,7 @@ const DashBoardCountOptions = ({
                 : userInfoData?.role === 'accountant'
                   ? accountantWidgetsData
                   : []
-          ).map((item, key) => (
+          )?.map((item, key) => (
             <Col xl={3} md={6} key={key} className="">
               <Card className="card-animate p-4">
                 <CardBody>

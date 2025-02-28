@@ -11,13 +11,10 @@ import {
   useGetAgentEarningsQuery,
   useUpdateAgentEarningsMutation,
 } from '@/slice/services/super admin/agentService';
-import {
-  agentEarnigsHeaders,
-  studentsHeaders,
-  userDummyImage,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
+
 import classnames from 'classnames';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -36,14 +33,21 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-const SingleAgentPageForAccountantDashboard = () => {
+const SingleAgentInSuperAdminDashboard = () => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const [activeTab, setActiveTab] = useState('1');
-
   const agent_id = router.query.agentId;
+
+  const customData = useCustomData();
+
+  const {
+    studentImageAndNameHeaderDataForSuperAdmin,
+    agentEarnigsHeaders,
+    studentsHeaders,
+  } = DataObjectComponent();
 
   const {
     data: getSingleAgent,
@@ -53,7 +57,6 @@ const SingleAgentPageForAccountantDashboard = () => {
     skip: !agent_id,
   });
 
-  const { data: userInfodata } = useGetUserInfoQuery();
   const {
     data: agentEarningsData,
     isLoading: agentEarningLoading,
@@ -97,8 +100,6 @@ const SingleAgentPageForAccountantDashboard = () => {
       toast.error(errorMessage);
     }
   };
-
-  // console.log(getSingleAgent?.data?.students[0]);
 
   const agentEarningsHeaderAction = {
     title: 'Action',
@@ -147,35 +148,6 @@ const SingleAgentPageForAccountantDashboard = () => {
     ),
   };
 
-  const studentImageAndNameHeaderData = {
-    title: 'Name',
-    key: 'profile_image',
-    render: (item) => (
-      <div className="d-flex align-items-center ">
-        <div className="flex-shrink-0 me-1">
-          <Image
-            src={
-              item?.profile_image?.url
-                ? item?.profile_image?.url
-                : `${userDummyImage}`
-            }
-            alt="User"
-            height={60}
-            width={60}
-            className="avatar-md p-1 me-3 align-middle rounded-circle"
-          />
-        </div>
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {item?.first_name && item?.last_name
-              ? `${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`
-              : '-'}
-          </h5>
-        </div>
-      </div>
-    ),
-  };
-
   return (
     <Layout>
       <div className="page-content">
@@ -209,22 +181,28 @@ const SingleAgentPageForAccountantDashboard = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
-                      <NavLink
-                        style={{ cursor: 'pointer' }}
-                        className={classnames({
-                          active: activeTab === '2',
-                        })}
-                        onClick={() => {
-                          toggleTab('2');
-                        }}
-                      >
-                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                        <span className="d-none d-md-inline-block">
-                          Earnings
-                        </span>
-                      </NavLink>
-                    </NavItem>
+                    {customData.hideforadmissionmanger ? (
+                      ''
+                    ) : (
+                      <>
+                        <NavItem className="fs-14">
+                          <NavLink
+                            style={{ cursor: 'pointer' }}
+                            className={classnames({
+                              active: activeTab === '2',
+                            })}
+                            onClick={() => {
+                              toggleTab('2');
+                            }}
+                          >
+                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                            <span className="d-none d-md-inline-block">
+                              Earnings
+                            </span>
+                          </NavLink>
+                        </NavItem>
+                      </>
+                    )}
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -262,7 +240,7 @@ const SingleAgentPageForAccountantDashboard = () => {
                           <CardBody>
                             <CommonTableComponent
                               headers={[
-                                studentImageAndNameHeaderData,
+                                studentImageAndNameHeaderDataForSuperAdmin,
                                 ...studentsHeaders,
                               ]}
                               data={isFilteredData || []}
@@ -279,33 +257,40 @@ const SingleAgentPageForAccountantDashboard = () => {
                     </Row>
                   </div>
                 )}
-                {activeTab === '2' && (
-                  <div style={{ marginTop: '30px' }}>
-                    <Row>
-                      <Col xl={12}>
-                        <Card>
-                          <CardHeader className="text-primary fw-semibold fs-2">
-                            Agent's Earnings
-                          </CardHeader>
-                          <CardBody className="mh-100">
-                            <CommonTableComponent
-                              headers={[
-                                ...agentEarnigsHeaders,
-                                agentEarningsHeaderAction,
-                              ]}
-                              data={agentEarningsData?.data || []}
-                              currentPage={currentPage}
-                              setCurrentPage={setCurrentPage}
-                              perPageData={perPageData}
-                              searchTerm={searchTerm}
-                              handleSearchChange={handleSearchChange}
-                              emptyMessage="No Data found yet."
-                            />
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    </Row>
-                  </div>
+
+                {customData.hideforadmissionmanger ? (
+                  ''
+                ) : (
+                  <>
+                    {activeTab === '2' && (
+                      <div style={{ marginTop: '30px' }}>
+                        <Row>
+                          <Col xl={12}>
+                            <Card>
+                              <CardHeader className="text-primary fw-semibold fs-2">
+                                Agent's Earnings
+                              </CardHeader>
+                              <CardBody className="mh-100">
+                                <CommonTableComponent
+                                  headers={[
+                                    ...agentEarnigsHeaders,
+                                    agentEarningsHeaderAction,
+                                  ]}
+                                  data={agentEarningsData?.data || []}
+                                  currentPage={currentPage}
+                                  setCurrentPage={setCurrentPage}
+                                  perPageData={perPageData}
+                                  searchTerm={searchTerm}
+                                  handleSearchChange={handleSearchChange}
+                                  emptyMessage="No Data found yet."
+                                />
+                              </CardBody>
+                            </Card>
+                          </Col>
+                        </Row>
+                      </div>
+                    )}
+                  </>
                 )}
               </Row>
             </div>
@@ -316,4 +301,4 @@ const SingleAgentPageForAccountantDashboard = () => {
   );
 };
 
-export default SingleAgentPageForAccountantDashboard;
+export default SingleAgentInSuperAdminDashboard;

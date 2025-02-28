@@ -7,6 +7,7 @@ import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCove
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import { useGetStudentForSuperAdminQuery } from '@/slice/services/super admin/sutdentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -23,7 +24,7 @@ const SingleStudentForSuperAdmin = () => {
     data: getSingleStudent,
     isLoading: getSingleStudenIsLoadingForStudent,
     refetch: getSingleStudenRefetch,
-  } = useSingleStudentForAgentQuery(student_id, {
+  } = useGetStudentForSuperAdminQuery(student_id, {
     skip: !student_id,
   });
 

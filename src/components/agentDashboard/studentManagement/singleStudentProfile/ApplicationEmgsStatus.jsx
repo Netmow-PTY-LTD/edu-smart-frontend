@@ -15,7 +15,7 @@ import {
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetAllEmgsStatusQuery } from '@/slice/services/common/applicationService';
-import { EmgsStatusListHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { ToastContainer } from 'react-toastify';
 import ApplicationEmgsStatusTimeline from './ApplicationEmgsStatusTimeline';
 
@@ -24,6 +24,8 @@ const ApplicationEmgsStatus = ({ student_id }) => {
   const [currentTimeline, setCurrentTimeline] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
+
+  const { EmgsStatusListHeaders } = DataObjectComponent();
 
   const { data: allEmgsStatusData, isLoading: allEmgsStatusLoading } =
     useGetAllEmgsStatusQuery(student_id, {

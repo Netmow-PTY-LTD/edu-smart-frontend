@@ -20,6 +20,9 @@ const HomePage = () => {
 
   const [subscribe] = useSubscribeNewsLetterMutation();
 
+
+
+
   useEffect(() => {
     const subscribeFunction = async () => {
       try {

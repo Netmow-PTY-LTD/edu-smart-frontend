@@ -1,4 +1,3 @@
-import { userDummyImage } from '@/utils/common/data';
 import Image from 'next/image';
 import React from 'react';
 

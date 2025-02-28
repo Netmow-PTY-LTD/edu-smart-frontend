@@ -8,33 +8,22 @@ import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentSe
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
-import {
-  agentNameAndImageHeaderDataForAdmissionManager,
-  agentsHeaders,
-  studentImageAndNameHeaderDataForAdmissionManager,
-  studentsHeaders,
-  universityHeadersData,
-  universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
-const AdmissionManagerDashboard = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const SuperAdminDashboard = () => {
+  const router = useRouter();
 
-  // const userInfodata = {
-  //   data: {
-  //     role: 'admission_manager',
-  //   },
-  // };
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
-
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();
   const { data: allAgentsData, isLoading: allAgentsIsLoading } =
@@ -43,7 +32,15 @@ const AdmissionManagerDashboard = () => {
     useGetAllStudentQuery();
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
 
-  console.log(totalIncome?.data);
+  const {
+    universityLogoAndNameHeaderDataForSuperAdminDashboard,
+    universityHeadersData,
+    agentNameAndImageHeaderDataForSuperAdmin,
+    agentsHeaders,
+    studentImageAndNameHeaderDataForSuperAdmin,
+    studentsHeaders,
+  } = DataObjectComponent();
+
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -61,9 +58,8 @@ const AdmissionManagerDashboard = () => {
         <div className="container-fluid">
           {getUniversityIsLoading ||
           allAgentsIsLoading ||
-          allStudentsIsLoading ? (
-            //  ||
-            // userInfoIsLoading
+          allStudentsIsLoading ||
+          userInfoIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Row>
@@ -76,27 +72,35 @@ const AdmissionManagerDashboard = () => {
                       firstElementData={getUniversityData?.data?.length}
                       secondElementData={allAgentsData?.data?.length}
                       thirdElementData={allStudentsData?.data?.length}
+                      fourthElementData={totalIncome?.data?.totalReceiveAmount}
+                      fithElement={totalIncome?.data?.totalUniversityPayout}
+                      sixthElement={totalIncome?.data?.totalAgentPayout}
+                      sevenElement={totalIncome?.data?.totalSuperAdminProfit}
+                      eightElement={''}
+                      gstAndCurrencyData={''}
+                      paidSum={''}
+                      unPaidSum={''}
                     />
                   </Row>
 
                   <Row xxl={12} className="g-5">
-                    {/* <Col xxl={12}>
+                    <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered University'}
                         headers={[
-                          universityLogoAndNameHeaderDataForAdmissionManagerDashboard,
+                          universityLogoAndNameHeaderDataForSuperAdminDashboard,
                           ...universityHeadersData,
                         ]}
                         data={
                           getUniversityData?.data ? getUniversityData?.data : []
                         }
                       />
-                    </Col> */}
+                    </Col>
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
                         headers={[
-                          agentNameAndImageHeaderDataForAdmissionManager,
+                          agentNameAndImageHeaderDataForSuperAdmin,
                           ...agentsHeaders,
                         ]}
                         data={allAgentsData?.data ? allAgentsData?.data : []}
@@ -106,7 +110,7 @@ const AdmissionManagerDashboard = () => {
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
                         headers={[
-                          studentImageAndNameHeaderDataForAdmissionManager,
+                          studentImageAndNameHeaderDataForSuperAdmin,
                           ...studentsHeaders,
                         ]}
                         data={
@@ -126,4 +130,4 @@ const AdmissionManagerDashboard = () => {
 };
 
 // export default ProtectedRoute(AdminDashboard);
-export default AdmissionManagerDashboard;
+export default SuperAdminDashboard;

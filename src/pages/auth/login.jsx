@@ -3,7 +3,7 @@ import PasswordField from '@/components/common/formField/PasswordField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useLogInMutation } from '@/slice/services/public/auth/authService';
-import { brandlogo } from '@/utils/common/data';
+import DataObjectComponent, { brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
 
 import Cookies from 'js-cookie';

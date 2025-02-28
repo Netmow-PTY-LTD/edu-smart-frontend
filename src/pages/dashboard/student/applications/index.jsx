@@ -10,7 +10,7 @@ import {
   useSingleGetApplicationQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/public/application/applicationServiceNew';
-import { studentApplicationsHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -39,6 +39,8 @@ export default function StudentApplications() {
   const [hasUpdated, setHasUpdated] = useState(false);
 
   const perPageData = 9;
+
+  const { studentApplicationsHeaders } = DataObjectComponent();
 
   const {
     data: applicationData,

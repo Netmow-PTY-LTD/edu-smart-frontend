@@ -1,5 +1,4 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import FileViewer from '@/components/common/FileViewer';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
@@ -7,6 +6,7 @@ import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
+import DataObjectComponent from '@/utils/common/data';
 import { currentUser } from '@/utils/currentUserHandler';
 
 import React, { useEffect, useState } from 'react';
@@ -20,11 +20,6 @@ const AllUploadDocumentsForStudents = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
-
-  const [
-    AllUploadDocumentsForStudentsData,
-    setAllUploadDocumentsForStudentsData,
-  ] = useState('');
   const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
@@ -32,6 +27,9 @@ const AllUploadDocumentsForStudents = () => {
     document: '',
     description: '',
   });
+
+  const { studentSubmittedDocumentsHeaderWithoutAction } =
+    DataObjectComponent();
 
   const {
     data: getSingleStudentDocRequest,
@@ -108,142 +106,6 @@ const AllUploadDocumentsForStudents = () => {
     getSingleStudentDocRequest?.data.filter((item) =>
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  const studentSubmittedDocumentsHeaderWithoutAction = [
-    {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Title',
-      key: 'title',
-      render: (item) => {
-        const newTitle = item?.title?.replace(/_/g, ' ');
-
-        return (
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
-              {newTitle || '-'}
-            </h5>
-          </div>
-        );
-      },
-    },
-
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.description ? item?.description : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-
-    {
-      title: 'Notes',
-      key: 'notes',
-      render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {item?.notes ? (
-            <span style={{ color: '#007BFF' }}>{item?.notes}</span>
-          ) : (
-            'No notes yet'
-          )}
-        </div>
-      ),
-    },
-
-    {
-      title: 'Requested By',
-      key: 'requested_by',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
-            ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
-                  : ''
-              } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Uploaded Files',
-      key: 'files',
-      render: (item) => (
-        <div>
-          <FileViewer files={item?.files && item?.files} />
-        </div>
-      ),
-    },
-
-    {
-      title: 'Status',
-      key: 'status',
-      render: (item) => (
-        <span
-          className={`d-flex flex-column text-capitalize fw-semibold ${
-            item?.status === 'accepted'
-              ? 'text-success'
-              : item?.status === 'rejected'
-                ? 'text-danger'
-                : item?.status === 'pending'
-                  ? 'text-warning'
-                  : item?.status === 'requested'
-                    ? 'text-primary'
-                    : item?.status === 'submitted'
-                      ? 'text-info'
-                      : ''
-          }`}
-        >
-          {item?.status ? <span>{item?.status}</span> : '-'}
-        </span>
-      ),
-    },
-  ];
-
-  useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
-      ...studentSubmittedDocumentsHeaderWithoutAction,
-      ...uploadAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const togModal = (id) => {
     setInitialValues({
@@ -324,7 +186,10 @@ const AllUploadDocumentsForStudents = () => {
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={AllUploadDocumentsForStudentsData}
+                  headers={[
+                    ...studentSubmittedDocumentsHeaderWithoutAction,
+                    ...uploadAction,
+                  ]}
                   data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}

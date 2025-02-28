@@ -16,6 +16,7 @@ import AgentSidebarData from '../sidebarLayoutData/AgentSidebarData';
 import StudentSidebarData from '../sidebarLayoutData/StudentSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
 import UniversityAdministratorSidebarData from '../sidebarLayoutData/UniversitySidebardata';
+import { useCustomData } from '@/utils/common/data/customeData';
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const VerticalLayout = (props) => {
   const accountantSidebarData = AccountantSidebarData().props.children;
 
   const { data: userInfodata } = useGetUserInfoQuery();
+  const customeData = useCustomData();
 
   // const userInfodata = {
   //   data: { role: 'admission_manager' },
@@ -211,9 +213,9 @@ const VerticalLayout = (props) => {
             : userInfodata?.data?.role === 'university_administrator'
               ? universitySidebarData
               : userInfodata?.data?.role === 'admission_manager'
-                ? admissionManagerSidebarData
+                ? superAdminSidebarData
                 : userInfodata?.data?.role === 'accountant'
-                  ? accountantSidebarData
+                  ? superAdminSidebarData
                   : []
       ).map((item, key) => {
         return (
@@ -224,7 +226,7 @@ const VerticalLayout = (props) => {
             ) : item.subItems ? (
               <li
                 id={`${item?.id === 'players' ? 'addplayer' : item?.id === 'teams' ? 'addteam' : item?.id === 'events' ? 'createevents' : item?.id === 'settings' ? 'systemsettings' : item?.id === 'website' ? 'websiteinfo' : item?.id === 'ecommerce' ? 'ecommercesystem' : ''}`}
-                className="nav-item fs-2"
+                className={`${item.style} nav-item fs-2`}
               >
                 <p
                   onClick={item?.click}
@@ -255,7 +257,10 @@ const VerticalLayout = (props) => {
                       (item.subItems || []).map((subItem, key) => (
                         <React.Fragment key={key}>
                           {!subItem.isChildItem ? (
-                            <li className="nav-item d-flex align-items-center">
+                            <li
+                              // style={subItem.style}
+                              className={`${subItem.style} nav-item `}
+                            >
                               <Link
                                 href={
                                   subItem.link
@@ -392,7 +397,7 @@ const VerticalLayout = (props) => {
                 </Collapse>
               </li>
             ) : (
-              <li className="nav-item fs-2">
+              <li className={`${item.style} nav-item fs-2`}>
                 <Link
                   className="nav-link menu-link"
                   href={item.link ? item.link : '/#'}

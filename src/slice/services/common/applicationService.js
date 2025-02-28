@@ -80,6 +80,16 @@ export const applicationService = createApi({
         };
       },
     }),
+    updateCommonApplicationStatus: builder.mutation({
+      query: (data) => {
+        const application_id = data.id;
+        return {
+          url: `/admission-manager/application/status/${application_id}`,
+          method: 'PATCH',
+          body: data,
+        };
+      },
+    }),
     updatePaymentApplicationStatus: builder.mutation({
       query: (data) => {
         const application_id = data.id;
@@ -104,4 +114,5 @@ export const {
   useCheckApplicationIsValidQuery,
   useUpdateApplicationStatusMutation,
   useUpdatePaymentApplicationStatusMutation,
+  useUpdateCommonApplicationStatusMutation,
 } = applicationService;
