@@ -1027,15 +1027,15 @@ const DataObjectComponent = () => {
   ];
 
   const accountantWidgetsData = [
-    {
-      id: 1,
-      label: 'registered agents',
-      counter: '25',
-      bgcolor: 'info',
-      icon: 'ri-group-2-fill',
-      link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
-    },
+    // {
+    //   id: 1,
+    //   label: 'registered agents',
+    //   counter: '25',
+    //   bgcolor: 'info',
+    //   icon: 'ri-group-2-fill',
+    //   link: 'View all',
+    //   pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
+    // },
 
     {
       id: 2,

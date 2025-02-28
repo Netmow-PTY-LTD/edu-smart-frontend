@@ -5,7 +5,6 @@ import SearchComponent from '@/components/common/SearchComponent';
 import SingleCountCard from '@/components/common/SingleCountCard';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import {
   useGetAgentEarningsQuery,
@@ -258,9 +257,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                   </div>
                 )}
 
-                {customData.hideforadmissionmanger ? (
-                  ''
-                ) : (
+                {customData.showInSuperAdmin ? (
                   <>
                     {activeTab === '2' && (
                       <div style={{ marginTop: '30px' }}>
@@ -291,6 +288,8 @@ const SingleAgentInSuperAdminDashboard = () => {
                       </div>
                     )}
                   </>
+                ) : (
+                  ''
                 )}
               </Row>
             </div>

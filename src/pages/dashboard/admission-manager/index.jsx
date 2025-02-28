@@ -70,9 +70,7 @@ const SuperAdminDashboard = () => {
                   </Row>
 
                   <Row xxl={12} className="g-5">
-                    {customData.hideforadmissionmanger ? (
-                      ''
-                    ) : (
+                    {customData.showInSuperAdmin ? (
                       <Col xxl={12}>
                         <LatestRegistered
                           tableHead={'Latest Registered University'}
@@ -87,30 +85,40 @@ const SuperAdminDashboard = () => {
                           }
                         />
                       </Col>
+                    ) : (
+                      ''
                     )}
 
-                    <Col xxl={6}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered Agents'}
-                        headers={[
-                          agentNameAndImageHeaderDataForSuperAdmin,
-                          ...agentsHeaders,
-                        ]}
-                        data={allAgentsData?.data ? allAgentsData?.data : []}
-                      />
-                    </Col>
-                    <Col xxl={6}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered Students'}
-                        headers={[
-                          studentImageAndNameHeaderDataForSuperAdmin,
-                          ...studentsHeaders,
-                        ]}
-                        data={
-                          allStudentsData?.data ? allStudentsData?.data : []
-                        }
-                      />
-                    </Col>
+                    {customData.hideInAccountant ? (
+                      ''
+                    ) : (
+                      <>
+                        <Col xxl={6}>
+                          <LatestRegistered
+                            tableHead={'Latest Registered Agents'}
+                            headers={[
+                              agentNameAndImageHeaderDataForSuperAdmin,
+                              ...agentsHeaders,
+                            ]}
+                            data={
+                              allAgentsData?.data ? allAgentsData?.data : []
+                            }
+                          />
+                        </Col>
+                        <Col xxl={6}>
+                          <LatestRegistered
+                            tableHead={'Latest Registered Students'}
+                            headers={[
+                              studentImageAndNameHeaderDataForSuperAdmin,
+                              ...studentsHeaders,
+                            ]}
+                            data={
+                              allStudentsData?.data ? allStudentsData?.data : []
+                            }
+                          />
+                        </Col>
+                      </>
+                    )}
                   </Row>
                 </div>
               </Col>

@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const PackagePaymentForSuperAdmin = () => {
+const TotalReceiveAmountForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
@@ -76,4 +76,4 @@ const PackagePaymentForSuperAdmin = () => {
   );
 };
 
-export default PackagePaymentForSuperAdmin;
+export default TotalReceiveAmountForSuperAdmin;
