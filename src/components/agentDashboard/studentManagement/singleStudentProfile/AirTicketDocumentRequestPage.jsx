@@ -39,7 +39,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   const perPageDataForRequest = 10;
   const perPageDataForSubmittedData = 10;
   const [initialValues, setInitialValues] = useState({
-    title: '',
+    title: 'Air Ticket', // Set default value
     description: '',
   });
 
@@ -49,6 +49,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     notes: '',
   });
 
+  // item?.requested_by.role === 'super_admin' ? 'Super Admin' : 'Agent'
   const [createDocumentRequest] =
     useCreateUserAirTicketDocRequestForAgentMutation();
 
@@ -78,7 +79,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   ] = useState('');
 
   const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required'),
+    title: Yup.string(),
     description: Yup.string().required('description is required'),
   });
 
@@ -111,6 +112,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       student_id,
     };
 
+    console.log('updatedata', updatedata);
     try {
       const result = createDocumentRequest(updatedata).unwrap();
       if (result) {
@@ -171,42 +173,50 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     {
       title: 'Action',
       key: 'actions',
-      render: (item) => (
-        <UncontrolledDropdown direction="end">
-          <DropdownToggle
-            tag="a"
-            className="text-reset dropdown-btn"
-            role="button"
-          >
-            <span className="button px-3">
-              <i className="ri-more-fill align-middle"></i>
-            </span>
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
-            <DropdownItem>
-              <div
-                className="text-primary"
-                onClick={() => {
-                  if (item?.status === 'submitted') {
-                    handleStatusChange(item?._id, 'accepted');
-                  } else {
-                    toast.error('Document must be submitted first');
-                  }
-                }}
-              >
-                <i class="ri-check-double-line me-2 text-success"></i>
-                Accepted
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div className="text-primary" onClick={() => togModal(item?._id)}>
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                Rejected
-              </div>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      ),
+      render: (item) => {
+        if (item?.requested_by?.role === 'super_admin') {
+          return <span className="text-capitalize">-</span>;
+        }
+        return (
+          <UncontrolledDropdown direction="end">
+            <DropdownToggle
+              tag="a"
+              className="text-reset dropdown-btn"
+              role="button"
+            >
+              <span className="button px-3">
+                <i className="ri-more-fill align-middle"></i>
+              </span>
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu dropdown-menu-end">
+              <DropdownItem>
+                <div
+                  className="text-primary"
+                  onClick={() => {
+                    if (item?.status === 'submitted') {
+                      handleStatusChange(item?._id, 'accepted');
+                    } else {
+                      toast.error('Document must be submitted first');
+                    }
+                  }}
+                >
+                  <i class="ri-check-double-line me-2 text-success"></i>
+                  Accepted
+                </div>
+              </DropdownItem>
+              <DropdownItem>
+                <div
+                  className="text-primary"
+                  onClick={() => togModal(item?._id)}
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Rejected
+                </div>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        );
+      },
     },
   ];
 
@@ -220,6 +230,12 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     if (singleDocument) {
       setRejectStatusInitialValues({ notes: singleDocument?.notes || '' });
     }
+
+    setAllUploadDocumentsForStudentsData(() => [
+      ...docRequestTableHeaderDataWithOutAction,
+      ...docRequestTableHeaderDataWithAction,
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSingleUserAirTicketDocumentRequest, docId]);
 
   return (
@@ -235,7 +251,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}
               >
-                Add Document Request
+                Add Request
               </button>
               <SearchComponent
                 searchTerm={searchTermForRequest}
@@ -243,7 +259,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
               />
             </CardHeader>
             <AirTicketDocumentRequestModalForm
-              formHeader={'Add Document'}
+              formHeader={'Add Air Ticket Document Request'}
               isOpen={addModalIsOpen}
               onClose={() => {
                 setAddModalIsOpen(!addModalIsOpen);
@@ -251,7 +267,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
               onSubmit={handleSubmit}
               initialValues={initialValues}
               validationSchema={validationSchema}
-              formSubmit={'Add Document'}
+              formSubmit={'Add Request'}
               setInitialValues={setInitialValues}
             />
             <CardBody>

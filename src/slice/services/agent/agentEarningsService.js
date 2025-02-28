@@ -31,8 +31,26 @@ export const agentEarningsService = createApi({
         };
       },
     }),
+
+    getAgentYearlyBonus: builder.query({
+      query: (id) => ({
+        url: `/yearly-bonus`,
+        method: 'GET',
+      }),
+    }),
+
+    getAgentFamilyTrip: builder.query({
+      query: (id) => ({
+        url: `/family-trip`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetEarningsQuery, useUpgradePackageForAgentMutation } =
-  agentEarningsService;
+export const {
+  useGetEarningsQuery,
+  useUpgradePackageForAgentMutation,
+  useGetAgentFamilyTripQuery,
+  useGetAgentYearlyBonusQuery,
+} = agentEarningsService;

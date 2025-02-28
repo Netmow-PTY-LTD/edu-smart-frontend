@@ -301,7 +301,7 @@ const DocumentRequestPage = ({ student_id }) => {
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}
               >
-                Add Document Request
+                Add Request
               </button>
               <SearchComponent
                 searchTerm={searchTerm}

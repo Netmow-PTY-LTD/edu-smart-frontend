@@ -3,6 +3,7 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { Progress } from 'reactstrap';
 
 export const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
@@ -177,6 +178,7 @@ const DataObjectComponent = () => {
   ];
 
   //student submitted doc header
+
   const studentSubmittedDocumentsHeaderWithoutAction = [
     {
       title: 'SN',
@@ -202,47 +204,98 @@ const DataObjectComponent = () => {
         );
       },
     },
+
     {
-      title: 'Name',
-      key: 'name',
+      title: 'Description',
+      key: 'description',
+      render: (item) => {
+        const maxLength = 40;
+        const description = item?.description || '-';
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [expanded, setExpanded] = useState(false);
+
+        const toggleDescription = () => {
+          setExpanded(!expanded);
+        };
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {expanded
+                ? description
+                : description.slice(0, maxLength) +
+                  (description.length > maxLength ? '...' : '')}
+              {description.length > maxLength && (
+                <span
+                  className="text-primary ms-1"
+                  style={{ cursor: 'pointer' }}
+                  onClick={toggleDescription}
+                >
+                  {expanded ? ' See Less' : ' See More'}
+                </span>
+              )}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Notes',
+      key: 'notes',
       render: (item) => (
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.user?.first_name ? item?.user?.first_name : ''} ${item?.user?.last_name ? item?.user?.last_name : ''}`}
+            {`${item?.notes ? item?.notes : '-'}`}
           </h5>
         </div>
       ),
     },
     {
-      title: 'Agent',
-      key: 'agent',
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          <FileViewer files={item?.files && item?.files} />
+        </div>
+      ),
+    },
+    {
+      title: 'Requested From',
+      key: 'requested_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.user?.agent?.first_name && item?.user?.agent?.last_name
-            ? `${item?.user?.agent?.first_name ? item?.user?.agent?.first_name : ''} ${item?.user?.agent?.last_name ? item?.user?.agent?.last_name : ''}`
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
             : '-'}
         </span>
       ),
     },
-
     {
-      title: 'Agent Email',
+      title: 'Requester Email',
       key: 'email',
       render: (item) => (
         <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.user?.agent?.email ? item?.user?.agent?.email : '-'}`}
+          <h5 className="fs-14 fw-medium ">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
           </h5>
         </div>
       ),
     },
     {
-      title: 'Description',
-      key: 'description',
+      title: 'Requester Role',
+      key: 'role',
       render: (item) => (
         <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.description ? item?.description : '-'}`}
+          <h5 className="fs-14 fw-medium  text-capitalize">
+            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
           </h5>
         </div>
       ),
@@ -262,7 +315,161 @@ const DataObjectComponent = () => {
                   ? 'text-warning'
                   : item?.status === 'requested'
                     ? 'text-primary'
-                    : ''
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  // student Doc upload request header
+  const studentRequestDocumentsHeaderWithoutAction = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => {
+        const maxLength = 40;
+        const description = item?.description || '-';
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const [expanded, setExpanded] = useState(false);
+
+        const toggleDescription = () => {
+          setExpanded(!expanded);
+        };
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {expanded
+                ? description
+                : description.slice(0, maxLength) +
+                  (description.length > maxLength ? '...' : '')}
+              {description.length > maxLength && (
+                <span
+                  className="text-primary ms-1"
+                  style={{ cursor: 'pointer' }}
+                  onClick={toggleDescription}
+                >
+                  {expanded ? ' See Less' : ' See More'}
+                </span>
+              )}
+            </h5>
+          </div>
+        );
+      },
+    },
+
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {item?.notes ? (
+            <span style={{ color: '#007BFF' }}>{item?.notes}</span>
+          ) : (
+            'No notes yet'
+          )}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Requested By',
+      key: 'requested_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium ">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium  text-capitalize">
+            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Uploaded Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          <FileViewer files={item?.files && item?.files} />
+        </div>
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
           }`}
         >
           {item?.status ? <span>{item?.status}</span> : '-'}
@@ -583,9 +790,7 @@ const DataObjectComponent = () => {
       key: 'application_id',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?._id
-            ? item?._id
-            : '-'}
+          {item?._id ? item?._id : '-'}
         </span>
       ),
     },
@@ -1526,17 +1731,22 @@ const DataObjectComponent = () => {
   ];
 
   const applicationHeadersWithoutAction = [
-    {
-      title: 'Invoice No',
-      key: 'createdAt',
-      render: (item) => (
-        <div>
-          {item?.createdAt
-            ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-            : ''}
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Invoice No',
+    //   key: 'createdAt',
+    //   render: (item) => (
+    //     // <div>
+    //     //   {item?.createdAt
+    //     //     ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
+    //     //     : ''}
+    //     // </div>
+    //     <div>
+    //       {item?._id
+    //         ? `${item._id}`
+    //         : '-'}
+    //     </div>
+    //     ),
+    // },
     {
       title: 'Name',
       key: 'student',
@@ -1557,7 +1767,7 @@ const DataObjectComponent = () => {
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+      render: (item) => <div>{item?.application?._id ?? 'N/A'}</div>,
     },
     // {
     //   title: 'Payment Date',
@@ -1714,6 +1924,7 @@ const DataObjectComponent = () => {
     docRequestTableHeaderDataWithoutAction,
     applicationHeadersWithoutAction,
     applicationPaymentHeadersWithoutAction,
+    studentRequestDocumentsHeaderWithoutAction,
   };
 };
 

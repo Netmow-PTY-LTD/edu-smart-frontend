@@ -34,7 +34,7 @@ const FileViewer = ({ files }) => {
             className="button me-2 px-4 py-2 "
             onClick={() => handlePreview(file.url)}
           >
-            Preview File
+            Preview
           </button>
         ))
       ) : (
