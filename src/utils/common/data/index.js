@@ -1557,7 +1557,7 @@ const DataObjectComponent = () => {
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+      render: (item) => <div>{item?.application?._id ?? 'N/A'}</div>,
     },
     // {
     //   title: 'Payment Date',
