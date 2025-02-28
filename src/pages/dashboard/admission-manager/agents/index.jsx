@@ -2,8 +2,10 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import DataObjectComponent from '@/utils/common/data';
+
 
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';

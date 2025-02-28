@@ -241,7 +241,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                             <CommonTableComponent
                               headers={[
                                 studentImageAndNameHeaderDataForSuperAdmin,
-                                studentsHeaders,
+                                ...studentsHeaders,
                               ]}
                               data={isFilteredData || []}
                               currentPage={currentPage}

@@ -5,7 +5,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
   useGetRecentApplicationsQuery,
-  useUpdateCommonApplicationStatusMutation,
+  useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
 import DataObjectComponent from '@/utils/common/data';
 import { useRouter } from 'next/router';
@@ -48,7 +48,7 @@ export default function RecentApplicationForSuperAdmin() {
       data: useUpdateApplicationStatusMutationData,
       isLoading: useUpdateApplicationStatusMutationLoading,
     },
-  ] = useUpdateCommonApplicationStatusMutation();
+  ] = useUpdateApplicationStatusMutation();
 
   const handleViewEmgsStatus = (id) => {
     setCurrentTimeline(id);
@@ -80,6 +80,9 @@ export default function RecentApplicationForSuperAdmin() {
 
   const searchInItem = (item, searchTerm) => {
     if (!searchTerm) return true; // If no search term, return all items
+
+    console.log(item);
+    console.log(searchTerm);
 
     if (typeof item === 'object' && item !== null) {
       return Object.values(item).some((value) =>

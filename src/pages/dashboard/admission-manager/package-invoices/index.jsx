@@ -24,7 +24,6 @@ import {
 const PackageInvoiceForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
   const [packageId, setPackageId] = useState('');
   const perPageData = 10;

@@ -11,12 +11,15 @@ import { useGetUniversityQuery } from '@/slice/services/super admin/universitySe
 import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const SuperAdminDashboard = () => {
+  const router = useRouter();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const { data: userInfodata, isLoading: userInfoIsLoading } =
@@ -33,10 +36,11 @@ const SuperAdminDashboard = () => {
     universityLogoAndNameHeaderDataForSuperAdminDashboard,
     universityHeadersData,
     agentNameAndImageHeaderDataForSuperAdmin,
-    studentImageAndNameHeaderDataForAdmissionManager,
     agentsHeaders,
+    studentImageAndNameHeaderDataForSuperAdmin,
     studentsHeaders,
   } = DataObjectComponent();
+
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -106,7 +110,7 @@ const SuperAdminDashboard = () => {
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
                         headers={[
-                          studentImageAndNameHeaderDataForAdmissionManager,
+                          studentImageAndNameHeaderDataForSuperAdmin,
                           ...studentsHeaders,
                         ]}
                         data={
