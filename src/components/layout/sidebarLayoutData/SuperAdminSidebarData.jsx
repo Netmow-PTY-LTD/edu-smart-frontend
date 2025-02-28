@@ -434,7 +434,7 @@ const SuperAdminSidebarData = () => {
       id: 'universities',
       label: 'Universities',
       icon: 'ri-school-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();
@@ -471,7 +471,7 @@ const SuperAdminSidebarData = () => {
       id: 'allpermittedusers',
       label: 'Roles & Permissions',
       icon: 'ri-user-star-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link:
         '/dashboard/' +
         `${paneltext}` +
@@ -488,7 +488,7 @@ const SuperAdminSidebarData = () => {
       id: 'invoices',
       label: 'Invoices',
       icon: 'ri-receipt-fill',
-      style: `${customeData.hideforadmissionmanger}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();
@@ -519,28 +519,28 @@ const SuperAdminSidebarData = () => {
       id: 'alldocuments',
       label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger}`,
       link: '/dashboard/' + `${paneltext}` + '/all-documents',
     },
     {
       id: 'package',
       label: 'Packages',
       icon: 'ri-price-tag-2-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/packages',
     },
     {
       id: 'coupon',
       label: 'Coupon Management',
       icon: 'ri-coupon-3-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/coupon-management',
     },
     {
       id: 'hotoffer',
       label: 'Hot Offers',
       icon: 'ri-fire-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/hot-offer',
     },
     {
@@ -562,7 +562,7 @@ const SuperAdminSidebarData = () => {
       id: 'blogs',
       label: 'Blogs',
       icon: 'ri-school-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();
@@ -593,7 +593,7 @@ const SuperAdminSidebarData = () => {
       id: 'contact-messages',
       label: 'Contact Messages',
       icon: 'ri-group-fill',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/contact-messages',
     },
 
@@ -613,7 +613,7 @@ const SuperAdminSidebarData = () => {
           id: 'paymentsettings',
           label: 'Payment Settings',
           icon: 'ri-refund-2-fill',
-          style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
           link: '/dashboard/' + `${paneltext}` + '/settings/payment',
           pathName: '/dashboard/' + `${paneltext}` + '/settings/payment',
           parentId: 'settings',
@@ -630,7 +630,7 @@ const SuperAdminSidebarData = () => {
           id: 'changeemail',
           label: 'Change Email',
           icon: 'ri-mail-add-fill',
-          style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
           link: '/dashboard/' + `${paneltext}` + '/settings/email',
           pathName: '/dashboard/' + `${paneltext}` + '/settings/email',
           parentId: 'settings',
@@ -639,7 +639,7 @@ const SuperAdminSidebarData = () => {
           id: 'changepassword',
           label: 'Change Password',
           icon: 'ri-lock-password-fill',
-          style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
           link: '/dashboard/' + `${paneltext}` + '/settings/password',
           pathName: '/dashboard/' + `${paneltext}` + '/settings/password',
           parentId: 'settings',
@@ -650,7 +650,7 @@ const SuperAdminSidebarData = () => {
       id: 'subscription',
       label: 'Subscription',
       icon: 'ri-rss-line',
-      style: `${(customeData.hideforadmissionmanger, customeData.hideforaccountant)}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();

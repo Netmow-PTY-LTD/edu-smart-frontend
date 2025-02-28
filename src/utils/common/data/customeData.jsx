@@ -8,7 +8,7 @@ export const useCustomData = () => {
   let hideforaccountant = '';
 
   if (userInfoData?.data?.role === 'admission_manager') {
-    paneltext = 'admission-managers';
+    paneltext = 'admission-manager';
     hideforadmissionmanger = `hide-div-for-manager`;
   }
   if (userInfoData?.data?.role === 'super_admin') {
