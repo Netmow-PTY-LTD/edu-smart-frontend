@@ -33,11 +33,12 @@ const AirTicketDocumentRequestModalForm = ({
                     <Row>
                       {/* Title Select Field */}
                       <Col md={12} xl={12}>
-                        <TextField label={'Title'} name={'title'} />
+                        <TextField label={'Title'} name={'title'} readOnly />
                       </Col>
                       <Col md={12} xl={12}>
                         <TextField
                           as="textarea"
+                          rows={4}
                           label={'Description'}
                           name={'description'}
                         />

@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 export const commonDocumentService = createApi({
   reducerPath: 'commonDocumentService',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/documents',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -21,7 +21,7 @@ export const commonDocumentService = createApi({
     getAllApplicationDocRequest: builder.query({
       query: () => {
         return {
-          url: '/application/request',
+          url: '/documents/application/request',
           method: 'GET',
         };
       },
@@ -31,7 +31,7 @@ export const commonDocumentService = createApi({
       query: (body) => {
         const application_id = body.application_id;
         return {
-          url: `/application/request/${application_id}`,
+          url: `/documents/application/request/${application_id}`,
           method: 'GET',
         };
       },
@@ -41,7 +41,7 @@ export const commonDocumentService = createApi({
       query: (body) => {
         const application_id = body.application_id;
         return {
-          url: `/application/upload/${application_id}`,
+          url: `/documents/application/upload/${application_id}`,
           method: 'POST',
           body,
         };
@@ -50,7 +50,7 @@ export const commonDocumentService = createApi({
     getAllApplicationSubmittedDocument: builder.query({
       query: () => {
         return {
-          url: '/all/application',
+          url: '/documents/all/application',
           method: 'GET',
         };
       },
@@ -59,7 +59,7 @@ export const commonDocumentService = createApi({
       query: (body) => {
         const application_id = body.application_id;
         return {
-          url: `/user/single/${application_id}`,
+          url: `/documents/user/single/${application_id}`,
           method: 'GET',
         };
       },
@@ -70,7 +70,7 @@ export const commonDocumentService = createApi({
     getAllUserDocRequest: builder.query({
       query: () => {
         return {
-          url: '/user/request',
+          url: '/documents/user/request',
           method: 'GET',
         };
       },
@@ -81,7 +81,7 @@ export const commonDocumentService = createApi({
         const student_id = body.student_id;
         console.log(body);
         return {
-          url: `/user/request/${student_id}`,
+          url: `/documents/user/request/${student_id}`,
           method: 'GET',
         };
       },
@@ -91,7 +91,7 @@ export const commonDocumentService = createApi({
       query: (body) => {
         const user_document_id = body.user_document_id;
         return {
-          url: `user/update/status/${user_document_id}`,
+          url: `/documents/user/update/status/${user_document_id}`,
           method: 'PATCH',
           body,
         };
@@ -101,7 +101,7 @@ export const commonDocumentService = createApi({
     getAllUserSubmittedDocument: builder.query({
       query: () => {
         return {
-          url: '/all/user',
+          url: '/documents/all/user',
           method: 'GET',
         };
       },
@@ -110,7 +110,7 @@ export const commonDocumentService = createApi({
       query: (body) => {
         const student_id = body.student_id;
         return {
-          url: `/user/single/${student_id}`,
+          url: `/documents/user/single/${student_id}`,
           method: 'GET',
         };
       },
@@ -120,7 +120,7 @@ export const commonDocumentService = createApi({
     getAllDocumentList: builder.query({
       query: () => {
         return {
-          url: '/list',
+          url: '/documents/list',
           method: 'GET',
         };
       },
@@ -129,7 +129,7 @@ export const commonDocumentService = createApi({
     GetAllStudentsAirticketDocumentRequest: builder.query({
       query: () => {
         return {
-          url: '/airticket/request',
+          url: '/documents/airticket/request',
           method: 'GET',
         };
       },
@@ -138,8 +138,19 @@ export const commonDocumentService = createApi({
       query: (body) => {
         const student_id = body.student_id;
         return {
-          url: `/airticket/request/${student_id}`,
+          url: `/documents/airticket/request/${student_id}`,
           method: 'GET',
+        };
+      },
+    }),
+
+    updateSingleAirTicketDocumentForAgent: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/airticket/document/${id}`,
+          method: 'PATCH',
+          body: body,
         };
       },
     }),
@@ -160,4 +171,5 @@ export const {
   useGetAllDocumentListQuery,
   useGetAllStudentsAirticketDocumentRequestQuery,
   useGetSingleUserAirTicketDocumentRequestQuery,
+  useUpdateSingleAirTicketDocumentForAgentMutation,
 } = commonDocumentService;

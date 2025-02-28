@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 export const superAdminAgentService = createApi({
   reducerPath: 'superAdminAgentService',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/super/agent/earnings',
+    baseUrl: `${serverInfo?.base_url_prod}` + '/api/v1/super/agent',
     prepareHeaders: (headers) => {
       const token = Cookies.get('token');
       if (token) {
@@ -17,7 +17,7 @@ export const superAdminAgentService = createApi({
   endpoints: (builder) => ({
     getAgentEarnings: builder.query({
       query: (id) => ({
-        url: `/${id}`,
+        url: `/earnings/${id}`,
         method: 'GET',
       }),
     }),
@@ -26,7 +26,7 @@ export const superAdminAgentService = createApi({
         const id = body instanceof FormData ? body.get('id') : body.id;
 
         return {
-          url: `/${id}`,
+          url: `/earnings/${id}`,
           method: 'PATCH',
           body,
         };
