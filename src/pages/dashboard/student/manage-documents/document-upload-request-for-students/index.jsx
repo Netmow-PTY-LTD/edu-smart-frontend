@@ -192,6 +192,17 @@ const AllUploadDocumentsForStudents = () => {
       ),
     },
     {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium  text-capitalize">
+            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
       title: 'Uploaded Files',
       key: 'files',
       render: (item) => (
