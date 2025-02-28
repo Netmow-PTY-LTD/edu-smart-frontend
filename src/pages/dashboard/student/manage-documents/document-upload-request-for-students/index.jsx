@@ -28,8 +28,7 @@ const AllUploadDocumentsForStudents = () => {
     description: '',
   });
 
-  const { studentSubmittedDocumentsHeaderWithoutAction } =
-    DataObjectComponent();
+  const { studentRequestDocumentsHeaderWithoutAction } = DataObjectComponent();
 
   const {
     data: getSingleStudentDocRequest,
@@ -187,7 +186,7 @@ const AllUploadDocumentsForStudents = () => {
               <CardBody>
                 <CommonTableComponent
                   headers={[
-                    ...studentSubmittedDocumentsHeaderWithoutAction,
+                    ...studentRequestDocumentsHeaderWithoutAction,
                     ...uploadAction,
                   ]}
                   data={isfilteredData ? isfilteredData : []}
