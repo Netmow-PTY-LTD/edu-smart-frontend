@@ -9,13 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const TotalReceiveAmountForSuperAdmin = () => {
+const UniversityPaymentPayoutForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { receivedAmountPaymentReportHeadersDataForSuperAdmin } =
+  const { universityPaymentPayoutReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
 
   const {
@@ -32,7 +32,11 @@ const TotalReceiveAmountForSuperAdmin = () => {
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
-    setAllPaymentData(combinedData);
+
+    const newData = combinedData.filter(
+      (item) => item?.payment_reason === 'application_tuition_fee'
+    );
+    setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
@@ -73,7 +77,7 @@ const TotalReceiveAmountForSuperAdmin = () => {
                 <CardBody>
                   <CommonTableComponent
                     headers={
-                      receivedAmountPaymentReportHeadersDataForSuperAdmin
+                      universityPaymentPayoutReportHeadersDataForSuperAdmin
                     }
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
@@ -93,4 +97,4 @@ const TotalReceiveAmountForSuperAdmin = () => {
   );
 };
 
-export default TotalReceiveAmountForSuperAdmin;
+export default UniversityPaymentPayoutForSuperAdmin;
