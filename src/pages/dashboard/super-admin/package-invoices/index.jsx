@@ -7,12 +7,8 @@ import {
   useGetPackagePaymentReportQuery,
   useGetSinglePackagePaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import {
-  brandlogo,
-  packagePaymentInvoieHeadersWithoutAction,
-  superAdminData,
-} from '@/utils/common/data';
+import DataObjectComponent, { brandlogo } from '@/utils/common/data';
+
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import {
@@ -28,12 +24,12 @@ import {
 const PackageInvoiceForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
   const [packageId, setPackageId] = useState('');
   const perPageData = 10;
 
-  const { data: userInfodata } = useGetUserInfoQuery();
+  const { superAdminData, packagePaymentInvoieHeadersWithoutAction } =
+    DataObjectComponent();
 
   const {
     data: packagePaymentData,

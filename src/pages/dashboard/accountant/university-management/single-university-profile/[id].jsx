@@ -10,11 +10,8 @@ import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/cou
 import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
 import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
 import { useGetSingleUniversityQuery } from '@/slice/services/super admin/universityService';
-import {
-  categoryHeaders,
-  courseHeaders,
-  departmentHeaders,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+
 import classnames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -26,6 +23,9 @@ const SingleUniversityProfile = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('1');
   const [currentPage, setCurrentPage] = useState(0);
+
+  const { departmentHeaders, categoryHeaders, courseHeaders } =
+    DataObjectComponent();
 
   const university_id = router.query.id;
 

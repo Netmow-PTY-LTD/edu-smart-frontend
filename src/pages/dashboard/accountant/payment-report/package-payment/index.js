@@ -3,7 +3,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetPackagePaymentReportQuery } from '@/slice/services/common/paymentReportServices';
-import { packagePaymentReportHeadersWithoutAction } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -12,6 +12,8 @@ const PackagePaymentForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
+
+  const { packagePaymentReportHeadersWithoutAction } = DataObjectComponent();
 
   const {
     data: packagePaymentData,

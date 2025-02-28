@@ -33,6 +33,8 @@ const SingleStudentForSuperAdmin = () => {
     }
   };
 
+
+
   return (
     <Layout>
       <div className="page-content">
@@ -65,6 +67,7 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -77,10 +80,11 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Documents
+                          Applied University
                         </span>
                       </NavLink>
                     </NavItem>
+
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -93,24 +97,7 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Document Request
-                        </span>
-                      </NavLink>
-                    </NavItem>
-
-                    <NavItem className="fs-14">
-                      <NavLink
-                        style={{ cursor: 'pointer' }}
-                        className={classnames({
-                          active: activeTab === '4',
-                        })}
-                        onClick={() => {
-                          toggleTab('4');
-                        }}
-                      >
-                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                        <span className="d-none d-md-inline-block">
-                          Applied University
+                          EMGS Status
                         </span>
                       </NavLink>
                     </NavItem>
@@ -126,7 +113,7 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          EMGS Status
+                          Air Ticket Document Request
                         </span>
                       </NavLink>
                     </NavItem>
@@ -142,6 +129,7 @@ const SingleStudentForSuperAdmin = () => {
                     </Col>
                   </div>
                 )}
+
                 {activeTab === '2' && (
                   <div style={{ marginTop: '50px' }}>
                     <DocumentPage

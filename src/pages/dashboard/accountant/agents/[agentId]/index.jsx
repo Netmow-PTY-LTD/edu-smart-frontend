@@ -5,17 +5,13 @@ import SearchComponent from '@/components/common/SearchComponent';
 import SingleCountCard from '@/components/common/SingleCountCard';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import {
   useGetAgentEarningsQuery,
   useUpdateAgentEarningsMutation,
 } from '@/slice/services/super admin/agentService';
-import {
-  agentEarnigsHeaders,
-  studentImageAndNameHeaderDataForSuperAdmin,
-  studentsHeaders,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -41,8 +37,13 @@ const SingleAgentInSuperAdminDashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const [activeTab, setActiveTab] = useState('1');
-
   const agent_id = router.query.agentId;
+
+  const {
+    studentImageAndNameHeaderDataForSuperAdmin,
+    agentEarnigsHeaders,
+    studentsHeaders,
+  } = DataObjectComponent();
 
   const {
     data: getSingleAgent,
@@ -52,7 +53,6 @@ const SingleAgentInSuperAdminDashboard = () => {
     skip: !agent_id,
   });
 
-  const { data: userInfodata } = useGetUserInfoQuery();
   const {
     data: agentEarningsData,
     isLoading: agentEarningLoading,

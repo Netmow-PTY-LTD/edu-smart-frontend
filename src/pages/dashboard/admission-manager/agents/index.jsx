@@ -2,12 +2,8 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import {
-  agentNameAndImageHeaderDataForSuperAdmin,
-  agentsHeaders,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
@@ -18,7 +14,9 @@ const AllAgentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
-  const { data: userInfodata } = useGetUserInfoQuery();
+  
+  const { agentNameAndImageHeaderDataForSuperAdmin, agentsHeaders } =
+    DataObjectComponent();
 
   const { data: allAgentsData, isLoading: allagentsIsloading } =
     useGetAllAgentQuery();

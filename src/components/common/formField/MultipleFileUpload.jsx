@@ -1,10 +1,12 @@
-import { allowedFileTypes } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
 const MultipleFileUpload = ({ field, form, label, ...props }) => {
   const [filePreviews, setFilePreviews] = useState([]);
   const [fileNames, setFileNames] = useState([]);
+
+  const { allowedFileTypes } = DataObjectComponent();
 
   const isValidFile = (file) => allowedFileTypes.includes(file?.type);
 
@@ -16,6 +18,7 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
       setFilePreviews(validFiles.map((file) => URL.createObjectURL(file)));
       setFileNames(validFiles.map((file) => file.name));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values, field.name]);
 
   const handleFileChange = (e) => {

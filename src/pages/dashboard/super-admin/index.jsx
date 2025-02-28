@@ -11,15 +11,17 @@ import { useGetUniversityQuery } from '@/slice/services/super admin/universitySe
 import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const SuperAdminDashboard = () => {
+  const router = useRouter();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
+
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
@@ -39,7 +41,6 @@ const SuperAdminDashboard = () => {
     studentsHeaders,
   } = DataObjectComponent();
 
-  console.log(totalIncome?.data);
 
   useEffect(() => {
     const token = Cookies.get('token');

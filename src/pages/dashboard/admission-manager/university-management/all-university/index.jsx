@@ -7,32 +7,25 @@ import {
   useDeleteUniversityMutation,
   useGetUniversityQuery,
 } from '@/slice/services/super admin/universityService';
-import {
-  universityHeadersData,
-  universityLogoAndNameHeaderDataForSuperAdminDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllUniversityForSuperAdmin = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
+
   const perPageData = 10;
+
+  const {
+    universityLogoAndNameHeaderDataForSuperAdminDashboard,
+    universityHeadersData,
+  } = DataObjectComponent();
 
   const {
     data: getUniversityData,
@@ -81,62 +74,6 @@ const AllUniversityForSuperAdmin = () => {
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const alluniversityHeaderAction = {
-    title: 'Action',
-    key: 'actions',
-    render: (item) => (
-      <UncontrolledDropdown className="card-header-dropdown">
-        <DropdownToggle
-          tag="a"
-          className="text-reset dropdown-btn"
-          role="button"
-        >
-          <span className="button px-3">
-            <i className="ri-more-fill align-middle"></i>
-          </span>
-        </DropdownToggle>
-        <DropdownMenu className="dropdown-menu dropdown-menu-end">
-          <DropdownItem>
-            <Link
-              href={`/dashboard/super-admin/university-management/single-university-profile/${item?._id}`}
-              className="text-primary"
-            >
-              <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-              Manage
-            </Link>
-          </DropdownItem>
-          <DropdownItem>
-            <Link
-              href={`/dashboard/super-admin/university-management/edit-university/${item?._id}`}
-              className="text-primary"
-            >
-              <i className="ri-pencil-fill align-start me-2 text-muted"></i>
-              Edit
-            </Link>
-          </DropdownItem>
-          <DropdownItem>
-            <div
-              onClick={() => handleDeleteButtonClick(item._id)}
-              className="text-primary"
-            >
-              <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-              Delete
-            </div>
-          </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    ),
-  };
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      universityLogoAndNameHeaderDataForSuperAdminDashboard,
-      ...universityHeadersData,
-      alluniversityHeaderAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Layout>
       <div className="page-content">
@@ -165,7 +102,10 @@ const AllUniversityForSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={allRegisteredUniversitydata}
+                    headers={[
+                      universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                      ...universityHeadersData,
+                    ]}
                     data={isfilteredData ? isfilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

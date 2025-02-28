@@ -1,4 +1,4 @@
-import { allowedFileTypes } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
@@ -6,6 +6,8 @@ const SingleFileUpload = ({ field, form, label, ...props }) => {
   const [filePreview, setFilePreview] = useState(null);
   const [fileType, setFileType] = useState(null);
   const [fileName, setFileName] = useState('');
+
+  const { allowedFileTypes } = DataObjectComponent();
 
   const isValidFile = (file) => {
     return allowedFileTypes.includes(file.type);

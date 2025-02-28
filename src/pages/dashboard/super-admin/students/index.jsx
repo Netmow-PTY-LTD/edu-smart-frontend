@@ -3,10 +3,8 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
-import {
-  studentImageAndNameHeaderDataForSuperAdmin,
-  studentsHeaders,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+
 import Link from 'next/link';
 
 import React, { useState } from 'react';
@@ -26,7 +24,8 @@ const AllStudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
-  // const [studentsHeadersData, setStudentHeadersData] = useState('');
+  const { studentImageAndNameHeaderDataForSuperAdmin, studentsHeaders } =
+    DataObjectComponent();
 
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();

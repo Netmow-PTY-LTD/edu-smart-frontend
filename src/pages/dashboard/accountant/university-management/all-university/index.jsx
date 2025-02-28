@@ -7,13 +7,10 @@ import {
   useDeleteUniversityMutation,
   useGetUniversityQuery,
 } from '@/slice/services/super admin/universityService';
-import {
-  universityHeadersData,
-  universityLogoAndNameHeaderDataForSuperAdminDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -30,8 +27,7 @@ const AllUniversityForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
+
   const perPageData = 10;
 
   const {
@@ -128,14 +124,10 @@ const AllUniversityForSuperAdmin = () => {
     ),
   };
 
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      universityLogoAndNameHeaderDataForSuperAdminDashboard,
-      ...universityHeadersData,
-      alluniversityHeaderAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {
+    universityLogoAndNameHeaderDataForSuperAdminDashboard,
+    universityHeadersData,
+  } = DataObjectComponent();
 
   return (
     <Layout>
@@ -165,7 +157,10 @@ const AllUniversityForSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={allRegisteredUniversitydata}
+                    headers={[
+                      universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                      ...universityHeadersData,
+                    ]}
                     data={isfilteredData ? isfilteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

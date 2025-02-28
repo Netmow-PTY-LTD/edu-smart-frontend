@@ -1,3 +1,4 @@
+import FileViewer from '@/components/common/FileViewer';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import moment from 'moment';
 import Image from 'next/image';
@@ -862,6 +863,25 @@ const DataObjectComponent = () => {
       ),
     },
 
+    {
+      title: 'Course Picture',
+      key: 'img',
+      render: (item, index) => (
+        <div className="d-flex flex-column text-capitalize">
+          {item.image && (
+            <Image
+              src={item.image.url}
+              alt={`Course ${index + 1}`}
+              width={40}
+              height={40}
+              className="mt-2 rounded"
+              style={{ objectFit: 'cover' }}
+            />
+          )}
+        </div>
+      ),
+    },
+
     { title: 'Course Name', key: 'name' },
     {
       title: 'Available Seats',
@@ -873,31 +893,39 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Course Fee',
-      key: 'price',
+      title: 'EMGS Fee',
+      key: 'emgs_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.price}
+          {item?.emgs_fee || item?.price}
         </span>
       ),
     },
     {
-      title: 'GST In Course Fee (%)',
-      key: 'gst',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{item?.gst}</span>
-      ),
-    },
-    {
-      title: 'Agent Commission (%)',
-      key: 'agent_commission',
+      title: 'Balance Payable',
+      key: 'after_emgs_fee',
       render: (item, index) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.agent_commission}
+          {item?.after_emgs_fee || item?.price}
         </span>
       ),
     },
-
+    {
+      title: 'Total Fee',
+      key: 'tuition_fee',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.tuition_fee || item?.university_price}
+        </span>
+      ),
+    },
+    {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <p className="text-wrap me-5">{item?.auto_deduct ? 'Yes' : 'No'}</p>
+      ),
+    },
     {
       title: 'Description',
       key: 'description',
@@ -1045,38 +1073,6 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-school-fill',
       link: 'View all',
-      pathName:
-        `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
-    },
-
-    {
-      id: 2,
-      label: 'registered agents',
-      counter: '25',
-      bgcolor: 'info',
-      icon: 'ri-group-2-fill',
-      link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
-    },
-    {
-      id: 3,
-      label: 'registered students',
-      counter: '55',
-      bgcolor: 'warning',
-      icon: 'ri-group-fill',
-      link: 'View  all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/students`,
-    },
-  ];
-
-  const agentProfileWidgetData = [
-    {
-      id: 1,
-      label: 'Registered UNIVERSITIES',
-      counter: '4',
-      bgcolor: 'info',
-      icon: 'ri-school-fill',
-      link: 'View all',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
     },
 
@@ -1088,6 +1084,37 @@ const DataObjectComponent = () => {
       icon: 'ri-group-2-fill',
       link: 'View all',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents`,
+    },
+    {
+      id: 3,
+      label: 'registered students',
+      counter: '55',
+      bgcolor: 'warning',
+      icon: 'ri-group-fill',
+      link: 'View  all',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/students`,
+    },
+  ];
+
+  const agentProfileWidgetData = [
+    {
+      id: 1,
+      label: 'Registered UNIVERSITIES',
+      counter: '4',
+      bgcolor: 'info',
+      icon: 'ri-school-fill',
+      link: 'View all',
+      pathName: `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
+    },
+
+    {
+      id: 2,
+      label: 'registered agents',
+      counter: '25',
+      bgcolor: 'info',
+      icon: 'ri-group-2-fill',
+      link: 'View all',
+      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
     },
   ];
 
@@ -1360,6 +1387,281 @@ const DataObjectComponent = () => {
     },
   ];
 
+  const docRequestTableHeaderDataWithoutAction = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Requester Email',
+      key: 'email',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium ">
+            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const applicationHeadersWithoutAction = [
+    {
+      title: 'Invoice No',
+      key: 'createdAt',
+      render: (item) => (
+        <div>
+          {item?.createdAt
+            ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
+            : ''}
+        </div>
+      ),
+    },
+    {
+      title: 'Name',
+      key: 'student',
+      render: (item) => (
+        <div>
+          {item?.student?.first_name || item?.student?.last_name
+            ? `${item.student.first_name} ${item.student.last_name}`
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course_name',
+      render: (item) => <div>{item?.application?.course.name ?? 'N/A'}</div>,
+    },
+
+    {
+      title: 'Application ID',
+      key: 'application',
+      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+    },
+    // {
+    //   title: 'Payment Date',
+    //   key: 'payment_date',
+    //   render: (item) => (
+    //     <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+    //   ),
+    // },
+    {
+      title: 'Emgs Payment',
+      key: 'emgs_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.emgs_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Tuition Payment',
+      key: 'tuition_fee_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.tuition_fee_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+    },
+  ];
+
+  const applicationPaymentHeadersWithoutAction = [
+    {
+      title: 'Student Name',
+      key: 'student',
+      render: (item) => (
+        <div>
+          {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
+        </div>
+      ),
+    },
+    {
+      title: 'Application ID',
+      key: 'application',
+      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+    },
+    {
+      title: 'Applied By',
+      key: 'applied_by',
+      render: (item) => (
+        <div>
+          {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
+            'N/A'}
+        </div>
+      ),
+    },
+    {
+      title: 'Paid Amount',
+      key: 'paid_amount',
+    },
+    {
+      title: 'University Price',
+      key: 'university_price',
+    },
+    {
+      title: 'Agent Package',
+      key: 'package',
+      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
+    },
+    {
+      title: 'Package Commission %',
+      key: 'agent_package',
+      render: (item) => (
+        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
+      ),
+    },
+    {
+      title: 'Hot Offer Commission %',
+      key: 'hot_offer',
+      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
+    },
+    {
+      title: 'Package Commission Amount',
+      key: 'agent_commission',
+    },
+    {
+      title: 'Hot Offer Commission Amount',
+      key: 'agent_commision_by_hot_offer',
+    },
+    {
+      title: 'Super Admin Profit',
+      key: 'super_admin_profit',
+    },
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+      ),
+    },
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+    },
+  ];
+
   return {
     accountantWidgetsData,
     admissionManagerWidgetsData,
@@ -1398,6 +1700,9 @@ const DataObjectComponent = () => {
     universityLogoAndNameHeaderDataForAgentDashboard,
     universityLogoAndNameHeaderDataForSuperAdminDashboard,
     userDummyImage,
+    docRequestTableHeaderDataWithoutAction,
+    applicationHeadersWithoutAction,
+    applicationPaymentHeadersWithoutAction,
   };
 };
 

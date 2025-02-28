@@ -10,7 +10,9 @@ import {
   useGetCourseQuery,
   useUpdateCourseMutation,
 } from '@/slice/services/super admin/courseService';
-import { allowedFileTypes } from '@/utils/common/data';
+import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
+import DataObjectComponent from '@/utils/common/data';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -24,8 +26,6 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 import CourseModalForm from '../modals/CourseModalForm';
-import Image from 'next/image';
-import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
 
 const AllCourseForSuperAdmin = ({
   university_id,
@@ -63,6 +63,8 @@ const AllCourseForSuperAdmin = ({
     program_duration: '',
     image: null,
   });
+
+  const { allowedFileTypes } = DataObjectComponent();
 
   const [
     addCourse,
