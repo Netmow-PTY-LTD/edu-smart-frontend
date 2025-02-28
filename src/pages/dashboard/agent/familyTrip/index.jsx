@@ -1,4 +1,5 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import ProgressBar from '@/components/common/ProgressBar';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
@@ -75,22 +76,10 @@ export default function AgentFamilyTrip() {
       title: 'Target Status',
       key: 'target_status',
       render: (item) => (
-        <Progress
-          className="my-2"
-          style={{
-            height: '13px',
-            borderRadius: '20px',
-            backgroundColor: 'rgba(75, 77, 70, 0.18)',
-          }}
-          color="success"
-          value={Math.trunc(
-            ((item?.target_achieved ?? 0) / (item?.target ?? 0)) * 100
-          )}
-        >
-          <span className="fs-12 fw-semibold">
-            {(item?.target_achieved ?? 0) + ' / ' + (item?.target ?? 0)}
-          </span>
-        </Progress>
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
       ),
     },
 
