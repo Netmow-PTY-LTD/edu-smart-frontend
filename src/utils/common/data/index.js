@@ -1073,37 +1073,6 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-school-fill',
       link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
-    },
-
-    {
-      id: 2,
-      label: 'registered agents',
-      counter: '25',
-      bgcolor: 'info',
-      icon: 'ri-group-2-fill',
-      link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
-    },
-    {
-      id: 3,
-      label: 'registered students',
-      counter: '55',
-      bgcolor: 'warning',
-      icon: 'ri-group-fill',
-      link: 'View  all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/students`,
-    },
-  ];
-
-  const agentProfileWidgetData = [
-    {
-      id: 1,
-      label: 'Registered UNIVERSITIES',
-      counter: '4',
-      bgcolor: 'info',
-      icon: 'ri-school-fill',
-      link: 'View all',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
     },
 
@@ -1115,6 +1084,37 @@ const DataObjectComponent = () => {
       icon: 'ri-group-2-fill',
       link: 'View all',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents`,
+    },
+    {
+      id: 3,
+      label: 'registered students',
+      counter: '55',
+      bgcolor: 'warning',
+      icon: 'ri-group-fill',
+      link: 'View  all',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/students`,
+    },
+  ];
+
+  const agentProfileWidgetData = [
+    {
+      id: 1,
+      label: 'Registered UNIVERSITIES',
+      counter: '4',
+      bgcolor: 'info',
+      icon: 'ri-school-fill',
+      link: 'View all',
+      pathName: `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
+    },
+
+    {
+      id: 2,
+      label: 'registered agents',
+      counter: '25',
+      bgcolor: 'info',
+      icon: 'ri-group-2-fill',
+      link: 'View all',
+      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
     },
   ];
 
