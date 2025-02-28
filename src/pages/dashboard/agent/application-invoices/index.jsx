@@ -50,14 +50,29 @@ const ApplicationInvoiceInSuperAdmin = () => {
     refetch: getSingleApplicationPaymentReportDataRefetch,
   } = useGetSingleApplicationPaymentReportQuery(applicationId);
 
+  // // search input change function
+  // const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+  // // Filter data for search option
+  // const filteredData = getApplicationPaymentData?.data?.filter((item) => {
+  //   const fullName =
+  //     `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
+  //   return fullName?.includes(searchTerm.toLowerCase());
+  // });
+
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const filteredData = getApplicationPaymentData?.data?.filter((item) => {
-    const fullName =
-      `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
-    return fullName?.includes(searchTerm.toLowerCase());
+    // Convert the entire item object to a string (excluding any undefined or null values)
+    const itemString = JSON.stringify(item).toLowerCase();
+
+    const isValidPaymentReason = item?.payment_reason === 'application_emgs';
+
+    return (
+      itemString.includes(searchTerm.toLowerCase()) && isValidPaymentReason
+    );
   });
 
   const handleShowInvoice = () => {
@@ -197,7 +212,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Application Payment Report
+                    Application Invoice
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}

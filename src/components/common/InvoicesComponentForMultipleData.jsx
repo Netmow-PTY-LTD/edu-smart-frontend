@@ -170,11 +170,12 @@ const InvoicesComponentForMultipleData = ({
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Invoice No
                       </p>
-                      <p className="mb-0">
+                      {/* <p className="mb-0 text-uppercase">
                         {invoice_no?.createdAt
                           ? `INV-${new Date(invoice_no.createdAt).getFullYear().toString().slice(-2)}${(new Date(invoice_no.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getDate().toString().padStart(2, '0')}-${new Date(invoice_no.createdAt).getHours().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getSeconds().toString().padStart(2, '0')}`
                           : ''}
-                      </p>
+                      </p> */}
+                      <p className="mb-0 text-uppercase">{invoice_no?._id}</p>
                     </Col>
                     <Col lg={3} xs={3}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
