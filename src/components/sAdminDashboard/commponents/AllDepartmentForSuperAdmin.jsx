@@ -10,6 +10,7 @@ import {
   useGetDepartmentQuery,
   useUpdateDepartmentMutation,
 } from '@/slice/services/super admin/departmentService';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -39,6 +40,8 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
     name: '',
     description: '',
   });
+
+  const { allDepartmentsWithoutAction } = DataObjectComponent();
 
   const [
     addDepartment,
@@ -208,50 +211,6 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   // Define table headers with custom render functions
   const headers = [
     {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize ">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Department Name', key: 'name' },
-    {
-      title: 'Course Category',
-      key: 'categories',
-      render: (item, index) =>
-        item?.categories?.length > 0
-          ? item?.categories?.map((category) => (
-              <span key={index} className="d-flex flex-column text-capitalize me-5">
-                {category?.name}
-              </span>
-            ))
-          : '-',
-    },
-    {
-      title: 'Courses',
-      key: 'courses',
-      render: (item, index) =>
-        item?.courses?.length > 0
-          ? item?.courses.map((course) => (
-              <span key={index} className="d-flex flex-column text-capitalize me-5">
-                {course?.name}
-              </span>
-            ))
-          : '-',
-    },
-
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-
-    {
       title: 'Action',
       key: 'actions',
       render: (item) => (
@@ -323,7 +282,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
 
           <CardBody>
             <CommonTableComponent
-              headers={headers}
+              headers={[...allDepartmentsWithoutAction, ...headers]}
               data={isfilteredData ? isfilteredData : []}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}

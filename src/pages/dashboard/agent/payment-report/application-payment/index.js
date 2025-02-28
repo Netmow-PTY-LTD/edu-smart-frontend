@@ -3,8 +3,8 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetApplicationPaymentReportQuery } from '@/slice/services/common/paymentReportServices';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import DataObjectComponent from '@/utils/common/data';
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
@@ -13,6 +13,8 @@ const ApplicationPaymentForAgent = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [applicationPaymentData, setApplicationPaymentData] = useState('');
   const perPageData = 10;
+
+  const { applicationPaymentHeadersWithoutAction } = DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
@@ -32,82 +34,6 @@ const ApplicationPaymentForAgent = () => {
       `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
     return fullName?.includes(searchTerm.toLowerCase());
   });
-
-  const applicationHeadersWithoutAction = [
-    {
-      title: 'Student Name',
-      key: 'student',
-      render: (item) => (
-        <div>
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
-        </div>
-      ),
-    },
-    {
-      title: 'Application ID',
-      key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Applied By',
-      key: 'applied_by',
-      render: (item) => (
-        <div>
-          {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
-            'N/A'}
-        </div>
-      ),
-    },
-    {
-      title: 'Paid Amount',
-      key: 'paid_amount',
-    },
-    {
-      title: 'University Price',
-      key: 'university_price',
-    },
-    {
-      title: 'Agent Package',
-      key: 'package',
-      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Package Commission %',
-      key: 'agent_package',
-      render: (item) => (
-        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
-      ),
-    },
-    {
-      title: 'Hot Offer Commission %',
-      key: 'hot_offer',
-      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Package Commission Amount',
-      key: 'agent_commission',
-    },
-    {
-      title: 'Hot Offer Commission Amount',
-      key: 'agent_commision_by_hot_offer',
-    },
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
-      render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
-      ),
-    },
-    {
-      title: 'Payment Method',
-      key: 'payment_method',
-    },
-  ];
-
-  useEffect(() => {
-    setApplicationPaymentData([...applicationHeadersWithoutAction]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Layout>
@@ -131,7 +57,7 @@ const ApplicationPaymentForAgent = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={applicationPaymentData}
+                    headers={[...applicationPaymentHeadersWithoutAction]}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

@@ -13,8 +13,8 @@ import {
   useUpdateCourseMutation,
 } from '@/slice/services/super admin/courseService';
 import { useGetDocumentInSuperAdminQuery } from '@/slice/services/super admin/documentService';
-import { allowedFileTypes } from '@/utils/common/data';
-import Image from 'next/image';
+
+import DataObjectComponent from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -84,6 +84,8 @@ const AllCourseForSuperAdminTest = ({
     free_air_ticket: false,
   });
 
+  const { allCoursesWithoutAction, allowedFileTypes } = DataObjectComponent();
+
   // document_list_id:
   const [
     addCourse,
@@ -109,40 +111,6 @@ const AllCourseForSuperAdminTest = ({
     isLoading: getDocumentIsLoading,
     refetch: getDocuemtnRefetch,
   } = useGetDocumentInSuperAdminQuery();
-
-  // const documentOptions = getDocumentData?.data?.map((item) => ({
-  //   value: item._id,
-  //   label: item.title,
-  // }));
-
-  //  const getSingleCourseDataForDocumentData =
-  //    getCourseData?.data?.length > 0 &&
-  //    getCourseData?.data.find((item) => item?._id === courseIdForEdit);
-
-  //    console.log(getSingleCourseDataForDocumentData?.document_requirements);
-
-  //    // Create a new variable to hold the merged data
-  //    let mergedData = [];
-
-  //    // Check if getDocumentData has a data property that is an array
-  //    if (getDocumentData && Array.isArray(getDocumentData.data)) {
-  //      // Copy existing data
-  //      mergedData = [...getDocumentData.data];
-
-  //      // Add documentRequirements data with description as _id
-  //      getSingleCourseDataForDocumentData?.document_requirements.forEach((requirement) => {
-  //        // Check if the _id already exists in mergedData
-  //        const existingRequirement = mergedData.find(item => item._id === requirement.document_list_id);
-  //        if (!existingRequirement) {
-  //          mergedData.push({
-  //            ...requirement,
-  //            _id: requirement.document_list_id,
-  //          });
-  //        }
-  //      });
-  //    } else {
-  //      console.error('getDocumentData.data is not an array');
-  //    }
 
   const getSingleCourseDataForDocumentData =
     getCourseData?.data?.length > 0 &&
@@ -228,9 +196,6 @@ const AllCourseForSuperAdminTest = ({
     setAllDepartmentName(allDept ? allDept : []);
   }, [allDepartmentData, allCategoryData]);
 
-  /* "_id": "67aad711257ff7fa00a36ecf",
-            "title": "Academic Transcripts", */
-
   useEffect(() => {
     if (getCourseData?.data && courseIdForEdit) {
       const getSingleCourseData =
@@ -240,10 +205,6 @@ const AllCourseForSuperAdminTest = ({
       const filterDoc = getSingleCourseData?.document_requirements.map(
         (item) => item?.title
       );
-
-      // const filterDocInitialData = Array.isArray(getDocumentData)
-      //   ? getDocumentData.filter((item) => item.label === filterDoc)
-      //   : [];
 
       const fetchData = async () => {
         try {
@@ -357,24 +318,7 @@ const AllCourseForSuperAdminTest = ({
       .required('Available Seats is required'),
     department: Yup.string().required('Department selection is required'),
     category: Yup.string().required('Course Category selection is required'),
-    // price: Yup.number()
-    //   .typeError('Course Fee must be a number')
-    //   .min(0, 'Course Fee cannot be negative')
-    //   .required('Course Fee is required'),
-    // university_price: Yup.number()
-    //   .typeError('University Fee must be a number')
-    //   .min(0, 'University Fee cannot be negative')
-    //   .required('University Fee is required'),
-    // gst: Yup.number()
-    //   .typeError('GST must be a number')
-    //   .min(0, 'GST cannot be negative')
-    //   .max(100, 'GST cannot be more than 100%')
-    //   .required('GST is required'),
-    // agent_commission_percentage: Yup.number()
-    //   .typeError('Agent Commission must be a number')
-    //   .min(0, 'Agent Commission cannot be negative')
-    //   .max(100, 'Agent Commission cannot be more than 100%')
-    //   .required('Agent Commission is required'),
+
     program_duration: Yup.string().required('Program Duration is required'),
     brochure: Yup.mixed().required('Brochure file is required'),
     image: Yup.mixed().required('Course Picture is required'),
@@ -382,18 +326,6 @@ const AllCourseForSuperAdminTest = ({
     description: Yup.string()
       .min(20, 'Description must be at least 20 characters')
       .required('Course Description is required'),
-
-    // document_requirements: Yup.array()
-    //   .of(
-    //     Yup.object().shape({
-    //       title: Yup.string().required('Document Title is required'),
-    //       description: Yup.string()
-    //         .min(5, 'Document Description must be at least 5 characters')
-    //         .required('Document Description is required'),
-    //       isRequired: Yup.boolean(),
-    //     })
-    //   )
-    //   .min(1, 'At least one document requirement is required'),
     document_requirements: Yup.array().optional(),
 
     entry_requirements: Yup.array()
@@ -417,9 +349,6 @@ const AllCourseForSuperAdminTest = ({
         document_list_id: item.document_list_id,
       }));
 
-    //   const modifiedDocData=[...filteredData, ...values.document_requirements]
-    // console.log('from handle submit filtered data==>', filteredData);
-
     const allData = {
       ...values,
       university_id: university_id,
@@ -430,35 +359,6 @@ const AllCourseForSuperAdminTest = ({
 
     try {
       const finalData = new FormData();
-
-      //  Object.entries(allData).forEach(([key, value]) => {
-      //    if (Array.isArray(value)) {
-      //      value.forEach((item, index) => {
-      //        if (
-      //          key === 'entry_requirements' ||
-      //          key === 'english_requirements'
-      //        ) {
-      //          finalData.append(`${key}[${index}]`, item);
-      //        } else if (key === 'document_requirements') {
-      //          finalData.append(`${key}[${index}][title]`, item.title);
-      //          finalData.append(
-      //            `${key}[${index}][description]`,
-      //            item.description
-      //          );
-      //          finalData.append(
-      //            `${key}[${index}][isRequired]`,
-      //            item.isRequired ?? false
-      //          );
-      //          finalData.append(
-      //            `${key}[${index}][document_list_id]`,
-      //            item.document_list_id
-      //          );
-      //        }
-      //      });
-      //    } else {
-      //      finalData.append(key, value);
-      //    }
-      //  });
 
       Object.entries(allData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -617,33 +517,6 @@ const AllCourseForSuperAdminTest = ({
     try {
       const finalData = new FormData();
 
-      // Object.entries(allData).forEach(([key, value]) => {
-      //   if (Array.isArray(value)) {
-      //     if (key === 'document_requirements' && value.length === 0) {
-      //       // Ensure an empty array by appending an empty key
-      //       finalData.append(`${key}[]`, []);
-      //     } else {
-      //       value.forEach((item, index) => {
-      //         if (key === 'entry_requirements' || key === 'english_requirements') {
-      //           finalData.append(`${key}[${index}]`, item);
-      //         } else if (key === 'document_requirements') {
-      //           // Only append fields that have defined (non-null and non-undefined) values
-      //           if (item.title != null) finalData.append(`${key}[${index}][title]`, item.title);
-      //           if (item.description != null) finalData.append(`${key}[${index}][description]`, item.description);
-      //           if (item.isRequired != null) finalData.append(`${key}[${index}][isRequired]`, item.isRequired);
-
-      //           // Only append document_list_id if it is neither undefined nor null
-      //           if (item.document_list_id != null) {
-      //             finalData.append(`${key}[${index}][document_list_id]`, item.document_list_id);
-      //           }
-      //         }
-      //       });
-      //     }
-      //   } else {
-      //     finalData.append(key, value);
-      //   }
-      // });
-
       Object.entries(allData).forEach(([key, value]) => {
         if (Array.isArray(value)) {
           if (key === 'document_requirements' && value.length === 0) {
@@ -756,103 +629,6 @@ const AllCourseForSuperAdminTest = ({
   // Define table headers with custom render functions
   const headers = [
     {
-      title: 'SN',
-      key: 'sn',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    {
-      title: 'Course Picture',
-      key: 'img',
-      render: (item, index) => (
-        <div className="d-flex flex-column text-capitalize">
-          {item.image && (
-            <Image
-              src={item.image.url}
-              alt={`Course ${index + 1}`}
-              width={40}
-              height={40}
-              className="mt-2 rounded"
-              style={{ objectFit: 'cover' }}
-            />
-          )}
-        </div>
-      ),
-    },
-
-    { title: 'Course Name', key: 'name' },
-    {
-      title: 'Available Seats',
-      key: 'available_seats',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.available_seats}
-        </span>
-      ),
-    },
-    {
-      title: 'EMGS Fee',
-      key: 'emgs_fee',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.emgs_fee || item?.price}
-        </span>
-      ),
-    },
-    {
-      title: 'Balance Payable',
-      key: 'after_emgs_fee',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.after_emgs_fee || item?.price}
-        </span>
-      ),
-    },
-    {
-      title: 'Total Fee',
-      key: 'tuition_fee',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.tuition_fee || item?.university_price}
-        </span>
-      ),
-    },
-    // {
-    //   title: 'GST In Course Fee (%)',
-    //   key: 'gst',
-    //   render: (item, index) => (
-    //     <span className="d-flex flex-column text-capitalize">{item?.gst}</span>
-    //   ),
-    // },
-    // {
-    //   title: 'Agent Commission (%)',
-    //   key: 'agent_commission_percentage',
-    //   render: (item, index) => (
-    //     <span className="d-flex flex-column text-capitalize">
-    //       {item?.agent_commission_percentage}
-    //     </span>
-    //   ),
-    // },
-    {
-      title: 'Auto Deduct',
-      key: 'auto_deduct',
-      render: (item) => (
-        <p className="text-wrap me-5">{item?.auto_deduct ? 'Yes' : 'No'}</p>
-      ),
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-
-    {
       title: 'Action',
       key: 'actions',
       render: (item) => (
@@ -948,7 +724,7 @@ const AllCourseForSuperAdminTest = ({
 
           <CardBody>
             <CommonTableComponent
-              headers={headers}
+              headers={[...allCoursesWithoutAction, ...headers]}
               data={isfilteredData ? isfilteredData : []}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}

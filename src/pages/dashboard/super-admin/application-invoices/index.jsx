@@ -8,9 +8,7 @@ import {
   useGetApplicationPaymentReportQuery,
   useGetSingleApplicationPaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
-import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
-import { brandlogo, superAdminData } from '@/utils/common/data';
-import moment from 'moment';
+import DataObjectComponent, { brandlogo } from '@/utils/common/data';
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import {
@@ -32,7 +30,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   const perPageData = 10;
 
-  const { data: userInfodata } = useGetUserInfoQuery();
+  const { superAdminData, applicationHeadersWithoutAction } =
+    DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
@@ -59,79 +58,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
       `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
     return fullName?.includes(searchTerm.toLowerCase());
   });
-
-  const applicationHeadersWithoutAction = [
-    {
-      title: 'Invoice No',
-      key: 'createdAt',
-      render: (item) => (
-        <div>
-          {item?.createdAt
-            ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-            : ''}
-        </div>
-      ),
-    },
-    {
-      title: 'Name',
-      key: 'student',
-      render: (item) => (
-        <div>
-          {item?.student?.first_name || item?.student?.last_name
-            ? `${item.student.first_name} ${item.student.last_name}`
-            : '-'}
-        </div>
-      ),
-    },
-    {
-      title: 'Course',
-      key: 'course_name',
-      render: (item) => <div>{item?.application?.course.name ?? 'N/A'}</div>,
-    },
-
-    {
-      title: 'Application ID',
-      key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
-    },
-    // {
-    //   title: 'Payment Date',
-    //   key: 'payment_date',
-    //   render: (item) => (
-    //     <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
-    //   ),
-    // },
-    {
-      title: 'Emgs Payment',
-      key: 'emgs_payment_status',
-      render: (item) => (
-        <p
-          className={` badge fw-semibold text-center me-4 ${item?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
-        >
-          <span className="text-uppercase">
-            {item?.application?.emgs_payment_status ?? ''}
-          </span>
-        </p>
-      ),
-    },
-    {
-      title: 'Tuition Payment',
-      key: 'tuition_fee_payment_status',
-      render: (item) => (
-        <p
-          className={` badge fw-semibold text-center me-4 ${item?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
-        >
-          <span className="text-uppercase">
-            {item?.application?.tuition_fee_payment_status ?? ''}
-          </span>
-        </p>
-      ),
-    },
-    {
-      title: 'Payment Method',
-      key: 'payment_method',
-    },
-  ];
 
   const ActionData = {
     title: 'Action',

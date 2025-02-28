@@ -7,10 +7,7 @@ import {
   useAllStudentForAgentQuery,
   useDeleteStudentForAgentMutation,
 } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import {
-  studentsHeaders,
-  studentsImageAndNameHeaderDataInAgentDashboard,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -29,8 +26,10 @@ const AllStudentsForAgent = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [studentIdForDelete, setStudentIdForDelete] = useState('');
-
   const perPageData = 10;
+
+  const { studentsImageAndNameHeaderDataInAgentDashboard, studentsHeaders } =
+    DataObjectComponent();
 
   const {
     data: allStudentForAgentData,

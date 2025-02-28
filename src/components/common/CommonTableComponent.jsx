@@ -25,7 +25,7 @@ const CommonTableComponent = ({
               {headers?.length > 0 &&
                 headers?.map((header, index) => (
                   <th key={index} scope="col">
-                    {header.title}
+                    {header?.title}
                   </th>
                 ))}
             </tr>

@@ -1,18 +1,16 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
-import React, { useEffect, useState } from 'react';
+import DataObjectComponent from '@/utils/common/data';
+import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 
 const AppliedUniversityPageSuper = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
-  // -------------------- Just for UI example this data will come from API -----------------------
-  const [
-    AllUploadDocumentsForStudentsData,
-    setAllUploadDocumentsForStudentsData,
-  ] = useState('');
+  const { studentSubmittedDocumentsHeaderWithoutAction } =
+    DataObjectComponent();
+
   const perPageData = 10;
 
   // search input change function
@@ -39,20 +37,12 @@ const AppliedUniversityPageSuper = () => {
     },
   ];
 
-  useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
-      ...studentSubmittedDocumentsHeaderWithoutAction,
-      ...uploadAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <Row>
       <div>
         <Card>
           <CardHeader className="d-flex justify-content-between align-items-center">
-          Applied University
+            Applied University
             <SearchComponent
               searchTerm={searchTerm}
               handleSearchChange={handleSearchChange}
@@ -60,7 +50,10 @@ const AppliedUniversityPageSuper = () => {
           </CardHeader>
           <CardBody>
             <CommonTableComponent
-              headers={AllUploadDocumentsForStudentsData}
+              headers={[
+                ...studentSubmittedDocumentsHeaderWithoutAction,
+                ...uploadAction,
+              ]}
               data={isfilteredData ? isfilteredData : []}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}

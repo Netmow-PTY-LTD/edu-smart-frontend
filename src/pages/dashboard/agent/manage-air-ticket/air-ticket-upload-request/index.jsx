@@ -14,28 +14,29 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 
 // Services
-import { useGetAllUserAirTicketDocSubmitedFilestForAgentQuery } from '@/slice/services/agent/agentDocumentServices';
+import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import {
-  useGetAllStudentsAirticketDocumentRequestQuery,
-  useUpdateSingleAirTicketDocumentForAgentMutation,
-} from '@/slice/services/common/commonDocumentService';
+  useGetAllSubmittedAirTicketDocumentsForStudentQuery,
+  useUpdateSingleAirTicketDocumentForStudentMutation,
+} from '@/slice/services/student/studentSubmitDocumentService';
+import { currentUser } from '@/utils/currentUserHandler';
+
+// HEADERS
 
 import {
-  REQUEST_TABLE_HEADERS,
-  SUBMITTED_TABLE_HEADERS,
-} from '@/utils/common/data/agentData';
+  REQUEST_TABLE_HEADERS_FOR_STUDENT,
+  SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
+} from '@/utils/common/data/studentData';
 
 const StudentAirtTicketDocumentUploadRequestForAgent = () => {
   // State Management
   const [searchTerms, setSearchTerms] = useState({
-    superAdmin: '',
-    agent: '',
+    requested: '',
     submitted: '',
   });
 
   const [currentPages, setCurrentPages] = useState({
-    superAdmin: 0,
-    agent: 0,
+    requested: 0,
     submitted: 0,
   });
 
@@ -46,36 +47,23 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
   });
 
   // API Queries
+  const user = currentUser();
   const {
-    data: allDocumentRequests,
-    isLoading: requestsLoading,
-    error: requestsError,
-    refetch: refetchRequests,
-  } = useGetAllStudentsAirticketDocumentRequestQuery();
+    data: getSingleStudentAirTicketDocRequest,
+    isLoading: getSingleStudentAirTicketDocRequestIsLoading,
+    refetch: getSingleStudentAirTicketDocRequestRefetch,
+    error: requestedError,
+  } = useGetSingleUserAirTicketDocumentRequestQuery({ student_id: user?.id });
 
   const {
-    data: submittedDocuments,
-    isLoading: submittedLoading,
+    data: getSingleStudentAirTicketDocSubmittedData,
+    isLoading: getSingleStudentAirTicketDocSubmittedIsLoading,
+    refetch: getSingleStudentAirTicketDocSubmittedRefetch,
     error: submittedError,
-    refetch: refetchSubmitted,
-  } = useGetAllUserAirTicketDocSubmitedFilestForAgentQuery();
+  } = useGetAllSubmittedAirTicketDocumentsForStudentQuery();
 
-  const [submitDocument] = useUpdateSingleAirTicketDocumentForAgentMutation();
-
-  // Memoized Data Processing
-  const { superAdminRequests, agentRequests } = useMemo(
-    () => ({
-      superAdminRequests:
-        allDocumentRequests?.data?.filter(
-          (item) => item.requested_by.role === 'super_admin'
-        ) || [],
-      agentRequests:
-        allDocumentRequests?.data?.filter(
-          (item) => item.requested_by.role === 'agent'
-        ) || [],
-    }),
-    [allDocumentRequests]
-  );
+  const [submitSingleDocumentForStudent] =
+    useUpdateSingleAirTicketDocumentForStudentMutation();
 
   // Handlers
   const handleSearchChange = (section) => (e) => {
@@ -97,7 +85,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     const prepareModalData = async () => {
       if (!modalState.docId) return;
 
-      const requestData = allDocumentRequests?.data?.find(
+      const requestData = getSingleStudentAirTicketDocRequest?.data?.find(
         (item) => item._id === modalState.docId
       );
 
@@ -119,7 +107,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     };
 
     prepareModalData();
-  }, [modalState.docId, allDocumentRequests]);
+  }, [modalState.docId, getSingleStudentAirTicketDocRequest]);
 
   // Form Submission
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -137,13 +125,13 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
         }
       });
 
-      const result = await submitDocument(formData).unwrap();
+      const result = await submitSingleDocumentForStudent(formData).unwrap();
+
       if (result.success) {
         toast.success(result?.message);
-        refetchRequests();
-        refetchSubmitted();
+        getSingleStudentAirTicketDocRequestRefetch();
+        getSingleStudentAirTicketDocSubmittedRefetch();
       }
-
       toggleModal();
     } catch (error) {
       toast.error(error?.data?.message || 'Submission failed');
@@ -162,42 +150,37 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     actions: {
       title: 'Actions',
       key: 'actions',
-      render: (item) =>
-        item.requested_by?.role === 'agent' ? (
-          <span>-</span>
-        ) : (
-          <button
-            className="button px-3 py-1"
-            onClick={() => toggleModal(item?._id)}
-          >
-            Upload
-          </button>
-        ),
+      render: (item) => (
+        <button
+          className="button px-3 py-1"
+          onClick={() => toggleModal(item?._id)}
+        >
+          Upload
+        </button>
+      ),
     },
   };
 
   const tableConfigs = {
     submitted: {
-      data: submittedDocuments?.data || [],
-      filteredData: submittedDocuments?.data?.filter(
+      data: getSingleStudentAirTicketDocSubmittedData?.data || [],
+      filteredData: getSingleStudentAirTicketDocSubmittedData?.data?.filter(
         createDataFilter(searchTerms.submitted)
       ),
-      headers: SUBMITTED_TABLE_HEADERS,
+      headers: SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
       searchTerm: searchTerms.submitted,
     },
-    agentRequests: {
-      data: agentRequests,
-      filteredData: agentRequests.filter(createDataFilter(searchTerms.agent)),
-      headers: REQUEST_TABLE_HEADERS,
-      searchTerm: searchTerms.agent,
-    },
-    superAdminRequests: {
-      data: superAdminRequests,
-      filteredData: superAdminRequests.filter(
-        createDataFilter(searchTerms.superAdmin)
+
+    requested: {
+      data: getSingleStudentAirTicketDocRequest?.data || [],
+      filteredData: getSingleStudentAirTicketDocRequest?.data.filter(
+        createDataFilter(searchTerms.requested)
       ),
-      headers: [...REQUEST_TABLE_HEADERS, TABLE_HEADERS_ACTIONS.actions],
-      searchTerm: searchTerms.superAdmin,
+      headers: [
+        ...REQUEST_TABLE_HEADERS_FOR_STUDENT,
+        TABLE_HEADERS_ACTIONS.actions,
+      ],
+      searchTerm: searchTerms.requested,
     },
   };
 
@@ -206,43 +189,31 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       <div className="page-content">
         <div className="h-100">
           <ToastContainer />
+
+          {/*  Requests Section */}
+          <DocumentSection
+            title="Document Requested  "
+            config={tableConfigs.requested}
+            loading={getSingleStudentAirTicketDocRequestIsLoading}
+            error={requestedError}
+            currentPage={currentPages.requested}
+            onPageChange={(page) =>
+              setCurrentPages((prev) => ({ ...prev, requested: page }))
+            }
+            onSearch={handleSearchChange('requested')}
+          />
+
           {/* Submitted Documents Section */}
           <DocumentSection
             title="Document Submitted"
             config={tableConfigs.submitted}
-            loading={submittedLoading}
+            loading={getSingleStudentAirTicketDocSubmittedIsLoading}
             error={submittedError}
             currentPage={currentPages.submitted}
             onPageChange={(page) =>
               setCurrentPages((prev) => ({ ...prev, submitted: page }))
             }
             onSearch={handleSearchChange('submitted')}
-          />
-
-          {/* Agent Requests Section */}
-          <DocumentSection
-            title="Requests from You"
-            config={tableConfigs.agentRequests}
-            loading={requestsLoading}
-            error={requestsError}
-            currentPage={currentPages.agent}
-            onPageChange={(page) =>
-              setCurrentPages((prev) => ({ ...prev, agent: page }))
-            }
-            onSearch={handleSearchChange('agent')}
-          />
-
-          {/* Super Admin Requests Section */}
-          <DocumentSection
-            title="Document Requested from Super Admin"
-            config={tableConfigs.superAdminRequests}
-            loading={requestsLoading}
-            error={requestsError}
-            currentPage={currentPages.superAdmin}
-            onPageChange={(page) =>
-              setCurrentPages((prev) => ({ ...prev, superAdmin: page }))
-            }
-            onSearch={handleSearchChange('superAdmin')}
           />
 
           {/* Document Upload Modal */}

@@ -52,7 +52,7 @@ const AddEmgsModal = ({ isOpen, onClose, dataRefetch, emgs_status_id }) => {
           {({ isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form>
               <Row>
-                <Col xl={6}>
+                <Col xl={12}>
                   <div className="mb-3">
                     <TextField name="title" label="Title" />
                   </div>

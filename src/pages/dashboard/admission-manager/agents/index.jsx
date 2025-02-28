@@ -4,21 +4,21 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
-import {
-  agentNameAndImageHeaderDataForAdmissionManager,
-  agentsHeaders,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+
 
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
-const AgentPageForAdmissionManagerDashboard = () => {
+const AllAgentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
-  const { data: userInfodata } = useGetUserInfoQuery();
+  
+  const { agentNameAndImageHeaderDataForSuperAdmin, agentsHeaders } =
+    DataObjectComponent();
 
   const { data: allAgentsData, isLoading: allagentsIsloading } =
     useGetAllAgentQuery();
@@ -54,7 +54,7 @@ const AgentPageForAdmissionManagerDashboard = () => {
                 <CardBody className="p-4">
                   <CommonTableComponent
                     headers={[
-                      agentNameAndImageHeaderDataForAdmissionManager,
+                      agentNameAndImageHeaderDataForSuperAdmin,
                       ...agentsHeaders,
                     ]}
                     data={isFilteredData ? isFilteredData : []}
@@ -76,4 +76,4 @@ const AgentPageForAdmissionManagerDashboard = () => {
 };
 
 // export default ProtectedRoute(AdminDashboard);
-export default AgentPageForAdmissionManagerDashboard;
+export default AllAgentsPage;

@@ -9,6 +9,7 @@ import {
   useGetAllCourseCategoriesQuery,
   useUpdateCourseCategoryMutation,
 } from '@/slice/services/super admin/courseCategoriesService';
+import DataObjectComponent from '@/utils/common/data';
 
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -41,6 +42,8 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
     description: '',
     department: '',
   });
+
+  const { allCourseCategoryWithoutAction } = DataObjectComponent();
 
   const [
     addCourseCategory,
@@ -239,34 +242,6 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
   // Define table headers with custom render functions
   const headers = [
     {
-      title: 'SN',
-      key: 'key',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
-      ),
-    },
-
-    { title: 'Course Category ', key: 'name' },
-    {
-      title: 'Department ',
-      key: 'department',
-      render: (item, index) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.department?.name}
-        </span>
-      ),
-    },
-    {
-      title: 'Description',
-      key: 'description',
-      render: (item) => (
-        <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-        </p>
-      ),
-    },
-
-    {
       title: 'Action',
       key: 'actions',
       render: (item) => (
@@ -342,7 +317,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
 
               <CardBody>
                 <CommonTableComponent
-                  headers={headers}
+                  headers={[...allCourseCategoryWithoutAction, ...headers]}
                   data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
