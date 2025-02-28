@@ -7,6 +7,7 @@ import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCove
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import { useGetStudentForSuperAdminQuery } from '@/slice/services/super admin/sutdentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -23,7 +24,7 @@ const SingleStudentForSuperAdmin = () => {
     data: getSingleStudent,
     isLoading: getSingleStudenIsLoadingForStudent,
     refetch: getSingleStudenRefetch,
-  } = useSingleStudentForAgentQuery(student_id, {
+  } = useGetStudentForSuperAdminQuery(student_id, {
     skip: !student_id,
   });
 
@@ -32,8 +33,6 @@ const SingleStudentForSuperAdmin = () => {
       setActiveTab(tab);
     }
   };
-
-
 
   return (
     <Layout>
@@ -67,7 +66,6 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -80,11 +78,10 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Applied University
+                          Documents
                         </span>
                       </NavLink>
                     </NavItem>
-
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -97,7 +94,24 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          EMGS Status
+                          Document Request
+                        </span>
+                      </NavLink>
+                    </NavItem>
+
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '4',
+                        })}
+                        onClick={() => {
+                          toggleTab('4');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Applied University
                         </span>
                       </NavLink>
                     </NavItem>
@@ -113,7 +127,7 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Air Ticket Document Request
+                          EMGS Status
                         </span>
                       </NavLink>
                     </NavItem>
@@ -129,7 +143,6 @@ const SingleStudentForSuperAdmin = () => {
                     </Col>
                   </div>
                 )}
-
                 {activeTab === '2' && (
                   <div style={{ marginTop: '50px' }}>
                     <DocumentPage

@@ -6,10 +6,13 @@ export const useCustomData = () => {
   let paneltext = '';
   let hideforadmissionmanger = '';
   let hideforaccountant = '';
+  let needhidemanageryes = '';
+  let needhideaccountantyes = '';
 
   if (userInfoData?.data?.role === 'admission_manager') {
     paneltext = 'admission-manager';
     hideforadmissionmanger = `hide-div-for-manager`;
+    needhidemanageryes = 'yes';
   }
   if (userInfoData?.data?.role === 'super_admin') {
     paneltext = 'super-admin';
@@ -18,6 +21,7 @@ export const useCustomData = () => {
   if (userInfoData?.data?.role === 'accountant') {
     paneltext = 'accountant';
     hideforaccountant = `hide-div-for-accountant`;
+    needhideaccountantyes = 'yes';
   }
 
   if (userInfoData?.data?.role === 'agent') {
@@ -28,5 +32,11 @@ export const useCustomData = () => {
     paneltext = 'student';
   }
 
-  return { paneltext, hideforadmissionmanger, hideforaccountant };
+  return {
+    paneltext,
+    hideforadmissionmanger,
+    hideforaccountant,
+    needhidemanageryes,
+    needhideaccountantyes,
+  };
 };

@@ -19,7 +19,6 @@ const AllUniversityForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
-
   const perPageData = 10;
 
   const {
