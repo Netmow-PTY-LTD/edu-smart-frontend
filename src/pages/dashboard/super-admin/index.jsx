@@ -9,18 +9,15 @@ import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStu
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const SuperAdminDashboard = () => {
-  const router = useRouter();
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const customData = useCustomData();
 
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
@@ -40,17 +37,6 @@ const SuperAdminDashboard = () => {
     studentImageAndNameHeaderDataForSuperAdmin,
     studentsHeaders,
   } = DataObjectComponent();
-
-
-  useEffect(() => {
-    const token = Cookies.get('token');
-
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      window.location.href = '/auth/login';
-    }
-  }, []);
 
   return (
     <Layout>
@@ -84,18 +70,25 @@ const SuperAdminDashboard = () => {
                   </Row>
 
                   <Row xxl={12} className="g-5">
-                    <Col xxl={12}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered University'}
-                        headers={[
-                          universityLogoAndNameHeaderDataForSuperAdminDashboard,
-                          ...universityHeadersData,
-                        ]}
-                        data={
-                          getUniversityData?.data ? getUniversityData?.data : []
-                        }
-                      />
-                    </Col>
+                    {customData.hideforadmissionmanger ? (
+                      ''
+                    ) : (
+                      <Col xxl={12}>
+                        <LatestRegistered
+                          tableHead={'Latest Registered University'}
+                          headers={[
+                            universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                            ...universityHeadersData,
+                          ]}
+                          data={
+                            getUniversityData?.data
+                              ? getUniversityData?.data
+                              : []
+                          }
+                        />
+                      </Col>
+                    )}
+
                     <Col xxl={6}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
