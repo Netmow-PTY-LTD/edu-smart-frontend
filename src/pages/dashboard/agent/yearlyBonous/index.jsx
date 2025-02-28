@@ -58,34 +58,24 @@ export default function AgentYarlyBonous() {
         </span>
       ),
     },
-
     {
       title: 'Target Status',
       key: 'target_status',
       render: (item) => (
         <Progress
-          className="my-2 "
+          className="my-2"
           style={{
             height: '13px',
             borderRadius: '20px',
             backgroundColor: 'rgba(75, 77, 70, 0.18)',
           }}
           color="success"
-          value={
-            (item?.agent_package?.target?.target_achieved /
-              item?.agent_package?.target?.target) *
-              100 >
-            0
-              ? (item?.agent_package?.target?.target_achieved /
-                  item?.agent_package?.target?.target) *
-                100
-              : 15
-          }
+          value={Math.trunc(
+            ((item?.target_achieved ?? 0) / (item?.target ?? 0)) * 100
+          )}
         >
           <span className="fs-12 fw-semibold">
-            {item?.target_achieved || 0}
-            {' / '}
-            {item?.target || 0}
+            {(item?.target_achieved ?? 0) + ' / ' + (item?.target ?? 0)}
           </span>
         </Progress>
       ),
