@@ -1731,17 +1731,22 @@ const DataObjectComponent = () => {
   ];
 
   const applicationHeadersWithoutAction = [
-    {
-      title: 'Invoice No',
-      key: 'createdAt',
-      render: (item) => (
-        <div>
-          {item?.createdAt
-            ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-            : ''}
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Invoice No',
+    //   key: 'createdAt',
+    //   render: (item) => (
+    //     // <div>
+    //     //   {item?.createdAt
+    //     //     ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
+    //     //     : ''}
+    //     // </div>
+    //     <div>
+    //       {item?._id
+    //         ? `${item._id}`
+    //         : '-'}
+    //     </div>
+    //     ),
+    // },
     {
       title: 'Name',
       key: 'student',
@@ -1762,7 +1767,7 @@ const DataObjectComponent = () => {
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+      render: (item) => <div>{item?.application?._id ?? 'N/A'}</div>,
     },
     // {
     //   title: 'Payment Date',
