@@ -1525,9 +1525,7 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
+      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
     },
 
     {
@@ -1535,8 +1533,7 @@ const DataObjectComponent = () => {
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? 'N/A'}{' '}
-          {'MYR'}
+          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1561,7 +1558,7 @@ const DataObjectComponent = () => {
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {(item?.paid_amount || 0).toFixed(2) ?? 'N/A'} {'MYR'}
+          {(item?.paid_amount || 0).toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1570,7 +1567,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
@@ -1611,16 +1608,14 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
+      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
     },
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {item?.paid_amount ?? 'N/A'} {'MYR'}
+          {item?.paid_amount ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1633,7 +1628,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
   ];
@@ -2179,7 +2174,7 @@ const DataObjectComponent = () => {
       key: 'course_name',
       render: (item) => (
         <div className="text-capitalize">
-          {item?.application?.course.name ?? 'N/A'}
+          {item?.application?.course.name ?? '-'}
         </div>
       ),
     },
@@ -2188,7 +2183,7 @@ const DataObjectComponent = () => {
       title: 'Application ID',
       key: 'application',
       render: (item) => (
-        <div className="text-uppercase">{item?.application?._id ?? 'N/A'}</div>
+        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
       ),
     },
     {
@@ -2221,25 +2216,49 @@ const DataObjectComponent = () => {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="text-capitalize">{item?.payment_method ?? 'N/A'}</div>
+        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
       ),
     },
   ];
 
   const applicationPaymentHeadersWithoutAction = [
     {
-      title: 'Student Name',
-      key: 'student',
-      render: (item) => (
-        <div className="text-capitalize">
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
         </div>
       ),
     },
     {
-      title: 'Application ID',
-      key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student',
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
     },
     {
       title: 'Applied By',
@@ -2247,54 +2266,87 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div>
           {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
-            'N/A'}
+            '-'}
         </div>
       ),
     },
     {
-      title: 'Paid Amount',
-      key: 'paid_amount',
-    },
-    {
-      title: 'University Price',
-      key: 'university_price',
-    },
-    {
-      title: 'Agent Package',
-      key: 'package',
-      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Package Commission %',
-      key: 'agent_package',
+      title: 'Course Fee',
+      key: 'course_fee',
       render: (item) => (
-        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
+        <div>
+          {item?.application?.course?.tuition_fee
+            ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
+            : '-'}
+        </div>
       ),
     },
     {
-      title: 'Hot Offer Commission %',
-      key: 'hot_offer',
-      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
+      title: 'Emgs Fee Paid Amount',
+      key: 'emgs_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_emgs'
+            ? item?.application?.emgs_fee_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Tuition Fee Paid Amount',
+      key: 'tuition_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.tuition_fee_paid_amount
+            ? item?.tuition_fee_paid_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
     },
     {
-      title: 'Package Commission Amount',
+      title: 'Course Incentive Amount',
+      key: 'course_incentive_amount',
+      render: (item) => (
+        <div>
+          {item?.incentive_amount ? item?.incentive_amount + ' ' + 'MYR' : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Commission',
       key: 'agent_commission',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_tuition_fee'
+            ? item?.agent_commission + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
     },
-    {
-      title: 'Hot Offer Commission Amount',
-      key: 'agent_commision_by_hot_offer',
-    },
+
     {
       title: 'Super Admin Profit',
       key: 'super_admin_profit',
-    },
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>
+          {item?.payment_reason === 'application_tuition_fee'
+            ? item?.incentive_amount - item?.agent_commission + ' ' + 'MYR'
+            : item?.incentive_amount
+              ? item?.incentive_amount
+              : '-'}
+        </div>
       ),
     },
+    // {
+    //   title: 'Payment Status',
+    //   key: 'status',
+    //   render: (item) => (
+    //     <div className="badge bg-success-subtle text-success text-capitalize">
+    //       {item?.status ?? '-'}
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Payment Method',
       key: 'payment_method',
