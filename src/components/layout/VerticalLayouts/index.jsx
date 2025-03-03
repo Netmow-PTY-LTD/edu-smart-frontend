@@ -8,15 +8,13 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
-import AccountantSidebarData from '../sidebarLayoutData/AccountantSidebarData';
-import AdmissionManagerSidebarData from '../sidebarLayoutData/AdmissionManagerData';
 import AgentSidebarData from '../sidebarLayoutData/AgentSidebarData';
 import StudentSidebarData from '../sidebarLayoutData/StudentSidebarData';
 import SuperAdminSidebarData from '../sidebarLayoutData/SuperAdminSidebarData';
 import UniversityAdministratorSidebarData from '../sidebarLayoutData/UniversitySidebardata';
-import { useCustomData } from '@/utils/common/data/customeData';
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
@@ -26,17 +24,8 @@ const VerticalLayout = (props) => {
   const agentSidebarData = AgentSidebarData().props.children;
   const universitySidebarData =
     UniversityAdministratorSidebarData().props.children;
-  const admissionManagerSidebarData =
-    AdmissionManagerSidebarData().props.children;
-  const accountantSidebarData = AccountantSidebarData().props.children;
 
   const { data: userInfodata } = useGetUserInfoQuery();
-  const customeData = useCustomData();
-
-  // const userInfodata = {
-  //   data: { role: 'admission_manager' },
-  // };
-
   const selectLayoutState = (state) => state.Layout;
 
   const selectLayoutProperties = createSelector(
