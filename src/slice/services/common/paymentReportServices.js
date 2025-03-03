@@ -47,6 +47,14 @@ export const paymentReportService = createApi({
         };
       },
     }),
+    getAllPaymentReport: builder.query({
+      query: () => {
+        return {
+          url: `/payment-reports/all`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -55,4 +63,5 @@ export const {
   useGetPackagePaymentReportQuery,
   useGetSingleApplicationPaymentReportQuery,
   useGetSinglePackagePaymentReportQuery,
+  useGetAllPaymentReportQuery,
 } = paymentReportService;

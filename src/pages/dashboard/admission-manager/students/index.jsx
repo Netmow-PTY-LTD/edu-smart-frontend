@@ -4,6 +4,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 
 import Link from 'next/link';
 
@@ -24,6 +25,9 @@ const AllStudentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
+
+  const customData = useCustomData();
+
   const { studentImageAndNameHeaderDataForSuperAdmin, studentsHeaders } =
     DataObjectComponent();
 
@@ -66,24 +70,31 @@ const AllStudentsPage = () => {
               View Profile
             </Link>
           </DropdownItem>
-          <DropdownItem>
-            <Link
-              href={`/dashboard/super-admin/students/edit-student-for-super-admin/${item?._id}`}
-              className="text-primary"
-            >
-              <i className="ri-pencil-fill align-start me-2 text-muted"></i>
-              Edit
-            </Link>
-          </DropdownItem>
-          {/* <DropdownItem>
-              <div
-                onClick={() => handleDeleteButtonClick(item._id)}
-                className="text-primary"
-              >
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                Delete
-              </div>
-            </DropdownItem> */}
+
+          {customData.hideforadmissionmanger ? (
+            ''
+          ) : (
+            <>
+              <DropdownItem>
+                <Link
+                  href={`/dashboard/super-admin/students/edit-student-for-super-admin/${item?._id}`}
+                  className="text-primary"
+                >
+                  <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+                  Edit
+                </Link>
+              </DropdownItem>
+              {/* <DropdownItem>
+                <div
+                  onClick={() => handleDeleteButtonClick(item._id)}
+                  className="text-primary"
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Delete
+                </div>
+              </DropdownItem> */}
+            </>
+          )}
         </DropdownMenu>
       </UncontrolledDropdown>
     ),

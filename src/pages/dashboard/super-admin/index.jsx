@@ -9,28 +9,31 @@ import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStu
 import { useGetToatalIncomeInSuperAdminQuery } from '@/slice/services/super admin/superAdminStatsServices';
 import { useGetUniversityQuery } from '@/slice/services/super admin/universityService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Col, Row } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
 const SuperAdminDashboard = () => {
-  const router = useRouter();
-
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const customData = useCustomData();
 
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
+
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();
+
   const { data: allAgentsData, isLoading: allAgentsIsLoading } =
     useGetAllAgentQuery();
+
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
+
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
+
+  console.log(totalIncome?.data);
 
   const {
     universityLogoAndNameHeaderDataForSuperAdminDashboard,
@@ -40,17 +43,6 @@ const SuperAdminDashboard = () => {
     studentImageAndNameHeaderDataForSuperAdmin,
     studentsHeaders,
   } = DataObjectComponent();
-
-
-  useEffect(() => {
-    const token = Cookies.get('token');
-
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      window.location.href = '/auth/login';
-    }
-  }, []);
 
   return (
     <Layout>
@@ -84,40 +76,55 @@ const SuperAdminDashboard = () => {
                   </Row>
 
                   <Row xxl={12} className="g-5">
-                    <Col xxl={12}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered University'}
-                        headers={[
-                          universityLogoAndNameHeaderDataForSuperAdminDashboard,
-                          ...universityHeadersData,
-                        ]}
-                        data={
-                          getUniversityData?.data ? getUniversityData?.data : []
-                        }
-                      />
-                    </Col>
-                    <Col xxl={6}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered Agents'}
-                        headers={[
-                          agentNameAndImageHeaderDataForSuperAdmin,
-                          ...agentsHeaders,
-                        ]}
-                        data={allAgentsData?.data ? allAgentsData?.data : []}
-                      />
-                    </Col>
-                    <Col xxl={6}>
-                      <LatestRegistered
-                        tableHead={'Latest Registered Students'}
-                        headers={[
-                          studentImageAndNameHeaderDataForSuperAdmin,
-                          ...studentsHeaders,
-                        ]}
-                        data={
-                          allStudentsData?.data ? allStudentsData?.data : []
-                        }
-                      />
-                    </Col>
+                    {customData.showInSuperAdmin ? (
+                      <Col xxl={12}>
+                        <LatestRegistered
+                          tableHead={'Latest Registered University'}
+                          headers={[
+                            universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                            ...universityHeadersData,
+                          ]}
+                          data={
+                            getUniversityData?.data
+                              ? getUniversityData?.data
+                              : []
+                          }
+                        />
+                      </Col>
+                    ) : (
+                      ''
+                    )}
+
+                    {customData.hideInAccountant ? (
+                      ''
+                    ) : (
+                      <>
+                        <Col xxl={6}>
+                          <LatestRegistered
+                            tableHead={'Latest Registered Agents'}
+                            headers={[
+                              agentNameAndImageHeaderDataForSuperAdmin,
+                              ...agentsHeaders,
+                            ]}
+                            data={
+                              allAgentsData?.data ? allAgentsData?.data : []
+                            }
+                          />
+                        </Col>
+                        <Col xxl={6}>
+                          <LatestRegistered
+                            tableHead={'Latest Registered Students'}
+                            headers={[
+                              studentImageAndNameHeaderDataForSuperAdmin,
+                              ...studentsHeaders,
+                            ]}
+                            data={
+                              allStudentsData?.data ? allStudentsData?.data : []
+                            }
+                          />
+                        </Col>
+                      </>
+                    )}
                   </Row>
                 </div>
               </Col>

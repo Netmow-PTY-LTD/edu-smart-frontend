@@ -1232,15 +1232,15 @@ const DataObjectComponent = () => {
   ];
 
   const accountantWidgetsData = [
-    {
-      id: 1,
-      label: 'registered agents',
-      counter: '25',
-      bgcolor: 'info',
-      icon: 'ri-group-2-fill',
-      link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
-    },
+    // {
+    //   id: 1,
+    //   label: 'registered agents',
+    //   counter: '25',
+    //   bgcolor: 'info',
+    //   icon: 'ri-group-2-fill',
+    //   link: 'View all',
+    //   pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
+    // },
 
     {
       id: 2,
@@ -1282,15 +1282,15 @@ const DataObjectComponent = () => {
   ];
 
   const admissionManagerWidgetsData = [
-    {
-      id: 1,
-      label: 'Registered UNIVERSITIES',
-      counter: '4',
-      bgcolor: 'info',
-      icon: 'ri-school-fill',
-      link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
-    },
+    // {
+    //   id: 1,
+    //   label: 'Registered UNIVERSITIES',
+    //   counter: '4',
+    //   bgcolor: 'info',
+    //   icon: 'ri-school-fill',
+    //   link: 'View all',
+    //   pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
+    // },
 
     {
       id: 2,
@@ -1603,6 +1603,388 @@ const DataObjectComponent = () => {
     },
   ];
 
+  const receivedAmountPaymentReportHeadersDataForSuperAdmin = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    // {
+    //   title: 'Paid By',
+    //   key: 'paid_by',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.applied_by
+    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //         : item?.agent
+    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.applied_by?.role
+    //           ? item?.applied_by?.role.split('_').join(' ')
+    //           : item?.agent
+    //             ? item?.agent?.role
+    //             : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Paid For',
+    //   key: 'paid_for',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.application
+    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
+    //         : item?.applied_by
+    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.student?.role
+    //           ? item?.student?.role.split('_').join(' ')
+    //           : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+
+    // {
+    //   title: 'Course',
+    //   key: 'course',
+    //   render: (item) => (
+    //     <div className="fs-2 fw-medium">
+    //       {item?.application?.course ? item?.application?.course?.name : '-'}
+    //     </div>
+    //   ),
+    // },
+    {
+      title: 'Received Amount',
+      key: 'received_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.payment_reason === 'application_emgs'
+            ? item?.application?.emgs_fee_amount
+            : item?.payment_reason === 'application_tuition_fee'
+              ? item?.tuition_fee_paid_amount - item?.agent_commission
+              : item?.agent !== undefined
+                ? item?.paid_amount
+                : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-uppercase">
+          {item?.payment_method ?? '-'}
+        </div>
+      ),
+    },
+  ];
+  const universityPaymentPayoutReportHeadersDataForSuperAdmin = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    // {
+    //   title: 'Paid By',
+    //   key: 'paid_by',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.applied_by
+    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //         : item?.agent
+    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.applied_by?.role
+    //           ? item?.applied_by?.role.split('_').join(' ')
+    //           : item?.agent
+    //             ? item?.agent?.role
+    //             : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Paid For',
+    //   key: 'paid_for',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.application
+    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
+    //         : item?.applied_by
+    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.student?.role
+    //           ? item?.student?.role.split('_').join(' ')
+    //           : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Received Amount',
+      key: 'received_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.payment_reason
+            ? item?.tuition_fee_paid_amount - item?.incentive_amount
+            : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-uppercase">
+          {item?.payment_method ?? '-'}
+        </div>
+      ),
+    },
+  ];
+  const TotalagentPayoutReportHeadersDataForSuperAdmin = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    // {
+    //   title: 'Paid By',
+    //   key: 'paid_by',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.applied_by
+    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //         : item?.agent
+    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.applied_by?.role
+    //           ? item?.applied_by?.role.split('_').join(' ')
+    //           : item?.agent
+    //             ? item?.agent?.role
+    //             : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Paid For',
+    //   key: 'paid_for',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.application
+    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
+    //         : item?.applied_by
+    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.student?.role
+    //           ? item?.student?.role.split('_').join(' ')
+    //           : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Received Amount',
+      key: 'received_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-uppercase">
+          {item?.payment_method ?? '-'}
+        </div>
+      ),
+    },
+  ];
+  const TotalProfitForSuperAdminHeadersData = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    // {
+    //   title: 'Paid By',
+    //   key: 'paid_by',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.applied_by
+    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //         : item?.agent
+    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.applied_by?.role
+    //           ? item?.applied_by?.role.split('_').join(' ')
+    //           : item?.agent
+    //             ? item?.agent?.role
+    //             : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Paid For',
+    //   key: 'paid_for',
+    //   render: (item) => (
+    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+    //       {item?.application
+    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
+    //         : item?.applied_by
+    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+    //           : '-'}
+    //       <small className="badge bg-secondary-subtle text-primary ms-3">
+    //         {item?.student?.role
+    //           ? item?.student?.role.split('_').join(' ')
+    //           : ''}
+    //       </small>
+    //     </div>
+    //   ),
+    // },
+
+    // {
+    //   title: 'Course',
+    //   key: 'course',
+    //   render: (item) => (
+    //     <div className="fs-2 fw-medium">
+    //       {item?.application?.course ? item?.application?.course?.name : '-'}
+    //     </div>
+    //   ),
+    // },
+
+    {
+      title: 'Received Amount',
+      key: 'received_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.super_admin_profit
+            ? item?.super_admin_profit
+            : item?.agent
+              ? item?.paid_amount
+              : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-uppercase">
+          {item?.payment_method ?? '-'}
+        </div>
+      ),
+    },
+  ];
+
   const docRequestTableHeaderDataWithoutAction = [
     {
       title: 'SN',
@@ -1878,10 +2260,12 @@ const DataObjectComponent = () => {
   ];
 
   return {
+    TotalagentPayoutReportHeadersDataForSuperAdmin,
     accountantWidgetsData,
     admissionManagerWidgetsData,
     agentEarnigsHeaders,
     agentNameAndImageHeaderDataForSuperAdmin,
+    receivedAmountPaymentReportHeadersDataForSuperAdmin,
     agentProfileWidgetData,
     agentsHeaders,
     allCourseCategoryWithoutAction,
@@ -1919,6 +2303,8 @@ const DataObjectComponent = () => {
     applicationHeadersWithoutAction,
     applicationPaymentHeadersWithoutAction,
     studentRequestDocumentsHeaderWithoutAction,
+    universityPaymentPayoutReportHeadersDataForSuperAdmin,
+    TotalProfitForSuperAdminHeadersData,
   };
 };
 

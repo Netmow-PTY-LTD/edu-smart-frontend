@@ -32,9 +32,6 @@ const DashBoardLayout = (props) => {
 
   const selectLayoutState = (state) => state.Layout;
 
-
-  
-
   const selectLayoutProperties = createSelector(
     selectLayoutState,
     (layout) => ({
