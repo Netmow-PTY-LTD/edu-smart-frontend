@@ -22,9 +22,9 @@ const AgentDashboard = () => {
   const router = useRouter();
 
   const {
-    studentsImageAndNameHeaderDataInAgentDashboard,
-    agentEarnigsHeaders,
-    studentsHeaders,
+    studentsImageAndNameHeaderDataInAgentDashboard = [],
+    agentEarnigsHeaders = [],
+    studentsHeaders = [],
   } = DataObjectComponent();
 
   const {
