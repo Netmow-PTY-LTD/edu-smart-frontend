@@ -1284,7 +1284,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 3,
@@ -1293,7 +1293,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 4,
@@ -1302,7 +1302,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-payout`,
     },
 
     {
@@ -1312,7 +1312,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
     },
   ];
 

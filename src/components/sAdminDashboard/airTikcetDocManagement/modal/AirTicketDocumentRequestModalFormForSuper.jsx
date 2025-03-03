@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
-import { Formik, Form, Field } from 'formik';
 import SubmitButton from '@/components/common/formField/SubmitButton';
+import { Form, Formik } from 'formik';
+import React from 'react';
+import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
 import TextField from '@/components/common/formField/TextField';
 import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
@@ -25,10 +25,10 @@ const AirTicketDocumentRequestModalFormForSuper = ({
 
   const recentApplicantStudentOptions =
     getAllRecentApplicationsData?.data?.map((item) => ({
-      value: item.student._id,
-      label: `${item.student.first_name} ${item.student.last_name}- ${item._id}`,
+      value: item?.student?._id,
+      label: `${item?.student?.first_name} ${item?.student?.last_name}- ${item?._id}`,
       // label: `${item.student.first_name} ${item.student.last_name} - ${item._id}`,
-      applicationId: item._id,
+      applicationId: item?._id,
     })) || [];
 
   return (

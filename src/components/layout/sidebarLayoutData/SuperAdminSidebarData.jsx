@@ -121,14 +121,18 @@ const SuperAdminSidebarData = () => {
       id: 'alldocuments',
       label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
-      style: `${customeData.hideforadmissionmanger}${customeData.hideforaccountant}`,
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/all-documents',
     },
     {
       id: 'airTicketDocumentuploadrequest',
       label: 'Air Ticket Doc  Request',
       icon: 'ri-ticket-2-line',
-      link: '/dashboard/super-admin/manage-air-ticket/air-ticket-upload-request',
+      style: `${customeData.hideforaccountant}`,
+      link:
+        '/dashboard/' +
+        `${paneltext}` +
+        '/manage-air-ticket/air-ticket-upload-request',
     },
     {
       id: 'package',
@@ -155,13 +159,15 @@ const SuperAdminSidebarData = () => {
       id: 'familyTrip',
       label: 'familyTrip',
       icon: 'ri-gift-line',
-      link: '/dashboard/super-admin/familyTrip',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/familyTrip',
     },
     {
       id: 'yearlyBonous',
       label: 'Yearly Bonous',
       icon: 'ri-percent-line',
-      link: '/dashboard/super-admin/yearlyBonous',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/yearlyBonous',
     },
     {
       id: 'agents',
