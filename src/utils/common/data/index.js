@@ -1249,7 +1249,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 3,
@@ -1258,7 +1258,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 4,
@@ -1267,7 +1267,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-payout`,
     },
 
     {
@@ -1277,7 +1277,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
     },
   ];
 
@@ -1701,7 +1701,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const universityPaymentPayoutReportHeadersDataForSuperAdmin = [
     {
       title: 'SN',
@@ -2142,13 +2142,19 @@ const DataObjectComponent = () => {
     {
       title: 'Course',
       key: 'course_name',
-      render: (item) => <div className="text-capitalize">{item?.application?.course.name ?? 'N/A'}</div>,
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.application?.course.name ?? 'N/A'}
+        </div>
+      ),
     },
 
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div className="text-uppercase">{item?.application?._id ?? 'N/A'}</div>,
+      render: (item) => (
+        <div className="text-uppercase">{item?.application?._id ?? 'N/A'}</div>
+      ),
     },
     {
       title: 'Emgs Payment',
@@ -2179,7 +2185,9 @@ const DataObjectComponent = () => {
     {
       title: 'Payment Method',
       key: 'payment_method',
-      render: (item) => <div className="text-capitalize">{item?.payment_method ?? 'N/A'}</div>,
+      render: (item) => (
+        <div className="text-capitalize">{item?.payment_method ?? 'N/A'}</div>
+      ),
     },
   ];
 
