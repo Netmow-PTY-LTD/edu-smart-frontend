@@ -68,7 +68,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      // console.log(item),
       <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
@@ -94,6 +93,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
               <i className="ri-eye-fill me-2"></i>
               View Emgs Invoice
             </div>
+          </DropdownItem>
+          <DropdownItem>
             <div
               onClick={() => {
                 if (item?._id) {
