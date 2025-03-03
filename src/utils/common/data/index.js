@@ -2188,6 +2188,26 @@ const DataObjectComponent = () => {
 
   const applicationPaymentHeadersWithoutAction = [
     {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : '-'}
+        </div>
+      ),
+    },
+    {
       title: 'Student Name',
       key: 'student',
       render: (item) => (
@@ -2197,9 +2217,13 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Application ID',
-      key: 'application',
-      render: (item) => <div>{item?._id ?? '-'}</div>,
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
     },
     {
       title: 'Applied By',
@@ -2212,61 +2236,82 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Paid Amount',
-      key: 'paid_amount',
+      title: 'Course Fee',
+      key: 'course_fee',
       render: (item) => (
         <div>
-          {item?.payment_reason === 'application_emgs'
-            ? item?.application?.emgs_fee_amount
-            : item?.payment_reason === 'application_tuition_fee'
-              ? item?.tuition_fee_paid_amount - item?.agent_commission
-              : item?.agent !== undefined
-                ? item?.paid_amount
-                : '0'}{' '}
-          {'MYR'}
+          {item?.application?.course?.tuition_fee
+            ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
+            : '-'}
         </div>
       ),
     },
     {
-      title: 'University Price',
-      key: 'university_price',
-    },
-    {
-      title: 'Agent Package',
-      key: 'package',
-      render: (item) => <div>{item.agent_package?.package?.name ?? '-'}</div>,
-    },
-    {
-      title: 'Package Commission %',
-      key: 'agent_package',
+      title: 'Emgs Fee Paid Amount',
+      key: 'emgs_paid_amount',
       render: (item) => (
-        <div>{item.agent_package?.package?.commission ?? '-'}</div>
+        <div>
+          {item?.payment_reason === 'application_emgs'
+            ? item?.application?.emgs_fee_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Tuition Fee Paid Amount',
+      key: 'tuition_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.tuition_fee_paid_amount
+            ? item?.tuition_fee_paid_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
       ),
     },
     {
-      title: 'Hot Offer Commission %',
-      key: 'hot_offer',
-      render: (item) => <div>{item.hot_offer?.offer_percentage ?? '-'}</div>,
+      title: 'Course Incentive Amount',
+      key: 'course_incentive_amount',
+      render: (item) => (
+        <div>
+          {item?.incentive_amount ? item?.incentive_amount + ' ' + 'MYR' : '-'}
+        </div>
+      ),
     },
     {
-      title: 'Package Commission Amount',
+      title: 'Agent Commission',
       key: 'agent_commission',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_tuition_fee'
+            ? item?.agent_commission + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
     },
-    {
-      title: 'Hot Offer Commission Amount',
-      key: 'agent_commision_by_hot_offer',
-    },
+
     {
       title: 'Super Admin Profit',
       key: 'super_admin_profit',
-    },
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+        <div>
+          {item?.payment_reason === 'application_tuition_fee'
+            ? item?.incentive_amount - item?.agent_commission + ' ' + 'MYR'
+            : item?.incentive_amount
+              ? item?.incentive_amount
+              : '-'}
+        </div>
       ),
     },
+    // {
+    //   title: 'Payment Status',
+    //   key: 'status',
+    //   render: (item) => (
+    //     <div className="badge bg-success-subtle text-success text-capitalize">
+    //       {item?.status ?? '-'}
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Payment Method',
       key: 'payment_method',
