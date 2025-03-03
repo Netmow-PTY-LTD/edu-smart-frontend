@@ -15,12 +15,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllDocumentsInSuperAdmin = () => {
+const AllDocumentsInSuperAdminDashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [requiredDocumentId, setRequiredDocumentId] = useState('');
   const [deleteRequiredDocumentId, setDeleteRequiredDocumentId] = useState('');
-  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState('');
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [editOpenModal, setEditOpenModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
@@ -30,7 +30,7 @@ const AllDocumentsInSuperAdmin = () => {
     description: '',
   });
 
-  const { documentHeaders } = DataObjectComponent();
+  const { documentHeaders = [] } = DataObjectComponent();
 
   const [addRequiredDocumentInSuperAdmin] =
     useAddRequiredDocumentInSuperAdminMutation();
@@ -285,4 +285,4 @@ const AllDocumentsInSuperAdmin = () => {
   );
 };
 
-export default AllDocumentsInSuperAdmin;
+export default AllDocumentsInSuperAdminDashboard;

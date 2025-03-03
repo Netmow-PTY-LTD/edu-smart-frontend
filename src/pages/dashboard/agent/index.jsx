@@ -23,8 +23,8 @@ const AgentDashboard = () => {
 
   const {
     studentsImageAndNameHeaderDataInAgentDashboard,
-    agentEarnigsHeaders,
-    studentsHeaders,
+    agentEarnigsHeaders = [],
+    studentsHeaders = [],
   } = DataObjectComponent();
 
   const {
