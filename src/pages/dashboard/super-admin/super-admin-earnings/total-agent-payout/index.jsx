@@ -9,13 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const UniversityPaymentPayoutForSuperAdmin = () => {
+const TotalAgentPayoutInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { universityPaymentPayoutReportHeadersDataForSuperAdmin } =
+  const { TotalagentPayoutReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
 
   const {
@@ -33,9 +33,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
 
-    const newData = combinedData.filter(
-      (item) => item?.payment_reason === 'application_tuition_fee'
-    );
+    const newData = combinedData.filter((item) => item?.agent_payout_amount);
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
@@ -50,7 +48,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
   // Filter data for search option
   const filteredData = allPaymentData?.filter((item) => {
     const fullName =
-      `${item?.payment_reason?.split('_').join(' ')} ${item?.application?.course?.name}`.toLowerCase();
+      `${item?.payment_reason?.split('_').join(' ')}`.toLowerCase();
     return fullName?.includes(searchTerm.toLowerCase());
   });
 
@@ -66,7 +64,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Receive Earnings
+                    Total Agent Payout
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -76,9 +74,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={
-                      universityPaymentPayoutReportHeadersDataForSuperAdmin
-                    }
+                    headers={TotalagentPayoutReportHeadersDataForSuperAdmin}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -97,4 +93,4 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
   );
 };
 
-export default UniversityPaymentPayoutForSuperAdmin;
+export default TotalAgentPayoutInSuperAdmin;

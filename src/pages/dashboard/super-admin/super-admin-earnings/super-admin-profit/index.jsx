@@ -9,14 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const UniversityPaymentPayoutForSuperAdmin = () => {
+const SuperAdminAllProfit = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { universityPaymentPayoutReportHeadersDataForSuperAdmin } =
-    DataObjectComponent();
+  const { TotalProfitForSuperAdminHeadersData } = DataObjectComponent();
 
   const {
     data: getAllPaymentReportData,
@@ -33,10 +32,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
 
-    const newData = combinedData.filter(
-      (item) => item?.payment_reason === 'application_tuition_fee'
-    );
-    setAllPaymentData(newData);
+    setAllPaymentData(combinedData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
@@ -49,9 +45,13 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
 
   // Filter data for search option
   const filteredData = allPaymentData?.filter((item) => {
-    const fullName =
-      `${item?.payment_reason?.split('_').join(' ')} ${item?.application?.course?.name}`.toLowerCase();
-    return fullName?.includes(searchTerm.toLowerCase());
+    const paymentReason = item?.payment_reason
+      ? item.payment_reason.split('_').join(' ')
+      : '';
+    const fullName = `${paymentReason} Package Payment`.toLowerCase();
+    console.log(fullName);
+
+    return fullName.includes(searchTerm.toLowerCase());
   });
 
   return (
@@ -66,7 +66,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Receive Earnings
+                    Super Admin All Profit
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -76,9 +76,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={
-                      universityPaymentPayoutReportHeadersDataForSuperAdmin
-                    }
+                    headers={TotalProfitForSuperAdminHeadersData}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -97,4 +95,4 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
   );
 };
 
-export default UniversityPaymentPayoutForSuperAdmin;
+export default SuperAdminAllProfit;
