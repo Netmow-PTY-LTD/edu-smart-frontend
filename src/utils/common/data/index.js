@@ -1490,9 +1490,7 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
+      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
     },
 
     {
@@ -1500,8 +1498,7 @@ const DataObjectComponent = () => {
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? 'N/A'}{' '}
-          {'MYR'}
+          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1526,7 +1523,7 @@ const DataObjectComponent = () => {
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {(item?.paid_amount || 0).toFixed(2) ?? 'N/A'} {'MYR'}
+          {(item?.paid_amount || 0).toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1535,7 +1532,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
@@ -1576,16 +1573,14 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
+      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
     },
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {item?.paid_amount ?? 'N/A'} {'MYR'}
+          {item?.paid_amount ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1598,7 +1593,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
   ];
@@ -2144,7 +2139,7 @@ const DataObjectComponent = () => {
       key: 'course_name',
       render: (item) => (
         <div className="text-capitalize">
-          {item?.application?.course.name ?? 'N/A'}
+          {item?.application?.course.name ?? '-'}
         </div>
       ),
     },
@@ -2153,7 +2148,7 @@ const DataObjectComponent = () => {
       title: 'Application ID',
       key: 'application',
       render: (item) => (
-        <div className="text-uppercase">{item?.application?._id ?? 'N/A'}</div>
+        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
       ),
     },
     {
@@ -2186,7 +2181,7 @@ const DataObjectComponent = () => {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="text-capitalize">{item?.payment_method ?? 'N/A'}</div>
+        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
       ),
     },
   ];
@@ -2197,14 +2192,14 @@ const DataObjectComponent = () => {
       key: 'student',
       render: (item) => (
         <div className="text-capitalize">
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
+          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
         </div>
       ),
     },
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+      render: (item) => <div>{item?._id ?? '-'}</div>,
     },
     {
       title: 'Applied By',
@@ -2212,13 +2207,25 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div>
           {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
-            'N/A'}
+            '-'}
         </div>
       ),
     },
     {
       title: 'Paid Amount',
       key: 'paid_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_emgs'
+            ? item?.application?.emgs_fee_amount
+            : item?.payment_reason === 'application_tuition_fee'
+              ? item?.tuition_fee_paid_amount - item?.agent_commission
+              : item?.agent !== undefined
+                ? item?.paid_amount
+                : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
     },
     {
       title: 'University Price',
@@ -2227,19 +2234,19 @@ const DataObjectComponent = () => {
     {
       title: 'Agent Package',
       key: 'package',
-      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
+      render: (item) => <div>{item.agent_package?.package?.name ?? '-'}</div>,
     },
     {
       title: 'Package Commission %',
       key: 'agent_package',
       render: (item) => (
-        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
+        <div>{item.agent_package?.package?.commission ?? '-'}</div>
       ),
     },
     {
       title: 'Hot Offer Commission %',
       key: 'hot_offer',
-      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
+      render: (item) => <div>{item.hot_offer?.offer_percentage ?? '-'}</div>,
     },
     {
       title: 'Package Commission Amount',
@@ -2257,7 +2264,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
