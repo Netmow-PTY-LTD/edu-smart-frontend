@@ -43,7 +43,9 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     description: '',
   });
 
-  const { docRequestTableHeaderDataWithOutAction } = DataObjectComponent();
+  const { studentAirTiecketHeadersWithoutAction = [] } = DataObjectComponent();
+
+  console.log(studentAirTiecketHeadersWithoutAction);
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
     notes: '',
@@ -114,8 +116,8 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
 
     console.log('updatedata', updatedata);
     try {
-      const result = createDocumentRequest(updatedata).unwrap();
-      if (result) {
+      const result = await createDocumentRequest(updatedata).unwrap();
+      if (result.success) {
         toast.success(result?.message);
         getSingleUserAirTicketDocumentRequestRefetch();
         setAddModalIsOpen(false);
@@ -157,6 +159,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       if (result) {
         toast.success(result?.message);
         getSingleUserAirTicketDocumentRequestRefetch();
+        getSingleUserAirTicketDocSubmisionRefetch();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -232,7 +235,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     }
 
     setAllUploadDocumentsForStudentsData(() => [
-      ...docRequestTableHeaderDataWithOutAction,
+      ...studentAirTiecketHeadersWithoutAction,
       ...docRequestTableHeaderDataWithAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -273,7 +276,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
             <CardBody>
               <CommonTableComponent
                 headers={[
-                  ...docRequestTableHeaderDataWithOutAction,
+                  ...studentAirTiecketHeadersWithoutAction,
                   ...docRequestTableHeaderDataWithAction,
                 ]}
                 data={isfilteredData ? isfilteredData : []}
@@ -306,7 +309,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
 
             <CardBody>
               <CommonTableComponent
-                headers={docRequestTableHeaderDataWithOutAction}
+                headers={studentAirTiecketHeadersWithoutAction}
                 data={
                   isfilteredDataForSubmittedData
                     ? isfilteredDataForSubmittedData
