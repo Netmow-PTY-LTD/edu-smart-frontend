@@ -2142,21 +2142,14 @@ const DataObjectComponent = () => {
     {
       title: 'Course',
       key: 'course_name',
-      render: (item) => <div>{item?.application?.course.name ?? 'N/A'}</div>,
+      render: (item) => <div className="text-capitalize">{item?.application?.course.name ?? 'N/A'}</div>,
     },
 
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div>{item?.application?._id ?? 'N/A'}</div>,
+      render: (item) => <div className="text-uppercase">{item?.application?._id ?? 'N/A'}</div>,
     },
-    // {
-    //   title: 'Payment Date',
-    //   key: 'payment_date',
-    //   render: (item) => (
-    //     <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
-    //   ),
-    // },
     {
       title: 'Emgs Payment',
       key: 'emgs_payment_status',
@@ -2186,6 +2179,7 @@ const DataObjectComponent = () => {
     {
       title: 'Payment Method',
       key: 'payment_method',
+      render: (item) => <div className="text-capitalize">{item?.payment_method ?? 'N/A'}</div>,
     },
   ];
 
@@ -2194,7 +2188,7 @@ const DataObjectComponent = () => {
       title: 'Student Name',
       key: 'student',
       render: (item) => (
-        <div>
+        <div className="text-capitalize">
           {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
         </div>
       ),
