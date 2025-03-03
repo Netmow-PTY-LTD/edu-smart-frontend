@@ -1701,6 +1701,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
+  
   const universityPaymentPayoutReportHeadersDataForSuperAdmin = [
     {
       title: 'SN',
@@ -1789,12 +1790,11 @@ const DataObjectComponent = () => {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">
-          {item?.payment_method ?? '-'}
-        </div>
+        <div className="fs-2 fw-medium text-uppercase">{'payout amount'}</div>
       ),
     },
   ];
+
   const TotalagentPayoutReportHeadersDataForSuperAdmin = [
     {
       title: 'SN',
@@ -1872,7 +1872,7 @@ const DataObjectComponent = () => {
       key: 'received_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
         </div>
       ),
     },
@@ -1881,12 +1881,11 @@ const DataObjectComponent = () => {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">
-          {item?.payment_method ?? '-'}
-        </div>
+        <div className="fs-2 fw-medium text-uppercase">{'payout amount'}</div>
       ),
     },
   ];
+
   const TotalProfitForSuperAdminHeadersData = [
     {
       title: 'SN',
