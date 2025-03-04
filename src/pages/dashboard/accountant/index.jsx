@@ -21,21 +21,27 @@ const SuperAdminDashboard = () => {
 
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
+
   const { data: getUniversityData, isLoading: getUniversityIsLoading } =
     useGetUniversityQuery();
+
   const { data: allAgentsData, isLoading: allAgentsIsLoading } =
     useGetAllAgentQuery();
+
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
+
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
 
+  console.log(totalIncome?.data);
+
   const {
-    universityLogoAndNameHeaderDataForSuperAdminDashboard,
-    universityHeadersData,
-    agentNameAndImageHeaderDataForSuperAdmin,
-    agentsHeaders,
-    studentImageAndNameHeaderDataForSuperAdmin,
-    studentsHeaders,
+    universityLogoAndNameHeaderDataForSuperAdminDashboard = [],
+    universityHeadersData = [],
+    agentNameAndImageHeaderDataForSuperAdmin = [],
+    agentsHeaders = [],
+    studentImageAndNameHeaderDataForSuperAdmin = [],
+    studentsHeaders = [],
   } = DataObjectComponent();
 
   return (

@@ -11,8 +11,7 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 const ApplicationPaymentForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [applicationPaymentData, setApplicationPaymentData] = useState('');
-  const perPageData = 10;
+  const perPageData = 15;
 
   const { applicationPaymentHeadersWithoutAction } = DataObjectComponent();
 
@@ -23,17 +22,20 @@ const ApplicationPaymentForSuperAdmin = () => {
     refetch: getApplicationPaymentDataRefetch,
   } = useGetApplicationPaymentReportQuery();
 
-  console.log(getApplicationPaymentData);
-
-  // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  // Filter data for search option
   const filteredData = getApplicationPaymentData?.data?.filter((item) => {
+    const isValidReason =
+      item?.payment_reason === 'application_emgs' ||
+      item?.payment_reason === 'application_tuition_fee';
+
     const fullName =
       `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
-    return fullName?.includes(searchTerm.toLowerCase());
+
+    return isValidReason && fullName.includes(searchTerm.toLowerCase());
   });
+
+  console.log(filteredData);
 
   return (
     <Layout>
