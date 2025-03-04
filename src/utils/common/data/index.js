@@ -1,5 +1,6 @@
 import FileViewer from '@/components/common/FileViewer';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import DescriptionRenderer from '@/utils/DescriptionRenderer';
 import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -179,6 +180,88 @@ const DataObjectComponent = () => {
 
   //student submitted doc header
 
+  const studentAirTiecketHeadersWithoutAction = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxLength={40}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.notes ? item?.notes : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          <FileViewer files={item?.files && item?.files} />
+        </div>
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
   const studentSubmittedDocumentsHeaderWithoutAction = [
     {
       title: 'SN',
@@ -208,36 +291,12 @@ const DataObjectComponent = () => {
     {
       title: 'Description',
       key: 'description',
-      render: (item) => {
-        const maxLength = 40;
-        const description = item?.description || '-';
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [expanded, setExpanded] = useState(false);
-
-        const toggleDescription = () => {
-          setExpanded(!expanded);
-        };
-
-        return (
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
-              {expanded
-                ? description
-                : description.slice(0, maxLength) +
-                  (description.length > maxLength ? '...' : '')}
-              {description.length > maxLength && (
-                <span
-                  className="text-primary ms-1"
-                  style={{ cursor: 'pointer' }}
-                  onClick={toggleDescription}
-                >
-                  {expanded ? ' See Less' : ' See More'}
-                </span>
-              )}
-            </h5>
-          </div>
-        );
-      },
+      render: (item) => (
+        <DescriptionRenderer
+          maxLength={40}
+          description={item?.description || '-'}
+        />
+      ),
     },
     {
       title: 'Notes',
@@ -356,36 +415,12 @@ const DataObjectComponent = () => {
     {
       title: 'Description',
       key: 'description',
-      render: (item) => {
-        const maxLength = 40;
-        const description = item?.description || '-';
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [expanded, setExpanded] = useState(false);
-
-        const toggleDescription = () => {
-          setExpanded(!expanded);
-        };
-
-        return (
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
-              {expanded
-                ? description
-                : description.slice(0, maxLength) +
-                  (description.length > maxLength ? '...' : '')}
-              {description.length > maxLength && (
-                <span
-                  className="text-primary ms-1"
-                  style={{ cursor: 'pointer' }}
-                  onClick={toggleDescription}
-                >
-                  {expanded ? ' See Less' : ' See More'}
-                </span>
-              )}
-            </h5>
-          </div>
-        );
-      },
+      render: (item) => (
+        <DescriptionRenderer
+          maxLength={40}
+          description={item?.description || '-'}
+        />
+      ),
     },
 
     {
@@ -1249,7 +1284,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 3,
@@ -1258,7 +1293,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 4,
@@ -1267,7 +1302,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-payout`,
     },
 
     {
@@ -1277,7 +1312,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
     },
   ];
 
@@ -1490,9 +1525,7 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
+      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
     },
 
     {
@@ -1500,8 +1533,7 @@ const DataObjectComponent = () => {
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? 'N/A'}{' '}
-          {'MYR'}
+          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1526,7 +1558,7 @@ const DataObjectComponent = () => {
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {(item?.paid_amount || 0).toFixed(2) ?? 'N/A'} {'MYR'}
+          {(item?.paid_amount || 0).toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1535,7 +1567,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
@@ -1576,16 +1608,14 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => (
-        <div>{item?.agent_package?.package?.name ?? 'N/A'}</div>
-      ),
+      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
     },
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {item?.paid_amount ?? 'N/A'} {'MYR'}
+          {item?.paid_amount ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1598,7 +1628,7 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
   ];
@@ -1701,7 +1731,7 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-  
+
   const universityPaymentPayoutReportHeadersDataForSuperAdmin = [
     {
       title: 'SN',
@@ -2142,13 +2172,19 @@ const DataObjectComponent = () => {
     {
       title: 'Course',
       key: 'course_name',
-      render: (item) => <div className="text-capitalize">{item?.application?.course.name ?? 'N/A'}</div>,
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.application?.course.name ?? '-'}
+        </div>
+      ),
     },
 
     {
       title: 'Application ID',
       key: 'application',
-      render: (item) => <div className="text-uppercase">{item?.application?._id ?? 'N/A'}</div>,
+      render: (item) => (
+        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
+      ),
     },
     {
       title: 'Emgs Payment',
@@ -2179,24 +2215,50 @@ const DataObjectComponent = () => {
     {
       title: 'Payment Method',
       key: 'payment_method',
-      render: (item) => <div className="text-capitalize">{item?.payment_method ?? 'N/A'}</div>,
+      render: (item) => (
+        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
+      ),
     },
   ];
 
   const applicationPaymentHeadersWithoutAction = [
     {
-      title: 'Student Name',
-      key: 'student',
-      render: (item) => (
-        <div className="text-capitalize">
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? 'N/A'}
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
         </div>
       ),
     },
     {
-      title: 'Application ID',
-      key: 'application',
-      render: (item) => <div>{item?._id ?? 'N/A'}</div>,
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student',
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
     },
     {
       title: 'Applied By',
@@ -2204,54 +2266,87 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div>
           {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
-            'N/A'}
+            '-'}
         </div>
       ),
     },
     {
-      title: 'Paid Amount',
-      key: 'paid_amount',
-    },
-    {
-      title: 'University Price',
-      key: 'university_price',
-    },
-    {
-      title: 'Agent Package',
-      key: 'package',
-      render: (item) => <div>{item.agent_package?.package?.name ?? 'N/A'}</div>,
-    },
-    {
-      title: 'Package Commission %',
-      key: 'agent_package',
+      title: 'Course Fee',
+      key: 'course_fee',
       render: (item) => (
-        <div>{item.agent_package?.package?.commission ?? 'N/A'}</div>
+        <div>
+          {item?.application?.course?.tuition_fee
+            ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
+            : '-'}
+        </div>
       ),
     },
     {
-      title: 'Hot Offer Commission %',
-      key: 'hot_offer',
-      render: (item) => <div>{item.hot_offer?.offer_percentage ?? 'N/A'}</div>,
+      title: 'Emgs Fee Paid Amount',
+      key: 'emgs_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_emgs'
+            ? item?.application?.emgs_fee_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Tuition Fee Paid Amount',
+      key: 'tuition_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.tuition_fee_paid_amount
+            ? item?.tuition_fee_paid_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
     },
     {
-      title: 'Package Commission Amount',
+      title: 'Course Incentive Amount',
+      key: 'course_incentive_amount',
+      render: (item) => (
+        <div>
+          {item?.incentive_amount ? item?.incentive_amount + ' ' + 'MYR' : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Commission',
       key: 'agent_commission',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_tuition_fee'
+            ? item?.agent_commission + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
     },
-    {
-      title: 'Hot Offer Commission Amount',
-      key: 'agent_commision_by_hot_offer',
-    },
+
     {
       title: 'Super Admin Profit',
       key: 'super_admin_profit',
-    },
-    {
-      title: 'Payment Date',
-      key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? 'N/A'}</div>
+        <div>
+          {item?.payment_reason === 'application_tuition_fee'
+            ? item?.incentive_amount - item?.agent_commission + ' ' + 'MYR'
+            : item?.incentive_amount
+              ? item?.incentive_amount
+              : '-'}
+        </div>
       ),
     },
+    // {
+    //   title: 'Payment Status',
+    //   key: 'status',
+    //   render: (item) => (
+    //     <div className="badge bg-success-subtle text-success text-capitalize">
+    //       {item?.status ?? '-'}
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -2304,6 +2399,7 @@ const DataObjectComponent = () => {
     studentRequestDocumentsHeaderWithoutAction,
     universityPaymentPayoutReportHeadersDataForSuperAdmin,
     TotalProfitForSuperAdminHeadersData,
+    studentAirTiecketHeadersWithoutAction,
   };
 };
 

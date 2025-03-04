@@ -89,6 +89,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
               <i className="ri-eye-fill me-2"></i>
               View Emgs Invoice
             </div>
+          </DropdownItem>
+          <DropdownItem>
             <div
               onClick={() => {
                 if (item?._id) {

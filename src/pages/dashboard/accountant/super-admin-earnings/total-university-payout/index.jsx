@@ -66,7 +66,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Receive Earnings
+                    Total Payout Amount
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
