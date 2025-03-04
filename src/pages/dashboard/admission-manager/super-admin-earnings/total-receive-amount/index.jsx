@@ -9,13 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const TotalAgentPayoutInSuperAdmin = () => {
+const TotalReceiveAmountForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { TotalagentPayoutReportHeadersDataForSuperAdmin } =
+  const { receivedAmountPaymentReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
 
   const {
@@ -32,13 +32,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
-
-    const newData = combinedData.filter(
-      (item) =>
-        item?.applied_by?.role === 'agent' &&
-        item?.payment_reason === 'application_tuition_fee'
-    );
-    setAllPaymentData(newData);
+    setAllPaymentData(combinedData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
@@ -68,7 +62,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Agent Payout
+                    Total Receive Earnings
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -78,7 +72,9 @@ const TotalAgentPayoutInSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={TotalagentPayoutReportHeadersDataForSuperAdmin}
+                    headers={
+                      receivedAmountPaymentReportHeadersDataForSuperAdmin
+                    }
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -97,4 +93,4 @@ const TotalAgentPayoutInSuperAdmin = () => {
   );
 };
 
-export default TotalAgentPayoutInSuperAdmin;
+export default TotalReceiveAmountForSuperAdmin;
