@@ -337,28 +337,28 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium  text-capitalize">
+    //         {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
 
     {
       title: 'Status',
@@ -456,28 +456,28 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium  text-capitalize">
+    //         {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Uploaded Files',
       key: 'files',
@@ -2100,27 +2100,27 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+    //     </span>
+    //   ),
+    // },
 
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Status',
       key: 'status',
