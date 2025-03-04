@@ -32,7 +32,13 @@ const SuperAdminAllProfit = () => {
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
 
-    setAllPaymentData(combinedData);
+    const newData = combinedData?.filter(
+      (item) =>
+        item?.payment_reason === 'application_tuition_fee' ||
+        item?.agent_package?._id
+    );
+
+    setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,

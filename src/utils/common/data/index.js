@@ -336,28 +336,28 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium  text-capitalize">
+    //         {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
 
     {
       title: 'Status',
@@ -455,28 +455,28 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium  text-capitalize">
+    //         {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Uploaded Files',
       key: 'files',
@@ -1222,8 +1222,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Transactions',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 5,
@@ -1231,8 +1231,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-currency-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 6,
@@ -1240,8 +1240,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-payout`,
     },
 
     {
@@ -1250,8 +1250,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View Profit Details',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
 
     // {
@@ -1656,8 +1656,8 @@ const DataObjectComponent = () => {
       ),
     },
     // {
-    //   title: 'Paid By',
-    //   key: 'paid_by',
+    //   title: 'Applied By',
+    //   key: 'applied_by',
     //   render: (item) => (
     //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
     //       {item?.applied_by
@@ -1719,7 +1719,13 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -1754,45 +1760,17 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Paid By',
-    //   key: 'paid_by',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.applied_by
-    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //         : item?.agent
-    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.applied_by?.role
-    //           ? item?.applied_by?.role.split('_').join(' ')
-    //           : item?.agent
-    //             ? item?.agent?.role
-    //             : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   title: 'Paid For',
-    //   key: 'paid_for',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.application
-    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
-    //         : item?.applied_by
-    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.student?.role
-    //           ? item?.student?.role.split('_').join(' ')
-    //           : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-
+    {
+      title: 'University Name',
+      key: 'university_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.application?.course?.university?.name
+            ? item?.application?.course?.university?.name
+            : '-'}
+        </div>
+      ),
+    },
     {
       title: 'Course',
       key: 'course',
@@ -1803,8 +1781,8 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Received Amount',
-      key: 'received_amount',
+      title: 'Payout Amount',
+      key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
           {item?.payment_reason
@@ -1815,6 +1793,13 @@ const DataObjectComponent = () => {
       ),
     },
 
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -1847,44 +1832,28 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Paid By',
-    //   key: 'paid_by',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.applied_by
-    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //         : item?.agent
-    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.applied_by?.role
-    //           ? item?.applied_by?.role.split('_').join(' ')
-    //           : item?.agent
-    //             ? item?.agent?.role
-    //             : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   title: 'Paid For',
-    //   key: 'paid_for',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.application
-    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
-    //         : item?.applied_by
-    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.student?.role
-    //           ? item?.student?.role.split('_').join(' ')
-    //           : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.applied_by
+            ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.first_name
+            ? item?.student?.first_name + ' ' + item?.student?.last_name
+            : '-'}
+        </div>
+      ),
+    },
 
     {
       title: 'Course',
@@ -1897,15 +1866,21 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Received Amount',
-      key: 'received_amount',
+      title: 'Payout Amount',
+      key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
           {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
         </div>
       ),
     },
-
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -1938,62 +1913,78 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    // {
-    //   title: 'Paid By',
-    //   key: 'paid_by',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.applied_by
-    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //         : item?.agent
-    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.applied_by?.role
-    //           ? item?.applied_by?.role.split('_').join(' ')
-    //           : item?.agent
-    //             ? item?.agent?.role
-    //             : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   title: 'Paid For',
-    //   key: 'paid_for',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.application
-    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
-    //         : item?.applied_by
-    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.student?.role
-    //           ? item?.student?.role.split('_').join(' ')
-    //           : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-
-    // {
-    //   title: 'Course',
-    //   key: 'course',
-    //   render: (item) => (
-    //     <div className="fs-2 fw-medium">
-    //       {item?.application?.course ? item?.application?.course?.name : '-'}
-    //     </div>
-    //   ),
-    // },
 
     {
-      title: 'Received Amount',
-      key: 'received_amount',
+      title: 'University',
+      key: 'university',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course?.university?.name
+            ? item?.application?.course?.university?.name
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Incentive Amount',
+      key: 'incentive_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.super_admin_profit
-            ? item?.super_admin_profit
+          {item?.incentive_amount ? item?.incentive_amount + ' ' + 'MYR' : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Commission',
+      key: 'agent_commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commission ? item?.agent_commission + ' ' + 'MYR' : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Package',
+      key: 'package',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.agent_package?.package_name
+            ? item?.agent_package?.package_name
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Package Amount',
+      key: 'package_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {!item?.payment_reason
+            ? item?.agent_package?.package_price + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Profit Amount',
+      key: 'profit_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.incentive_amount && item?.agent_commission
+            ? item?.incentive_amount - item?.agent_commission
             : item?.agent
               ? item?.paid_amount
               : '0'}{' '}
@@ -2001,7 +1992,13 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -2094,27 +2091,27 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+    //     </span>
+    //   ),
+    // },
 
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Status',
       key: 'status',
@@ -2263,7 +2260,7 @@ const DataObjectComponent = () => {
       title: 'Applied By',
       key: 'applied_by',
       render: (item) => (
-        <div>
+        <div className="text-capitalize">
           {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
             '-'}
         </div>
