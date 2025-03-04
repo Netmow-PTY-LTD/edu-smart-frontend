@@ -4,6 +4,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetSingleUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
 import { downloadFiles } from '@/utils/downloadFiles';
+import { downloadFilesAsPDF } from '@/utils/dwonloadFilesAsPdf';
 
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -43,7 +44,15 @@ const DocumentPage = ({ student_id }) => {
     const allFileUrls = singleStudentAllSubmittedDoc.data
       .flatMap((item) => item.files.map((file) => file.url))
       .filter(Boolean); // Remove undefined/null values
-    downloadFiles(allFileUrls, 'Downloading all documents...');
+
+    // single files dwonloader
+    // downloadFiles(allFileUrls, 'Downloading all documents...');
+
+    // 'Downloading all documents as a single PDF...
+    downloadFilesAsPDF(
+      allFileUrls,
+      'Downloading all documents as a single PDF...'
+    );
   };
 
   return (
