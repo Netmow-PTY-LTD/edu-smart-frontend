@@ -1223,8 +1223,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Transactions',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 5,
@@ -1232,8 +1232,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-currency-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 6,
@@ -1241,8 +1241,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-payout`,
     },
 
     {
@@ -1251,8 +1251,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View Profit Details',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
 
     // {
