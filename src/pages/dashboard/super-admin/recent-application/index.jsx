@@ -9,6 +9,7 @@ import {
 } from '@/slice/services/common/applicationService';
 import DataObjectComponent from '@/utils/common/data';
 import { useCustomData } from '@/utils/common/data/customeData';
+import { generateUserProfilePDF } from '@/utils/generateUserProfilePDF';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -93,6 +94,27 @@ export default function RecentApplicationForSuperAdmin() {
     }
 
     return String(item).toLowerCase().includes(searchTerm.toLowerCase());
+  };
+
+  const handleDwonloadApplication = (id) => {
+    const singleApplicaiton = recentApplicationData?.data?.find(
+      (item) => item._id === id
+    );
+
+    console.log('download', singleApplicaiton);
+    // Usage Example:
+    const userData = {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      phone: '+1234567890',
+      address: '123 Street, City, Country',
+      profilePicture: singleApplicaiton?.student?.profile_image, // URL of profile picture
+      // documents: singleApplicaiton?.documents[0]?.files,
+      documents: [],
+    };
+
+    // Call function to generate PDF
+    generateUserProfilePDF(singleApplicaiton);
   };
 
   // Ensure full search even if searchTerm is empty
@@ -209,6 +231,16 @@ export default function RecentApplicationForSuperAdmin() {
           ) : (
             ''
           )}
+
+          <DropdownItem>
+            <div
+              onClick={() => handleDwonloadApplication(item._id)}
+              className="text-primary"
+            >
+              <i class="ri-file-line me-1"></i>
+              Dwonload Application
+            </div>
+          </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
