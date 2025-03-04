@@ -1,8 +1,6 @@
 import FileViewer from '@/components/common/FileViewer';
 import Link from 'next/link';
 
-// tableConfig.js
-
 export const REQUEST_TABLE_HEADERS = [
   {
     title: 'SN',

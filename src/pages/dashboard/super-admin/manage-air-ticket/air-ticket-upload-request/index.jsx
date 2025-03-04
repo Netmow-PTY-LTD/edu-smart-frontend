@@ -1,5 +1,4 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
@@ -11,11 +10,7 @@ import {
   useUpdateUserAirTicketDocStatusForAgentMutation,
 } from '@/slice/services/agent/agentDocumentServices';
 import { useGetAllStudentsAirticketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
-import {
-  AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN,
-  AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN,
-} from '@/utils/common/data/superAdminData';
-import Link from 'next/link';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -44,6 +39,11 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
     description: '',
     student_id: '',
   });
+
+  const {
+    AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN = [],
+    AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN = [],
+  } = DataObjectComponent();
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
     notes: '',

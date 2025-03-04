@@ -36,12 +36,12 @@ const SuperAdminDashboard = () => {
   console.log(totalIncome?.data);
 
   const {
-    universityLogoAndNameHeaderDataForSuperAdminDashboard,
-    universityHeadersData,
-    agentNameAndImageHeaderDataForSuperAdmin,
-    agentsHeaders,
-    studentImageAndNameHeaderDataForSuperAdmin,
-    studentsHeaders,
+    universityLogoAndNameHeaderDataForSuperAdminDashboard = [],
+    universityHeadersData = [],
+    agentNameAndImageHeaderDataForSuperAdmin = [],
+    agentsHeaders = [],
+    studentImageAndNameHeaderDataForSuperAdmin = [],
+    studentsHeaders = [],
   } = DataObjectComponent();
 
   return (
