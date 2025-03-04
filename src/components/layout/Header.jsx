@@ -44,28 +44,31 @@ const Header = () => {
       ];
 
       if (!allowedPathsForAccountant.includes(router.pathname)) {
-        router.push('/dashboard/accountant');
+        router.push(`/dashboard/${userInfodata?.data?.role?.split()}`);
       }
     }
 
-    // if (userInfodata?.data?.role === 'admission_manager') {
-    //   const allowedPathsForAccountant = [
-    //     '/dashboard/accountant',
-    //     '/dashboard/accountant/package-invoices',
-    //     '/dashboard/accountant/application-invoices',
-    //     '/dashboard/accountant/super-admin-earnings/total-receive-amount',
-    //     '/dashboard/accountant/super-admin-earnings/total-university-payout',
-    //     '/dashboard/accountant/super-admin-earnings/total-agent-payout',
-    //     '/dashboard/accountant/super-admin-earnings/super-admin-profit',
-    //     '/dashboard/accountant/payment-report/package-payment',
-    //     '/dashboard/accountant/payment-report/application-payment',
-    //     '/dashboard/accountant/settings/profile',
-    //   ];
+    if (userInfodata?.data?.role === 'admission_manager') {
+      const allowedPathsForAdmissionManager = [
+        '/dashboard/admission-manager',
+        '/dashboard/admission-manager/recent-application',
+        '/dashboard/admission-manager/manage-air-ticket/air-ticket-upload-request',
+        '/dashboard/admission-manager/agents',
+        '/dashboard/admission-manager/settings/profile',
+      ];
 
-    //   if (!allowedPathsForAccountant.includes(router.pathname)) {
-    //     router.push(`/dashboard/${userInfodata?.data?.role?.split()}`);
-    //   }
-    // }
+      const currentPath = router.pathname;
+
+      const isAllowedPath = allowedPathsForAdmissionManager.some((path) =>
+        currentPath.startsWith(path)
+      );
+
+      if (!isAllowedPath) {
+        router.push(
+          `/dashboard/${userInfodata?.data?.role?.split('_').join('-')}`
+        );
+      }
+    }
   }, [router, userInfodata?.data?.role]);
 
   const selectDashboardData = createSelector(
