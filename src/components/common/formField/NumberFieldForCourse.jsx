@@ -67,7 +67,7 @@ const NumberFieldForCourse = ({ name, label, form, ...props }) => {
                   form.setFieldValue(name, '0');
                 }
 
-                if (name === 'tuition_fee' && value < emgs_get) {
+                if (name === 'tuition_fee' && parseInt(value) < emgs_get) {
                   form.setFieldValue('tuition_fee', emgs_get); // Restrict price
                   form.setFieldValue('incentive_amount', '0'); // Restrict price
                   toast.error(
@@ -75,24 +75,30 @@ const NumberFieldForCourse = ({ name, label, form, ...props }) => {
                   );
                 }
 
-                if (name === 'incentive_amount' && value > after_emgs_fee) {
+                if (
+                  name === 'incentive_amount' &&
+                  parseInt(value) > after_emgs_fee
+                ) {
                   form.setFieldValue('incentive_amount', after_emgs_fee); // Restrict price
                   toast.error(
                     'Incentive amount cannot be greater than After EMGS fee.'
                   );
                 }
 
-                if (name === 'incentive_amount' && value <= 0) {
+                if (name === 'incentive_amount' && parseInt(value) <= 0) {
                   form.setFieldValue('auto_deduct', false); // Restrict price
                 }
 
-                if (name === 'scholarship_amount' && value > tuitionFee) {
+                if (
+                  name === 'scholarship_amount' &&
+                  parseInt(value) > tuitionFee
+                ) {
                   form.setFieldValue('scholarship_amount', tuitionFee); // Restrict price
                   toast.error(
                     'Scholarship  amount cannot be greater than Tuition fee.'
                   );
                 }
-                if (name === 'scholarship_amount' && value <= 0) {
+                if (name === 'scholarship_amount' && parseInt(value) <= 0) {
                   form.setFieldValue('scholarship_on_tuition_fee', false); // Optionally uncheck the box if scholarship_amount is <= 0
                   form.setFieldValue('scholarship_auto_deduct', false); // Optionally uncheck the box if scholarship_amount is <= 0
                 } else {
