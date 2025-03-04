@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 //redux
 import withRouter from '@/components/common/withRoutes';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -26,9 +27,69 @@ import Sidebar from './Sidebar';
 
 const DashBoardLayout = (props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const route = useRouter();
+  const router = useRouter();
   const [headerClass, setHeaderClass] = useState('');
   const dispatch = useDispatch();
+
+  const [isRouteLoading, setIsRouteLoading] = useState(true);
+
+  const { data: userInfodata } = useGetUserInfoQuery();
+
+  useEffect(() => {
+    if (userInfodata?.data?.role) {
+      if (userInfodata.data.role === 'accountant') {
+        const allowedPathsForAccountant = [
+          '/dashboard/accountant',
+          '/dashboard/accountant/package-invoices',
+          '/dashboard/accountant/application-invoices',
+          '/dashboard/accountant/super-admin-earnings/total-receive-amount',
+          '/dashboard/accountant/super-admin-earnings/total-university-payout',
+          '/dashboard/accountant/super-admin-earnings/total-agent-payout',
+          '/dashboard/accountant/super-admin-earnings/super-admin-profit',
+          '/dashboard/accountant/payment-report/package-payment',
+          '/dashboard/accountant/payment-report/application-payment',
+          '/dashboard/accountant/settings/profile',
+        ];
+
+        if (!allowedPathsForAccountant.includes(router.pathname)) {
+          router.push(
+            `/dashboard/${userInfodata?.data?.role?.split('_').join('-')}`
+          );
+        }
+      }
+
+      if (userInfodata.data.role === 'admission_manager') {
+        const allowedPathsForAdmissionManager = [
+          '/dashboard/admission-manager',
+          '/dashboard/admission-manager/recent-application',
+          '/dashboard/admission-manager/manage-air-ticket/air-ticket-upload-request',
+          '/dashboard/admission-manager/agents',
+          '/dashboard/admission-manager/students',
+          '/dashboard/admission-manager/settings/profile',
+        ];
+
+        const dynamicPath = [
+          '/dashboard/admission-manager/students/',
+          '/dashboard/admission-manager/agents/',
+          '/dashboard/admission-manager/recent-application/',
+        ];
+
+        const currentPath = router.pathname;
+
+        const isAllowedPath =
+          allowedPathsForAdmissionManager.includes(currentPath) ||
+          dynamicPath.some((path) => currentPath.startsWith(path));
+
+        if (!isAllowedPath) {
+          router.push(
+            `/dashboard/${userInfodata?.data?.role?.split('_').join('-')}`
+          );
+        }
+      }
+
+      setIsRouteLoading(false);
+    }
+  }, [router, userInfodata?.data?.role]);
 
   const selectLayoutState = (state) => state.Layout;
 
@@ -145,6 +206,10 @@ const DashBoardLayout = (props) => {
     }
   }, [sidebarVisibilitytype, layoutType]);
 
+  if (isRouteLoading || isLoading) {
+    return <LoaderSpiner />;
+  }
+
   return (
     <>
       {isLoading ? (
@@ -158,7 +223,7 @@ const DashBoardLayout = (props) => {
           />
           <Sidebar layoutType={layoutType} />
           <div id="footer" className="main-content">
-            {props.children}
+            {isRouteLoading ? <LoaderSpiner /> : <>{props.children}</>}
             <Footer />
           </div>
         </div>
