@@ -2,6 +2,7 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import DeleteModal from '@/components/common/DeleteModal';
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SelectUserModalForSuperAdmin from '@/components/sAdminDashboard/modals/SelectUserModalForSuperAdmin';
 import {
@@ -37,6 +38,7 @@ const AllPermittedUserForSuperAdmin = () => {
     useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [userIdForUpdate, setUserIdForUpdate] = useState('');
+  const [editFormIsLoading, setEditFormIsLoading] = useState(false);
   const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
@@ -96,16 +98,8 @@ const AllPermittedUserForSuperAdmin = () => {
     refetch: getSingleStaffMemberInSuperAdminRefetch,
   } = useGetSingleStaffMemberInSuperAdminQuery(userIdForUpdate, {
     skip: !userIdForUpdate,
+    refetchOnMountOrArgChange: true,
   });
-
-  //   const [
-  //     deletePermittedUser,
-  //     {
-  //       data: deletePermittedUserData,
-  //       error: deletePermittedUserError,
-  //       isLoading: deletePermittedUserIsLoading,
-  //     },
-  //   ] = useDeletePermittedUserMutation();
 
   const validationSchema = Yup.object({
     image: Yup.mixed().required('Image is required'),
@@ -127,47 +121,50 @@ const AllPermittedUserForSuperAdmin = () => {
     zip: Yup.number().required('Zip is required'),
   });
 
-  // console.log(getSingleStaffMemberInSuperAdminData?.data);
-
   useEffect(() => {
-    if (
-      userIdForUpdate !== '' &&
-      getSingleStaffMemberInSuperAdminData?.data?._id
-    ) {
-      const fetchData = async () => {
-        try {
-          const file = await convertImageUrlToFile(
-            getSingleStaffMemberInSuperAdminData?.data?.profile_image?.url
-          );
+    if (!userIdForUpdate || !getSingleStaffMemberInSuperAdminData?.data?._id)
+      return;
 
-          setInitialValues({
-            image: file,
-            first_name:
-              getSingleStaffMemberInSuperAdminData?.data?.first_name || '',
-            last_name:
-              getSingleStaffMemberInSuperAdminData?.data?.last_name || '',
-            email: getSingleStaffMemberInSuperAdminData?.data?.email || '',
-            phone: getSingleStaffMemberInSuperAdminData?.data?.phone || '',
-            password: '',
-            confirm_password: '',
-            address:
-              getSingleStaffMemberInSuperAdminData?.data?.address_line_1 || '',
-            select_role: getSingleStaffMemberInSuperAdminData?.data?.role || '',
-            city: getSingleStaffMemberInSuperAdminData?.data?.city || '',
-            state: getSingleStaffMemberInSuperAdminData?.data?.state || '',
-            zip: getSingleStaffMemberInSuperAdminData?.data?.zip || '',
-            country: getSingleStaffMemberInSuperAdminData?.data?.country || '',
-          });
+    setEditFormIsLoading(true);
 
-          setImagePreview(URL.createObjectURL(file));
-        } catch (error) {
-          // console.error('Error loading data:', error);
-        }
-      };
+    const fetchData = async () => {
+      try {
+        const { data } = getSingleStaffMemberInSuperAdminData;
 
-      fetchData();
-    }
-  }, [getSingleStaffMemberInSuperAdminData?.data, userIdForUpdate]);
+        const file = data?.profile_image?.url
+          ? await convertImageUrlToFile(data.profile_image.url)
+          : new File([], 'default.jpg');
+
+        setInitialValues({
+          image: file,
+          first_name: data.first_name || '',
+          last_name: data.last_name || '',
+          email: data.email || '',
+          phone: data.phone || '',
+          password: '',
+          confirm_password: '',
+          address: data.address_line_1 || '',
+          select_role: data.role || '',
+          city: data.city || '',
+          state: data.state || '',
+          zip: data.zip || '',
+          country: data.country || '',
+        });
+
+        setImagePreview(URL.createObjectURL(file));
+      } catch (error) {
+        console.error('Error loading staff member data:', error);
+      } finally {
+        setEditFormIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [
+    getSingleStaffMemberInSuperAdminData,
+    setEditFormIsLoading,
+    userIdForUpdate,
+  ]);
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -451,54 +448,54 @@ const AllPermittedUserForSuperAdmin = () => {
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
-            {/* {getAllPermittedUserData ? (
+            {getAllStaffMemberIsLoading ? (
               <LoaderSpiner />
-            ) : ( */}
-            <Card>
-              <CardHeader className="d-flex justify-content-between align-items-center">
-                <button
-                  onClick={() => setAddModalIsOpen(true)}
-                  className="button px-3 py-2"
-                >
-                  Add New
-                </button>
-                {
-                  <SelectUserModalForSuperAdmin
-                    openModal={addModalIsOpen}
-                    closeModal={() => setAddModalIsOpen(false)}
-                    modalTitle={'Add Permission Role'}
-                    submitBtn={'Add New'}
-                    setInitialValues={setInitialValues}
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    handleSubmit={handleSubmit}
-                    imagePreview={imagePreview}
-                    setImagePreview={setImagePreview}
+            ) : (
+              <Card>
+                <CardHeader className="d-flex justify-content-between align-items-center">
+                  <button
+                    onClick={() => setAddModalIsOpen(true)}
+                    className="button px-3 py-2"
+                  >
+                    Add New
+                  </button>
+                  {
+                    <SelectUserModalForSuperAdmin
+                      openModal={addModalIsOpen}
+                      closeModal={() => setAddModalIsOpen(false)}
+                      modalTitle={'Add Permission Role'}
+                      submitBtn={'Add New'}
+                      setInitialValues={setInitialValues}
+                      initialValues={initialValues}
+                      validationSchema={validationSchema}
+                      handleSubmit={handleSubmit}
+                      imagePreview={imagePreview}
+                      setImagePreview={setImagePreview}
+                    />
+                  }
+                  <SearchComponent
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
                   />
-                }
-                <SearchComponent
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
-                />
-              </CardHeader>
+                </CardHeader>
 
-              <CardBody>
-                <CommonTableComponent
-                  headers={[
-                    ...admissionManagerHeaders,
-                    alluniversityHeaderAction,
-                  ]}
-                  data={isfilteredData ? isfilteredData : []}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
-                  emptyMessage="No Data found yet."
-                />
-              </CardBody>
-            </Card>
-            {/* )} */}
+                <CardBody>
+                  <CommonTableComponent
+                    headers={[
+                      ...admissionManagerHeaders,
+                      alluniversityHeaderAction,
+                    ]}
+                    data={isfilteredData ? isfilteredData : []}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    perPageData={perPageData}
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                    emptyMessage="No Data found yet."
+                  />
+                </CardBody>
+              </Card>
+            )}
 
             {
               // Update user
@@ -515,7 +512,7 @@ const AllPermittedUserForSuperAdmin = () => {
                 handleSubmit={handleUpdateSubmit}
                 imagePreview={imagePreview}
                 setImagePreview={setImagePreview}
-                isLoading={getSingleStaffMemberInSuperAdminIsLoading}
+                isLoading={editFormIsLoading}
               />
             }
 

@@ -9,13 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const TotalAgentPayoutInSuperAdmin = () => {
+const UniversityPaymentPayoutForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { TotalagentPayoutReportHeadersDataForSuperAdmin } =
+  const { universityPaymentPayoutReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
 
   const {
@@ -34,9 +34,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
     ];
 
     const newData = combinedData.filter(
-      (item) =>
-        item?.applied_by?.role === 'agent' &&
-        item?.payment_reason === 'application_tuition_fee'
+      (item) => item?.payment_reason === 'application_tuition_fee'
     );
     setAllPaymentData(newData);
   }, [
@@ -52,7 +50,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
   // Filter data for search option
   const filteredData = allPaymentData?.filter((item) => {
     const fullName =
-      `${item?.payment_reason?.split('_').join(' ')}`.toLowerCase();
+      `${item?.payment_reason?.split('_').join(' ')} ${item?.application?.course?.name}`.toLowerCase();
     return fullName?.includes(searchTerm.toLowerCase());
   });
 
@@ -68,7 +66,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Agent Payout
+                    Total Payout Amount
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -78,7 +76,9 @@ const TotalAgentPayoutInSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={TotalagentPayoutReportHeadersDataForSuperAdmin}
+                    headers={
+                      universityPaymentPayoutReportHeadersDataForSuperAdmin
+                    }
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -97,4 +97,4 @@ const TotalAgentPayoutInSuperAdmin = () => {
   );
 };
 
-export default TotalAgentPayoutInSuperAdmin;
+export default UniversityPaymentPayoutForSuperAdmin;

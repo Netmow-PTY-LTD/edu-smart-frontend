@@ -33,7 +33,11 @@ const TotalAgentPayoutInSuperAdmin = () => {
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
 
-    const newData = combinedData.filter((item) => item?.agent_payout_amount);
+    const newData = combinedData.filter(
+      (item) =>
+        item?.applied_by?.role === 'agent' &&
+        item?.payment_reason === 'application_tuition_fee'
+    );
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
