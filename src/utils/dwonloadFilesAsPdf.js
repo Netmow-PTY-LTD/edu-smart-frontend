@@ -1,6 +1,6 @@
-import { toast } from 'react-toastify';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
 import { PDFDocument } from 'pdf-lib';
+import { toast } from 'react-toastify';
 
 export const downloadFilesAsPDF = async (
   fileUrls,
