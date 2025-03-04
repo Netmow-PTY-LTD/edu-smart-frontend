@@ -7,6 +7,7 @@ import {
   useSingleStudentForAgentQuery,
   useUpdateStudentForAgentMutation,
 } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
+import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -34,6 +35,8 @@ const EditStudentForAgent = () => {
 
   const [updateStudentForAgent] = useUpdateStudentForAgentMutation();
   const { refetch: allStudentForAgentRefetch } = useAllStudentForAgentQuery();
+
+  const { refetch: getAllStudentsRefetch } = useGetAllStudentQuery();
 
   const {
     data: singleStudentForAgentData,
@@ -98,6 +101,7 @@ const EditStudentForAgent = () => {
       if (response) {
         toast.success(response?.message);
         allStudentForAgentRefetch();
+        getAllStudentsRefetch();
         singleStudentForAgentRefetch();
         setImagePreview(null);
         resetForm();
