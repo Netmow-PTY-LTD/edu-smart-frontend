@@ -22,6 +22,7 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
+import { toast } from 'react-toastify';
 
 // ModalForm Component
 const CourseModalFormTest = ({
@@ -155,6 +156,21 @@ const CourseModalFormTest = ({
                         type="checkbox"
                         name="auto_deduct"
                         className="form-check-input"
+                        onChange={(e) => {
+                          const checked = e.target.checked;
+                          setFieldValue('auto_deduct', checked);
+                          // If the checkbox is checked, ensure incentive_amount is valid (greater than 0)
+                          if (
+                            checked &&
+                            (values.incentive_amount <= 0 ||
+                              values.incentive_amount === '')
+                          ) {
+                            toast.error(
+                              'Incentive amount cannot be less than 1.'
+                            );
+                            setFieldValue('auto_deduct', false);
+                          }
+                        }}
                       />
                     </div>
                   </Col>
@@ -198,6 +214,27 @@ const CourseModalFormTest = ({
                                 type="checkbox"
                                 name="scholarship_auto_deduct"
                                 className="form-check-input"
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  setFieldValue(
+                                    'scholarship_auto_deduct',
+                                    checked
+                                  );
+                                  // If the checkbox is checked, ensure incentive_amount is valid (greater than 0)
+                                  if (
+                                    checked &&
+                                    (values.scholarship_amount <= 0 ||
+                                      values.scholarship_amount === '')
+                                  ) {
+                                    toast.error(
+                                      'Scholarship Amount cannot be less than 1.'
+                                    );
+                                    setFieldValue(
+                                      'scholarship_auto_deduct',
+                                      false
+                                    );
+                                  }
+                                }}
                               />
                             </div>
                           </Col>
