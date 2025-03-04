@@ -339,6 +339,8 @@ const AllCourseForSuperAdminTest = ({
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
+    console.log('shadik', values);
+
     setSubmitting(true);
     const filteredData = getDocumentData?.data
       ?.filter((doc) => values.document_requirements?.includes(doc._id))
@@ -349,11 +351,95 @@ const AllCourseForSuperAdminTest = ({
         document_list_id: item.document_list_id,
       }));
 
+    // const allData = {
+    //   ...values,
+    //   university_id: university_id,
+    //   department_id: values?.department,
+    //   category_id: values?.category,
+    //   document_requirements: [...filteredData, ...values.document_requirements],
+    // };
+
+    // try {
+    //   const finalData = new FormData();
+
+    //   Object.entries(allData).forEach(([key, value]) => {
+    //     if (Array.isArray(value)) {
+    //       if (key === 'document_requirements' && value.length === 0) {
+    //         // Ensure an empty array by appending an empty key
+    //         finalData.append(`${key}[]`, []);
+    //       } else {
+    //         value.forEach((item, index) => {
+    //           if (
+    //             key === 'entry_requirements' ||
+    //             key === 'english_requirements'
+    //           ) {
+    //             finalData.append(`${key}[${index}]`, item);
+    //           } else if (key === 'document_requirements') {
+    //             // Only append fields that have defined (non-null and non-undefined) values
+    //             if (item.title != null)
+    //               finalData.append(`${key}[${index}][title]`, item.title);
+    //             if (item.description != null)
+    //               finalData.append(
+    //                 `${key}[${index}][description]`,
+    //                 item.description
+    //               );
+    //             if (item.isRequired != null)
+    //               finalData.append(
+    //                 `${key}[${index}][isRequired]`,
+    //                 item.isRequired
+    //               );
+
+    //             // Only append document_list_id if it is neither undefined nor null
+    //             if (item.document_list_id != null) {
+    //               finalData.append(
+    //                 `${key}[${index}][document_list_id]`,
+    //                 item.document_list_id
+    //               );
+    //             }
+    //           }
+    //         });
+    //       }
+    //     } else {
+    //       finalData.append(key, value);
+    //     }
+    //   });
+
     const allData = {
-      ...values,
+      name: values?.name,
+      available_seats: values?.available_seats,
+      price: values?.emgs_fee || values?.price,
+      gst: values?.gst || 0,
+      emgs_fee: values?.emgs_fee || values?.price,
+      after_emgs_fee: values?.after_emgs_fee || 0,
+      agent_commission_percentage: values?.agent_commission_percentage || 0,
+      description: values?.description,
+      //      course_id: courseIdForEdit,
       university_id: university_id,
       department_id: values?.department,
       category_id: values?.category,
+      brochure: values?.brochure,
+      university_price: values?.tuition_fee || values?.university_price || 0,
+      tuition_fee: values?.tuition_fee || values?.university_price || 0,
+      entry_requirements: values?.entry_requirements,
+      english_requirements: values?.english_requirements,
+      program_duration: values?.program_duration,
+      image: values?.image,
+      incentive_amount: values?.incentive_amount || 0,
+      scholarship_on_tuition_fee: values?.scholarship_on_tuition_fee || false,
+      scholarship_amount: values?.scholarship_amount || 0,
+      scholarship_auto_deduct: values?.scholarship_auto_deduct || false,
+      auto_deduct: values?.auto_deduct || false,
+      free_air_ticket: values?.free_air_ticket || false,
+      free_accessories: values?.free_accessories || false,
+      accessories: values?.accessories || [],
+
+      free_accommodation: checkFreeAcommodation,
+      // Conditionally add accommodation_start_date and accommodation_end_date
+      ...(checkFreeAcommodation && {
+        accommodation_start_date: values?.accommodation_start_date,
+        accommodation_end_date: values?.accommodation_end_date,
+      }),
+
       document_requirements: [...filteredData, ...values.document_requirements],
     };
 
@@ -365,15 +451,20 @@ const AllCourseForSuperAdminTest = ({
           if (key === 'document_requirements' && value.length === 0) {
             // Ensure an empty array by appending an empty key
             finalData.append(`${key}[]`, []);
+          } else if (key === 'accessories' && value.length === 0) {
+            // If 'accessories' is an empty array, append an empty array
+            finalData.append(`${key}[]`, []);
           } else {
             value.forEach((item, index) => {
               if (
                 key === 'entry_requirements' ||
-                key === 'english_requirements'
+                key === 'english_requirements' ||
+                key === 'accessories'
               ) {
+                // Append each item in the array as an indexed field
                 finalData.append(`${key}[${index}]`, item);
               } else if (key === 'document_requirements') {
-                // Only append fields that have defined (non-null and non-undefined) values
+                // Append only fields that are not null or undefined
                 if (item.title != null)
                   finalData.append(`${key}[${index}][title]`, item.title);
                 if (item.description != null)
@@ -386,8 +477,6 @@ const AllCourseForSuperAdminTest = ({
                     `${key}[${index}][isRequired]`,
                     item.isRequired
                   );
-
-                // Only append document_list_id if it is neither undefined nor null
                 if (item.document_list_id != null) {
                   finalData.append(
                     `${key}[${index}][document_list_id]`,
@@ -425,18 +514,18 @@ const AllCourseForSuperAdminTest = ({
     setInitialValues({
       name: '',
       available_seats: '',
-      price: '',
+      price: '2400',
+      emgs_fee: '2400',
       gst: '',
       agent_commission_percentage: '',
-      university_price: '',
-      tuition_fee: '',
+      university_price: '25000',
+      tuition_fee: '25000',
+      after_emgs_fee: '22600',
       description: '',
       department: '',
       category: '',
       brochure: null,
-      document_requirements: [
-        { title: '', description: '', isRequired: false },
-      ],
+      document_requirements: [''],
       entry_requirements: [''],
       english_requirements: [''],
       program_duration: '',
@@ -479,18 +568,18 @@ const AllCourseForSuperAdminTest = ({
       name: values?.name,
       available_seats: values?.available_seats,
       price: values?.emgs_fee || values?.price,
-      gst: values?.gst,
+      gst: values?.gst || 0,
       emgs_fee: values?.emgs_fee || values?.price,
-      after_emgs_fee: values?.after_emgs_fee,
-      agent_commission_percentage: values?.agent_commission_percentage,
+      after_emgs_fee: values?.after_emgs_fee || 0,
+      agent_commission_percentage: values?.agent_commission_percentage || 0,
       description: values?.description,
       course_id: courseIdForEdit,
       university_id: university_id,
       department_id: values?.department?.value,
       category_id: values?.category?.value,
       brochure: values?.brochure,
-      university_price: values?.tuition_fee || values?.university_price,
-      tuition_fee: values?.tuition_fee || values?.university_price,
+      university_price: values?.tuition_fee || values?.university_price || 0,
+      tuition_fee: values?.tuition_fee || values?.university_price || 0,
       entry_requirements: values?.entry_requirements,
       english_requirements: values?.english_requirements,
       program_duration: values?.program_duration,
@@ -502,7 +591,7 @@ const AllCourseForSuperAdminTest = ({
       auto_deduct: values?.auto_deduct || false,
       free_air_ticket: values?.free_air_ticket || false,
       free_accessories: values?.free_accessories || false,
-      accessories: values?.accessories,
+      accessories: values?.accessories || [],
 
       free_accommodation: checkFreeAcommodation,
       // Conditionally add accommodation_start_date and accommodation_end_date

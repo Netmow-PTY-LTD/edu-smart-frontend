@@ -8,6 +8,7 @@ import {
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -33,6 +34,8 @@ export default function RecentApplicationForSuperAdmin() {
   const [tuitionInvoiceModal, setTuitionInvoiceModal] = useState(false);
   const [applicationId, setApplicationId] = useState('');
   const perPageData = 20;
+
+  const customData = useCustomData();
 
   const { studentApplicationsHeaders } = DataObjectComponent();
 
@@ -81,8 +84,7 @@ export default function RecentApplicationForSuperAdmin() {
   const searchInItem = (item, searchTerm) => {
     if (!searchTerm) return true; // If no search term, return all items
 
-    console.log(item);
-    console.log(searchTerm);
+    console.log('Search', searchTerm);
 
     if (typeof item === 'object' && item !== null) {
       return Object.values(item).some((value) =>
@@ -121,7 +123,7 @@ export default function RecentApplicationForSuperAdmin() {
             <div
               onClick={() =>
                 router.push(
-                  `/dashboard/super-admin/recent-application/${item?._id}`
+                  `/dashboard/${customData?.paneltext}/recent-application/${item?._id}`
                 )
               }
               className="text-primary"

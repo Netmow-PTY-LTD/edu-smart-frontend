@@ -84,8 +84,7 @@ export default function RecentApplicationForSuperAdmin() {
   const searchInItem = (item, searchTerm) => {
     if (!searchTerm) return true; // If no search term, return all items
 
-    console.log(item);
-    console.log(searchTerm);
+    console.log('Search', searchTerm);
 
     if (typeof item === 'object' && item !== null) {
       return Object.values(item).some((value) =>
