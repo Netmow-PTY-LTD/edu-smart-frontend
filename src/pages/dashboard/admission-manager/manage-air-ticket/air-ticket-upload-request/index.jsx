@@ -37,6 +37,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   const [initialValues, setInitialValues] = useState({
     title: 'Air Ticket', // Set default value
     description: '',
+    student_id: '',
   });
 
   const {
