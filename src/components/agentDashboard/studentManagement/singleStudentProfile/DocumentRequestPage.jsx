@@ -134,6 +134,7 @@ const DocumentRequestPage = ({ student_id }) => {
       if (result) {
         toast.success(result?.message);
         getSingleStudentDocRequestRefetch();
+        togModal();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
@@ -286,6 +287,7 @@ const DocumentRequestPage = ({ student_id }) => {
     setAllUploadDocumentsForStudentsData(() => [
       ...docRequestTableHeaderDataWithAction,
     ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSingleStudentDocRequest, docId]);
 
   return (

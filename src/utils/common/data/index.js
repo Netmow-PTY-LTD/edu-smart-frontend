@@ -336,28 +336,28 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium  text-capitalize">
+    //         {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
 
     {
       title: 'Status',
@@ -455,28 +455,28 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium  text-capitalize">
-            {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium  text-capitalize">
+    //         {`${item?.requested_by?.role ? item?.requested_by?.role : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Uploaded Files',
       key: 'files',
@@ -1222,8 +1222,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Transactions',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 5,
@@ -1231,8 +1231,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-currency-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 6,
@@ -1240,8 +1240,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-payout`,
     },
 
     {
@@ -1250,8 +1250,8 @@ const DataObjectComponent = () => {
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
-      link: 'All Charges',
-      pathName: '/dashboard/super-admin',
+      link: 'View Profit Details',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
 
     // {
@@ -2091,27 +2091,27 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+    //     </span>
+    //   ),
+    // },
 
-    {
-      title: 'Requester Email',
-      key: 'email',
-      render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium ">
-            {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-          </h5>
-        </div>
-      ),
-    },
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
     {
       title: 'Status',
       key: 'status',
