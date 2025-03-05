@@ -5,6 +5,7 @@ import Layout from '@/components/layout';
 import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
 
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
   Card,
@@ -22,7 +23,7 @@ import {
 export default function AgentFamilyTrip() {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
-
+  const router = useRouter();
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
 
@@ -142,15 +143,15 @@ export default function AgentFamilyTrip() {
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu dropdown-menu-end">
             <DropdownItem>
-              <div className="text-primary">
-                <i class="ri-check-double-line me-2 text-success"></i>
-                Accepted
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div className="text-primary">
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                Rejected
+              <div
+                onClick={() =>
+                  // router.push(`/dashboard/agent/familyTrip/${item?._id}`)
+                  router.push(`/dashboard/agent/applications`)
+                }
+                className="text-primary"
+              >
+                <i className="ri-eye-fill me-2"></i>
+                View Application
               </div>
             </DropdownItem>
           </DropdownMenu>
