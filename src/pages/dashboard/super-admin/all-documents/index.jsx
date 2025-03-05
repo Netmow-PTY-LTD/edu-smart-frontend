@@ -61,8 +61,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
           (item) => item?._id === requiredDocumentId
         );
 
-        console.log(singleCouponData);
-
         try {
           setInitialValues({
             title: singleCouponData?.title || '',
