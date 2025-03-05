@@ -28,8 +28,10 @@ const AllStudentsForAgent = () => {
   const [studentIdForDelete, setStudentIdForDelete] = useState('');
   const perPageData = 10;
 
-  const { studentsImageAndNameHeaderDataInAgentDashboard, studentsHeaders } =
-    DataObjectComponent();
+  const {
+    studentsImageAndNameHeaderDataInAgentDashboard = [],
+    studentsHeaders = [],
+  } = DataObjectComponent();
 
   const {
     data: allStudentForAgentData,
