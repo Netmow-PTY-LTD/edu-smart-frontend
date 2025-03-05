@@ -1181,7 +1181,9 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+          {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
+          {`${item.description.slice(0, 100)}...`}
+
         </p>
       ),
     },
@@ -1422,7 +1424,9 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+          {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
+          {`${item.description.slice(0, 100)}...`}
+
         </p>
       ),
     },
@@ -1468,7 +1472,9 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+          {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
+          {`${item.description.slice(0, 100)}...`}
+
         </p>
       ),
     },
