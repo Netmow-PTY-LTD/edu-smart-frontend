@@ -1,4 +1,5 @@
 import FileViewer from '@/components/common/FileViewer';
+import DescriptionRenderer from '@/utils/DescriptionRenderer';
 import Link from 'next/link';
 
 export const REQUEST_TABLE_HEADERS = [
@@ -47,26 +48,10 @@ export const REQUEST_TABLE_HEADERS = [
     title: 'Descriptions',
     key: 'description',
     render: (item) => (
-      <div className="fs-14 fw-medium text-capitalize">
-        {`${item?.description ? item?.description : '-'}`}
-      </div>
-    ),
-  },
-  {
-    title: 'Requested By',
-    key: 'agent',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.requested_by?.first_name && item?.requested_by?.last_name
-          ? `${
-              item?.requested_by?.first_name
-                ? item?.requested_by?.first_name
-                : ''
-            } ${
-              item?.requested_by?.last_name ? item?.requested_by?.last_name : ''
-            }`
-          : '-'}
-      </span>
+      <DescriptionRenderer
+        maxLength={40}
+        description={item?.description || '-'}
+      />
     ),
   },
 
@@ -90,6 +75,41 @@ export const REQUEST_TABLE_HEADERS = [
           'No submission files yet'
         )}
       </div>
+    ),
+  },
+
+  {
+    title: 'Requested By',
+    key: 'agent',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.requested_by?.first_name && item?.requested_by?.last_name
+          ? `${
+              item?.requested_by?.first_name
+                ? item?.requested_by?.first_name
+                : ''
+            } ${
+              item?.requested_by?.last_name ? item?.requested_by?.last_name : ''
+            }`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Submitted By',
+    key: 'submitted_by',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+          ? `${
+              item?.submitted_by?.first_name
+                ? item?.submitted_by?.first_name
+                : ''
+            } ${
+              item?.submitted_by?.last_name ? item?.submitted_by?.last_name : ''
+            }`
+          : '-'}
+      </span>
     ),
   },
   {
@@ -162,6 +182,12 @@ export const SUBMITTED_TABLE_HEADERS = [
   {
     title: 'Descriptions',
     key: 'description',
+    render: (item) => (
+      <DescriptionRenderer
+        maxLength={40}
+        description={item?.description || '-'}
+      />
+    ),
   },
 
   {
@@ -189,6 +215,23 @@ export const SUBMITTED_TABLE_HEADERS = [
                 : ''
             } ${
               item?.requested_by?.last_name ? item?.requested_by?.last_name : ''
+            }`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Submitted By',
+    key: 'submitted_by',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+          ? `${
+              item?.submitted_by?.first_name
+                ? item?.submitted_by?.first_name
+                : ''
+            } ${
+              item?.submitted_by?.last_name ? item?.submitted_by?.last_name : ''
             }`
           : '-'}
       </span>

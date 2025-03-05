@@ -1,4 +1,5 @@
 import FileViewer from '@/components/common/FileViewer';
+import DescriptionRenderer from '@/utils/DescriptionRenderer';
 import Link from 'next/link';
 
 // tableConfig.js
@@ -30,6 +31,12 @@ export const REQUEST_TABLE_HEADERS_FOR_STUDENT = [
   {
     title: 'Descriptions',
     key: 'description',
+    render: (item) => (
+      <DescriptionRenderer
+        maxLength={40}
+        description={item?.description || '-'}
+      />
+    ),
   },
 
   {
@@ -57,6 +64,23 @@ export const REQUEST_TABLE_HEADERS_FOR_STUDENT = [
                 : ''
             } ${
               item?.requested_by?.last_name ? item?.requested_by?.last_name : ''
+            }`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Submitted By',
+    key: 'submitted_by',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+          ? `${
+              item?.submitted_by?.first_name
+                ? item?.submitted_by?.first_name
+                : ''
+            } ${
+              item?.submitted_by?.last_name ? item?.submitted_by?.last_name : ''
             }`
           : '-'}
       </span>
@@ -122,14 +146,13 @@ export const SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [
   },
 
   {
-    title: 'Description',
+    title: 'Descriptions',
     key: 'description',
     render: (item) => (
-      <div>
-        <h5 className="fs-14 fw-medium text-capitalize">
-          {`${item?.description ? item?.description : '-'}`}
-        </h5>
-      </div>
+      <DescriptionRenderer
+        maxLength={40}
+        description={item?.description || '-'}
+      />
     ),
   },
 
@@ -149,7 +172,7 @@ export const SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [
 
   {
     title: 'Requested By',
-    key: 'requested_by',
+    key: 'agent',
     render: (item) => (
       <span className="d-flex flex-column text-capitalize">
         {item?.requested_by?.first_name && item?.requested_by?.last_name
@@ -159,6 +182,23 @@ export const SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [
                 : ''
             } ${
               item?.requested_by?.last_name ? item?.requested_by?.last_name : ''
+            }`
+          : '-'}
+      </span>
+    ),
+  },
+  {
+    title: 'Submitted By',
+    key: 'submitted_by',
+    render: (item) => (
+      <span className="d-flex flex-column text-capitalize">
+        {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+          ? `${
+              item?.submitted_by?.first_name
+                ? item?.submitted_by?.first_name
+                : ''
+            } ${
+              item?.submitted_by?.last_name ? item?.submitted_by?.last_name : ''
             }`
           : '-'}
       </span>

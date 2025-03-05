@@ -53,6 +53,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     refetch: refetchRequests,
   } = useGetAllStudentsAirticketDocumentRequestQuery();
 
+  console.log('all document request', allDocumentRequests);
   const {
     data: submittedDocuments,
     isLoading: submittedLoading,
