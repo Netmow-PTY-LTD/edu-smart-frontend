@@ -19,11 +19,8 @@ import {
   useUpdateSingleAirTicketDocumentForAgentMutation,
 } from '@/slice/services/common/commonDocumentService';
 
-import {
-  REQUEST_TABLE_HEADERS,
-  SUBMITTED_TABLE_HEADERS,
-} from '@/utils/common/data/agentData';
 import { useEffect, useMemo, useState } from 'react';
+import DataObjectComponent from '@/utils/common/data';
 
 const StudentAirtTicketDocumentUploadRequestForAgent = () => {
   // State Management
@@ -53,7 +50,6 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     refetch: refetchRequests,
   } = useGetAllStudentsAirticketDocumentRequestQuery();
 
-  console.log('all document request', allDocumentRequests);
   const {
     data: submittedDocuments,
     isLoading: submittedLoading,
@@ -92,6 +88,13 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
         : { title: '', document: '', description: '' },
     }));
   };
+
+  // HEADERS
+
+  const {
+    AIRTICKET_SUBMITTED_HEADER_FOR_AGENT = [],
+    AIRTICKET_REQUEST_HEADER_FOR_AGENT = [],
+  } = DataObjectComponent();
 
   // Modal Data Preparation
   useEffect(() => {
@@ -158,7 +161,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
 
   // ------------- Table Configuration  -----------
 
-  const TABLE_HEADERS_ACTIONS = {
+  const AGENT_TABLE_HEADERS_ACTIONS = {
     actions: {
       title: 'Actions',
       key: 'actions',
@@ -182,13 +185,13 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       filteredData: submittedDocuments?.data?.filter(
         createDataFilter(searchTerms.submitted)
       ),
-      headers: SUBMITTED_TABLE_HEADERS,
+      headers: AIRTICKET_SUBMITTED_HEADER_FOR_AGENT,
       searchTerm: searchTerms.submitted,
     },
     agentRequests: {
       data: agentRequests,
       filteredData: agentRequests.filter(createDataFilter(searchTerms.agent)),
-      headers: REQUEST_TABLE_HEADERS,
+      headers: AIRTICKET_REQUEST_HEADER_FOR_AGENT,
       searchTerm: searchTerms.agent,
     },
     superAdminRequests: {
@@ -196,7 +199,10 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       filteredData: superAdminRequests.filter(
         createDataFilter(searchTerms.superAdmin)
       ),
-      headers: [...REQUEST_TABLE_HEADERS, TABLE_HEADERS_ACTIONS.actions],
+      headers: [
+        ...AIRTICKET_REQUEST_HEADER_FOR_AGENT,
+        AGENT_TABLE_HEADERS_ACTIONS.actions,
+      ],
       searchTerm: searchTerms.superAdmin,
     },
   };
