@@ -1655,6 +1655,15 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
     // {
     //   title: 'Applied By',
     //   key: 'applied_by',
@@ -1801,10 +1810,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Method',
-      key: 'payment_method',
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'payout amount'}</div>
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
       ),
     },
   ];
@@ -1885,7 +1896,16 @@ const DataObjectComponent = () => {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'payout amount'}</div>
+        <div className="fs-2 fw-medium text-uppercase">{'Auto Deduct'}</div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
       ),
     },
   ];
@@ -1978,6 +1998,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
+    {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
@@ -2040,6 +2069,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+
     {
       title: 'Agent Commission',
       key: 'agent_commission',
@@ -2049,13 +2079,24 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Agent Hot Commission',
+      key: 'agent_hot_commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer
+            ? item?.agent_commision_by_hot_offer + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
 
     {
       title: 'Package',
       key: 'package',
       render: (item) => (
         <div className="fs-2 fw-medium">
-          {item?.agent_package?.package_name
+          {item?.payment_reason != 'application_tuition_fee'
             ? item?.agent_package?.package_name
             : '-'}
         </div>
@@ -2079,12 +2120,7 @@ const DataObjectComponent = () => {
       key: 'profit_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.incentive_amount && item?.agent_commission
-            ? item?.incentive_amount - item?.agent_commission
-            : item?.agent
-              ? item?.paid_amount
-              : '0'}{' '}
-          {'MYR'}
+          {item?.super_admin_profit ? item?.super_admin_profit : '0'} {'MYR'}
         </div>
       ),
     },
