@@ -809,7 +809,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'student_name',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -840,12 +840,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Emgs Payment',
+      title: 'Emgs',
       key: 'emgs_payment_status',
       render: (item) => (
         <>
           <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.emgs_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.emgs_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+            className={`fw-medium fs-3 text-capitalize badge ${item?.emgs_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.emgs_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
           >
             {item?.emgs_payment_status ?? '-'}
           </span>
@@ -853,15 +853,35 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Tuition Payment',
+      title: 'Tuition',
       key: 'tuition_fee_payment_status',
       render: (item) => (
         <>
           <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.tuition_fee_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.tuition_fee_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+            className={` fw-medium fs-3 text-capitalize badge ${item?.tuition_fee_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.tuition_fee_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
           >
             {item?.tuition_fee_payment_status ?? '-'}
           </span>
+        </>
+      ),
+    },
+
+    {
+      title: 'Pickup',
+      key: 'pickup_status',
+      render: (item) => (
+        <>
+          {item?.airport_pickup_charge > 0 ? (
+            <span
+              className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
+            >
+              {item?.airport_pickup_charge_payment_status ?? '-'}
+            </span>
+          ) : (
+            <span className="text-capitalize text-primary fw-medium">
+              {'Not Activated Yet'}
+            </span>
+          )}
         </>
       ),
     },
@@ -872,7 +892,7 @@ const DataObjectComponent = () => {
       render: (item) => (
         <>
           <span
-            className={`fw-semibold px-4 py-1 rounded-4 text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
+            className={`fw-medium fs-3 text-capitalize badge  ${item?.status === 'accepted' ? 'bg-success-subtle text-success' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
           >
             {item?.status ?? '-'}
           </span>
@@ -1182,7 +1202,6 @@ const DataObjectComponent = () => {
         <p className="text-wrap me-5">
           {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
           {`${item.description.slice(0, 100)}...`}
-
         </p>
       ),
     },
@@ -1425,7 +1444,6 @@ const DataObjectComponent = () => {
         <p className="text-wrap me-5">
           {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
           {`${item.description.slice(0, 100)}...`}
-
         </p>
       ),
     },
@@ -1473,7 +1491,6 @@ const DataObjectComponent = () => {
         <p className="text-wrap me-5">
           {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
           {`${item.description.slice(0, 100)}...`}
-
         </p>
       ),
     },
@@ -2281,29 +2298,13 @@ const DataObjectComponent = () => {
   ];
 
   const applicationHeadersWithoutAction = [
-    // {
-    //   title: 'Invoice No',
-    //   key: 'createdAt',
-    //   render: (item) => (
-    //     // <div>
-    //     //   {item?.createdAt
-    //     //     ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-    //     //     : ''}
-    //     // </div>
-    //     <div>
-    //       {item?._id
-    //         ? `${item._id}`
-    //         : '-'}
-    //     </div>
-    //     ),
-    // },
     {
       title: 'Name',
       key: 'student',
       render: (item) => (
         <div className="text-capitalize">
           {item?.student?.first_name || item?.student?.last_name
-            ? `${item.student.first_name} ${item.student.last_name}`
+            ? `${item?.student?.first_name} ${item?.student?.last_name}`
             : '-'}
         </div>
       ),
@@ -2313,7 +2314,7 @@ const DataObjectComponent = () => {
       key: 'course_name',
       render: (item) => (
         <div className="text-capitalize">
-          {item?.application?.course.name ?? '-'}
+          {item?.application?.course?.name ?? '-'}
         </div>
       ),
     },
@@ -2352,10 +2353,28 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Airport Pickup',
+      key: 'airport_pickup',
+      render: (item) =>
+        item?.application?.airport_pickup_invoice_status === 'active' ? (
+          <p
+            className={` badge fw-semibold text-center me-4 ${item?.application?.airport_pickup_charge_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          >
+            <span className="text-uppercase">
+              {item?.application?.airport_pickup_charge_payment_status ?? ''}
+            </span>
+          </p>
+        ) : (
+          <span className="text-capitalize text-primary fw-medium">
+            {'Not Activated Yet'}
+          </span>
+        ),
+    },
+    {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
+        <div className="text-uppercase">{item?.payment_method ?? '-'}</div>
       ),
     },
   ];
