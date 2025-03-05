@@ -1,6 +1,8 @@
+import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import Image from 'next/image';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardHeader,
@@ -13,40 +15,72 @@ import {
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 
-const InvoicesComponentForMultipleDataTuitionFee = ({
+const AirportPickupChargeInvoice = ({
   addressData,
   billingAddressData,
   tableData,
-  generatePDF,
   printInvoice,
-  payButton,
-  goToPay,
-  chargesType,
-  invoice,
-  superAdmin,
-  subtotal,
-  gst,
-  total,
   currency,
   logoData,
   close,
   open,
   loading,
-  payment_status,
   invoice_no,
 }) => {
+  const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
+  const customData = useCustomData();
+
+  const sslCommerzPaymentHandler = async () => {
+    const price = invoice_no?.application?.airport_pickup_charge;
+    const application_id = invoice_no?.application?._id;
+    const course_id = invoice_no?.application?.course?._id;
+    const report_id = invoice_no?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=faild&report_id=${report_id}`;
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_airport_pickup_charge';
+    const payment_method = 'sslcommerz';
+
+    try {
+      const response = await sslCommerzPaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      if (response.success && response?.data?.gatewayPageURL) {
+        window.location.href = response?.data?.gatewayPageURL;
+      } else {
+        toast.error('Payment failed');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
   return (
     <>
-      {/* <Layout> */}
-      {/* <div className="page-content"> */}
-      {/* { (
-            <LoaderSpiner />
-          ) : ( */}
-      {/* <Container fluid> */}
-      {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
         <ModalHeader toggle={close} className="">
-          Invoice For Tuition Fee
+          Invoice For Airport Pickup Charge
         </ModalHeader>
         <ModalBody className="p-5">
           {loading ? (
@@ -66,24 +100,13 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                         width={80}
                       />
                     ) : (
-                      // <div
-                      //   style={{
-                      //     height: '80px',
-                      //     width: 'auto',
-                      //     display: 'flex',
-                      //     justifyContent: 'start',
-                      //     alignItems: 'start',
-                      //   }}
-                      // >
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={logoData}
                         className="card-logo card-logo-dark"
                         alt="logo dark"
-                        // height={10}
                         width={'12%'}
                       />
-                      // </div>
                     )}
                   </div>
                   <CardHeader className="border-bottom-dashed ">
@@ -170,9 +193,8 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Invoice No
                       </p>
-
                       <p className="mb-0 text-uppercase">
-                        {invoice_no?._id?.slice(0, -1)}
+                        {invoice_no?._id?.slice(0, -2)}
                       </p>
                     </Col>
                     <Col lg={3} xs={3}>
@@ -180,12 +202,21 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                         Date
                       </p>
                       <p className=" mb-0 text-uppercase">
-                        <p className=" mb-0 text-uppercase">
-                          {new Date().toDateString('en-GB', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                          })}
+                        <p className="mb-0 text-uppercase">
+                          {invoice_no?.application
+                            ?.airport_pickup_charge_payment_status === 'paid'
+                            ? new Date(
+                                invoice_no?.application?.airport_pickup_charge_payment_date
+                              ).toDateString('en-GB', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              })
+                            : new Date().toDateString('en-GB', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              })}
                         </p>
                       </p>
                     </Col>
@@ -194,11 +225,11 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                         Payment Status
                       </p>
                       <p
-                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.airport_pickup_charge_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
                       >
                         <span className="text-uppercase">
                           {invoice_no?.application
-                            ?.tuition_fee_payment_status ?? '-'}
+                            ?.airport_pickup_charge_payment_status ?? '-'}
                         </span>
                       </p>
                     </Col>
@@ -207,7 +238,9 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                         INVOICE TYPE
                       </p>
                       <p className=" mb-0 text-uppercase">
-                        <p className=" mb-0 text-uppercase">TUITION FEE</p>
+                        <p className=" mb-0 text-uppercase">
+                          Airport Pickup Charge
+                        </p>
                       </p>
                     </Col>
                   </Row>
@@ -225,7 +258,7 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                           <th scope="col">SL</th>
                           <th scope="col">Application Details</th>
                           <th scope="col">Student</th>
-                          <th scope="col">Tuition Fee</th>
+                          <th scope="col">Charge Fee</th>
                           <th scope="col">Amount</th>
                         </tr>
                       </thead>
@@ -266,17 +299,15 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.tuition_fee -
-                                      item?.application?.course?.emgs_fee ??
-                                      '-'}{' '}
+                                    {item?.application?.airport_pickup_charge ??
+                                      '0.00'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
                                 <td>
                                   <h3 className="my-1 fw-normal">
-                                    {item?.application?.course?.tuition_fee -
-                                      item?.application?.course?.emgs_fee ??
-                                      '-'}{' '}
+                                    {item?.application?.airport_pickup_charge ??
+                                      '0.00'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -296,29 +327,18 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                         <tr>
                           <th className="">Sub Total :</th>
                           <th className="text-end ">
-                            {invoice_no?.application?.course?.tuition_fee -
-                              invoice_no?.application?.course?.emgs_fee}{' '}
+                            {invoice_no?.application?.airport_pickup_charge ??
+                              '0.00'}{' '}
                             {currency}
                           </th>
                         </tr>
-
-                        {gst ? (
-                          <tr>
-                            <th>GST :</th>
-                            <th className="text-end ">
-                              {gst} {currency}
-                            </th>
-                          </tr>
-                        ) : (
-                          ''
-                        )}
 
                         <tr className="border-top border-top-dashed ">
                           <th scope="row">Total Amount :</th>
 
                           <th className="text-end">
-                            {invoice_no?.application?.course?.tuition_fee -
-                              invoice_no?.application?.course?.emgs_fee}{' '}
+                            {invoice_no?.application?.airport_pickup_charge ??
+                              '0.00'}{' '}
                             {currency}
                           </th>
                         </tr>
@@ -342,97 +362,23 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
 
                           `}</style>
 
-                  <div className="border-top border-top-dashed mx-5 my-5 fs-2">
-                    <div className="invoicetable">
-                      <div className="table-row">
-                        <div className="tc mt-3">
-                          Course Fee: <br />
-                          <span style={{ fontSize: '12px' }}>
-                            (Payment is required after EMGS processing.)
-                          </span>
-                        </div>
-                        <div className="tc mt-3">
-                          {' '}
-                          {invoice_no?.application?.tuition_fee_amount +
-                            invoice_no?.application?.emgs_fee_amount}{' '}
-                          {currency}
-                        </div>
+                  {(customData?.paneltext === 'agent' ||
+                    customData?.paneltext === 'student') &&
+                    invoice_no?.application
+                      ?.airport_pickup_charge_payment_status === 'pending' && (
+                      <div className="border-top border-top-dashed mx-5 my-5 fs-2">
+                        <button
+                          onClick={sslCommerzPaymentHandler}
+                          className="d-flex justify-content-end button mt-5 px-5 py-2"
+                        >
+                          Pay Pickup Charge
+                        </button>
                       </div>
-                      <div className="table-row">
-                        <div className="tc">Emgs Fee:</div>
-                        <div className="tc">
-                          {' '}
-                          - {invoice_no?.emgs_fee_paid_amount} {currency}
-                        </div>
-                      </div>
-                      {invoice_no?.application?.tuition_fee_payment_status ===
-                      'paid' ? (
-                        <>
-                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                            <div className="tc mt-3">
-                              Balance Payable: <br />
-                              <span style={{ fontSize: '12px' }}>
-                                (Payment is required after EMGS processing.)
-                              </span>
-                            </div>
-                            <div className="tc mt-3">
-                              {' '}
-                              -{' '}
-                              {invoice_no?.application?.tuition_fee_amount +
-                                invoice_no?.application?.emgs_fee_amount -
-                                invoice_no?.emgs_fee_paid_amount}{' '}
-                              {currency}
-                            </div>
-                          </div>
-                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                            <div className="tc mt-3">
-                              Due Amount: <br />
-                            </div>
-                            <div className="tc mt-3 text-end">
-                              {' '}
-                              {'0'} {currency}
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                            <div className="tc mt-3">
-                              Balance Payable: <br />
-                              <span style={{ fontSize: '12px' }}>
-                                (Payment is required after EMGS processing.)
-                              </span>
-                            </div>
-                            <div className="tc mt-3">
-                              {' '}
-                              {invoice_no?.application?.tuition_fee_amount +
-                                invoice_no?.application?.emgs_fee_amount -
-                                invoice_no?.emgs_fee_paid_amount}{' '}
-                              {currency}
-                            </div>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
+                    )}
                 </Card>
 
-                {/* print and download button section */}
                 <Col xl={12}>
                   <div className="d-flex align-items-center justify-content-between mb-5">
-                    {payButton === 'yes' ? (
-                      <button
-                        onClick={goToPay}
-                        className="button text-light px-3 p-2 me-3 no-print"
-                        id="invoicepaynow"
-                      >
-                        <i className="ri-bank-card-fill align-bottom me-1"></i>
-                        Pay Now
-                      </button>
-                    ) : (
-                      ''
-                    )}
-
                     <button
                       onClick={printInvoice}
                       className="button px-5 py-2 no-print"
@@ -441,15 +387,9 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                       <i className="ri-printer-line align-bottom me-2"></i>{' '}
                       Print
                     </button>
-                    {/* <button
-                      onClick={generatePDF}
-                      className="button text-light px-3 p-2 me-3 no-print"
-                    >
-                      <i className="ri-download-2-line align-bottom me-2"></i>
-                      Download
-                    </button> */}
+
                     <button
-                      onClick={() => close()}
+                      onClick={close}
                       className="d-flex justify-content-end button px-5 py-2 "
                     >
                       Close
@@ -461,13 +401,8 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
           )}
         </ModalBody>
       </Modal>
-
-      {/* </Container> */}
-      {/* )} */}
-      {/* </div> */}
-      {/* </Layout> */}
     </>
   );
 };
 
-export default InvoicesComponentForMultipleDataTuitionFee;
+export default AirportPickupChargeInvoice;
