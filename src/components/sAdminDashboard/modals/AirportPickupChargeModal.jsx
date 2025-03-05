@@ -45,10 +45,13 @@ const AirportPickupChargeModal = ({
       <ModalBody>
         <form onSubmit={handleChangeAirportPichupCharge}>
           <div className="mb-4">
-            <Label htmlFor="airport_pickup_charge">Add Charge Amount</Label>
+            <Label className="fs-2" htmlFor="airport_pickup_charge">
+              {' '}
+              Charge Amount
+            </Label>
             <input
               type="number"
-              className="form-control"
+              className="form-control fs-2"
               id="airport_pickup_charge"
               name="airport_pickup_charge"
               placeholder="Enter charge amount"
@@ -67,11 +70,11 @@ const AirportPickupChargeModal = ({
           </div>
 
           <div className="mb-4">
-            <Label htmlFor="airport_pickup_invoice_status">
+            <Label className="fs-2" htmlFor="airport_pickup_invoice_status">
               Select Charge Status
             </Label>
             <select
-              className="form-select"
+              className="form-select fs-2"
               id="airport_pickup_invoice_status"
               name="airport_pickup_invoice_status"
               value={selectStatus}
@@ -83,7 +86,11 @@ const AirportPickupChargeModal = ({
           </div>
 
           {checkAirportPickupStatus === 'paid' ? (
-            ''
+            <div className="d-flex align-items-center justify-content-center ">
+              <span className="badge bg-success-subtle text-success fs-2">
+                {'Already Is Paid'}
+              </span>
+            </div>
           ) : (
             <div className="d-flex justify-content-center align-items-center">
               <div className="button px-4 py-2">
