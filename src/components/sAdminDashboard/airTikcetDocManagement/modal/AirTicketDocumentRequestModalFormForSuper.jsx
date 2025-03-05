@@ -25,10 +25,9 @@ const AirTicketDocumentRequestModalFormForSuper = ({
 
   const recentApplicantStudentOptions =
     getAllRecentApplicationsData?.data?.map((item) => ({
-      value: item?.student?._id,
+      value: item?._id,
       label: `${item?.student?.first_name} ${item?.student?.last_name}- ${item?._id}`,
-      // label: `${item.student.first_name} ${item.student.last_name} - ${item._id}`,
-      applicationId: item?._id,
+      student_id: item?.student?._id,
     })) || [];
 
   return (
@@ -60,21 +59,21 @@ const AirTicketDocumentRequestModalFormForSuper = ({
                             isClearable
                             isSearchable
                             placeholder="Select Applicant Student"
-                            name="student_id"
+                            name="application_id"
                             options={recentApplicantStudentOptions}
                             onChange={(option) => {
                               setFieldValue(
-                                'student_id',
+                                'application_id',
                                 option ? option.value : ''
                               );
                               setFieldValue(
-                                'application_id',
-                                option ? option.applicationId : ''
+                                'student_id',
+                                option ? option.student_id : ''
                               );
                             }}
                             value={
                               recentApplicantStudentOptions.find(
-                                (opt) => opt.value === values?.student_id
+                                (opt) => opt.value === values?.application_id
                               ) || null
                             }
                           />
