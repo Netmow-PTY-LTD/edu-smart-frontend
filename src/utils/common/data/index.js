@@ -210,7 +210,7 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
-          maxLength={40}
+          maxWords={5}
           description={item?.description || '-'}
         />
       ),
@@ -292,7 +292,7 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
-          maxLength={40}
+          maxWords={5}
           description={item?.description || '-'}
         />
       ),
@@ -416,7 +416,7 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
-          maxLength={40}
+          maxWords={5}
           description={item?.description || '-'}
         />
       ),
@@ -809,7 +809,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'student_name',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -840,12 +840,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Emgs Payment',
+      title: 'Emgs',
       key: 'emgs_payment_status',
       render: (item) => (
         <>
           <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.emgs_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.emgs_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+            className={`fw-medium fs-3 text-capitalize badge ${item?.emgs_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.emgs_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
           >
             {item?.emgs_payment_status ?? '-'}
           </span>
@@ -853,15 +853,35 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Tuition Payment',
+      title: 'Tuition',
       key: 'tuition_fee_payment_status',
       render: (item) => (
         <>
           <span
-            className={` rounded-4 px-5 py-1 fw-medium text-capitalize ${item?.tuition_fee_payment_status === 'paid' ? 'bg-third-color text-primary' : item?.tuition_fee_payment_status === 'pending' ? ' bg-danger-subtle text-danger text-center' : ''}`}
+            className={` fw-medium fs-3 text-capitalize badge ${item?.tuition_fee_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.tuition_fee_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
           >
             {item?.tuition_fee_payment_status ?? '-'}
           </span>
+        </>
+      ),
+    },
+
+    {
+      title: 'Pickup',
+      key: 'pickup_status',
+      render: (item) => (
+        <>
+          {item?.airport_pickup_charge > 0 ? (
+            <span
+              className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
+            >
+              {item?.airport_pickup_charge_payment_status ?? '-'}
+            </span>
+          ) : (
+            <span className="text-capitalize text-primary fw-medium">
+              {'Not Activated Yet'}
+            </span>
+          )}
         </>
       ),
     },
@@ -872,7 +892,7 @@ const DataObjectComponent = () => {
       render: (item) => (
         <>
           <span
-            className={`fw-semibold px-4 py-1 rounded-4 text-capitalize ${item?.status === 'accepted' ? 'bg-third-color text-primary' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
+            className={`fw-medium fs-3 text-capitalize badge  ${item?.status === 'accepted' ? 'bg-success-subtle text-success' : item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : item?.status === 'pending' ? 'bg-warning-subtle text-warning' : ''}`}
           >
             {item?.status ?? '-'}
           </span>
@@ -998,11 +1018,10 @@ const DataObjectComponent = () => {
       title: 'Description',
       key: 'description',
       render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.description ? item?.description : '-'}`}
-          </h5>
-        </div>
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
       ),
     },
   ];
@@ -1181,7 +1200,8 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+          {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
+          {`${item.description.slice(0, 100)}...`}
         </p>
       ),
     },
@@ -1422,7 +1442,8 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+          {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
+          {`${item.description.slice(0, 100)}...`}
         </p>
       ),
     },
@@ -1468,7 +1489,8 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <p className="text-wrap me-5">
-          {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
+          {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
+          {`${item.description.slice(0, 100)}...`}
         </p>
       ),
     },
@@ -1655,6 +1677,15 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
     // {
     //   title: 'Applied By',
     //   key: 'applied_by',
@@ -1801,10 +1832,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Method',
-      key: 'payment_method',
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'payout amount'}</div>
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
       ),
     },
   ];
@@ -1837,7 +1870,7 @@ const DataObjectComponent = () => {
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.applied_by
+          {item?.applied_by?.role === 'agent'
             ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
             : '-'}
         </div>
@@ -1885,7 +1918,121 @@ const DataObjectComponent = () => {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'payout amount'}</div>
+        <div className="fs-2 fw-medium text-uppercase">{'Auto Deduct'}</div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
+  ];
+  const TotalAgentPendingPayoutReportHeadersDataForSuperAdmin = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.first_name
+            ? item?.student?.first_name + ' ' + item?.student?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Commission',
+      key: 'commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Hot Commission',
+      key: 'hot_commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer
+            ? item?.agent_commision_by_hot_offer
+            : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Total Commission',
+      key: 'payout_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Status',
+      key: 'payment_status',
+      render: (item) => (
+        <div className="badge bg-warning-subtle text-warning">{'Pending'}</div>
       ),
     },
   ];
@@ -1944,6 +2091,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+
     {
       title: 'Agent Commission',
       key: 'agent_commission',
@@ -1953,13 +2101,24 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Agent Hot Commission',
+      key: 'agent_hot_commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer
+            ? item?.agent_commision_by_hot_offer + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
 
     {
       title: 'Package',
       key: 'package',
       render: (item) => (
         <div className="fs-2 fw-medium">
-          {item?.agent_package?.package_name
+          {item?.payment_reason != 'application_tuition_fee'
             ? item?.agent_package?.package_name
             : '-'}
         </div>
@@ -1983,12 +2142,7 @@ const DataObjectComponent = () => {
       key: 'profit_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.incentive_amount && item?.agent_commission
-            ? item?.incentive_amount - item?.agent_commission
-            : item?.agent
-              ? item?.paid_amount
-              : '0'}{' '}
-          {'MYR'}
+          {item?.super_admin_profit ? item?.super_admin_profit : '0'} {'MYR'}
         </div>
       ),
     },
@@ -2057,6 +2211,12 @@ const DataObjectComponent = () => {
     {
       title: 'Descriptions',
       key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
     },
 
     {
@@ -2138,29 +2298,13 @@ const DataObjectComponent = () => {
   ];
 
   const applicationHeadersWithoutAction = [
-    // {
-    //   title: 'Invoice No',
-    //   key: 'createdAt',
-    //   render: (item) => (
-    //     // <div>
-    //     //   {item?.createdAt
-    //     //     ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-    //     //     : ''}
-    //     // </div>
-    //     <div>
-    //       {item?._id
-    //         ? `${item._id}`
-    //         : '-'}
-    //     </div>
-    //     ),
-    // },
     {
       title: 'Name',
       key: 'student',
       render: (item) => (
         <div className="text-capitalize">
           {item?.student?.first_name || item?.student?.last_name
-            ? `${item.student.first_name} ${item.student.last_name}`
+            ? `${item?.student?.first_name} ${item?.student?.last_name}`
             : '-'}
         </div>
       ),
@@ -2170,7 +2314,7 @@ const DataObjectComponent = () => {
       key: 'course_name',
       render: (item) => (
         <div className="text-capitalize">
-          {item?.application?.course.name ?? '-'}
+          {item?.application?.course?.name ?? '-'}
         </div>
       ),
     },
@@ -2209,10 +2353,28 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Airport Pickup',
+      key: 'airport_pickup',
+      render: (item) =>
+        item?.application?.airport_pickup_invoice_status === 'active' ? (
+          <p
+            className={` badge fw-semibold text-center me-4 ${item?.application?.airport_pickup_charge_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          >
+            <span className="text-uppercase">
+              {item?.application?.airport_pickup_charge_payment_status ?? ''}
+            </span>
+          </p>
+        ) : (
+          <span className="text-capitalize text-primary fw-medium">
+            {'Not Activated Yet'}
+          </span>
+        ),
+    },
+    {
       title: 'Payment Method',
       key: 'payment_method',
       render: (item) => (
-        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
+        <div className="text-uppercase">{item?.payment_method ?? '-'}</div>
       ),
     },
   ];
@@ -2408,9 +2570,32 @@ const DataObjectComponent = () => {
       title: 'Description',
       key: 'description',
       render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.description ? item?.description : '-'}
-        </span>
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.notes ? item?.notes : '-'}`}
+        </div>
       ),
     },
     {
@@ -2426,6 +2611,25 @@ const DataObjectComponent = () => {
               } ${
                 item?.requested_by?.last_name
                   ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Submitted By',
+      key: 'submitted_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+            ? `${
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
+                  : ''
+              } ${
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
                   : ''
               }`
             : '-'}
@@ -2453,28 +2657,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    {
-      title: 'Notes',
-      key: 'notes',
-      render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {`${item?.notes ? item?.notes : '-'}`}
-        </div>
-      ),
-    },
-    {
-      title: 'Submitted Files',
-      key: 'files',
-      render: (item) => (
-        <div>
-          {item?.files && item?.files.length > 0 ? (
-            <FileViewer files={item?.files && item?.files} />
-          ) : (
-            'No submission files yet'
-          )}
-        </div>
-      ),
-    },
+
     {
       title: 'Status',
       key: 'status',
@@ -2555,6 +2738,12 @@ const DataObjectComponent = () => {
     {
       title: 'Descriptions',
       key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
     },
 
     {
@@ -2592,11 +2781,20 @@ const DataObjectComponent = () => {
     {
       title: 'Requester Role',
       key: 'role',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-        </span>
-      ),
+      render: (item) => {
+        const role = item?.requested_by?.role || '-';
+        // Format role by replacing hyphens or underscores
+        const formattedRole = role
+          .split(/[-_]/) // Split by both hyphen and underscore
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+          .join(' ');
+
+        return (
+          <span className="d-flex flex-column text-capitalize">
+            {formattedRole}
+          </span>
+        );
+      },
     },
 
     {
@@ -2635,7 +2833,538 @@ const DataObjectComponent = () => {
     },
   ];
 
+  const AIRTICKET_REQUEST_HEADER_FOR_AGENT = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {`${item?.notes ? item?.notes : '-'}`}
+        </div>
+      ),
+    },
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Submitted By',
+      key: 'submitted_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+            ? `${
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
+                  : ''
+              } ${
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AIRTICKET_SUBMITTED_HEADER_FOR_AGENT = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Submitted By',
+      key: 'submitted_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+            ? `${
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
+                  : ''
+              } ${
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AIR_TICKET_REQUEST_TABLE_HEADERS_FOR_STUDENT = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Submitted By',
+      key: 'submitted_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+            ? `${
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
+                  : ''
+              } ${
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Requester Role',
+      key: 'role',
+      render: (item) => {
+        const role = item?.requested_by?.role || '-';
+        // Format role by replacing hyphens or underscores
+        const formattedRole = role
+          .split(/[-_]/) // Split by both hyphen and underscore
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+          .join(' ');
+
+        return (
+          <span className="d-flex flex-column text-capitalize">
+            {formattedRole}
+          </span>
+        );
+      },
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+
+    {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div className="fs-14 fw-medium text-capitalize">
+          {item?.notes ? (
+            <span style={{ color: '#007BFF' }}>{item?.notes}</span>
+          ) : (
+            'No notes yet'
+          )}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Submitted By',
+      key: 'submitted_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+            ? `${
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
+                  : ''
+              } ${
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Uploaded Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          <FileViewer files={item?.files && item?.files} />
+        </div>
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
   return {
+    TotalAgentPendingPayoutReportHeadersDataForSuperAdmin,
     TotalagentPayoutReportHeadersDataForSuperAdmin,
     accountantWidgetsData,
     admissionManagerWidgetsData,
@@ -2684,6 +3413,10 @@ const DataObjectComponent = () => {
     studentAirTiecketHeadersWithoutAction,
     AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN,
     AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN,
+    AIRTICKET_SUBMITTED_HEADER_FOR_AGENT,
+    AIRTICKET_REQUEST_HEADER_FOR_AGENT,
+    AIR_TICKET_REQUEST_TABLE_HEADERS_FOR_STUDENT,
+    AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
   };
 };
 

@@ -22,6 +22,7 @@ import {
 import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import FileViewer from '@/components/common/FileViewer';
 import StatusUpdateForm from './modal/StatusUpdateForm';
+import DescriptionRenderer from '@/utils/DescriptionRenderer';
 
 const DocumentRequestPage = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -176,9 +177,10 @@ const DocumentRequestPage = ({ student_id }) => {
       title: 'Description',
       key: 'description',
       render: (item) => (
-        <div className="fs-14 fw-medium text-capitalize">
-          {`${item?.description ? item?.description : '-'}`}
-        </div>
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
       ),
     },
 

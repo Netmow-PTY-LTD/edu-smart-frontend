@@ -5,6 +5,7 @@ const SuperAdminSidebarData = () => {
   const [isUniversities, setIsUniversities] = useState(false);
   const [isInvoices, setIsInvoices] = useState(false);
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
+  const [isPackageManagement, setIsPackageManagement] = useState(false);
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [isBlogs, setIsBlogs] = useState(false);
@@ -69,7 +70,6 @@ const SuperAdminSidebarData = () => {
         },
       ],
     },
-
     {
       id: 'allpermittedusers',
       label: 'Roles & Permissions',
@@ -86,6 +86,59 @@ const SuperAdminSidebarData = () => {
       icon: 'ri-article-fill',
       style: `${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/recent-application',
+    },
+    {
+      id: 'agents',
+      label: 'Agents',
+      icon: 'ri-group-2-fill',
+      style: `${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/agents',
+    },
+    {
+      id: 'students',
+      label: 'Students',
+      icon: 'ri-group-fill',
+      style: `${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/students',
+    },
+    {
+      id: 'package-management',
+      label: 'Package Management',
+      icon: 'ri-red-packet-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPackageManagement(!isPackageManagement);
+        updateIconSidebar(e);
+      },
+      stateVariables: isPackageManagement,
+      subItems: [
+        {
+          id: 'package',
+          label: 'Packages',
+          icon: 'ri-price-tag-2-fill',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/packages',
+          parentId: 'package-management',
+        },
+        {
+          id: 'coupon',
+          label: 'Coupon Management',
+          icon: 'ri-coupon-3-fill',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/coupon-management',
+          parentId: 'package-management',
+        },
+        {
+          id: 'hotoffer',
+          label: 'Hot Offers',
+          icon: 'ri-fire-fill',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/hot-offer',
+          parentId: 'package-management',
+        },
+      ],
     },
     {
       id: 'invoices',
@@ -116,7 +169,90 @@ const SuperAdminSidebarData = () => {
         },
       ],
     },
-
+    {
+      id: 'super-admin-earnings',
+      label: 'Earnings',
+      icon: 'ri-coins-line',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setEarnings(!earnings);
+      },
+      stateVariables: earnings,
+      subItems: [
+        {
+          id: 'total-receive-amount',
+          label: 'Total Receive Amount',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-receive-amount',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-receive-amount',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-university-payout',
+          label: 'Total University Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-university-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-university-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-agent-paid-payout',
+          label: 'Total Agent Paid Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-paid-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-paid-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-agent-pending-payout',
+          label: 'Total Agent Pending Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-pending-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-pending-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'super-admin-profit',
+          label: 'Super Admin Profit',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/super-admin-profit',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/super-admin-profit',
+          parentId: 'super-admin-earnings',
+        },
+      ],
+    },
     {
       id: 'alldocuments',
       label: 'Document Required List',
@@ -134,55 +270,61 @@ const SuperAdminSidebarData = () => {
         `${paneltext}` +
         '/manage-air-ticket/air-ticket-upload-request',
     },
-    {
-      id: 'package',
-      label: 'Packages',
-      icon: 'ri-price-tag-2-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/packages',
-    },
-    {
-      id: 'coupon',
-      label: 'Coupon Management',
-      icon: 'ri-coupon-3-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/coupon-management',
-    },
-    {
-      id: 'hotoffer',
-      label: 'Hot Offers',
-      icon: 'ri-fire-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/hot-offer',
-    },
-    {
-      id: 'familyTrip',
-      label: 'familyTrip',
-      icon: 'ri-gift-line',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/familyTrip',
-    },
-    {
-      id: 'yearlyBonous',
-      label: 'Yearly Bonous',
-      icon: 'ri-percent-line',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/yearlyBonous',
-    },
-    {
-      id: 'agents',
-      label: 'Agents',
-      icon: 'ri-group-2-fill',
-      style: `${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/agents',
-    },
 
     {
-      id: 'students',
-      label: 'Students',
-      icon: 'ri-group-fill',
-      style: `${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/students',
+      id: 'report',
+      label: 'Report',
+      icon: 'ri-bank-card-line',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'package-payment',
+          label: 'Package Payment',
+          icon: 'ri-red-packet-line',
+          link:
+            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
+          pathName:
+            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
+          parentId: 'report',
+        },
+
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/payment-report/application-payment',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/payment-report/application-payment',
+          parentId: 'report',
+        },
+        {
+          id: 'familyTrip',
+          label: 'Family Trip',
+          icon: 'ri-gift-line',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/familyTrip',
+          parentId: 'report',
+        },
+        {
+          id: 'yearlyBonous',
+          label: 'Yearly Bonus',
+          icon: 'ri-percent-line',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/yearlyBonous',
+          parentId: 'report',
+        },
+      ],
     },
     {
       id: 'blogs',
@@ -242,115 +384,6 @@ const SuperAdminSidebarData = () => {
           pathName:
             '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
           parentId: 'subscription',
-        },
-      ],
-    },
-    {
-      id: 'super-admin-earnings',
-      label: 'Earnings',
-      icon: 'ri-coins-line',
-      style: `${customeData.hideforadmissionmanger}`,
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setEarnings(!earnings);
-      },
-      stateVariables: earnings,
-      subItems: [
-        {
-          id: 'total-receive-amount',
-          label: 'Total Receive Amount',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-receive-amount',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-receive-amount',
-          parentId: 'super-admin-earnings',
-        },
-        {
-          id: 'total-university-payout',
-          label: 'Total University Payout',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-university-payout',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-university-payout',
-          parentId: 'super-admin-earnings',
-        },
-        {
-          id: 'total-agent-payout',
-          label: 'Total Agent Payout',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-agent-payout',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-agent-payout',
-          parentId: 'super-admin-earnings',
-        },
-        {
-          id: 'super-admin-profit',
-          label: 'Super Admin Profit',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/super-admin-profit',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/super-admin-profit',
-          parentId: 'super-admin-earnings',
-        },
-      ],
-    },
-    {
-      id: 'payment-report',
-      label: 'Payment Report',
-      icon: 'ri-bank-card-line',
-      style: `${customeData.hideforadmissionmanger}`,
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsPaymentReport(!isPaymentReport);
-      },
-      stateVariables: isPaymentReport,
-      subItems: [
-        {
-          id: 'package-payment',
-          label: 'Package Payment',
-          icon: 'ri-red-packet-line',
-          link:
-            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
-          pathName:
-            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
-          parentId: 'payment-report',
-        },
-
-        {
-          id: 'application-payment',
-          label: 'Application Payment',
-          icon: 'ri-box-1-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/payment-report/application-payment',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/payment-report/application-payment',
-          parentId: 'payment-report',
         },
       ],
     },
