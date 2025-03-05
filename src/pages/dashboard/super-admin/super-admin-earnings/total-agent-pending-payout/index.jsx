@@ -9,13 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const TotalReceiveAmountForSuperAdmin = () => {
+const TotalAgentPendingPayoutInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { receivedAmountPaymentReportHeadersDataForSuperAdmin } =
+  const { TotalAgentPendingPayoutReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
 
   const {
@@ -34,9 +34,11 @@ const TotalReceiveAmountForSuperAdmin = () => {
     ];
 
     const newData = combinedData.filter(
-      (item) => item?.payment_reason != 'application_incentive'
+      (item) =>
+        item?.application?.course?.auto_deduct === false &&
+        item?.applied_by?.role === 'student' &&
+        item?.payment_reason === 'application_tuition_fee'
     );
-
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
@@ -67,7 +69,7 @@ const TotalReceiveAmountForSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Receive Earnings
+                    Total Agent Pending Payout
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -78,7 +80,7 @@ const TotalReceiveAmountForSuperAdmin = () => {
                 <CardBody>
                   <CommonTableComponent
                     headers={
-                      receivedAmountPaymentReportHeadersDataForSuperAdmin
+                      TotalAgentPendingPayoutReportHeadersDataForSuperAdmin
                     }
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
@@ -98,4 +100,4 @@ const TotalReceiveAmountForSuperAdmin = () => {
   );
 };
 
-export default TotalReceiveAmountForSuperAdmin;
+export default TotalAgentPendingPayoutInSuperAdmin;

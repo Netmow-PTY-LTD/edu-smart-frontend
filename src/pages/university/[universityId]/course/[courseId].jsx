@@ -97,17 +97,23 @@ const SingleCoursePageInFrontSite = () => {
       if (role === 'student' || role === 'agent') {
         router.push(destination);
       } else if (role === 'super_admin') {
-        toast.error('Super Admin is not allowed to apply to course');
+        toast.error('Super Admin is not allowed to apply to the course');
+      } else if (role === 'admission_manager') {
+        toast.error('Admission manager is not allowed to apply to the course');
+      } else if (role === 'accountant') {
+        toast.error('Accountant is not allowed to apply to the course');
       }
     } else {
       router.push(`/auth/register?universityId=${universityId}&courseId=${id}`);
     }
   };
 
-  console.log(courseDetail);
+  //console.log(courseDetail);
   const scholarship_percentage = Math.round(
-    (scholarship_amount * 100) / (tuition_fee || university_price)
+    (parseInt(scholarship_amount) * 100) /
+      (parseInt(tuition_fee) || parseInt(university_price))
   );
+
   return (
     <UniversityLayout>
       <section className="course-details-main">
@@ -497,7 +503,7 @@ const SingleCoursePageInFrontSite = () => {
                               )}
 
                             {(tuition_fee || university_price) &&
-                              scholarship_amount && (
+                              scholarship_amount >= 0 && (
                                 <li>
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"

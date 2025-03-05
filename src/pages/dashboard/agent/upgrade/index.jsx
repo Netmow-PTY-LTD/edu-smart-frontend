@@ -380,7 +380,7 @@ const UpgradePackageInAgentdashboard = () => {
           <div className="h-100">
             <Row>
               <Col xl={10}>
-                <div className=" d-flex align-items-center justify-content-center my-5 gap-5">
+                <div className=" d-flex justify-content-center my-5 gap-5">
                   {getAllPackageIsLoading || upgradePackageIsLoading ? (
                     <LoaderSpiner />
                   ) : (
@@ -632,7 +632,6 @@ const UpgradePackageInAgentdashboard = () => {
                             <div
                               disabled={upgradePackageForAgentIsLoading}
                               onClick={() => handleUpgradePackageWithCoupon()}
-
                             >
                               Continue
                             </div>

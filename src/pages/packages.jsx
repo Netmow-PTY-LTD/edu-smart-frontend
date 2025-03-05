@@ -61,7 +61,6 @@ export default function Packages() {
               <>
                 {getAllPackageData?.data?.length > 0 ? (
                   getAllPackageData?.data.map((item, index) => {
-                    console.log(item?._id);
                     return (
                       <PackagesMain
                         key={index}

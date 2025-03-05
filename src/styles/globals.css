@@ -3462,9 +3462,11 @@ a.play-btn {
   color: #162a73;
 }
 
-/* .pricing-lists {
-  margin-top: 2.8rem;
-} */
+.pricing-lists {
+  /* margin-top: 2.8rem; */
+  flex: 1;
+}
+
 .pricing-lists ul {
   padding-left: 0;
 }
