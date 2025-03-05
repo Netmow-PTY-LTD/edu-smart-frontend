@@ -42,12 +42,12 @@ const CourseModalFormTest = ({
   checkFreeAcommodation,
 }) => {
   const accessoryOptions = [
-    { value: 'laptop', label: 'Laptop' },
-    { value: 'charger', label: 'Charger' },
-    { value: 'headphones', label: 'Headphones' },
-    { value: 'usb_cable', label: 'USB Cable' },
-    { value: 'mouse', label: 'Mouse' },
-    { value: 'keyboard', label: 'Keyboard' },
+    { value: 'Laptop', label: 'Laptop' },
+    { value: 'Charger', label: 'Charger' },
+    { value: 'Headphones', label: 'Headphones' },
+    { value: 'USB Cable', label: 'USB Cable' },
+    { value: 'Mouse', label: 'Mouse' },
+    { value: 'Keyboard', label: 'Keyboard' },
   ];
 
   return (
