@@ -33,7 +33,7 @@ export const REQUEST_TABLE_HEADERS_FOR_STUDENT = [
     key: 'description',
     render: (item) => (
       <DescriptionRenderer
-        maxLength={40}
+        maxWords={5}
         description={item?.description || '-'}
       />
     ),
@@ -159,7 +159,7 @@ export const SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [
     key: 'description',
     render: (item) => (
       <DescriptionRenderer
-        maxLength={40}
+        maxWords={5}
         description={item?.description || '-'}
       />
     ),

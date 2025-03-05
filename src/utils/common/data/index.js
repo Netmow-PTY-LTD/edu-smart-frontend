@@ -210,7 +210,7 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
-          maxLength={40}
+          maxWords={5}
           description={item?.description || '-'}
         />
       ),
@@ -292,7 +292,7 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
-          maxLength={40}
+          maxWords={5}
           description={item?.description || '-'}
         />
       ),
@@ -416,7 +416,7 @@ const DataObjectComponent = () => {
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
-          maxLength={40}
+          maxWords={5}
           description={item?.description || '-'}
         />
       ),
@@ -998,11 +998,10 @@ const DataObjectComponent = () => {
       title: 'Description',
       key: 'description',
       render: (item) => (
-        <div>
-          <h5 className="fs-14 fw-medium text-capitalize">
-            {`${item?.description ? item?.description : '-'}`}
-          </h5>
-        </div>
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
       ),
     },
   ];
@@ -2057,6 +2056,12 @@ const DataObjectComponent = () => {
     {
       title: 'Descriptions',
       key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
     },
 
     {
@@ -2408,9 +2413,10 @@ const DataObjectComponent = () => {
       title: 'Description',
       key: 'description',
       render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.description ? item?.description : '-'}
-        </span>
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
       ),
     },
     {
@@ -2555,6 +2561,12 @@ const DataObjectComponent = () => {
     {
       title: 'Descriptions',
       key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
     },
 
     {
