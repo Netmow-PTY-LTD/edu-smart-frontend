@@ -43,15 +43,16 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     description: '',
   });
 
-  const { studentAirTiecketHeadersWithoutAction = [] } = DataObjectComponent();
-
-  console.log(studentAirTiecketHeadersWithoutAction);
+  const {
+    // studentAirTiecketHeadersWithoutAction = [],
+    AIRTICKET_REQUEST_HEADER_FOR_AGENT = [],
+    AIRTICKET_SUBMITTED_HEADER_FOR_AGENT = [],
+  } = DataObjectComponent();
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
     notes: '',
   });
 
-  // item?.requested_by.role === 'super_admin' ? 'Super Admin' : 'Agent'
   const [createDocumentRequest] =
     useCreateUserAirTicketDocRequestForAgentMutation();
 
@@ -74,11 +75,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
     { student_id: student_id },
     { skip: !student_id }
   );
-
-  const [
-    AllUploadDocumentsForStudentsData,
-    setAllUploadDocumentsForStudentsData,
-  ] = useState('');
 
   const validationSchema = Yup.object({
     title: Yup.string(),
@@ -234,10 +230,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       setRejectStatusInitialValues({ notes: singleDocument?.notes || '' });
     }
 
-    setAllUploadDocumentsForStudentsData(() => [
-      ...studentAirTiecketHeadersWithoutAction,
-      ...docRequestTableHeaderDataWithAction,
-    ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSingleUserAirTicketDocumentRequest, docId]);
 
@@ -276,7 +268,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
             <CardBody>
               <CommonTableComponent
                 headers={[
-                  ...studentAirTiecketHeadersWithoutAction,
+                  ...AIRTICKET_REQUEST_HEADER_FOR_AGENT,
                   ...docRequestTableHeaderDataWithAction,
                 ]}
                 data={isfilteredData ? isfilteredData : []}
@@ -309,7 +301,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
 
             <CardBody>
               <CommonTableComponent
-                headers={studentAirTiecketHeadersWithoutAction}
+                headers={AIRTICKET_SUBMITTED_HEADER_FOR_AGENT}
                 data={
                   isfilteredDataForSubmittedData
                     ? isfilteredDataForSubmittedData
