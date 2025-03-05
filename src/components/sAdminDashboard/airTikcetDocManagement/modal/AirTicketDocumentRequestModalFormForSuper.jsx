@@ -1,12 +1,19 @@
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from 'reactstrap';
 
 import TextField from '@/components/common/formField/TextField';
 import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
 import Select from 'react-select';
-
 const AirTicketDocumentRequestModalFormForSuper = ({
   formHeader,
   isOpen,
@@ -23,11 +30,13 @@ const AirTicketDocumentRequestModalFormForSuper = ({
     refetch: getAllRecentApplicationsRefetch,
   } = useGetRecentApplicationsQuery();
 
+  console.log('get recent application value', getAllRecentApplicationsData);
   const recentApplicantStudentOptions =
     getAllRecentApplicationsData?.data?.map((item) => ({
       value: item?._id,
       label: `${item?.student?.first_name} ${item?.student?.last_name}- ${item?._id}`,
       student_id: item?.student?._id,
+      applied_by: item?.applied_by,
     })) || [];
 
   return (
@@ -42,6 +51,7 @@ const AirTicketDocumentRequestModalFormForSuper = ({
           onSubmit={onSubmit}
         >
           {({ isSubmitting, values, setFieldValue }) => {
+            console.log('seleted values=>', values);
             return (
               <Form>
                 <Row>
@@ -70,6 +80,10 @@ const AirTicketDocumentRequestModalFormForSuper = ({
                                 'student_id',
                                 option ? option.student_id : ''
                               );
+                              setFieldValue(
+                                'applied_by',
+                                option ? option.applied_by : ''
+                              );
                             }}
                             value={
                               recentApplicantStudentOptions.find(
@@ -79,6 +93,23 @@ const AirTicketDocumentRequestModalFormForSuper = ({
                           />
                         </div>
                       </Col>
+                      {values.applied_by &&
+                      values.applied_by.role == 'agent' ? (
+                        <Col md={12} xl={12}>
+                          <Card className="shadow-sm border-0">
+                            <CardBody className="d-flex  align-items-center p-4">
+                              <h6 className="fw-bold fs-3 text-primary mb-0 me-2">
+                                Also, retrieve the request{' '}
+                                <span className="text-capitalize">
+                                  {values?.applied_by?.role}
+                                </span>
+                              </h6>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      ) : (
+                        <></>
+                      )}
                       <Col md={12} xl={12}>
                         <TextField label={'Title'} name={'title'} readOnly />
                       </Col>

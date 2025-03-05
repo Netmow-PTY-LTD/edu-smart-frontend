@@ -103,7 +103,6 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    console.log(values);
     const airTicketRequestData = {
       application: values.application_id,
       description: values.description,
