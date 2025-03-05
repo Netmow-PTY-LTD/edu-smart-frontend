@@ -89,11 +89,20 @@ export const REQUEST_TABLE_HEADERS_FOR_STUDENT = [
   {
     title: 'Requester Role',
     key: 'role',
-    render: (item) => (
-      <span className="d-flex flex-column text-capitalize">
-        {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-      </span>
-    ),
+    render: (item) => {
+      const role = item?.requested_by?.role || '-';
+      // Format role by replacing hyphens or underscores
+      const formattedRole = role
+        .split(/[-_]/) // Split by both hyphen and underscore
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+        .join(' ');
+
+      return (
+        <span className="d-flex flex-column text-capitalize">
+          {formattedRole}
+        </span>
+      );
+    },
   },
 
   {
@@ -204,17 +213,7 @@ export const SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [
       </span>
     ),
   },
-  {
-    title: 'Requester Email',
-    key: 'email',
-    render: (item) => (
-      <div>
-        <h5 className="fs-14 fw-medium ">
-          {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-        </h5>
-      </div>
-    ),
-  },
+
   {
     title: 'Uploaded Files',
     key: 'files',
