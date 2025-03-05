@@ -286,17 +286,31 @@ const SuperAdminSidebarData = () => {
           parentId: 'super-admin-earnings',
         },
         {
-          id: 'total-agent-payout',
-          label: 'Total Agent Payout',
+          id: 'total-agent-paid-payout',
+          label: 'Total Agent Paid Payout',
           icon: 'ri-money-rupee-circle-line',
           link:
             '/dashboard/' +
             `${paneltext}` +
-            '/super-admin-earnings/total-agent-payout',
+            '/super-admin-earnings/total-agent-paid-payout',
           pathName:
             '/dashboard/' +
             `${paneltext}` +
-            '/super-admin-earnings/total-agent-payout',
+            '/super-admin-earnings/total-agent-paid-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-agent-pending-payout',
+          label: 'Total Agent Pending Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-pending-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-pending-payout',
           parentId: 'super-admin-earnings',
         },
         {
