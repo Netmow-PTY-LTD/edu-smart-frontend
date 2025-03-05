@@ -20,7 +20,6 @@ const SingleStudentForAgent = () => {
 
   //  ------------------- Just for UI example this data will come from API -----------------------
   const student_id = router.query.id;
-  console.log(router.query.tab);
 
   const {
     data: getSingleStudent,

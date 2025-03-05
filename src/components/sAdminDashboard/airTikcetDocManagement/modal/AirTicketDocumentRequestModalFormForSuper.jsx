@@ -30,7 +30,6 @@ const AirTicketDocumentRequestModalFormForSuper = ({
     refetch: getAllRecentApplicationsRefetch,
   } = useGetRecentApplicationsQuery();
 
-  console.log('get recent application value', getAllRecentApplicationsData);
   const recentApplicantStudentOptions =
     getAllRecentApplicationsData?.data?.map((item) => ({
       value: item?._id,
@@ -51,7 +50,6 @@ const AirTicketDocumentRequestModalFormForSuper = ({
           onSubmit={onSubmit}
         >
           {({ isSubmitting, values, setFieldValue }) => {
-            console.log('seleted values=>', values);
             return (
               <Form>
                 <Row>
