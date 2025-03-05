@@ -145,8 +145,7 @@ export default function AgentFamilyTrip() {
             <DropdownItem>
               <div
                 onClick={() =>
-                  // router.push(`/dashboard/agent/familyTrip/${item?._id}`)
-                  router.push(`/dashboard/agent/applications`)
+                  router.push(`/dashboard/agent/familyTrip/${item?._id}`)
                 }
                 className="text-primary"
               >

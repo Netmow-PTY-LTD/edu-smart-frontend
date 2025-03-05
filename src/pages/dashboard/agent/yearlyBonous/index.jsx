@@ -130,8 +130,7 @@ export default function AgentYarlyBonous() {
             <DropdownItem>
               <div
                 onClick={() =>
-                  // router.push(`/dashboard/agent/familyTrip/${item?._id}`)
-                  router.push(`/dashboard/agent/applications`)
+                  router.push(`/dashboard/agent/yearlyBonous/${item?._id}`)
                 }
                 className="text-primary"
               >

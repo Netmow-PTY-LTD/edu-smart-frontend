@@ -1,7 +1,8 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
+import { useGetAgentYearlyBonusQuery } from '@/slice/services/agent/agentEarningsService';
+
 import DataObjectComponent from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -10,11 +11,11 @@ import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 const AgentApplicationList = () => {
   const router = useRouter();
   const [currentPage, setCurrentPage] = React.useState(0);
+  const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
+    useGetAgentYearlyBonusQuery();
 
-  const { data: familyTrip, isLoading: familyTripLoading } =
-    useGetAgentFamilyTripQuery();
-  const singleUserFamilyTrip =
-    familyTrip?.data?.find((item) => item._id === router?.query?.id)
+  const singleUserYearlyBonous =
+    yearlyBonous?.data?.find((item) => item._id === router?.query?.id)
       ?.applications || [];
 
   const { studentApplicationsHeaders = [] } = DataObjectComponent();
@@ -23,7 +24,7 @@ const AgentApplicationList = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
-          {familyTripLoading ? (
+          {yearlyBonousLoading ? (
             <LoaderSpiner />
           ) : (
             <div className="container-fluid">
@@ -37,7 +38,7 @@ const AgentApplicationList = () => {
                       <CardBody className="mh-100">
                         <CommonTableComponent
                           headers={[...studentApplicationsHeaders]}
-                          data={singleUserFamilyTrip}
+                          data={singleUserYearlyBonous}
                           currentPage={currentPage}
                           setCurrentPage={setCurrentPage}
                           perPageData={10}
