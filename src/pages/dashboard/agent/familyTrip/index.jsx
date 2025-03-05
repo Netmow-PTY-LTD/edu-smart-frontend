@@ -6,7 +6,18 @@ import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarnings
 
 import moment from 'moment';
 import React, { useState } from 'react';
-import { Card, CardBody, CardHeader, Col, Progress, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Progress,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 export default function AgentFamilyTrip() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -15,7 +26,7 @@ export default function AgentFamilyTrip() {
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
 
-  // console.log('family trip data', familyTrip);
+  console.log('family trip data', familyTrip);
 
   const agentFamilyTripHeaders = [
     {
@@ -26,35 +37,35 @@ export default function AgentFamilyTrip() {
       ),
     },
 
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Price ($)',
+    //   key: 'package_price',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">
+    //       ${item?.package?.price || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Duration',
+    //   key: 'package_duration',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.duration || '-'}
+    //     </span>
+    //   ),
+    // },
     {
-      title: 'Package Name',
-      key: 'package_name',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.package?.name || '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Package Price ($)',
-      key: 'package_price',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          ${item?.package?.price || '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Package Duration',
-      key: 'package_duration',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.package?.duration || '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Start Date',
+      title: 'Target Start Date',
       key: 'start_date',
       render: (item) => (
         <span className="d-flex flex-column">
@@ -63,7 +74,7 @@ export default function AgentFamilyTrip() {
       ),
     },
     {
-      title: 'End Date',
+      title: 'Target End Date',
       key: 'end_date',
       render: (item) => (
         <span className="d-flex flex-column">
@@ -113,6 +124,37 @@ export default function AgentFamilyTrip() {
         >
           {item?.payout_status || '-'}
         </span>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'actions',
+      render: (item) => (
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <div className="text-primary">
+                <i class="ri-check-double-line me-2 text-success"></i>
+                Accepted
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div className="text-primary">
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Rejected
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       ),
     },
   ];
