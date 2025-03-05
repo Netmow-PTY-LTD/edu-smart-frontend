@@ -59,48 +59,49 @@ const SingleApplicationsPage = () => {
               <CardBody className="mh-100">
                 <div className="row">
                   {singleGetApplicationData?.data?.documents?.length > 0 &&
-                    singleGetApplicationData?.data?.documents.map(
-                      (item, index) => (
-                        <div key={index} className="col-md-4 mb-4">
-                          <h5 className="fs-2 text-capitalize text-primary fw-semibold">
+                    singleGetApplicationData?.data?.documents.map((item, index) => (
+                      <div key={index} className="col-md-4 mb-4">
+                        <h5 className="fs-2 text-capitalize text-primary fw-semibold">
                           {item?.title
-                              .split('[')[0]
-                              .split('_')
-                              .join(' ')
-                              .split('/')
-                              .join(' ')}
-                          </h5>
-                          {item?.files?.length > 0 &&
-                            item?.files.map((file, fileIndex) => (
-                              <div key={fileIndex} className="file-preview">
-                                {file?.url?.endsWith('.pdf') ? (
-                                  // Show PDF download link instead of preview
-                                  <a
-                                    href={file.url}
-                                    download={file.public_id}
-                                    className="btn btn-link"
-                                  >
-                                    Download PDF
-                                  </a>
-                                ) : (
-                                  <img
-                                    src={imageFiles[fileIndex]?.url || file.url}
-                                    alt={`file-preview-${fileIndex}`}
-                                    width="100%"
-                                    height="auto"
-                                    onClick={() =>
-                                      handleImageClick(
-                                        imageFiles[fileIndex]?.url || file.url
-                                      )
-                                    }
-                                    className="cursor-pointer"
-                                  />
-                                )}
-                              </div>
-                            ))}
-                        </div>
-                      )
-                    )}
+                            .split('[')[0]
+                            .split('_')
+                            .join(' ')
+                            .split('/')
+                            .join(' ')}
+                        </h5>
+                        {item?.description && (
+                          <div>
+                            <span style={{ fontWeight: 'normal' }}>{item.description}</span>
+                          </div>
+                        )}
+                        {item?.files?.length > 0 &&
+                          item?.files.map((file, fileIndex) => (
+                            <div key={fileIndex} className="file-preview">
+                              {file?.url?.endsWith('.pdf') ? (
+                                // Show PDF download link instead of preview
+                                <a
+                                  href={file.url}
+                                  download={file.public_id}
+                                  className="btn btn-link"
+                                >
+                                  Download PDF
+                                </a>
+                              ) : (
+                                <img
+                                  src={imageFiles[fileIndex]?.url || file.url}
+                                  alt={`file-preview-${fileIndex}`}
+                                  width="100%"
+                                  height="auto"
+                                  onClick={() =>
+                                    handleImageClick(imageFiles[fileIndex]?.url || file.url)
+                                  }
+                                  className="cursor-pointer"
+                                />
+                              )}
+                            </div>
+                          ))}
+                      </div>
+                    ))}
                 </div>
               </CardBody>
             </Card>

@@ -1,14 +1,15 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetSingleStudentApplicationQuery } from '@/slice/services/agent/agentApplicationService';
-import { studentApplicationsHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
+
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
-
 const AppliedUniversityPage = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
+
+  const { studentApplicationsHeaders } = DataObjectComponent();
 
   const { data: applicationData, isLoading: applicationLoading } =
     useGetSingleStudentApplicationQuery(id, {

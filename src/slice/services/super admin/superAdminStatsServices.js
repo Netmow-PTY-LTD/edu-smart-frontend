@@ -23,7 +23,30 @@ export const superAdminStatsServices = createApi({
         };
       },
     }),
+    updateAirportPickupChargeInSuperAdmin: builder.mutation({
+      query: (body) => {
+        const application_id = body.application_id;
+
+        return {
+          url: `/application/${application_id}/airport-pickup/update`,
+          method: 'PATCH',
+          body,
+        };
+      },
+    }),
+    getAirportPickupChargeInSuperAdmin: builder.query({
+      query: (application_id) => {
+        return {
+          url: `/application/${application_id}/airport-pickup/get`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetToatalIncomeInSuperAdminQuery } = superAdminStatsServices;
+export const {
+  useGetToatalIncomeInSuperAdminQuery,
+  useGetAirportPickupChargeInSuperAdminQuery,
+  useUpdateAirportPickupChargeInSuperAdminMutation,
+} = superAdminStatsServices;

@@ -16,6 +16,7 @@ import ProfileDropdown from '@/components/layout/common/ProfileDropdown';
 import Website from '@/components/layout/common/Website';
 
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { useRouter } from 'next/router';
 import Script from 'next/script';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -23,8 +24,9 @@ import { changeSidebarVisibility } from '../constants/utils/dashboardSidebarUtil
 
 const Header = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
+  const { data: userInfodata } = useGetUserInfoQuery();
 
   const selectDashboardData = createSelector(
     (state) => state.Layout.sidebarVisibilitytype,

@@ -3,6 +3,7 @@ import { useGetEmgsStatusTimelineQuery } from '@/slice/services/common/applicati
 import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Button, Col, Row } from 'reactstrap';
 import AddEmgsModal from './modal/AddEmgsModal';
 
@@ -11,6 +12,7 @@ export default function ApplicationEmgsStatusTimeline({
   currentTimeline,
 }) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+
   const {
     data: timelineData,
     isLoading: timelineLoading,
@@ -18,15 +20,17 @@ export default function ApplicationEmgsStatusTimeline({
   } = useGetEmgsStatusTimelineQuery(currentTimeline, {
     skip: !currentTimeline,
   });
+  
   return (
     <>
+      <ToastContainer />
       {timelineLoading ? (
         <LoaderSpiner />
       ) : (
         <Row>
           <div className="d-flex justify-content-between my-3">
             <Button
-              className="btn btn-danger fs-14 mt-3"
+              className="button fs-14 mt-3"
               onClick={() => setActiveTab('1')}
             >
               <i className="ri-arrow-left-line me-2"></i>

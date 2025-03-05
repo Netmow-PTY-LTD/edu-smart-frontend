@@ -10,7 +10,7 @@ const ProfileBgCover = ({ profileData }) => {
       <div className="profile-foreground position-relative mx-n5 mt-n5 pt-5">
         <div className="profile-wid-bg">
           <Image
-            src={profileBg || '/assets/images/landing/hero/hero-image.png'}
+            src={profileBg ?? '/assets/images/landing/hero/hero-image.png'}
             width={500}
             height={500}
             alt=""
@@ -41,8 +41,11 @@ const ProfileBgCover = ({ profileData }) => {
           <Col>
             <div className="p-2">
               <h1 className="text-white text-uppercase fs-1 mb-1">
-                {profileData?.name ||
-                  profileData?.first_name + ' ' + profileData?.last_name}
+                {profileData?.name
+                  ? profileData?.name
+                  : profileData?.first_name
+                    ? profileData?.first_name + ' ' + profileData?.last_name
+                    : ''}
               </h1>
               <div className="me-2 text-light text-capitalize">
                 <i className="ri-map-pin-fill me-2 align-middle third-color fs-1"></i>

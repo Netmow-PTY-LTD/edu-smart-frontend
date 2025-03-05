@@ -1,19 +1,18 @@
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useCustomData } from '@/utils/common/data/customeData';
+import React, { useState } from 'react';
 
 const SuperAdminSidebarData = () => {
-  const history = useRouter();
-  //state data
-  const [isDashboard, setIsDashboard] = useState(false);
   const [isUniversities, setIsUniversities] = useState(false);
-  const [isUniversity, setIsUniversity] = useState(false);
   const [isInvoices, setIsInvoices] = useState(false);
   const [isSubscriptionManagement, setSubscriptionManagement] = useState(false);
+  const [isPackageManagement, setIsPackageManagement] = useState(false);
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [isBlogs, setIsBlogs] = useState(false);
+  const [earnings, setEarnings] = useState(false);
 
-  const [iscurrentState, setIscurrentState] = useState('Dashboard');
+  const customeData = useCustomData();
+  const paneltext = customeData.paneltext;
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
@@ -29,41 +28,22 @@ const SuperAdminSidebarData = () => {
     }
   }
 
-  useEffect(() => {
-    document.body.classList.remove('twocolumn-panel');
-    if (iscurrentState !== 'Dashboard') {
-      setIsDashboard(false);
-    }
-    if (iscurrentState !== 'Universities') {
-      setIsUniversities(false);
-    }
-    if (iscurrentState !== 'University') {
-      setIsUniversity(false);
-    }
-    if (iscurrentState !== 'subscription') {
-      setIsUniversity(false);
-    }
-    if (iscurrentState !== 'Invoices') {
-      setIsInvoices(false);
-    }
-  }, [iscurrentState]);
-
   const menuItems = [
     {
       id: 'dashboard',
       label: 'Dashboard',
       icon: 'ri-dashboard-2-line',
-      link: '/dashboard/super-admin',
+      link: '/dashboard/' + `${paneltext}` + '',
     },
     {
       id: 'universities',
       label: 'Universities',
       icon: 'ri-school-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();
         setIsUniversities(!isUniversities);
-        setIscurrentState('Universities');
         updateIconSidebar(e);
       },
       stateVariables: isUniversities,
@@ -72,33 +52,103 @@ const SuperAdminSidebarData = () => {
           id: 'alluniversity',
           label: 'All University',
           icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/all-university',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/university-management/all-university',
           parentId: 'universities',
         },
         {
           id: 'adduniversity',
           label: 'Add University',
           icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/university-management/add-university',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/university-management/add-university',
           parentId: 'universities',
         },
       ],
     },
     {
+      id: 'allpermittedusers',
+      label: 'Roles & Permissions',
+      icon: 'ri-user-star-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link:
+        '/dashboard/' +
+        `${paneltext}` +
+        '/super-admin-panel/all-permitted-users',
+    },
+    {
       id: 'recent-application',
       label: 'Recent Application',
       icon: 'ri-article-fill',
-      link: '/dashboard/super-admin/recent-application',
+      style: `${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/recent-application',
+    },
+    {
+      id: 'agents',
+      label: 'Agents',
+      icon: 'ri-group-2-fill',
+      style: `${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/agents',
+    },
+    {
+      id: 'students',
+      label: 'Students',
+      icon: 'ri-group-fill',
+      style: `${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/students',
+    },
+    {
+      id: 'package-management',
+      label: 'Package Management',
+      icon: 'ri-red-packet-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPackageManagement(!isPackageManagement);
+        updateIconSidebar(e);
+      },
+      stateVariables: isPackageManagement,
+      subItems: [
+        {
+          id: 'package',
+          label: 'Packages',
+          icon: 'ri-price-tag-2-fill',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/packages',
+          parentId: 'package-management',
+        },
+        {
+          id: 'coupon',
+          label: 'Coupon Management',
+          icon: 'ri-coupon-3-fill',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/coupon-management',
+          parentId: 'package-management',
+        },
+        {
+          id: 'hotoffer',
+          label: 'Hot Offers',
+          icon: 'ri-fire-fill',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/hot-offer',
+          parentId: 'package-management',
+        },
+      ],
     },
     {
       id: 'invoices',
       label: 'Invoices',
       icon: 'ri-receipt-fill',
+      style: `${customeData.hideforadmissionmanger} `,
       link: '/#',
       click: function (e) {
         e.preventDefault();
         setIsInvoices(!isInvoices);
-        setIscurrentState('Invoices');
         updateIconSidebar(e);
       },
       stateVariables: isInvoices,
@@ -107,15 +157,99 @@ const SuperAdminSidebarData = () => {
           id: 'package-invoice',
           label: 'Package Invoices',
           icon: 'ri-receipt-fill',
-          link: '/dashboard/super-admin/package-invoices',
+          link: '/dashboard/' + `${paneltext}` + '/package-invoices',
           parentId: 'invoices',
         },
         {
           id: 'application-invoice',
           label: 'Application Invoices',
           icon: 'ri-receipt-fill',
-          link: '/dashboard/super-admin/application-invoices',
+          link: '/dashboard/' + `${paneltext}` + '/application-invoices',
           parentId: 'invoices',
+        },
+      ],
+    },
+    {
+      id: 'super-admin-earnings',
+      label: 'Earnings',
+      icon: 'ri-coins-line',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setEarnings(!earnings);
+      },
+      stateVariables: earnings,
+      subItems: [
+        {
+          id: 'total-receive-amount',
+          label: 'Total Receive Amount',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-receive-amount',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-receive-amount',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-university-payout',
+          label: 'Total University Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-university-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-university-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-agent-paid-payout',
+          label: 'Total Agent Paid Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-paid-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-paid-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'total-agent-pending-payout',
+          label: 'Total Agent Pending Payout',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-pending-payout',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/total-agent-pending-payout',
+          parentId: 'super-admin-earnings',
+        },
+        {
+          id: 'super-admin-profit',
+          label: 'Super Admin Profit',
+          icon: 'ri-money-rupee-circle-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/super-admin-profit',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/super-admin-earnings/super-admin-profit',
+          parentId: 'super-admin-earnings',
         },
       ],
     },
@@ -123,48 +257,84 @@ const SuperAdminSidebarData = () => {
       id: 'alldocuments',
       label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
-      link: '/dashboard/super-admin/all-documents',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/all-documents',
     },
     {
-      id: 'package',
-      label: 'Packages',
-      icon: 'ri-price-tag-2-fill',
-      link: '/dashboard/super-admin/packages',
-    },
-    {
-      id: 'coupon',
-      label: 'Coupon Management',
-      icon: 'ri-coupon-3-fill',
-      link: '/dashboard/super-admin/coupon-management',
-    },
-    {
-      id: 'hotoffer',
-      label: 'Hot Offers',
-      icon: 'ri-fire-fill',
-      link: '/dashboard/super-admin/hot-offer',
-    },
-    {
-      id: 'agents',
-      label: 'Agents',
-      icon: 'ri-group-2-fill',
-      link: '/dashboard/super-admin/agents',
+      id: 'airTicketDocumentuploadrequest',
+      label: 'Air Ticket Doc  Request',
+      icon: 'ri-ticket-2-line',
+      style: `${customeData.hideforaccountant}`,
+      link:
+        '/dashboard/' +
+        `${paneltext}` +
+        '/manage-air-ticket/air-ticket-upload-request',
     },
 
     {
-      id: 'students',
-      label: 'Students',
-      icon: 'ri-group-fill',
-      link: '/dashboard/super-admin/students',
+      id: 'report',
+      label: 'Report',
+      icon: 'ri-bank-card-line',
+      style: `${customeData.hideforadmissionmanger}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsPaymentReport(!isPaymentReport);
+      },
+      stateVariables: isPaymentReport,
+      subItems: [
+        {
+          id: 'package-payment',
+          label: 'Package Payment',
+          icon: 'ri-red-packet-line',
+          link:
+            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
+          pathName:
+            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
+          parentId: 'report',
+        },
+
+        {
+          id: 'application-payment',
+          label: 'Application Payment',
+          icon: 'ri-box-1-line',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/payment-report/application-payment',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/payment-report/application-payment',
+          parentId: 'report',
+        },
+        {
+          id: 'familyTrip',
+          label: 'Family Trip',
+          icon: 'ri-gift-line',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/familyTrip',
+          parentId: 'report',
+        },
+        {
+          id: 'yearlyBonous',
+          label: 'Yearly Bonus',
+          icon: 'ri-percent-line',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/yearlyBonous',
+          parentId: 'report',
+        },
+      ],
     },
     {
       id: 'blogs',
       label: 'Blogs',
       icon: 'ri-school-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();
         setIsBlogs(!isBlogs);
-        setIscurrentState('Blogs');
         updateIconSidebar(e);
       },
       stateVariables: isBlogs,
@@ -173,7 +343,7 @@ const SuperAdminSidebarData = () => {
           id: 'addblog',
           label: 'Add Blog',
           icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/blog/add-blog',
+          link: '/dashboard/' + `${paneltext}` + '/blog/add-blog',
           parentId: 'blogs',
         },
 
@@ -181,7 +351,7 @@ const SuperAdminSidebarData = () => {
           id: 'allblogs',
           label: 'Blogs List',
           icon: 'ri-school-fill',
-          link: '/dashboard/super-admin/blog/blog-list',
+          link: '/dashboard/' + `${paneltext}` + '/blog/blog-list',
           parentId: 'blogs',
         },
       ],
@@ -190,9 +360,33 @@ const SuperAdminSidebarData = () => {
       id: 'contact-messages',
       label: 'Contact Messages',
       icon: 'ri-group-fill',
-      link: '/dashboard/super-admin/contact-messages',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/contact-messages',
     },
-
+    {
+      id: 'subscription',
+      label: 'Subscription',
+      icon: 'ri-rss-line',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setSubscriptionManagement(!isSubscriptionManagement);
+      },
+      stateVariables: isSubscriptionManagement,
+      subItems: [
+        {
+          id: 'subscriptionList',
+          label: 'Subscription List',
+          icon: 'ri-rss-line',
+          link:
+            '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
+          pathName:
+            '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
+          parentId: 'subscription',
+        },
+      ],
+    },
     {
       id: 'settings',
       label: 'Settings',
@@ -201,117 +395,43 @@ const SuperAdminSidebarData = () => {
       click: function (e) {
         e.preventDefault();
         setIsSettings(!isSettings);
-        setIscurrentState('Settings');
       },
       stateVariables: isSettings,
       subItems: [
-        // {
-        //   id: 'businesssettings',
-        //   label: 'Business settings',
-        //   icon: 'ri-briefcase-fill',
-        //   link: '/dashboard/super-admin/settings/business',
-        //   pathName: '/dashboard/super-admin/settings/business',
-        //   parentId: 'settings',
-        // },
-        // {
-        //   id: 'smtpsettings',
-        //   label: 'SMTP & Email Config',
-        //   icon: 'ri-mail-settings-fill',
-        //   link: '/dashboard/super-admin/settings/smtp-config',
-        //   pathName: '/dashboard/super-admin/settings/smtp-config',
-        //   parentId: 'settings',
-        // },
-        // {
-        //   id: 'currencysettings',
-        //   label: 'Currency Settings',
-        //   icon: 'ri-money-dollar-circle-fill',
-        //   link: '/dashboard/super-admin/settings/currency',
-        //   pathName: '/dashboard/super-admin/settings/currency',
-        //   parentId: 'settings',
-        // },
         {
           id: 'paymentsettings',
           label: 'Payment Settings',
           icon: 'ri-refund-2-fill',
-          link: '/dashboard/super-admin/settings/payment',
-          pathName: '/dashboard/super-admin/settings/payment',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/settings/payment',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/payment',
           parentId: 'settings',
         },
         {
           id: 'profilesettings',
           label: 'Profile Settings',
           icon: 'ri-user-settings-fill',
-          link: '/dashboard/super-admin/settings/profile',
-          pathName: '/dashboard/super-admin/settings/profile',
+          link: '/dashboard/' + `${paneltext}` + '/settings/profile',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/profile',
           parentId: 'settings',
         },
         {
           id: 'changeemail',
           label: 'Change Email',
           icon: 'ri-mail-add-fill',
-          link: '/dashboard/super-admin/settings/email',
-          pathName: '/dashboard/super-admin/settings/email',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/settings/email',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/email',
           parentId: 'settings',
         },
         {
           id: 'changepassword',
           label: 'Change Password',
           icon: 'ri-lock-password-fill',
-          link: '/dashboard/super-admin/settings/password',
-          pathName: '/dashboard/super-admin/settings/password',
+          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+          link: '/dashboard/' + `${paneltext}` + '/settings/password',
+          pathName: '/dashboard/' + `${paneltext}` + '/settings/password',
           parentId: 'settings',
-        },
-      ],
-    },
-    {
-      id: 'subscription',
-      label: 'Subscription',
-      icon: 'ri-rss-line',
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setSubscriptionManagement(!isSubscriptionManagement);
-        setIscurrentState('subscription');
-      },
-      stateVariables: isSubscriptionManagement,
-      subItems: [
-        {
-          id: 'subscriptionList',
-          label: 'Subscription List',
-          icon: 'ri-rss-line',
-          link: '/dashboard/super-admin/subscription/subscription-list',
-          pathName: '/dashboard/super-admin/subscription/subscription-list',
-          parentId: 'subscription',
-        },
-      ],
-    },
-    {
-      id: 'payment-report',
-      label: 'Payment Report',
-      icon: 'ri-bank-card-line',
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsPaymentReport(!isPaymentReport);
-        setIscurrentState('payment-report');
-      },
-      stateVariables: isPaymentReport,
-      subItems: [
-        {
-          id: 'package-payment',
-          label: 'Package Payment',
-          icon: 'ri-red-packet-line',
-          link: '/dashboard/super-admin/payment-report/package-payment',
-          pathName: '/dashboard/super-admin/payment-report/package-payment',
-          parentId: 'payment-report',
-        },
-        {
-          id: 'application-payment',
-          label: 'Application Payment',
-          icon: 'ri-box-1-line',
-          link: '/dashboard/super-admin/payment-report/application-payment',
-          pathName: '/dashboard/super-admin/payment-report/application-payment',
-          parentId: 'payment-report',
         },
       ],
     },

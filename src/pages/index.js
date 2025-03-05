@@ -1,18 +1,17 @@
 require('dotenv').config();
 
 import HomeUniversities from '@/components/clientSite/agent/Home/HomeUniversities';
-import HeroSection from '@/components/main/home/HeroSection';
-import MainLayout from '@/components/main/layout';
-import OurServices from '@/components/main/home/OurServices';
-import { useRouter } from 'next/router';
-import 'react-toastify/dist/ReactToastify.css';
-import StudyAbroadBanner from '@/components/main/home/StudyAbroadBanner';
-import PopularCourses from '@/components/main/home/PopularCourses';
 import BlogSection from '@/components/main/home/BlogSection';
-import { useEffect } from 'react';
-import { useSubscribeNewsLetterMutation } from '@/slice/services/public/newsLetter/newsLetterSubscriptionPublic';
-import { toast } from 'react-toastify';
 import HeroSectionSlider from '@/components/main/home/HeroSectionSlider';
+import OurServices from '@/components/main/home/OurServices';
+import PopularCourses from '@/components/main/home/PopularCourses';
+import StudyAbroadBanner from '@/components/main/home/StudyAbroadBanner';
+import MainLayout from '@/components/main/layout';
+import { useSubscribeNewsLetterMutation } from '@/slice/services/public/newsLetter/newsLetterSubscriptionPublic';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HomePage = () => {
   const router = useRouter();

@@ -5,10 +5,7 @@ import Layout from '@/components/layout';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
 import { useGetDocumentRequestForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
-import {
-  studentAndLogoData,
-  universityHeadersWithoutAction,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -19,13 +16,20 @@ import { Col, Row } from 'reactstrap';
 
 const StudentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
+
   const router = useRouter();
+
+  const {
+    studentImageAndNameHeaderDataForStudentDashboard,
+    universityHeadersData,
+  } = DataObjectComponent();
+
   const { data: userInfodata, isLoading: userInfoIsLoading } =
     useGetUserInfoQuery();
+
   const { data: universityData, isLoading: universityIsLoading } =
     useGetAllUniversityQuery();
+
   const {
     data: getDocumentRequestForStudentData,
     isLoading: getDocumentRequestForStudentIsLoading,
@@ -39,13 +43,6 @@ const StudentDashboard = () => {
     } else {
       window.location.href = '/auth/login';
     }
-  }, []);
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      studentAndLogoData,
-      ...universityHeadersWithoutAction.slice(0, -1),
-    ]);
   }, []);
 
   useEffect(() => {
@@ -79,24 +76,13 @@ const StudentDashboard = () => {
                     <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Recent University'}
-                        headers={allRegisteredUniversitydata}
+                        headers={[
+                          studentImageAndNameHeaderDataForStudentDashboard,
+                          ...universityHeadersData.slice(0, -1),
+                        ]}
                         data={universityData?.data ? universityData?.data : []}
                       />
                     </Col>
-                    {/* <Col xxl={6}>
-                      <LatestRegistered
-                        tableHead={'My Applied Universities'}
-                        // headers={}
-                        // data={}
-                      />
-                    </Col> */}
-                    {/* <Col xxl={12}>
-                      <LatestRegistered
-                        tableHead={'Document Upload Request'}
-                        headers={studentSubmittedDocumentsHeaderWithoutAction}
-                        data={getDocumentRequestForStudentData?.data}
-                      />
-                    </Col> */}
                   </Row>
                 </div>
               </Col>

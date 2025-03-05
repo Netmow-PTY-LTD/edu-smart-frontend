@@ -1,7 +1,9 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useAllSubmittedDocumentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
@@ -11,26 +13,27 @@ const StudentDocumentUploadRquestForAgent = () => {
 
   const perPageData = 10;
 
-  const {
-    data: allSubmittedDocumentForAgentData,
-    error: allSubmittedDocumentForAgentError,
-    isLoading: allSubmittedDocumentForAgentIsLoading,
-    refetch: allSubmittedDocumentForAgentRefetch,
-  } = useAllSubmittedDocumentForAgentQuery();
+  const { docRequestTableHeaderDataWithoutAction } = DataObjectComponent();
 
+  const {
+    data: allDocumentRequestForAgentData,
+    error: allDocumentRequestForAgentError,
+    isLoading: allDocumentRequestForAgentIsLoading,
+    refetch: allDocumentRequestForAgentRefetch,
+  } = useGetAllUserDocRequestQuery();
+
+  console.log(allDocumentRequestForAgentData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const isFilteredData =
-    allSubmittedDocumentForAgentData?.data?.length > 0 &&
-    allSubmittedDocumentForAgentData?.data.filter(
+    allDocumentRequestForAgentData?.data?.length > 0 &&
+    allDocumentRequestForAgentData?.data.filter(
       (item) =>
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  console.log(allSubmittedDocumentForAgentData);
 
   return (
     <Layout>
@@ -38,19 +41,29 @@ const StudentDocumentUploadRquestForAgent = () => {
         <div className="h-100">
           <Card>
             <CardHeader>
-              <h3>Student Document Upload Requests</h3>
-            </CardHeader>
-            <CardBody>
-              <CommonTableComponent
-                headers={studentSubmittedDocumentsHeaderWithoutAction}
-                data={isFilteredData ? isFilteredData : []}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                perPageData={perPageData}
+              <h3>All Student Document Upload Requests from Agent</h3>
+              <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
-                emptyMessage="No Data found yet."
               />
+            </CardHeader>
+            <CardBody>
+              {allDocumentRequestForAgentIsLoading ? (
+                <LoaderSpiner />
+              ) : allDocumentRequestForAgentError ? (
+                <div>Error loading data....</div>
+              ) : (
+                <CommonTableComponent
+                  headers={docRequestTableHeaderDataWithoutAction}
+                  data={isFilteredData ? isFilteredData : []}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  perPageData={perPageData}
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
+                  emptyMessage="No Data found yet."
+                />
+              )}
             </CardBody>
           </Card>
         </div>

@@ -25,7 +25,7 @@ const CommonTableComponent = ({
               {headers?.length > 0 &&
                 headers?.map((header, index) => (
                   <th key={index} scope="col">
-                    {header.title}
+                    {header?.title}
                   </th>
                 ))}
             </tr>
@@ -38,11 +38,11 @@ const CommonTableComponent = ({
                 <tr key={rowIndex}>
                   {headers?.length > 0 &&
                     headers?.map((header) => (
-                      <td key={header.key}>
-                        {header.render
-                          ? header.render(item, rowIndex)
-                          : `${header.key}` in item
-                            ? item[header.key]
+                      <td key={header?.key}>
+                        {header?.render
+                          ? header?.render(item, rowIndex)
+                          : `${header?.key}` in item
+                            ? item[header?.key]
                             : '-'}
                       </td>
                     ))}

@@ -10,7 +10,7 @@ import {
   useSingleGetApplicationQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/public/application/applicationServiceNew';
-import { studentApplicationsHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -39,6 +39,8 @@ export default function StudentApplications() {
   const [hasUpdated, setHasUpdated] = useState(false);
 
   const perPageData = 9;
+
+  const { studentApplicationsHeaders } = DataObjectComponent();
 
   const {
     data: applicationData,
@@ -122,7 +124,9 @@ export default function StudentApplications() {
   ]);
 
   const sslCommerzPaymentHandler = async () => {
-    const price = singleGetApplicationData?.data?.course?.price;
+    const price =
+      singleGetApplicationData?.data?.course?.emgs_fee ||
+      singleGetApplicationData?.data?.course?.price;
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/student/applications/?payment_status=faild`
@@ -220,6 +224,10 @@ export default function StudentApplications() {
     ),
   };
 
+  const filteredData = applicationData?.data?.filter(
+    (item) => item?.payment_status !== 'pending'
+  );
+
   return (
     <Layout>
       {applicationLoading ? (
@@ -245,7 +253,7 @@ export default function StudentApplications() {
                               ...studentApplicationsHeaders,
                               EmgsStatusActionData,
                             ]}
-                            data={applicationData?.data || []}
+                            data={filteredData || []}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             perPageData={perPageData}

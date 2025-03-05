@@ -1,18 +1,10 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
-import { useAllSubmittedDocumentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+import { useGetAllUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-} from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllDocumentForAgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,14 +12,14 @@ const AllDocumentForAgentDashboard = () => {
 
   const perPageData = 10;
 
+  const { docRequestTableHeaderDataWithoutAction } = DataObjectComponent();
+
   const {
     data: allSubmittedDocumentForAgentData,
     error: allSubmittedDocumentForAgentError,
     isLoading: allSubmittedDocumentForAgentIsLoading,
     refetch: allSubmittedDocumentForAgentRefetch,
-  } = useAllSubmittedDocumentForAgentQuery();
-
-  // console.log(allSubmittedDocumentForAgentData);
+  } = useGetAllUserSubmittedDocumentQuery();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -40,58 +32,6 @@ const AllDocumentForAgentDashboard = () => {
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  const actionHeader = [
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (item) => {
-        const status = item?.status;
-
-        // console.log(status);
-        const validStatuses = ['accepted', 'rejected', 'pending', 'requested'];
-
-        if (validStatuses.includes(status)) {
-          return (
-            <UncontrolledDropdown className="card-header-dropdown">
-              <DropdownToggle
-                tag="a"
-                className="text-reset dropdown-btn"
-                role="button"
-              >
-                <span className="button px-3">
-                  <i className="ri-more-fill align-middle"></i>
-                </span>
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu dropdown-menu-end">
-                {status === 'accepted' && (
-                  <DropdownItem>
-                    <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
-                    Accepted
-                  </DropdownItem>
-                )}
-                {/* {status === 'rejected' && (
-                  <DropdownItem>
-                    <i className="ri-refresh-fill align-start me-2 text-muted fw-bold"></i>
-                    Reconsider
-                  </DropdownItem>
-                )} */}
-
-                {status === 'requested' && (
-                  <DropdownItem>
-                    <i className="ri-question-fill align-start me-2 text-muted fw-bold"></i>
-                    Review Request
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          );
-        }
-
-        return null;
-      },
-    },
-  ];
 
   return (
     <Layout>
@@ -108,7 +48,7 @@ const AllDocumentForAgentDashboard = () => {
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={studentSubmittedDocumentsHeaderWithoutAction}
+                  headers={docRequestTableHeaderDataWithoutAction}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}

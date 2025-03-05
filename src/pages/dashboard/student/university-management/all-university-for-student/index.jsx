@@ -3,19 +3,19 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllUniversityQuery } from '@/slice/services/public/university/publicUniveristyService';
-import {
-  studentAndLogoData,
-  universityHeadersWithoutAction,
-} from '@/utils/common/data';
-import React, { useEffect, useState } from 'react';
+import DataObjectComponent from '@/utils/common/data';
+import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 const AllUniversityForStudent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [allRegisteredUniversitydata, setAllRegisteredUniversitydata] =
-    useState('');
   const perPageData = 10;
+
+  const {
+    studentImageAndNameHeaderDataForStudentDashboard,
+    universityHeadersData,
+  } = DataObjectComponent();
 
   const { data: universityData, isLoading: universityDataIsLoading } =
     useGetAllUniversityQuery();
@@ -29,13 +29,6 @@ const AllUniversityForStudent = () => {
     universityData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  useEffect(() => {
-    setAllRegisteredUniversitydata([
-      studentAndLogoData,
-      ...universityHeadersWithoutAction,
-    ]);
-  }, []);
 
   return (
     <Layout>
@@ -56,7 +49,10 @@ const AllUniversityForStudent = () => {
 
               <CardBody>
                 <CommonTableComponent
-                  headers={allRegisteredUniversitydata}
+                  headers={[
+                    studentImageAndNameHeaderDataForStudentDashboard,
+                    ...universityHeadersData,
+                  ]}
                   data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}

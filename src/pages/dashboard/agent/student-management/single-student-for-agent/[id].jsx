@@ -1,3 +1,4 @@
+import AirTicketDocumentRequestPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AirTicketDocumentRequestPage';
 import ApplicationEmgsStatus from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatus';
 import AppliedUniversityPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/AppliedUniversityPage';
 import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
@@ -9,7 +10,7 @@ import Layout from '@/components/layout';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
 const SingleStudentForAgent = () => {
@@ -28,9 +29,27 @@ const SingleStudentForAgent = () => {
     skip: !student_id,
   });
 
+  useEffect(() => {
+    if (router.query.tab) {
+      setActiveTab(router.query.tab);
+    }
+  }, [router.query.tab, getSingleStudent?.data]);
+
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
+
+      const newQuery = { ...router.query };
+      delete newQuery.tab;
+
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: newQuery,
+        },
+        undefined,
+        { shallow: true } // Prevents a full page reload
+      );
     }
   };
 
@@ -66,7 +85,7 @@ const SingleStudentForAgent = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    {/* <NavItem className="fs-14">
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -81,8 +100,8 @@ const SingleStudentForAgent = () => {
                           Documents
                         </span>
                       </NavLink>
-                    </NavItem> */}
-                    {/* <NavItem className="fs-14">
+                    </NavItem>
+                    <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -97,7 +116,7 @@ const SingleStudentForAgent = () => {
                           Document Request
                         </span>
                       </NavLink>
-                    </NavItem> */}
+                    </NavItem>
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
@@ -130,6 +149,23 @@ const SingleStudentForAgent = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '6',
+                        })}
+                        onClick={() => {
+                          toggleTab('6');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Air Ticket Document Request
+                        </span>
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -137,31 +173,21 @@ const SingleStudentForAgent = () => {
                 {activeTab === '1' && (
                   <div style={{ marginTop: '50px' }}>
                     {/* <OverviewPage /> */}
-                    <Col xl={3}>
+                    <Col xl={12}>
                       <AllOverviewInfoCard data={getSingleStudent?.data} />
                     </Col>
                   </div>
                 )}
-                {/* {activeTab === '2' && (
+                {activeTab === '2' && (
                   <div style={{ marginTop: '50px' }}>
-                    <DocumentPage
-                      student_id={student_id}
-                      getSingleStudent={getSingleStudent}
-                      refetchSingleStudent={getSingleStudenRefetch}
-                      sigleStudentIsLoading={getSingleStudenIsLoadingForStudent}
-                    />
+                    <DocumentPage student_id={student_id} />
                   </div>
-                )} */}
-                {/* {activeTab === '3' && (
+                )}
+                {activeTab === '3' && (
                   <div style={{ marginTop: '50px' }}>
-                    <DocumentRequestPage
-                      student_id={student_id}
-                      getSingleStudent={getSingleStudent}
-                      refetchSingleStudent={getSingleStudenRefetch}
-                      sigleStudentIsLoading={getSingleStudenIsLoadingForStudent}
-                    />
+                    <DocumentRequestPage student_id={student_id} />
                   </div>
-                )} */}
+                )}
                 {activeTab === '4' && (
                   <div>
                     <AppliedUniversityPage id={student_id} />
@@ -170,6 +196,12 @@ const SingleStudentForAgent = () => {
                 {activeTab === '5' && (
                   <div>
                     <ApplicationEmgsStatus student_id={student_id} />
+                  </div>
+                )}
+
+                {activeTab === '6' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <AirTicketDocumentRequestPage student_id={student_id} />
                   </div>
                 )}
               </Row>

@@ -4,6 +4,8 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { Card, CardBody, Col, Row } from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AppliedCourseForm = ({
   setStep,
@@ -13,6 +15,7 @@ const AppliedCourseForm = ({
   validationSchema,
   documentRequirements,
   initialValues,
+  emgsfee,
 }) => {
   return (
     <Card>
@@ -32,139 +35,121 @@ const AppliedCourseForm = ({
         <LoaderSpiner />
       ) : (
         <CardBody>
-          {/* <div className="form-content">
-            <Formik
-              initialValues={initialValues}
-              onSubmit={handleAddSubmit}
-              validationSchema={validationSchema}
-              enableReinitialize
-            >
-              {({ isSubmitting, setFieldValue, values }) => {
-                return (
-                  <Form>
-                    <Row>
-                      <Col lg={12}>
-                        <div className="ps-0">
-                          <Row>
-                            {documentRequirements.map((item, index) => {
-                              const fieldName = item.title
-                                .toLowerCase()
-                                .replace(/\s+/g, '_');
-                              return (
-                                <div key={index}>
-                                  <Field
-                                    name={fieldName}
-                                    component={MultipleFileUploadAcceptAll}
-                                    label={
-                                      item?.title
-                                        ? item.title.charAt(0).toUpperCase() +
-                                          item.title.slice(1)
-                                        : ''
-                                    }
-                                    field={{
-                                      name: fieldName,
-                                    }}
-                                    form={{ values, setFieldValue }}
-                                  />
-                                </div>
-                              );
-                            })}
-
-                            <Col md={12} xl={12}>
-                              <div className="d-flex align-items-center justify-content-center my-4 gap-3">
-                                <SubmitButton
-                                  isSubmitting={isSubmitting}
-                                  formSubmit={'Submit Without Payment'}
-                                >
-                                  {'Submit Without Payment'}
-                                </SubmitButton>
-                                <SubmitButton
-                                  isSubmitting={isSubmitting}
-                                  formSubmit={'Proceed to Payment'}
-                                >
-                                  {'Proceed to Payment'}
-                                </SubmitButton>
-                              </div>
-                            </Col>
-                          </Row>
-                        </div>
-                      </Col>
-                    </Row>
-                  </Form>
-                );
-              }}
-            </Formik>
-          </div> */}
-
           <div className="form-content">
             <Formik
               initialValues={initialValues}
-              onSubmit={(values, { setSubmitting }, actionType) =>
-                handleAddSubmit(values, { setSubmitting }, actionType)
-              } // Pass the actionType here
+              onSubmit={(values, { setSubmitting }) => {
+                handleAddSubmit(values, { setSubmitting });
+              }}
               validationSchema={validationSchema}
               enableReinitialize
             >
-              {({ isSubmitting, setFieldValue, values, setSubmitting }) => {
+              {({
+                isSubmitting,
+                setFieldValue,
+                values,
+                errors,
+                touched,
+                validateForm,
+                setSubmitting,
+              }) => {
                 return (
                   <Form>
                     <Row>
                       <Col lg={12}>
                         <div className="ps-0">
                           <Row>
-                            {documentRequirements?.length > 0 &&
-                              documentRequirements.map((item, index) => {
-                                const fieldName = item.title
-                                  .toLowerCase()
-                                  .replace(/\s+/g, '_');
-                                return (
-                                  <div key={index}>
-                                    <Field
-                                      name={fieldName}
-                                      component={MultipleFileUploadAcceptAll}
-                                      label={
-                                        item?.title
-                                          ? item.title.charAt(0).toUpperCase() +
-                                            item.title.slice(1)
-                                          : ''
-                                      }
-                                      field={{
-                                        name: fieldName,
-                                      }}
-                                      form={{ values, setFieldValue }}
-                                    />
-                                  </div>
-                                );
-                              })}
+                            {Array.isArray(documentRequirements) &&
+                            documentRequirements?.length > 0 ? (
+                              documentRequirements
+                                .filter((item) => item && item.title) // Filter out invalid entries
+                                .map((item, index) => {
+                                  const fieldName = item?.title
+                                    ?.toLowerCase()
+                                    .replace(/\s+/g, '_');
+                                  return (
+                                    <div key={index}>
+                                      <Field
+                                        name={fieldName}
+                                        component={MultipleFileUploadAcceptAll}
+                                        label={
+                                          <>
+                                            <span className="title">
+                                              {item?.title
+                                                ? item.title
+                                                    .charAt(0)
+                                                    .toUpperCase() +
+                                                  item.title.slice(1)
+                                                : ''}
+                                            </span>
+                                            {item?.description && (
+                                              <div>
+                                                <span
+                                                  className="description"
+                                                  style={{ fontWeight: '400' }}
+                                                >
+                                                  {item.description}
+                                                </span>
+                                              </div>
+                                            )}
+                                          </>
+                                        }
+                                        field={{
+                                          name: fieldName,
+                                        }}
+                                        form={{ values, setFieldValue }}
+                                        validate={(value) => {
+                                          if (
+                                            item.isRequired &&
+                                            (!value || value.length === 0)
+                                          ) {
+                                            toast.error(
+                                              `${item.title} - This field is required`
+                                            );
+                                            return 'This field is required';
+                                          }
+                                          return undefined;
+                                        }}
+                                      />
+                                      {item?.description && (
+                                        <Field
+                                          type="hidden"
+                                          name={`${fieldName}_description`}
+                                          value={item.description}
+                                        />
+                                      )}
+                                      {errors[fieldName] &&
+                                        touched[fieldName] && (
+                                          <div className="error-message">
+                                            {errors[fieldName]}
+                                          </div>
+                                        )}
+                                    </div>
+                                  );
+                                })
+                            ) : (
+                              <div>No document requirements available.</div>
+                            )}
 
                             <Col md={12} xl={12}>
                               <div className="d-flex align-items-center justify-content-center my-4 gap-3">
-                                {/* stop without payment application logic for temporary */}
-                                {/* <SubmitButton
-                                  // isSubmitting={isSubmitting}
-                                  formSubmit={'Submit Without Payment'}
-                                  onClick={() =>
-                                    handleAddSubmit(
-                                      values,
-                                      { setSubmitting },
-                                      'Submit Without Payment'
-                                    )
-                                  }
-                                >
-                                  {'Submit Without Payment'}
-                                </SubmitButton> */}
                                 <SubmitButton
                                   // isSubmitting={isSubmitting}
                                   formSubmit={'Proceed to Payment'}
-                                  onClick={() =>
-                                    handleAddSubmit(
-                                      values,
-                                      { setSubmitting },
-                                      'Proceed to Payment'
-                                    )
-                                  }
+                                  onClick={async (e) => {
+                                    e.preventDefault();
+                                    const formErrors = await validateForm();
+                                    if (Object.keys(formErrors).length === 0) {
+                                      setSubmitting(true);
+                                      handleAddSubmit(values, {
+                                        setSubmitting,
+                                      });
+                                    } else {
+                                      //toast.error('Please fix the errors before proceeding.');
+                                    }
+                                  }}
                                 >
-                                  {'Proceed to Payment'}
+                                  {`Proceed to Payment With EMGS Fee ${emgsfee} MYR`}
                                 </SubmitButton>
                               </div>
                             </Col>
@@ -176,6 +161,7 @@ const AppliedCourseForm = ({
                 );
               }}
             </Formik>
+            <ToastContainer />
           </div>
         </CardBody>
       )}

@@ -5,7 +5,7 @@ import NumberField from '@/components/common/formField/NumberField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
-import { allowedFileTypes, brandlogo } from '@/utils/common/data';
+import DataObjectComponent, { brandlogo } from '@/utils/common/data';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
@@ -27,6 +27,7 @@ const UniversityForm = ({
   headTitle,
 }) => {
   const options = useMemo(() => countryList().getData(), []);
+  const { allowedFileTypes } = DataObjectComponent();
 
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];

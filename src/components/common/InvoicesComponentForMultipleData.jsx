@@ -46,7 +46,7 @@ const InvoicesComponentForMultipleData = ({
       {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
         <ModalHeader toggle={close} className="">
-          Inovice
+          Invoice For EMGS Fee
         </ModalHeader>
         <ModalBody className="p-5">
           {loading ? (
@@ -170,11 +170,12 @@ const InvoicesComponentForMultipleData = ({
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Invoice No
                       </p>
-                      <p className="mb-0">
+                      {/* <p className="mb-0 text-uppercase">
                         {invoice_no?.createdAt
                           ? `INV-${new Date(invoice_no.createdAt).getFullYear().toString().slice(-2)}${(new Date(invoice_no.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getDate().toString().padStart(2, '0')}-${new Date(invoice_no.createdAt).getHours().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getSeconds().toString().padStart(2, '0')}`
                           : ''}
-                      </p>
+                      </p> */}
+                      <p className="mb-0 text-uppercase">{invoice_no?._id}</p>
                     </Col>
                     <Col lg={3} xs={3}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
@@ -195,19 +196,19 @@ const InvoicesComponentForMultipleData = ({
                         Payment Status
                       </p>
                       <p
-                        className={`badge fw-semibold text-center me-4 ${payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+                        className={`badge fw-semibold text-center me-4 ${invoice_no?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
                       >
                         <span className="text-uppercase">
-                          {payment_status ?? '-'}
+                          {invoice_no?.application?.emgs_payment_status ?? '-'}
                         </span>
                       </p>
                     </Col>
                     <Col lg={3} xs={3}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
-                        TOTAL AMOUNT
+                        INVOICE TYPE
                       </p>
-                      <p className=" mb-0 text-uppercase fw-medium ">
-                        {total} {currency}
+                      <p className=" mb-0 text-uppercase">
+                        <p className=" mb-0 text-uppercase">EMGS FEE</p>
                       </p>
                     </Col>
                   </Row>
@@ -223,12 +224,10 @@ const InvoicesComponentForMultipleData = ({
                       <thead>
                         <tr className=" text-center">
                           <th scope="col">SL</th>
-                          <th scope="col">Application ID</th>
+                          <th scope="col">Application Details</th>
                           <th scope="col">Student</th>
-                          <th scope="col">University</th>
-                          <th scope="col">Department</th>
-                          <th scope="col">Course</th>
-                          <th scope="col">Course Fee</th>
+                          <th scope="col">Emgs Fee</th>
+                          <th scope="col">Amount</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -242,7 +241,18 @@ const InvoicesComponentForMultipleData = ({
                                 <td>
                                   <div className="py-4">
                                     <h3 className=" my-1 fw-normal text-uppercase">
-                                      {item?.application?._id ?? '-'}
+                                      ID: {item?.application?._id ?? '-'}
+                                      <br />
+                                      COURSE:{' '}
+                                      {item?.application?.course?.name ?? '-'}
+                                      <br />
+                                      UNIVERSITY:{' '}
+                                      {item?.application?.course?.university
+                                        ?.name ?? '-'}
+                                      <br />
+                                      DEPARTMENT:{' '}
+                                      {item?.application?.course?.department
+                                        ?.name ?? '-'}
                                     </h3>
                                   </div>
                                 </td>
@@ -257,25 +267,13 @@ const InvoicesComponentForMultipleData = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.university
-                                      ?.name ?? '-'}
-                                  </h3>
-                                </td>
-                                <td>
-                                  <h3 className=" my-1 fw-normal text-uppercase">
-                                    {item?.application?.course?.department
-                                      ?.name ?? '-'}
-                                  </h3>
-                                </td>
-
-                                <td>
-                                  <h3 className=" my-1 fw-normal">
-                                    {item?.application?.course?.name ?? '-'}
+                                    {item?.application?.course?.emgs_fee ?? '-'}{' '}
+                                    {currency}
                                   </h3>
                                 </td>
                                 <td>
                                   <h3 className="my-1 fw-normal">
-                                    {item?.application?.course?.price ?? '-'}{' '}
+                                    {item?.application?.course?.emgs_fee ?? '-'}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -295,7 +293,8 @@ const InvoicesComponentForMultipleData = ({
                         <tr>
                           <th className="">Sub Total :</th>
                           <th className="text-end ">
-                            {subtotal} {currency}
+                            {invoice_no?.application?.course?.emgs_fee}{' '}
+                            {currency}
                           </th>
                         </tr>
 
@@ -314,11 +313,68 @@ const InvoicesComponentForMultipleData = ({
                           <th scope="row">Total Amount :</th>
 
                           <th className="text-end">
-                            {total} {currency}
+                            {invoice_no?.application?.course?.emgs_fee}{' '}
+                            {currency}
                           </th>
                         </tr>
                       </tbody>
                     </Table>
+                  </div>
+
+                  <style>{`.table-row{
+                            display: flex;
+                            gap: 30px;
+                          }
+
+                          .tc:first-child{
+                            width: 25%;
+                          }
+                            @media(max-width:575px){
+                            .tc:first-child {
+                              width: 50%;
+                          }
+                            }
+
+                          `}</style>
+
+                  <div className="border-top border-top-dashed mx-5 my-5 fs-2">
+                    <div className="invoicetable">
+                      <div className="table-row">
+                        <div className="tc mt-3">
+                          Course Fee: <br />
+                          <span style={{ fontSize: '12px' }}>
+                            (Payment is required after EMGS processing.)
+                          </span>
+                        </div>
+                        <div className="tc mt-3">
+                          {' '}
+                          {invoice_no?.application?.course?.after_emgs_fee +
+                            invoice_no?.application?.course?.emgs_fee}{' '}
+                          {currency}
+                        </div>
+                      </div>
+                      <div className="table-row">
+                        <div className="tc">Emgs Fee:</div>
+                        <div className="tc">
+                          {' '}
+                          - {invoice_no?.application?.course?.emgs_fee}{' '}
+                          {currency}
+                        </div>
+                      </div>
+                      <div className="table-row border-top border-top-dashed mt-3 fs-2">
+                        <div className="tc mt-3">
+                          Balance Payable: <br />
+                          <span style={{ fontSize: '12px' }}>
+                            (Payment is required after EMGS processing.)
+                          </span>
+                        </div>
+                        <div className="tc mt-3">
+                          {' '}
+                          {invoice_no?.application?.course?.after_emgs_fee}{' '}
+                          {currency}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </Card>
 

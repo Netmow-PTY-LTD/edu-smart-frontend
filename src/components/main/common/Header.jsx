@@ -97,7 +97,10 @@ export default function Header() {
                           allCourses?.data?.slice(0, 10).map((item, index) => (
                             <li key={index}>
                               <Link
-                                href={`/university/${item?.university?._id}/course/${item?._id}`}
+                                // href={`/university/${item?.university?._id}/course/${item?._id}`}
+                                href={
+                                  item?._id ? `/courses?id=${item?._id}` : '#'
+                                }
                               >
                                 {item?.name}
                               </Link>
@@ -171,7 +174,7 @@ export default function Header() {
                   <div className="d-flex gap-3 ">
                     <Link
                       type="button"
-                      href={`/dashboard/super-admin`}
+                      href={`/dashboard/${userInfoData?.data?.role?.split('_').join('-')}`}
                       className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
                     >
                       Dashboard
@@ -187,6 +190,24 @@ export default function Header() {
                     </Link>
                   </div>
                 ) : userInfoData?.data?.role === 'student' ? (
+                  <div className="d-flex gap-3 ">
+                    <Link
+                      href={`/dashboard/${userInfoData?.data?.role}`}
+                      className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                ) : userInfoData?.data?.role === 'admission_manager' ? (
+                  <div className="d-flex gap-3 ">
+                    <Link
+                      href={`/dashboard/${userInfoData?.data?.role?.split('_').join('-')}`}
+                      className={`fs-20 fw-semibold py-2 px-3 button text-secondary-alt`}
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                ) : userInfoData?.data?.role === 'accountant' ? (
                   <div className="d-flex gap-3 ">
                     <Link
                       href={`/dashboard/${userInfoData?.data?.role}`}

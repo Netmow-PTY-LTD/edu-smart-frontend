@@ -1,42 +1,43 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
-import {
-  useGetDocumentRequestForStudentQuery,
-  useSubmitSingleDocumentForStudentMutation,
-} from '@/slice/services/student/studentSubmitDocumentService';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
+import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
+import DataObjectComponent from '@/utils/common/data';
+import { currentUser } from '@/utils/currentUserHandler';
+
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
 const AllUploadDocumentsForStudents = () => {
+  const user = currentUser();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
-  const [
-    AllUploadDocumentsForStudentsData,
-    setAllUploadDocumentsForStudentsData,
-  ] = useState('');
   const perPageData = 10;
 
   const [initialValues, setInitialValues] = useState({
     title: '',
     document: '',
+    description: '',
   });
 
+  const { studentRequestDocumentsHeaderWithoutAction } = DataObjectComponent();
+
   const {
-    data: getDocumentRequestForStudentData,
-    isLoading: getDocumentRequestForStudentIsLoading,
-    refetch: getDocumentRequestForStudentRefetch,
-  } = useGetDocumentRequestForStudentQuery();
+    data: getSingleStudentDocRequest,
+    isLoading: getSingleStudentDocRequestIsLoading,
+    refetch: getSingleStudentDocRequestRefetch,
+  } = useGetSingleUserDocRequestQuery({ student_id: user?.id });
 
   const [submitSingleDocumentForStudent] =
-    useSubmitSingleDocumentForStudentMutation();
+    useUpdateSingleDocumentForStudentMutation();
 
   const validationSchema = Yup.object({
     document: Yup.array()
@@ -70,35 +71,60 @@ const AllUploadDocumentsForStudents = () => {
   });
 
   // search input change function
+
+  useEffect(() => {
+    const fetchFile = async () => {
+      const requestData = getSingleStudentDocRequest?.data?.find(
+        (item) => item?._id === docId
+      );
+
+      if (!requestData) return;
+
+      // eslint-disable-next-line no-undef
+      const files = await Promise.all(
+        requestData?.files?.map(
+          async (file) => await convertImageUrlToFile(file.url)
+        )
+      );
+
+      setInitialValues({
+        title: requestData?.title || '',
+        document: files || '',
+        description: requestData?.description || '',
+      });
+    };
+
+    fetchFile();
+  }, [getSingleStudentDocRequest, docId]);
+
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const isfilteredData =
-    getDocumentRequestForStudentData?.data?.length > 0 &&
-    getDocumentRequestForStudentData?.data.filter((item) =>
+    getSingleStudentDocRequest?.data?.length > 0 &&
+    getSingleStudentDocRequest?.data.filter((item) =>
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  useEffect(() => {
-    setAllUploadDocumentsForStudentsData([
-      ...studentSubmittedDocumentsHeaderWithoutAction,
-      ...uploadAction,
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const togModal = (id) => {
+    setInitialValues({
+      title: '',
+      document: '',
+      description: '',
+    });
     setDocId(id);
     setOpenModal(!openModal);
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    // console.log(values);
+
     const updatedata = {
       ...values,
       id: docId,
+      status: 'submitted',
     };
+
     try {
       const finalData = new FormData();
       Object.entries(updatedata).forEach(([key, value]) => {
@@ -115,7 +141,7 @@ const AllUploadDocumentsForStudents = () => {
       const result = await submitSingleDocumentForStudent(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
-        getDocumentRequestForStudentRefetch();
+        getSingleStudentDocRequestRefetch();
         setOpenModal(!openModal);
       }
     } catch (error) {
@@ -146,12 +172,12 @@ const AllUploadDocumentsForStudents = () => {
       <div className="page-content">
         <div className="h-100">
           <ToastContainer />
-          {getDocumentRequestForStudentIsLoading ? (
+          {getSingleStudentDocRequestIsLoading ? (
             <LoaderSpiner />
           ) : (
             <Card>
               <CardHeader className="d-flex justify-content-between align-items-center">
-                Uploaded Docs
+                <h1> Document Uploaded Request</h1>
                 <SearchComponent
                   searchTerm={searchTerm}
                   handleSearchChange={handleSearchChange}
@@ -159,7 +185,10 @@ const AllUploadDocumentsForStudents = () => {
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={AllUploadDocumentsForStudentsData}
+                  headers={[
+                    ...studentRequestDocumentsHeaderWithoutAction,
+                    ...uploadAction,
+                  ]}
                   data={isfilteredData ? isfilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}

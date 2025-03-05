@@ -9,18 +9,18 @@ import {
   useGetRequiredDocumentInSuperAdminQuery,
   useUpdateRequiredDocumentInSuperAdminMutation,
 } from '@/slice/services/super admin/requiredService';
-import { documentHeaders } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
-const AllDocumentsInSuperAdmin = () => {
+const AllDocumentsInSuperAdminDashboard = () => {
   const [openModal, setOpenModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [requiredDocumentId, setRequiredDocumentId] = useState('');
   const [deleteRequiredDocumentId, setDeleteRequiredDocumentId] = useState('');
-  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState('');
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [editOpenModal, setEditOpenModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
@@ -29,6 +29,8 @@ const AllDocumentsInSuperAdmin = () => {
     title: '',
     description: '',
   });
+
+  const { documentHeaders = [] } = DataObjectComponent();
 
   const [addRequiredDocumentInSuperAdmin] =
     useAddRequiredDocumentInSuperAdminMutation();
@@ -47,7 +49,10 @@ const AllDocumentsInSuperAdmin = () => {
     refetch: getRequiredDocumentRefetch,
   } = useGetRequiredDocumentInSuperAdminQuery();
 
-  const validationSchema = Yup.object({});
+  const validationSchema = Yup.object({
+    description: Yup.string().required('Description is required'),
+    title: Yup.string().required('Title is required'),
+  });
 
   useEffect(() => {
     if (getRequiredDocumentData?.data?.length > 0 && requiredDocumentId) {
@@ -55,8 +60,6 @@ const AllDocumentsInSuperAdmin = () => {
         const singleCouponData = getRequiredDocumentData?.data?.find(
           (item) => item?._id === requiredDocumentId
         );
-
-        console.log(singleCouponData);
 
         try {
           setInitialValues({
@@ -283,4 +286,4 @@ const AllDocumentsInSuperAdmin = () => {
   );
 };
 
-export default AllDocumentsInSuperAdmin;
+export default AllDocumentsInSuperAdminDashboard;

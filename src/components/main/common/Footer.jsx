@@ -1,11 +1,37 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 import { footerLogo, footerShape } from '@/utils/common/data';
 import Subscription from './Subscription';
 
 export default function Footer() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Show button when user scrolls down 20px from top
+    const toggleVisibility = () => {
+      if (window.scrollY > 20) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility);
+    };
+  }, []);
+
+  const scrollToTop = (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Smooth scroll to top
+    });
+  };
   return (
     <footer className="main-footer">
       <div className="container">
@@ -170,6 +196,26 @@ export default function Footer() {
           style={{ width: '17.7rem', height: '17.7rem' }}
         />
       </div>
+      <Link
+        href="#"
+        className={`scrolltop-btn ${isVisible ? 'show' : ''}`}
+        id="scrollToTop"
+        onClick={scrollToTop}
+      >
+        <svg
+          aria-hidden="true"
+          role="img"
+          width="0.45em"
+          height="1em"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 768 1728"
+        >
+          <path
+            fill="#fff"
+            d="M765 429q-9 19-29 19H512v1248q0 14-9 23t-23 9H288q-14 0-23-9t-9-23V448H32q-21 0-29-19t5-35L358 10q10-10 23-10q14 0 24 10l355 384q13 16 5 35z"
+          ></path>
+        </svg>
+      </Link>
     </footer>
   );
 }

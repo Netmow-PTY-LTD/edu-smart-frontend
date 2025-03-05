@@ -1,4 +1,4 @@
-import { allowedFileTypes } from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import { ErrorMessage } from 'formik';
 import React, { useEffect, useState } from 'react';
 
@@ -6,17 +6,19 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
   const [filePreviews, setFilePreviews] = useState([]);
   const [fileNames, setFileNames] = useState([]);
 
+  const { allowedFileTypes } = DataObjectComponent();
+
   const isValidFile = (file) => allowedFileTypes.includes(file?.type);
 
   useEffect(() => {
     const files = form.values[field.name] || [];
-    // console.log(files);
+
     if (files?.length > 0) {
-      // console.log('check');
       const validFiles = files.filter(isValidFile);
       setFilePreviews(validFiles.map((file) => URL.createObjectURL(file)));
       setFileNames(validFiles.map((file) => file.name));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values, field.name]);
 
   const handleFileChange = (e) => {
@@ -43,8 +45,6 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
       const newFileNames = validFiles.map((file) => file.name);
 
-      console.log(newFilePreviews);
-
       setFilePreviews((prevPreviews) => [...prevPreviews, ...newFilePreviews]);
       setFileNames((prevNames) => [...prevNames, ...newFileNames]);
 
@@ -64,8 +64,6 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
 
     form.setFieldValue(field.name, updatedFiles);
   };
-
-  console.log(filePreviews);
 
   return (
     <div>

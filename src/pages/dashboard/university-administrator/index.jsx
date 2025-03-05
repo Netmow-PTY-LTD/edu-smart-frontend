@@ -5,11 +5,7 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllCourseCategoriesQuery } from '@/slice/services/super admin/courseCategoriesService';
 import { useGetCourseQuery } from '@/slice/services/super admin/courseService';
 import { useGetDepartmentQuery } from '@/slice/services/super admin/departmentService';
-import {
-  categoryHeaders,
-  courseHeaders,
-  departmentHeaders,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
@@ -23,6 +19,9 @@ const UniversityAdministratorDashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const { data: userInfodata } = useGetUserInfoQuery();
   const perPageData = 10;
+
+  const { departmentHeaders, categoryHeaders, courseHeaders } =
+    DataObjectComponent();
 
   const {
     data: getDepartmentData,

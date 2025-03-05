@@ -1,13 +1,16 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import { useAllSubmittedDocumentForStudentQuery } from '@/slice/services/student/studentSubmitDocumentService';
+import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
-import { studentSubmittedDocumentsHeaderWithoutAction } from '@/utils/common/data';
 const DocumentPageSuper = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
+
+  const { studentSubmittedDocumentsHeaderWithoutAction } =
+    DataObjectComponent();
 
   // -------------------- Just for UI example this data will come from API -----------------------
   const {

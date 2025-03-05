@@ -49,6 +49,7 @@ const UpgradePackageInAgentdashboard = () => {
   const package_id = router.query?.package_id;
   const payment_method = router.query.payment_method;
   const paid_amount = router.query.paid_amount;
+  const coupon_id = router.query.coupon_id;
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const { data: allCouponData } = useGetAllActiveCouponQuery();
@@ -112,7 +113,11 @@ const UpgradePackageInAgentdashboard = () => {
             payment_method: payment_method,
             paid_amount: paid_amount,
             coupon_duration: couponDuration,
-            coupon: couponId,
+            coupon: couponId
+              ? couponId
+              : coupon_id && coupon_id != 'none'
+                ? coupon_id
+                : '',
           };
           const response = await upgradePackageForAgent(finalData).unwrap();
           if (response) {
@@ -182,6 +187,7 @@ const UpgradePackageInAgentdashboard = () => {
   }, [
     couponDuration,
     couponId,
+    coupon_id,
     package_id,
     paid_amount,
     payment_method,
@@ -200,14 +206,17 @@ const UpgradePackageInAgentdashboard = () => {
         : `https://edusmart.study/dashboard/agent/upgrade?payment_status=failed`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`
-        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}`;
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`;
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
         : `https://edusmart.study/dashboard/agent/upgrade?payment_status=cancel`;
-
+    const transaction_reason = 'agent_package';
     const package_id = upgradePackageId;
+    const currency = 'MYR';
+    const payment_method = 'sslcommerz';
+    const agent_package = null;
 
     try {
       const response = await sslCommerzPaymentIntend({
@@ -216,6 +225,10 @@ const UpgradePackageInAgentdashboard = () => {
         success_url,
         cancel_url,
         package_id,
+        transaction_reason,
+        currency,
+        payment_method,
+        agent_package,
       }).unwrap();
 
       if (response.success && response?.data?.gatewayPageURL) {
@@ -227,6 +240,8 @@ const UpgradePackageInAgentdashboard = () => {
       toast.error('Something went wrong');
     }
   };
+
+  console.log(couponId);
 
   const handleCouponSubmit = async () => {
     if (!couponCode) {
@@ -242,8 +257,6 @@ const UpgradePackageInAgentdashboard = () => {
         code: couponCode,
         package_id: upgradePackageId,
       }).unwrap();
-
-      console.log('Coupon verification response:', response);
 
       const { package_duration, packages, discount_percentage } =
         response?.data || {};
@@ -285,10 +298,7 @@ const UpgradePackageInAgentdashboard = () => {
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
 
-      console.log(upgradeResponse);
-
       if (upgradeResponse) {
-        console.log('checking upgrade');
         toast.success(upgradeResponse?.message);
         setUpgradePackageId('');
         setUpgradePackageName('');
@@ -319,24 +329,19 @@ const UpgradePackageInAgentdashboard = () => {
   const handleCheckboxChange = async () => {
     const newCheckedState = !isChecked;
 
-    // Show confirmation only when checking the box
     if (newCheckedState) {
       const confirmAction = window.confirm(
         "Are you sure you don't want to upgrade now?"
       );
       if (!confirmAction) {
-        return; // Do nothing if the user cancels
+        return;
       }
     }
-
     setIsChecked(newCheckedState);
 
-    // Close modal if checkbox is checked
     if (newCheckedState && typeof setOpenPaymentModal === 'function') {
       setOpenPaymentModal(false);
     }
-
-    // Determine the correct body based on checkbox state
     const requestBody = JSON.stringify({
       package_choice: newCheckedState
         ? null
@@ -367,14 +372,6 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
-  //
-
-  // console.log(
-  //   couponAmount !== '' && couponAmount !== null && Number(couponAmount) === 0
-  // );
-
-  // console.log(couponAmount);
-
   return (
     <Layout>
       <div className="page-content">
@@ -383,7 +380,7 @@ const UpgradePackageInAgentdashboard = () => {
           <div className="h-100">
             <Row>
               <Col xl={10}>
-                <div className=" d-flex align-items-center justify-content-center my-5 gap-5">
+                <div className=" d-flex justify-content-center my-5 gap-5">
                   {getAllPackageIsLoading || upgradePackageIsLoading ? (
                     <LoaderSpiner />
                   ) : (
@@ -529,6 +526,7 @@ const UpgradePackageInAgentdashboard = () => {
                           } else {
                             setTotalCouponAmount('');
                             setCouponCode('');
+                            setCouponId('');
                           }
                         }}
                         onPaste={(e) => {
@@ -538,6 +536,7 @@ const UpgradePackageInAgentdashboard = () => {
                           } else {
                             setTotalCouponAmount('');
                             setCouponCode('');
+                            setCouponId('');
                           }
                         }}
                         placeholder="Enter coupon code"
@@ -547,18 +546,18 @@ const UpgradePackageInAgentdashboard = () => {
                           }
                         }}
                       />
-                      {applyPackageIsLoading ? (
-                        <Loader />
-                      ) : (
-                        <button
-                          type="button"
-                          className="button px-3 fw-medium"
-                          onClick={() => handleCouponSubmit()}
-                          disabled={applyPackageIsLoading}
-                        >
-                          Apply
-                        </button>
-                      )}
+                      <div className="hstack mx-auto button px-4 py-3 fw-medium">
+                        {applyPackageIsLoading ? (
+                          <Loader />
+                        ) : (
+                          <div
+                            onClick={() => handleCouponSubmit()}
+                            disabled={applyPackageIsLoading}
+                          >
+                            Apply
+                          </div>
+                        )}
+                      </div>
                     </div>
                     {couponError && (
                       <div className="text-danger mt-2">{couponError}</div>
@@ -626,17 +625,18 @@ const UpgradePackageInAgentdashboard = () => {
                         <div className="text-primary fs-2 fw-semibold text-center mb-2">
                           Get It for FREE with Our Exclusive Coupon!
                         </div>
-                        {upgradePackageForAgentIsLoading ? (
-                          <Loader />
-                        ) : (
-                          <button
-                            disabled={upgradePackageForAgentIsLoading}
-                            onClick={() => handleUpgradePackageWithCoupon()}
-                            className="button px-4 py-2"
-                          >
-                            Continue
-                          </button>
-                        )}
+                        <div className="hstack mx-auto d-flex justify-content-center align-items-center button px-3 py-2 w-25">
+                          {upgradePackageForAgentIsLoading ? (
+                            <Loader />
+                          ) : (
+                            <div
+                              disabled={upgradePackageForAgentIsLoading}
+                              onClick={() => handleUpgradePackageWithCoupon()}
+                            >
+                              Continue
+                            </div>
+                          )}
+                        </div>
                       </div>
                     ) : (
                       ''

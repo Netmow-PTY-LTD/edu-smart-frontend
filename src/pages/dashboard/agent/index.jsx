@@ -7,14 +7,9 @@ import { useGetEarningsQuery } from '@/slice/services/agent/agentEarningsService
 import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllHotOfferQuery } from '@/slice/services/public/package/publicPackageService';
-import {
-  agentEarnigsHeaders,
-  studentAndLogoDataForAgentDashboard,
-  studentsHeadersWithLogoLinkInAgent,
-} from '@/utils/common/data';
+import DataObjectComponent from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
 
@@ -24,8 +19,13 @@ const AgentDashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
-
   const router = useRouter();
+
+  const {
+    studentsImageAndNameHeaderDataInAgentDashboard,
+    agentEarnigsHeaders = [],
+    studentsHeaders = [],
+  } = DataObjectComponent();
 
   const {
     data: allStudentForAgentData,
@@ -43,28 +43,13 @@ const AgentDashboard = () => {
   const { data: earningData, isLoading: earningLoading } =
     useGetEarningsQuery();
 
-  // useEffect(() => {
-  // const token = Cookies.get('token');
-  //   if (token) {
-  //     setIsAuthenticated(true);
-  //   } else {
-  //     // window.location.href = '/auth/login';
-  //   }
-  // }, []);
-
-  console.log(userInfodata?.data?.role);
-
   if (userInfodata?.data?.package_choice) {
-    //console.log('working');
     router.push('/dashboard/agent/upgrade');
     return;
   }
 
   const course_choice = Cookies.get('course_choice');
   const universityId = Cookies.get('universityId');
-
-  console.log(course_choice);
-  console.log(universityId);
 
   let destination;
 
@@ -76,15 +61,10 @@ const AgentDashboard = () => {
     destination = 'single-university-profile-for-agent';
   }
 
-  console.log(destination);
-
   if (course_choice && universityId && destination) {
-    console.log('working');
-
     router.push(
       `/dashboard/${userInfodata?.data?.role}/university-management/${destination}/${universityId}/course/${course_choice}`
     );
-
     Cookies.remove('course_choice');
     Cookies.remove('universityId');
     return;
@@ -93,28 +73,6 @@ const AgentDashboard = () => {
       'Missing data: Check if userInfodata, course_choice, universityId, or destination is undefined'
     );
   }
-
-  // if (
-  //   course_choice != null && // Check if course_choice is not null or undefined
-  //   universityId != null && // Check if universityId is not null or undefined
-  //   destination != null && // Check if destination is not null or undefined
-  //   course_choice !== '' && // Ensure course_choice is not an empty string
-  //   universityId !== '' && // Ensure universityId is not an empty string
-  //   destination !== '' // Ensure destination is not an empty string
-  // ) {
-  //   console.log('working');
-
-  //   router.push(
-  //     `/dashboard/${userInfodata?.data?.role}/university-management/${destination}/${universityId}/course/${course_choice}`
-  //   );
-  //   Cookies.remove('course_choice');
-  //   Cookies.remove('universityId');
-  //   return;
-  // } else {
-  //   console.error(
-  //     'Missing data: Check if course_choice, universityId, or destination is null, undefined, or empty'
-  //   );
-  // }
 
   return (
     <Layout>
@@ -133,8 +91,8 @@ const AgentDashboard = () => {
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
                         headers={[
-                          studentAndLogoDataForAgentDashboard,
-                          ...studentsHeadersWithLogoLinkInAgent.slice(1),
+                          studentsImageAndNameHeaderDataInAgentDashboard,
+                          ...studentsHeaders,
                         ]}
                         data={
                           allStudentForAgentData?.data

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { createSelector } from 'reselect';
 import withRouter from '../../common/withRoutes';
 import AgentSidebarData from '../sidebarLayoutData/AgentSidebarData';
@@ -17,16 +18,16 @@ import UniversityAdministratorSidebarData from '../sidebarLayoutData/UniversityS
 
 const VerticalLayout = (props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const superAdminSidebarData = SuperAdminSidebarData().props.children;
   const studentSidebarData = StudentSidebarData().props.children;
   const agentSidebarData = AgentSidebarData().props.children;
   const universitySidebarData =
     UniversityAdministratorSidebarData().props.children;
-  const router = useRouter();
 
-  const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
-
+  const { data: userInfodata } = useGetUserInfoQuery();
   const selectLayoutState = (state) => state.Layout;
+
   const selectLayoutProperties = createSelector(
     selectLayoutState,
     (layout) => ({
@@ -200,7 +201,11 @@ const VerticalLayout = (props) => {
             ? agentSidebarData
             : userInfodata?.data?.role === 'university_administrator'
               ? universitySidebarData
-              : []
+              : userInfodata?.data?.role === 'admission_manager'
+                ? superAdminSidebarData
+                : userInfodata?.data?.role === 'accountant'
+                  ? superAdminSidebarData
+                  : []
       ).map((item, key) => {
         return (
           <React.Fragment key={key}>
@@ -210,11 +215,11 @@ const VerticalLayout = (props) => {
             ) : item.subItems ? (
               <li
                 id={`${item?.id === 'players' ? 'addplayer' : item?.id === 'teams' ? 'addteam' : item?.id === 'events' ? 'createevents' : item?.id === 'settings' ? 'systemsettings' : item?.id === 'website' ? 'websiteinfo' : item?.id === 'ecommerce' ? 'ecommercesystem' : ''}`}
-                className="nav-item fs-2"
+                className={`${item.style} nav-item fs-2`}
               >
                 <p
                   onClick={item?.click}
-                  className="nav-link menu-link "
+                  className="nav-link menu-link cursor-pointer"
                   data-bs-toggle="collapse"
                 >
                   <i className={`pe-3 ${item.icon}`}></i>
@@ -241,7 +246,10 @@ const VerticalLayout = (props) => {
                       (item.subItems || []).map((subItem, key) => (
                         <React.Fragment key={key}>
                           {!subItem.isChildItem ? (
-                            <li className="nav-item d-flex align-items-center">
+                            <li
+                              // style={subItem.style}
+                              className={`${subItem.style} nav-item `}
+                            >
                               <Link
                                 href={
                                   subItem.link
@@ -378,7 +386,7 @@ const VerticalLayout = (props) => {
                 </Collapse>
               </li>
             ) : (
-              <li className="nav-item fs-2">
+              <li className={`${item.style} nav-item fs-2`}>
                 <Link
                   className="nav-link menu-link"
                   href={item.link ? item.link : '/#'}

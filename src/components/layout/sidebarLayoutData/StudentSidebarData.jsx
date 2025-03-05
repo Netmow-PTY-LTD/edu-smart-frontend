@@ -12,6 +12,7 @@ const StudentSidebarData = () => {
   const [isInvoices, setIsInvoices] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
   const [isPaymentReport, setIsPaymentReport] = useState(false);
+  const [isManageAirTicket, setIsManageAirTicket] = useState(false);
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');
@@ -37,6 +38,9 @@ const StudentSidebarData = () => {
 
     if (iscurrentState !== 'Manage Document') {
       setIsManageDocument(false);
+    }
+    if (iscurrentState !== 'Manage Air Ticket') {
+      setIsManageAirTicket(false);
     }
 
     if (iscurrentState !== 'My Profile') {
@@ -96,39 +100,79 @@ const StudentSidebarData = () => {
         // },
       ],
     },
+    {
+      id: 'managedocument',
+      label: 'Manage Documents',
+      icon: 'ri-article-fill',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsManageDocument(!isManageDocument);
+        setIscurrentState('Manage Document');
+      },
+      stateVariables: isManageDocument,
+      subItems: [
+        {
+          id: 'alldocuments',
+          label: 'All Documents',
+          icon: 'ri-file-list-fill',
+          link: '/dashboard/student/manage-documents/all-submitted-documents-for-students',
+          pathName:
+            '/dashboard/student/manage-documents/all-submitted-documents-for-students',
+          parentId: 'managedocument',
+        },
+
+        {
+          id: 'documentuploadrequest',
+          label: 'Doc Upload Request',
+          link: '/dashboard/student/manage-documents/document-upload-request-for-students',
+          icon: 'ri-file-list-3-fill',
+          pathName:
+            '/dashboard/student/manage-documents/document-upload-request-for-students',
+          parentId: 'managedocument',
+        },
+      ],
+    },
+    // ----------------- Future use Manage Air Ticket subitem sidebar -----------------
     // {
-    //   id: 'managedocument',
-    //   label: 'Manage Documents',
+    // {
+    //   id: 'manage-air-ticket',
+    //   label: 'Manage Air Ticket',
     //   icon: 'ri-article-fill',
     //   link: '/#',
     //   click: function (e) {
     //     e.preventDefault();
-    //     setIsManageDocument(!isManageDocument);
-    //     setIscurrentState('Manage Document');
+    //     setIsManageAirTicket(!isManageAirTicket);
+    //     setIscurrentState('Manage Air Ticket');
     //   },
-    //   stateVariables: isManageDocument,
+    //   stateVariables: isManageAirTicket,
     //   subItems: [
     //     {
-    //       id: 'alldocuments',
-    //       label: 'All Documents',
-    //       icon: 'ri-file-list-fill',
-    //       link: '/dashboard/student/manage-documents/all-submitted-documents-for-students',
+    //       id: 'allAirTicketDoc',
+    //       label: 'All Air Ticket Document',
+    //       link: '/dashboard/student/manage-air-ticket/all-air-ticket-doc-for-student',
+    //       icon: 'ri-file-fill',
     //       pathName:
-    //         '/dashboard/student/manage-documents/all-submitted-documents-for-students',
-    //       parentId: 'managedocument',
+    //         '/dashboard/student/manage-air-ticket/all-air-ticket-doc-for-student',
+    //       parentId: 'manage-air-ticket',
     //     },
-
     //     {
-    //       id: 'documentuploadrequest',
-    //       label: 'Doc Upload Request',
-    //       link: '/dashboard/student/manage-documents/document-upload-request-for-students',
+    //       id: 'airTicketDocumentuploadrequest',
+    //       label: 'Air Ticket Doc Request',
+    //       link: '/dashboard/student/manage-air-ticket/air-ticket-upload-request',
     //       icon: 'ri-file-list-3-fill',
     //       pathName:
-    //         '/dashboard/student/manage-documents/document-upload-request-for-students',
-    //       parentId: 'managedocument',
+    //         '/dashboard/student/manage-air-ticket/air-ticket-upload-request',
+    //       parentId: 'manage-air-ticket',
     //     },
     //   ],
     // },
+    {
+      id: 'airTicketDocumentuploadrequest',
+      label: 'Air Ticket Doc  Request',
+      icon: 'ri-dashboard-2-line',
+      link: '/dashboard/student/manage-air-ticket/air-ticket-upload-request',
+    },
     {
       id: 'applications',
       label: 'Applications',

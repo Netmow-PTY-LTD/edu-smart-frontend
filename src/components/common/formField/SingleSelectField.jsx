@@ -18,21 +18,26 @@ const SingleSelectField = ({
 
       <Field name={name}>
         {({ field, form }) => {
-          //console.log('field ', field.value);
+          // console.log('field ', field);
+          // console.log('form ', form);
           const selectedOption =
             options?.length > 0
               ? options.find((option) => {
                   // console.log(option.value);
                   return (
                     option.label === field?.value ||
-                    option.label === field?.value?.label
+                    option.label === field?.value?.label ||
+                    option.value === field?.value?.value ||
+                    option.value === field?.value?.label ||
+                    option.value === field?.value
                   );
                 })
               : null;
 
-          //console.log(selectedOption);
+          // console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
+            // console.log(selectedOption);
             if (setInitialValues) {
               setInitialValues((prev) => ({
                 ...prev,
@@ -40,7 +45,7 @@ const SingleSelectField = ({
               }));
             }
 
-            form.setFieldValue(
+            form?.setFieldValue(
               name,
               name === 'country' ? selectedOption?.label : selectedOption?.value
             );
