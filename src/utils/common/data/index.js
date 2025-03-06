@@ -632,13 +632,18 @@ const DataObjectComponent = () => {
       title: 'Agent',
       key: 'agent',
       render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.agent?.first_name && item?.agent?.last_name
-            ? `${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`
-            : '-'}
-        </span>
+        <h5 className="fs-14 fw-medium text-capitalize text-wrap">
+        <Link
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents/${item?.agent?._id}`}
+          className="text-reset"
+        >
+          {`${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`}
+        </Link>
+      </h5>
+
       ),
     },
+
     { title: 'Email', key: 'email' },
     { title: 'Phone', key: 'phone' },
     {
