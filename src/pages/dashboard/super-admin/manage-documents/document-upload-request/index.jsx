@@ -39,6 +39,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     );
 
   const handleSubmit = (values, { setSubmitting }) => {
+    console.log(values);
     setSubmitting(true);
     const student_id = values.student_id;
 
