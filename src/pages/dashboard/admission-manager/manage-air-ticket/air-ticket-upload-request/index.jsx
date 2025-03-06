@@ -105,7 +105,6 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
 
     const airTicketRequestData = {
       application: values.application_id,
-
       description: values.description,
       student_id: values.student_id,
       title: values.title,

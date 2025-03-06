@@ -30,7 +30,12 @@ const TotalReceiveAmountForSuperAdmin = () => {
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
       ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
-    setAllPaymentData(combinedData);
+
+    const newData = combinedData.filter(
+      (item) => item?.payment_reason != 'application_incentive'
+    );
+
+    setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,

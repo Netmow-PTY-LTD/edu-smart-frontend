@@ -9,13 +9,13 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const TotalAgentPayoutInSuperAdmin = () => {
+const TotalAgentPendingPayoutInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
 
-  const { TotalagentPayoutReportHeadersDataForSuperAdmin } =
+  const { TotalAgentPendingPayoutReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
 
   const {
@@ -25,6 +25,8 @@ const TotalAgentPayoutInSuperAdmin = () => {
     refetch: getAllPaymentReportDataRefetch,
   } = useGetAllPaymentReportQuery();
 
+  // console.log(getAllPaymentReportData?.data);
+
   useEffect(() => {
     const combinedData = [
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
@@ -33,7 +35,8 @@ const TotalAgentPayoutInSuperAdmin = () => {
 
     const newData = combinedData.filter(
       (item) =>
-        item?.applied_by?.role === 'agent' &&
+        item?.application?.course?.auto_deduct === false &&
+        item?.applied_by?.role === 'student' &&
         item?.payment_reason === 'application_tuition_fee'
     );
     setAllPaymentData(newData);
@@ -41,6 +44,8 @@ const TotalAgentPayoutInSuperAdmin = () => {
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
   ]);
+
+  console.log(allPaymentData);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -64,7 +69,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Total Agent Payout
+                    Total Agent Pending Payout
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
@@ -74,7 +79,9 @@ const TotalAgentPayoutInSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={TotalagentPayoutReportHeadersDataForSuperAdmin}
+                    headers={
+                      TotalAgentPendingPayoutReportHeadersDataForSuperAdmin
+                    }
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -93,4 +100,4 @@ const TotalAgentPayoutInSuperAdmin = () => {
   );
 };
 
-export default TotalAgentPayoutInSuperAdmin;
+export default TotalAgentPendingPayoutInSuperAdmin;

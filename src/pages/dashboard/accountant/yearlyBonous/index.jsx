@@ -4,12 +4,25 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAgentYearlyBonusQuery } from '@/slice/services/agent/agentEarningsService';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Card, CardBody, CardHeader, Col, Progress, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Progress,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 export default function AgentYarlyBonous() {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
+  const router = useRouter();
 
   const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
     useGetAgentYearlyBonusQuery();
@@ -22,15 +35,15 @@ export default function AgentYarlyBonous() {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-    {
-      title: 'Package Name',
-      key: 'package_name',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.package?.name || 'N/A'}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || 'N/A'}
+    //     </span>
+    //   ),
+    // },
     {
       title: 'Agent Name',
       key: 'agent_name',
@@ -47,15 +60,15 @@ export default function AgentYarlyBonous() {
         <span className="d-flex flex-column">{item?.agent?.email || '-'}</span>
       ),
     },
+    // {
+    //   title: 'Amount ',
+    //   key: 'amount',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">{item?.amount || '0'}</span>
+    //   ),
+    // },
     {
-      title: 'Amount ',
-      key: 'amount',
-      render: (item) => (
-        <span className="d-flex flex-column">{item?.amount || '0'}</span>
-      ),
-    },
-    {
-      title: 'Start Date',
+      title: 'Target Start Date',
       key: 'start_date',
       render: (item) => (
         <span className="d-flex flex-column">
@@ -64,7 +77,7 @@ export default function AgentYarlyBonous() {
       ),
     },
     {
-      title: 'End Date',
+      title: 'Target End Date',
       key: 'end_date',
       render: (item) => (
         <span className="d-flex flex-column">
@@ -113,6 +126,40 @@ export default function AgentYarlyBonous() {
         >
           {item?.payout_status || '-'}
         </span>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'actions',
+      render: (item) => (
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <div
+                onClick={
+                  () =>
+                    router.push(
+                      `/dashboard/super-admin/yearlyBonous/${item?._id}`
+                    )
+                  // router.push(`/dashboard/super-admin/recent-application`)
+                }
+                className="text-primary"
+              >
+                <i className="ri-eye-fill me-2"></i>
+                View Application
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       ),
     },
   ];

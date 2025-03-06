@@ -9619,6 +9619,7 @@ input.search-input::placeholder {
 
 textarea.form-control {
   height: auto !important;
+  resize: vertical;
 }
 
 @media (max-width: 1024px) {
@@ -10037,6 +10038,10 @@ textarea.form-control {
   width: calc(50% - 1.2rem);
 }
 
+.course-act svg {
+  flex-shrink: 0;
+}
+
 .description-text {
   color: var(--Black, #1c1c1c);
   font-family: Poppins;
@@ -10109,7 +10114,7 @@ textarea.form-control {
 }
 
 .course-offers-list ul li {
-  width: calc(50% - 10px);
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
