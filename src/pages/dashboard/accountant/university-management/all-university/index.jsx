@@ -8,23 +8,36 @@ import {
   useGetUniversityQuery,
 } from '@/slice/services/super admin/universityService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 const AllUniversityForSuperAdmin = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [universityIdForDelete, setUniversityIdForDelete] = useState(null);
+  const [universityIdForChangeStatus, setUniversityIdForChangeStatus] =
+    useState(null);
+  const [checkUniversityStatus, setCheckUniversityStatus] = useState(null);
   const perPageData = 10;
 
   const {
-    universityLogoAndNameHeaderDataForSuperAdminDashboard,
-    universityHeadersData,
+    universityLogoAndNameHeaderDataForSuperAdminDashboard = [],
+    universityHeadersData = [],
   } = DataObjectComponent();
+
+  const customData = useCustomData();
 
   const {
     data: getUniversityData,
@@ -42,14 +55,19 @@ const AllUniversityForSuperAdmin = () => {
     },
   ] = useDeleteUniversityMutation();
 
-  const handleDeleteButtonClick = (itemId) => {
-    setUniversityIdForDelete(itemId);
+  const handleDeleteButtonClick = (uniData) => {
+    setUniversityIdForChangeStatus(uniData?.id);
     setDeleteModalIsOpen(!deleteModalIsOpen);
+    setCheckUniversityStatus(uniData?.status);
   };
 
   const handleDeleteUniversity = async (id) => {
     try {
-      const result = await deleteUniversity(id).unwrap();
+      const statusData = {
+        id: universityIdForChangeStatus,
+        status: checkUniversityStatus,
+      };
+      const result = await deleteUniversity(statusData).unwrap();
       if (result) {
         toast.success(result?.message);
         getUniversityRefetch();
@@ -72,6 +90,69 @@ const AllUniversityForSuperAdmin = () => {
     getUniversityData?.data.filter((item) =>
       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  const alluniversityHeaderAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown className="card-header-dropdown">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+          <DropdownItem>
+            <Link
+              href={`/dashboard/${customData?.paneltext}/university-management/single-university-profile/${item?._id}`}
+              className="text-primary"
+            >
+              <i className="ri-tools-fill align-start me-2 text-muted fw-bold"></i>
+              Manage
+            </Link>
+          </DropdownItem>
+          <DropdownItem>
+            <Link
+              href={`/dashboard/${customData?.paneltext}/university-management/edit-university/${item?._id}`}
+              className="text-primary"
+            >
+              <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+              Edit
+            </Link>
+          </DropdownItem>
+          {item?.status === 'active' ? (
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleDeleteButtonClick({ id: item._id, status: 'inactive' })
+                }
+                className="text-primary"
+              >
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Inactive
+              </div>
+            </DropdownItem>
+          ) : (
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleDeleteButtonClick({ id: item._id, status: 'active' })
+                }
+                className="text-primary"
+              >
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Active
+              </div>
+            </DropdownItem>
+          )}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
 
   return (
     <Layout>
@@ -104,6 +185,7 @@ const AllUniversityForSuperAdmin = () => {
                     headers={[
                       universityLogoAndNameHeaderDataForSuperAdminDashboard,
                       ...universityHeadersData,
+                      alluniversityHeaderAction,
                     ]}
                     data={isfilteredData ? isfilteredData : []}
                     currentPage={currentPage}
@@ -121,9 +203,10 @@ const AllUniversityForSuperAdmin = () => {
             <DeleteModal
               Open={deleteModalIsOpen}
               close={handleDeleteButtonClick}
-              id={universityIdForDelete}
+              id={universityIdForChangeStatus}
               handleDelete={handleDeleteUniversity}
               isloading={deleteUniversityIsLoading}
+              userStatus={checkUniversityStatus}
             />
           </div>
         </div>

@@ -9,7 +9,9 @@ import UniversityGalleryFormHandler from '../administrationApiComponent/Universi
 import UniversitySliderList from '../administrationApiComponent/UniversitySliderList';
 
 const ManageUniversityForSuperAdmin = ({ university_id }) => {
+
   const [customverticalTab, setcustomverticalTab] = useState(1);
+
   const customtoggleVertical = (tab) => {
     if (customverticalTab !== tab) {
       setcustomverticalTab(tab);
