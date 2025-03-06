@@ -19,7 +19,6 @@ const UniversitySponsorModalForm = ({
   previewImage,
   formSubmit,
 }) => {
-  // console.log(initialValues);
   return (
     <Modal isOpen={isOpen} centered size="md">
       <ModalHeader toggle={onClose} className="fw-semibold text-black">

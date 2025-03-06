@@ -37,8 +37,6 @@ export default function HeroHome({ university }) {
     }
   );
 
-  // console.log(universityCourses);
-
   const handleChange = (e) => {
     setSelectedValue(e.target.value);
   };

@@ -17,8 +17,6 @@ const RequiredDocemtsModal = ({
   handleSubmit,
   singleCouponIsLoading,
 }) => {
-  // console.log(allPackages);
-
   return (
     <Modal isOpen={open} centered size="xl">
       <ToastContainer />

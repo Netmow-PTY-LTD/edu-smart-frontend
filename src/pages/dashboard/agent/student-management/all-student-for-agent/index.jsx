@@ -55,7 +55,6 @@ const AllStudentsForAgent = () => {
     );
 
   const handleDeleteButtonClick = (itemId) => {
-    console.log(itemId);
     setStudentIdForDelete(itemId);
     setDeleteModalIsOpen(true);
   };

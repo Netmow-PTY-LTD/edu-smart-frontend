@@ -32,8 +32,6 @@ const Register = () => {
   const [step, setStep] = useState(1);
   const [checkExistingUser, setCheckExistingUser] = useState('');
 
-  console.log('from register page==>', query);
-
   const [logIn, { data: LoginData }] = useLogInMutation();
   const [generateOtp] = useGenerateOtpMutation();
   const [agentRegister] = useAgentRegisterMutation();
@@ -215,8 +213,6 @@ const Register = () => {
   const course_choice = searchParams.get('courseId');
   const universityId = searchParams.get('universityId');
 
-  //console.log('Package ID:', packageChoice);
-
   const [initialValues, setInitialValues] = useState({
     email: '',
     password: '',
@@ -258,8 +254,6 @@ const Register = () => {
       }));
     }
   }, [package_choice, query]);
-
-  //console.log(initialValues);
 
   var initialStepValidationSchema;
   if (package_choice) {
@@ -307,12 +301,11 @@ const Register = () => {
   });
 
   const handleAgentSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     setSubmitting(true);
 
     try {
       const updatedValues = { ...values, email: values?.email, package_choice };
-      console.log(updatedValues);
+
       if (checkExistingUser) {
         toast.error('Email already exists');
       } else {
@@ -334,8 +327,6 @@ const Register = () => {
 
   const handleRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-    // console.log('agent', values);
 
     try {
       const updatedRegisterValues = {
@@ -384,8 +375,6 @@ const Register = () => {
 
   const handleStudentRegistrationSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-    // console.log('student', values);
 
     try {
       const updatedStudentRegisterValues = {
@@ -437,8 +426,6 @@ const Register = () => {
   ) => {
     setSubmitting(true);
 
-    // console.log('university', values);
-
     try {
       const resRegister = await universityRegister({
         ...values,
@@ -464,8 +451,6 @@ const Register = () => {
       setSubmitting(false);
     }
   };
-
-  //console.log(initialValues);
 
   return (
     <>

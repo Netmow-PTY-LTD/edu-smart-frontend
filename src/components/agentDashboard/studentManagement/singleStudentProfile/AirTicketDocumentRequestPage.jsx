@@ -110,7 +110,6 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       student_id,
     };
 
-    console.log('updatedata', updatedata);
     try {
       const result = await createDocumentRequest(updatedata).unwrap();
       if (result.success) {

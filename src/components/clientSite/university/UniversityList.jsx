@@ -32,7 +32,6 @@ export default function UniversityList({ universityData }) {
     setVisibleTeams((prevVisibleTeams) => prevVisibleTeams + 4);
   };
 
-  //console.log(universityData);
   return (
     <section className="university-list">
       <div className="container">

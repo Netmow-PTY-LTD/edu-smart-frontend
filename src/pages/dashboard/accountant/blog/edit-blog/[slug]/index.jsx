@@ -68,8 +68,6 @@ export default function EditBlog() {
       id: blogId, // Pass the blogId so we know which blog to update
     };
 
-    //console.log(updatedBlogData);
-
     try {
       const formData = new FormData();
       Object.keys(updatedBlogData).forEach((key) => {
@@ -100,8 +98,6 @@ export default function EditBlog() {
       setSubmitting(false);
     }
   };
-
-  //console.log(getSingleBlogData?.data?.image?.url);
 
   return (
     <Layout>

@@ -173,8 +173,6 @@ export default function CourseForm({ setStep, step }) {
       if (singleStudentData?.data) {
         setLoading(true);
 
-        console.log(singleStudentData?.data);
-
         const documentPromises = singleStudentData?.data?.documents?.map(
           async (student) => {
             if (student?.title === 'academic_certificate') {
@@ -241,8 +239,6 @@ export default function CourseForm({ setStep, step }) {
           {}
         );
 
-        console.log(newValues);
-
         setInitialValues((prev) => ({
           ...prev,
           ...newValues,
@@ -272,8 +268,6 @@ export default function CourseForm({ setStep, step }) {
 
   const handleAddSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-    console.log(values);
 
     try {
       if (
@@ -311,9 +305,8 @@ export default function CourseForm({ setStep, step }) {
           }
         });
         const result = await submitStudentDocument(finalData).unwrap();
-        // console.log(result);
+
         if (result?.success) {
-          console.log('check');
           toast.success(result?.message || 'Document Submit Successfully.');
           singleStudentRefetch();
           router.push(
@@ -322,15 +315,12 @@ export default function CourseForm({ setStep, step }) {
         }
       }
     } catch (error) {
-      // console.log(error?.data?.message);
       const errorMessage = error?.data?.message;
       toast.error(errorMessage || 'Failed. Please Try Again.');
     } finally {
       setSubmitting(false);
     }
   };
-
-  console.log(initialValues);
 
   return (
     <>

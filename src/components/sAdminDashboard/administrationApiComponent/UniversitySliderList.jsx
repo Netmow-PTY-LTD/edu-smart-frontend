@@ -202,7 +202,6 @@ export default function UniversitySliderList({ university_id }) {
       title: 'Picture',
       key: 'image',
       render: (item, index) => {
-        // console.log(item?.image?.url);
         return (
           <span className="d-flex flex-column text-capitalize">
             <Image

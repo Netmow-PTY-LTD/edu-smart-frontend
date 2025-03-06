@@ -84,15 +84,11 @@ const UpgradePackageInAgentdashboard = () => {
     setOpenPaymentModal(true);
   };
 
-  //console.log('Selected package', userInfodata?.data?.package_choice);
-
   useEffect(() => {
     if (userInfodata?.data?.package_choice) {
       const selectedPackage = getAllPackageData?.data?.find(
         (item) => item._id === userInfodata?.data?.package_choice
       );
-
-      console.log('Selected package', selectedPackage);
 
       if (userInfodata?.data?.package_choice && selectedPackage?.price != 0) {
         handleUpgradeNew(selectedPackage, userInfodata?.data?.package_choice);
@@ -241,8 +237,6 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
-  console.log(couponId);
-
   const handleCouponSubmit = async () => {
     if (!couponCode) {
       toast.error('Coupon code is required.');
@@ -366,7 +360,6 @@ const UpgradePackageInAgentdashboard = () => {
       }
 
       const data = await response.json();
-      console.log('API Response:', data);
     } catch (error) {
       console.error('Error:', error.message);
     }

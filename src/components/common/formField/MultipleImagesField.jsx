@@ -34,8 +34,6 @@ const MultipleImageField = ({ field, form, label, ...props }) => {
         const reader = new FileReader();
 
         reader.onloadend = () => {
-          // console.log('object');
-          // console.log(reader.result);
           previews.push(reader.result);
 
           if (previews.length === validFiles.length) {
