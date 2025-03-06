@@ -179,7 +179,6 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   };
 
   const handleDeleteDepartment = async (id) => {
-    console.log(id);
     try {
       const result = await deleteDepartment({
         university_id: university_id,

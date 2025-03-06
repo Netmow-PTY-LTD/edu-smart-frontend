@@ -51,8 +51,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
     refetch: getSingleApplicationPaymentReportDataRefetch,
   } = useGetSingleApplicationPaymentReportQuery(applicationId);
 
-  console.log(getSingleApplicationPaymentReportData);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -72,7 +70,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      // console.log(item),
       <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"

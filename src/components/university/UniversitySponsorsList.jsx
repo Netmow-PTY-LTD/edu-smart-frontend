@@ -57,8 +57,6 @@ export default function UniversitySponsorsList({ university_id }) {
     logo: Yup.mixed().required('The logo is required'),
   });
 
-  //console.log(sponsorId);
-
   useEffect(() => {
     if (getSingleUniversityData?.data?.sponsors && sponsorId) {
       setIsUpdateLoading(true);
@@ -122,10 +120,6 @@ export default function UniversitySponsorsList({ university_id }) {
       }
     });
 
-    for (let [key, value] of finalData.entries()) {
-      // console.log(`${key}:`, value);
-    }
-
     try {
       const finalData = new FormData();
       Object.entries(updatedData).forEach(([key, value]) => {
@@ -134,6 +128,7 @@ export default function UniversitySponsorsList({ university_id }) {
       const result = await universitySponsor(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
+        setPreviewImage('');
         getSingleUniversityRefetch();
         setAddModalIsOpen(false);
       }
@@ -144,8 +139,6 @@ export default function UniversitySponsorsList({ university_id }) {
       setSubmitting(false);
     }
   };
-
-  //console.log(getSingleUniversityData);
 
   const handleUpdateSponsor = async (values, { setSubmitting }) => {
     setSubmitting(true);
@@ -162,10 +155,6 @@ export default function UniversitySponsorsList({ university_id }) {
         finalData.append(key, value);
       }
     });
-
-    for (let [key, value] of finalData.entries()) {
-      console.log(`${key}:`, value);
-    }
 
     try {
       const finalData = new FormData();

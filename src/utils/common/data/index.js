@@ -633,14 +633,13 @@ const DataObjectComponent = () => {
       key: 'agent',
       render: (item) => (
         <h5 className="fs-14 fw-medium text-capitalize text-wrap">
-        <Link
-          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents/${item?.agent?._id}`}
-          className="text-reset"
-        >
-          {`${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`}
-        </Link>
-      </h5>
-
+          <Link
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents/${item?.agent?._id}`}
+            className="text-reset"
+          >
+            {`${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`}
+          </Link>
+        </h5>
       ),
     },
 
@@ -961,8 +960,7 @@ const DataObjectComponent = () => {
     //   render: (item) => {
     //     const createdDate = item.start_date.split('T')[0];
     //     const expiryDate = item.expiry_date.split('T')[0];
-    //     console.log(createdDate);
-    //     console.log(expiryDate);
+
     //     const createdAt = new Date(createdDate);
     //     const expiryAt = new Date(expiryDate);
 
@@ -1261,12 +1259,21 @@ const DataObjectComponent = () => {
     },
     {
       id: 6,
-      label: 'Total Agent Payout',
+      label: 'Total Agent Paid Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'View All Payouts',
-      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
+    },
+    {
+      id: 6,
+      label: 'Total Agent Pending Payout',
+      counter: '55',
+      bgcolor: 'warning',
+      icon: 'ri-money-pound-box-line',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-pending-payout`,
     },
 
     {
@@ -1291,18 +1298,8 @@ const DataObjectComponent = () => {
   ];
 
   const accountantWidgetsData = [
-    // {
-    //   id: 1,
-    //   label: 'registered agents',
-    //   counter: '25',
-    //   bgcolor: 'info',
-    //   icon: 'ri-group-2-fill',
-    //   link: 'View all',
-    //   pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
-    // },
-
     {
-      id: 2,
+      id: 4,
       label: 'Total Receive Amount',
       counter: '55',
       bgcolor: 'warning',
@@ -1311,7 +1308,7 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
-      id: 3,
+      id: 5,
       label: 'Total University Payout',
       counter: '55',
       bgcolor: 'warning',
@@ -1320,17 +1317,26 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
-      id: 4,
-      label: 'Total Agent Payout',
+      id: 6,
+      label: 'Total Agent Paid Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
+    },
+    {
+      id: 7,
+      label: 'Total Agent Pending Payout',
+      counter: '55',
+      bgcolor: 'warning',
+      icon: 'ri-money-pound-box-line',
+      link: 'All Charges',
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-pending-payout`,
     },
 
     {
-      id: 5,
+      id: 8,
       label: 'Total Profit',
       counter: '55',
       bgcolor: 'warning',
@@ -1747,7 +1753,7 @@ const DataObjectComponent = () => {
           {item?.payment_reason === 'application_emgs'
             ? item?.application?.emgs_fee_amount
             : item?.payment_reason === 'application_tuition_fee'
-              ? item?.tuition_fee_paid_amount - item?.agent_commission
+              ? item?.tuition_fee_paid_amount
               : item?.agent !== undefined
                 ? item?.paid_amount
                 : '0'}{' '}
@@ -1822,7 +1828,7 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
           {item?.payment_reason
-            ? item?.tuition_fee_paid_amount - item?.incentive_amount
+            ? item?.application?.tuition_fee_amount - item?.application?.incentive_amount
             : '0'}{' '}
           {'MYR'}
         </div>
@@ -2147,7 +2153,7 @@ const DataObjectComponent = () => {
       key: 'profit_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.super_admin_profit ? item?.super_admin_profit : '0'} {'MYR'}
+          {item?.super_admin_profit ? item?.super_admin_profit : item?.paid_amount} {'MYR'}
         </div>
       ),
     },
@@ -2188,6 +2194,270 @@ const DataObjectComponent = () => {
           {item?.user?.first_name && item?.user?.last_name ? (
             <Link
               href={`/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=2`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+    //     </span>
+    //   ),
+    // },
+
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+  const docRequestTableHeaderDataWithoutActionForSuperAdmin = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/super-admin/students/${item?.user?._id}?tab=3`}
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Doc Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Descriptions',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Submitted Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Requested By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    // {
+    //   title: 'Requester Role',
+    //   key: 'role',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+    //     </span>
+    //   ),
+    // },
+
+    // {
+    //   title: 'Requester Email',
+    //   key: 'email',
+    //   render: (item) => (
+    //     <div>
+    //       <h5 className="fs-14 fw-medium ">
+    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
+    //       </h5>
+    //     </div>
+    //   ),
+    // },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+  const docSubmittedTableHeaderDataWithoutActionForSuperAdmin = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student Name',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={`/dashboard/super-admin/students/${item?.user?._id}?tab=2`}
               className="text-primary text-decoration-none"
             >
               {`${item?.user?.first_name} ${item?.user?.last_name}`}
@@ -2530,29 +2800,26 @@ const DataObjectComponent = () => {
       title: 'Student Name',
       key: 'user',
       render: (item) => (
-        console.log(userInfoData?.data?.role),
-        (
-          <span className="d-flex flex-column text-capitalize">
-            {item?.user?.first_name && item?.user?.last_name ? (
-              <Link
-                href={
-                  userInfoData?.data?.role === 'agent'
-                    ? `/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`
-                    : userInfoData?.data?.role === 'super_admin'
-                      ? `/dashboard/super-admin/students/${item?.user?._id}?tab=6`
-                      : userInfoData?.data?.role === 'admission_manager'
-                        ? `/dashboard/admission-manager/students/${item?.user?._id}?tab=6`
-                        : ''
-                }
-                className="text-primary text-decoration-none"
-              >
-                {`${item?.user?.first_name} ${item?.user?.last_name}`}
-              </Link>
-            ) : (
-              '-'
-            )}
-          </span>
-        )
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={
+                userInfoData?.data?.role === 'agent'
+                  ? `/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`
+                  : userInfoData?.data?.role === 'super_admin'
+                    ? `/dashboard/super-admin/students/${item?.user?._id}?tab=6`
+                    : userInfoData?.data?.role === 'admission_manager'
+                      ? `/dashboard/admission-manager/students/${item?.user?._id}?tab=6`
+                      : ''
+              }
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
       ),
     },
 
@@ -3422,6 +3689,8 @@ const DataObjectComponent = () => {
     AIRTICKET_REQUEST_HEADER_FOR_AGENT,
     AIR_TICKET_REQUEST_TABLE_HEADERS_FOR_STUDENT,
     AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
+    docRequestTableHeaderDataWithoutActionForSuperAdmin,
+    docSubmittedTableHeaderDataWithoutActionForSuperAdmin,
   };
 };
 

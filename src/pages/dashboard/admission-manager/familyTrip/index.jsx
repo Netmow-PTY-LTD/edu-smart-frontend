@@ -26,8 +26,6 @@ export default function AgentFamilyTrip() {
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
 
-  console.log('family trip data', familyTrip);
-
   const agentFamilyTripHeaders = [
     {
       title: 'SN',

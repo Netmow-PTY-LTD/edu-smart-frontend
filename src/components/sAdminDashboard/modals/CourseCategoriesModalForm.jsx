@@ -18,8 +18,6 @@ const CourseCategoryModalForm = ({
   allDepartmentName,
   setInitialValues,
 }) => {
-  // console.log(initialValues);
-  // console.log(allDepartmentName);
   return (
     <Modal isOpen={isOpen} centered size="lg">
       <ModalHeader toggle={onClose}>

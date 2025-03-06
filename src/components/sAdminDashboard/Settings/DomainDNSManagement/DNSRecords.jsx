@@ -6,7 +6,6 @@ import { useState } from 'react';
 const DNSRecords = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // console.log(modalIsOpen);
   const [initialValues, setInitialValues] = useState({
     hostName: '',
     value: '',
@@ -23,7 +22,6 @@ const DNSRecords = () => {
 
   const handleDNSSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-    // console.log(values);
   };
 
   const actionHeader = [

@@ -170,8 +170,6 @@ const AllPermittedUserForSuperAdmin = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
 
-    // console.log('formData', values);
-
     try {
       const finalData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
@@ -200,6 +198,8 @@ const AllPermittedUserForSuperAdmin = () => {
       first_name: values?.first_name ?? '',
       last_name: values?.last_name ?? '',
       email: values?.email ?? '',
+      password: values?.password ?? '',
+      confirm_password: values?.confirm_password ?? '',
       phone: values?.phone ?? '',
       address: values?.address ?? '',
       role: values?.select_role ?? '',
@@ -209,8 +209,6 @@ const AllPermittedUserForSuperAdmin = () => {
       country: values?.country ?? '',
       user_id: userIdForUpdate,
     };
-
-    // console.log('formData', updatedata);
 
     try {
       const finalData = new FormData();
@@ -234,14 +232,11 @@ const AllPermittedUserForSuperAdmin = () => {
   };
 
   const handleUserStatusModal = (userData) => {
-    console.log(userData?.id);
-    console.log(userData?.status);
     setPermittedUserIdForDelete(userData);
     setUserStatusModalIsOpen(true);
   };
 
   const handleChangeUserStatus = async (statusData) => {
-    console.log(statusData);
     try {
       const result =
         await updateStaffMemberStatusInSuperAdmin(statusData).unwrap();
@@ -329,8 +324,6 @@ const AllPermittedUserForSuperAdmin = () => {
       </UncontrolledDropdown>
     ),
   };
-
-  // console.log(userIdForUpdate);
 
   const admissionManagerHeaders = [
     {

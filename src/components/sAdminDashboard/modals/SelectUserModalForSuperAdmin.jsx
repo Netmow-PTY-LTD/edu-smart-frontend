@@ -42,8 +42,7 @@ const SelectUserModalForSuperAdmin = ({
 
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
-    // console.log(file);
-    console.log(file);
+
     if (file) {
       setFieldValue(fieldName, file);
 

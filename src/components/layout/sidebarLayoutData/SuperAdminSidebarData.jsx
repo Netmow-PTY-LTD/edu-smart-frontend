@@ -10,7 +10,7 @@ const SuperAdminSidebarData = () => {
   const [isSettings, setIsSettings] = useState(false);
   const [isBlogs, setIsBlogs] = useState(false);
   const [earnings, setEarnings] = useState(false);
-
+  const [isManageDocument, setIsManageDocument] = useState(false);
   const customeData = useCustomData();
   const paneltext = customeData.paneltext;
 
@@ -253,6 +253,7 @@ const SuperAdminSidebarData = () => {
         },
       ],
     },
+
     {
       id: 'alldocuments',
       label: 'Document Required List',
@@ -260,6 +261,55 @@ const SuperAdminSidebarData = () => {
       style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/all-documents',
     },
+
+    {
+      id: 'managedocument',
+      label: 'Manage Documents',
+      icon: 'ri-article-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setIsManageDocument(!isManageDocument);
+      },
+      stateVariables: isManageDocument,
+      subItems: [
+        {
+          id: 'alldocument',
+          label: 'Document Accepted list',
+
+          icon: 'ri-file-fill',
+
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/manage-documents/all-document-for-superAdmin',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/manage-documents/all-document-for-superAdmin',
+
+          parentId: 'managedocument',
+        },
+        {
+          id: 'documentuploadrequest',
+          label: 'Document Requested Submitted List',
+          icon: 'ri-file-list-3-fill',
+
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/manage-documents/document-upload-request',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/manage-documents/document-upload-request',
+
+          parentId: 'managedocument',
+        },
+      ],
+    },
+
     {
       id: 'airTicketDocumentuploadrequest',
       label: 'Air Ticket Doc  Request',

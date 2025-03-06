@@ -44,9 +44,6 @@ const EditStudentForAgent = () => {
     refetch: singleStudentForAgentRefetch,
   } = useSingleStudentForAgentQuery(student_id, { skip: !student_id });
 
-  // console.log(singleStudentForAgentData);
-  // console.log(student_id);
-
   useEffect(() => {
     const fetchStudentData = async () => {
       setIsEditLoading(true);
@@ -54,8 +51,6 @@ const EditStudentForAgent = () => {
         const student = singleStudentForAgentData?.data
           ? singleStudentForAgentData?.data
           : null;
-
-        // console.log(student);
 
         const profile_image = await convertImageUrlToFile(
           student?.profile_image?.url
@@ -81,8 +76,6 @@ const EditStudentForAgent = () => {
     };
     fetchStudentData();
   }, [singleStudentForAgentData]);
-
-  // console.log(initialValues);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);

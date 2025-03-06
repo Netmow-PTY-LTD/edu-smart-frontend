@@ -1,9 +1,6 @@
 import React from 'react';
 
 const SearchComponent = ({ searchTerm, handleSearchChange }) => {
-
-// console.log(searchTerm);
-
   return (
     <>
       {/* Table search input */}

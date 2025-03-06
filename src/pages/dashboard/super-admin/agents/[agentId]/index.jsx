@@ -95,7 +95,7 @@ const SingleAgentInSuperAdminDashboard = () => {
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
-      // console.log(errorMessage);
+
       toast.error(errorMessage);
     }
   };

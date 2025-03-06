@@ -31,8 +31,6 @@ const MultipleFileUpload = ({ field, form, label, ...props }) => {
         ? form.values[field.name]
         : [];
 
-      // console.log(currentFiles);
-
       const newFiles = [...currentFiles, ...validFiles];
 
       const newFilePreviews = validFiles
