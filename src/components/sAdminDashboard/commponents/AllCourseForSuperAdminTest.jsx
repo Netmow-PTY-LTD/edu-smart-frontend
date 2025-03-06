@@ -339,8 +339,6 @@ const AllCourseForSuperAdminTest = ({
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log('shadik', values);
-
     setSubmitting(true);
     const filteredData = getDocumentData?.data
       ?.filter((doc) => values.document_requirements?.includes(doc._id))

@@ -62,16 +62,12 @@ const CouponManagementInSuperAdmin = () => {
           (item) => item?._id === couponId
         );
 
-        console.log(singleCouponData);
-
         const allPackagesData =
           singleCouponData?.packages?.length > 0 &&
           singleCouponData?.packages.map((item) => ({
             label: item?.name,
             value: item?._id,
           }));
-
-        console.log(allPackagesData);
 
         // const utcDate = new Date(singleCouponData?.start_date);
         // const startLocalDate = utcDate.toLocaleString();
@@ -100,8 +96,6 @@ const CouponManagementInSuperAdmin = () => {
     }
   }, [getCouponData?.data, couponId]);
 
-  console.log(initialValues);
-
   // add Coupon handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
@@ -119,11 +113,9 @@ const CouponManagementInSuperAdmin = () => {
       status: values?.coupon_status,
     };
 
-    console.log(finalData);
-
     try {
       const response = await addCouponInSuperAdmin(finalData).unwrap();
-      // console.log(response);
+
       if (response) {
         toast.success(response?.message);
         getCouponRefetch();
@@ -145,8 +137,6 @@ const CouponManagementInSuperAdmin = () => {
     const startDate = values?.start_date.split('T')[0];
     const endDate = values?.end_date.split('T')[0];
 
-    console.log(values);
-
     const editData = {
       code: values?.name,
       start_date: startDate,
@@ -160,8 +150,6 @@ const CouponManagementInSuperAdmin = () => {
       status: values?.coupon_status?.value || values?.coupon_status,
       coupon_id: couponId,
     };
-
-    console.log(editData);
 
     try {
       const response = await updateCouponInSuperAdmin(editData).unwrap();

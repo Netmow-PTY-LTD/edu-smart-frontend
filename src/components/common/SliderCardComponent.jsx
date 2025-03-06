@@ -122,9 +122,6 @@ const SliderCardComponent = ({ university_id }) => {
           finalData.append(key, value);
         }
       });
-      for (let [key, value] of finalData.entries()) {
-        // console.log(`${key}:`, value);
-      }
 
       const result = await updateUniversitySlider(finalData).unwrap();
       if (result) {
@@ -148,8 +145,6 @@ const SliderCardComponent = ({ university_id }) => {
     { name: 'button_2_text', label: 'Button Two Text:' },
     { name: 'button_2_link', label: 'Button Two Link:' },
   ];
-
-  console.log(initialValues);
 
   return (
     <Col lg={10}>

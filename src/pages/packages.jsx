@@ -16,8 +16,6 @@ export default function Packages() {
 
   const [selectPackage, setSelectPackage] = useState(null);
 
-  //console.log(userInfodata);
-
   const { data: allCouponData } = useGetAllActiveCouponQuery();
 
   const {
@@ -30,7 +28,7 @@ export default function Packages() {
     const selectedPackage = getAllPackageData?.data?.find(
       (item) => item?._id === userInfodata?.data?.agent_package?.package?._id
     );
-    //console.log(selectedPackage);
+
     setSelectPackage(selectedPackage);
   }, [
     getAllPackageData?.data,

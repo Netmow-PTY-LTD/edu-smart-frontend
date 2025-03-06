@@ -73,8 +73,6 @@
 //     { label: '1 Year', value: '12_months' },
 //   ];
 
-//   console.log(initialValues.package_duration);
-
 //   return (
 //     <Modal isOpen={open} centered size="xl">
 //       <ToastContainer />
@@ -173,7 +171,6 @@
 
 // export default CouponModal;
 
-
 import PackageMultipleSelectField from '@/components/common/formField/PackageMultipleSelectField';
 import SingleSelectField from '@/components/common/formField/SingleSelectField';
 import NumberField from '@/components/common/formField/NumberField';
@@ -187,7 +184,6 @@ import { Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
-
 
 const CouponModal = ({
   modalHeader,
@@ -241,9 +237,6 @@ const CouponModal = ({
     { label: '11 Months', value: '11_months' },
     { label: '1 Year', value: '12_months' },
   ];
-
-  console.log('Initial Values:', initialValues);
-  console.log('All Packages:', allPackages);
 
   return (
     <Modal isOpen={open} centered size="xl">
@@ -313,7 +306,9 @@ const CouponModal = ({
                         label={'Package Duration'}
                         options={durationOptions}
                         value={values.package_duration || ''} // Ensure it's always controlled
-                        onChange={(option) => setFieldValue('package_duration', option.value)}
+                        onChange={(option) =>
+                          setFieldValue('package_duration', option.value)
+                        }
                       />
                     </Col>
                     <Col xl={6}>

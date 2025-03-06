@@ -114,7 +114,6 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
     try {
       const result = await createDocumentRequest(airTicketRequestData).unwrap();
       if (result.success) {
-        console.log(result);
         toast.success(result?.message);
         allDocumentRequestForAgentRefetch();
         setAddModalIsOpen(false);

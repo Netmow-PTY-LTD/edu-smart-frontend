@@ -14,8 +14,6 @@ export default function AgentYarlyBonous() {
   const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
     useGetAgentYearlyBonusQuery();
 
-  console.log('yarly bonous', yearlyBonous);
-
   const agentYearlyBonousHeaders = [
     {
       title: 'SN',

@@ -24,8 +24,6 @@ const SuperAdminAllProfit = () => {
     refetch: getAllPaymentReportDataRefetch,
   } = useGetAllPaymentReportQuery();
 
-  // console.log(getAllPaymentReportData?.data);
-
   useEffect(() => {
     const combinedData = [
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
@@ -44,8 +42,6 @@ const SuperAdminAllProfit = () => {
     getAllPaymentReportData?.data?.packagePaymentReports,
   ]);
 
-  console.log(allPaymentData);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -55,7 +51,6 @@ const SuperAdminAllProfit = () => {
       ? item.payment_reason.split('_').join(' ')
       : '';
     const fullName = `${paymentReason} Package Payment`.toLowerCase();
-    console.log(fullName);
 
     return fullName.includes(searchTerm.toLowerCase());
   });

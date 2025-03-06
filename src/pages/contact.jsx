@@ -27,7 +27,7 @@ export default function Contact() {
 
     try {
       const response = await createContact(formData).unwrap();
-      //console.log('Success:', response);
+
       toast.success(response?.message);
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {

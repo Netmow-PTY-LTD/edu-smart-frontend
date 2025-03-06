@@ -58,8 +58,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
           (item) => item?._id === requiredDocumentId
         );
 
-        console.log(singleCouponData);
-
         try {
           setInitialValues({
             title: singleCouponData?.title || '',
@@ -76,8 +74,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
   // add RequiredDocument handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-
-    // console.log(values);
 
     try {
       const response = await addRequiredDocumentInSuperAdmin(values).unwrap();
@@ -106,8 +102,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
       description: values?.description,
       RequiredDocument_id: requiredDocumentId,
     };
-
-    console.log(editData);
 
     try {
       const response =

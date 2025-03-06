@@ -956,8 +956,7 @@ const DataObjectComponent = () => {
     //   render: (item) => {
     //     const createdDate = item.start_date.split('T')[0];
     //     const expiryDate = item.expiry_date.split('T')[0];
-    //     console.log(createdDate);
-    //     console.log(expiryDate);
+
     //     const createdAt = new Date(createdDate);
     //     const expiryAt = new Date(expiryDate);
 
@@ -2789,29 +2788,26 @@ const DataObjectComponent = () => {
       title: 'Student Name',
       key: 'user',
       render: (item) => (
-        console.log(userInfoData?.data?.role),
-        (
-          <span className="d-flex flex-column text-capitalize">
-            {item?.user?.first_name && item?.user?.last_name ? (
-              <Link
-                href={
-                  userInfoData?.data?.role === 'agent'
-                    ? `/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`
-                    : userInfoData?.data?.role === 'super_admin'
-                      ? `/dashboard/super-admin/students/${item?.user?._id}?tab=6`
-                      : userInfoData?.data?.role === 'admission_manager'
-                        ? `/dashboard/admission-manager/students/${item?.user?._id}?tab=6`
-                        : ''
-                }
-                className="text-primary text-decoration-none"
-              >
-                {`${item?.user?.first_name} ${item?.user?.last_name}`}
-              </Link>
-            ) : (
-              '-'
-            )}
-          </span>
-        )
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={
+                userInfoData?.data?.role === 'agent'
+                  ? `/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`
+                  : userInfoData?.data?.role === 'super_admin'
+                    ? `/dashboard/super-admin/students/${item?.user?._id}?tab=6`
+                    : userInfoData?.data?.role === 'admission_manager'
+                      ? `/dashboard/admission-manager/students/${item?.user?._id}?tab=6`
+                      : ''
+              }
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
       ),
     },
 

@@ -346,7 +346,6 @@ const CoursesForAdmissionManager = ({
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
-    // console.log('from handle submit==>', values);
     setSubmitting(true);
     const filteredData = getRequiredDocumentForAdmissionManagerData?.data
       ?.filter((doc) => values.document_requirements?.includes(doc._id))

@@ -34,8 +34,6 @@ const EditUniversity = () => {
 
   const universityId = router.query.id;
 
-  console.log(initialValues);
-
   const [updateUniversity] = useUpdateUniversityMutation();
 
   const {
@@ -84,13 +82,9 @@ const EditUniversity = () => {
     }
   }, [getUniversityData?.data, universityId]);
 
-  // console.log(initialValues);
-
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
-    // console.log(values);
 
     const finalData = {
       ...values,

@@ -25,8 +25,6 @@ const TotalReceiveAmountForSuperAdmin = () => {
     refetch: getAllPaymentReportDataRefetch,
   } = useGetAllPaymentReportQuery();
 
-  // console.log(getAllPaymentReportData?.data);
-
   useEffect(() => {
     const combinedData = [
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
@@ -37,8 +35,6 @@ const TotalReceiveAmountForSuperAdmin = () => {
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
   ]);
-
-  console.log(allPaymentData);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);

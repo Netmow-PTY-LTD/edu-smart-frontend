@@ -17,7 +17,7 @@ const SocialLinkFormHandler = ({ className, apiData }) => {
         data: value,
         university_id: apiData,
       }).unwrap();
-      // console.log(result)
+
       if (result) {
         toast.success(result?.message);
       }
