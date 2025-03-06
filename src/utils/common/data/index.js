@@ -1754,7 +1754,7 @@ const DataObjectComponent = () => {
           {item?.payment_reason === 'application_emgs'
             ? item?.application?.emgs_fee_amount
             : item?.payment_reason === 'application_tuition_fee'
-              ? item?.tuition_fee_paid_amount - item?.agent_commission
+              ? item?.tuition_fee_paid_amount
               : item?.agent !== undefined
                 ? item?.paid_amount
                 : '0'}{' '}
@@ -1829,7 +1829,7 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
           {item?.payment_reason
-            ? item?.tuition_fee_paid_amount - item?.incentive_amount
+            ? item?.application?.tuition_fee_amount - item?.application?.incentive_amount
             : '0'}{' '}
           {'MYR'}
         </div>
@@ -2154,7 +2154,7 @@ const DataObjectComponent = () => {
       key: 'profit_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.super_admin_profit ? item?.super_admin_profit : '0'} {'MYR'}
+          {item?.super_admin_profit ? item?.super_admin_profit : item?.paid_amount} {'MYR'}
         </div>
       ),
     },
