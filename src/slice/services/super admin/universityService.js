@@ -24,7 +24,7 @@ export const universityService = createApi({
     }),
     getUniversity: builder.query({
       query: () => ({
-        url: '/university',
+        url: `${serverInfo?.base_url_prod}` + '/api/v1/super/university',
         method: 'GET',
       }),
     }),
@@ -46,9 +46,10 @@ export const universityService = createApi({
       },
     }),
     deleteUniversity: builder.mutation({
-      query: (id) => ({
-        url: `/university/${id}`,
+      query: (body) => ({
+        url: `/university/${body?.id}`,
         method: 'DELETE',
+        body: { status: body?.status },
       }),
     }),
     universitySponsor: builder.mutation({
