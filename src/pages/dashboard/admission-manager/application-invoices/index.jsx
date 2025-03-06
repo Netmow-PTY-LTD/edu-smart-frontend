@@ -50,8 +50,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
     refetch: getSingleApplicationPaymentReportDataRefetch,
   } = useGetSingleApplicationPaymentReportQuery(applicationId);
 
-  console.log(getSingleApplicationPaymentReportData);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 

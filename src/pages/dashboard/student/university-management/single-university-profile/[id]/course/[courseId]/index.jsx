@@ -60,7 +60,6 @@ const SingleUniversityCourse = () => {
 
   useEffect(() => {
     if (router?.query?.payment_status && router?.query?.transaction_id) {
-      console.log('check status');
       ('');
     } else if (checkApplicationIsValidData) {
       const status = checkApplicationIsValidData.data.status;
@@ -108,7 +107,7 @@ const SingleUniversityCourse = () => {
 
   // useEffect(() => {
   //   if (router?.query?.payment_status && router?.query?.transaction_id) {
-  //     console.log('check status');
+  //
   //     ('');
   //   } else {
   //     if (
@@ -223,10 +222,6 @@ const SingleUniversityCourse = () => {
         finalData.append(key, value);
       }
     }
-
-    // for (const [key, value] of finalData.entries()) {
-    //   console.log(`${key}: ${value instanceof File ? value.name : value}`);
-    // }
 
     try {
       createApplication(finalData);

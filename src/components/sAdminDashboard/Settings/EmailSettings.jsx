@@ -130,8 +130,6 @@ const EmailSettings = () => {
           }
         }
       }
-
-      // console.log(values);
     } catch (error) {
       toast.error('Error during form submission');
       console.error('Error during form submission:', error);

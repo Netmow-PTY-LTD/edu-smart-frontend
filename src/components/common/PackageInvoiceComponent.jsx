@@ -37,7 +37,6 @@ const PackageInvoiceComponent = ({
   payment_method,
   paymentData,
 }) => {
-  // console.log(paymentData);
   return (
     <>
       {/* <Layout> */}

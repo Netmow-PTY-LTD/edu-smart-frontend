@@ -78,8 +78,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
 
-    // console.log(values);
-
     try {
       const response = await addRequiredDocumentInSuperAdmin(values).unwrap();
 
@@ -107,8 +105,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
       description: values?.description,
       RequiredDocument_id: requiredDocumentId,
     };
-
-    console.log(editData);
 
     try {
       const response =

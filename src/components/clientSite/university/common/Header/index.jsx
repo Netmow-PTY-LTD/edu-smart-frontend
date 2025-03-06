@@ -19,11 +19,11 @@ export default function Header() {
   };
   const router = useRouter();
   const { universityId } = router.query;
-  //console.log(universityId);
+
   const { data: universityData } = useGetAllUniversityQuery();
   const { data: singleUniversityData } =
     useGetsingleUniversityQuery(universityId);
-  //console.log(singleUniversityData);
+
   return (
     <>
       <header className="header">

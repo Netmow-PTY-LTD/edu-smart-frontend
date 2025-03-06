@@ -45,8 +45,6 @@ export default function AllCourses() {
     setVisibleCourses((prevVisibleCourses) => prevVisibleCourses + 6);
   };
 
-  //console.log(filteredCourses);
-
   return (
     <MainLayout>
       <PageBanner

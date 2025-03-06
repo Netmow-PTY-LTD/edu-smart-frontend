@@ -59,7 +59,6 @@ const PackageInvoiceForSuperAdmin = () => {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      // console.log(item),
       <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"

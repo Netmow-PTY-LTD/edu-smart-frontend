@@ -33,9 +33,7 @@ const PaypalSettings = () => {
 
   const handleSubmit = (value) => {};
 
-  const handleToggleChange = (newState) => {
-    // console.log('Toggle State:', newState);
-  };
+  const handleToggleChange = (newState) => {};
 
   return (
     <>

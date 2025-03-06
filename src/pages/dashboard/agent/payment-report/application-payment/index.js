@@ -23,8 +23,6 @@ const ApplicationPaymentForAgent = () => {
     refetch: getApplicationPaymentDataRefetch,
   } = useGetApplicationPaymentReportQuery();
 
-  console.log(getApplicationPaymentData);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 

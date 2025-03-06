@@ -79,7 +79,7 @@ export const commonDocumentService = createApi({
     getSingleUserDocRequest: builder.query({
       query: (body) => {
         const student_id = body.student_id;
-        console.log(body);
+
         return {
           url: `/documents/user/request/${student_id}`,
           method: 'GET',

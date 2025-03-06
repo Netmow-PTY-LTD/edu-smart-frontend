@@ -35,8 +35,6 @@ const ApplicationPaymentForSuperAdmin = () => {
     return isValidReason && fullName.includes(searchTerm.toLowerCase());
   });
 
-  console.log(filteredData);
-
   return (
     <Layout>
       <div className="page-content">

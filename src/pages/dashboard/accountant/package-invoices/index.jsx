@@ -45,9 +45,6 @@ const PackageInvoiceForSuperAdmin = () => {
     refetch: getSinglePackagePaymentReportDataRefetch,
   } = useGetSinglePackagePaymentReportQuery(packageId);
 
-  console.log(packagePaymentData);
-  console.log(getSinglePackagePaymentReportData);
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -62,7 +59,6 @@ const PackageInvoiceForSuperAdmin = () => {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      // console.log(item),
       <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"

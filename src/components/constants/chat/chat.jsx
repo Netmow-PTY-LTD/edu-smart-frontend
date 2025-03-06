@@ -109,8 +109,6 @@ const Chat = ({ userID }) => {
     setTotalMessageCount(messageCount);
   }, [userChatList]);
 
-  // console.log(userChatList);
-
   return (
     <>
       <div className={`sdc-sidebar no-print ${isActive ? 'active' : ''} `}>
