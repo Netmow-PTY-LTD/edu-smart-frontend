@@ -7,29 +7,29 @@ import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const StudentDocumentUploadRquestForAgent = () => {
+const StudentDocumentUploadRquestForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
   const perPageData = 10;
 
-  const { docRequestTableHeaderDataWithoutAction } = DataObjectComponent();
+  const { docRequestTableHeaderDataWithoutActionForSuperAdmin = [] } =
+    DataObjectComponent();
 
   const {
-    data: allDocumentRequestForAgentData,
-    error: allDocumentRequestForAgentError,
-    isLoading: allDocumentRequestForAgentIsLoading,
-    refetch: allDocumentRequestForAgentRefetch,
+    data: allDocumentRequestForSuperAdminData,
+    error: allDocumentRequestForSuperAdminError,
+    isLoading: allDocumentRequestForSuperAdminIsLoading,
+    refetch: allDocumentRequestForSuperAdminRefetch,
   } = useGetAllUserDocRequestQuery();
 
-  console.log(allDocumentRequestForAgentData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
   // Filter data for search option
   const isFilteredData =
-    allDocumentRequestForAgentData?.data?.length > 0 &&
-    allDocumentRequestForAgentData?.data.filter(
+    allDocumentRequestForSuperAdminData?.data?.length > 0 &&
+    allDocumentRequestForSuperAdminData?.data.filter(
       (item) =>
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -48,13 +48,13 @@ const StudentDocumentUploadRquestForAgent = () => {
               />
             </CardHeader>
             <CardBody>
-              {allDocumentRequestForAgentIsLoading ? (
+              {allDocumentRequestForSuperAdminIsLoading ? (
                 <LoaderSpiner />
-              ) : allDocumentRequestForAgentError ? (
+              ) : allDocumentRequestForSuperAdminError ? (
                 <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
-                  headers={docRequestTableHeaderDataWithoutAction}
+                  headers={docRequestTableHeaderDataWithoutActionForSuperAdmin}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
@@ -72,4 +72,4 @@ const StudentDocumentUploadRquestForAgent = () => {
   );
 };
 
-export default StudentDocumentUploadRquestForAgent;
+export default StudentDocumentUploadRquestForSuperAdmin;

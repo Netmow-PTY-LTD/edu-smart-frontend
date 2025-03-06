@@ -1,24 +1,26 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
+import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllUserSubmittedDocumentQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const AllDocumentForAgentDashboard = () => {
+const AllDocumentForSuperAdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
 
   const perPageData = 10;
 
-  const { docRequestTableHeaderDataWithoutAction } = DataObjectComponent();
+  const { docSubmittedTableHeaderDataWithoutActionForSuperAdmin = [] } =
+    DataObjectComponent();
 
   const {
-    data: allSubmittedDocumentForAgentData,
-    error: allSubmittedDocumentForAgentError,
-    isLoading: allSubmittedDocumentForAgentIsLoading,
-    refetch: allSubmittedDocumentForAgentRefetch,
+    data: allSubmittedDocumentForSuperAdminData,
+    error: allSubmittedDocumentForSuperAdminError,
+    isLoading: allSubmittedDocumentForSuperAdminIsLoading,
+    refetch: allSubmittedDocumentForSuperAdminRefetch,
   } = useGetAllUserSubmittedDocumentQuery();
 
   // search input change function
@@ -26,8 +28,8 @@ const AllDocumentForAgentDashboard = () => {
 
   // Filter data for search option
   const isFilteredData =
-    allSubmittedDocumentForAgentData?.data?.length > 0 &&
-    allSubmittedDocumentForAgentData?.data.filter(
+    allSubmittedDocumentForSuperAdminData?.data?.length > 0 &&
+    allSubmittedDocumentForSuperAdminData?.data.filter(
       (item) =>
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -47,16 +49,24 @@ const AllDocumentForAgentDashboard = () => {
                 />
               </CardHeader>
               <CardBody>
-                <CommonTableComponent
-                  headers={docRequestTableHeaderDataWithoutAction}
-                  data={isFilteredData ? isFilteredData : []}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  perPageData={perPageData}
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
-                  emptyMessage="No Data found yet."
-                />
+                {allSubmittedDocumentForSuperAdminIsLoading ? (
+                  <LoaderSpiner />
+                ) : allSubmittedDocumentForSuperAdminError ? (
+                  <div>Error loading data....</div>
+                ) : (
+                  <CommonTableComponent
+                    headers={
+                      docSubmittedTableHeaderDataWithoutActionForSuperAdmin
+                    }
+                    data={isFilteredData ? isFilteredData : []}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    perPageData={perPageData}
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                    emptyMessage="No Data found yet."
+                  />
+                )}
               </CardBody>
             </Card>
           </div>
@@ -66,4 +76,4 @@ const AllDocumentForAgentDashboard = () => {
   );
 };
 
-export default AllDocumentForAgentDashboard;
+export default AllDocumentForSuperAdminDashboard;

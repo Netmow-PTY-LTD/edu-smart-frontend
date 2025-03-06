@@ -10,7 +10,7 @@ import AirTicketDocumentRequestPageForSuperAdmin from '@/components/sAdminDashbo
 import { useGetStudentForSuperAdminQuery } from '@/slice/services/super admin/sutdentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Nav, NavItem, NavLink, Row } from 'reactstrap';
 
 const SingleStudentForSuperAdmin = () => {
@@ -28,9 +28,27 @@ const SingleStudentForSuperAdmin = () => {
     skip: !student_id,
   });
 
+  useEffect(() => {
+    if (router.query.tab) {
+      setActiveTab(router.query.tab);
+    }
+  }, [router.query.tab, getSingleStudent?.data]);
+
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
+
+      const newQuery = { ...router.query };
+      delete newQuery.tab;
+
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: newQuery,
+        },
+        undefined,
+        { shallow: true } // Prevents a full page reload
+      );
     }
   };
 
