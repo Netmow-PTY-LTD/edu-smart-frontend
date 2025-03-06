@@ -52,81 +52,73 @@ const SuperAdminDashboard = () => {
           userInfoIsLoading ? (
             <LoaderSpiner />
           ) : (
-            <Row>
-              <Col>
-                <div className="h-100">
-                  <WelcomingMessage data={userInfodata?.data} />
-                  <Row>
-                    <DashBoardCountOptions
-                      userInfoData={userInfodata?.data}
-                      firstElementData={getUniversityData?.data?.length}
-                      secondElementData={allAgentsData?.data?.length}
-                      thirdElementData={allStudentsData?.data?.length}
-                      fourthElementData={totalIncome?.data?.totalReceiveAmount}
-                      fithElement={totalIncome?.data?.totalUniversityPayout}
-                      sixthElement={totalIncome?.data?.totalAgentPayout}
-                      sevenElement={totalIncome?.data?.totalSuperAdminProfit}
-                      eightElement={''}
-                      gstAndCurrencyData={''}
-                      paidSum={''}
-                      unPaidSum={''}
+            <div className="h-100">
+              <WelcomingMessage data={userInfodata?.data} />
+              <Row className="pb-5">
+                <DashBoardCountOptions
+                  userInfoData={userInfodata?.data}
+                  firstElementData={getUniversityData?.data?.length}
+                  secondElementData={allAgentsData?.data?.length}
+                  thirdElementData={allStudentsData?.data?.length}
+                  fourthElementData={totalIncome?.data?.totalReceiveAmount}
+                  fithElement={totalIncome?.data?.totalUniversityPayout}
+                  sixthElement={totalIncome?.data?.totalAgentPayout}
+                  sevenElement={totalIncome?.data?.totalSuperAdminProfit}
+                  eightElement={''}
+                  gstAndCurrencyData={''}
+                  paidSum={''}
+                  unPaidSum={''}
+                />
+              </Row>
+
+              <Row xxl={12} className="g-5">
+                {customData.showInSuperAdmin ? (
+                  <Col xxl={12}>
+                    <LatestRegistered
+                      tableHead={'Latest Registered University'}
+                      headers={[
+                        universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                        ...universityHeadersData,
+                      ]}
+                      data={
+                        getUniversityData?.data ? getUniversityData?.data : []
+                      }
                     />
-                  </Row>
+                  </Col>
+                ) : (
+                  ''
+                )}
 
-                  <Row xxl={12} className="g-5">
-                    {customData.showInSuperAdmin ? (
-                      <Col xxl={12}>
-                        <LatestRegistered
-                          tableHead={'Latest Registered University'}
-                          headers={[
-                            universityLogoAndNameHeaderDataForSuperAdminDashboard,
-                            ...universityHeadersData,
-                          ]}
-                          data={
-                            getUniversityData?.data
-                              ? getUniversityData?.data
-                              : []
-                          }
-                        />
-                      </Col>
-                    ) : (
-                      ''
-                    )}
-
-                    {customData.hideInAccountant ? (
-                      ''
-                    ) : (
-                      <>
-                        <Col xxl={6}>
-                          <LatestRegistered
-                            tableHead={'Latest Registered Agents'}
-                            headers={[
-                              agentNameAndImageHeaderDataForSuperAdmin,
-                              ...agentsHeaders,
-                            ]}
-                            data={
-                              allAgentsData?.data ? allAgentsData?.data : []
-                            }
-                          />
-                        </Col>
-                        <Col xxl={6}>
-                          <LatestRegistered
-                            tableHead={'Latest Registered Students'}
-                            headers={[
-                              studentImageAndNameHeaderDataForSuperAdmin,
-                              ...studentsHeaders,
-                            ]}
-                            data={
-                              allStudentsData?.data ? allStudentsData?.data : []
-                            }
-                          />
-                        </Col>
-                      </>
-                    )}
-                  </Row>
-                </div>
-              </Col>
-            </Row>
+                {customData.hideInAccountant ? (
+                  ''
+                ) : (
+                  <>
+                    <Col xxl={6}>
+                      <LatestRegistered
+                        tableHead={'Latest Registered Agents'}
+                        headers={[
+                          agentNameAndImageHeaderDataForSuperAdmin,
+                          ...agentsHeaders,
+                        ]}
+                        data={allAgentsData?.data ? allAgentsData?.data : []}
+                      />
+                    </Col>
+                    <Col xxl={6}>
+                      <LatestRegistered
+                        tableHead={'Latest Registered Students'}
+                        headers={[
+                          studentImageAndNameHeaderDataForSuperAdmin,
+                          ...studentsHeaders,
+                        ]}
+                        data={
+                          allStudentsData?.data ? allStudentsData?.data : []
+                        }
+                      />
+                    </Col>
+                  </>
+                )}
+              </Row>
+            </div>
           )}
         </div>
       </div>
