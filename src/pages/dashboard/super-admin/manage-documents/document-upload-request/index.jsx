@@ -61,7 +61,9 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               >
                 Create Request
               </button>
-              <h3>All Student Document Upload Requests from Agent</h3>
+              <h3 className="fs-1 fw-semibold">
+                All Student Document Upload Requests from Agent
+              </h3>
               <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
