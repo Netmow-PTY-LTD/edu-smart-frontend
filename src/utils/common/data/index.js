@@ -1260,12 +1260,21 @@ const DataObjectComponent = () => {
     },
     {
       id: 6,
-      label: 'Total Agent Payout',
+      label: 'Total Agent Paid Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'View All Payouts',
-      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
+    },
+    {
+      id: 6,
+      label: 'Total Agent Pending Payout',
+      counter: '55',
+      bgcolor: 'warning',
+      icon: 'ri-money-pound-box-line',
+      link: 'View All Payouts',
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-pending-payout`,
     },
 
     {
