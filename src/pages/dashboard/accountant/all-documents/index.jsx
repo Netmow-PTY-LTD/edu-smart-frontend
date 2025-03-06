@@ -49,7 +49,10 @@ const AllDocumentsInSuperAdminDashboard = () => {
     refetch: getRequiredDocumentRefetch,
   } = useGetRequiredDocumentInSuperAdminQuery();
 
-  const validationSchema = Yup.object({});
+  const validationSchema = Yup.object({
+    description: Yup.string().required('Description is required'),
+    title: Yup.string().required('Title is required'),
+  });
 
   useEffect(() => {
     if (getRequiredDocumentData?.data?.length > 0 && requiredDocumentId) {
@@ -57,8 +60,6 @@ const AllDocumentsInSuperAdminDashboard = () => {
         const singleCouponData = getRequiredDocumentData?.data?.find(
           (item) => item?._id === requiredDocumentId
         );
-
-        console.log(singleCouponData);
 
         try {
           setInitialValues({
