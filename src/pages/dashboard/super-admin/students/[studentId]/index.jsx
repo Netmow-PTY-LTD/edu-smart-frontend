@@ -6,6 +6,7 @@ import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverv
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import AirTicketDocumentRequestPageForSuperAdmin from '@/components/sAdminDashboard/studentManagement/AirTicketDocumentRequestPageForSuperAdmin';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetStudentForSuperAdminQuery } from '@/slice/services/super admin/sutdentService';
 import classnames from 'classnames';
@@ -131,6 +132,22 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
+                    <NavItem className="fs-14">
+                      <NavLink
+                        style={{ cursor: 'pointer' }}
+                        className={classnames({
+                          active: activeTab === '6',
+                        })}
+                        onClick={() => {
+                          toggleTab('6');
+                        }}
+                      >
+                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                        <span className="d-none d-md-inline-block">
+                          Air Ticket Document Request
+                        </span>
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -171,6 +188,13 @@ const SingleStudentForSuperAdmin = () => {
                 {activeTab === '5' && (
                   <div>
                     <ApplicationEmgsStatus student_id={student_id} />
+                  </div>
+                )}
+                {activeTab === '6' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <AirTicketDocumentRequestPageForSuperAdmin
+                      student_id={student_id}
+                    />
                   </div>
                 )}
               </Row>
