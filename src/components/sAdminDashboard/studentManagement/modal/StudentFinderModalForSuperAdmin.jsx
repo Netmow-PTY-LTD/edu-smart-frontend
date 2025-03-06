@@ -4,7 +4,7 @@ import React from 'react';
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 
 import Select from 'react-select';
-import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
 const StudentFinderModalForSuperAdmin = ({
   formHeader,
   isOpen,
@@ -14,19 +14,12 @@ const StudentFinderModalForSuperAdmin = ({
   onSubmit,
   formSubmit,
 }) => {
-  const {
-    data: allDocumentRequestForSuperAdminData,
-    error: allDocumentRequestForSuperAdminError,
-    isLoading: allDocumentRequestForSuperAdminIsLoading,
-    refetch: allDocumentRequestForSuperAdminRefetch,
-  } = useGetAllUserDocRequestQuery();
-
-  const requstedStudentDataOptions =
-    allDocumentRequestForSuperAdminData?.data?.map((item) => ({
+  const { data: allStudentsData, isLoading: allStudentsIsLoading } =
+    useGetAllStudentQuery();
+  const allStudentDataOptions =
+    allStudentsData?.data?.map((item) => ({
       value: item?._id,
-      label: `${item?.user?.first_name} ${item?.user?.last_name}- ${item?.user?._id.toUpperCase()}`,
-      // label: `${item?.user?.first_name} ${item?.user?.last_name}`,
-      student_id: item?.user?._id,
+      label: `${item?.first_name} ${item?.last_name}- ${item?._id.toUpperCase()}`,
     })) || [];
 
   return (
@@ -36,7 +29,7 @@ const StudentFinderModalForSuperAdmin = ({
       </ModalHeader>
       <ModalBody>
         <Formik
-          initialValues={{ request_doc: '' }}
+          initialValues={{ student_id: '' }}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
@@ -59,21 +52,17 @@ const StudentFinderModalForSuperAdmin = ({
                             isClearable
                             isSearchable
                             placeholder="Select Student"
-                            name="request_doc"
-                            options={requstedStudentDataOptions}
+                            name="student_id"
+                            options={allStudentDataOptions}
                             onChange={(option) => {
                               setFieldValue(
-                                'request_doc',
-                                option ? option.value : ''
-                              );
-                              setFieldValue(
                                 'student_id',
-                                option ? option.student_id : ''
+                                option ? option.value : ''
                               );
                             }}
                             value={
-                              requstedStudentDataOptions?.find(
-                                (opt) => opt.value === values?.request_doc
+                              allStudentDataOptions?.find(
+                                (opt) => opt.value === values?.student_id
                               ) || null
                             }
                           />
