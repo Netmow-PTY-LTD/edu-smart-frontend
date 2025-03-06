@@ -312,45 +312,6 @@ const SingleCoursePageInFrontSite = () => {
                 <Col md={12} lg={6} className="mb-4">
                   <div className="ps-lg-5 course-img">
                     <img src={image?.url ? image?.url : ''} alt={name} />
-                    {/* {allRelatedCourses?.data?.length > 0 && (
-                      <section className="related-course">
-                        <h4>Same Course offered by other universities</h4>
-                        <div className="univ-grid">
-                          {allRelatedCourses?.data?.map((course, i) => (
-                            <div className="team-single" key={i}>
-                              <div className="team-single-inner">
-                                <div className="team-img">
-                                  <img
-                                    src={
-                                      course?.image?.url ||
-                                      '/assets/images/users/user-dummy-img.jpg'
-                                    }
-                                    alt={course?.name}
-                                  />
-                                </div>
-                                <div className="team-info">
-                                  <h4>
-                                    <Link
-                                      href={
-                                        course._id
-                                          ? `/university/${course?.university?._id}/course/${course._id}`
-                                          : '#'
-                                      }
-                                    >
-                                      {course?.university?.name}
-                                    </Link>
-                                  </h4>
-                                  <h5>{course?.name}</h5>
-                                  <div className="team-desc">
-                                    {course?.description}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </section>
-                    )} */}
                   </div>
                 </Col>
                 <Col md={12} lg={6} className="mb-4">
