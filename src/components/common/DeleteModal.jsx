@@ -51,7 +51,7 @@ const DeleteModal = ({
           >
             Close
           </button>
-          <div className="hstack button ">
+          <div className="hstack">
             {isloading ? (
               <Loader />
             ) : (
