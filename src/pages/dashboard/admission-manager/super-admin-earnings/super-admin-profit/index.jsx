@@ -34,8 +34,7 @@ const SuperAdminAllProfit = () => {
 
     const newData = combinedData?.filter(
       (item) =>
-        item?.payment_reason === 'application_tuition_fee' ||
-        item?.agent_package?._id
+        item?.payment_reason === 'application_tuition_fee' || item?.paid_amount
     );
 
     setAllPaymentData(newData);

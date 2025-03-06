@@ -200,6 +200,8 @@ const AllPermittedUserForSuperAdmin = () => {
       first_name: values?.first_name ?? '',
       last_name: values?.last_name ?? '',
       email: values?.email ?? '',
+      password: values?.password ?? '',
+      confirm_password: values?.confirm_password ?? '',
       phone: values?.phone ?? '',
       address: values?.address ?? '',
       role: values?.select_role ?? '',
