@@ -5,17 +5,29 @@ import Layout from '@/components/layout';
 import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
 
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { Card, CardBody, CardHeader, Col, Progress, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Progress,
+  Row,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 export default function AgentFamilyTrip() {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
-
+  const router = useRouter();
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
 
-  // console.log('family trip data', familyTrip);
+  console.log('family trip data', familyTrip);
 
   const agentFamilyTripHeaders = [
     {
@@ -26,35 +38,35 @@ export default function AgentFamilyTrip() {
       ),
     },
 
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Price ($)',
+    //   key: 'package_price',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">
+    //       ${item?.package?.price || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Duration',
+    //   key: 'package_duration',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.duration || '-'}
+    //     </span>
+    //   ),
+    // },
     {
-      title: 'Package Name',
-      key: 'package_name',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.package?.name || '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Package Price ($)',
-      key: 'package_price',
-      render: (item) => (
-        <span className="d-flex flex-column">
-          ${item?.package?.price || '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Package Duration',
-      key: 'package_duration',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.package?.duration || '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Start Date',
+      title: 'Target Start Date',
       key: 'start_date',
       render: (item) => (
         <span className="d-flex flex-column">
@@ -63,7 +75,7 @@ export default function AgentFamilyTrip() {
       ),
     },
     {
-      title: 'End Date',
+      title: 'Target End Date',
       key: 'end_date',
       render: (item) => (
         <span className="d-flex flex-column">
@@ -113,6 +125,36 @@ export default function AgentFamilyTrip() {
         >
           {item?.payout_status || '-'}
         </span>
+      ),
+    },
+    {
+      title: 'Action',
+      key: 'actions',
+      render: (item) => (
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  router.push(`/dashboard/agent/familyTrip/${item?._id}`)
+                }
+                className="text-primary"
+              >
+                <i className="ri-eye-fill me-2"></i>
+                View Application
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       ),
     },
   ];

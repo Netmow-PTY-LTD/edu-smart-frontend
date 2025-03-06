@@ -1,3 +1,4 @@
+import AirportPickupChargeInvoice from '@/components/common/AirportPickupChargeInvoice';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
 import InvoicesComponentForMultipleDataTuitionFeeStudent from '@/components/common/InvoicesComponentForMultipleDataTuitionFeeStudent';
@@ -29,7 +30,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
   const [openInvoiceModalTuition, setOpenInvoiceModalTuition] = useState(false);
   const [applicationId, setApplicationId] = useState('');
-
+  const [openInvoiceAirportPickupModal, setOpenInvoiceAirportPickupModal] =
+    useState(false);
   const perPageData = 10;
 
   const { superAdminData, applicationHeadersWithoutAction } =
@@ -112,6 +114,25 @@ const ApplicationInvoiceInSuperAdmin = () => {
               View Tuition Invoice
             </div>
           </DropdownItem>
+          {item?.application?.airport_pickup_invoice_status === 'active' ? (
+            <DropdownItem>
+              <div
+                onClick={() => {
+                  if (item?._id) {
+                    setApplicationId(item?._id);
+                    setOpenInvoiceAirportPickupModal(true);
+                    getSingleApplicationPaymentReportDataRefetch(item?._id);
+                  }
+                }}
+                className="text-primary"
+              >
+                <i className="ri-eye-fill me-2"></i>
+                View Airport Pickup Charge Invoice
+              </div>
+            </DropdownItem>
+          ) : (
+            ''
+          )}
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
@@ -133,7 +154,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
   useEffect(() => {
     if (
       query.payment_status === 'success' &&
-      query.transaction_reason === 'application_tuition_fee'
+      (query.transaction_reason === 'application_tuition_fee' ||
+        query.transaction_reason === 'application_airport_pickup_charge')
     ) {
       updateApplicationStatus({
         transaction_id: query.transaction_id,
@@ -148,21 +170,15 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   useEffect(() => {
     if (!toastShown && (updateApplicationStatusData || error)) {
+      if (query.transaction_reason === 'application_airport_pickup_charge') {
+        setOpenInvoiceAirportPickupModal(true);
+      }
+      if (query.transaction_reason === 'application_tuition_fee') {
+        setOpenInvoiceModalTuition(true);
+      }
       getApplicationPaymentDataRefetch();
       setApplicationId(query.report_id);
-      setOpenInvoiceModalTuition(true);
       getSingleApplicationPaymentReportDataRefetch(query.report_id);
-
-      // setTimeout(() => {
-      //   router.replace(
-      //     {
-      //       pathname: router.pathname,
-      //       query: '',
-      //     },
-      //     undefined,
-      //     { shallow: true }
-      //   );
-      // }, 1000);
 
       if (updateApplicationStatusData) {
         toast.success('Payment is successful!');
@@ -173,20 +189,14 @@ const ApplicationInvoiceInSuperAdmin = () => {
       setToastShown(true);
     }
   }, [
-    updateApplicationStatusData,
     error,
     getApplicationPaymentDataRefetch,
     getSingleApplicationPaymentReportDataRefetch,
     query.report_id,
+    query.transaction_reason,
     toastShown,
-    router,
+    updateApplicationStatusData,
   ]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      setToastShown(false);
-    }
-  }, [isLoading]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -242,17 +252,10 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 getSingleApplicationPaymentReportData?.data?.applied_by
               }
               tableData={[getSingleApplicationPaymentReportData?.data]}
-              //   generatePDF,
               printInvoice={printInvoice}
-              //   payButton,
-              //   goToPay,
-              //   chargesType,
-              // invoice=
-              //   superAdmin,
               subtotal={
                 getSingleApplicationPaymentReportData?.data?.paid_amount
               }
-              //   gst,
               total={getSingleApplicationPaymentReportData?.data?.paid_amount}
               currency={'MYR'}
               payment_status={
@@ -276,17 +279,10 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 getSingleApplicationPaymentReportData?.data?.applied_by
               }
               tableData={[getSingleApplicationPaymentReportData?.data]}
-              //   generatePDF,
               printInvoice={printInvoice}
-              //   payButton,
-              //   goToPay,
-              //   chargesType,
-              // invoice=
-              //   superAdmin,
               subtotal={
                 getSingleApplicationPaymentReportData?.data?.paid_amount
               }
-              //   gst,
               total={getSingleApplicationPaymentReportData?.data?.paid_amount}
               currency={'MYR'}
               payment_status={
@@ -295,6 +291,31 @@ const ApplicationInvoiceInSuperAdmin = () => {
               }
               logoData={brandlogo}
               invoice_no={getSingleApplicationPaymentReportData?.data}
+            />
+          }
+
+          {
+            <AirportPickupChargeInvoice
+              open={openInvoiceAirportPickupModal}
+              close={() => {
+                setApplicationId('');
+                router.push({ query: {} });
+                setOpenInvoiceAirportPickupModal(false);
+              }}
+              loading={getSingleApplicationPaymentReportDataLoading}
+              addressData={superAdminData}
+              billingAddressData={
+                getSingleApplicationPaymentReportData?.data?.applied_by
+              }
+              tableData={[getSingleApplicationPaymentReportData?.data]}
+              invoice_no={getSingleApplicationPaymentReportData?.data}
+              logoData={brandlogo}
+              currency={'MYR'}
+              printInvoice={printInvoice}
+              subtotal={
+                getSingleApplicationPaymentReportData?.data?.paid_amount
+              }
+              total={getSingleApplicationPaymentReportData?.data?.paid_amount}
             />
           }
         </div>

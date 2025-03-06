@@ -3,10 +3,15 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import AirportPickupChargeModal from '@/components/sAdminDashboard/modals/AirportPickupChargeModal';
 import {
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
+import {
+  useGetAirportPickupChargeInSuperAdminQuery,
+  useUpdateAirportPickupChargeInSuperAdminMutation,
+} from '@/slice/services/super admin/superAdminStatsServices';
 import DataObjectComponent from '@/utils/common/data';
 import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
@@ -30,11 +35,11 @@ export default function RecentApplicationForSuperAdmin() {
   const [currentPage, setCurrentPage] = React.useState(0);
   const [currentTimeline, setCurrentTimeline] = React.useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [emgsInvoiceModal, setEmgsInvoiceModal] = useState(false);
-  const [tuitionInvoiceModal, setTuitionInvoiceModal] = useState(false);
+  const [pickupChargeModal, setPickupChargeModal] = useState(false);
+  const [checkAirportPickupStatus, setCheckAirportPickupStatus] = useState('');
   const [applicationId, setApplicationId] = useState('');
-  const perPageData = 20;
 
+  const perPageData = 20;
   const customData = useCustomData();
 
   const { studentApplicationsHeaders } = DataObjectComponent();
@@ -45,13 +50,24 @@ export default function RecentApplicationForSuperAdmin() {
     refetch: recentApplicationRefetch,
   } = useGetRecentApplicationsQuery();
 
+  const {
+    data: getAirportPickupChargeInSuperAdminData,
+    isLoading: getAirportPickupChargeInSuperAdminLoading,
+    refetch: getAirportPickupChargeInSuperAdminRefetch,
+  } = useGetAirportPickupChargeInSuperAdminQuery(applicationId, {
+    skip: !applicationId,
+    refetchOnMountOrArgChange: true,
+  });
+
+  const [updateApplicationStatus] = useUpdateApplicationStatusMutation();
+
   const [
-    updateApplicationStatus,
+    updateAirportPickupChargeInSuperAdmin,
     {
-      data: useUpdateApplicationStatusMutationData,
-      isLoading: useUpdateApplicationStatusMutationLoading,
+      data: updateAirportPickupChargeInSuperAdminData,
+      isLoading: updateAirportPickupChargeInSuperAdminLoading,
     },
-  ] = useUpdateApplicationStatusMutation();
+  ] = useUpdateAirportPickupChargeInSuperAdminMutation();
 
   const handleViewEmgsStatus = (id) => {
     setCurrentTimeline(id);
@@ -107,7 +123,6 @@ export default function RecentApplicationForSuperAdmin() {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      // console.log(item),
       <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
@@ -143,24 +158,21 @@ export default function RecentApplicationForSuperAdmin() {
             </div>
           </DropdownItem>
 
-          {/* <DropdownItem>
-            <div
-              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View EMGS Invoice
-            </div>
-          </DropdownItem>
           <DropdownItem>
             <div
-              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
+              onClick={() => {
+                setPickupChargeModal(true),
+                  setApplicationId(item?._id),
+                  setCheckAirportPickupStatus(
+                    item?.airport_pickup_charge_payment_status
+                  );
+              }}
               className="text-primary"
             >
               <i className="ri-eye-fill me-2"></i>
-              View Tuition Invoice
+              Airport Pick-up Charge
             </div>
-          </DropdownItem> */}
+          </DropdownItem>
 
           {item?.status === 'pending' ? (
             <>
@@ -193,25 +205,43 @@ export default function RecentApplicationForSuperAdmin() {
                 </div>
               </DropdownItem>
             </>
-          ) : item?.status === 'accepted' ? (
-            // <DropdownItem>
-            //   <div
-            //     // onClick={() => {
-            //     //   setApplicationId(item?._id), setOpenPaymentModal(true);
-            //     // }}
-            //     className="text-primary"
-            //   >
-            //     <i className="ri-bank-card-fill me-2"></i>
-            //     Active
-            //   </div>
-            // </DropdownItem>
-            ''
           ) : (
             ''
           )}
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
+  };
+
+  const handleChangeAirportPichupCharge = (e) => {
+    e.preventDefault();
+
+    const formElements = e.target.elements;
+    const data = {};
+
+    for (let element of formElements) {
+      if (element.name) {
+        data[element.name] = element.value;
+      }
+    }
+
+    try {
+      updateAirportPickupChargeInSuperAdmin(data).then((res) => {
+        if (res?.error) {
+          toast.error(
+            res?.error?.error?.data?.mesage || 'Something went wrong'
+          );
+        } else {
+          toast.success(res?.data?.message);
+          recentApplicationRefetch();
+          setApplicationId('');
+          setPickupChargeModal(false);
+          setCheckAirportPickupStatus('');
+        }
+      });
+    } catch (error) {
+      toast.error(error?.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -251,6 +281,25 @@ export default function RecentApplicationForSuperAdmin() {
                   </Col>
                 </Row>
               </div>
+
+              {/* for add */}
+              <AirportPickupChargeModal
+                modalTitle={'Airport Pickup Charge'}
+                submitTitle={'Submit'}
+                handleChangeAirportPichupCharge={
+                  handleChangeAirportPichupCharge
+                }
+                openModal={pickupChargeModal}
+                closeModal={() => {
+                  setPickupChargeModal(false),
+                    setApplicationId(''),
+                    setCheckAirportPickupStatus('');
+                }}
+                applicationId={applicationId}
+                editPickupChargeData={getAirportPickupChargeInSuperAdminData}
+                isLoading={updateAirportPickupChargeInSuperAdminLoading}
+                checkAirportPickupStatus={checkAirportPickupStatus}
+              />
             </div>
           </div>
         </div>

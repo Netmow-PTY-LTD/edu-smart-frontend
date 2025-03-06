@@ -22,11 +22,7 @@ import {
 import { currentUser } from '@/utils/currentUserHandler';
 
 // HEADERS
-
-import {
-  REQUEST_TABLE_HEADERS_FOR_STUDENT,
-  SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
-} from '@/utils/common/data/studentData';
+import DataObjectComponent from '@/utils/common/data';
 
 const StudentAirtTicketDocumentUploadRequestForAgent = () => {
   // State Management
@@ -79,6 +75,13 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
         : { title: '', document: '', description: '' },
     }));
   };
+
+  // HEADERS
+
+  const {
+    AIR_TICKET_REQUEST_TABLE_HEADERS_FOR_STUDENT = [],
+    AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT = [],
+  } = DataObjectComponent();
 
   // Modal Data Preparation
   useEffect(() => {
@@ -167,7 +170,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       filteredData: getSingleStudentAirTicketDocSubmittedData?.data?.filter(
         createDataFilter(searchTerms.submitted)
       ),
-      headers: SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
+      headers: AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
       searchTerm: searchTerms.submitted,
     },
 
@@ -177,7 +180,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
         createDataFilter(searchTerms.requested)
       ),
       headers: [
-        ...REQUEST_TABLE_HEADERS_FOR_STUDENT,
+        ...AIR_TICKET_REQUEST_TABLE_HEADERS_FOR_STUDENT,
         TABLE_HEADERS_ACTIONS.actions,
       ],
       searchTerm: searchTerms.requested,
