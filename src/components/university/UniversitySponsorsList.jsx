@@ -134,6 +134,7 @@ export default function UniversitySponsorsList({ university_id }) {
       const result = await universitySponsor(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
+        setPreviewImage('');
         getSingleUniversityRefetch();
         setAddModalIsOpen(false);
       }
