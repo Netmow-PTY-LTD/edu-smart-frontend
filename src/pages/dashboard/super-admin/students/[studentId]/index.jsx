@@ -7,7 +7,6 @@ import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCove
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import AirTicketDocumentRequestPageForSuperAdmin from '@/components/sAdminDashboard/studentManagement/AirTicketDocumentRequestPageForSuperAdmin';
-import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetStudentForSuperAdminQuery } from '@/slice/services/super admin/sutdentService';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';

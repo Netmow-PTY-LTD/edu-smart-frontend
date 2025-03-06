@@ -46,6 +46,8 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   const {
     AIRTICKET_REQUEST_HEADER_FOR_AGENT = [],
     AIRTICKET_SUBMITTED_HEADER_FOR_AGENT = [],
+    AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN = [],
+    AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN = [],
   } = DataObjectComponent();
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
@@ -171,50 +173,42 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
     {
       title: 'Action',
       key: 'actions',
-      render: (item) => {
-        if (item?.requested_by?.role === 'super_admin') {
-          return <span className="text-capitalize">-</span>;
-        }
-        return (
-          <UncontrolledDropdown direction="end">
-            <DropdownToggle
-              tag="a"
-              className="text-reset dropdown-btn"
-              role="button"
-            >
-              <span className="button px-3">
-                <i className="ri-more-fill align-middle"></i>
-              </span>
-            </DropdownToggle>
-            <DropdownMenu className="dropdown-menu dropdown-menu-end">
-              <DropdownItem>
-                <div
-                  className="text-primary"
-                  onClick={() => {
-                    if (item?.status === 'submitted') {
-                      handleStatusChange(item?._id, 'accepted');
-                    } else {
-                      toast.error('Document must be submitted first');
-                    }
-                  }}
-                >
-                  <i class="ri-check-double-line me-2 text-success"></i>
-                  Accepted
-                </div>
-              </DropdownItem>
-              <DropdownItem>
-                <div
-                  className="text-primary"
-                  onClick={() => togModal(item?._id)}
-                >
-                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                  Rejected
-                </div>
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        );
-      },
+      render: (item) => (
+        <UncontrolledDropdown direction="end">
+          <DropdownToggle
+            tag="a"
+            className="text-reset dropdown-btn"
+            role="button"
+          >
+            <span className="button px-3">
+              <i className="ri-more-fill align-middle"></i>
+            </span>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+            <DropdownItem>
+              <div
+                className="text-primary"
+                onClick={() => {
+                  if (item?.status === 'submitted') {
+                    handleStatusChange(item?._id, 'accepted');
+                  } else {
+                    toast.error('Document must be submitted first');
+                  }
+                }}
+              >
+                <i class="ri-check-double-line me-2 text-success"></i>
+                Accepted
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div className="text-primary" onClick={() => togModal(item?._id)}>
+                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                Rejected
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      ),
     },
   ];
 
@@ -267,7 +261,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
             <CardBody>
               <CommonTableComponent
                 headers={[
-                  ...AIRTICKET_REQUEST_HEADER_FOR_AGENT,
+                  ...AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN,
                   ...docRequestTableHeaderDataWithAction,
                 ]}
                 data={isfilteredData ? isfilteredData : []}
@@ -300,7 +294,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
 
             <CardBody>
               <CommonTableComponent
-                headers={AIRTICKET_SUBMITTED_HEADER_FOR_AGENT}
+                headers={AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN}
                 data={
                   isfilteredDataForSubmittedData
                     ? isfilteredDataForSubmittedData
