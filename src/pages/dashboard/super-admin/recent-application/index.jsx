@@ -117,6 +117,25 @@ export default function RecentApplicationForSuperAdmin() {
         )
       : [];
 
+  const PickupHeaderData = {
+    title: 'Pickup',
+    key: 'pickup_status',
+    render: (item) => (
+      <div
+        onClick={() => {
+          setPickupChargeModal(true),
+            setApplicationId(item?._id),
+            setCheckAirportPickupStatus(
+              item?.airport_pickup_charge_payment_status
+            );
+        }}
+        className="text-primary cursor-pointer"
+      >
+        Airport Pick-up Charge
+      </div>
+    ),
+  };
+
   const EmgsStatusActionData = {
     title: 'Action',
     key: 'actions',
@@ -266,6 +285,7 @@ export default function RecentApplicationForSuperAdmin() {
                         <CommonTableComponent
                           headers={[
                             ...studentApplicationsHeaders,
+                            // PickupHeaderData,
                             EmgsStatusActionData,
                           ]}
                           data={isfilteredData || []}

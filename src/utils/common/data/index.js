@@ -1299,7 +1299,7 @@ const DataObjectComponent = () => {
 
   const accountantWidgetsData = [
     {
-      id: 2,
+      id: 4,
       label: 'Total Receive Amount',
       counter: '55',
       bgcolor: 'warning',
@@ -1308,7 +1308,7 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
-      id: 3,
+      id: 5,
       label: 'Total University Payout',
       counter: '55',
       bgcolor: 'warning',
@@ -1317,7 +1317,7 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
-      id: 4,
+      id: 6,
       label: 'Total Agent Paid Payout',
       counter: '55',
       bgcolor: 'warning',
@@ -1326,7 +1326,7 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
-      id: 5,
+      id: 7,
       label: 'Total Agent Pending Payout',
       counter: '55',
       bgcolor: 'warning',
@@ -1336,7 +1336,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      id: 6,
+      id: 8,
       label: 'Total Profit',
       counter: '55',
       bgcolor: 'warning',
