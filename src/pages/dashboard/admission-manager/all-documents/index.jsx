@@ -266,6 +266,7 @@ const AllDocumentsInSuperAdminDashboard = () => {
                 initialValues={initialValues}
                 handleSubmit={handleUpdateSubmit}
                 isLoading={updateRequiredDocumentInSuperAdminIsLoading}
+                validationSchema={validationSchema}
               />
             }
             {
