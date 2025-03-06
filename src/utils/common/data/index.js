@@ -633,14 +633,13 @@ const DataObjectComponent = () => {
       key: 'agent',
       render: (item) => (
         <h5 className="fs-14 fw-medium text-capitalize text-wrap">
-        <Link
-          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents/${item?.agent?._id}`}
-          className="text-reset"
-        >
-          {`${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`}
-        </Link>
-      </h5>
-
+          <Link
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents/${item?.agent?._id}`}
+            className="text-reset"
+          >
+            {`${item?.agent?.first_name ? item?.agent?.first_name : ''} ${item?.agent?.last_name ? item?.agent?.last_name : ''}`}
+          </Link>
+        </h5>
       ),
     },
 
@@ -1291,16 +1290,6 @@ const DataObjectComponent = () => {
   ];
 
   const accountantWidgetsData = [
-    // {
-    //   id: 1,
-    //   label: 'registered agents',
-    //   counter: '25',
-    //   bgcolor: 'info',
-    //   icon: 'ri-group-2-fill',
-    //   link: 'View all',
-    //   pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
-    // },
-
     {
       id: 2,
       label: 'Total Receive Amount',
@@ -1321,16 +1310,25 @@ const DataObjectComponent = () => {
     },
     {
       id: 4,
-      label: 'Total Agent Payout',
+      label: 'Total Agent Paid Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
+    },
+    {
+      id: 5,
+      label: 'Total Agent Pending Payout',
+      counter: '55',
+      bgcolor: 'warning',
+      icon: 'ri-money-pound-box-line',
+      link: 'All Charges',
+      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-pending-payout`,
     },
 
     {
-      id: 5,
+      id: 6,
       label: 'Total Profit',
       counter: '55',
       bgcolor: 'warning',
