@@ -17,6 +17,7 @@ const SingleStudentForSuperAdmin = () => {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('1');
+  const [request, setRequest] = useState(false);
 
   const student_id = router.query.studentId;
 
@@ -29,10 +30,17 @@ const SingleStudentForSuperAdmin = () => {
   });
 
   useEffect(() => {
-    if (router.query.tab) {
-      setActiveTab(router.query.tab);
+    if (!router.isReady) return; // Ensure router is ready before accessing query
+
+    const { tab, request } = router.query;
+
+    if (tab) {
+      setActiveTab((prevTab) => (prevTab !== tab ? tab : prevTab));
     }
-  }, [router.query.tab, getSingleStudent?.data]);
+    if (request) {
+      setRequest(request);
+    }
+  }, [router.isReady, router.query.tab, router.query.request, router.query]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
@@ -40,6 +48,7 @@ const SingleStudentForSuperAdmin = () => {
 
       const newQuery = { ...router.query };
       delete newQuery.tab;
+      delete newQuery.request;
 
       router.replace(
         {

@@ -24,6 +24,7 @@ import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/
 import DataObjectComponent from '@/utils/common/data';
 import AirTicketDocumentRequestModalFormForSuperAdmin from './modal/AirTicketDocumentRequestModalFormForSuperAdmin';
 import StatusUpdateFormForSuperAdmin from './modal/StatusUpdateFormForSuperAdmin';
+import { useRouter } from 'next/router';
 
 const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -44,8 +45,6 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   });
 
   const {
-    AIRTICKET_REQUEST_HEADER_FOR_AGENT = [],
-    AIRTICKET_SUBMITTED_HEADER_FOR_AGENT = [],
     AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN = [],
     AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN = [],
   } = DataObjectComponent();
@@ -111,7 +110,6 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
       student_id,
     };
 
-    console.log('updatedata', updatedata);
     try {
       const result = await createDocumentRequest(updatedata).unwrap();
       if (result.success) {
