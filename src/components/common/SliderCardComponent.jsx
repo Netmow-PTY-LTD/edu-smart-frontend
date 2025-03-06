@@ -50,7 +50,6 @@ const SliderCardComponent = ({ university_id }) => {
         ? getSingleUniversityData?.data?.slider
         : null;
 
-      // console.log(slider);
       setInitialValues({
         title: slider?.title || '',
         sub_title: slider?.sub_title || '',
@@ -112,7 +111,6 @@ const SliderCardComponent = ({ university_id }) => {
 
   // Handle form submission
   const handleSubmit = async (values, { setSubmitting }) => {
-    // console.log(values);
     setSubmitting(true);
     const updatedData = { ...values, university_id: university_id };
     try {

@@ -24,7 +24,6 @@ import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/
 import DataObjectComponent from '@/utils/common/data';
 import AirTicketDocumentRequestModalFormForSuperAdmin from './modal/AirTicketDocumentRequestModalFormForSuperAdmin';
 import StatusUpdateFormForSuperAdmin from './modal/StatusUpdateFormForSuperAdmin';
-import { useRouter } from 'next/router';
 
 const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);

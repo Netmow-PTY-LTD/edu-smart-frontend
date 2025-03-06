@@ -18,12 +18,9 @@ const SingleSelectField = ({
 
       <Field name={name}>
         {({ field, form }) => {
-          // console.log('field ', field);
-          // console.log('form ', form);
           const selectedOption =
             options?.length > 0
               ? options.find((option) => {
-                  // console.log(option.value);
                   return (
                     option.label === field?.value ||
                     option.label === field?.value?.label ||
@@ -34,10 +31,7 @@ const SingleSelectField = ({
                 })
               : null;
 
-          // console.log(selectedOption);
-
           const handleChange = (selectedOption) => {
-            // console.log(selectedOption);
             if (setInitialValues) {
               setInitialValues((prev) => ({
                 ...prev,

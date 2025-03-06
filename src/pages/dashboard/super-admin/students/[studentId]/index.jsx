@@ -17,7 +17,7 @@ const SingleStudentForSuperAdmin = () => {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState('1');
-  const [request, setRequest] = useState(false);
+  const [requestQuery, setRequestQuery] = useState(false);
 
   const student_id = router.query.studentId;
 
@@ -37,14 +37,15 @@ const SingleStudentForSuperAdmin = () => {
     if (tab) {
       setActiveTab((prevTab) => (prevTab !== tab ? tab : prevTab));
     }
-    if (request) {
-      setRequest(request);
+    if (request == 'true') {
+      setRequestQuery(true);
     }
   }, [router.isReady, router.query.tab, router.query.request, router.query]);
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
+      setRequestQuery(false); // Set requestQuery to false when switching tabs
 
       const newQuery = { ...router.query };
       delete newQuery.tab;
@@ -199,6 +200,7 @@ const SingleStudentForSuperAdmin = () => {
                 {activeTab === '3' && (
                   <div style={{ marginTop: '50px' }}>
                     <DocumentRequestPage
+                      request={requestQuery}
                       student_id={student_id}
                       getSingleStudent={getSingleStudent}
                       refetchSingleStudent={getSingleStudenRefetch}
