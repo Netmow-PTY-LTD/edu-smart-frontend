@@ -80,7 +80,6 @@ const PackagePageInSuperAdmin = () => {
         return packageItem;
       });
       setPackageDetailsData(updatedPackageData);
-      // console.log(updatedPackageData);
     }
   }, [getHotOfferData?.data, getAllPackageData?.data]);
 
@@ -132,8 +131,6 @@ const PackagePageInSuperAdmin = () => {
     }
   }, [getSinglePackageData?.data, packageId]);
 
-  console.log(initialValues);
-
   const validationSchema = Yup.object({});
 
   // add package handler
@@ -142,8 +139,6 @@ const PackagePageInSuperAdmin = () => {
     const editData = {
       ...values,
     };
-
-    console.log(editData);
 
     try {
       const finalData = new FormData();
@@ -202,8 +197,6 @@ const PackagePageInSuperAdmin = () => {
       icon: values?.icon,
       package_id: packageId,
     };
-
-    console.log(editData);
 
     try {
       const finalData = new FormData();

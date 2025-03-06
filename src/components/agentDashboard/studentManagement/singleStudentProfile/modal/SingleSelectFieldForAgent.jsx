@@ -18,19 +18,15 @@ const SingleSelectFieldForAgent = ({
 
       <Field name={name}>
         {({ field, form }) => {
-          //console.log('field ', field.value);
           const selectedOption =
             options?.length > 0
               ? options.find((option) => {
-                  // console.log(option.value);
                   return (
                     option.label === field?.value ||
                     option.label === field?.value?.label
                   );
                 })
               : null;
-
-          //console.log(selectedOption);
 
           const handleChange = (selectedOption) => {
             if (setInitialValues) {

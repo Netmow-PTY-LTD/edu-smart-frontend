@@ -25,8 +25,6 @@ const DescriptionFormHandler = ({ university_id }) => {
     skip: !university_id,
   });
 
-  // console.log(getSingleUniversityData);
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

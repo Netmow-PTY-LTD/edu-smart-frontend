@@ -24,7 +24,7 @@ import FileViewer from '@/components/common/FileViewer';
 import StatusUpdateForm from './modal/StatusUpdateForm';
 import DescriptionRenderer from '@/utils/DescriptionRenderer';
 
-const DocumentRequestPage = ({ student_id }) => {
+const DocumentRequestPage = ({ student_id, request }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
@@ -75,7 +75,6 @@ const DocumentRequestPage = ({ student_id }) => {
     );
 
   const handleSubmit = async (values) => {
-    console.log(values);
     try {
       // Create an array of API calls for each document request
       const requests = values.map((item) => {
@@ -291,6 +290,10 @@ const DocumentRequestPage = ({ student_id }) => {
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getSingleStudentDocRequest, docId]);
+
+  useEffect(() => {
+    setAddModalIsOpen(request);
+  }, [request]);
 
   return (
     <Row>

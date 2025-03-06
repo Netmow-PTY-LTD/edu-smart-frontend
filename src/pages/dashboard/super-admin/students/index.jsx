@@ -28,8 +28,10 @@ const AllStudentsPage = () => {
 
   const customData = useCustomData();
 
-  const { studentImageAndNameHeaderDataForSuperAdmin, studentsHeaders } =
-    DataObjectComponent();
+  const {
+    studentImageAndNameHeaderDataForSuperAdmin = [],
+    studentsHeaders = [],
+  } = DataObjectComponent();
 
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();

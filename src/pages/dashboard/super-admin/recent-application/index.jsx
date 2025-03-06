@@ -100,8 +100,6 @@ export default function RecentApplicationForSuperAdmin() {
   const searchInItem = (item, searchTerm) => {
     if (!searchTerm) return true; // If no search term, return all items
 
-    console.log('Search', searchTerm);
-
     if (typeof item === 'object' && item !== null) {
       return Object.values(item).some((value) =>
         searchInItem(value, searchTerm)
@@ -118,6 +116,25 @@ export default function RecentApplicationForSuperAdmin() {
           searchInItem(item, searchTerm)
         )
       : [];
+
+  const PickupHeaderData = {
+    title: 'Pickup',
+    key: 'pickup_status',
+    render: (item) => (
+      <div
+        onClick={() => {
+          setPickupChargeModal(true),
+            setApplicationId(item?._id),
+            setCheckAirportPickupStatus(
+              item?.airport_pickup_charge_payment_status
+            );
+        }}
+        className="text-primary cursor-pointer"
+      >
+        Airport Pick-up Charge
+      </div>
+    ),
+  };
 
   const EmgsStatusActionData = {
     title: 'Action',
@@ -268,6 +285,7 @@ export default function RecentApplicationForSuperAdmin() {
                         <CommonTableComponent
                           headers={[
                             ...studentApplicationsHeaders,
+                            // PickupHeaderData,
                             EmgsStatusActionData,
                           ]}
                           data={isfilteredData || []}

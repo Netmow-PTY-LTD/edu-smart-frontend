@@ -39,8 +39,6 @@ export default function ContactMessages() {
       item?.title?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  console.log(filteredData);
-
   const [
     deleteBlog,
     {

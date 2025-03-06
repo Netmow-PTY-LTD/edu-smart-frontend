@@ -25,9 +25,6 @@ const PopularCourses = () => {
   //   image: imageUrls[course.name],
   // }));
 
-  //console.log(allCourses);
-  //console.log(updatedCourses);
-
   return (
     <section className="popular-coureses-section">
       <div className="container">

@@ -7,9 +7,7 @@ const UniversitySocailLinks = () => {
   const [initialValues, setInitialValues] = useState({});
   const validationSchema = Yup.object({});
 
-  const onSubmit = (e) => {
-    // console.log(e);
-  };
+  const onSubmit = (e) => {};
 
   const fields = [
     { name: 'facebook', label: 'Facebook:' },

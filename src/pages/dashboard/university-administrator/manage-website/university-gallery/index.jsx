@@ -14,9 +14,7 @@ const UniversityGallery = () => {
       .required('Image gallery is required'),
   });
 
-  const onSubmit = (value) => {
-    // console.log(value);
-  };
+  const onSubmit = (value) => {};
 
   return (
     <Layout>

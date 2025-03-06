@@ -14,9 +14,7 @@ const UniversitySlider = () => {
       .required('slider Image is required'),
   });
 
-  const onSubmit = (value) => {
-    // console.log(value);
-  };
+  const onSubmit = (value) => {};
   return (
     <Layout>
       <div className="page-content">

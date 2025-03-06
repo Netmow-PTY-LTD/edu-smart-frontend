@@ -13,8 +13,6 @@ const MultipleSelectField = ({ field, form, label, options, ...props }) => {
   // }, []);
 
   const handleChange = (selectedOptions) => {
-    // console.log(selectedOptions);
-
     // form.setFieldValue(
     //   field.name,
     //   selectedOptions

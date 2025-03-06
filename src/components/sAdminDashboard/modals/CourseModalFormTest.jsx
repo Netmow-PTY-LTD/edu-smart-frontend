@@ -520,7 +520,6 @@ const CourseModalFormTest = ({
                   <Col xl={12}>
                     <FieldArray name="entry_requirements">
                       {({ remove, push }) => (
-                        // console.log(values),
                         <div>
                           {values.entry_requirements?.map((item, index) => (
                             <Row key={index} className="align-items-center">

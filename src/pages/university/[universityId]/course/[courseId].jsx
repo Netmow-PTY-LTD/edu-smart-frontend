@@ -34,7 +34,6 @@ const SingleCoursePageInFrontSite = () => {
 
   const courseDetail = data?.data || {};
   const { data: allRelatedCourses } = useGetRelatedCoursesQuery(courseId);
-  //console.log(allRelatedCourses?.data);
 
   const [open, setOpen] = useState('1');
   const toggle = (id) => {
@@ -92,7 +91,6 @@ const SingleCoursePageInFrontSite = () => {
       destination = `/dashboard/agent/university-management/single-university-profile-for-agent/${universityId}/course/${id}`;
     }
 
-    //console.log(destination);
     if (isAuthenticated) {
       if (role === 'student' || role === 'agent') {
         router.push(destination);
@@ -108,7 +106,6 @@ const SingleCoursePageInFrontSite = () => {
     }
   };
 
-  //console.log(courseDetail);
   const scholarship_percentage = Math.round(
     (parseInt(scholarship_amount) * 100) /
       (parseInt(tuition_fee) || parseInt(university_price))

@@ -165,7 +165,6 @@ const AllDepartmentForAdmissionManager = ({ university_id }) => {
   };
 
   const handleDeleteDepartment = async (id) => {
-    console.log(id);
     try {
       const result = await deleteDepartmentForAdmissionManager({
         university_id: university_id,

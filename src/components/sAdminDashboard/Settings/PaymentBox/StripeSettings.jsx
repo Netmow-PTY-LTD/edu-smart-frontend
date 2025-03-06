@@ -47,8 +47,6 @@ const StripeSettings = () => {
     agentStripeData?.data?.secret_key_test,
   ]);
 
-  // console.log(initialValues);
-
   const validationSchema = Yup.object({
     stripeKey: Yup.string()
       .required('Stripe Key is required')

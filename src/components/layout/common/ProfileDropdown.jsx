@@ -77,8 +77,6 @@ const ProfileDropdown = () => {
     // }
   };
 
-  // console.log(userInfodata);
-
   return (
     <>
       <Dropdown

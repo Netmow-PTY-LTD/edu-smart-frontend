@@ -48,8 +48,6 @@ const EditStudentForAgent = () => {
           ? singleStudentForAgentData?.data
           : null;
 
-        console.log(student);
-
         const profile_image = await convertImageUrlToFile(
           student?.profile_image?.url
         );

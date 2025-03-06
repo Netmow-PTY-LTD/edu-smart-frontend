@@ -22,7 +22,6 @@ const StudentDocumentUploadRquestForAgent = () => {
     refetch: allDocumentRequestForAgentRefetch,
   } = useGetAllUserDocRequestQuery();
 
-  console.log(allDocumentRequestForAgentData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 

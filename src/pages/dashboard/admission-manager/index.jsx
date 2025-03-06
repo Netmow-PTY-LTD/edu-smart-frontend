@@ -33,8 +33,6 @@ const SuperAdminDashboard = () => {
 
   const { data: totalIncome } = useGetToatalIncomeInSuperAdminQuery();
 
-  console.log(totalIncome?.data);
-
   const {
     universityLogoAndNameHeaderDataForSuperAdminDashboard = [],
     universityHeadersData = [],
