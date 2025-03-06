@@ -24,8 +24,8 @@ const StudentFinderModalForSuperAdmin = ({
   const requstedStudentDataOptions =
     allDocumentRequestForSuperAdminData?.data?.map((item) => ({
       value: item?._id,
-      // label: `${item?.user?.first_name} ${item?.user?.last_name}- ${item?.user?._id}`,
-      label: `${item?.user?.first_name} ${item?.user?.last_name}`,
+      label: `${item?.user?.first_name} ${item?.user?.last_name}- ${item?.user?._id.toUpperCase()}`,
+      // label: `${item?.user?.first_name} ${item?.user?.last_name}`,
       student_id: item?.user?._id,
     })) || [];
 

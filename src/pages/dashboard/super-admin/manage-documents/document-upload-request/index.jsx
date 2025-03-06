@@ -12,7 +12,7 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 const StudentDocumentUploadRquestForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const perPageData = 10;
   const router = useRouter();
 
