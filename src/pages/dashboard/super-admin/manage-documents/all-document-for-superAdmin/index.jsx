@@ -42,7 +42,7 @@ const AllDocumentForSuperAdminDashboard = () => {
           <div className="h-100">
             <Card>
               <CardHeader>
-                <h3 className="">All Submitted Documents </h3>
+                <h3 className="fs-1 fw-semibold">All Submitted Documents </h3>
                 <SearchComponent
                   searchTerm={searchTerm}
                   handleSearchChange={handleSearchChange}

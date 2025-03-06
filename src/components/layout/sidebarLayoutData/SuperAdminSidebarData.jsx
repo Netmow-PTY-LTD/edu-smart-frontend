@@ -276,7 +276,7 @@ const SuperAdminSidebarData = () => {
       subItems: [
         {
           id: 'alldocument',
-          label: 'New Submitted Document',
+          label: 'Document Accepted list',
 
           icon: 'ri-file-fill',
 
@@ -293,7 +293,7 @@ const SuperAdminSidebarData = () => {
         },
         {
           id: 'documentuploadrequest',
-          label: 'New Document Request',
+          label: 'Document Requested Submitted List',
           icon: 'ri-file-list-3-fill',
 
           link:

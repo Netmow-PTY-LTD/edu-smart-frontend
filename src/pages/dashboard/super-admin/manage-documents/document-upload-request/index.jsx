@@ -12,7 +12,7 @@ import { Card, CardBody, CardHeader } from 'reactstrap';
 const StudentDocumentUploadRquestForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const perPageData = 10;
   const router = useRouter();
 
@@ -61,7 +61,9 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               >
                 Create Request
               </button>
-              <h3>All Student Document Upload Requests from Agent</h3>
+              <h3 className="fs-1 fw-semibold">
+                All Student Document Upload Requests from Agent
+              </h3>
               <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
