@@ -9619,6 +9619,7 @@ input.search-input::placeholder {
 
 textarea.form-control {
   height: auto !important;
+  resize: vertical;
 }
 
 @media (max-width: 1024px) {
@@ -10035,6 +10036,10 @@ textarea.form-control {
   border: 1px solid #b5d336;
   background: #fcfef6;
   width: calc(50% - 1.2rem);
+}
+
+.course-act svg {
+  flex-shrink: 0;
 }
 
 .description-text {
