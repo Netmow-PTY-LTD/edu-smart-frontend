@@ -23,6 +23,7 @@ import { useGetSingleUserDocRequestQuery } from '@/slice/services/common/commonD
 import FileViewer from '@/components/common/FileViewer';
 import StatusUpdateForm from './modal/StatusUpdateForm';
 import DescriptionRenderer from '@/utils/DescriptionRenderer';
+import moment from 'moment';
 
 const DocumentRequestPage = ({ student_id, request }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -209,6 +210,21 @@ const DocumentRequestPage = ({ student_id, request }) => {
         </div>
       ),
     },
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+
     {
       title: 'Status',
       key: 'status',

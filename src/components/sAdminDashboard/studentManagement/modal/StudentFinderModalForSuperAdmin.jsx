@@ -1,7 +1,15 @@
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  Col,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  Row,
+} from 'reactstrap';
 
 import Select from 'react-select';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
@@ -20,6 +28,7 @@ const StudentFinderModalForSuperAdmin = ({
     allStudentsData?.data?.map((item) => ({
       value: item?._id,
       label: `${item?.first_name} ${item?.last_name}- ${item?._id.toUpperCase()}`,
+      agent: item?.agent ? item?.agent : '',
     })) || [];
 
   return (
@@ -59,6 +68,10 @@ const StudentFinderModalForSuperAdmin = ({
                                 'student_id',
                                 option ? option.value : ''
                               );
+                              setFieldValue(
+                                'agent',
+                                option ? option.agent : ''
+                              );
                             }}
                             value={
                               allStudentDataOptions?.find(
@@ -68,6 +81,23 @@ const StudentFinderModalForSuperAdmin = ({
                           />
                         </div>
                       </Col>
+
+                      {values.agent && values.agent.role == 'agent' ? (
+                        <Col md={12} xl={12}>
+                          <Card className="shadow-sm border-0">
+                            <CardBody className="d-flex  align-items-center p-4">
+                              <h6 className="fw-bold fs-3 text-primary mb-0 me-2">
+                                Also, retrieve the request{' '}
+                                <span className="text-capitalize">
+                                  {values?.agent?.role}
+                                </span>
+                              </h6>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      ) : (
+                        <></>
+                      )}
 
                       {/* Submit Button */}
                       <Col md={12} xl={12}>
