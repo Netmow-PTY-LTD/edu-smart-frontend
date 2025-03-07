@@ -875,7 +875,7 @@ const DataObjectComponent = () => {
       key: 'pickup_status',
       render: (item) => (
         <>
-          {item?.airport_pickup_charge > 0 ? (
+          {(item?.airport_pickup_charge > 0 && item?.airport_pickup_invoice_status ==='active')? (
             <span
               className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
             >
