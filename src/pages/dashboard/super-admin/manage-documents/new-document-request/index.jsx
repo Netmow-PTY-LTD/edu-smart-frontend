@@ -7,6 +7,7 @@ import StudentFinderModalForSuperAdmin from '@/components/sAdminDashboard/studen
 import { useUpdateUserDocStatusForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
 import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -31,6 +32,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   const [docId, setDocId] = useState('');
   const [addModalIsOpen, setAddModalIsOpen] = useState(true);
   const router = useRouter();
+
+  const customData = useCustomData();
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
     notes: '',
@@ -124,7 +127,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
     // Redirect to the student profile page
     router.push({
-      pathname: `/dashboard/super-admin/students/${student_id}`,
+      pathname: `/dashboard/${customData?.paneltext}/students/${student_id}`,
       query: { tab: 3, request: true },
     });
   };

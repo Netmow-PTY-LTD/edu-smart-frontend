@@ -1,6 +1,7 @@
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import Layout from '@/components/layout';
 import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -17,8 +18,9 @@ const AirportPickupRequestPage = () => {
     refetch: getAllRecentApplicationsRefetch,
   } = useGetRecentApplicationsQuery();
 
+  const customData = useCustomData();
+
   const recentApplicantStudentOptions =
-  
     getAllRecentApplicationsData?.data?.map((item) => ({
       value: item?._id,
       label: `${item?.student?.first_name} ${item?.student?.last_name} - ${item?._id}`,
@@ -38,7 +40,7 @@ const AirportPickupRequestPage = () => {
 
     // Redirect to the student profile page
     router.push({
-      pathname: `/dashboard/super-admin/recent-application/`,
+      pathname: `/dashboard/${customData?.paneltext}/recent-application/`,
       query: { application_id: application_id },
     });
 

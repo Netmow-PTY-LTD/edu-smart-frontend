@@ -4,6 +4,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import Layout from '@/components/layout';
 import AdmissionManagerModal from '@/components/sAdminDashboard/modals/SelectUserModalForSuperAdmin';
 import { userDummyImage } from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 import Image from 'next/image';
 
 import Link from 'next/link';
@@ -30,6 +31,8 @@ const AllAdmissionManagerForSuperAdmin = () => {
     useState('');
   const perPageData = 10;
 
+  const customData = useCustomData();
+
   const [initialValues, setInitialValues] = useState({
     image: null,
     first_name: '',
@@ -46,52 +49,13 @@ const AllAdmissionManagerForSuperAdmin = () => {
     country: '',
   });
 
-  //   const {
-  //     data: getAdmissionManagerData,
-  //     error: getAdmissionManagerError,
-  //     isLoading: getAdmissionManagerIsLoading,
-  //     refetch: getAdmissionManagerRefetch,
-  //   } = useGetAdmissionManagerQuery();
-
-  //   const [
-  //     deleteAdmissionManager,
-  //     {
-  //       data: deleteAdmissionManagerData,
-  //       error: deleteAdmissionManagerError,
-  //       isLoading: deleteAdmissionManagerIsLoading,
-  //     },
-  //   ] = useDeleteAdmissionManagerMutation();
-
   const handleDeleteButtonClick = (itemId) => {
     setAdmissionManagerIdForDelete(itemId);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
-  //   const handleDeleteAdmissionManager = async (id) => {
-  //     try {
-  //       const result = await deleteAdmissionManager(id).unwrap();
-  //       if (result) {
-  //         toast.success(result?.message);
-  //         getAdmissionManagerRefetch();
-  //         handleDeleteButtonClick();
-  //       }
-  //     } catch (error) {
-  //       const errorMessage = error?.data?.message;
-  //       toast.error(errorMessage);
-  //     } finally {
-  //       //
-  //     }
-  //   };
-
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
-
-  // Filter data for search option
-  //   const isfilteredData =
-  //     getAdmissionManagerData?.data?.length > 0 &&
-  //     getAdmissionManagerData?.data.filter((item) =>
-  //       item?.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
 
   const alluniversityHeaderAction = {
     title: 'Action',
@@ -110,7 +74,7 @@ const AllAdmissionManagerForSuperAdmin = () => {
         <DropdownMenu className="dropdown-menu dropdown-menu-end">
           <DropdownItem>
             <Link
-              href={`/dashboard/super-admin/university-management/edit-university/${item?._id}`}
+              href={`/dashboard/${customData?.paneltext}/university-management/edit-university/${item?._id}`}
               className="text-primary"
             >
               <i className="ri-pencil-fill align-start me-2 text-muted"></i>
@@ -120,28 +84,6 @@ const AllAdmissionManagerForSuperAdmin = () => {
           {item?.status === 'active' ? (
             <DropdownItem>
               <div
-                // onClick={() => {
-                //   if (!item?._id) {
-                //     toast.error('Invalid item ID');
-                //     return;
-                //   }
-
-                //   deleteAdmissionManager({ id: item._id, status: 'inactive' })
-                //     .then((res) => {
-                //       if (res.error) {
-                //         toast.error(
-                //           res.payload ||
-                //             'Failed to delete the Admission Manager.'
-                //         );
-                //       } else {
-                //         toast.success(
-                //           res.payload?.message ||
-                //             'Admission Manager deleted successfully.'
-                //         );
-                //       }
-                //     })
-                //     .catch(() => toast.error('An unexpected error occurred.'));
-                // }}
                 className="text-primary"
                 aria-label="Inactive Admission Manager"
               >
@@ -152,28 +94,6 @@ const AllAdmissionManagerForSuperAdmin = () => {
           ) : (
             <DropdownItem>
               <div
-                // onClick={() => {
-                //   if (!item?._id) {
-                //     toast.error('Invalid item ID');
-                //     return;
-                //   }
-
-                //   deleteAdmissionManager({ id: item._id, status: 'active' })
-                //     .then((res) => {
-                //       if (res.error) {
-                //         toast.error(
-                //           res.payload ||
-                //             'Failed to delete the Admission Manager.'
-                //         );
-                //       } else {
-                //         toast.success(
-                //           res.payload?.message ||
-                //             'Admission Manager deleted successfully.'
-                //         );
-                //       }
-                //     })
-                //     .catch(() => toast.error('An unexpected error occurred.'));
-                // }}
                 className="text-primary"
                 aria-label="Active Admission Manager"
               >
