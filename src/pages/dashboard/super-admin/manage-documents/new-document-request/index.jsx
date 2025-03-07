@@ -30,7 +30,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(true);
   const router = useRouter();
 
   const customData = useCustomData();
@@ -73,6 +73,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     [allDocumentRequestForSuperAdminData]
   );
 
+  // Filter data for search option
   const isfilteredData =
     requestedAndRejectedData?.length > 0
       ? requestedAndRejectedData.filter((item) => {

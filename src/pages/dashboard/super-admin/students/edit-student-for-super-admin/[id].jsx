@@ -8,6 +8,7 @@ import {
   useUpdateStudentForAgentMutation,
 } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetAllStudentQuery } from '@/slice/services/public/student/publicStudentService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,6 +18,9 @@ const EditStudentForAgent = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isEditLoading, setIsEditLoading] = useState(false);
   const student_id = router.query.id;
+
+  const customData = useCustomData();
+
   const [initialValues, setInitialValues] = useState({
     first_name: '',
     last_name: '',
@@ -98,7 +102,7 @@ const EditStudentForAgent = () => {
         singleStudentForAgentRefetch();
         setImagePreview(null);
         resetForm();
-        router.push('/dashboard/super-admin/students');
+        router.push(`/dashboard/${customData?.paneltext}/students`);
       }
     } catch (error) {
       const errorMessage = error?.data?.message;
