@@ -322,6 +322,14 @@ const SuperAdminSidebarData = () => {
     },
 
     {
+      id: 'airportpickupchargerequest',
+      label: 'Airport Pickup Request',
+      icon: 'ri-flight-takeoff-line',
+      style: `${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/airport-pickup-request',
+    },
+
+    {
       id: 'report',
       label: 'Report',
       icon: 'ri-bank-card-line',
