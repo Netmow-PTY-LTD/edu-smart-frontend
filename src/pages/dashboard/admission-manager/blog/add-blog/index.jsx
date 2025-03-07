@@ -6,6 +6,7 @@ import TextField from '@/components/common/formField/TextField';
 import Layout from '@/components/layout';
 import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
 import { useAddBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -16,6 +17,8 @@ import { Card, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
 export default function AddBlog() {
+ const customData = useCustomData();
+
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
@@ -69,7 +72,7 @@ export default function AddBlog() {
         allBlogDataRefetch();
         resetForm();
         setTimeout(() => {
-          router.push('/dashboard/super-admin/blog/blog-list');
+          router.push(`/dashboard/${customData?.paneltext}/blog/blog-list`);
         }, 2000);
       }
     } catch (error) {
