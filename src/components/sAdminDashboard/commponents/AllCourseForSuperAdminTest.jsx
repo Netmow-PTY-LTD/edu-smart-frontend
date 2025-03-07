@@ -743,7 +743,7 @@ const AllCourseForSuperAdminTest = ({
               <div
                 onClick={() =>
                   window.open(
-                    `/university/${item?.university_id}/course/${item?._id}`,
+                    `/university/${item?.university?._id}/course/${item?._id}`,
                     '_blank'
                   )
                 }

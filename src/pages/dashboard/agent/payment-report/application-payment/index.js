@@ -14,7 +14,7 @@ const ApplicationPaymentForAgent = () => {
   const [applicationPaymentData, setApplicationPaymentData] = useState('');
   const perPageData = 10;
 
-  const { applicationPaymentHeadersAgent } = DataObjectComponent();
+  const { applicationPaymentHeadersAgent = [] } = DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
@@ -58,7 +58,7 @@ const ApplicationPaymentForAgent = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={[...applicationPaymentHeadersAgent]}
+                    headers={applicationPaymentHeadersAgent}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
