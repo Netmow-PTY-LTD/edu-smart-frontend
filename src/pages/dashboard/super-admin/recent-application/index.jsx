@@ -15,7 +15,7 @@ import {
 import DataObjectComponent from '@/utils/common/data';
 import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -68,6 +68,13 @@ export default function RecentApplicationForSuperAdmin() {
       isLoading: updateAirportPickupChargeInSuperAdminLoading,
     },
   ] = useUpdateAirportPickupChargeInSuperAdminMutation();
+
+  useEffect(() => {
+    if (router?.query?.application_id) {
+      setPickupChargeModal(true);
+      setApplicationId(router?.query?.application_id);
+    }
+  }, [router?.query?.application_id]);
 
   const handleViewEmgsStatus = (id) => {
     setCurrentTimeline(id);
@@ -314,6 +321,10 @@ export default function RecentApplicationForSuperAdmin() {
                   setPickupChargeModal(false),
                     setApplicationId(''),
                     setCheckAirportPickupStatus('');
+                  router.push({
+                    pathname: router.pathname,
+                    query: {},
+                  });
                 }}
                 applicationId={applicationId}
                 editPickupChargeData={getAirportPickupChargeInSuperAdminData}
