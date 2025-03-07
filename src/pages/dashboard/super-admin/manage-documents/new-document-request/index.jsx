@@ -72,20 +72,49 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   // Filter data for search option
   const isfilteredData =
-    requestedAndRejectedData?.length > 0 &&
-    requestedAndRejectedData?.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
-    );
+    requestedAndRejectedData?.length > 0
+      ? requestedAndRejectedData.filter((item) => {
+          const searchTerm = searchTermForRequest.toLowerCase();
+
+          // Combine first and last names for requested_by
+          const requestedByName =
+            `${item?.requested_by?.first_name ?? ''} ${item?.requested_by?.last_name ?? ''}`.toLowerCase();
+
+          // Combine first and last names for student
+          const studentName =
+            `${item?.user?.first_name ?? ''} ${item?.user?.last_name ?? ''}`.toLowerCase();
+
+          return (
+            item?.title?.toLowerCase().includes(searchTerm) ||
+            item?.description?.toLowerCase().includes(searchTerm) ||
+            requestedByName.includes(searchTerm) || // Check combined name of requested_by
+            studentName.includes(searchTerm) // Check combined name of student
+          );
+        })
+      : [];
 
   // Filter data for search option
   const isfilteredDataForSubmittedData =
-    submittedData?.length > 0 &&
-    submittedData?.filter((item) =>
-      item?.title
-        ?.toLowerCase()
-        .includes(searchTermForSubmitedData.toLowerCase())
-    );
+    requestedAndRejectedData?.length > 0
+      ? requestedAndRejectedData.filter((item) => {
+          const searchTerm = searchTermForSubmitedData.toLowerCase();
 
+          // Combine first and last names for requested_by
+          const requestedByName =
+            `${item?.requested_by?.first_name ?? ''} ${item?.requested_by?.last_name ?? ''}`.toLowerCase();
+
+          // Combine first and last names for student
+          const studentName =
+            `${item?.user?.first_name ?? ''} ${item?.user?.last_name ?? ''}`.toLowerCase();
+
+          return (
+            item?.title?.toLowerCase().includes(searchTerm) ||
+            item?.description?.toLowerCase().includes(searchTerm) ||
+            requestedByName.includes(searchTerm) || // Check combined name of requested_by
+            studentName.includes(searchTerm) // Check combined name of student
+          );
+        })
+      : [];
   // Status Mutation
 
   const handleSubmit = (values, { setSubmitting }) => {
