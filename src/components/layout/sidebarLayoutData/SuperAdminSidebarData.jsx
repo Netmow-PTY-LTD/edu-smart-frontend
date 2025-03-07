@@ -293,7 +293,7 @@ const SuperAdminSidebarData = () => {
         },
         {
           id: 'documentuploadrequest',
-          label: 'Document Requested Submitted List',
+          label: 'Document Request and Submitted List',
           icon: 'ri-file-list-3-fill',
 
           link:
@@ -307,6 +307,22 @@ const SuperAdminSidebarData = () => {
 
           parentId: 'managedocument',
         },
+        // {
+        //   id: 'newRequest',
+        //   label: 'New Document Request',
+        //   icon: 'ri-file-list-3-fill',
+
+        //   link:
+        //     '/dashboard/' +
+        //     `${paneltext}` +
+        //     '/manage-documents/document-upload-request?requested',
+        //   pathName:
+        //     '/dashboard/' +
+        //     `${paneltext}` +
+        //     '/manage-documents/document-upload-request',
+
+        //   parentId: 'managedocument',
+        // },
       ],
     },
 
