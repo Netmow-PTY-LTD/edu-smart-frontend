@@ -190,10 +190,11 @@ const StudentDocumentUploadRquestForAgent = () => {
                 <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
-                  headers={[
-                    ...docRequestTableHeaderDataWithoutAction,
-                    ...uploadAction,
-                  ]}
+                  headers={docRequestTableHeaderDataWithoutAction}
+                  // headers={[
+                  //   ...docRequestTableHeaderDataWithoutAction,
+                  //   ...uploadAction,
+                  // ]}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
