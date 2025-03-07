@@ -9,17 +9,18 @@ import {
   useGetSingleBlogQuery,
 } from '@/slice/services/public/blogs/publicBlogsServices';
 import { useUpdateBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { Form, Formik } from 'formik';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Card, Col, Row } from 'reactstrap';
 import * as Yup from 'yup';
 
 export default function EditBlog() {
+  const customData = useCustomData();
+
   const [initialValues, setInitialValues] = useState({
     title: '',
     description: '',
@@ -89,7 +90,7 @@ export default function EditBlog() {
         toast.success(result?.message);
         allBlogDataRefetch();
         setTimeout(() => {
-          router.push('/dashboard/super-admin/blog/blog-list');
+          router.push(`/dashboard/${customData?.paneltext}/blog/blog-list`);
         }, 2000);
       }
     } catch (error) {

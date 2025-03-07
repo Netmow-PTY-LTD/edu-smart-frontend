@@ -1304,7 +1304,7 @@ const DataObjectComponent = () => {
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
-      id: 6,
+      id: 7,
       label: 'Total Agent Pending Payout',
       counter: '55',
       bgcolor: 'warning',
@@ -1314,7 +1314,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      id: 7,
+      id: 8,
       label: 'Total Profit',
       counter: '55',
       bgcolor: 'warning',

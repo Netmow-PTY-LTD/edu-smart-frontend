@@ -30,7 +30,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
-  const [addModalIsOpen, setAddModalIsOpen] = useState(true);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const router = useRouter();
 
   const customData = useCustomData();
@@ -73,7 +73,6 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     [allDocumentRequestForSuperAdminData]
   );
 
-  // Filter data for search option
   const isfilteredData =
     requestedAndRejectedData?.length > 0
       ? requestedAndRejectedData.filter((item) => {
@@ -98,8 +97,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   // Filter data for search option
   const isfilteredDataForSubmittedData =
-    submittedData?.length > 0
-      ? submittedData.filter((item) => {
+    requestedAndRejectedData?.length > 0
+      ? requestedAndRejectedData.filter((item) => {
           const searchTerm = searchTermForSubmitedData.toLowerCase();
 
           // Combine first and last names for requested_by
@@ -121,6 +120,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   // Status Mutation
 
   const handleSubmit = (values, { setSubmitting }) => {
+    console.log(values);
     setSubmitting(true);
     const student_id = values.student_id;
 

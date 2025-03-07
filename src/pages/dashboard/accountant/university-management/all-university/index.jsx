@@ -166,9 +166,7 @@ const AllUniversityForSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <Link
-                    href={
-                      '/dashboard/super-admin/university-management/add-university'
-                    }
+                    href={`/dashboard/${customData?.paneltext}/university-management/add-university`}
                     className="button px-3 py-2"
                   >
                     Add New
