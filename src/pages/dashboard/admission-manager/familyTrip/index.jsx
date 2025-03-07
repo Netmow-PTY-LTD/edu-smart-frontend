@@ -3,6 +3,7 @@ import ProgressBar from '@/components/common/ProgressBar';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -22,6 +23,8 @@ export default function AgentFamilyTrip() {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const router = useRouter();
+
+  const customData = useCustomData();
 
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
@@ -157,12 +160,10 @@ export default function AgentFamilyTrip() {
           <DropdownMenu className="dropdown-menu dropdown-menu-end">
             <DropdownItem>
               <div
-                onClick={
-                  () =>
-                    router.push(
-                      `/dashboard/super-admin/familyTrip/${item?._id}`
-                    )
-                  // router.push(`/dashboard/super-admin/recent-application`)
+                onClick={() =>
+                  router.push(
+                    `/dashboard/${customData?.paneltext}/familyTrip/${item?._id}`
+                  )
                 }
                 className="text-primary"
               >

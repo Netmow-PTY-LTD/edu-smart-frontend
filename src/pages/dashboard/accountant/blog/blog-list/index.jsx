@@ -4,6 +4,8 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAllBlogsQuery } from '@/slice/services/public/blogs/publicBlogsServices';
 import { useDeleteBlogMutation } from '@/slice/services/super admin/superAdminBlogServices';
+import { useCustomData } from '@/utils/common/data/customeData';
+import DOMPurify from 'dompurify';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -17,12 +19,13 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
 } from 'reactstrap';
-import DOMPurify from 'dompurify';
 
 export default function ContactMessages() {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const [searchTerm, setSearchTerm] = useState('');
+
+  const customData = useCustomData();
 
   const {
     data: allBlogs,
@@ -142,7 +145,7 @@ export default function ContactMessages() {
             </DropdownItem>
             <DropdownItem>
               <Link
-                href={`/dashboard/super-admin/blog/edit-blog/${item?.slug}`}
+                href={`/dashboard/${customData?.paneltext}/blog/edit-blog/${item?.slug}`}
                 className="text-secondary fw-medium cursor-pointer"
               >
                 <i className="ri-pencil-fill align-start me-2 "></i>
