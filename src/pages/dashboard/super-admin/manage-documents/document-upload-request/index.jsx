@@ -49,7 +49,6 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   const [updateDocumentRequest] = useUpdateUserDocStatusForAgentMutation();
 
-  console.log(allDocumentRequestForSuperAdminData);
   //  search input change function
   const handleSearchChangeForRequest = (e) =>
     setSearchTermForRequest(e.target.value);
@@ -118,7 +117,6 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   // Status Mutation
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
     setSubmitting(true);
     const student_id = values.student_id;
 
