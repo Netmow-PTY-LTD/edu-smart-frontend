@@ -14,7 +14,7 @@ const ApplicationPaymentForAgent = () => {
   const [applicationPaymentData, setApplicationPaymentData] = useState('');
   const perPageData = 10;
 
-  const { applicationPaymentHeadersAgent } = DataObjectComponent();
+  const { applicationPaymentHeadersAgent = [] } = DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
