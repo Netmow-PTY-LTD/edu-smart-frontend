@@ -119,8 +119,10 @@ export default function RecentApplicationForSuperAdmin() {
   // Ensure full search even if searchTerm is empty
   const isfilteredData =
     recentApplicationData?.data?.length > 0
-      ? recentApplicationData.data.filter((item) =>
-          searchInItem(item, searchTerm)
+      ? recentApplicationData.data.filter(
+          (item) =>
+            item?.emgs_payment_status != 'pending' &&
+            searchInItem(item, searchTerm)
         )
       : [];
 
