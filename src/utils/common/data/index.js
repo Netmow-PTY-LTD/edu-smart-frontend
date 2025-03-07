@@ -3303,6 +3303,108 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Payment Data',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+    },
+  ];
+  const applicationPaymentHeadersStudent = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student',
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applied By',
+      key: 'applied_by',
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
+            '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course Fee',
+      key: 'course_fee',
+      render: (item) => (
+        <div>
+          {item?.application?.course?.tuition_fee
+            ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Emgs Fee Paid Amount',
+      key: 'emgs_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_emgs'
+            ? item?.application?.emgs_fee_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Tuition Fee Paid Amount',
+      key: 'tuition_paid_amount',
+      render: (item) => (
+        <div>
+          {item?.tuition_fee_paid_amount
+            ? item?.tuition_fee_paid_amount + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Data',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
 
     {
       title: 'Payment Method',
@@ -4325,6 +4427,7 @@ const DataObjectComponent = () => {
     docRequestTableHeaderDataWithoutActionForSuperAdmin,
     docSubmittedTableHeaderDataWithoutActionForSuperAdmin,
     applicationPaymentHeadersAgent,
+    applicationPaymentHeadersStudent,
   };
 };
 
