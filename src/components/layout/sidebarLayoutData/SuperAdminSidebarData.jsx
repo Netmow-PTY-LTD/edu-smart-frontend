@@ -307,22 +307,22 @@ const SuperAdminSidebarData = () => {
 
           parentId: 'managedocument',
         },
-        // {
-        //   id: 'newRequest',
-        //   label: 'New Document Request',
-        //   icon: 'ri-file-list-3-fill',
+        {
+          id: 'newRequest',
+          label: 'New Document Request',
+          icon: 'ri-file-list-3-fill',
 
-        //   link:
-        //     '/dashboard/' +
-        //     `${paneltext}` +
-        //     '/manage-documents/document-upload-request?requested',
-        //   pathName:
-        //     '/dashboard/' +
-        //     `${paneltext}` +
-        //     '/manage-documents/document-upload-request',
+          link:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/manage-documents/new-document-request',
+          pathName:
+            '/dashboard/' +
+            `${paneltext}` +
+            '/manage-documents/new-document-request',
 
-        //   parentId: 'managedocument',
-        // },
+          parentId: 'managedocument',
+        },
       ],
     },
 
