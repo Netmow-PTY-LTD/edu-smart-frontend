@@ -1,19 +1,31 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
+import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
 import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
+import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
 import DataObjectComponent from '@/utils/common/data';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
-
+import * as Yup from 'yup';
 const StudentDocumentUploadRquestForAgent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-
+  // const user = currentUser();
+  const [openModal, setOpenModal] = useState(false);
+  const [docId, setDocId] = useState('');
   const perPageData = 10;
 
-  const { docRequestTableHeaderDataWithoutAction } = DataObjectComponent();
+  const [initialValues, setInitialValues] = useState({
+    title: '',
+    document: '',
+    description: '',
+  });
+
+  const { docRequestTableHeaderDataWithoutAction = [] } = DataObjectComponent();
 
   const {
     data: allDocumentRequestForAgentData,
@@ -21,6 +33,41 @@ const StudentDocumentUploadRquestForAgent = () => {
     isLoading: allDocumentRequestForAgentIsLoading,
     refetch: allDocumentRequestForAgentRefetch,
   } = useGetAllUserDocRequestQuery();
+
+  //  -------- temoporary add this api it will change able
+  const [submitSingleDocumentForStudent] =
+    useUpdateSingleDocumentForStudentMutation();
+
+  const validationSchema = Yup.object({
+    document: Yup.array()
+      .of(
+        Yup.mixed()
+          .test(
+            'fileFormat',
+            'Only PDF, JPG, PNG files are allowed',
+            (value) => {
+              if (value) {
+                const fileType = value.type;
+                return (
+                  fileType === 'application/pdf' ||
+                  fileType === 'image/jpeg' ||
+                  fileType === 'image/png'
+                );
+              }
+              return false;
+            }
+          )
+          .test('fileSize', 'File size must be 5MB or less', (value) => {
+            if (value) {
+              return value.size <= 5 * 1024 * 1024;
+            }
+            return false;
+          })
+      )
+      .required('Documents are required')
+      .min(1, 'At least one document is required')
+      .max(5, 'You can upload a maximum of 5 documents'),
+  });
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -33,6 +80,96 @@ const StudentDocumentUploadRquestForAgent = () => {
         item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  useEffect(() => {
+    const fetchFile = async () => {
+      const requestData = allDocumentRequestForAgentData?.data?.find(
+        (item) => item?._id === docId
+      );
+
+      if (!requestData) return;
+
+      // eslint-disable-next-line no-undef
+      const files = await Promise.all(
+        requestData?.files?.map(
+          async (file) => await convertImageUrlToFile(file.url)
+        )
+      );
+
+      setInitialValues({
+        title: requestData?.title || '',
+        document: files || '',
+        description: requestData?.description || '',
+      });
+    };
+
+    fetchFile();
+  }, [allDocumentRequestForAgentData, docId]);
+
+  const togModal = (id) => {
+    setInitialValues({
+      title: '',
+      document: '',
+      description: '',
+    });
+    setDocId(id);
+    setOpenModal(!openModal);
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
+    const updatedata = {
+      ...values,
+      id: docId,
+      status: 'submitted',
+    };
+
+    try {
+      const finalData = new FormData();
+      Object.entries(updatedata).forEach(([key, value]) => {
+        if (key === 'document') {
+          if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+              finalData.append(`${key}`, item);
+            });
+          }
+        } else {
+          finalData.append(key, value);
+        }
+      });
+      const result = await submitSingleDocumentForStudent(finalData).unwrap();
+      if (result) {
+        toast.success(result?.message);
+        allDocumentRequestForAgentRefetch();
+        setOpenModal(!openModal);
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message;
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const uploadAction = [
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (item) => {
+        return item?.requested_by?.role === 'agent' ? (
+          <span>-</span>
+        ) : (
+          <button
+            onClick={() => togModal(item?._id)}
+            className="button d-flex px-3 py-1"
+          >
+            Upload
+          </button>
+        );
+      },
+    },
+  ];
 
   return (
     <Layout>
@@ -53,7 +190,10 @@ const StudentDocumentUploadRquestForAgent = () => {
                 <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
-                  headers={docRequestTableHeaderDataWithoutAction}
+                  headers={[
+                    ...docRequestTableHeaderDataWithoutAction,
+                    ...uploadAction,
+                  ]}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
@@ -65,6 +205,17 @@ const StudentDocumentUploadRquestForAgent = () => {
               )}
             </CardBody>
           </Card>
+
+          {
+            <SingleDocUploadForm
+              initialValues={initialValues}
+              OpenModal={openModal}
+              toggle={togModal}
+              handleAddSubmit={handleSubmit}
+              submitBtn={'Upload'}
+              validationSchema={validationSchema}
+            />
+          }
         </div>
       </div>
     </Layout>

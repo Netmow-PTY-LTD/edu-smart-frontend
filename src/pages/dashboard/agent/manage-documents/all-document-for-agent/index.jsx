@@ -12,7 +12,8 @@ const AllDocumentForAgentDashboard = () => {
 
   const perPageData = 10;
 
-  const { docRequestTableHeaderDataWithoutAction } = DataObjectComponent();
+  const { docSubmittedTableHeaderDataWithoutAction = [] } =
+    DataObjectComponent();
 
   const {
     data: allSubmittedDocumentForAgentData,
@@ -48,7 +49,7 @@ const AllDocumentForAgentDashboard = () => {
               </CardHeader>
               <CardBody>
                 <CommonTableComponent
-                  headers={docRequestTableHeaderDataWithoutAction}
+                  headers={docSubmittedTableHeaderDataWithoutAction}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
