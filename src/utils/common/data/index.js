@@ -336,6 +336,27 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Accepted Date',
+      key: 'accepted_date',
+      render: (item) => (
+        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     // {
     //   title: 'Requester Email',
     //   key: 'email',
@@ -455,6 +476,22 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+
     // {
     //   title: 'Requester Email',
     //   key: 'email',
@@ -2266,6 +2303,21 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     // {
     //   title: 'Requester Role',
     //   key: 'role',
@@ -2396,6 +2448,27 @@ const DataObjectComponent = () => {
               }`
             : '-'}
         </span>
+      ),
+    },
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Accepted Date',
+      key: 'accepted_date',
+      render: (item) => (
+        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     // {
@@ -2531,12 +2604,20 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Create Date',
-      key: 'createdAt',
+      title: 'Requested Date',
+      key: 'requested_date',
       render: (item) => (
-        <div>{moment(item?.createdAt).format('DD-MM-YYYY') ?? '-'}</div>
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+
     // {
     //   title: 'Requester Role',
     //   key: 'role',
@@ -2670,10 +2751,24 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submited Date',
-      key: 'updatedAt',
+      title: 'Requested Date',
+      key: 'requested_date',
       render: (item) => (
-        <div>{moment(item?.updatedAt).format('DD-MM-YYYY') ?? '-'}</div>
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Accepted Date',
+      key: 'accepted_date',
+      render: (item) => (
+        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     // {
@@ -3079,6 +3174,20 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
 
     {
       title: 'Status',
@@ -3231,6 +3340,27 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Accepted Date',
+      key: 'accepted_date',
+      render: (item) => (
+        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
       title: 'Status',
       key: 'status',
       render: (item) => (
@@ -3372,6 +3502,21 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+
+    {
       title: 'Status',
       key: 'status',
       render: (item) => (
@@ -3503,6 +3648,27 @@ const DataObjectComponent = () => {
       ),
     },
 
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Accepted Date',
+      key: 'accepted_date',
+      render: (item) => (
+        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     {
       title: 'Status',
       key: 'status',
@@ -3636,6 +3802,21 @@ const DataObjectComponent = () => {
     },
 
     {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+
+    {
       title: 'Status',
       key: 'status',
       render: (item) => (
@@ -3757,6 +3938,27 @@ const DataObjectComponent = () => {
         <div>
           <FileViewer files={item?.files && item?.files} />
         </div>
+      ),
+    },
+    {
+      title: 'Requested Date',
+      key: 'requested_date',
+      render: (item) => (
+        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'submited_date',
+      render: (item) => (
+        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Accepted Date',
+      key: 'accepted_date',
+      render: (item) => (
+        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
 
