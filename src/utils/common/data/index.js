@@ -1828,7 +1828,8 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
           {item?.payment_reason
-            ? item?.application?.tuition_fee_amount - item?.application?.incentive_amount
+            ? item?.application?.tuition_fee_amount -
+              item?.application?.incentive_amount
             : '0'}{' '}
           {'MYR'}
         </div>
@@ -2153,7 +2154,10 @@ const DataObjectComponent = () => {
       key: 'profit_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.super_admin_profit ? item?.super_admin_profit : item?.paid_amount} {'MYR'}
+          {item?.super_admin_profit
+            ? item?.super_admin_profit
+            : item?.paid_amount}{' '}
+          {'MYR'}
         </div>
       ),
     },
@@ -2394,6 +2398,13 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+    {
+      title: 'Create Date',
+      key: 'createdAt',
+      render: (item) => (
+        <div>{moment(item?.createdAt).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
     // {
     //   title: 'Requester Role',
     //   key: 'role',
@@ -2524,6 +2535,13 @@ const DataObjectComponent = () => {
               }`
             : '-'}
         </span>
+      ),
+    },
+    {
+      title: 'Submited Date',
+      key: 'updatedAt',
+      render: (item) => (
+        <div>{moment(item?.updatedAt).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     // {

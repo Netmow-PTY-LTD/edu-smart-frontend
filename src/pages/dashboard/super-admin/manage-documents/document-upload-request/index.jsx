@@ -49,6 +49,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   const [updateDocumentRequest] = useUpdateUserDocStatusForAgentMutation();
 
+  console.log(allDocumentRequestForSuperAdminData);
   //  search input change function
   const handleSearchChangeForRequest = (e) =>
     setSearchTermForRequest(e.target.value);
@@ -94,8 +95,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   // Filter data for search option
   const isfilteredDataForSubmittedData =
-    requestedAndRejectedData?.length > 0
-      ? requestedAndRejectedData.filter((item) => {
+    submittedData?.length > 0
+      ? submittedData.filter((item) => {
           const searchTerm = searchTermForSubmitedData.toLowerCase();
 
           // Combine first and last names for requested_by

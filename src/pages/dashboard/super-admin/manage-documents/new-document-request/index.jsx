@@ -95,8 +95,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   // Filter data for search option
   const isfilteredDataForSubmittedData =
-    requestedAndRejectedData?.length > 0
-      ? requestedAndRejectedData.filter((item) => {
+    submittedData?.length > 0
+      ? submittedData.filter((item) => {
           const searchTerm = searchTermForSubmitedData.toLowerCase();
 
           // Combine first and last names for requested_by
