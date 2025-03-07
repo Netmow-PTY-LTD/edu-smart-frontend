@@ -3,6 +3,7 @@ import ProgressBar from '@/components/common/ProgressBar';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAgentYearlyBonusQuery } from '@/slice/services/agent/agentEarningsService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -14,7 +15,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Progress,
   Row,
   UncontrolledDropdown,
 } from 'reactstrap';
@@ -23,6 +23,8 @@ export default function AgentYarlyBonous() {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const router = useRouter();
+
+  const customData = useCustomData();
 
   const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
     useGetAgentYearlyBonusQuery();
@@ -145,12 +147,10 @@ export default function AgentYarlyBonous() {
           <DropdownMenu className="dropdown-menu dropdown-menu-end">
             <DropdownItem>
               <div
-                onClick={
-                  () =>
-                    router.push(
-                      `/dashboard/super-admin/yearlyBonous/${item?._id}`
-                    )
-                  // router.push(`/dashboard/super-admin/recent-application`)
+                onClick={() =>
+                  router.push(
+                    `/dashboard/${customData?.paneltext}/yearlyBonous/${item?._id}`
+                  )
                 }
                 className="text-primary"
               >

@@ -28,8 +28,10 @@ const AllStudentsPage = () => {
 
   const customData = useCustomData();
 
-  const { studentImageAndNameHeaderDataForSuperAdmin, studentsHeaders } =
-    DataObjectComponent();
+  const {
+    studentImageAndNameHeaderDataForSuperAdmin = [],
+    studentsHeaders = [],
+  } = DataObjectComponent();
 
   const { data: allStudentsData, isLoading: allStudentsIsLoading } =
     useGetAllStudentQuery();
@@ -63,7 +65,7 @@ const AllStudentsPage = () => {
         <DropdownMenu className="me-3">
           <DropdownItem>
             <Link
-              href={`/dashboard/super-admin/students/${item?._id}`}
+              href={`/dashboard/${customData?.paneltext}/students/${item?._id}`}
               className="text-primary"
             >
               <i className="ri-eye-fill align-start me-2 text-muted fw-bold"></i>
@@ -77,7 +79,7 @@ const AllStudentsPage = () => {
             <>
               <DropdownItem>
                 <Link
-                  href={`/dashboard/super-admin/students/edit-student-for-super-admin/${item?._id}`}
+                  href={`/dashboard/${customData?.paneltext}/students/edit-student-for-super-admin/${item?._id}`}
                   className="text-primary"
                 >
                   <i className="ri-pencil-fill align-start me-2 text-muted"></i>
