@@ -28,12 +28,26 @@ const AllDocumentForSuperAdminDashboard = () => {
 
   // Filter data for search option
   const isFilteredData =
-    allSubmittedDocumentForSuperAdminData?.data?.length > 0 &&
-    allSubmittedDocumentForSuperAdminData?.data.filter(
-      (item) =>
-        item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    allSubmittedDocumentForSuperAdminData?.data?.length > 0
+      ? allSubmittedDocumentForSuperAdminData?.data?.filter((item) => {
+          const searchTermFilter = searchTerm.toLowerCase();
+
+          // Combine first and last names for requested_by
+          const requestedByName =
+            `${item?.requested_by?.first_name ?? ''} ${item?.requested_by?.last_name ?? ''}`.toLowerCase();
+
+          // Combine first and last names for student
+          const studentName =
+            `${item?.user?.first_name ?? ''} ${item?.user?.last_name ?? ''}`.toLowerCase();
+
+          return (
+            item?.title?.toLowerCase().includes(searchTermFilter) ||
+            item?.description?.toLowerCase().includes(searchTermFilter) ||
+            requestedByName.includes(searchTermFilter) || // Check combined name of requested_by
+            studentName.includes(searchTermFilter) // Check combined name of student
+          );
+        })
+      : [];
 
   return (
     <Layout>
