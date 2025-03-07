@@ -29,6 +29,7 @@ export const agentDocumentServices = createApi({
     updateApplicationDocStatusForAgent: builder.mutation({
       query: (body) => {
         const application_document_id = body.application_document_id;
+
         return {
           url: `/documents/application/status/${application_document_id}`,
           method: 'PATCH',
