@@ -912,7 +912,8 @@ const DataObjectComponent = () => {
       key: 'pickup_status',
       render: (item) => (
         <>
-          {(item?.airport_pickup_charge > 0 && item?.airport_pickup_invoice_status ==='active')? (
+          {item?.airport_pickup_charge > 0 &&
+          item?.airport_pickup_invoice_status === 'active' ? (
             <span
               className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
             >
@@ -1866,7 +1867,6 @@ const DataObjectComponent = () => {
         <div className="fs-2 fw-medium text-primary">
           {item?.payment_reason
             ? item?.application?.tuition_fee_amount -
-
               item?.application?.incentive_amount
             : '0'}{' '}
           {'MYR'}
@@ -4324,6 +4324,7 @@ const DataObjectComponent = () => {
     AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
     docRequestTableHeaderDataWithoutActionForSuperAdmin,
     docSubmittedTableHeaderDataWithoutActionForSuperAdmin,
+    applicationPaymentHeadersAgent,
   };
 };
 
