@@ -5,6 +5,7 @@ import {
   useGetUniversityQuery,
   useUpdateUniversityMutation,
 } from '@/slice/services/super admin/universityService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -14,6 +15,8 @@ const EditUniversity = () => {
   const [ssmFilePreview, setSsmFilePreview] = useState(null);
   const [govtFilePreview, setGovtFilePreview] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+
+  const customData = useCustomData();
 
   const [initialValues, setInitialValues] = useState({
     name: '',
@@ -102,7 +105,7 @@ const EditUniversity = () => {
         getUniversityRefetch();
         setImagePreview(null);
         router.push(
-          '/dashboard/super-admin/university-management/all-university'
+          `/dashboard/${customData?.paneltext}/university-management/all-university`
         );
       }
     } catch (error) {
