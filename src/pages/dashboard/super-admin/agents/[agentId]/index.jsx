@@ -5,6 +5,8 @@ import SearchComponent from '@/components/common/SearchComponent';
 import SingleCountCard from '@/components/common/SingleCountCard';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import AgentFamilyTripForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentFamilyTripForSuperAdmin';
+import AgentYearlyBonousForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentYearlyBonousForSuperAdmin';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import {
   useGetAgentEarningsQuery,
@@ -200,6 +202,38 @@ const SingleAgentInSuperAdminDashboard = () => {
                             </span>
                           </NavLink>
                         </NavItem>
+                        <NavItem className="fs-14">
+                          <NavLink
+                            style={{ cursor: 'pointer' }}
+                            className={classnames({
+                              active: activeTab === '3',
+                            })}
+                            onClick={() => {
+                              toggleTab('3');
+                            }}
+                          >
+                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                            <span className="d-none d-md-inline-block">
+                              Family Trip
+                            </span>
+                          </NavLink>
+                        </NavItem>
+                        <NavItem className="fs-14">
+                          <NavLink
+                            style={{ cursor: 'pointer' }}
+                            className={classnames({
+                              active: activeTab === '4',
+                            })}
+                            onClick={() => {
+                              toggleTab('4');
+                            }}
+                          >
+                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                            <span className="d-none d-md-inline-block">
+                              Yearly Bonous
+                            </span>
+                          </NavLink>
+                        </NavItem>
                       </>
                     )}
                   </Nav>
@@ -254,6 +288,16 @@ const SingleAgentInSuperAdminDashboard = () => {
                         </Card>
                       </Col>
                     </Row>
+                  </div>
+                )}
+                {activeTab === '3' && (
+                  <div style={{ marginTop: '30px' }}>
+                    <AgentFamilyTripForSuperAdmin agent_id={agent_id} />
+                  </div>
+                )}
+                {activeTab === '4' && (
+                  <div style={{ marginTop: '30px' }}>
+                    <AgentYearlyBonousForSuperAdmin agent_id={agent_id} />
                   </div>
                 )}
 
