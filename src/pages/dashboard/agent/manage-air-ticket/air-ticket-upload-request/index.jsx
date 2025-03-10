@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import * as Yup from 'yup';
 
@@ -127,12 +127,14 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
 
   // Form Submission
   const handleSubmit = async (values, { setSubmitting }) => {
+    const submited_date = new Date().toISOString();
     try {
       const formData = new FormData();
       Object.entries({
         ...values,
         id: modalState.docId,
         status: 'submitted',
+        submited_date,
       }).forEach(([key, value]) => {
         if (key === 'document' && Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
@@ -142,7 +144,8 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       });
 
       const result = await submitDocument(formData).unwrap();
-      if (result.succees) {
+      console.log(result);
+      if (result.success) {
         toast.success(result?.message);
         refetchRequests();
         refetchSubmitted();
@@ -211,6 +214,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
     <Layout>
       <div className="page-content">
         <div className="h-100">
+          <ToastContainer />
           {/* Submitted Documents Section */}
           <DocumentSection
             title="Document Submitted"

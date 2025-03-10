@@ -1,9 +1,8 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import Layout from '@/components/layout';
 import { useGetAgentFamilyTripQuery } from '@/slice/services/agent/agentEarningsService';
 import DataObjectComponent from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -19,14 +18,21 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 
-export default function AgentFamilyTrip() {
+export default function AgentFamilyTripForSuperAdmin({ agent_id }) {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const router = useRouter();
+  const { AGENT_FAMILYTRIP_HEADERS_FOR_SUPER_ADMIN = [] } =
+    DataObjectComponent();
+  const customData = useCustomData();
+
   const { data: familyTrip, isLoading: familyTripLoading } =
     useGetAgentFamilyTripQuery();
-  const { AGENT_FAMILYTRIP_HEADERS = [] } = DataObjectComponent();
-  const AGENT_FAMILYTRIP_HEADERS_ACTION = [
+  const singleAgent = familyTrip?.data?.filter(
+    (item) => item?.agent?._id === agent_id
+  );
+
+  const AGENT_FAMILYTRIP_HEADERS_Action = [
     {
       title: 'Action',
       key: 'actions',
@@ -45,7 +51,9 @@ export default function AgentFamilyTrip() {
             <DropdownItem>
               <div
                 onClick={() =>
-                  router.push(`/dashboard/agent/familyTrip/${item?._id}`)
+                  router.push(
+                    `/dashboard/${customData?.paneltext}/familyTrip/${item?._id}`
+                  )
                 }
                 className="text-primary"
               >
@@ -60,41 +68,37 @@ export default function AgentFamilyTrip() {
   ];
 
   return (
-    <Layout>
-      <div className="page-content">
-        <div className="h-100">
-          {familyTripLoading ? (
-            <LoaderSpiner />
-          ) : (
-            <div className="container-fluid">
-              <div>
-                <Row>
-                  <Col xl={12}>
-                    <Card>
-                      <CardHeader className="text-primary fw-semibold fs-2">
-                        Familiy Trip
-                      </CardHeader>
-                      <CardBody className="mh-100">
-                        <CommonTableComponent
-                          headers={[
-                            ...AGENT_FAMILYTRIP_HEADERS,
-                            ...AGENT_FAMILYTRIP_HEADERS_ACTION,
-                          ]}
-                          data={familyTrip?.data || []}
-                          currentPage={currentPage}
-                          setCurrentPage={setCurrentPage}
-                          perPageData={perPageData}
-                          emptyMessage="No Data found yet."
-                        />
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          )}
+    <Row>
+      {familyTripLoading ? (
+        <LoaderSpiner />
+      ) : (
+        <div className="container-fluid">
+          <div>
+            <Row>
+              <Col xl={12}>
+                <Card>
+                  <CardHeader className="text-primary fw-semibold fs-2">
+                    Agent Family Trip
+                  </CardHeader>
+                  <CardBody className="mh-100">
+                    <CommonTableComponent
+                      headers={[
+                        ...AGENT_FAMILYTRIP_HEADERS_FOR_SUPER_ADMIN,
+                        ...AGENT_FAMILYTRIP_HEADERS_Action,
+                      ]}
+                      data={singleAgent || []}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      perPageData={perPageData}
+                      emptyMessage="No Data found yet."
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
         </div>
-      </div>
-    </Layout>
+      )}
+    </Row>
   );
 }
