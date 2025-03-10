@@ -38,18 +38,23 @@ const UpgradePackageInAgentdashboard = () => {
   const [couponError, setCouponError] = useState('');
   const [couponAmount, setTotalCouponAmount] = useState('');
   const [couponDuration, setCouponDuration] = useState('');
+  const [packagePaidDuration, setPackagePaidDuration] = useState('');
+  const [packageDuration, setPackageDuration] = useState('');
   const [totalPricePackage, setTotalPricePackage] = useState('');
   const [pricePackage, setPricePackage] = useState('');
   const [couponId, setCouponId] = useState('');
-
   const router = useRouter();
-
   const payment_status = router.query?.payment_status;
   const transaction_id = router.query?.transaction_id;
   const package_id = router.query?.package_id;
   const payment_method = router.query.payment_method;
   const paid_amount = router.query.paid_amount;
   const coupon_id = router.query.coupon_id;
+  const getDuration = router.query.duration;
+
+  console.log('packagePaidDuration', packagePaidDuration);
+  console.log('packageDuration', packageDuration);
+  console.log('getDuration', getDuration);
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const { data: allCouponData } = useGetAllActiveCouponQuery();
@@ -71,16 +76,21 @@ const UpgradePackageInAgentdashboard = () => {
   } = useGetAllPackageQuery();
 
   const handleUpgrade = (data) => {
-    setPricePackage(data?.price);
+    // console.log(data);
+    setPackageDuration(data?.package_duration);
+    setPricePackage(data?.price * data?.package_duration);
     setUpgradePackageName(data?.name);
     setUpgradePackageId(data?.id);
     setOpenPaymentModal(!openPaymentModal);
   };
 
+  // console.log(pricePackage);
+
   const handleUpgradeNew = (data, packageId) => {
     setUpgradePackageName(data?.name);
     setUpgradePackageId(packageId);
-    setPricePackage(data?.price);
+    setPackageDuration(data?.package_duration);
+    setPricePackage(data?.price * data?.package_duration);
     setOpenPaymentModal(true);
   };
 
@@ -108,7 +118,7 @@ const UpgradePackageInAgentdashboard = () => {
             package_id: package_id,
             payment_method: payment_method,
             paid_amount: paid_amount,
-            coupon_duration: couponDuration,
+            coupon_duration: getDuration,
             coupon: couponId
               ? couponId
               : coupon_id && coupon_id != 'none'
@@ -126,6 +136,8 @@ const UpgradePackageInAgentdashboard = () => {
             setCouponDuration('');
             setTotalPricePackage('');
             setPricePackage('');
+            setPackageDuration('');
+            setPackagePaidDuration('');
             setCouponId('');
             userInfoRefetch();
             setOpenPaymentModal(false);
@@ -181,9 +193,9 @@ const UpgradePackageInAgentdashboard = () => {
     };
     handlePayment();
   }, [
-    couponDuration,
     couponId,
     coupon_id,
+    getDuration,
     package_id,
     paid_amount,
     payment_method,
@@ -202,8 +214,8 @@ const UpgradePackageInAgentdashboard = () => {
         : `https://edusmart.study/dashboard/agent/upgrade?payment_status=failed`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`
-        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`;
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`;
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
@@ -259,13 +271,26 @@ const UpgradePackageInAgentdashboard = () => {
 
       const [packagePrice] = packages;
       const [duration] = package_duration.split('_').map(Number);
-      const discount = parseFloat(discount_percentage);
 
-      const totalPrice = packagePrice?.price * duration;
+      const totalPrice =
+        duration > packageDuration
+          ? packagePrice?.price * duration
+          : packagePrice?.price * packageDuration;
+
+      const discount = parseFloat(discount_percentage);
       setTotalPricePackage(totalPrice.toFixed(2));
-      const discountAmount = (totalPrice * discount) / 100;
+
+      const discountAmount =
+        duration > packageDuration
+          ? (packagePrice?.price * duration * discount) / 100
+          : (packagePrice?.price * duration * discount) / 100;
+
+      const packagePaidDuration =
+        duration > packageDuration ? duration : packageDuration;
+
       const totalAmount = (totalPrice - discountAmount).toFixed(2);
 
+      setPackagePaidDuration(packagePaidDuration);
       setCouponDuration(duration);
       setTotalCouponAmount(parseFloat(totalAmount));
       toast.success('Applied Coupon Successfully');
@@ -283,7 +308,7 @@ const UpgradePackageInAgentdashboard = () => {
     try {
       const finalData = {
         package_id: upgradePackageId,
-        coupon_duration: couponDuration,
+        coupon_duration: packagePaidDuration,
         transaction_id: transaction_id,
         payment_method: 'Coupon',
         paid_amount: couponAmount,
@@ -303,6 +328,8 @@ const UpgradePackageInAgentdashboard = () => {
         setCouponId('');
         setTotalPricePackage('');
         setPricePackage('');
+        setPackageDuration('');
+        setPackagePaidDuration('');
         userInfoRefetch();
         setOpenPaymentModal(false);
       }
@@ -388,6 +415,7 @@ const UpgradePackageInAgentdashboard = () => {
                                 price: item?.price,
                                 name: item?.name,
                                 id: item?._id,
+                                package_duration: item?.duration.split('_')[0],
                               })
                             }
                             style={
@@ -492,6 +520,8 @@ const UpgradePackageInAgentdashboard = () => {
                   setCouponCode('');
                   setCouponError('');
                   setTotalCouponAmount('');
+                  setPackageDuration('');
+                  setPackagePaidDuration('');
                   setOpenPaymentModal(!openPaymentModal);
                 }}
               >
@@ -500,7 +530,7 @@ const UpgradePackageInAgentdashboard = () => {
               <ModalBody>
                 <Card>
                   <div className="text-center fs-1 text-primary fw-medium">
-                    {upgradePackageName ?? ''}
+                    {upgradePackageName ?? ''} {totalPricePackage ?? ''}
                   </div>
                   <div className="m-4">
                     <label htmlFor="couponCode" className="form-label fs-3">
