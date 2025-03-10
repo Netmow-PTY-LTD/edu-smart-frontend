@@ -7,9 +7,9 @@ import DataObjectComponent from '@/utils/common/data';
 
 import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 
-const TotalAgentPayoutInAgent = () => {
+const AgentTotalPaidAmountForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
@@ -45,44 +45,40 @@ const TotalAgentPayoutInAgent = () => {
   });
 
   return (
-    <Layout>
-      <div className="page-content">
-        <div className="container-fluid">
-          <div className="h-100">
-            <ToastContainer />
-            {getApplicationPaymentDataLoading ? (
-              <LoaderSpiner />
-            ) : (
-              <Card>
-                <CardHeader className="d-flex justify-content-between align-items-center">
-                  <div className="text-primary fw-semibold fs-2">
-                    Total Paid Agent Payout
-                  </div>
-                  <SearchComponent
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                  />
-                </CardHeader>
+    <Row>
+      <div>
+        <ToastContainer />
+        {getApplicationPaymentDataLoading ? (
+          <LoaderSpiner />
+        ) : (
+          <Card>
+            <CardHeader className="d-flex justify-content-between align-items-center">
+              <div className="text-primary fw-semibold fs-2">
+                Total Paid Agent Payout
+              </div>
+              <SearchComponent
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+              />
+            </CardHeader>
 
-                <CardBody>
-                  <CommonTableComponent
-                    headers={TotalAgentPaidPayoutReportHeadersDataForAgent}
-                    data={filteredData ? filteredData : []}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    perPageData={perPageData}
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                    emptyMessage="No Data found yet."
-                  />
-                </CardBody>
-              </Card>
-            )}
-          </div>
-        </div>
+            <CardBody>
+              <CommonTableComponent
+                headers={TotalAgentPaidPayoutReportHeadersDataForAgent}
+                data={filteredData ? filteredData : []}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                perPageData={perPageData}
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
+                emptyMessage="No Data found yet."
+              />
+            </CardBody>
+          </Card>
+        )}
       </div>
-    </Layout>
+    </Row>
   );
 };
 
-export default TotalAgentPayoutInAgent;
+export default AgentTotalPaidAmountForSuperAdmin;
