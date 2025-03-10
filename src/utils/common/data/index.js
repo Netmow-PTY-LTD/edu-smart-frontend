@@ -1,4 +1,5 @@
 import FileViewer from '@/components/common/FileViewer';
+import ProgressBar from '@/components/common/ProgressBar';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import DescriptionRenderer from '@/utils/DescriptionRenderer';
 import moment from 'moment';
@@ -4017,6 +4018,241 @@ const DataObjectComponent = () => {
     },
   ];
 
+  const AGENT_YEARLYBONOUS_HEADERS_FOR_SUPER_ADMIN = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || 'N/A'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => {
+        const firstName = item?.agent?.first_name || '';
+        const lastName = item?.agent?.last_name || '';
+        const fullName = `${firstName} ${lastName}`.trim() || '-';
+
+        return (
+          <Link href={`/dashboard/super-admin/agents/${item?.agent?._id}`}>
+            <span className="d-flex flex-column text-capitalize">
+              {fullName}
+            </span>
+          </Link>
+        );
+      },
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <span className="d-flex flex-column">{item?.agent?.email || '-'}</span>
+      ),
+    },
+    // {
+    //   title: 'Amount ',
+    //   key: 'amount',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">{item?.amount || '0'}</span>
+    //   ),
+    // },
+    {
+      title: 'Target Start Date',
+      key: 'start_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.start_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Target End Date',
+      key: 'end_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.end_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Target Status',
+      key: 'target_status',
+      render: (item) => (
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.status === 'active'
+              ? 'bg-success-subtle text-success'
+              : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.status || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Payout Status',
+      key: 'payout_status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.payout_status === 'paid'
+              ? 'bg-third-color text-primary'
+              : item?.payout_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.payout_status || '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AGENT_FAMILYTRIP_HEADERS_FOR_SUPER_ADMIN = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || '-'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => {
+        const firstName = item?.agent?.first_name || '';
+        const lastName = item?.agent?.last_name || '';
+        const fullName = `${firstName} ${lastName}`.trim() || '-';
+
+        return (
+          <Link href={`/dashboard/super-admin/agents/${item?.agent?._id}`}>
+            <span className="d-flex flex-column text-capitalize">
+              {fullName}
+            </span>
+          </Link>
+        );
+      },
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <span className="d-flex flex-column">{item?.agent?.email || '-'}</span>
+      ),
+    },
+    // {
+    //   title: 'Package Price ',
+    //   key: 'package_price',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">
+    //       {item?.package?.price || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Duration',
+    //   key: 'package_duration',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.duration || '-'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Start Date',
+      key: 'start_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.start_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'End Date',
+      key: 'end_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.end_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Target Status',
+      key: 'target_status',
+      render: (item) => (
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.status === 'active'
+              ? 'bg-success-subtle text-success'
+              : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.status || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Payout Status',
+      key: 'payout_status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.payout_status === 'paid'
+              ? 'bg-third-color text-primary'
+              : item?.payout_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.payout_status || '-'}
+        </span>
+      ),
+    },
+  ];
+
   return {
     TotalAgentPendingPayoutReportHeadersDataForSuperAdmin,
     TotalagentPayoutReportHeadersDataForSuperAdmin,
@@ -4074,6 +4310,8 @@ const DataObjectComponent = () => {
     docRequestTableHeaderDataWithoutActionForSuperAdmin,
     docSubmittedTableHeaderDataWithoutActionForSuperAdmin,
     docSubmittedTableHeaderDataWithoutAction,
+    AGENT_YEARLYBONOUS_HEADERS_FOR_SUPER_ADMIN,
+    AGENT_FAMILYTRIP_HEADERS_FOR_SUPER_ADMIN,
   };
 };
 
