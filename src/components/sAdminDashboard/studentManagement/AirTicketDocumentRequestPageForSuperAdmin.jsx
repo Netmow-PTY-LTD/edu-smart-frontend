@@ -103,10 +103,12 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
     );
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    const requested_date = new Date().toISOString();
     setSubmitting(true);
     const updatedata = {
       ...values,
       student_id,
+      requested_date,
     };
 
     try {
@@ -126,7 +128,8 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   };
 
   const handleStatusChange = async (airticket_document_id, status) => {
-    const updatedDataStatus = { airticket_document_id, status };
+    const accepted_date = new Date().toISOString();
+    const updatedDataStatus = { airticket_document_id, status, accepted_date };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {

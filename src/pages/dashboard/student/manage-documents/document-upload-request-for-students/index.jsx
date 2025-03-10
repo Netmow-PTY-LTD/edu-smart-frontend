@@ -118,11 +118,12 @@ const AllUploadDocumentsForStudents = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
+    const submited_date = new Date().toISOString();
     const updatedata = {
       ...values,
       id: docId,
       status: 'submitted',
+      submited_date,
     };
 
     try {

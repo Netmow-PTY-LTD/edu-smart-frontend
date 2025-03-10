@@ -76,6 +76,7 @@ const DocumentRequestPage = ({ student_id, request }) => {
     );
 
   const handleSubmit = async (values) => {
+    const requested_date = new Date().toISOString();
     try {
       // Create an array of API calls for each document request
       const requests = values.map((item) => {
@@ -83,6 +84,7 @@ const DocumentRequestPage = ({ student_id, request }) => {
           title: item.title,
           description: item.description,
           student_id,
+          requested_date,
         }).unwrap();
       });
 
@@ -109,7 +111,8 @@ const DocumentRequestPage = ({ student_id, request }) => {
   };
 
   const handleStatusChange = async (user_document_id, status) => {
-    const updatedDataStatus = { user_document_id, status };
+    const accepted_date = new Date().toISOString();
+    const updatedDataStatus = { user_document_id, status, accepted_date };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -213,16 +216,19 @@ const DocumentRequestPage = ({ student_id, request }) => {
     {
       title: 'Requested Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
       title: 'Submited Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     {
