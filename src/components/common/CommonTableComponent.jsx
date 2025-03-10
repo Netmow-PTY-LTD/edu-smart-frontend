@@ -9,6 +9,7 @@ const CommonTableComponent = ({
   setCurrentPage,
   perPageData,
   emptyMessage,
+  totalAmount,
 }) => {
   // Pagination logic
   const startIdx = currentPage * perPageData;
@@ -35,18 +36,20 @@ const CommonTableComponent = ({
           <tbody>
             {paginatedData.length > 0 ? (
               paginatedData.map((item, rowIndex) => (
-                <tr key={rowIndex}>
-                  {headers?.length > 0 &&
-                    headers?.map((header) => (
-                      <td key={header?.key}>
-                        {header?.render
-                          ? header?.render(item, rowIndex)
-                          : `${header?.key}` in item
-                            ? item[header?.key]
-                            : '-'}
-                      </td>
-                    ))}
-                </tr>
+                <>
+                  <tr key={rowIndex}>
+                    {headers?.length > 0 &&
+                      headers?.map((header) => (
+                        <td key={header?.key}>
+                          {header?.render
+                            ? header?.render(item, rowIndex)
+                            : `${header?.key}` in item
+                              ? item[header?.key]
+                              : '-'}
+                        </td>
+                      ))}
+                  </tr>
+                </>
               ))
             ) : (
               <tr>
@@ -56,6 +59,28 @@ const CommonTableComponent = ({
               </tr>
             )}
           </tbody>
+          {totalAmount ? (
+            <thead className="fs-2">
+              <tr>
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+                {
+                  <th className="text-uppercase">
+                    {'Total Received Amount :'}
+                  </th>
+                }
+                {
+                  <th>
+                    {totalAmount} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
         </table>
       </div>
 

@@ -1,4 +1,5 @@
 import FileViewer from '@/components/common/FileViewer';
+import ProgressBar from '@/components/common/ProgressBar';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import DescriptionRenderer from '@/utils/DescriptionRenderer';
 import moment from 'moment';
@@ -336,27 +337,33 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+
     {
       title: 'Requested Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
       title: 'Submited Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
       title: 'Accepted Date',
       key: 'accepted_date',
-      render: (item) => (
-        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
+
     // {
     //   title: 'Requester Email',
     //   key: 'email',
@@ -480,16 +487,19 @@ const DataObjectComponent = () => {
     {
       title: 'Requested Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
       title: 'Submited Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     // {
@@ -1572,13 +1582,7 @@ const DataObjectComponent = () => {
     {
       title: 'Invoice No',
       key: 'createdAt',
-      render: (item) => (
-        <div>
-          {item?.createdAt
-            ? `INV-${new Date(item.createdAt).getFullYear().toString().slice(-2)}${(new Date(item.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(item.createdAt).getDate().toString().padStart(2, '0')}-${new Date(item.createdAt).getHours().toString().padStart(2, '0')}${new Date(item.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(item.createdAt).getSeconds().toString().padStart(2, '0')}`
-            : ''}
-        </div>
-      ),
+      render: (item) => <div className="text-uppercase">{item?._id}</div>,
     },
     {
       title: 'Agent Name',
@@ -1603,7 +1607,13 @@ const DataObjectComponent = () => {
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(item?.agent_package?.package?.price || 0).toFixed(2) ?? '-'} {'MYR'}
+          {(
+            item?.agent_package?.package?.price *
+            (item?.coupon_package_duration
+              ? item?.coupon_package_duration.split('_')[0]
+              : item?.agent_package?.package_duration.split('_')[0])
+          ).toFixed(2) ?? '-'}{' '}
+          {'MYR'}
         </div>
       ),
     },
@@ -1611,7 +1621,12 @@ const DataObjectComponent = () => {
       title: 'Discount',
       key: 'discount',
       render: (item) => {
-        const price = item?.agent_package?.package?.price || 0;
+        const price = (
+          item?.agent_package?.package?.price *
+          (item?.coupon_package_duration
+            ? item?.coupon_package_duration.split('_')[0]
+            : item?.agent_package?.package_duration.split('_')[0])
+        ).toFixed(2);
         const paidAmount = item?.paid_amount || 0;
         const discount = price - paidAmount;
         const formattedDiscount = discount.toFixed(2);
@@ -1622,7 +1637,6 @@ const DataObjectComponent = () => {
         );
       },
     },
-
     {
       title: 'Paid',
       key: 'paid_amount',
@@ -1731,58 +1745,14 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?._id
+            ? item?.application?._id
+            : item?.agent_package
+              ? item?.agent_package?.package?.name
+              : '-'}
         </div>
       ),
     },
-    // {
-    //   title: 'Applied By',
-    //   key: 'applied_by',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.applied_by
-    //         ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //         : item?.agent
-    //           ? item?.agent?.first_name + ' ' + item?.agent?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.applied_by?.role
-    //           ? item?.applied_by?.role.split('_').join(' ')
-    //           : item?.agent
-    //             ? item?.agent?.role
-    //             : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   title: 'Paid For',
-    //   key: 'paid_for',
-    //   render: (item) => (
-    //     <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-    //       {item?.application
-    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
-    //         : item?.applied_by
-    //           ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
-    //           : '-'}
-    //       <small className="badge bg-secondary-subtle text-primary ms-3">
-    //         {item?.student?.role
-    //           ? item?.student?.role.split('_').join(' ')
-    //           : ''}
-    //       </small>
-    //     </div>
-    //   ),
-    // },
-
-    // {
-    //   title: 'Course',
-    //   key: 'course',
-    //   render: (item) => (
-    //     <div className="fs-2 fw-medium">
-    //       {item?.application?.course ? item?.application?.course?.name : '-'}
-    //     </div>
-    //   ),
-    // },
     {
       title: 'Received Amount',
       key: 'received_amount',
@@ -1803,7 +1773,11 @@ const DataObjectComponent = () => {
       title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
-        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+        <div>
+          {item?.payment_date
+            ? moment(item?.payment_date).format('DD-MM-YYYY')
+            : '-'}
+        </div>
       ),
     },
     {
@@ -2407,7 +2381,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2425,7 +2399,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2451,7 +2425,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2484,19 +2458,23 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
+
     // {
     //   title: 'Requester Role',
     //   key: 'role',
@@ -2554,7 +2532,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2572,7 +2550,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2598,7 +2576,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2630,25 +2608,29 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
-      render: (item) => (
-        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     // {
     //   title: 'Requester Role',
@@ -2707,7 +2689,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2725,7 +2707,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2751,7 +2733,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2783,18 +2765,21 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     // {
@@ -2854,7 +2839,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2872,7 +2857,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2898,7 +2883,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2930,25 +2915,29 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
-      render: (item) => (
-        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     // {
     //   title: 'Requester Role',
@@ -3426,7 +3415,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3453,7 +3442,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3478,7 +3467,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3500,26 +3489,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested By',
-      key: 'agent',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
-            ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
-                  : ''
-              } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Submitted By',
+      title: 'Sub. By',
       key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3538,17 +3508,46 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requester Role',
-      key: 'role',
+      title: 'Req. By',
+      key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
         </span>
       ),
     },
 
     {
-      title: 'Requester Email',
+      title: 'REQ Role',
+      key: 'role',
+      render: (item) => {
+        const role = item?.requested_by?.role || '-';
+        // Format role by replacing hyphens or underscores
+        const formattedRole = role
+          .split(/[-_]/) // Split by both hyphen and underscore
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+          .join(' ');
+
+        return (
+          <span className="d-flex flex-column text-capitalize">
+            {formattedRole}
+          </span>
+        );
+      },
+    },
+
+    {
+      title: 'REQ Email',
       key: 'email',
       render: (item) => (
         <div>
@@ -3559,18 +3558,20 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     {
@@ -3610,7 +3611,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3636,7 +3637,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3651,7 +3652,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Descriptions',
+      title: 'Description',
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
@@ -3662,7 +3663,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3675,18 +3676,18 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested By',
-      key: 'agent',
+      title: 'Sub. By',
+      key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
             ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
                   : ''
               } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
                   : ''
               }`
             : '-'}
@@ -3694,7 +3695,27 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requester Role',
+      title: 'Req. By',
+      key: 'agent',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : '-'
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : '-'
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'REQ Role',
       key: 'role',
       render: (item) => {
         const role = item?.requested_by?.role || '-';
@@ -3713,7 +3734,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requester Email',
+      title: 'REQ Email',
       key: 'email',
       render: (item) => (
         <div>
@@ -3724,25 +3745,29 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
-      render: (item) => (
-        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
       title: 'Status',
@@ -3780,7 +3805,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3799,7 +3824,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3814,7 +3839,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Descriptions',
+      title: 'Description',
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
@@ -3834,7 +3859,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3848,7 +3873,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested By',
+      title: 'Req. By',
       key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3867,7 +3892,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted By',
+      title: 'Sub. By',
       key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3885,19 +3910,23 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     {
@@ -3937,7 +3966,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3955,7 +3984,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3970,7 +3999,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Descriptions',
+      title: 'Description',
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
@@ -3981,7 +4010,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3994,7 +4023,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested By',
+      title: 'Req. By',
       key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -4013,7 +4042,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted By',
+      title: 'Sub. By',
       key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -4033,26 +4062,31 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
-      render: (item) => (
-        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
+
     {
       title: 'Status',
       key: 'status',
@@ -4186,18 +4220,21 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     {
@@ -4325,25 +4362,29 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
-      render: (item) => (
-        <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     {
@@ -4366,6 +4407,426 @@ const DataObjectComponent = () => {
           }`}
         >
           {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AGENT_YEARLYBONOUS_HEADERS_FOR_SUPER_ADMIN = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || 'N/A'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => {
+        const firstName = item?.agent?.first_name || '';
+        const lastName = item?.agent?.last_name || '';
+        const fullName = `${firstName} ${lastName}`.trim() || '-';
+
+        return (
+          <Link href={`/dashboard/super-admin/agents/${item?.agent?._id}`}>
+            <span className="d-flex flex-column text-capitalize">
+              {fullName}
+            </span>
+          </Link>
+        );
+      },
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <span className="d-flex flex-column">{item?.agent?.email || '-'}</span>
+      ),
+    },
+    // {
+    //   title: 'Amount ',
+    //   key: 'amount',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">{item?.amount || '0'}</span>
+    //   ),
+    // },
+    {
+      title: 'Target Start Date',
+      key: 'start_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.start_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Target End Date',
+      key: 'end_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.end_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Target Status',
+      key: 'target_status',
+      render: (item) => (
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.status === 'active'
+              ? 'bg-success-subtle text-success'
+              : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.status || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Payout Status',
+      key: 'payout_status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.payout_status === 'paid'
+              ? 'bg-third-color text-primary'
+              : item?.payout_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.payout_status || '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AGENT_FAMILYTRIP_HEADERS_FOR_SUPER_ADMIN = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || '-'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => {
+        const firstName = item?.agent?.first_name || '';
+        const lastName = item?.agent?.last_name || '';
+        const fullName = `${firstName} ${lastName}`.trim() || '-';
+
+        return (
+          <Link href={`/dashboard/super-admin/agents/${item?.agent?._id}`}>
+            <span className="d-flex flex-column text-capitalize">
+              {fullName}
+            </span>
+          </Link>
+        );
+      },
+    },
+    {
+      title: 'Email',
+      key: 'email',
+      render: (item) => (
+        <span className="d-flex flex-column">{item?.agent?.email || '-'}</span>
+      ),
+    },
+    // {
+    //   title: 'Package Price ',
+    //   key: 'package_price',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">
+    //       {item?.package?.price || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Duration',
+    //   key: 'package_duration',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.duration || '-'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Start Date',
+      key: 'start_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.start_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'End Date',
+      key: 'end_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.end_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Target Status',
+      key: 'target_status',
+      render: (item) => (
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.status === 'active'
+              ? 'bg-success-subtle text-success'
+              : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.status || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Payout Status',
+      key: 'payout_status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.payout_status === 'paid'
+              ? 'bg-third-color text-primary'
+              : item?.payout_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.payout_status || '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AGENT_FAMILYTRIP_HEADERS = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Price ($)',
+    //   key: 'package_price',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">
+    //       ${item?.package?.price || '-'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Package Duration',
+    //   key: 'package_duration',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.duration || '-'}
+    //     </span>
+    //   ),
+    // },
+    {
+      title: 'Target Start Date',
+      key: 'start_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.start_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Target End Date',
+      key: 'end_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.end_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+
+    {
+      title: 'Target Status',
+      key: 'target_status',
+      render: (item) => (
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
+      ),
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.status === 'active'
+              ? 'bg-success-subtle text-success'
+              : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.status || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Payout Status',
+      key: 'payout_status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.payout_status === 'paid'
+              ? 'bg-third-color text-primary'
+              : item?.payout_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.payout_status || '-'}
+        </span>
+      ),
+    },
+  ];
+  const AGENTYEARLYBONOUSHEADERS = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <span className="d-flex flex-column text-capitalize">{index + 1}</span>
+      ),
+    },
+    // {
+    //   title: 'Package Name',
+    //   key: 'package_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.package?.name || 'N/A'}
+    //     </span>
+    //   ),
+    // },
+    // {
+    //   title: 'Amount ($)',
+    //   key: 'amount',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column">${item?.amount || '0'}</span>
+    //   ),
+    // },
+    {
+      title: 'Target Start Date',
+      key: 'start_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.start_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Target End Date',
+      key: 'end_date',
+      render: (item) => (
+        <span className="d-flex flex-column">
+          {moment(item?.end_date).format('DD-MM-YYYY') || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Target Status',
+      key: 'target_status',
+      render: (item) => (
+        <ProgressBar
+          target={item?.target ?? 0}
+          targetAchieved={item?.target_achieved ?? 0}
+        />
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.status === 'active'
+              ? 'bg-success-subtle text-success'
+              : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.status || '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Payout Status',
+      key: 'payout_status',
+      render: (item) => (
+        <span
+          className={`rounded-4 px-4 py-1 fw-medium text-capitalize ${
+            item?.payout_status === 'paid'
+              ? 'bg-third-color text-primary'
+              : item?.payout_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : 'bg-danger-subtle text-danger'
+          }`}
+        >
+          {item?.payout_status || '-'}
         </span>
       ),
     },
@@ -4429,6 +4890,11 @@ const DataObjectComponent = () => {
     AIR_TICKET_SUBMITTED_TABLE_HEADERS_FOR_STUDENT,
     docRequestTableHeaderDataWithoutActionForSuperAdmin,
     docSubmittedTableHeaderDataWithoutActionForSuperAdmin,
+    docSubmittedTableHeaderDataWithoutAction,
+    AGENT_YEARLYBONOUS_HEADERS_FOR_SUPER_ADMIN,
+    AGENT_FAMILYTRIP_HEADERS_FOR_SUPER_ADMIN,
+    AGENT_FAMILYTRIP_HEADERS,
+    AGENTYEARLYBONOUSHEADERS,
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
   };

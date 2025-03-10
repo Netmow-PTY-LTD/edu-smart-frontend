@@ -276,7 +276,7 @@ const SuperAdminSidebarData = () => {
       subItems: [
         {
           id: 'alldocument',
-          label: 'Document Accepted list',
+          label: 'Accepted Documents',
 
           icon: 'ri-file-fill',
 
@@ -293,7 +293,7 @@ const SuperAdminSidebarData = () => {
         },
         {
           id: 'documentuploadrequest',
-          label: 'Document Request and Submitted List',
+          label: 'Requested & Submitted',
           icon: 'ri-file-list-3-fill',
 
           link:
@@ -309,7 +309,7 @@ const SuperAdminSidebarData = () => {
         },
         {
           id: 'newRequest',
-          label: 'New Document Request',
+          label: 'New Requests',
           icon: 'ri-file-list-3-fill',
 
           link:
@@ -328,7 +328,7 @@ const SuperAdminSidebarData = () => {
 
     {
       id: 'airTicketDocumentuploadrequest',
-      label: 'Air Ticket Doc  Request',
+      label: 'Air Ticket Request',
       icon: 'ri-ticket-2-line',
       style: `${customeData.hideforaccountant}`,
       link:

@@ -136,9 +136,16 @@ const PackagePageInSuperAdmin = () => {
   // add package handler
   const handleAddSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
+
+    const durationValue = values?.duration?.split('_')[0];
+    const totalAmount = durationValue * values?.price;
+
     const editData = {
       ...values,
+      total_package_price: totalAmount,
     };
+
+    // console.log(editData);
 
     try {
       const finalData = new FormData();
@@ -165,9 +172,19 @@ const PackagePageInSuperAdmin = () => {
   // update  package handler
   const handleUpdateSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
+
+    const durationValue = values?.duration?.value
+      ? values?.duration?.value?.split('_')[0]
+      : values?.duration.split('_')[0];
+
+    const totalAmount = durationValue * values?.price;
+
+    // console.log(totalAmount);
+
     const editData = {
       name: values?.name || '',
       price: values?.price || 0,
+      total_package_price: totalAmount || 0,
       monthly_minimum_files: values?.monthly_minimum_files || 0,
       duration: values?.duration?.value || values?.duration || '',
       yearly_bonus: values?.yearly_bonus?.value
