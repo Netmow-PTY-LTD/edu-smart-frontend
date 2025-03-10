@@ -3042,7 +3042,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3069,7 +3069,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3094,7 +3094,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3116,26 +3116,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested By',
-      key: 'agent',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
-            ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
-                  : ''
-              } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Submitted By',
+      title: 'Sub. By',
       key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3154,17 +3135,46 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requester Role',
-      key: 'role',
+      title: 'Req. By',
+      key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.role ? item?.requested_by?.role : '-'}
+          {item?.requested_by?.first_name && item?.requested_by?.last_name
+            ? `${
+                item?.requested_by?.first_name
+                  ? item?.requested_by?.first_name
+                  : ''
+              } ${
+                item?.requested_by?.last_name
+                  ? item?.requested_by?.last_name
+                  : ''
+              }`
+            : '-'}
         </span>
       ),
     },
 
     {
-      title: 'Requester Email',
+      title: 'REQ Role',
+      key: 'role',
+      render: (item) => {
+        const role = item?.requested_by?.role || '-';
+        // Format role by replacing hyphens or underscores
+        const formattedRole = role
+          .split(/[-_]/) // Split by both hyphen and underscore
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+          .join(' ');
+
+        return (
+          <span className="d-flex flex-column text-capitalize">
+            {formattedRole}
+          </span>
+        );
+      },
+    },
+
+    {
+      title: 'REQ Email',
       key: 'email',
       render: (item) => (
         <div>
@@ -3175,14 +3185,14 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => (
         <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
       render: (item) => (
         <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
@@ -3226,7 +3236,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3252,7 +3262,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3267,7 +3277,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Descriptions',
+      title: 'Description',
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
@@ -3278,7 +3288,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3291,7 +3301,26 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested By',
+      title: 'Sub. By',
+      key: 'submitted_by',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
+            ? `${
+                item?.submitted_by?.first_name
+                  ? item?.submitted_by?.first_name
+                  : ''
+              } ${
+                item?.submitted_by?.last_name
+                  ? item?.submitted_by?.last_name
+                  : ''
+              }`
+            : '-'}
+        </span>
+      ),
+    },
+    {
+      title: 'Req. By',
       key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3309,8 +3338,9 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+
     {
-      title: 'Requester Role',
+      title: 'REQ Role',
       key: 'role',
       render: (item) => {
         const role = item?.requested_by?.role || '-';
@@ -3329,7 +3359,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requester Email',
+      title: 'REQ Email',
       key: 'email',
       render: (item) => (
         <div>
@@ -3340,21 +3370,21 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => (
         <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
       render: (item) => (
         <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
       render: (item) => (
         <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>
@@ -3396,7 +3426,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3415,7 +3445,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3430,7 +3460,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Descriptions',
+      title: 'Description',
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
@@ -3450,7 +3480,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3464,7 +3494,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested By',
+      title: 'Req. By',
       key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3483,7 +3513,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted By',
+      title: 'Sub. By',
       key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3502,14 +3532,14 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => (
         <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
       render: (item) => (
         <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
@@ -3553,7 +3583,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3571,7 +3601,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -3586,7 +3616,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Descriptions',
+      title: 'Description',
       key: 'description',
       render: (item) => (
         <DescriptionRenderer
@@ -3597,7 +3627,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -3610,7 +3640,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested By',
+      title: 'Req. By',
       key: 'agent',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3629,7 +3659,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Submitted By',
+      title: 'Sub. By',
       key: 'submitted_by',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -3649,21 +3679,21 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => (
         <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
       render: (item) => (
         <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
       ),
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
       render: (item) => (
         <div>{moment(item?.accepted_date).format('DD-MM-YYYY') ?? '-'}</div>

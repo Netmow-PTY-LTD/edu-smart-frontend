@@ -328,7 +328,7 @@ const SuperAdminSidebarData = () => {
 
     {
       id: 'airTicketDocumentuploadrequest',
-      label: 'Air Ticket Doc  Request',
+      label: 'Air Ticket Request',
       icon: 'ri-ticket-2-line',
       style: `${customeData.hideforaccountant}`,
       link:

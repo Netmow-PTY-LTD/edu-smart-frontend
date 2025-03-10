@@ -224,9 +224,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
               >
                 Create Request
               </button>
-              <h3 className="fs-1 fw-semibold">
-                All Student Air Ticket Document Upload Requests from Agent
-              </h3>
+              <h3 className="fs-1 fw-semibold">Air Ticket Requests</h3>
               <SearchComponent
                 searchTerm={searchTermForRequest}
                 handleSearchChange={handleSearchChangeForRequest}
@@ -269,9 +267,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
           </Card>
           <Card>
             <CardHeader>
-              <h3 className="fs-1 fw-semibold">
-                All Student Air Ticket Document Submission Table
-              </h3>
+              <h3 className="fs-1 fw-semibold">Air Ticket Submitted</h3>
               <SearchComponent
                 searchTerm={searchTermForSubmitedData}
                 handleSearchChange={handleSearchChangeForSubmittedData}
