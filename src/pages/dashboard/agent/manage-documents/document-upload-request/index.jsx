@@ -120,11 +120,12 @@ const StudentDocumentUploadRquestForAgent = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
+    const submited_date = new Date().toISOString();
     const updatedata = {
       ...values,
       user_document_id: docId,
       status: 'submitted',
+      submited_date,
     };
 
     try {
