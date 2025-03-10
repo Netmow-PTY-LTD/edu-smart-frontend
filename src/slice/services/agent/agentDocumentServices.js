@@ -60,6 +60,16 @@ export const agentDocumentServices = createApi({
         };
       },
     }),
+    submittDocumentForAgent: builder.mutation({
+      query: (body) => {
+        const user_document_id = body?.get('user_document_id');
+        return {
+          url: `/document/${user_document_id}`,
+          method: 'PATCH',
+          body,
+        };
+      },
+    }),
     //-------------------- User or Student Base End Point ------------------------
     createUserAirTicketDocRequestForAgent: builder.mutation({
       query: (body) => {
@@ -112,4 +122,5 @@ export const {
   useUpdateUserAirTicketDocStatusForAgentMutation,
   useGetAllUserAirTicketDocSubmitedFilestForAgentQuery,
   useGetSingleUserAirTicketDocSubmitedFilestForAgentQuery,
+  useSubmittDocumentForAgentMutation,
 } = agentDocumentServices;

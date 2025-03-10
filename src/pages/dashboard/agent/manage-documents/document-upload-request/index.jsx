@@ -4,6 +4,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import SingleDocUploadForm from '@/components/StudentDashboard/components/SingleDocUploadForm';
+import { useSubmittDocumentForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
 import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import { useUpdateSingleDocumentForStudentMutation } from '@/slice/services/student/studentSubmitDocumentService';
 import DataObjectComponent from '@/utils/common/data';
@@ -37,6 +38,7 @@ const StudentDocumentUploadRquestForAgent = () => {
   //  -------- temoporary add this api it will change able
   const [submitSingleDocumentForStudent] =
     useUpdateSingleDocumentForStudentMutation();
+  const [submitSingleDocumentForAgent] = useSubmittDocumentForAgentMutation();
 
   const validationSchema = Yup.object({
     document: Yup.array()
@@ -121,7 +123,7 @@ const StudentDocumentUploadRquestForAgent = () => {
 
     const updatedata = {
       ...values,
-      id: docId,
+      user_document_id: docId,
       status: 'submitted',
     };
 
@@ -138,7 +140,7 @@ const StudentDocumentUploadRquestForAgent = () => {
           finalData.append(key, value);
         }
       });
-      const result = await submitSingleDocumentForStudent(finalData).unwrap();
+      const result = await submitSingleDocumentForAgent(finalData).unwrap();
       if (result) {
         toast.success(result?.message);
         allDocumentRequestForAgentRefetch();
@@ -190,11 +192,10 @@ const StudentDocumentUploadRquestForAgent = () => {
                 <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
-                  headers={docRequestTableHeaderDataWithoutAction}
-                  // headers={[
-                  //   ...docRequestTableHeaderDataWithoutAction,
-                  //   ...uploadAction,
-                  // ]}
+                  headers={[
+                    ...docRequestTableHeaderDataWithoutAction,
+                    ...uploadAction,
+                  ]}
                   data={isFilteredData ? isFilteredData : []}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
