@@ -1,3 +1,4 @@
+import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -11,10 +12,14 @@ const AgentSidebarData = () => {
   const [isStudentManagement, setIsStudentManagement] = useState(false);
   const [isUinversityManagement, setIsUinversityManagement] = useState(false);
   const [isInvoices, setIsInvoices] = useState(false);
+  const [earnings, setEarnings] = useState(false);
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [isSettings, setIsSettings] = useState(false);
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
   const [isPaymentReport, setIsPaymentReport] = useState(false);
+
+  const customeData = useCustomData();
+  const paneltext = customeData.paneltext;
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
@@ -55,6 +60,9 @@ const AgentSidebarData = () => {
     if (iscurrentState !== 'My Profile') {
       setIsMyProfile(false);
     }
+    if (iscurrentState !== 'Earnings') {
+      setEarnings(false);
+    }
     if (iscurrentState !== 'Settings') {
       setIsSettings(false);
     }
@@ -67,6 +75,7 @@ const AgentSidebarData = () => {
     isMyProfile,
     isSettings,
     isUinversityManagement,
+    earnings,
   ]);
 
   const menuItems = [
@@ -258,11 +267,41 @@ const AgentSidebarData = () => {
       icon: 'ri-ticket-2-line',
       link: '/dashboard/agent/manage-air-ticket/air-ticket-upload-request',
     },
+    // {
+    //   id: 'earnings',
+    //   label: 'Earnings',
+    //   icon: 'ri-dashboard-2-line',
+    //   link: '/dashboard/agent/earnings',
+    // },
     {
       id: 'earnings',
       label: 'Earnings',
       icon: 'ri-dashboard-2-line',
-      link: '/dashboard/agent/earnings',
+      link: '/#',
+      click: function (e) {
+        e.preventDefault();
+        setEarnings(!earnings);
+        setIscurrentState('Earnings');
+      },
+      stateVariables: earnings,
+      subItems: [
+        {
+          id: 'total-paid-amount',
+          label: 'Total Paid Amount',
+          icon: 'ri-money-rupee-circle-line',
+          link: '/dashboard/' + `${paneltext}` + '/total-paid-amount',
+          pathName: '/dashboard/' + `${paneltext}` + '/total-paid-amount',
+          parentId: 'earnings',
+        },
+        {
+          id: 'total-pending-amount',
+          label: 'Total Pending Amount',
+          icon: 'ri-money-rupee-circle-line',
+          link: '/dashboard/' + `${paneltext}` + '/total-pending-amount',
+          pathName: '/dashboard/' + `${paneltext}` + '/total-pending-amount',
+          parentId: 'earnings',
+        },
+      ],
     },
     {
       id: 'familyTrip',

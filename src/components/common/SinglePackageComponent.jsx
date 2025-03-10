@@ -56,7 +56,7 @@ const SinglePackageComponent = ({
           <p>
             <span>MYR</span>
             <small className="ms-3 text-primary">{data?.price}</small>
-            <small className="text-capitalize">/{data?.duration}</small>
+            <small className="text-capitalize">/{data?.duration.split('_').join(' ')}</small>
           </p>
         </div>
 
