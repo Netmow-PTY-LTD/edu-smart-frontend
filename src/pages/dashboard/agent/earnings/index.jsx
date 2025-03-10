@@ -14,7 +14,7 @@ export default function Earnings() {
   const { data: earningData, isLoading: earningLoading } =
     useGetEarningsQuery();
 
-  const { agentEarnigsHeaders } = DataObjectComponent();
+  const { agentEarnigsHeaders = [] } = DataObjectComponent();
 
   return (
     <Layout>

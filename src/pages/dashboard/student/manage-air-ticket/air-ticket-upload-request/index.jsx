@@ -114,12 +114,14 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
 
   // Form Submission
   const handleSubmit = async (values, { setSubmitting }) => {
+    const submited_date = new Date().toISOString();
     try {
       const formData = new FormData();
       Object.entries({
         ...values,
         id: modalState.docId,
         status: 'submitted',
+        submited_date,
       }).forEach(([key, value]) => {
         if (key === 'document' && Array.isArray(value)) {
           value.forEach((item) => formData.append(key, item));
