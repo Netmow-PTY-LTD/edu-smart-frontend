@@ -3381,7 +3381,7 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div>
           {item?.payment_reason === 'application_emgs'
-            ? item?.application?.emgs_fee_amount + ' ' + 'MYR'
+            ? item?.emgs_fee_paid_amount + ' ' + 'MYR'
             : '-'}
         </div>
       ),
@@ -3393,7 +3393,10 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div>
           {item?.tuition_fee_paid_amount
-            ? item?.tuition_fee_paid_amount + ' ' + 'MYR'
+            ? item?.application?.course?.tuition_fee -
+              item?.application?.emgs_fee_amount +
+              ' ' +
+              'MYR'
             : '-'}
         </div>
       ),
