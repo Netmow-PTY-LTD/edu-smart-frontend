@@ -14,7 +14,7 @@ const ApplicationPaymentForAgent = () => {
   const [applicationPaymentData, setApplicationPaymentData] = useState('');
   const perPageData = 10;
 
-  const { applicationPaymentHeadersWithoutAction } = DataObjectComponent();
+  const { applicationPaymentHeadersAgent = [] } = DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
@@ -26,11 +26,14 @@ const ApplicationPaymentForAgent = () => {
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  // Filter data for search option
   const filteredData = getApplicationPaymentData?.data?.filter((item) => {
-    const fullName =
-      `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
-    return fullName?.includes(searchTerm.toLowerCase());
+    if (item?.payment_reason !== 'application_incentive') {
+      const fullName =
+        `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
+
+      return fullName.includes(searchTerm.toLowerCase());
+    }
+    return false;
   });
 
   return (
@@ -55,7 +58,7 @@ const ApplicationPaymentForAgent = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={[...applicationPaymentHeadersWithoutAction]}
+                    headers={applicationPaymentHeadersAgent}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

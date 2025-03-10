@@ -64,6 +64,7 @@ const DashBoardLayout = (props) => {
           '/dashboard/admission-manager',
           '/dashboard/admission-manager/recent-application',
           '/dashboard/admission-manager/manage-air-ticket/air-ticket-upload-request',
+          '/dashboard/admission-manager/airport-pickup-request',
           '/dashboard/admission-manager/agents',
           '/dashboard/admission-manager/students',
           '/dashboard/admission-manager/settings/profile',

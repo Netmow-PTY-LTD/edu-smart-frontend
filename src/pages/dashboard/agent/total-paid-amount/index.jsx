@@ -5,17 +5,18 @@ import Layout from '@/components/layout';
 import { useGetApplicationPaymentReportQuery } from '@/slice/services/common/paymentReportServices';
 import DataObjectComponent from '@/utils/common/data';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
-const ApplicationPaymentForStudent = () => {
+const TotalAgentPayoutInAgent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const [applicationPaymentData, setApplicationPaymentData] = useState('');
-  const perPageData = 10;
+  const [allPaymentData, setAllPaymentData] = useState([]);
+  const perPageData = 15;
 
-  const { applicationPaymentHeadersStudent = [] } = DataObjectComponent();
+  const { TotalAgentPaidPayoutReportHeadersDataForAgent } =
+    DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
@@ -24,18 +25,27 @@ const ApplicationPaymentForStudent = () => {
     refetch: getApplicationPaymentDataRefetch,
   } = useGetApplicationPaymentReportQuery();
 
+  useEffect(() => {
+    const newData = getApplicationPaymentData?.data.filter(
+      (item) =>
+        item?.payment_reason === 'application_tuition_fee' &&
+        item?.application?.course?.auto_deduct === true
+    );
+    setAllPaymentData(newData);
+  }, [getApplicationPaymentData]);
+
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  const filteredData = getApplicationPaymentData?.data?.filter((item) => {
-    if (item?.payment_reason !== 'application_incentive') {
-      const fullName =
-        `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
-
-      return fullName.includes(searchTerm.toLowerCase());
-    }
-    return false;
+  // Filter data for search option
+  const filteredData = allPaymentData?.filter((item) => {
+    const fullName =
+      `${item?.payment_reason?.split('_').join(' ')}`.toLowerCase();
+    return fullName?.includes(searchTerm.toLowerCase());
   });
+
+
+  console.log(allPaymentData);
 
   return (
     <Layout>
@@ -49,9 +59,8 @@ const ApplicationPaymentForStudent = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Application Payment Report
+                    Total Paid Agent Payout
                   </div>
-
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
@@ -60,7 +69,7 @@ const ApplicationPaymentForStudent = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={applicationPaymentHeadersStudent}
+                    headers={TotalAgentPaidPayoutReportHeadersDataForAgent}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
@@ -79,4 +88,4 @@ const ApplicationPaymentForStudent = () => {
   );
 };
 
-export default ApplicationPaymentForStudent;
+export default TotalAgentPayoutInAgent;

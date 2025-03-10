@@ -101,13 +101,13 @@ const AgentDashboard = () => {
                         }
                       />
                     </Col>
-                    <Col xl={12}>
+                    {/* <Col xl={12}>
                       <LatestRegistered
                         tableHead={'Agents Earnings'}
                         headers={[...agentEarnigsHeaders]}
                         data={earningData?.data || []}
                       />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               </Col>

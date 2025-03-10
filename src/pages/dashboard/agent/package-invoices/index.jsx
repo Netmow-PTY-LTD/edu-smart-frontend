@@ -106,7 +106,7 @@ const PackageInvoiceForSuperAdmin = () => {
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
                   <div className="text-primary fw-semibold fs-2">
-                    Package Payment Report
+                    Package Payment Invoices
                   </div>
                   <SearchComponent
                     searchTerm={searchTerm}
