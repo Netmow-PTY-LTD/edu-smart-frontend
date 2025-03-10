@@ -2417,7 +2417,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2435,7 +2435,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2461,7 +2461,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2494,7 +2494,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => {
         const date = item?.requested_date ? moment(item.requested_date) : null;
@@ -2502,7 +2502,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
 
       render: (item) => {
@@ -2568,7 +2568,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2586,7 +2586,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2612,7 +2612,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2644,7 +2644,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => {
         const date = item?.requested_date ? moment(item.requested_date) : null;
@@ -2652,7 +2652,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
 
       render: (item) => {
@@ -2661,7 +2661,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
       render: (item) => {
         const date = item?.accepted_date ? moment(item.accepted_date) : null;
@@ -2725,7 +2725,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2743,7 +2743,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2769,7 +2769,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2801,7 +2801,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => {
         const date = item?.requested_date ? moment(item.requested_date) : null;
@@ -2809,7 +2809,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
 
       render: (item) => {
@@ -2875,7 +2875,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Student Name',
+      title: 'Student',
       key: 'user',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -2893,7 +2893,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Doc Title',
+      title: 'Title',
       key: 'title',
       render: (item) => {
         const newTitle = item?.title?.replace(/_/g, ' ');
@@ -2919,7 +2919,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -2951,7 +2951,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Requested Date',
+      title: 'Req. Date',
       key: 'requested_date',
       render: (item) => {
         const date = item?.requested_date ? moment(item.requested_date) : null;
@@ -2959,7 +2959,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Submited Date',
+      title: 'Sub. Date',
       key: 'submited_date',
 
       render: (item) => {
@@ -2968,7 +2968,7 @@ const DataObjectComponent = () => {
       },
     },
     {
-      title: 'Accepted Date',
+      title: 'Acc. Date',
       key: 'accepted_date',
       render: (item) => {
         const date = item?.accepted_date ? moment(item.accepted_date) : null;
