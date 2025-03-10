@@ -94,6 +94,8 @@ const PackageInvoiceForSuperAdmin = () => {
     window.print();
   };
 
+  console.log(filteredData);
+
   return (
     <Layout>
       <div className="page-content">
@@ -148,11 +150,14 @@ const PackageInvoiceForSuperAdmin = () => {
               subtotal={
                 getSinglePackagePaymentReportData?.data?.agent_package?.package
                   ?.price *
-                  getSinglePackagePaymentReportData?.data?.coupon?.package_duration.split(
-                    '_'
-                  )[0] ||
-                getSinglePackagePaymentReportData?.data?.agent_package?.package
-                  ?.price
+                (getSinglePackagePaymentReportData?.data
+                  ?.coupon_package_duration
+                  ? getSinglePackagePaymentReportData?.data?.coupon_package_duration.split(
+                      '_'
+                    )[0]
+                  : getSinglePackagePaymentReportData?.data?.agent_package?.package_duration.split(
+                      '_'
+                    )[0])
               }
               total={getSinglePackagePaymentReportData?.data?.paid_amount}
               currency={'MYR'}

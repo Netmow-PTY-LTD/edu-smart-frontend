@@ -88,11 +88,14 @@ const PackageModal = ({
               {({ isSubmitting, values, setFieldValue, resetForm }) => (
                 <Form>
                   <Row>
-                    <Col xl={6}>
+                    <Col xl={4}>
                       <TextField label="Package Name" name="name" />
                     </Col>
-                    <Col xl={6}>
-                      <NumberField label="Package Price" name="price" />
+                    <Col xl={4}>
+                      <NumberField label="Monthly Package Price" name="price" />
+                    </Col>
+                    <Col xl={4}>
+                      <NumberField label="Commission (%)" name="commission" />
                     </Col>
                     <Col xl={4}>
                       <SingleSelectField
@@ -101,15 +104,34 @@ const PackageModal = ({
                         options={durationOptions}
                       />
                     </Col>
+
+                    <Col xl={4}>
+                      <div className="mb-3">
+                        <label className="form-label fs-2 mb-3">
+                          {'Total Package Price'}
+                        </label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          value={
+                            values?.duration?.value
+                              ? values?.duration?.value.split('_')[0] *
+                                values?.price
+                              : values?.duration &&
+                                typeof values?.duration === 'string' &&
+                                values?.duration.split('_')[0] * values?.price
+                          }
+                          readOnly
+                        />
+                      </div>
+                    </Col>
                     <Col xl={4}>
                       <NumberField
                         label="Monthly Minimum Files Target"
                         name="monthly_minimum_files"
                       />
                     </Col>
-                    <Col xl={4}>
-                      <NumberField label="Commission (%)" name="commission" />
-                    </Col>
+
                     <Col xl={4}>
                       <SingleSelectField
                         name={'yearly_bonus'}

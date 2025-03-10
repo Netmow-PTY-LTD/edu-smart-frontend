@@ -162,11 +162,7 @@ const PackageInvoiceComponent = ({
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Invoice No
                       </p>
-                      <p className="mb-0">
-                        {invoice_no?.createdAt
-                          ? `INV-${new Date(invoice_no.createdAt).getFullYear().toString().slice(-2)}${(new Date(invoice_no.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getDate().toString().padStart(2, '0')}-${new Date(invoice_no.createdAt).getHours().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getSeconds().toString().padStart(2, '0')}`
-                          : ''}
-                      </p>
+                      <p className="mb-0 text-uppercase">{invoice_no?._id}</p>
                     </Col>
                     <Col lg={3} xs={3}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
@@ -217,9 +213,9 @@ const PackageInvoiceComponent = ({
                           <th scope="col">SL</th>
                           <th scope="col">Package Name</th>
                           <th scope="col">Package Duration</th>
+                          <th scope="col">Monthly Duration</th>
                           <th scope="col">Coupon</th>
                           <th scope="col">Package Price</th>
-                          <th scope="col">Duration</th>
                           <th scope="col">Total Price</th>
                         </tr>
                       </thead>
@@ -253,14 +249,40 @@ const PackageInvoiceComponent = ({
                                           item.agent_package.end_date
                                         ).toDateString()
                                       : '-'}
+                                    {}
                                   </h3>
                                 </td>
-
                                 <td>
-                                  <h3 className=" my-1 fw-normal">
-                                    {item?.coupon?._id
-                                      ? item?.coupon?.code
-                                      : '-'}
+                                  <h3 className=" my-1 fw-normal text-capitalize">
+                                    <h3>
+                                      {item?.coupon?.package_duration
+                                        ? item?.coupon?.package_duration
+                                            .split('_')
+                                            .join(' ')
+                                        : item?.agent_package?.package_duration
+                                          ? item?.agent_package?.package_duration
+                                              .split('_')
+                                              .join(' ')
+                                          : '-'}{' '}
+                                    </h3>
+                                  </h3>
+                                </td>
+                                <td>
+                                  <h3 className="my-1 fw-normal d-flex align-items-center justify-content-center">
+                                    {item?.coupon ? (
+                                      <>
+                                        {item?.coupon?._id
+                                          ? item?.coupon?.code
+                                          : '-'}
+                                        <small className="ms-2 badge bg-secondary-subtle text-secondary">
+                                          {item?.coupon?.discount_percentage
+                                            ? `${item?.coupon?.discount_percentage}%`
+                                            : '-'}
+                                        </small>
+                                      </>
+                                    ) : (
+                                      '-'
+                                    )}
                                   </h3>
                                 </td>
 
@@ -277,27 +299,17 @@ const PackageInvoiceComponent = ({
                                 </td>
 
                                 <td>
-                                  <h3 className=" my-1 fw-normal text-capitalize">
-                                    <h3>
-                                      {item?.coupon?.package_duration
-                                        ? item?.coupon?.package_duration
-                                            .split('_')
-                                            .join(' ')
-                                        : '-'}{' '}
-                                    </h3>
-                                  </h3>
-                                </td>
-
-                                <td>
                                   <h3 className="my-1 fw-normal">
                                     {(() => {
                                       return (
                                         item?.agent_package?.package?.price *
-                                          item?.coupon?.package_duration.split(
-                                            '_'
-                                          )[0] ||
-                                        item?.agent_package?.package?.price ||
-                                        0
+                                        (item?.coupon_package_duration
+                                          ? item?.coupon_package_duration.split(
+                                              '_'
+                                            )[0]
+                                          : item?.agent_package?.package_duration.split(
+                                              '_'
+                                            )[0])
                                       ).toFixed(2);
                                     })()}{' '}
                                     {currency}
@@ -326,12 +338,33 @@ const PackageInvoiceComponent = ({
                         <tr className="border-top border-top-dashed">
                           <th scope="row">Discount :</th>
                           <th className="text-end">
-                            {(
-                              (subtotal *
-                                paymentData?.coupon?.discount_percentage) /
-                                100 || 0
-                            ).toFixed(2)}{' '}
-                            {currency}
+                            {(() => {
+                              const price = (
+                                paymentData?.agent_package?.package?.price *
+                                (paymentData?.coupon_package_duration
+                                  ? paymentData?.coupon_package_duration.split(
+                                      '_'
+                                    )[0]
+                                  : paymentData?.agent_package?.package_duration.split(
+                                      '_'
+                                    )[0])
+                              ).toFixed(2);
+
+                              const paidAmount = paymentData?.paid_amount || 0;
+                              const discount = price - paidAmount;
+                              const formattedDiscount = discount.toFixed(2);
+
+                              return (
+                                <div>
+                                  {`${formattedDiscount}`} {currency}
+                                </div>
+                              );
+                            })()}
+                            {/* {(
+    (subtotal *
+      paymentData?.coupon?.discount_percentage) /
+      100 || 0
+  ).toFixed(2)}{' '} */}
                           </th>
                         </tr>
 
