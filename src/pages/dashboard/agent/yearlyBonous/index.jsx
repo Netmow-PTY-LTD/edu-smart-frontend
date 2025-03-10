@@ -1,11 +1,8 @@
 import CommonTableComponent from '@/components/common/CommonTableComponent';
-import ProgressBar from '@/components/common/ProgressBar';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useGetAgentYearlyBonusQuery } from '@/slice/services/agent/agentEarningsService';
 import DataObjectComponent from '@/utils/common/data';
-
-import moment from 'moment';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import {
@@ -16,18 +13,17 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Progress,
   Row,
   UncontrolledDropdown,
 } from 'reactstrap';
 
 export default function AgentYarlyBonous() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
 
   const { data: yearlyBonous, isLoading: yearlyBonousLoading } =
     useGetAgentYearlyBonusQuery();
-  const router = useRouter();
   const { AGENTYEARLYBONOUSHEADERS = [] } = DataObjectComponent();
 
   const AGENTYEARLYBONOUSHEADERS_ACTION = [

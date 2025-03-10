@@ -213,16 +213,19 @@ const DocumentRequestPage = ({ student_id, request }) => {
     {
       title: 'Requested Date',
       key: 'requested_date',
-      render: (item) => (
-        <div>{moment(item?.requested_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
     {
       title: 'Submited Date',
       key: 'submited_date',
-      render: (item) => (
-        <div>{moment(item?.submited_date).format('DD-MM-YYYY') ?? '-'}</div>
-      ),
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
     },
 
     {
