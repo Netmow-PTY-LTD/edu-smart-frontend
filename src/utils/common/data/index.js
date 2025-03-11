@@ -3536,8 +3536,185 @@ const DataObjectComponent = () => {
       ),
     },
   ];
-
   const AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+
+    {
+      title: 'Student',
+      key: 'user',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.user?.first_name && item?.user?.last_name ? (
+            <Link
+              href={
+                userInfoData?.data?.role === 'agent'
+                  ? `/dashboard/agent/student-management/single-student-for-agent/${item?.user?._id}?tab=6`
+                  : userInfoData?.data?.role === 'super_admin'
+                    ? `/dashboard/super-admin/students/${item?.user?._id}?tab=6`
+                    : userInfoData?.data?.role === 'admission_manager'
+                      ? `/dashboard/admission-manager/students/${item?.user?._id}?tab=6`
+                      : ''
+              }
+              className="text-primary text-decoration-none"
+            >
+              {`${item?.user?.first_name} ${item?.user?.last_name}`}
+            </Link>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+
+    {
+      title: 'Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          {item?.files && item?.files.length > 0 ? (
+            <FileViewer files={item?.files && item?.files} />
+          ) : (
+            'No submission files yet'
+          )}
+        </div>
+      ),
+    },
+    {
+      title: 'Req. By',
+      key: 'requested_by',
+
+      render: (item) => {
+        const firstName = item?.requested_by?.first_name;
+        const lastName = item?.requested_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.requested_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.requested_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span>-</span>;
+        }
+      },
+    },
+    {
+      title: 'Req. Date',
+      key: 'requested_date',
+
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+    {
+      title: 'Sub. By',
+      key: 'submitted_by',
+
+      render: (item) => {
+        const firstName = item?.submitted_by?.first_name;
+        const lastName = item?.submitted_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.submitted_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.submitted_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span>-</span>;
+        }
+      },
+    },
+    {
+      title: 'Sub. Date',
+      key: 'submited_date',
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
+  const AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN = [
     {
       title: 'SN',
       key: 'sn',
@@ -4844,6 +5021,7 @@ const DataObjectComponent = () => {
     AGENTYEARLYBONOUSHEADERS,
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
+    AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN,
   };
 };
 

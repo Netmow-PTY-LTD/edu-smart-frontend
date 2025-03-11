@@ -11,7 +11,7 @@ import {
 } from '@/slice/services/agent/agentDocumentServices';
 import { useGetAllStudentsAirticketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -27,8 +27,12 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
+  const [searchTermForAcceptedData, setSearchTermForAcceptedData] =
+    useState('');
   const [currentPageForRequest, setCurrentPageForRequest] = useState(0);
   const [currentPageForSubmittedData, setCurrentPageForSubmittedData] =
+    useState(0);
+  const [currentPageForAcceptedData, setCurrentPageForAcceptedData] =
     useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
@@ -43,6 +47,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   const {
     AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN = [],
     AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN = [],
+    AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN = [],
   } = DataObjectComponent();
 
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
@@ -69,29 +74,86 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
     useUpdateUserAirTicketDocStatusForAgentMutation();
   const [createDocumentRequest] =
     useCreateUserAirTicketDocRequestForAgentMutation();
+
+  // Memoized Data Processing
+  const { submittedDocData, requestedDocData } = useMemo(
+    () => ({
+      submittedDocData:
+        allDocumentRequestForAgentData?.data?.filter(
+          (item) => item.status === 'submitted'
+        ) || [],
+      requestedDocData:
+        allDocumentRequestForAgentData?.data?.filter(
+          (item) => item.status === 'requested' || item.status === 'rejected'
+        ) || [],
+    }),
+    [allDocumentRequestForAgentData]
+  );
+
   //  search input change function
   const handleSearchChangeForRequest = (e) =>
     setSearchTermForRequest(e.target.value);
   const handleSearchChangeForSubmittedData = (e) =>
     setSearchTermForSubmitedData(e.target.value);
+  const handleSearchChangeForAcceptedData = (e) =>
+    setSearchTermForAcceptedData(e.target.value);
 
   // Filter data for search option
-  const isfilteredData =
-    allDocumentRequestForAgentData?.data?.length > 0 &&
-    allDocumentRequestForAgentData?.data.filter((item) =>
+  const isfilteredDataForRequested =
+    requestedDocData?.length > 0 &&
+    requestedDocData?.filter((item) =>
       item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
     );
-
   // Filter data for search option
   const isfilteredDataForSubmittedData =
-    allAirTicketDocumentSubmittedDataForAgentData?.data?.length > 0 &&
-    allAirTicketDocumentSubmittedDataForAgentData?.data.filter((item) =>
+    submittedDocData?.length > 0 &&
+    submittedDocData?.filter((item) =>
       item?.title
         ?.toLowerCase()
         .includes(searchTermForSubmitedData.toLowerCase())
     );
 
   // Validation
+  const deepSearch = (obj, searchTerm) => {
+    if (!obj) return false;
+
+    // Convert search term to lowercase and split into words
+    const searchWords = searchTerm.toLowerCase().split(' ');
+
+    // Function to check if all words exist in object data
+    const containsAllWords = (value) => {
+      if (typeof value === 'string') {
+        const lowerValue = value.toLowerCase();
+        return searchWords.every((word) => lowerValue.includes(word));
+      }
+      return false;
+    };
+
+    // If obj is a string, check if it contains all words
+    if (containsAllWords(obj)) {
+      return true;
+    }
+
+    // If obj is an array, recursively search in each element
+    if (Array.isArray(obj)) {
+      return obj.some((item) => deepSearch(item, searchTerm));
+    }
+
+    // If obj is an object, recursively search in each property
+    if (typeof obj === 'object') {
+      return Object.values(obj).some((value) => deepSearch(value, searchTerm));
+    }
+
+    return false;
+  };
+
+  // Filtering the data based on search term
+  const isfilteredDataForAcceptedData =
+    allAirTicketDocumentSubmittedDataForAgentData?.data?.length > 0
+      ? allAirTicketDocumentSubmittedDataForAgentData.data.filter((item) =>
+          deepSearch(item, searchTermForAcceptedData)
+        )
+      : [];
 
   const validationSchema = Yup.object().shape({
     student_id: Yup.string().required('Applicant Student is required'), // Ensure student_id is required
@@ -223,6 +285,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
       <div className="page-content">
         <ToastContainer />
         <div className="h-100">
+          {/* reqested doc */}
           <Card>
             <CardHeader>
               <button
@@ -257,11 +320,10 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
                 <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
-                  headers={[
-                    ...AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN,
-                    ...HEADER_ACTION_FOR_SUPER,
-                  ]}
-                  data={isfilteredData ? isfilteredData : []}
+                  headers={[...AIRTICKET_REQUEST_HEADER_FOR_SUPERADMIN]}
+                  data={
+                    isfilteredDataForRequested ? isfilteredDataForRequested : []
+                  }
                   currentPage={currentPageForRequest}
                   setCurrentPage={setCurrentPageForRequest}
                   perPageData={perPageDataForRequest}
@@ -272,12 +334,51 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
               )}
             </CardBody>
           </Card>
+
+          {/* submitted doc */}
           <Card>
             <CardHeader>
               <h3 className="fs-1 fw-semibold">Air Ticket Submitted</h3>
               <SearchComponent
                 searchTerm={searchTermForSubmitedData}
                 handleSearchChange={handleSearchChangeForSubmittedData}
+              />
+            </CardHeader>
+
+            <CardBody>
+              {allDocumentRequestForAgentIsLoading ? (
+                <LoaderSpiner />
+              ) : allDocumentRequestForAgentError ? (
+                <div>Error loading data....</div>
+              ) : (
+                <CommonTableComponent
+                  headers={[
+                    ...AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN,
+                    ...HEADER_ACTION_FOR_SUPER,
+                  ]}
+                  data={
+                    isfilteredDataForSubmittedData
+                      ? isfilteredDataForSubmittedData
+                      : []
+                  }
+                  currentPage={currentPageForSubmittedData}
+                  setCurrentPage={setCurrentPageForSubmittedData}
+                  perPageData={perPageDataForRequest}
+                  searchTerm={searchTermForSubmitedData}
+                  handleSearchChange={handleSearchChangeForSubmittedData}
+                  emptyMessage="No Data found yet."
+                />
+              )}
+            </CardBody>
+          </Card>
+
+          {/* accepted doc */}
+          <Card>
+            <CardHeader>
+              <h3 className="fs-1 fw-semibold">Air Ticket Accepted</h3>
+              <SearchComponent
+                searchTerm={searchTermForAcceptedData}
+                handleSearchChange={handleSearchChangeForAcceptedData}
               />
             </CardHeader>
             <CardBody>
@@ -287,17 +388,17 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
                 <div>Error loading data....</div>
               ) : (
                 <CommonTableComponent
-                  headers={AIRTICKET_SUBMITTED_HEADER_FOR_SUPERADMIN}
+                  headers={AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN}
                   data={
-                    isfilteredDataForSubmittedData
-                      ? isfilteredDataForSubmittedData
+                    isfilteredDataForAcceptedData
+                      ? isfilteredDataForAcceptedData
                       : []
                   }
-                  currentPage={currentPageForSubmittedData}
-                  setCurrentPage={setCurrentPageForSubmittedData}
+                  currentPage={currentPageForAcceptedData}
+                  setCurrentPage={setCurrentPageForAcceptedData}
                   perPageData={perPageDataForSubmittedData}
-                  searchTerm={searchTermForSubmitedData}
-                  handleSearchChange={handleSearchChangeForSubmittedData}
+                  searchTerm={searchTermForAcceptedData}
+                  handleSearchChange={handleSearchChangeForAcceptedData}
                   emptyMessage="No Data found yet."
                 />
               )}
