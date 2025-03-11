@@ -13,6 +13,7 @@ const TotalReceiveAmountForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState('');
   const perPageData = 15;
 
   const { receivedAmountPaymentReportHeadersDataForSuperAdmin } =
@@ -32,14 +33,32 @@ const TotalReceiveAmountForSuperAdmin = () => {
     ];
 
     const newData = combinedData.filter(
-      (item) => item?.payment_reason != 'application_incentive'
+      (item) =>
+        item?.payment_reason !== 'application_incentive' &&
+        item?.paid_amount !== 0
     );
 
+    const totalReceivedAmount = newData.reduce((total, item) => {
+      const emgsFeeAmount =
+        item?.payment_reason === 'application_emgs'
+          ? item?.application?.emgs_fee_amount
+          : 0;
+      const tuitionFeeAmount =
+        item?.payment_reason === 'application_tuition_fee'
+          ? item?.tuition_fee_paid_amount
+          : 0;
+      const agentAmount = item?.agent !== undefined ? item?.paid_amount : 0;
+      return total + emgsFeeAmount + tuitionFeeAmount + agentAmount;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount);
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
   ]);
+
+  console.log(allPaymentData);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -83,6 +102,7 @@ const TotalReceiveAmountForSuperAdmin = () => {
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
                     emptyMessage="No Data found yet."
+                    totalAmount={totalAmount}
                   />
                 </CardBody>
               </Card>

@@ -1,7 +1,11 @@
+import { useCustomData } from '@/utils/common/data/customeData';
+import Link from 'next/link';
 import React from 'react';
 import { Card, CardBody, CardTitle, Table } from 'reactstrap';
 
 const AllOverviewInfoCard = ({ data }) => {
+  const customData = useCustomData();
+
   return (
     <>
       <Card>
