@@ -11,6 +11,7 @@ import {
 } from '@/slice/services/agent/agentDocumentServices';
 import { useGetAllStudentsAirticketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
+import { currentUser } from '@/utils/currentUserHandler';
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -24,6 +25,7 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
+  const user = currentUser();
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
@@ -127,7 +129,13 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   };
 
   const handleStatusChange = async (airticket_document_id, status) => {
-    const updatedDataStatus = { airticket_document_id, status };
+    const accepted_date = new Date().toISOString();
+    const updatedDataStatus = {
+      airticket_document_id,
+      status,
+      accepted_date,
+      accepted_by: user.id,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result.success) {
@@ -150,6 +158,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
       airticket_document_id: docId,
       status: 'rejected',
       rejected_date,
+      rejected_by: user?.id,
     };
 
     try {

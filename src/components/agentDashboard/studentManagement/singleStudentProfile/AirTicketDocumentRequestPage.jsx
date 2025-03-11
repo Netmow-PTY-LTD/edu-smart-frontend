@@ -129,10 +129,12 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   };
 
   const handleStatusChange = async (airticket_document_id, status) => {
+    const accepted_date = new Date().toISOString();
     const updatedDataStatus = {
       airticket_document_id,
       status,
-      accepted_by: user.id,
+      accepted_by: user?.id,
+      accepted_date,
     };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
@@ -154,7 +156,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       ...values,
       airticket_document_id: docId,
       status: 'rejected',
-      rejected_by: user.id,
+      rejected_by: user?.id,
       rejected_date,
     };
 

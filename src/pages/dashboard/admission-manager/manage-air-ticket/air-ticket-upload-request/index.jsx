@@ -127,7 +127,12 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   };
 
   const handleStatusChange = async (airticket_document_id, status) => {
-    const updatedDataStatus = { airticket_document_id, status };
+    const accepted_date = new Date().toISOString();
+    const updatedDataStatus = {
+      airticket_document_id,
+      status,
+      accepted_date,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result.success) {
