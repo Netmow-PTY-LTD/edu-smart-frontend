@@ -24,8 +24,10 @@ import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/
 import DataObjectComponent from '@/utils/common/data';
 import AirTicketDocumentRequestModalForm from './modal/AirTicketDocumentRequestModalForm';
 import StatusUpdateForm from './modal/StatusUpdateForm';
+import { currentUser } from '@/utils/currentUserHandler';
 
 const AirTicketDocumentRequestPage = ({ student_id }) => {
+  const user = currentUser();
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
@@ -127,7 +129,11 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
   };
 
   const handleStatusChange = async (airticket_document_id, status) => {
-    const updatedDataStatus = { airticket_document_id, status };
+    const updatedDataStatus = {
+      airticket_document_id,
+      status,
+      accepted_by: user.id,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -147,6 +153,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
       ...values,
       airticket_document_id: docId,
       status: 'rejected',
+      rejected_by: user.id,
     };
 
     try {

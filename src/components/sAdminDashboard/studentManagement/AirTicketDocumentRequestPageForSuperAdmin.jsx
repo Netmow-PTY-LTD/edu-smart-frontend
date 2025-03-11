@@ -24,6 +24,7 @@ import { useGetSingleUserAirTicketDocumentRequestQuery } from '@/slice/services/
 import DataObjectComponent from '@/utils/common/data';
 import AirTicketDocumentRequestModalFormForSuperAdmin from './modal/AirTicketDocumentRequestModalFormForSuperAdmin';
 import StatusUpdateFormForSuperAdmin from './modal/StatusUpdateFormForSuperAdmin';
+import { currentUser } from '@/utils/currentUserHandler';
 
 const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
@@ -35,6 +36,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   const [currentPageForRequest, setCurrentPageForRequest] = useState(0);
   const [currentPageForSubmittedData, setCurrentPageForSubmittedData] =
     useState(0);
+  const user = currentUser();
 
   const perPageDataForRequest = 10;
   const perPageDataForSubmittedData = 10;
@@ -129,7 +131,12 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
 
   const handleStatusChange = async (airticket_document_id, status) => {
     const accepted_date = new Date().toISOString();
-    const updatedDataStatus = { airticket_document_id, status, accepted_date };
+    const updatedDataStatus = {
+      airticket_document_id,
+      status,
+      accepted_date,
+      accepted_by: user.id,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -149,6 +156,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
       ...values,
       airticket_document_id: docId,
       status: 'rejected',
+      rejected_by: user.id,
     };
 
     try {
@@ -157,6 +165,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
         toast.success(result?.message);
         getSingleUserAirTicketDocumentRequestRefetch();
         getSingleUserAirTicketDocSubmisionRefetch();
+        togModal();
       }
     } catch (error) {
       const errorMessage = error?.data?.message;

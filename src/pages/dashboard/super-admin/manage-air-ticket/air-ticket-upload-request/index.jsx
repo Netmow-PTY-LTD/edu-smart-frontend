@@ -11,6 +11,8 @@ import {
 } from '@/slice/services/agent/agentDocumentServices';
 import { useGetAllStudentsAirticketDocumentRequestQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
+import { currentUser } from '@/utils/currentUserHandler';
+import { deepSearch } from '@/utils/deepSearch';
 import React, { useMemo, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
@@ -37,6 +39,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const user = currentUser();
 
   const [initialValues, setInitialValues] = useState({
     title: 'Air Ticket', // Set default value
@@ -101,51 +104,15 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
   // Filter data for search option
   const isfilteredDataForRequested =
     requestedDocData?.length > 0 &&
-    requestedDocData?.filter((item) =>
-      item?.title?.toLowerCase().includes(searchTermForRequest.toLowerCase())
-    );
+    requestedDocData?.filter((item) => deepSearch(item, searchTermForRequest));
   // Filter data for search option
   const isfilteredDataForSubmittedData =
     submittedDocData?.length > 0 &&
     submittedDocData?.filter((item) =>
-      item?.title
-        ?.toLowerCase()
-        .includes(searchTermForSubmitedData.toLowerCase())
+      deepSearch(item, searchTermForSubmitedData)
     );
 
   // Validation
-  const deepSearch = (obj, searchTerm) => {
-    if (!obj) return false;
-
-    // Convert search term to lowercase and split into words
-    const searchWords = searchTerm.toLowerCase().split(' ');
-
-    // Function to check if all words exist in object data
-    const containsAllWords = (value) => {
-      if (typeof value === 'string') {
-        const lowerValue = value.toLowerCase();
-        return searchWords.every((word) => lowerValue.includes(word));
-      }
-      return false;
-    };
-
-    // If obj is a string, check if it contains all words
-    if (containsAllWords(obj)) {
-      return true;
-    }
-
-    // If obj is an array, recursively search in each element
-    if (Array.isArray(obj)) {
-      return obj.some((item) => deepSearch(item, searchTerm));
-    }
-
-    // If obj is an object, recursively search in each property
-    if (typeof obj === 'object') {
-      return Object.values(obj).some((value) => deepSearch(value, searchTerm));
-    }
-
-    return false;
-  };
 
   // Filtering the data based on search term
   const isfilteredDataForAcceptedData =
@@ -164,6 +131,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
     const requested_date = new Date().toISOString();
     const airTicketRequestData = {
       application: values.application_id,
@@ -191,11 +159,12 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
 
   const handleStatusChange = async (airticket_document_id, status) => {
     const accepted_date = new Date().toISOString();
-    // accepted_date
+
     const updatedDataStatus = {
       airticket_document_id,
       status,
       accepted_date: accepted_date,
+      accepted_by: user.id,
     };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
@@ -217,6 +186,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
       ...values,
       airticket_document_id: docId,
       status: 'rejected',
+      rejected_by: user.id,
     };
 
     try {
