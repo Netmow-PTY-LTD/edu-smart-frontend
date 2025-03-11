@@ -16,7 +16,7 @@ const AllSubmittedDocumentsForStudents = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
 
-  const { studentSubmittedDocumentsHeaderWithoutAction } =
+  const { studentSubmittedDocumentsHeaderWithoutAction = [] } =
     DataObjectComponent();
 
   const {
