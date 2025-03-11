@@ -4,6 +4,7 @@ import Layout from '@/components/layout';
 
 import {
   useCheckApplicationIsValidQuery,
+  useDeleteApplicationMutation,
   useGetApplicationsQuery,
 } from '@/slice/services/common/applicationService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -45,10 +46,12 @@ const SingleUniversityCourse = () => {
     useGetUserInfoQuery();
 
   const { refetch: applicationDataRefetch } = useGetApplicationsQuery();
+  const [deleteApplication] = useDeleteApplicationMutation();
 
   const {
     data: checkApplicationIsValidData,
     error: checkApplicationIsValidError,
+    refetch: checkApplicationIsValidRefetch,
   } = useCheckApplicationIsValidQuery(
     {
       course_id: course_id,
@@ -64,15 +67,30 @@ const SingleUniversityCourse = () => {
       ('');
     } else if (checkApplicationIsValidData) {
       const status = checkApplicationIsValidData.data.status;
+
       if (status === 'rejected') {
         toast.success('You can apply');
       } else {
-        toast.error('Application Already Exists');
-        
+        if (
+          status === 'pending' ||
+          checkApplicationIsValidData.data?.emgs_payment_status === 'pending'
+        ) {
+          deleteApplication(checkApplicationIsValidData.data?._id)
+            .then(() => {
+              checkApplicationIsValidRefetch();
+            })
+            .catch((error) => {
+              toast.error('Failed to delete application');
+            });
+        } else {
+          toast.error('Application Already Exists');
+        }
       }
     }
   }, [
     checkApplicationIsValidData,
+    checkApplicationIsValidRefetch,
+    deleteApplication,
     router?.query?.payment_status,
     router?.query?.transaction_id,
   ]);
