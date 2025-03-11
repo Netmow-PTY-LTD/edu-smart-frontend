@@ -40,7 +40,7 @@ export default function StudentApplications() {
 
   const perPageData = 9;
 
-  const { studentApplicationsHeaders } = DataObjectComponent();
+  const { studentApplicationsHeaders = [] } = DataObjectComponent();
 
   const {
     data: applicationData,
@@ -225,7 +225,7 @@ export default function StudentApplications() {
   };
 
   const filteredData = applicationData?.data?.filter(
-    (item) => item?.payment_status !== 'pending'
+    (item) => item?.emgs_payment_status !== 'pending'
   );
 
   return (

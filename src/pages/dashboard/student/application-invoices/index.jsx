@@ -34,7 +34,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
     useState(false);
   const perPageData = 10;
 
-  const { superAdminData, applicationHeadersWithoutAction } =
+  const { superAdminData, applicationHeadersForStudent } =
     DataObjectComponent();
 
   const {
@@ -223,7 +223,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={[...applicationHeadersWithoutAction, ActionData]}
+                    headers={[...applicationHeadersForStudent, ActionData]}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}

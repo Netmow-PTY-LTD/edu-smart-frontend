@@ -859,17 +859,17 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Student',
-      key: 'student_name',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.student?._id
-            ? item?.student?.first_name + ' ' + item?.student?.last_name
-            : '-'}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Student',
+    //   key: 'student_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.student?._id
+    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
+    //         : '-'}
+    //     </span>
+    //   ),
+    // },
     {
       title: 'Application Id',
       key: 'application_id',
@@ -2941,27 +2941,7 @@ const DataObjectComponent = () => {
         return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
       },
     },
-    // {
-    //   title: 'Requester Role',
-    //   key: 'role',
-    //   render: (item) => (
-    //     <span className="d-flex flex-column text-capitalize">
-    //       {item?.requested_by?.role ? item?.requested_by?.role : '-'}
-    //     </span>
-    //   ),
-    // },
 
-    // {
-    //   title: 'Requester Email',
-    //   key: 'email',
-    //   render: (item) => (
-    //     <div>
-    //       <h5 className="fs-14 fw-medium ">
-    //         {`${item?.requested_by?.email ? item?.requested_by?.email : '-'}`}
-    //       </h5>
-    //     </div>
-    //   ),
-    // },
     {
       title: 'Status',
       key: 'status',
@@ -2996,6 +2976,85 @@ const DataObjectComponent = () => {
           {item?.student?.first_name || item?.student?.last_name
             ? `${item?.student?.first_name} ${item?.student?.last_name}`
             : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course_name',
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.application?.course?.name ?? '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Application ID',
+      key: 'application',
+      render: (item) => (
+        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Emgs Payment',
+      key: 'emgs_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.emgs_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Tuition Payment',
+      key: 'tuition_fee_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.tuition_fee_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Airport Pickup',
+      key: 'airport_pickup',
+      render: (item) =>
+        item?.application?.airport_pickup_invoice_status === 'active' ? (
+          <p
+            className={` badge fw-semibold text-center me-4 ${item?.application?.airport_pickup_charge_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          >
+            <span className="text-uppercase">
+              {item?.application?.airport_pickup_charge_payment_status ?? ''}
+            </span>
+          </p>
+        ) : (
+          <span className="text-capitalize text-primary fw-medium">
+            {'Not Activated Yet'}
+          </span>
+        ),
+    },
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="text-uppercase">{item?.payment_method ?? '-'}</div>
+      ),
+    },
+  ];
+  const applicationHeadersForStudent = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
         </div>
       ),
     },
@@ -3327,15 +3386,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    {
-      title: 'Student Name',
-      key: 'student',
-      render: (item) => (
-        <div className="text-capitalize">
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
-        </div>
-      ),
-    },
+
     {
       title: 'Course',
       key: 'course',
@@ -3360,9 +3411,11 @@ const DataObjectComponent = () => {
       key: 'course_fee',
       render: (item) => (
         <div>
-          {item?.application?.course?.tuition_fee
-            ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
-            : '-'}
+          {item?.payment_reason === 'application_airport_pickup_charge'
+            ? '-'
+            : item?.application?.course?.tuition_fee
+              ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
+              : '-'}
         </div>
       ),
     },
@@ -3393,7 +3446,18 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Data',
+      title: 'Airport Pickup Amount',
+      key: 'airport_pickup_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_airport_pickup_charge'
+            ? item?.airport_pickup_charge + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
         <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
@@ -4899,6 +4963,7 @@ const DataObjectComponent = () => {
     AGENTYEARLYBONOUSHEADERS,
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
+    applicationHeadersForStudent,
   };
 };
 
