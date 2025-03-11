@@ -3239,9 +3239,11 @@ const DataObjectComponent = () => {
         <div>
           {item?.payment_reason === 'application_tuition_fee'
             ? item?.incentive_amount - item?.agent_commission + ' ' + 'MYR'
-            : item?.incentive_amount
-              ? item?.incentive_amount
-              : '-'}
+            : item?.payment_reason === 'application_airport_pickup_charge'
+              ? item?.airport_pickup_charge + ' ' + 'MYR'
+              : item?.incentive_amount
+                ? item?.incentive_amount
+                : '-'}
         </div>
       ),
     },

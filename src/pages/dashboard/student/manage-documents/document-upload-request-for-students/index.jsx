@@ -28,7 +28,8 @@ const AllUploadDocumentsForStudents = () => {
     description: '',
   });
 
-  const { studentRequestDocumentsHeaderWithoutAction } = DataObjectComponent();
+  const { studentRequestDocumentsHeaderWithoutAction = [] } =
+    DataObjectComponent();
 
   const {
     data: getSingleStudentDocRequest,

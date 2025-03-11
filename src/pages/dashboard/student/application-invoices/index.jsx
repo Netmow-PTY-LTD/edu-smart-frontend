@@ -56,11 +56,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   // Filter data for search option
   const filteredData = getApplicationPaymentData?.data?.filter((item) => {
-    // Convert the entire item object to a string (excluding any undefined or null values)
     const itemString = JSON.stringify(item).toLowerCase();
-
     const isValidPaymentReason = item?.payment_reason === 'application_emgs';
-
     return (
       itemString.includes(searchTerm.toLowerCase()) && isValidPaymentReason
     );
@@ -163,7 +160,30 @@ const ApplicationInvoiceInSuperAdmin = () => {
         paid_amount: query.paid_amount,
       });
     }
-  }, [query, updateApplicationStatus]);
+    if (query.payment_status === 'failed') {
+      toast.error('Payment Failed');
+      router.push({
+        query: {},
+        pathname: router?.pathname,
+      });
+    }
+    if (query.payment_status === 'cancel') {
+      toast.error('Payment Cancelled');
+      router.push({
+        query: {},
+        pathname: router?.pathname,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    query.application_id,
+    query.paid_amount,
+    query.payment_method,
+    query.payment_status,
+    query.transaction_id,
+    query.transaction_reason,
+    updateApplicationStatus,
+  ]);
 
   useEffect(() => {
     if (!toastShown && (updateApplicationStatusData || error)) {
@@ -268,7 +288,12 @@ const ApplicationInvoiceInSuperAdmin = () => {
             <InvoicesComponentForMultipleDataTuitionFeeStudent
               open={openInvoiceModalTuition}
               close={() => {
-                setApplicationId(''), setOpenInvoiceModalTuition(false);
+                setApplicationId(''),
+                  setOpenInvoiceModalTuition(false),
+                  router.push({
+                    query: {},
+                    pathname: router?.pathname,
+                  });
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
               addressData={superAdminData}
@@ -296,7 +321,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
               open={openInvoiceAirportPickupModal}
               close={() => {
                 setApplicationId('');
-                router.push({ query: {} });
+                router.push({ query: {}, pathname: router?.pathname });
                 setOpenInvoiceAirportPickupModal(false);
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
