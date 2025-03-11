@@ -1813,9 +1813,11 @@ const DataObjectComponent = () => {
             ? item?.application?.emgs_fee_amount
             : item?.payment_reason === 'application_tuition_fee'
               ? item?.tuition_fee_paid_amount
-              : item?.agent !== undefined
-                ? item?.paid_amount
-                : '0'}{' '}
+              : item?.payment_reason === 'application_airport_pickup_charge'
+                ? item?.airport_pickup_charge
+                : item?.agent !== undefined
+                  ? item?.paid_amount
+                  : '0'}{' '}
           {'MYR'}
         </div>
       ),

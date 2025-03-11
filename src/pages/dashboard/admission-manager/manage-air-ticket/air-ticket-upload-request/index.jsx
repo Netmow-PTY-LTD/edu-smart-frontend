@@ -102,12 +102,13 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
-
+    const requested_date = new Date().toISOString();
     const airTicketRequestData = {
       application: values.application_id,
       description: values.description,
       student_id: values.student_id,
       title: values.title,
+      requested_date: requested_date,
     };
 
     try {
@@ -231,9 +232,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
               >
                 Create Request
               </button>
-              <h3 className="fs-1 fw-semibold">
-                All Student Air Ticket Document Upload Requests from Agent
-              </h3>
+              <h3 className="fs-1 fw-semibold">Air Ticket Requests</h3>
               <SearchComponent
                 searchTerm={searchTermForRequest}
                 handleSearchChange={handleSearchChangeForRequest}
@@ -276,9 +275,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
           </Card>
           <Card>
             <CardHeader>
-              <h3 className="fs-1 fw-semibold">
-                All Student Air Ticket Document Submission Table
-              </h3>
+              <h3 className="fs-1 fw-semibold">Air Ticket Submitted</h3>
               <SearchComponent
                 searchTerm={searchTermForSubmitedData}
                 handleSearchChange={handleSearchChangeForSubmittedData}

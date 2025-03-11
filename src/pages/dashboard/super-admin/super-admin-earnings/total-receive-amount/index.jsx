@@ -48,10 +48,20 @@ const TotalReceiveAmountForSuperAdmin = () => {
           ? item?.tuition_fee_paid_amount
           : 0;
       const agentAmount = item?.agent !== undefined ? item?.paid_amount : 0;
-      return total + emgsFeeAmount + tuitionFeeAmount + agentAmount;
+      const airportPickupAmount =
+        item?.payment_reason === 'application_airport_pickup_charge'
+          ? item?.airport_pickup_charge
+          : 0;
+      return (
+        total +
+        emgsFeeAmount +
+        tuitionFeeAmount +
+        agentAmount +
+        airportPickupAmount
+      );
     }, 0);
 
-    setTotalAmount(totalReceivedAmount);
+    setTotalAmount(totalReceivedAmount.toFixed(2));
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
