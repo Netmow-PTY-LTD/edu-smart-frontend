@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from 'next/image';
 import React from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,27 +14,21 @@ import {
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import { userDummyImage } from '@/utils/common/data';
 
 const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   addressData,
   billingAddressData,
   tableData,
-  generatePDF,
   printInvoice,
   payButton,
   goToPay,
-  chargesType,
-  invoice,
-  superAdmin,
-  subtotal,
   gst,
-  total,
   currency,
   logoData,
   close,
   open,
   loading,
-  payment_status,
   invoice_no,
 }) => {
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
@@ -83,16 +78,9 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
       toast.error(error?.data?.message || 'Something went wrong');
     }
   };
-
+  console.log(logoData);
   return (
     <>
-      {/* <Layout> */}
-      {/* <div className="page-content"> */}
-      {/* { (
-            <LoaderSpiner />
-          ) : ( */}
-      {/* <Container fluid> */}
-      {/* <BreadCrumb title={' Invoice'} pagetitle={'Pages'} /> */}
       <Modal isOpen={open} centered fullscreen>
         <ModalHeader toggle={close} className="">
           Invoice For Tuition Fee
@@ -106,34 +94,18 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
               <Col>
                 <Card id="demo">
                   <div className="mb-4">
-                    {logoData?.business_setting?.logo ? (
-                      <Image
-                        src={logoData?.business_setting?.logo?.secure_url}
-                        className="card-logo card-logo-dark"
-                        alt="logo dark"
-                        height={40}
-                        width={80}
-                      />
-                    ) : (
-                      // <div
-                      //   style={{
-                      //     height: '80px',
-                      //     width: 'auto',
-                      //     display: 'flex',
-                      //     justifyContent: 'start',
-                      //     alignItems: 'start',
-                      //   }}
-                      // >
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={logoData}
-                        className="card-logo card-logo-dark"
-                        alt="logo dark"
-                        // height={10}
-                        width={'12%'}
-                      />
-                      // </div>
-                    )}
+                    <img
+                      src={
+                        logoData
+                          ? logoData
+                          : logoData?.profile_image?.url
+                            ? logoData?.profile_image?.url
+                            : userDummyImage
+                      }
+                      className="card-logo card-logo-dark"
+                      alt="logo dark"
+                      width={'12%'}
+                    />
                   </div>
                   <CardHeader className="border-bottom-dashed ">
                     <div className="d-flex align-items-center justify-content-between w-100">
@@ -143,11 +115,9 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                             Address
                           </h6>
                           <p className="fw-medium fs-2 mb-2 text-muted">
-                            {addressData?.role === 'admin'
-                              ? addressData?.organisation_name
-                              : addressData?.first_name +
-                                ' ' +
-                                addressData?.last_name}
+                            {addressData?.first_name +
+                              ' ' +
+                              addressData?.last_name}
                           </p>
                           <p className="text-muted  mb-1">
                             {addressData?.email}
@@ -219,12 +189,6 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Invoice No
                       </p>
-                      {/* <p className="mb-0">
-                        {invoice_no?.createdAt
-                          ? `INV-${new Date(invoice_no.createdAt).getFullYear().toString().slice(-2)}${(new Date(invoice_no.createdAt).getMonth() + 1).toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getDate().toString().padStart(2, '0')}-${new Date(invoice_no.createdAt).getHours().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getMinutes().toString().padStart(2, '0')}${new Date(invoice_no.createdAt).getSeconds().toString().padStart(2, '0')}`
-                          : ''}
-                      </p> */}
-
                       <p className="mb-0 text-uppercase">
                         {invoice_no?._id?.slice(0, -1)}
                       </p>
@@ -466,15 +430,18 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                               {currency}
                             </div>
                           </div>
-                          <button
-                            onClick={() => {
-                              sslCommerzPaymentHandler(); // Call the payment function
-                              //   close(); // Close the modal
-                            }}
-                            className="d-flex justify-content-end button mt-5 px-5 py-2"
-                          >
-                            Pay Tuition Fee
-                          </button>
+                          {invoice_no?.application?.status === 'rejected' ? (
+                            ''
+                          ) : (
+                            <button
+                              onClick={() => {
+                                sslCommerzPaymentHandler();
+                              }}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              Pay Tuition Fee
+                            </button>
+                          )}
                         </>
                       )}
                     </div>

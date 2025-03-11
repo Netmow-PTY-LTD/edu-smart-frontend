@@ -4,6 +4,7 @@ import Layout from '@/components/layout';
 
 import {
   useCheckApplicationIsValidQuery,
+  useDeleteApplicationMutation,
   useGetApplicationsQuery,
 } from '@/slice/services/common/applicationService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -30,6 +31,7 @@ import {
   Container,
   Row,
 } from 'reactstrap';
+
 import AppliedCourseForm from '../course-form/applied-course-form';
 
 const SingleUniversityCourse = () => {
@@ -44,10 +46,12 @@ const SingleUniversityCourse = () => {
     useGetUserInfoQuery();
 
   const { refetch: applicationDataRefetch } = useGetApplicationsQuery();
+  const [deleteApplication] = useDeleteApplicationMutation();
 
   const {
     data: checkApplicationIsValidData,
     error: checkApplicationIsValidError,
+    refetch: checkApplicationIsValidRefetch,
   } = useCheckApplicationIsValidQuery(
     {
       course_id: course_id,
@@ -63,13 +67,37 @@ const SingleUniversityCourse = () => {
       ('');
     } else if (checkApplicationIsValidData) {
       const status = checkApplicationIsValidData.data.status;
+
       if (status === 'rejected') {
-        toast.success('You can apply');
+        toast.success(
+          `You are eligible to apply again. Current status: ${checkApplicationIsValidData.data.status}`
+        );
       } else {
-        toast.error('Application Already Exists');
+        if (
+          status === 'pending' &&
+          checkApplicationIsValidData.data?.emgs_payment_status === 'pending'
+        ) {
+          deleteApplication(checkApplicationIsValidData.data?._id)
+            .then(() => {
+              checkApplicationIsValidRefetch();
+            })
+            .catch((error) => {
+              // toast.error('Failed to delete application');
+            });
+        } else {
+          toast.error(
+            `Application Already Exists. Current status: ${checkApplicationIsValidData.data.status}`
+          );
+        }
       }
     }
-  }, [checkApplicationIsValidData]);
+  }, [
+    checkApplicationIsValidData,
+    checkApplicationIsValidRefetch,
+    deleteApplication,
+    router?.query?.payment_status,
+    router?.query?.transaction_id,
+  ]);
 
   const {
     data: getSingleUniversityDataForStudent,
@@ -105,27 +133,6 @@ const SingleUniversityCourse = () => {
     }
   }, [getSingleUniversityForStudentRefetch, university_id]);
 
-  // useEffect(() => {
-  //   if (router?.query?.payment_status && router?.query?.transaction_id) {
-  //
-  //     ('');
-  //   } else {
-  //     if (
-  //       checkApplicationIsValidError?.data?.message ===
-  //       'Invalid ObjectId. The provided id is not a valid MongoDB ObjectId.'
-  //     ) {
-  //       ('');
-  //     } else {
-
-  //       toast.error(checkApplicationIsValidError?.data?.message);
-  //     }
-  //   }
-  // }, [
-  //   checkApplicationIsValidError?.data?.message,
-  //   router?.query?.payment_status,
-  //   router?.query?.transaction_id,
-  // ]);
-
   useEffect(() => {
     if (updateApplicationStatusData?.success) {
       toast.success('Application Payment successful');
@@ -143,14 +150,12 @@ const SingleUniversityCourse = () => {
 
   useEffect(() => {
     if (createApplicationData?.success) {
-      // toast.success(createApplicationData?.message);
       if (buttonType === 'Proceed to Payment') {
         router.push(
           `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
         );
       } else {
         applicationDataRefetch();
-        // router.push(`/dashboard/student/applications`);
         router.push(
           `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
         );
@@ -239,18 +244,6 @@ const SingleUniversityCourse = () => {
       return acc;
     }, {});
 
-  // const initialValues = getSingleCourseData?.data?.document_requirements?.reduce(
-  //   (acc, item) => {
-  //     const fieldName = item?.title?.toLowerCase().replace(/\s+/g, '_');
-  //     acc[fieldName] = {
-  //       files: [],
-  //       description: item?.description || ''
-  //     };
-  //     return acc;
-  //   },
-  //   {}
-  // );
-
   const toggle = (id) => {
     if (open === id) {
       setOpen();
@@ -282,16 +275,16 @@ const SingleUniversityCourse = () => {
 
   // Calculate the difference in total days
   const timeDifference = endDate - startDate;
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
   // Calculate months and remaining days
-  const months = Math.floor(daysDifference / 30); // Approximate months
-  const remainingDays = daysDifference % 30; // Remaining days after full months
+  const months = Math.floor(daysDifference / 30);
+  const remainingDays = daysDifference % 30;
 
   // Generate the display format
   const accommodationShow =
     daysDifference < 30
-      ? `${daysDifference} Day${daysDifference === 1 ? '' : 's'}` // If 1 day, show "Day" instead of "Days"
+      ? `${daysDifference} Day${daysDifference === 1 ? '' : 's'}`
       : `${months} Month${months > 1 ? 's' : ''} ${remainingDays > 0 ? `${remainingDays} Day${remainingDays === 1 ? '' : 's'}` : ''}`;
 
   const scholarshipAmount = getSingleCourseData?.data?.scholarship_amount;
@@ -769,7 +762,6 @@ const SingleUniversityCourse = () => {
                     </CardBody>
                   </Card>
                 ) : (
-                  // <CourseForm setStep={setStep} step={step} />
                   <AppliedCourseForm
                     setStep={setStep}
                     step={step}

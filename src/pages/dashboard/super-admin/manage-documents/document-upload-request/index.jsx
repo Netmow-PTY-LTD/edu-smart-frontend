@@ -8,6 +8,7 @@ import { useUpdateUserDocStatusForAgentMutation } from '@/slice/services/agent/a
 import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
 import { useCustomData } from '@/utils/common/data/customeData';
+import { currentUser } from '@/utils/currentUserHandler';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -22,6 +23,7 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 const StudentDocumentUploadRquestForSuperAdmin = () => {
+  const user = currentUser();
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
@@ -40,8 +42,10 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   });
 
   // api requested
-  const { docRequestTableHeaderDataWithoutActionForSuperAdmin = [] } =
-    DataObjectComponent();
+  const {
+    docRequestTableHeaderDataWithoutActionForSuperAdmin = [],
+    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin = [],
+  } = DataObjectComponent();
 
   const {
     data: allDocumentRequestForSuperAdminData,
@@ -131,7 +135,13 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   };
 
   const handleStatusChange = async (user_document_id, status) => {
-    const updatedDataStatus = { user_document_id, status };
+    const accepted_date = new Date().toISOString();
+    const updatedDataStatus = {
+      user_document_id,
+      status,
+      accepted_by: user?.id,
+      accepted_date,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -145,11 +155,14 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   };
 
   const handleRejectStatus = async (values, { setSubmitting }) => {
+    const rejected_date = new Date().toISOString();
     setSubmitting(true);
     const updatedDataStatus = {
       ...values,
       user_document_id: docId,
       status: 'rejected',
+      rejected_by: user.id,
+      rejected_date,
     };
 
     try {
@@ -288,7 +301,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               ) : (
                 <CommonTableComponent
                   headers={[
-                    ...docRequestTableHeaderDataWithoutActionForSuperAdmin,
+                    ...docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
                     ...HEADER_ACTION_FOR_SUPER,
                   ]}
                   data={

@@ -1,5 +1,6 @@
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetEmgsStatusTimelineQuery } from '@/slice/services/common/applicationService';
+import { userDummyImage } from '@/utils/common/data';
 import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
@@ -48,9 +49,11 @@ export default function StudentApplicationEmgsStatusTimeline({
                         <div className="flex-shrink-0">
                           {item?.image?.url && (
                             <Image
-                              src={item?.image?.url}
+                              src={item?.image?.url || userDummyImage}
                               alt=""
-                              className="avatar-sm rounded"
+                              width={0}
+                              height={0}
+                              className="avatar-md rounded"
                             />
                           )}
                         </div>

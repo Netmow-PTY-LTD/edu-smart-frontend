@@ -6,6 +6,7 @@ import React from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Button, Col, Row } from 'reactstrap';
 import AddEmgsModal from './modal/AddEmgsModal';
+import { userDummyImage } from '@/utils/common/data';
 
 export default function ApplicationEmgsStatusTimeline({
   setActiveTab,
@@ -20,7 +21,7 @@ export default function ApplicationEmgsStatusTimeline({
   } = useGetEmgsStatusTimelineQuery(currentTimeline, {
     skip: !currentTimeline,
   });
-  
+
   return (
     <>
       <ToastContainer />
@@ -61,9 +62,11 @@ export default function ApplicationEmgsStatusTimeline({
                         <div className="flex-shrink-0">
                           {item?.image?.url && (
                             <Image
-                              src={item?.image?.url}
+                              src={item?.image?.url || userDummyImage}
                               alt=""
-                              className="avatar-sm rounded"
+                              width={0}
+                              height={0}
+                              className="avatar-md rounded"
                             />
                           )}
                         </div>
