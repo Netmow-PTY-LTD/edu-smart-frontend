@@ -10,6 +10,7 @@ import {
   useGetApplicationPaymentReportQuery,
   useGetSingleApplicationPaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import DataObjectComponent, { brandlogo } from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -36,6 +37,9 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   const { superAdminData, applicationHeadersForStudent } =
     DataObjectComponent();
+
+  const { data: userInfoData, isLoading: userInfoLoading } =
+    useGetUserInfoQuery();
 
   const {
     data: getApplicationPaymentData,
@@ -221,6 +225,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
     }
   }, [isLoading]);
 
+  console.log(userInfoData?.data);
+
   return (
     <Layout>
       <div className="page-content">
@@ -264,11 +270,18 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 setApplicationId(''), setOpenInvoiceModal(false);
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
-              addressData={superAdminData}
+              addressData={
+                // userInfoData?.data?.agent?._id
+                //   ? userInfoData?.data?.agent
+                //   :
+                superAdminData
+              }
               billingAddressData={
                 getSingleApplicationPaymentReportData?.data?.applied_by
               }
+
               tableData={[getSingleApplicationPaymentReportData?.data]}
+              
               printInvoice={printInvoice}
               subtotal={
                 getSingleApplicationPaymentReportData?.data?.paid_amount
@@ -279,7 +292,12 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 getSingleApplicationPaymentReportData?.data?.application
                   ?.payment_status
               }
-              logoData={brandlogo}
+              logoData={
+                // userInfoData?.data?.agent?._id
+                //   ? userInfoData?.data?.agent
+                //   :
+                brandlogo
+              }
               invoice_no={getSingleApplicationPaymentReportData?.data}
             />
           }
@@ -296,7 +314,12 @@ const ApplicationInvoiceInSuperAdmin = () => {
                   });
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
-              addressData={superAdminData}
+              addressData={
+                // userInfoData?.data?.agent?._id
+                //   ? userInfoData?.data?.agent
+                //   :
+                superAdminData
+              }
               billingAddressData={
                 getSingleApplicationPaymentReportData?.data?.applied_by
               }
@@ -311,7 +334,12 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 getSingleApplicationPaymentReportData?.data?.application
                   ?.payment_status
               }
-              logoData={brandlogo}
+              logoData={
+                // userInfoData?.data?.agent?._id
+                //   ? userInfoData?.data?.agent
+                //   :
+                brandlogo
+              }
               invoice_no={getSingleApplicationPaymentReportData?.data}
             />
           }
@@ -325,13 +353,23 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 setOpenInvoiceAirportPickupModal(false);
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
-              addressData={superAdminData}
+              addressData={
+                // userInfoData?.data?.agent?._id
+                //   ? userInfoData?.data?.agent
+                //   :
+                superAdminData
+              }
               billingAddressData={
                 getSingleApplicationPaymentReportData?.data?.applied_by
               }
               tableData={[getSingleApplicationPaymentReportData?.data]}
               invoice_no={getSingleApplicationPaymentReportData?.data}
-              logoData={brandlogo}
+              logoData={
+                // userInfoData?.data?.agent?._id
+                //   ? userInfoData?.data?.agent
+                //   :
+                brandlogo
+              }
               currency={'MYR'}
               printInvoice={printInvoice}
               subtotal={

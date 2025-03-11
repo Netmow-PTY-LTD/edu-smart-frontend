@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from 'next/image';
 import React from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -13,6 +14,7 @@ import {
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import { userDummyImage } from '@/utils/common/data';
 
 const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   addressData,
@@ -76,7 +78,7 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
       toast.error(error?.data?.message || 'Something went wrong');
     }
   };
-
+  console.log(logoData);
   return (
     <>
       <Modal isOpen={open} centered fullscreen>
@@ -92,23 +94,18 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
               <Col>
                 <Card id="demo">
                   <div className="mb-4">
-                    {logoData?.business_setting?.logo ? (
-                      <Image
-                        src={logoData?.business_setting?.logo?.secure_url}
-                        className="card-logo card-logo-dark"
-                        alt="logo dark"
-                        height={40}
-                        width={80}
-                      />
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={logoData}
-                        className="card-logo card-logo-dark"
-                        alt="logo dark"
-                        width={'12%'}
-                      />
-                    )}
+                    <img
+                      src={
+                        logoData
+                          ? logoData
+                          : logoData?.profile_image?.url
+                            ? logoData?.profile_image?.url
+                            : userDummyImage
+                      }
+                      className="card-logo card-logo-dark"
+                      alt="logo dark"
+                      width={'12%'}
+                    />
                   </div>
                   <CardHeader className="border-bottom-dashed ">
                     <div className="d-flex align-items-center justify-content-between w-100">
@@ -118,11 +115,9 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                             Address
                           </h6>
                           <p className="fw-medium fs-2 mb-2 text-muted">
-                            {addressData?.role === 'admin'
-                              ? addressData?.organisation_name
-                              : addressData?.first_name +
-                                ' ' +
-                                addressData?.last_name}
+                            {addressData?.first_name +
+                              ' ' +
+                              addressData?.last_name}
                           </p>
                           <p className="text-muted  mb-1">
                             {addressData?.email}
