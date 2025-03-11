@@ -4582,7 +4582,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Submitted Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -4594,69 +4594,65 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    {
-      title: 'Requested By',
-      key: 'agent',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
-            ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
-                  : ''
-              } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Submitted By',
-      key: 'submitted_by',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
-            ? `${
-                item?.submitted_by?.first_name
-                  ? item?.submitted_by?.first_name
-                  : ''
-              } ${
-                item?.submitted_by?.last_name
-                  ? item?.submitted_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Requester Role',
-      key: 'role',
-      render: (item) => {
-        const role = item?.requested_by?.role || '-';
-        // Format role by replacing hyphens or underscores
-        const formattedRole = role
-          .split(/[-_]/) // Split by both hyphen and underscore
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-          .join(' ');
 
+    {
+      title: 'Req. By',
+      key: 'requested_by',
+
+      render: (item) => {
+        const firstName = item?.requested_by?.first_name;
+        const lastName = item?.requested_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.requested_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
         return (
-          <span className="d-flex flex-column text-capitalize">
-            {formattedRole}
-          </span>
+          <div className="d-flex align-items-start ">
+            <span className="text-capitalize">{fullName ? fullName : '-'}</span>
+            <small className="ms-1 badge bg-secondary-subtle text-secondary">
+              {formattedRole}
+            </small>
+          </div>
         );
       },
     },
-
     {
       title: 'Req. Date',
       key: 'requested_date',
       render: (item) => {
         const date = item?.requested_date ? moment(item.requested_date) : null;
         return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+    {
+      title: 'Sub. By',
+      key: 'submitted_by',
+
+      render: (item) => {
+        const firstName = item?.submitted_by?.first_name;
+        const lastName = item?.submitted_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.submitted_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.submitted_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span> -</span>;
+        }
       },
     },
     {
@@ -4746,46 +4742,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Requested By',
-      key: 'agent',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.requested_by?.first_name && item?.requested_by?.last_name
-            ? `${
-                item?.requested_by?.first_name
-                  ? item?.requested_by?.first_name
-                  : ''
-              } ${
-                item?.requested_by?.last_name
-                  ? item?.requested_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-    {
-      title: 'Submitted By',
-      key: 'submitted_by',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.submitted_by?.first_name && item?.submitted_by?.last_name
-            ? `${
-                item?.submitted_by?.first_name
-                  ? item?.submitted_by?.first_name
-                  : ''
-              } ${
-                item?.submitted_by?.last_name
-                  ? item?.submitted_by?.last_name
-                  : ''
-              }`
-            : '-'}
-        </span>
-      ),
-    },
-
-    {
-      title: 'Uploaded Files',
+      title: 'Files',
       key: 'files',
       render: (item) => (
         <div>
@@ -4793,12 +4750,65 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+
+    {
+      title: 'Req. By',
+      key: 'requested_by',
+
+      render: (item) => {
+        const firstName = item?.requested_by?.first_name;
+        const lastName = item?.requested_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.requested_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        return (
+          <div className="d-flex align-items-start ">
+            <span className="text-capitalize">{fullName ? fullName : '-'}</span>
+            <small className="ms-1 badge bg-secondary-subtle text-secondary">
+              {formattedRole}
+            </small>
+          </div>
+        );
+      },
+    },
     {
       title: 'Req. Date',
       key: 'requested_date',
       render: (item) => {
         const date = item?.requested_date ? moment(item.requested_date) : null;
         return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+    {
+      title: 'Sub. By',
+      key: 'submitted_by',
+
+      render: (item) => {
+        const firstName = item?.submitted_by?.first_name;
+        const lastName = item?.submitted_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.submitted_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.submitted_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span> -</span>;
+        }
       },
     },
     {
@@ -4810,6 +4820,37 @@ const DataObjectComponent = () => {
         return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
       },
     },
+
+    {
+      title: 'Acc. By',
+      key: 'accepted_by',
+
+      render: (item) => {
+        const firstName = item?.accepted_by?.first_name;
+        const lastName = item?.accepted_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.accepted_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.accepted_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span> - </span>;
+        }
+      },
+    },
+
     {
       title: 'Acc. Date',
       key: 'accepted_date',
@@ -4818,7 +4859,6 @@ const DataObjectComponent = () => {
         return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
       },
     },
-
     {
       title: 'Status',
       key: 'status',
