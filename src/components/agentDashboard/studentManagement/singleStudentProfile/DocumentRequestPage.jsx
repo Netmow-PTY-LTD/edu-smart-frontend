@@ -133,12 +133,14 @@ const DocumentRequestPage = ({ student_id, request }) => {
   };
 
   const handleRejectStatus = async (values, { setSubmitting }) => {
+    const rejected_date = new Date().toISOString();
     setSubmitting(true);
     const updatedDataStatus = {
       ...values,
       user_document_id: docId,
       status: 'rejected',
       rejected_by: user.id,
+      rejected_date,
     };
 
     try {

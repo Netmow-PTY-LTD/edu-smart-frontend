@@ -151,12 +151,14 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
   };
 
   const handleRejectStatus = async (values, { setSubmitting }) => {
+    const rejected_date = new Date().toISOString();
     setSubmitting(true);
     const updatedDataStatus = {
       ...values,
       airticket_document_id: docId,
       status: 'rejected',
       rejected_by: user.id,
+      rejected_date,
     };
 
     try {
