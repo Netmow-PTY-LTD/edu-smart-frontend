@@ -24,8 +24,10 @@ import FileViewer from '@/components/common/FileViewer';
 import StatusUpdateForm from './modal/StatusUpdateForm';
 import DescriptionRenderer from '@/utils/DescriptionRenderer';
 import moment from 'moment';
+import { currentUser } from '@/utils/currentUserHandler';
 
 const DocumentRequestPage = ({ student_id, request }) => {
+  const user = currentUser();
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [docId, setDocId] = useState('');
@@ -112,7 +114,12 @@ const DocumentRequestPage = ({ student_id, request }) => {
 
   const handleStatusChange = async (user_document_id, status) => {
     const accepted_date = new Date().toISOString();
-    const updatedDataStatus = { user_document_id, status, accepted_date };
+    const updatedDataStatus = {
+      user_document_id,
+      status,
+      accepted_date,
+      accepted_by: user?.id,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -131,6 +138,7 @@ const DocumentRequestPage = ({ student_id, request }) => {
       ...values,
       user_document_id: docId,
       status: 'rejected',
+      rejected_by: user.id,
     };
 
     try {
