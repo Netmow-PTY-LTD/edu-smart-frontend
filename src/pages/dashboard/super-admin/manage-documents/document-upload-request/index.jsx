@@ -50,6 +50,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     refetch: allDocumentRequestForSuperAdminRefetch,
   } = useGetAllUserDocRequestQuery();
 
+  console.log('all document', allDocumentRequestForSuperAdminData);
   const [updateDocumentRequest] = useUpdateUserDocStatusForAgentMutation();
 
   //  search input change function
