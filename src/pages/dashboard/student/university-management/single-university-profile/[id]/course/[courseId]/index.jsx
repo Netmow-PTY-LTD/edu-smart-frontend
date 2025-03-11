@@ -69,10 +69,12 @@ const SingleUniversityCourse = () => {
       const status = checkApplicationIsValidData.data.status;
 
       if (status === 'rejected') {
-        toast.success('You can apply');
+        toast.success(
+          `You are eligible to apply again. Current status: ${checkApplicationIsValidData.data.status}`
+        );
       } else {
         if (
-          status === 'pending' ||
+          status === 'pending' &&
           checkApplicationIsValidData.data?.emgs_payment_status === 'pending'
         ) {
           deleteApplication(checkApplicationIsValidData.data?._id)
@@ -80,10 +82,12 @@ const SingleUniversityCourse = () => {
               checkApplicationIsValidRefetch();
             })
             .catch((error) => {
-              toast.error('Failed to delete application');
+              // toast.error('Failed to delete application');
             });
         } else {
-          toast.error('Application Already Exists');
+          toast.error(
+            `Application Already Exists. Current status: ${checkApplicationIsValidData.data.status}`
+          );
         }
       }
     }
