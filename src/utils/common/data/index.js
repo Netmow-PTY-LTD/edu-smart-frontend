@@ -3265,10 +3265,6 @@ const DataObjectComponent = () => {
         return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
       },
     },
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
     {
       title: 'Status',
       key: 'status',
@@ -5607,13 +5603,6 @@ const DataObjectComponent = () => {
     AGENTYEARLYBONOUSHEADERS,
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
-<<<<<<< HEAD
-    applicationHeadersForStudent,
-=======
-    AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN,
-    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
-    docRequestTableHeaderData,
->>>>>>> dev
   };
 };
 
