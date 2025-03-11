@@ -55,7 +55,6 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   // Filter data for search option
   const filteredData = getApplicationPaymentData?.data?.filter((item) => {
-    // Convert the entire item object to a string (excluding any undefined or null values)
     const itemString = JSON.stringify(item).toLowerCase();
 
     const isValidPaymentReason = item?.payment_reason === 'application_emgs';

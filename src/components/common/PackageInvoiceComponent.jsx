@@ -12,6 +12,7 @@ import {
   Table,
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
+import moment from 'moment';
 
 const PackageInvoiceComponent = ({
   addressData,
@@ -239,24 +240,46 @@ const PackageInvoiceComponent = ({
 
                                 <td>
                                   <h3 className=" my-1 fw-medium text-uppercase ">
-                                    {item?.agent_package?.start_date &&
-                                    item?.agent_package?.end_date
-                                      ? new Date(
-                                          item.agent_package.start_date
-                                        ).toDateString() +
+                                    {item.createdAt &&
+                                    item?.coupon_package_duration
+                                      ? moment(item.createdAt).format(
+                                          'ddd MMM D, YYYY'
+                                        ) +
                                         ' - ' +
-                                        new Date(
-                                          item.agent_package.end_date
-                                        ).toDateString()
-                                      : '-'}
-                                    {}
+                                        moment(item.createdAt)
+                                          .add(
+                                            parseInt(
+                                              item?.coupon_package_duration.split(
+                                                '_'
+                                              )[0]
+                                            ),
+                                            'months'
+                                          )
+                                          .format('ddd MMM D, YYYY')
+                                      : item.createdAt &&
+                                          item?.agent_package?.package_duration
+                                        ? moment(item.createdAt).format(
+                                            'ddd MMM D, YYYY'
+                                          ) +
+                                          ' - ' +
+                                          moment(item.createdAt)
+                                            .add(
+                                              parseInt(
+                                                item?.agent_package?.package_duration.split(
+                                                  '_'
+                                                )[0]
+                                              ),
+                                              'months'
+                                            )
+                                            .format('ddd MMM D, YYYY')
+                                        : '-'}
                                   </h3>
                                 </td>
                                 <td>
                                   <h3 className=" my-1 fw-normal text-capitalize">
                                     <h3>
-                                      {item?.coupon?.package_duration
-                                        ? item?.coupon?.package_duration
+                                      {item?.coupon_package_duration
+                                        ? item?.coupon_package_duration
                                             .split('_')
                                             .join(' ')
                                         : item?.agent_package?.package_duration

@@ -97,8 +97,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   // Filter data for search option
   const isfilteredDataForSubmittedData =
-    requestedAndRejectedData?.length > 0
-      ? requestedAndRejectedData.filter((item) => {
+    submittedData?.length > 0
+      ? submittedData.filter((item) => {
           const searchTerm = searchTermForSubmitedData.toLowerCase();
 
           // Combine first and last names for requested_by
@@ -120,7 +120,6 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   // Status Mutation
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
     setSubmitting(true);
     const student_id = values.student_id;
 
