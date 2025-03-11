@@ -8,6 +8,7 @@ import { useUpdateUserDocStatusForAgentMutation } from '@/slice/services/agent/a
 import { useGetAllUserDocRequestQuery } from '@/slice/services/common/commonDocumentService';
 import DataObjectComponent from '@/utils/common/data';
 import { useCustomData } from '@/utils/common/data/customeData';
+import { currentUser } from '@/utils/currentUserHandler';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -22,6 +23,7 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 const StudentDocumentUploadRquestForSuperAdmin = () => {
+  const user = currentUser();
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
@@ -132,7 +134,12 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
 
   const handleStatusChange = async (user_document_id, status) => {
     const accepted_date = new Date().toISOString();
-    const updatedDataStatus = { user_document_id, status, accepted_date };
+    const updatedDataStatus = {
+      user_document_id,
+      status,
+      accepted_date,
+      accepted_by: user?.id,
+    };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
       if (result) {
@@ -153,6 +160,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
       user_document_id: docId,
       status: 'rejected',
       rejected_date,
+      rejected_by: user?.id,
     };
 
     try {
