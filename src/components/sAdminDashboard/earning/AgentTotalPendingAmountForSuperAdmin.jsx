@@ -14,6 +14,7 @@ const AgentTotalPendingAmountForSuperAdmin = ({ agent_id }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
+  const [totalAmount, setTotalAmount] = useState('');
 
   const { TotalAgentPendingPayoutReportHeadersDataForAgent } =
     DataObjectComponent();
@@ -42,10 +43,16 @@ const AgentTotalPendingAmountForSuperAdmin = ({ agent_id }) => {
         agent_commission_paid: item?.agent_commission,
       }));
 
+    const totalReceivedAmount = newData?.reduce((total, item) => {
+      const amountPass =
+        item?.agent_commision_by_hot_offer + item?.agent_commission;
+      return total + amountPass;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount?.toFixed(2));
     setAllPaymentData(newData);
   }, [getApplicationPaymentData]);
 
-  console.log(getApplicationPaymentData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
@@ -84,6 +91,7 @@ const AgentTotalPendingAmountForSuperAdmin = ({ agent_id }) => {
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
                 emptyMessage="No Data found yet."
+                totalAgentPendingPayoutAmount={totalAmount}
               />
             </CardBody>
           </Card>
