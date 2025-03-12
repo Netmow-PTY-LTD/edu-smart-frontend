@@ -1345,6 +1345,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'View All Transactions',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
@@ -1354,6 +1355,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'View All Payouts',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
@@ -1363,6 +1365,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'View All Payouts',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
@@ -1372,6 +1375,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'View All Payouts',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-pending-payout`,
     },
 
@@ -1382,18 +1386,9 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'View Profit Details',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
-
-    // {
-    //   id: 8,
-    //   label: 'total income',
-    //   counter: '55',
-    //   bgcolor: 'warning',
-    //   icon: 'ri-wallet-3-fill',
-    //   link: 'All Charges',
-    //   pathName: '/dashboard/super-admin',
-    // },
   ];
 
   const accountantWidgetsData = [
@@ -1404,6 +1399,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
@@ -1413,6 +1409,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
@@ -1422,6 +1419,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
@@ -1431,6 +1429,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-pending-payout`,
     },
 
@@ -1441,21 +1440,12 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
     },
   ];
 
   const admissionManagerWidgetsData = [
-    // {
-    //   id: 1,
-    //   label: 'Registered UNIVERSITIES',
-    //   counter: '4',
-    //   bgcolor: 'info',
-    //   icon: 'ri-school-fill',
-    //   link: 'View all',
-    //   pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
-    // },
-
     {
       id: 2,
       label: 'registered agents',
@@ -2075,7 +2065,7 @@ const DataObjectComponent = () => {
       key: 'auto_deduct',
       render: (item) => (
         <div className="fs-2 fw-medium">
-          {item?.application?.course.auto_deduct ? 'True' : 'False'}
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
         </div>
       ),
     },
@@ -2130,10 +2120,132 @@ const DataObjectComponent = () => {
       key: 'payment_status',
       render: (item) => (
         <div
-          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
         >
           <span className="text-uppercase">
-            {item?.agent_pending_payout_status ?? ''}
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
+          </span>
+        </div>
+      ),
+    },
+  ];
+  const TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.first_name
+            ? item?.student?.first_name + ' ' + item?.student?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Commission',
+      key: 'commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commission + ' ' + 'MYR'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Hot Commission',
+      key: 'hot_commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer
+            ? item?.agent_commision_by_hot_offer
+            : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Total Commission',
+      key: 'payout_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Status',
+      key: 'payment_status',
+      render: (item) => (
+        <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
           </span>
         </div>
       ),
@@ -5672,6 +5784,7 @@ const DataObjectComponent = () => {
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
     applicationHeadersForStudent,
+    TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew,
   };
 };
 

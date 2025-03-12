@@ -287,7 +287,7 @@ const AgentSidebarData = () => {
       subItems: [
         {
           id: 'total-paid-amount',
-          label: 'Total Paid Amount',
+          label: 'Total Paid Earnings',
           icon: 'ri-money-rupee-circle-line',
           link: '/dashboard/' + `${paneltext}` + '/total-paid-amount',
           pathName: '/dashboard/' + `${paneltext}` + '/total-paid-amount',
@@ -295,7 +295,7 @@ const AgentSidebarData = () => {
         },
         {
           id: 'total-pending-amount',
-          label: 'Total Pending Amount',
+          label: 'Total Pending Earnings',
           icon: 'ri-money-rupee-circle-line',
           link: '/dashboard/' + `${paneltext}` + '/total-pending-amount',
           pathName: '/dashboard/' + `${paneltext}` + '/total-pending-amount',
