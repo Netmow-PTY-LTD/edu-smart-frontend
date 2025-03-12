@@ -1947,8 +1947,8 @@ const DataObjectComponent = () => {
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.applied_by?.role === 'agent'
-            ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+          {item?.student?.agent?._id
+            ? item?.student?.agent?.first_name + ' ' + item?.student?.agent?.last_name
             : '-'}
         </div>
       ),
@@ -1992,10 +1992,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Method',
+      title: 'Auto Deduct',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'Auto Deduct'}</div>
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True': 'False'}
+        </div>
       ),
     },
     {
@@ -2065,13 +2067,28 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    
+    {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course.auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
 
     {
       title: 'Commission',
       key: 'commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+{item?.agent_commission 
+  ? `${item.agent_commission} MYR` 
+  : `${item?.agent_commission_paid} MYR ` 
+    && <span className="badge bg-success-subtle text-success">{item?.agent_commission_paid} PAID</span>}
+
+          
         </div>
       ),
     },
@@ -2092,7 +2109,7 @@ const DataObjectComponent = () => {
       key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
         </div>
       ),
     },
@@ -2109,10 +2126,18 @@ const DataObjectComponent = () => {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
-        <div className="badge bg-warning-subtle text-warning">{'Pending'}</div>
+          <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">{item?.agent_pending_payout_status ?? ''}</span>
+        </div>
+
       ),
     },
   ];
+
+
+  
   const TotalAgentPaidPayoutReportHeadersDataForAgent = [
     {
       title: 'SN',

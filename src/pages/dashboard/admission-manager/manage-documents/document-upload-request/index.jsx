@@ -42,8 +42,10 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   });
 
   // api requested
-  const { docRequestTableHeaderDataWithoutActionForSuperAdmin = [] } =
-    DataObjectComponent();
+  const {
+    docRequestTableHeaderDataWithoutActionForSuperAdmin = [],
+    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin = [],
+  } = DataObjectComponent();
 
   const {
     data: allDocumentRequestForSuperAdminData,
@@ -137,8 +139,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
     const updatedDataStatus = {
       user_document_id,
       status,
+      accepted_by: user?.id,
       accepted_date,
-      accepted_by: user.id,
     };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
@@ -159,8 +161,8 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
       ...values,
       user_document_id: docId,
       status: 'rejected',
-      rejected_date,
       rejected_by: user.id,
+      rejected_date,
     };
 
     try {
@@ -299,7 +301,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               ) : (
                 <CommonTableComponent
                   headers={[
-                    ...docRequestTableHeaderDataWithoutActionForSuperAdmin,
+                    ...docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
                     ...HEADER_ACTION_FOR_SUPER,
                   ]}
                   data={

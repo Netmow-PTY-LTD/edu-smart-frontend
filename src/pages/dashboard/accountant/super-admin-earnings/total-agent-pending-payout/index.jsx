@@ -33,8 +33,7 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
 
     const newData = combinedData.filter(
       (item) =>
-        item?.application?.course?.auto_deduct === false &&
-        item?.applied_by?.role === 'student' &&
+        item?.application?.tuition_fee_auto_deduct === false &&
         item?.payment_reason === 'application_tuition_fee'
     );
     setAllPaymentData(newData);
