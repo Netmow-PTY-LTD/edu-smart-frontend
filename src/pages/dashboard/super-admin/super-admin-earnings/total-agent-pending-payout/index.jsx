@@ -32,7 +32,8 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
       ?.filter(
         (item) =>
           item?.payment_reason === 'application_tuition_fee' &&
-          item?.student?.agent?._id
+          item?.student?.agent?._id &&
+          item?.agent_pending_payout_status === 'pending'
       )
       ?.map((item) => ({
         ...item,
