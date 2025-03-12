@@ -29,7 +29,7 @@ const TotalAgentPayoutInAgent = () => {
     console.log(getApplicationPaymentData);
     const newData = getApplicationPaymentData?.data.filter(
       (item) =>
-        item?.application?.course?.auto_deduct === false &&
+        item?.application?.tuition_fee_auto_deduct === false &&
         item?.payment_reason === 'application_tuition_fee'
     );
     setAllPaymentData(newData);

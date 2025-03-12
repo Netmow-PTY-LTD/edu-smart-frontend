@@ -13,6 +13,8 @@ const TotalAgentPayoutInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState('');
+
   const perPageData = 15;
 
   const { TotalagentPayoutReportHeadersDataForSuperAdmin } =
@@ -28,14 +30,22 @@ const TotalAgentPayoutInSuperAdmin = () => {
   useEffect(() => {
     const combinedData = [
       ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
-      ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
     ];
 
     const newData = combinedData.filter(
       (item) =>
         item?.student?.agent?._id &&
-        item?.payment_reason === 'application_tuition_fee'
+        item?.payment_reason === 'application_tuition_fee' &&
+        item?.application?.tuition_fee_auto_deduct === true
     );
+
+    const totalReceivedAmount = newData.reduce((total, item) => {
+      const amountPass = item?.agent_commission;
+      return total + amountPass;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount.toFixed(2));
+
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
@@ -84,6 +94,7 @@ const TotalAgentPayoutInSuperAdmin = () => {
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
                     emptyMessage="No Data found yet."
+                    totalAgentPaidPayoutAmount={totalAmount}
                   />
                 </CardBody>
               </Card>
