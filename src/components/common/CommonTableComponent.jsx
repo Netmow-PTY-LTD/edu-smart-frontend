@@ -14,6 +14,7 @@ const CommonTableComponent = ({
   totalAgentPaidPayoutAmount,
   totalAgentPendingPayoutAmount,
   SupperProfitAmount,
+  totalAgentPaidPayoutAmountNew,
 }) => {
   // Pagination logic
   const startIdx = currentPage * perPageData;
@@ -150,6 +151,28 @@ const CommonTableComponent = ({
           ) : (
             ''
           )}
+
+          {totalAgentPaidPayoutAmountNew ? (
+            <thead className="fs-2">
+              <tr>
+                {
+                  <th colSpan={8} className="text-uppercase text-end">
+                    {'Total Payout Amount :'}
+                  </th>
+                }
+                {
+                  <th>
+                    {totalAgentPaidPayoutAmountNew} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
+
           {SupperProfitAmount ? (
             <thead className="fs-2">
               <tr>

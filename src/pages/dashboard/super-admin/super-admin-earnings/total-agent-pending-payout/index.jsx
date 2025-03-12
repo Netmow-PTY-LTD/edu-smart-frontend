@@ -197,6 +197,8 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
     ),
   };
 
+  console.log(allPaymentData);
+
   return (
     <Layout>
       <div className="page-content">
