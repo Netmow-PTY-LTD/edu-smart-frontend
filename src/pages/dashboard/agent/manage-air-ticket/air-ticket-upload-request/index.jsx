@@ -144,7 +144,7 @@ const StudentAirtTicketDocumentUploadRequestForAgent = () => {
       });
 
       const result = await submitDocument(formData).unwrap();
-      console.log(result);
+
       if (result.success) {
         toast.success(result?.message);
         refetchRequests();
