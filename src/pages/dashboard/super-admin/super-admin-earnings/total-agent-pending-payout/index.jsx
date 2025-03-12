@@ -13,6 +13,8 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState('');
+
   const perPageData = 15;
 
   const { TotalAgentPendingPayoutReportHeadersDataForSuperAdmin } =
@@ -26,17 +28,30 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
   } = useGetAllPaymentReportQuery();
 
   useEffect(() => {
-    const combinedData = [
-      ...(getAllPaymentReportData?.data?.applicationPaymentReports || []),
-      ...(getAllPaymentReportData?.data?.packagePaymentReports || []),
-    ];
+    const newData = getAllPaymentReportData?.data?.applicationPaymentReports
+      ?.filter(
+        (item) =>
+          item?.payment_reason === 'application_tuition_fee' &&
+          item?.student?.agent?._id
+      )
+      ?.map((item) => ({
+        ...item,
+        agent_commission:
+          item?.application?.tuition_fee_auto_deduct === true
+            ? 0
+            : item?.agent_commission,
+        agent_commission_paid: item?.agent_commission,
+      }));
 
-    const newData = combinedData.filter(
-      (item) =>
-        item?.application?.course?.auto_deduct === false &&
-        item?.payment_reason === 'application_tuition_fee'
-    );
-    setAllPaymentData(newData);
+    const totalReceivedAmount = newData?.reduce((total, item) => {
+      const amountPass =
+        item?.agent_commision_by_hot_offer + item?.agent_commission;
+      return total + amountPass;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount?.toFixed(2));
+
+    setAllPaymentData(newData || []);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
     getAllPaymentReportData?.data?.packagePaymentReports,
@@ -84,6 +99,7 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
                     emptyMessage="No Data found yet."
+                    totalAgentPendingPayoutAmount={totalAmount}
                   />
                 </CardBody>
               </Card>

@@ -29,7 +29,7 @@ const AgentTotalPaidAmountForSuperAdmin = () => {
     const newData = getApplicationPaymentData?.data.filter(
       (item) =>
         item?.payment_reason === 'application_tuition_fee' &&
-        item?.application?.course?.auto_deduct === true
+        item?.application?.tuition_fee_auto_deduct === true
     );
     setAllPaymentData(newData);
   }, [getApplicationPaymentData]);
