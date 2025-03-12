@@ -2,19 +2,29 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
-import { useGetAllPaymentReportQuery } from '@/slice/services/common/paymentReportServices';
+import {
+  useGetAllPaymentReportQuery,
+  useUpdateAgentPendingPayoutStatusMutation,
+} from '@/slice/services/common/paymentReportServices';
 import DataObjectComponent from '@/utils/common/data';
 
 import React, { useEffect, useState } from 'react';
-import { ToastContainer } from 'react-toastify';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from 'reactstrap';
 
 const TotalAgentPendingPayoutInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const [totalAmount, setTotalAmount] = useState('');
-
   const perPageData = 15;
 
   const { TotalAgentPendingPayoutReportHeadersDataForSuperAdmin } =
@@ -26,6 +36,9 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
     isLoading: getAllPaymentReportDataLoading,
     refetch: getAllPaymentReportDataRefetch,
   } = useGetAllPaymentReportQuery();
+
+  const [updateAgentPendingPayoutStatus] =
+    useUpdateAgentPendingPayoutStatusMutation();
 
   useEffect(() => {
     const newData = getAllPaymentReportData?.data?.applicationPaymentReports
@@ -68,6 +81,122 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
     return fullName?.includes(searchTerm.toLowerCase());
   });
 
+  const agentPendingPayoutStatusAction = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown direction="end">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="me-3 ">
+          <DropdownItem>
+            <div
+              onClick={() => {
+                updateAgentPendingPayoutStatus({
+                  report_id: item?._id,
+                  status: 'paid',
+                }).then((res) => {
+                  if (res?.error) {
+                    toast.error(
+                      res.error?.message ||
+                        'Somthing Went Wrong.Please Try Again'
+                    );
+                  } else {
+                    getAllPaymentReportDataRefetch();
+                    toast.success(res?.data?.message || 'Successfully Done');
+                  }
+                });
+              }}
+              className="text-primary"
+            >
+              <i className="ri-currency-fill me-2"></i>
+              PAID
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => {
+                updateAgentPendingPayoutStatus({
+                  report_id: item?._id,
+                  status: 'pending',
+                }).then((res) => {
+                  if (res?.error) {
+                    toast.error(
+                      res.error?.message ||
+                        'Somthing Went Wrong.Please Try Again'
+                    );
+                  } else {
+                    getAllPaymentReportDataRefetch();
+                    toast.success(res?.data?.message || 'Successfully Done');
+                  }
+                });
+              }}
+              className="text-primary"
+            >
+              <i className="ri-currency-fill me-2"></i>
+              PENDING
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => {
+                updateAgentPendingPayoutStatus({
+                  report_id: item?._id,
+                  status: 'refund',
+                }).then((res) => {
+                  if (res?.error) {
+                    toast.error(
+                      res.error?.message ||
+                        'Somthing Went Wrong.Please Try Again'
+                    );
+                  } else {
+                    getAllPaymentReportDataRefetch();
+                    toast.success(res?.data?.message || 'Successfully Done');
+                  }
+                });
+              }}
+              className="text-primary"
+            >
+              <i className="ri-currency-fill me-2"></i>
+              REFUND
+            </div>
+          </DropdownItem>
+          <DropdownItem>
+            <div
+              onClick={() => {
+                updateAgentPendingPayoutStatus({
+                  report_id: item?._id,
+                  status: 'hand_cash',
+                }).then((res) => {
+                  if (res?.error) {
+                    toast.error(
+                      res.error?.message ||
+                        'Somthing Went Wrong.Please Try Again'
+                    );
+                  } else {
+                    getAllPaymentReportDataRefetch();
+                    toast.success(res?.data?.message || 'Successfully Done');
+                  }
+                });
+              }}
+              className="text-primary"
+            >
+              <i className="ri-currency-fill me-2"></i>
+              PAID BY CASH
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -90,9 +219,10 @@ const TotalAgentPendingPayoutInSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
-                    headers={
-                      TotalAgentPendingPayoutReportHeadersDataForSuperAdmin
-                    }
+                    headers={[
+                      ...TotalAgentPendingPayoutReportHeadersDataForSuperAdmin,
+                      agentPendingPayoutStatusAction,
+                    ]}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
