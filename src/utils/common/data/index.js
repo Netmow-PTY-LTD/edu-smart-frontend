@@ -2120,10 +2120,10 @@ const DataObjectComponent = () => {
       key: 'payment_status',
       render: (item) => (
         <div
-          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
         >
           <span className="text-uppercase">
-            {item?.agent_pending_payout_status ?? ''}
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
           </span>
         </div>
       ),
@@ -2299,10 +2299,10 @@ const DataObjectComponent = () => {
       key: 'payment_status',
       render: (item) => (
         <div
-          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
         >
           <span className="text-uppercase">
-            {item?.agent_pending_payout_status ?? ''}
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
           </span>
         </div>
       ),

@@ -55,6 +55,17 @@ export const paymentReportService = createApi({
         };
       },
     }),
+    updateAgentPendingPayoutStatus: builder.mutation({
+      query: (body) => {
+        return {
+          url: `/payment-report/update/agent-payout/${body?.report_id}`,
+          method: 'PATCH',
+          body: {
+            status: body?.status,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -64,4 +75,5 @@ export const {
   useGetSingleApplicationPaymentReportQuery,
   useGetSinglePackagePaymentReportQuery,
   useGetAllPaymentReportQuery,
+  useUpdateAgentPendingPayoutStatusMutation,
 } = paymentReportService;
