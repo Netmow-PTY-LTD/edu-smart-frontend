@@ -910,17 +910,17 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    {
-      title: 'Student',
-      key: 'student_name',
-      render: (item) => (
-        <span className="d-flex flex-column text-capitalize">
-          {item?.student?._id
-            ? item?.student?.first_name + ' ' + item?.student?.last_name
-            : '-'}
-        </span>
-      ),
-    },
+    // {
+    //   title: 'Student',
+    //   key: 'student_name',
+    //   render: (item) => (
+    //     <span className="d-flex flex-column text-capitalize">
+    //       {item?.student?._id
+    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
+    //         : '-'}
+    //     </span>
+    //   ),
+    // },
     {
       title: 'Application Id',
       key: 'application_id',
@@ -1947,8 +1947,10 @@ const DataObjectComponent = () => {
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.applied_by?.role === 'agent'
-            ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+          {item?.student?.agent?._id
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
             : '-'}
         </div>
       ),
@@ -1992,10 +1994,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Method',
+      title: 'Auto Deduct',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'Auto Deduct'}</div>
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
       ),
     },
     {
@@ -2067,11 +2071,27 @@ const DataObjectComponent = () => {
     },
 
     {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course.auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+
+    {
       title: 'Commission',
       key: 'commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+          {item?.agent_commission
+            ? `${item.agent_commission} MYR`
+            : `${item?.agent_commission_paid} MYR ` && (
+                <span className="badge bg-success-subtle text-success">
+                  {item?.agent_commission_paid} PAID
+                </span>
+              )}
         </div>
       ),
     },
@@ -2092,7 +2112,7 @@ const DataObjectComponent = () => {
       key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
         </div>
       ),
     },
@@ -2109,10 +2129,17 @@ const DataObjectComponent = () => {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
-        <div className="badge bg-warning-subtle text-warning">{'Pending'}</div>
+        <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.agent_pending_payout_status ?? ''}
+          </span>
+        </div>
       ),
     },
   ];
+
   const TotalAgentPaidPayoutReportHeadersDataForAgent = [
     {
       title: 'SN',
@@ -3375,6 +3402,85 @@ const DataObjectComponent = () => {
       ),
     },
   ];
+  const applicationHeadersForStudent = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Course',
+      key: 'course_name',
+      render: (item) => (
+        <div className="text-capitalize">
+          {item?.application?.course?.name ?? '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Application ID',
+      key: 'application',
+      render: (item) => (
+        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Emgs Payment',
+      key: 'emgs_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.emgs_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.emgs_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Tuition Payment',
+      key: 'tuition_fee_payment_status',
+      render: (item) => (
+        <p
+          className={` badge fw-semibold text-center me-4 ${item?.application?.tuition_fee_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.application?.tuition_fee_payment_status ?? ''}
+          </span>
+        </p>
+      ),
+    },
+    {
+      title: 'Airport Pickup',
+      key: 'airport_pickup',
+      render: (item) =>
+        item?.application?.airport_pickup_invoice_status === 'active' ? (
+          <p
+            className={` badge fw-semibold text-center me-4 ${item?.application?.airport_pickup_charge_payment_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+          >
+            <span className="text-uppercase">
+              {item?.application?.airport_pickup_charge_payment_status ?? ''}
+            </span>
+          </p>
+        ) : (
+          <span className="text-capitalize text-primary fw-medium">
+            {'Not Activated Yet'}
+          </span>
+        ),
+    },
+    {
+      title: 'Payment Method',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="text-uppercase">{item?.payment_method ?? '-'}</div>
+      ),
+    },
+  ];
 
   const applicationPaymentHeadersWithoutAction = [
     {
@@ -3387,31 +3493,42 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Type',
+      title: 'Application Id',
+      key: 'application_id',
+      render: (item) => (
+        <span className="d-flex flex-column text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : ''}
+        </span>
+      ),
+    },
+    {
+      title: 'Details',
       key: 'payment_reason',
       render: (item) => (
-        <div className="text-capitalize fs-2 fw-medium">
-          {item?.payment_reason
-            ? item?.payment_reason?.split('_').join(' ')
-            : '-'}
-        </div>
+        <>
+          <div className="text-capitalize fs-2 fw-medium">
+            Type:{' '}
+            {item?.payment_reason
+              ? item?.payment_reason?.split('_').join(' ')
+              : ''}
+          </div>
+          <div className="text-capitalize fs-2 fw-medium">
+            Name:{' '}
+            {item?.student?.first_name + ' ' + item?.student?.last_name ?? ''}
+          </div>
+          <div className="text-capitalize fs-2 fw-medium">
+            Course:{' '}
+            {item?.application?.course ? item?.application?.course?.name : ''}
+          </div>
+        </>
       ),
     },
     {
-      title: 'Student Name',
-      key: 'student',
+      title: 'Date',
+      key: 'payment_date',
       render: (item) => (
         <div className="text-capitalize">
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
-        </div>
-      ),
-    },
-    {
-      title: 'Course',
-      key: 'course',
-      render: (item) => (
-        <div className="fs-2 fw-medium">
-          {item?.application?.course ? item?.application?.course?.name : '-'}
+          {moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}
         </div>
       ),
     },
@@ -3421,7 +3538,7 @@ const DataObjectComponent = () => {
       render: (item) => (
         <div className="text-capitalize">
           {item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name ??
-            '-'}
+            ''}
         </div>
       ),
     },
@@ -3432,76 +3549,44 @@ const DataObjectComponent = () => {
         <div>
           {item?.application?.course?.tuition_fee
             ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
-            : '-'}
+            : ''}
         </div>
       ),
     },
     {
-      title: 'Emgs Fee Paid Amount',
+      title: 'Emgs Fee ',
       key: 'emgs_paid_amount',
       render: (item) => (
         <div>
           {item?.payment_reason === 'application_emgs'
             ? item?.application?.emgs_fee_amount + ' ' + 'MYR'
-            : '-'}
+            : ''}
         </div>
       ),
     },
 
     {
-      title: 'Tuition Fee Paid Amount',
+      title: 'Tuition Fee ',
       key: 'tuition_paid_amount',
       render: (item) => (
         <div>
           {item?.tuition_fee_paid_amount
             ? item?.tuition_fee_paid_amount + ' ' + 'MYR'
-            : '-'}
+            : ''}
         </div>
       ),
     },
     {
-      title: 'Course Incentive Amount',
-      key: 'course_incentive_amount',
+      title: 'Pickup Fee ',
+      key: 'airport_pickup',
       render: (item) => (
         <div>
-          {item?.incentive_amount ? item?.incentive_amount + ' ' + 'MYR' : '-'}
+          {item?.payment_reason === 'application_airport_pickup_charge'
+            ? item?.airport_pickup_charge + ' ' + 'MYR'
+            : ''}
         </div>
       ),
     },
-    {
-      title: 'Agent Commission',
-      key: 'agent_commission',
-      render: (item) => (
-        <div>
-          {item?.payment_reason === 'application_tuition_fee'
-            ? item?.agent_commission + ' ' + 'MYR'
-            : '-'}
-        </div>
-      ),
-    },
-
-    {
-      title: 'Super Admin Profit',
-      key: 'super_admin_profit',
-      render: (item) => (
-        <div>
-          {item?.payment_reason === 'application_tuition_fee'
-            ? item?.incentive_amount - item?.agent_commission + ' ' + 'MYR'
-            : item?.incentive_amount
-              ? item?.incentive_amount
-              : '-'}
-        </div>
-      ),
-    },
-    // {
-    //   title: 'Payment Status',
-    //   key: 'status',
-    //   render: (item) => (
-    //     <div className="badge bg-success-subtle text-success text-capitalize">
-    //       {item?.status ?? '-'}
-    //     </div>
-    //   ),
-    // },
     {
       title: 'Payment Method',
       key: 'payment_method',
@@ -3591,6 +3676,17 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Airport Pickup Amount',
+      key: 'airport_pickup_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_airport_pickup_charge'
+            ? item?.airport_pickup_charge + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+    {
       title: 'Commission',
       key: 'agent_commission',
       render: (item) => (
@@ -3634,15 +3730,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    {
-      title: 'Student Name',
-      key: 'student',
-      render: (item) => (
-        <div className="text-capitalize">
-          {item?.student?.first_name + ' ' + item?.student?.last_name ?? '-'}
-        </div>
-      ),
-    },
+
     {
       title: 'Course',
       key: 'course',
@@ -3667,9 +3755,11 @@ const DataObjectComponent = () => {
       key: 'course_fee',
       render: (item) => (
         <div>
-          {item?.application?.course?.tuition_fee
-            ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
-            : '-'}
+          {item?.payment_reason === 'application_airport_pickup_charge'
+            ? '-'
+            : item?.application?.course?.tuition_fee
+              ? item?.application?.course?.tuition_fee + ' ' + 'MYR'
+              : '-'}
         </div>
       ),
     },
@@ -3700,7 +3790,18 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Data',
+      title: 'Airport Pickup Amount',
+      key: 'airport_pickup_amount',
+      render: (item) => (
+        <div>
+          {item?.payment_reason === 'application_airport_pickup_charge'
+            ? item?.airport_pickup_charge + ' ' + 'MYR'
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Date',
       key: 'payment_date',
       render: (item) => (
         <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
@@ -5533,9 +5634,7 @@ const DataObjectComponent = () => {
     AGENTYEARLYBONOUSHEADERS,
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
-    AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN,
-    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
-    docRequestTableHeaderData,
+    applicationHeadersForStudent,
   };
 };
 

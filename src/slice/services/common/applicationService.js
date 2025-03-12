@@ -100,6 +100,14 @@ export const applicationService = createApi({
         };
       },
     }),
+    deleteApplication: builder.mutation({
+      query: (application_id) => {
+        return {
+          url: `/application/${application_id}`,
+          method: 'DELETE',
+        };
+      },
+    }),
   }),
 });
 
@@ -115,4 +123,5 @@ export const {
   useUpdateApplicationStatusMutation,
   useUpdatePaymentApplicationStatusMutation,
   useUpdateCommonApplicationStatusMutation,
+  useDeleteApplicationMutation,
 } = applicationService;

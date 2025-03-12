@@ -23,6 +23,7 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 const StudentDocumentUploadRquestForSuperAdmin = () => {
+  const user = currentUser();
   const [searchTermForRequest, setSearchTermForRequest] = useState('');
   const [searchTermForSubmitedData, setSearchTermForSubmitedData] =
     useState('');
@@ -33,7 +34,6 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   const [docId, setDocId] = useState('');
   const [addModalIsOpen, setAddModalIsOpen] = useState(true);
   const router = useRouter();
-  const user = currentUser();
 
   const customData = useCustomData();
 
@@ -139,7 +139,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
       user_document_id,
       status,
       accepted_date,
-      accepted_by: user?.id,
+      accepted_by: user.id,
     };
     try {
       const result = await updateDocumentRequest(updatedDataStatus).unwrap();
@@ -161,7 +161,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
       user_document_id: docId,
       status: 'rejected',
       rejected_date,
-      rejected_by: user?.id,
+      rejected_by: user.id,
     };
 
     try {

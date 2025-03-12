@@ -159,7 +159,7 @@ export default function RecentApplicationForSuperAdmin() {
             <i className="ri-more-fill align-middle"></i>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="ms-2">
+        <DropdownMenu className="me-3">
           <DropdownItem>
             <div
               onClick={() =>
@@ -269,6 +269,9 @@ export default function RecentApplicationForSuperAdmin() {
       toast.error(error?.message || 'Something went wrong');
     }
   };
+
+
+  console.log(recentApplicationData);
 
   return (
     <Layout>

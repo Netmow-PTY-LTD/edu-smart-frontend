@@ -26,10 +26,11 @@ const TotalAgentPayoutInAgent = () => {
   } = useGetApplicationPaymentReportQuery();
 
   useEffect(() => {
+    console.log(getApplicationPaymentData);
     const newData = getApplicationPaymentData?.data.filter(
       (item) =>
-        item?.payment_reason === 'application_tuition_fee' &&
-        item?.application?.course?.auto_deduct === false
+        item?.application?.tuition_fee_auto_deduct === false &&
+        item?.payment_reason === 'application_tuition_fee'
     );
     setAllPaymentData(newData);
   }, [getApplicationPaymentData]);

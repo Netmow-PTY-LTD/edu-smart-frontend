@@ -13,7 +13,7 @@ const ApplicationPaymentForSuperAdmin = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 15;
 
-  const { applicationPaymentHeadersWithoutAction } = DataObjectComponent();
+  const { applicationPaymentHeadersWithoutAction = [] } = DataObjectComponent();
 
   const {
     data: getApplicationPaymentData,
@@ -27,13 +27,16 @@ const ApplicationPaymentForSuperAdmin = () => {
   const filteredData = getApplicationPaymentData?.data?.filter((item) => {
     const isValidReason =
       item?.payment_reason === 'application_emgs' ||
-      item?.payment_reason === 'application_tuition_fee';
+      item?.payment_reason === 'application_tuition_fee' ||
+      item?.payment_reason === 'application_airport_pickup_charge';
 
     const fullName =
       `${item?.student?.first_name || ''} ${item?.student?.last_name || ''}`.toLowerCase();
 
     return isValidReason && fullName.includes(searchTerm.toLowerCase());
   });
+
+  console.log(filteredData);
 
   return (
     <Layout>

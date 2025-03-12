@@ -64,9 +64,9 @@ const CourseModalFormTest = ({
           {({ isSubmitting, setFieldValue, values, errors, touched }) => {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
-              const after_emgs_fee_get = values.tuition_fee - values.emgs_fee;
+              const after_emgs_fee_get = values?.tuition_fee - values?.emgs_fee;
               setFieldValue('after_emgs_fee', after_emgs_fee_get);
-            }, [values.tuition_fee, values.emgs_fee, setFieldValue]);
+            }, [values?.tuition_fee, values?.emgs_fee, setFieldValue]);
 
             return (
               <Form>
@@ -162,8 +162,8 @@ const CourseModalFormTest = ({
                           // If the checkbox is checked, ensure incentive_amount is valid (greater than 0)
                           if (
                             checked &&
-                            (values.incentive_amount <= 0 ||
-                              values.incentive_amount === '')
+                            (values?.incentive_amount <= 0 ||
+                              values?.incentive_amount === '')
                           ) {
                             toast.error(
                               'Incentive amount cannot be less than 1.'
@@ -203,7 +203,7 @@ const CourseModalFormTest = ({
 
                   <Field name="scholarship_on_tuition_fee">
                     {({ field, form }) =>
-                      field.value && (
+                      field?.value && (
                         <>
                           <Col xl={6}>
                             <div className="mb-3">
@@ -223,8 +223,8 @@ const CourseModalFormTest = ({
                                   // If the checkbox is checked, ensure incentive_amount is valid (greater than 0)
                                   if (
                                     checked &&
-                                    (values.scholarship_amount <= 0 ||
-                                      values.scholarship_amount === '')
+                                    (values?.scholarship_amount <= 0 ||
+                                      values?.scholarship_amount === '')
                                   ) {
                                     toast.error(
                                       'Scholarship Amount cannot be less than 1.'
@@ -319,7 +319,7 @@ const CourseModalFormTest = ({
 
                   <Field name="free_accessories">
                     {({ field, form }) =>
-                      field.value && (
+                      field?.value && (
                         <Col xl={12}>
                           <div className="mb-3">
                             <label className="form-label fs-2 mb-3">
@@ -337,7 +337,7 @@ const CourseModalFormTest = ({
                               }))}
                               onChange={(selectedOptions) => {
                                 const selectedValues = selectedOptions.map(
-                                  (option) => option.value
+                                  (option) => option?.value
                                 );
                                 form.setFieldValue(
                                   'accessories',
@@ -407,11 +407,11 @@ const CourseModalFormTest = ({
                               .filter((item) => item?.document_list_id) // This filters out items with undefined or empty document_list_id
                               .map((item, index) => {
                                 const isManual =
-                                  item.document_list_id?.startsWith('manual_');
+                                  item?.document_list_id?.startsWith('manual_');
 
                                 return (
                                   <Row
-                                    key={item.document_list_id}
+                                    key={item?.document_list_id}
                                     className="align-items-center mt-4 mb-4"
                                   >
                                     {/* Title (Editable) */}
@@ -422,7 +422,7 @@ const CourseModalFormTest = ({
                                           name={`document_requirements[${index}].title`}
                                           placeholder="Enter document title"
                                           className="form-control"
-                                          value={item.title || ''}
+                                          value={item?.title || ''}
                                         />
                                       </div>
                                     </Col>
@@ -435,7 +435,7 @@ const CourseModalFormTest = ({
                                           name={`document_requirements[${index}].description`}
                                           placeholder="Enter document description"
                                           className="form-control"
-                                          value={item.description || ''}
+                                          value={item?.description || ''}
                                         />
                                       </div>
                                     </Col>
@@ -447,7 +447,7 @@ const CourseModalFormTest = ({
                                         <Field
                                           name={`document_requirements[${index}].document_list_id`}
                                           className="form-control"
-                                          value={item.document_list_id || ''}
+                                          value={item?.document_list_id || ''}
                                           readOnly // Always read-only
                                         />
                                       </div>
@@ -467,7 +467,7 @@ const CourseModalFormTest = ({
                                           className="form-check-input"
                                           id={`document_requirements[${index}].isRequired`}
                                           checked={
-                                            values.document_requirements?.[
+                                            values?.document_requirements?.[
                                               index
                                             ]?.isRequired ?? false
                                           } // Ensure default is false
@@ -521,50 +521,51 @@ const CourseModalFormTest = ({
                     <FieldArray name="entry_requirements">
                       {({ remove, push }) => (
                         <div>
-                          {values.entry_requirements?.map((item, index) => (
-                            <Row key={index} className="align-items-center">
-                              <Col md={11}>
-                                <div className="mb-3">
-                                  <label
-                                    htmlFor={`entry_requirements[${index}]`}
-                                  >
-                                    {`Entry Requirements ${index + 1}`}
-                                  </label>
+                          {values?.entry_requirements?.length > 0 &&
+                            values?.entry_requirements?.map((item, index) => (
+                              <Row key={index} className="align-items-center">
+                                <Col md={11}>
+                                  <div className="mb-3">
+                                    <label
+                                      htmlFor={`entry_requirements[${index}]`}
+                                    >
+                                      {`Entry Requirements ${index + 1}`}
+                                    </label>
 
-                                  <Field
-                                    name={`entry_requirements[${index}]`}
-                                    label={`Entry requirements ${index + 1}`}
-                                    placeholder="Enter Text Here"
-                                    className={`form-control ${
-                                      errors.entry_requirements?.[index] &&
-                                      touched.entry_requirements?.[index]
-                                        ? 'is-invalid'
-                                        : ''
-                                    }`}
-                                  />
-                                  {errors.entry_requirements?.[index] &&
-                                    touched.entry_requirements?.[index] && (
-                                      <div className="invalid-feedback">
-                                        {errors.entry_requirements[index]}
-                                      </div>
-                                    )}
-                                </div>
-                              </Col>
-                              {index > 0 && (
-                                <Col md={1}>
-                                  <Button
-                                    type="button"
-                                    onClick={() => {
-                                      remove(index);
-                                    }}
-                                    className="third-btn mt-3"
-                                  >
-                                    <i className="ri-delete-bin-fill"></i>
-                                  </Button>
+                                    <Field
+                                      name={`entry_requirements[${index}]`}
+                                      label={`Entry requirements ${index + 1}`}
+                                      placeholder="Enter Text Here"
+                                      className={`form-control ${
+                                        errors?.entry_requirements?.[index] &&
+                                        touched?.entry_requirements?.[index]
+                                          ? 'is-invalid'
+                                          : ''
+                                      }`}
+                                    />
+                                    {errors?.entry_requirements?.[index] &&
+                                      touched?.entry_requirements?.[index] && (
+                                        <div className="invalid-feedback">
+                                          {errors?.entry_requirements[index]}
+                                        </div>
+                                      )}
+                                  </div>
                                 </Col>
-                              )}
-                            </Row>
-                          ))}
+                                {index > 0 && (
+                                  <Col md={1}>
+                                    <Button
+                                      type="button"
+                                      onClick={() => {
+                                        remove(index);
+                                      }}
+                                      className="third-btn mt-3"
+                                    >
+                                      <i className="ri-delete-bin-fill"></i>
+                                    </Button>
+                                  </Col>
+                                )}
+                              </Row>
+                            ))}
                           <div className="d-flex align-items-center justify-content-center mb-4">
                             <Button
                               type="button"
@@ -583,50 +584,53 @@ const CourseModalFormTest = ({
                     <FieldArray name="english_requirements">
                       {({ remove, push }) => (
                         <div>
-                          {values.english_requirements?.map((item, index) => (
-                            <Row key={index} className="align-items-center">
-                              <Col md={11}>
-                                <div className="mb-3">
-                                  <label
-                                    htmlFor={`english_requirements[${index}]`}
-                                  >
-                                    {`English Requirements ${index + 1}`}
-                                  </label>
+                          {values?.english_requirements?.length > 0 &&
+                            values?.english_requirements?.map((item, index) => (
+                              <Row key={index} className="align-items-center">
+                                <Col md={11}>
+                                  <div className="mb-3">
+                                    <label
+                                      htmlFor={`english_requirements[${index}]`}
+                                    >
+                                      {`English Requirements ${index + 1}`}
+                                    </label>
 
-                                  <Field
-                                    name={`english_requirements[${index}]`}
-                                    label={`Entry requirements ${index + 1}`}
-                                    placeholder="Enter Text Here"
-                                    className={`form-control ${
-                                      errors.english_requirements?.[index] &&
-                                      touched.english_requirements?.[index]
-                                        ? 'is-invalid'
-                                        : ''
-                                    }`}
-                                  />
-                                  {errors.english_requirements?.[index] &&
-                                    touched.english_requirements?.[index] && (
-                                      <div className="invalid-feedback">
-                                        {errors.english_requirements[index]}
-                                      </div>
-                                    )}
-                                </div>
-                              </Col>
-                              {index > 0 && (
-                                <Col md={1}>
-                                  <Button
-                                    type="button"
-                                    onClick={() => {
-                                      remove(index);
-                                    }}
-                                    className="third-btn mt-3"
-                                  >
-                                    <i className="ri-delete-bin-fill"></i>
-                                  </Button>
+                                    <Field
+                                      name={`english_requirements[${index}]`}
+                                      label={`Entry requirements ${index + 1}`}
+                                      placeholder="Enter Text Here"
+                                      className={`form-control ${
+                                        errors?.english_requirements?.[index] &&
+                                        touched?.english_requirements?.[index]
+                                          ? 'is-invalid'
+                                          : ''
+                                      }`}
+                                    />
+                                    {errors?.english_requirements?.[index] &&
+                                      touched?.english_requirements?.[
+                                        index
+                                      ] && (
+                                        <div className="invalid-feedback">
+                                          {errors?.english_requirements[index]}
+                                        </div>
+                                      )}
+                                  </div>
                                 </Col>
-                              )}
-                            </Row>
-                          ))}
+                                {index > 0 && (
+                                  <Col md={1}>
+                                    <Button
+                                      type="button"
+                                      onClick={() => {
+                                        remove(index);
+                                      }}
+                                      className="third-btn mt-3"
+                                    >
+                                      <i className="ri-delete-bin-fill"></i>
+                                    </Button>
+                                  </Col>
+                                )}
+                              </Row>
+                            ))}
                           <div className="hstack d-flex align-items-center justify-content-center mb-4">
                             <Button
                               type="button"
