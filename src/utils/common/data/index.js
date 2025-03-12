@@ -2287,7 +2287,11 @@ const DataObjectComponent = () => {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
-        <div className="badge bg-warning-subtle text-warning">{'Pending'}</div>
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_pending_payout_status
+            ? item?.agent_pending_payout_status
+            : '-'}
+        </div>
       ),
     },
   ];

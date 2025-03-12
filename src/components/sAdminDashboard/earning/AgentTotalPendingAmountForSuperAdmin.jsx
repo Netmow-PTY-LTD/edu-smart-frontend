@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 
-const AgentTotalPendingAmountForSuperAdmin = () => {
+const AgentTotalPendingAmountForSuperAdmin = ({ agent_id }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
@@ -26,14 +26,26 @@ const AgentTotalPendingAmountForSuperAdmin = () => {
   } = useGetApplicationPaymentReportQuery();
 
   useEffect(() => {
-    const newData = getApplicationPaymentData?.data.filter(
-      (item) =>
-        item?.payment_reason === 'application_tuition_fee' &&
-        item?.application?.course?.auto_deduct === false
-    );
+    const newData = getApplicationPaymentData?.data
+      .filter(
+        (item) =>
+          item?.payment_reason === 'application_tuition_fee' &&
+          item?.student?.agent?._id === agent_id &&
+          item?.agent_pending_payout_status === 'pending'
+      )
+      ?.map((item) => ({
+        ...item,
+        agent_commission:
+          item?.application?.tuition_fee_auto_deduct === true
+            ? 0
+            : item?.agent_commission,
+        agent_commission_paid: item?.agent_commission,
+      }));
+
     setAllPaymentData(newData);
   }, [getApplicationPaymentData]);
 
+  console.log(getApplicationPaymentData);
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
