@@ -8,13 +8,27 @@ const SinglePackageComponent = ({
   handleUpgrade,
   style,
   unselectedPackage,
+  renewButton,
+  renewHandler,
 }) => {
+  console.log(style);
   return (
     <>
       <div
         style={style}
         className="sqdk-single-pricing-table position-relative"
       >
+        {renewButton ? (
+          <button
+            onClick={renewHandler}
+            className="button px-4 py-2 position-absolute top-0 m-3"
+          >
+            Renew Now
+          </button>
+        ) : (
+          ''
+        )}
+
         <div
           style={{
             position: 'absolute',
@@ -31,6 +45,7 @@ const SinglePackageComponent = ({
             ''
           )}
         </div>
+
         <div className="d-flex align-items-center justify-content-between mt-3 gap-5">
           <h1 className="text-secondary-alt text-capitalize text-nowrap">
             {data?.name}

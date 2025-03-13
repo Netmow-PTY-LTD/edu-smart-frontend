@@ -43,6 +43,7 @@ const UpgradePackageInAgentdashboard = () => {
   const [totalPricePackage, setTotalPricePackage] = useState('');
   const [pricePackage, setPricePackage] = useState('');
   const [couponId, setCouponId] = useState('');
+  const [renewStatus, setRenewStatus] = useState('no');
   const router = useRouter();
   const payment_status = router.query?.payment_status;
   const transaction_id = router.query?.transaction_id;
@@ -51,10 +52,12 @@ const UpgradePackageInAgentdashboard = () => {
   const paid_amount = router.query.paid_amount;
   const coupon_id = router.query.coupon_id;
   const getDuration = router.query.duration;
+  const getRenewStatus = router.query.renew;
 
   console.log('packagePaidDuration', packagePaidDuration);
   console.log('packageDuration', packageDuration);
   console.log('getDuration', getDuration);
+  console.log('renewStatus', renewStatus);
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const { data: allCouponData } = useGetAllActiveCouponQuery();
@@ -76,7 +79,6 @@ const UpgradePackageInAgentdashboard = () => {
   } = useGetAllPackageQuery();
 
   const handleUpgrade = (data) => {
-    // console.log(data);
     setPackageDuration(data?.package_duration);
     setPricePackage(data?.price * data?.package_duration);
     setUpgradePackageName(data?.name);
@@ -124,6 +126,7 @@ const UpgradePackageInAgentdashboard = () => {
               : coupon_id && coupon_id != 'none'
                 ? coupon_id
                 : '',
+            renew: renewStatus || getRenewStatus,
           };
           const response = await upgradePackageForAgent(finalData).unwrap();
           if (response) {
@@ -196,10 +199,12 @@ const UpgradePackageInAgentdashboard = () => {
     couponId,
     coupon_id,
     getDuration,
+    getRenewStatus,
     package_id,
     paid_amount,
     payment_method,
     payment_status,
+    renewStatus,
     router,
     transaction_id,
     upgradePackageForAgent,
@@ -214,8 +219,8 @@ const UpgradePackageInAgentdashboard = () => {
         : `https://edusmart.study/dashboard/agent/upgrade?payment_status=failed`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`
-        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}`;
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}&renew=${renewStatus}`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}&renew=${renewStatus}`;
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
         ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
@@ -313,6 +318,7 @@ const UpgradePackageInAgentdashboard = () => {
         payment_method: 'Coupon',
         paid_amount: couponAmount,
         coupon: couponId,
+        renew: renewStatus || getRenewStatus,
       };
 
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
@@ -392,6 +398,16 @@ const UpgradePackageInAgentdashboard = () => {
     }
   };
 
+  const renewPackagehandler = (data) => {
+    console.log(data);
+    setRenewStatus('yes');
+    setPackageDuration(data?.package_duration);
+    setPricePackage(data?.price * data?.package_duration);
+    setUpgradePackageName(data?.name);
+    setUpgradePackageId(data?.id);
+    setOpenPaymentModal(!openPaymentModal);
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -418,6 +434,19 @@ const UpgradePackageInAgentdashboard = () => {
                                 package_duration: item?.duration.split('_')[0],
                               })
                             }
+                            renewHandler={() =>
+                              renewPackagehandler({
+                                price: item?.price,
+                                name: item?.name,
+                                id: item?._id,
+                                package_duration: item?.duration.split('_')[0],
+                              })
+                            }
+                            renewButton={
+                              item?.price > 0 &&
+                              item?._id ===
+                                userInfodata?.data?.agent_package?.package?._id
+                            }
                             style={
                               item?._id ===
                               userInfodata?.data?.agent_package?.package?._id
@@ -435,7 +464,6 @@ const UpgradePackageInAgentdashboard = () => {
                           <h1 className="text-primary">
                             No package found right now
                           </h1>
-                          <p className="text-primary">Please add a package.</p>
                         </div>
                       )}
                     </>
@@ -516,6 +544,7 @@ const UpgradePackageInAgentdashboard = () => {
             <Modal isOpen={openPaymentModal} centered size="lg">
               <ModalHeader
                 toggle={() => {
+                  setRenewStatus('no');
                   setUpgradePackageId('');
                   setCouponCode('');
                   setCouponError('');
