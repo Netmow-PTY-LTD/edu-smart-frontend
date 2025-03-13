@@ -9,12 +9,12 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 
-const AgentTotalPaidAmountForSuperAdmin = () => {
+const AgentTotalPaidAmountForSuperAdmin = ({ agent_id }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const perPageData = 15;
-
+  const [totalAmount, setTotalAmount] = useState('');
   const { TotalAgentPaidPayoutReportHeadersDataForAgent } =
     DataObjectComponent();
 
@@ -28,9 +28,18 @@ const AgentTotalPaidAmountForSuperAdmin = () => {
   useEffect(() => {
     const newData = getApplicationPaymentData?.data.filter(
       (item) =>
+        item?.student?.agent?._id === agent_id &&
         item?.payment_reason === 'application_tuition_fee' &&
         item?.application?.tuition_fee_auto_deduct === true
     );
+
+    const totalReceivedAmount = newData?.reduce((total, item) => {
+      const amountPass = item?.agent_commission;
+      return total + amountPass;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount.toFixed(2));
+
     setAllPaymentData(newData);
   }, [getApplicationPaymentData]);
 
@@ -72,6 +81,7 @@ const AgentTotalPaidAmountForSuperAdmin = () => {
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
                 emptyMessage="No Data found yet."
+                totalAgentPaidPayoutAmount={totalAmount}
               />
             </CardBody>
           </Card>
