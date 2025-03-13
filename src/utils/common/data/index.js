@@ -1005,6 +1005,16 @@ const DataObjectComponent = () => {
   ];
 
   const agentsHeaders = [
+    {
+      title: 'Package',
+      key: 'package',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.agent_package ? <span>{item.agent_package_new.package_name}</span> : '-'}
+        </span>
+      ),
+    },
+
     { title: 'Email', key: 'email' },
     { title: 'Phone', key: 'phone' },
     {
