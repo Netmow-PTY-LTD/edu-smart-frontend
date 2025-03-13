@@ -286,7 +286,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               )}
             </CardBody>
           </Card>
-          <Card>
+          <Card className="mt-5">
             <CardHeader>
               <h3 className="fs-1 fw-semibold">All Submiteed Document</h3>
               <SearchComponent
