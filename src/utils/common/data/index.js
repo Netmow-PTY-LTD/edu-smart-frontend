@@ -5785,6 +5785,8 @@ const DataObjectComponent = () => {
     applicationPaymentHeadersStudent,
     applicationHeadersForStudent,
     TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew,
+    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
+    AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN,
   };
 };
 
