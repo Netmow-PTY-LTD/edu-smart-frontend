@@ -14,7 +14,8 @@ const TotalReceiveAmountForSuperAdmin = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
   const [totalAmount, setTotalAmount] = useState('');
-  const perPageData = 15;
+  const [perPageData, setPerPageData] = useState(15);
+  const perPageDataDefault = 15;
 
   const { receivedAmountPaymentReportHeadersDataForSuperAdmin } =
     DataObjectComponent();
@@ -94,6 +95,44 @@ const TotalReceiveAmountForSuperAdmin = () => {
                   <div className="text-primary fw-semibold fs-2">
                     Total Receive Earnings
                   </div>
+                  <div
+                    className="d-flex justify-content-between align-items-center gap-3"
+                    style={{ width: '120px' }}
+                  >
+                    <label className="text-primary fw-semibold fs-2">
+                      Show:
+                    </label>
+                    <select
+                      className="form-select d-flex justify-content-between align-items-center gap-3"
+                      value={perPageData}
+                      onChange={(e) => setPerPageData(Number(e.target.value))}
+                    >
+                      <option
+                        key={perPageDataDefault}
+                        value={perPageDataDefault}
+                      >
+                        {perPageDataDefault}
+                      </option>
+                      {[...Array(Math.floor(filteredData.length / 50))].map(
+                        (_, index) => {
+                          const value = (index + 1) * 50; // Increment by 50
+                          return (
+                            <option key={value} value={value}>
+                              {value}
+                            </option>
+                          );
+                        }
+                      )}
+                      {/* Add last option as the total length of filteredData */}
+                      <option
+                        key={filteredData.length}
+                        value={filteredData.length}
+                      >
+                        {filteredData.length}
+                      </option>
+                    </select>
+                  </div>
+
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
