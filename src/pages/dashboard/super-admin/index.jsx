@@ -60,19 +60,19 @@ const SuperAdminDashboard = () => {
                   firstElementData={getUniversityData?.data?.length}
                   secondElementData={allAgentsData?.data?.length}
                   thirdElementData={allStudentsData?.data?.length}
-                  fourthElementData={totalIncome?.data?.totalReceiveAmount.toFixed(
+                  fourthElementData={totalIncome?.data?.totalReceiveAmount?.toFixed(
                     2
                   )}
-                  fithElement={totalIncome?.data?.totalUniversityPayout.toFixed(
+                  fithElement={totalIncome?.data?.totalUniversityPayout?.toFixed(
                     2
                   )}
-                  sixthElement={totalIncome?.data?.totalPaidAgentPayout.toFixed(
+                  sixthElement={totalIncome?.data?.totalPaidAgentPayout?.toFixed(
                     2
                   )}
-                  sevenElement={totalIncome?.data?.totalPendingAgentPayout.toFixed(
+                  sevenElement={totalIncome?.data?.totalPendingAgentPayout?.toFixed(
                     2
                   )}
-                  eightElement={totalIncome?.data?.totalSuperAdminProfit.toFixed(
+                  eightElement={totalIncome?.data?.totalSuperAdminProfit?.toFixed(
                     2
                   )}
                   gstAndCurrencyData={''}
