@@ -308,7 +308,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
           </Card>
 
           {/* submitted doc */}
-          <Card>
+          <Card className="my-5">
             <CardHeader>
               <h3 className="fs-1 fw-semibold">Air Ticket Submitted</h3>
               <SearchComponent
