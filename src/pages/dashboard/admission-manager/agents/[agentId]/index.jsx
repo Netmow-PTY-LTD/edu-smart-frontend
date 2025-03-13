@@ -218,7 +218,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                           >
                             <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Total Paid Amount
+                              Earning Paid Payout
                             </span>
                           </NavLink>
                         </NavItem>
@@ -234,7 +234,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                           >
                             <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Total Pending Amount
+                              Earning Pending Payout
                             </span>
                           </NavLink>
                         </NavItem>

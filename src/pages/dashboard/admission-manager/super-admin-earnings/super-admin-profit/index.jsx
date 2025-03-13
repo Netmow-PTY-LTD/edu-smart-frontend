@@ -13,6 +13,8 @@ const SuperAdminAllProfit = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState('');
+
   const perPageData = 15;
 
   const { TotalProfitForSuperAdminHeadersData } = DataObjectComponent();
@@ -34,6 +36,16 @@ const SuperAdminAllProfit = () => {
       (item) =>
         item?.payment_reason === 'application_tuition_fee' || item?.paid_amount
     );
+
+    const totalReceivedAmount = newData.reduce((total, item) => {
+      const amountPass = item?.super_admin_profit
+        ? item?.super_admin_profit
+        : item?.paid_amount;
+
+      return total + amountPass;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount.toFixed(2));
 
     setAllPaymentData(newData);
   }, [
@@ -84,6 +96,7 @@ const SuperAdminAllProfit = () => {
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
                     emptyMessage="No Data found yet."
+                    SupperProfitAmount={totalAmount}
                   />
                 </CardBody>
               </Card>
