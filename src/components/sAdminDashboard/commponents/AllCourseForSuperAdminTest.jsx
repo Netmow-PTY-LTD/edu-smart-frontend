@@ -46,6 +46,7 @@ const AllCourseForSuperAdminTest = ({
   const [filePreview, setFilePreview] = useState(null);
   const [price, setPrice] = useState(2400);
   const [checkFreeAcommodation, SetCheckFreeAcommodation] = useState(false);
+  const [checkChangeStatus, setCheckChangeStatus] = useState(null);
 
   const perPageData = 10;
 
@@ -664,8 +665,9 @@ const AllCourseForSuperAdminTest = ({
     }
   };
 
-  const handleDeleteButtonClick = (itemId) => {
-    setCourseIdForDelete(itemId);
+  const handleDeleteButtonClick = (itemData) => {
+    setCourseIdForDelete(itemData?.id);
+    setCheckChangeStatus(itemData?.status);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
@@ -674,6 +676,7 @@ const AllCourseForSuperAdminTest = ({
       const result = await deleteCourse({
         university_id: university_id,
         course_id: id,
+        status: checkChangeStatus,
       }).unwrap();
       if (result) {
         toast.success(result?.message);
@@ -753,15 +756,34 @@ const AllCourseForSuperAdminTest = ({
                 View Course
               </div>
             </DropdownItem>
-            {/* <DropdownItem>
-             <div
-               onClick={() => handleDeleteButtonClick(item._id)}
-               className="text-primary"
-             >
-               <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-               Delete
-             </div>
-           </DropdownItem> */}
+            {item?.status === 'active' ? (
+              <DropdownItem>
+                <div
+                  onClick={() =>
+                    handleDeleteButtonClick({
+                      id: item._id,
+                      status: 'inactive',
+                    })
+                  }
+                  className="text-primary"
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Inactive
+                </div>
+              </DropdownItem>
+            ) : (
+              <DropdownItem>
+                <div
+                  onClick={() =>
+                    handleDeleteButtonClick({ id: item._id, status: 'active' })
+                  }
+                  className="text-primary"
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Active
+                </div>
+              </DropdownItem>
+            )}
           </DropdownMenu>
         </UncontrolledDropdown>
       ),
@@ -850,6 +872,7 @@ const AllCourseForSuperAdminTest = ({
         id={courseIdForDelete}
         handleDelete={handleDeleteCourse}
         isloading={deleteCourseIsLoading}
+        userStatus={checkChangeStatus}
       />
     </div>
   );

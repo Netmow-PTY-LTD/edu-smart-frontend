@@ -32,6 +32,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [departmentIdForEdit, setDepartmentIdForEdit] = useState(null);
   const [departmentIdForDelete, setDepartmentIdForDelete] = useState(null);
+  const [checkChangeStatus, setCheckChangeStatus] = useState(null);
 
   const perPageData = 10;
 
@@ -173,8 +174,9 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
     }
   };
 
-  const handleDeleteButtonClick = (itemId) => {
-    setDepartmentIdForDelete(itemId);
+  const handleDeleteButtonClick = (itemData) => {
+    setDepartmentIdForDelete(itemData?.id);
+    setCheckChangeStatus(itemData?.status);
     setDeleteModalIsOpen(!deleteModalIsOpen);
   };
 
@@ -183,6 +185,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       const result = await deleteDepartment({
         university_id: university_id,
         department_id: id,
+        status: checkChangeStatus,
       }).unwrap();
       if (result) {
         toast.success(result?.message);
@@ -213,7 +216,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
       title: 'Action',
       key: 'actions',
       render: (item) => (
-        <UncontrolledDropdown className="card-header-dropdown">
+        <UncontrolledDropdown direction="end">
           <DropdownToggle
             tag="a"
             className="text-reset dropdown-btn"
@@ -223,7 +226,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
               <i className="ri-more-fill align-middle"></i>
             </span>
           </DropdownToggle>
-          <DropdownMenu className="dropdown-menu dropdown-menu-end">
+          <DropdownMenu className="me-3">
             <DropdownItem>
               <div
                 onClick={() => handleEditButtonClick(item?._id)}
@@ -233,15 +236,34 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
                 Edit
               </div>
             </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() => handleDeleteButtonClick(item._id)}
-                className="text-primary"
-              >
-                <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-                Delete
-              </div>
-            </DropdownItem>
+            {item?.status === 'active' ? (
+              <DropdownItem>
+                <div
+                  onClick={() =>
+                    handleDeleteButtonClick({
+                      id: item._id,
+                      status: 'inactive',
+                    })
+                  }
+                  className="text-primary"
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Inactive
+                </div>
+              </DropdownItem>
+            ) : (
+              <DropdownItem>
+                <div
+                  onClick={() =>
+                    handleDeleteButtonClick({ id: item._id, status: 'active' })
+                  }
+                  className="text-primary"
+                >
+                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+                  Active
+                </div>
+              </DropdownItem>
+            )}
           </DropdownMenu>
         </UncontrolledDropdown>
       ),
@@ -311,6 +333,7 @@ const AllDepartmentForSuperAdmin = ({ university_id }) => {
         id={departmentIdForDelete}
         handleDelete={handleDeleteDepartment}
         isloading={deleteDepartmentIsLoading}
+        userStatus={checkChangeStatus}
       />
     </div>
   );

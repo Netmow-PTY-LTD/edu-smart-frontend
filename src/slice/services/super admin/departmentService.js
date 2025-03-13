@@ -63,12 +63,13 @@ export const departmentService = createApi({
       },
     }),
     deleteDepartment: builder.mutation({
-      query: (idObj) => {
-        const university_id = idObj?.university_id;
-        const department_id = idObj?.department_id;
+      query: (body) => {
+        const university_id = body?.university_id;
+        const department_id = body?.department_id;
         return {
           url: `/${university_id}/department/${department_id}`,
           method: 'DELETE',
+          body: { status: body?.status },
         };
       },
     }),
