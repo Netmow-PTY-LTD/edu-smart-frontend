@@ -17,35 +17,36 @@ const SingleHotOfferCardComponent = ({
 
   return (
     <>
-      <div>
-        <div className="d-flex align-items-center justify-content-between mb-2">
-          <h2>Hot Offer</h2>
-          <UncontrolledDropdown direction="end">
-            <DropdownToggle
-              tag="a"
-              className="text-reset dropdown-btn"
-              role="button"
-            >
-              <button
-                style={{
-                  background: 'transparent',
-                  transform: 'rotate(90deg)',
-                }}
+      <div className="w-100 d-flex flex-column align-items-center">
+        <div style={{ maxWidth: '400px', width: '100%' }}>
+          <div className="d-flex align-items-center justify-content-between mb-2 w-100">
+            <h2>Hot Offer</h2>
+            <UncontrolledDropdown direction="end">
+              <DropdownToggle
+                tag="a"
+                className="text-reset dropdown-btn"
+                role="button"
               >
-                <i className="ri-more-2-fill fw-bolder fs-1"></i>
-              </button>
-            </DropdownToggle>
-            <DropdownMenu className="ms-2">
-              <DropdownItem>
-                <div
-                  onClick={() => updateHotOffer(data?._id)}
-                  className="text-primary"
+                <button
+                  style={{
+                    background: 'transparent',
+                    transform: 'rotate(90deg)',
+                  }}
                 >
-                  <i className="ri-pencil-fill align-start me-2 text-muted"></i>
-                  Edit
-                </div>
-              </DropdownItem>
-              {/* <DropdownItem>
+                  <i className="ri-more-2-fill fw-bolder fs-1"></i>
+                </button>
+              </DropdownToggle>
+              <DropdownMenu className="ms-2">
+                <DropdownItem>
+                  <div
+                    onClick={() => updateHotOffer(data?._id)}
+                    className="text-primary"
+                  >
+                    <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+                    Edit
+                  </div>
+                </DropdownItem>
+                {/* <DropdownItem>
                 <div
                   onClick={() => deleteHotOffer(data._id)}
                   className="text-primary"
@@ -54,66 +55,68 @@ const SingleHotOfferCardComponent = ({
                   Delete
                 </div>
               </DropdownItem> */}
-            </DropdownMenu>
-          </UncontrolledDropdown>
-        </div>
-        <div
-          style={{
-            backgroundColor: '#FFC1AE',
-            minHeight: '250px',
-            minWidth: '400px',
-            position: 'relative',
-          }}
-          className="d-flex px-5 rounded-5 pt-4"
-        >
-          <div className="d-flex flex-column z-1">
-            <div>
-              <div
-                className="d-flex align-items-center justify-content-between"
-                style={{ gap: '75%' }}
-              >
-                <h1 className="text-primary text-nowrap fw-bold text-capitalize">
-                  {data?.name}
-                </h1>
-                <span
-                  className={`fs-3 text-capitalize badge ${data?.status === 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}`}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+          <div
+            style={{
+              backgroundColor: '#FFC1AE',
+              minHeight: '250px',
+              position: 'relative',
+              filter:
+                data?.status === 'inactive' ? 'grayscale(1)' : 'grayscale(0)',
+            }}
+            className="d-flex px-5 rounded-5 pt-4"
+          >
+            <div className="d-flex flex-column z-1 position-relative">
+              <div>
+                <div
+                  className="d-flex flex-wrap align-items-center justify-content-between"
+                  style={{ gap: '10px' }}
                 >
-                  {data?.status}
-                </span>
-              </div>
+                  <h1 className="text-primary text-nowrap fw-bold text-capitalize">
+                    {data?.name}
+                  </h1>
+                  <span
+                    className={`fs-3 text-capitalize badge ${data?.status === 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}`}
+                  >
+                    {data?.status}
+                  </span>
+                </div>
 
-              <p className="text-primary fw-semibold text-capitalize">
-                {data?.offer_duration.split('_').join(' ')}
-              </p>
-              <p className="text-primary fw-semibold text-capitalize">
-                <strong>For</strong> {data?.package?.name}
-              </p>
+                <p className="text-primary fw-semibold text-capitalize mt-2">
+                  {data?.offer_duration.split('_').join(' ')}
+                </p>
+                <p className="text-primary fw-semibold text-capitalize">
+                  <strong>For</strong> {data?.package?.name}
+                </p>
+              </div>
+              <button
+                style={{
+                  position: 'absolute',
+                  bottom: '0',
+                }}
+                className="button px-4 py-2 my-5"
+              >
+                {data?.offer_percentage}
+                {'%'}
+                {' Extraa'}
+              </button>
             </div>
-            <button
+
+            <Image
+              src={cardimg || bgImage}
+              alt="alt"
               style={{
                 position: 'absolute',
-                bottom: '0',
+                bottom: '-34px',
+                right: '-16px',
+                width: '300px',
+                height: '278px',
+                objectFit: 'cover',
               }}
-              className="button px-4 py-2 my-5"
-            >
-              {data?.offer_percentage}
-              {'%'}
-              {' Extraa'}
-            </button>
+            />
           </div>
-
-          <Image
-            src={cardimg || bgImage}
-            alt="alt"
-            style={{
-              position: 'absolute',
-              bottom: '-34px',
-              right: '-16px',
-              width: '300px',
-              height: '278px',
-              objectFit: 'cover',
-            }}
-          />
         </div>
       </div>
     </>

@@ -26,6 +26,7 @@ import {
 const AllUniversityForSuperAdmin = () => {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchTermNew, setSearchTermNew] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [universityIdForChangeStatus, setUniversityIdForChangeStatus] =
     useState(null);
@@ -83,19 +84,31 @@ const AllUniversityForSuperAdmin = () => {
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
+  // search input change function
+  const handleSearchChangeNew = (e) => setSearchTermNew(e.target.value);
 
   // Filter data for search option
   const isfilteredData =
     getUniversityData?.data?.length > 0 &&
-    getUniversityData?.data.filter((item) =>
-      item?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    getUniversityData?.data.filter(
+      (item) =>
+        item?.status === 'active' &&
+        item?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  // Filter data for search option
+  const isfilteredDataNew =
+    getUniversityData?.data?.length > 0 &&
+    getUniversityData?.data.filter(
+      (item) =>
+        item?.status === 'inactive' &&
+        item?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const alluniversityHeaderAction = {
     title: 'Action',
     key: 'actions',
     render: (item) => (
-      <UncontrolledDropdown className="card-header-dropdown">
+      <UncontrolledDropdown direction="end">
         <DropdownToggle
           tag="a"
           className="text-reset dropdown-btn"
@@ -105,7 +118,7 @@ const AllUniversityForSuperAdmin = () => {
             <i className="ri-more-fill align-middle"></i>
           </span>
         </DropdownToggle>
-        <DropdownMenu className="dropdown-menu dropdown-menu-end">
+        <DropdownMenu className="me-3">
           <DropdownItem>
             <Link
               href={`/dashboard/${customData?.paneltext}/university-management/single-university-profile/${item?._id}`}
@@ -163,38 +176,69 @@ const AllUniversityForSuperAdmin = () => {
             {getUniversityIsLoading ? (
               <LoaderSpiner />
             ) : (
-              <Card>
-                <CardHeader className="d-flex justify-content-between align-items-center">
-                  <Link
-                    href={`/dashboard/${customData?.paneltext}/university-management/add-university`}
-                    className="button px-3 py-2"
-                  >
-                    Add New
-                  </Link>
+              <div className=" d-flex flex-column gap-5">
+                <Card>
+                  <CardHeader className="d-flex justify-content-between align-items-center">
+                    <Link
+                      href={`/dashboard/${customData?.paneltext}/university-management/add-university`}
+                      className="button px-3 py-2"
+                    >
+                      Add New
+                    </Link>
 
-                  <SearchComponent
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                  />
-                </CardHeader>
+                    <SearchComponent
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                    />
+                  </CardHeader>
 
-                <CardBody>
-                  <CommonTableComponent
-                    headers={[
-                      universityLogoAndNameHeaderDataForSuperAdminDashboard,
-                      ...universityHeadersData,
-                      alluniversityHeaderAction,
-                    ]}
-                    data={isfilteredData ? isfilteredData : []}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    perPageData={perPageData}
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                    emptyMessage="No Data found yet."
-                  />
-                </CardBody>
-              </Card>
+                  <CardBody>
+                    <CommonTableComponent
+                      headers={[
+                        universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                        ...universityHeadersData,
+                        alluniversityHeaderAction,
+                      ]}
+                      data={isfilteredData ? isfilteredData : []}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      perPageData={perPageData}
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                      emptyMessage="No Data found yet."
+                    />
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardHeader className="d-flex justify-content-between align-items-center">
+                    <div className="fs-2 fw-semibold text-primary">
+                      Inactive Universities
+                    </div>
+
+                    <SearchComponent
+                      searchTerm={searchTermNew}
+                      handleSearchChange={handleSearchChangeNew}
+                    />
+                  </CardHeader>
+
+                  <CardBody>
+                    <CommonTableComponent
+                      headers={[
+                        universityLogoAndNameHeaderDataForSuperAdminDashboard,
+                        ...universityHeadersData,
+                        alluniversityHeaderAction,
+                      ]}
+                      data={isfilteredDataNew ? isfilteredDataNew : []}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      perPageData={perPageData}
+                      searchTerm={searchTermNew}
+                      handleSearchChange={handleSearchChangeNew}
+                      emptyMessage="No Data found yet."
+                    />
+                  </CardBody>
+                </Card>
+              </div>
             )}
 
             {/* Delete University */}
