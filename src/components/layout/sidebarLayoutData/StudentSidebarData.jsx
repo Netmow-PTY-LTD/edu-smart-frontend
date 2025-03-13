@@ -1,3 +1,5 @@
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -13,6 +15,9 @@ const StudentSidebarData = () => {
   const [iscurrentState, setIscurrentState] = useState('Dashboard');
   const [isPaymentReport, setIsPaymentReport] = useState(false);
   const [isManageAirTicket, setIsManageAirTicket] = useState(false);
+
+  const { data: userInfoData } = useGetUserInfoQuery();
+
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');
@@ -88,16 +93,6 @@ const StudentSidebarData = () => {
             '/dashboard/student/university-management/all-university-for-student',
           parentId: 'university',
         },
-
-        // {
-        //   id: 'applieduniversity',
-        //   label: 'Applied University',
-        //   link: '/dashboard/student/university-management/applied-university-for-student',
-        //   icon: 'ri-building-4-fill',
-        //   pathName:
-        //     '/dashboard/student/university-management/applied-university-for-student',
-        //   parentId: 'university',
-        // },
       ],
     },
     {
@@ -133,40 +128,7 @@ const StudentSidebarData = () => {
         },
       ],
     },
-    // ----------------- Future use Manage Air Ticket subitem sidebar -----------------
-    // {
-    // {
-    //   id: 'manage-air-ticket',
-    //   label: 'Manage Air Ticket',
-    //   icon: 'ri-article-fill',
-    //   link: '/#',
-    //   click: function (e) {
-    //     e.preventDefault();
-    //     setIsManageAirTicket(!isManageAirTicket);
-    //     setIscurrentState('Manage Air Ticket');
-    //   },
-    //   stateVariables: isManageAirTicket,
-    //   subItems: [
-    //     {
-    //       id: 'allAirTicketDoc',
-    //       label: 'All Air Ticket Document',
-    //       link: '/dashboard/student/manage-air-ticket/all-air-ticket-doc-for-student',
-    //       icon: 'ri-file-fill',
-    //       pathName:
-    //         '/dashboard/student/manage-air-ticket/all-air-ticket-doc-for-student',
-    //       parentId: 'manage-air-ticket',
-    //     },
-    //     {
-    //       id: 'airTicketDocumentuploadrequest',
-    //       label: 'Air Ticket Doc Request',
-    //       link: '/dashboard/student/manage-air-ticket/air-ticket-upload-request',
-    //       icon: 'ri-file-list-3-fill',
-    //       pathName:
-    //         '/dashboard/student/manage-air-ticket/air-ticket-upload-request',
-    //       parentId: 'manage-air-ticket',
-    //     },
-    //   ],
-    // },
+
     {
       id: 'airTicketDocumentuploadrequest',
       label: 'Air Ticket Doc  Request',
@@ -193,13 +155,6 @@ const StudentSidebarData = () => {
       },
       stateVariables: isInvoices,
       subItems: [
-        // {
-        //   id: 'package-invoice',
-        //   label: 'Package Invoices',
-        //   icon: 'ri-receipt-fill',
-        //   link: '/dashboard/student/package-invoices',
-        //   parentId: 'invoices',
-        // },
         {
           id: 'application-invoice',
           label: 'Application Invoices',
@@ -209,6 +164,17 @@ const StudentSidebarData = () => {
         },
       ],
     },
+
+    ...(userInfoData?.data?.agent?._id
+      ? [
+          {
+            id: 'your_agent_profile',
+            label: 'Your Agent',
+            icon: 'ri-user-line',
+            link: '/dashboard/student/agent-profile',
+          },
+        ]
+      : []),
 
     {
       id: 'settings',
