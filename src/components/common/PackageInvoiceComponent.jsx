@@ -315,7 +315,7 @@ const PackageInvoiceComponent = ({
                                       ? (
                                           item?.agent_package?.package?.price ||
                                           0
-                                        ).toFixed(2)
+                                        )?.toFixed(2)
                                       : '-'}{' '}
                                     {currency}
                                   </h3>
@@ -333,7 +333,7 @@ const PackageInvoiceComponent = ({
                                           : item?.agent_package?.package_duration.split(
                                               '_'
                                             )[0])
-                                      ).toFixed(2);
+                                      )?.toFixed(2);
                                     })()}{' '}
                                     {currency}
                                   </h3>
@@ -371,7 +371,7 @@ const PackageInvoiceComponent = ({
                                   : paymentData?.agent_package?.package_duration.split(
                                       '_'
                                     )[0])
-                              ).toFixed(2);
+                              )?.toFixed(2);
 
                               const paidAmount = paymentData?.paid_amount || 0;
                               const discount = price - paidAmount;
@@ -387,7 +387,7 @@ const PackageInvoiceComponent = ({
     (subtotal *
       paymentData?.coupon?.discount_percentage) /
       100 || 0
-  ).toFixed(2)}{' '} */}
+  )?.toFixed(2)}{' '} */}
                           </th>
                         </tr>
 
