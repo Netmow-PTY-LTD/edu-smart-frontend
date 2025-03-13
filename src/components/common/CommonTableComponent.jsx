@@ -10,6 +10,11 @@ const CommonTableComponent = ({
   perPageData,
   emptyMessage,
   totalAmount,
+  totalUniversityAmount,
+  totalAgentPaidPayoutAmount,
+  totalAgentPendingPayoutAmount,
+  SupperProfitAmount,
+  totalAgentPaidPayoutAmountNew,
 }) => {
   // Pagination logic
   const startIdx = currentPage * perPageData;
@@ -62,16 +67,123 @@ const CommonTableComponent = ({
           {totalAmount ? (
             <thead className="fs-2">
               <tr>
-                {<th>{''}</th>}
-                {<th>{''}</th>}
+                {<th colSpan={2}></th>}
                 {
-                  <th className="text-uppercase">
+                  <th className="text-uppercase text-end">
                     {'Total Received Amount :'}
                   </th>
                 }
                 {
                   <th>
                     {totalAmount} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
+
+          {totalUniversityAmount ? (
+            <thead className="fs-2">
+              <tr>
+                {<th colSpan={3}></th>}
+                {
+                  <th className="text-uppercase text-end">
+                    {'Total Payout Amount :'}
+                  </th>
+                }
+                {
+                  <th>
+                    {totalUniversityAmount} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
+
+          {totalAgentPaidPayoutAmount ? (
+            <thead className="fs-2">
+              <tr>
+                {<th colSpan={4}></th>}
+                {
+                  <th className="text-uppercase text-end">
+                    {'Total Payout Amount :'}
+                  </th>
+                }
+                {
+                  <th>
+                    {totalAgentPaidPayoutAmount} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
+
+          {totalAgentPendingPayoutAmount ? (
+            <thead className="fs-2">
+              <tr>
+                {
+                  <th colSpan={8} className="text-uppercase text-end">
+                    {'Total Payout Amount :'}
+                  </th>
+                }
+                {
+                  <th>
+                    {totalAgentPendingPayoutAmount} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
+
+          {totalAgentPaidPayoutAmountNew ? (
+            <thead className="fs-2">
+              <tr>
+                {
+                  <th colSpan={8} className="text-uppercase text-end">
+                    {'Total Payout Amount :'}
+                  </th>
+                }
+                {
+                  <th>
+                    {totalAgentPaidPayoutAmountNew} {'MYR'}
+                  </th>
+                }
+                {<th>{''}</th>}
+                {<th>{''}</th>}
+              </tr>
+            </thead>
+          ) : (
+            ''
+          )}
+
+          {SupperProfitAmount ? (
+            <thead className="fs-2">
+              <tr>
+                {
+                  <th colSpan={9} className="text-uppercase text-end">
+                    {'Total Profit Amount :'}
+                  </th>
+                }
+                {
+                  <th colSpan={3}>
+                    {SupperProfitAmount} {'MYR'}
                   </th>
                 }
                 {<th>{''}</th>}

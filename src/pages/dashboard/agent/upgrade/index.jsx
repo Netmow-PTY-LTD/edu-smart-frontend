@@ -288,7 +288,7 @@ const UpgradePackageInAgentdashboard = () => {
       const packagePaidDuration =
         duration > packageDuration ? duration : packageDuration;
 
-      const totalAmount = (totalPrice - discountAmount).toFixed(2);
+      const totalAmount = (totalPrice - discountAmount)?.toFixed(2);
 
       setPackagePaidDuration(packagePaidDuration);
       setCouponDuration(duration);
@@ -598,7 +598,7 @@ const UpgradePackageInAgentdashboard = () => {
                         </span>
                         <span>
                           Discount Amount :{' '}
-                          {(totalPricePackage - couponAmount).toFixed(2)}{' '}
+                          {(totalPricePackage - couponAmount)?.toFixed(2)}{' '}
                           {totalPricePackage != null &&
                             totalPricePackage !== '' &&
                             totalPricePackage !== undefined &&
@@ -623,7 +623,7 @@ const UpgradePackageInAgentdashboard = () => {
                         </span>
                         <span>
                           Discount Amount :{' '}
-                          {(totalPricePackage - couponAmount).toFixed(2)}{' '}
+                          {(totalPricePackage - couponAmount)?.toFixed(2)}{' '}
                           {totalPricePackage != null &&
                             totalPricePackage !== '' &&
                             totalPricePackage !== undefined &&

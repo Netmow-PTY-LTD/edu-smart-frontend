@@ -40,7 +40,7 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
 
   const sslCommerzPaymentHandler = async () => {
     const price =
-      invoice_no?.application?.course?.auto_deduct === true
+      invoice_no?.application?.tuition_fee_auto_deduct === true
         ? invoice_no?.application?.course?.after_emgs_fee -
           (invoice_no?.application?.incentive_amount *
             invoice_no?.application?.agent_package_parcentage) /
@@ -361,7 +361,7 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                           </th>
                         </tr>
 
-                        {invoice_no?.application?.course?.auto_deduct ===
+                        {invoice_no?.application?.tuition_fee_auto_deduct ===
                         true ? (
                           <>
                             <tr className="border-top border-top-dashed ">
@@ -445,7 +445,7 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                       {invoice_no?.application?.tuition_fee_payment_status ===
                       'paid' ? (
                         <>
-                          {invoice_no?.application?.course?.auto_deduct ===
+                          {invoice_no?.application?.tuition_fee_auto_deduct ===
                           true ? (
                             <>
                               <div className="table-row">
@@ -507,7 +507,7 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                         </>
                       ) : (
                         <>
-                          {invoice_no?.application?.course?.auto_deduct ===
+                          {invoice_no?.application?.tuition_fee_auto_deduct ===
                           true ? (
                             <>
                               <div className="table-row">

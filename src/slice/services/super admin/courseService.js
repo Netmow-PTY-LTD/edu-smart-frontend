@@ -65,12 +65,13 @@ export const courseService = createApi({
       },
     }),
     deleteCourse: builder.mutation({
-      query: (idObj) => {
-        const university_id = idObj?.university_id;
-        const course_id = idObj?.course_id;
+      query: (body) => {
+        const university_id = body?.university_id;
+        const course_id = body?.course_id;
         return {
           url: `/${university_id}/course/${course_id}`,
           method: 'DELETE',
+          body: { status: body?.status },
         };
       },
     }),

@@ -27,11 +27,20 @@ const TotalAgentPayoutInAgent = () => {
 
   useEffect(() => {
     console.log(getApplicationPaymentData);
-    const newData = getApplicationPaymentData?.data.filter(
-      (item) =>
-        item?.application?.course?.auto_deduct === false &&
-        item?.payment_reason === 'application_tuition_fee'
-    );
+    const newData = getApplicationPaymentData?.data
+      .filter(
+        (item) =>
+          item?.payment_reason === 'application_tuition_fee' &&
+          item?.student?.agent
+      )
+      ?.map((item) => ({
+        ...item,
+        agent_commission:
+          item?.application?.tuition_fee_auto_deduct === true
+            ? 0
+            : item?.agent_commission,
+        agent_commission_paid: item?.agent_commission,
+      }));
     setAllPaymentData(newData);
   }, [getApplicationPaymentData]);
 

@@ -1192,6 +1192,19 @@ const DataObjectComponent = () => {
         </p>
       ),
     },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
+      ),
+    },
   ];
 
   // all course header
@@ -1221,6 +1234,19 @@ const DataObjectComponent = () => {
         <p className="text-wrap me-5">
           {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
         </p>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
       ),
     },
   ];
@@ -1307,6 +1333,19 @@ const DataObjectComponent = () => {
         </p>
       ),
     },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
+      ),
+    },
   ];
 
   const supperAdminWidgetsData = [
@@ -1345,6 +1384,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'View All Transactions',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
@@ -1354,6 +1394,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'View All Payouts',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
@@ -1363,6 +1404,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'View All Payouts',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
@@ -1372,6 +1414,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'View All Payouts',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-pending-payout`,
     },
 
@@ -1382,18 +1425,9 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'View Profit Details',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
-
-    // {
-    //   id: 8,
-    //   label: 'total income',
-    //   counter: '55',
-    //   bgcolor: 'warning',
-    //   icon: 'ri-wallet-3-fill',
-    //   link: 'All Charges',
-    //   pathName: '/dashboard/super-admin',
-    // },
   ];
 
   const accountantWidgetsData = [
@@ -1404,6 +1438,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
     },
     {
@@ -1413,6 +1448,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-currency-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
     },
     {
@@ -1422,6 +1458,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
@@ -1431,6 +1468,7 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-pending-payout`,
     },
 
@@ -1441,21 +1479,12 @@ const DataObjectComponent = () => {
       bgcolor: 'warning',
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
+      decimals: '2',
       pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
     },
   ];
 
   const admissionManagerWidgetsData = [
-    // {
-    //   id: 1,
-    //   label: 'Registered UNIVERSITIES',
-    //   counter: '4',
-    //   bgcolor: 'info',
-    //   icon: 'ri-school-fill',
-    //   link: 'View all',
-    //   pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
-    // },
-
     {
       id: 2,
       label: 'registered agents',
@@ -1663,7 +1692,7 @@ const DataObjectComponent = () => {
             (item?.coupon_package_duration
               ? item?.coupon_package_duration.split('_')[0]
               : item?.agent_package?.package_duration.split('_')[0])
-          ).toFixed(2) ?? '-'}{' '}
+          )?.toFixed(2) ?? '-'}{' '}
           {'MYR'}
         </div>
       ),
@@ -1677,7 +1706,7 @@ const DataObjectComponent = () => {
           (item?.coupon_package_duration
             ? item?.coupon_package_duration.split('_')[0]
             : item?.agent_package?.package_duration.split('_')[0])
-        ).toFixed(2);
+        )?.toFixed(2);
         const paidAmount = item?.paid_amount || 0;
         const discount = price - paidAmount;
         const formattedDiscount = discount.toFixed(2);
@@ -1693,7 +1722,7 @@ const DataObjectComponent = () => {
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {(item?.paid_amount || 0).toFixed(2) ?? '-'} {'MYR'}
+          {(item?.paid_amount || 0)?.toFixed(2) ?? '-'} {'MYR'}
         </div>
       ),
     },
@@ -1947,8 +1976,10 @@ const DataObjectComponent = () => {
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.applied_by?.role === 'agent'
-            ? item?.applied_by?.first_name + ' ' + item?.applied_by?.last_name
+          {item?.student?.agent?._id
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
             : '-'}
         </div>
       ),
@@ -1992,10 +2023,12 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Payment Method',
+      title: 'Auto Deduct',
       key: 'payment_method',
       render: (item) => (
-        <div className="fs-2 fw-medium text-uppercase">{'Auto Deduct'}</div>
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
       ),
     },
     {
@@ -2067,11 +2100,27 @@ const DataObjectComponent = () => {
     },
 
     {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+
+    {
       title: 'Commission',
       key: 'commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+          {item?.agent_commission
+            ? `${item.agent_commission} MYR`
+            : `${item?.agent_commission_paid} MYR ` && (
+                <span className="badge bg-success-subtle text-success">
+                  {item?.agent_commission_paid} PAID
+                </span>
+              )}
         </div>
       ),
     },
@@ -2092,7 +2141,7 @@ const DataObjectComponent = () => {
       key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
         </div>
       ),
     },
@@ -2109,11 +2158,17 @@ const DataObjectComponent = () => {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
-        <div className="badge bg-warning-subtle text-warning">{'Pending'}</div>
+        <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
+          </span>
+        </div>
       ),
     },
   ];
-  const TotalAgentPaidPayoutReportHeadersDataForAgent = [
+  const TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew = [
     {
       title: 'SN',
       key: 'sn',
@@ -2137,11 +2192,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Applicatioon ID',
-      key: 'payment_reason',
+      title: 'Agent Name',
+      key: 'agent_name',
       render: (item) => (
-        <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
         </div>
       ),
     },
@@ -2168,14 +2227,25 @@ const DataObjectComponent = () => {
     },
 
     {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+
+    {
       title: 'Commission',
       key: 'commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+          {item?.agent_commission + ' ' + 'MYR'}
         </div>
       ),
     },
+
     {
       title: 'Hot Commission',
       key: 'hot_commission',
@@ -2193,7 +2263,123 @@ const DataObjectComponent = () => {
       key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Status',
+      key: 'payment_status',
+      render: (item) => (
+        <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
+          </span>
+        </div>
+      ),
+    },
+  ];
+
+  const TotalAgentPaidPayoutReportHeadersDataForAgent = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.agent?._id
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.first_name
+            ? item?.student?.first_name + ' ' + item?.student?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Payout Amount',
+      key: 'payout_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Auto Deduct',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2222,11 +2408,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Applicatioon ID',
-      key: 'payment_reason',
+      title: 'Agent Name',
+      key: 'agent_name',
       render: (item) => (
-        <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
         </div>
       ),
     },
@@ -2253,11 +2443,27 @@ const DataObjectComponent = () => {
     },
 
     {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course.auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+
+    {
       title: 'Commission',
       key: 'commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+          {item?.agent_commission
+            ? `${item.agent_commission} MYR`
+            : `${item?.agent_commission_paid} MYR ` && (
+                <span className="badge bg-success-subtle text-success">
+                  {item?.agent_commission_paid} PAID
+                </span>
+              )}
         </div>
       ),
     },
@@ -2278,20 +2484,33 @@ const DataObjectComponent = () => {
       key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
-          {item?.agent_payout_amount ? item?.agent_payout_amount : '0'} {'MYR'}
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
         </div>
       ),
     },
-
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
     {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
-        <div className="badge bg-warning-subtle text-warning">{'Pending'}</div>
+        <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.agent_pending_payout_status ?? ''}
+          </span>
+        </div>
       ),
     },
   ];
-
   const TotalProfitForSuperAdminHeadersData = [
     {
       title: 'SN',
@@ -5603,6 +5822,8 @@ const DataObjectComponent = () => {
     AGENTYEARLYBONOUSHEADERS,
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
+    applicationHeadersForStudent,
+    TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew,
   };
 };
 
