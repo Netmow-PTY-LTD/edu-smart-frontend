@@ -2065,7 +2065,7 @@ const DataObjectComponent = () => {
       key: 'auto_deduct',
       render: (item) => (
         <div className="fs-2 fw-medium">
-          {item?.application?.course.auto_deduct ? 'True' : 'False'}
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
         </div>
       ),
     },
@@ -2085,6 +2085,128 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+    {
+      title: 'Hot Commission',
+      key: 'hot_commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer
+            ? item?.agent_commision_by_hot_offer
+            : '0'}{' '}
+          {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Total Commission',
+      key: 'payout_amount',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commision_by_hot_offer + item?.agent_commission} {' MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Status',
+      key: 'payment_status',
+      render: (item) => (
+        <div
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
+        >
+          <span className="text-uppercase">
+            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
+          </span>
+        </div>
+      ),
+    },
+  ];
+  const TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew = [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-2 fw-medium text-capitalize">{index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Type',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-capitalize fs-2 fw-medium">
+          {item?.payment_reason
+            ? item?.payment_reason?.split('_').join(' ')
+            : item?.agent
+              ? 'Package Payment'
+              : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Agent Name',
+      key: 'agent_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+    {
+      title: 'Student Name',
+      key: 'student_name',
+      render: (item) => (
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.first_name
+            ? item?.student?.first_name + ' ' + item?.student?.last_name
+            : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Course',
+      key: 'course',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.course ? item?.application?.course?.name : '-'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Auto Deduct',
+      key: 'auto_deduct',
+      render: (item) => (
+        <div className="fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+
+    {
+      title: 'Commission',
+      key: 'commission',
+      render: (item) => (
+        <div className="fs-2 fw-medium text-primary">
+          {item?.agent_commission + ' ' + 'MYR'}
+        </div>
+      ),
+    },
+
     {
       title: 'Hot Commission',
       key: 'hot_commission',
@@ -2154,11 +2276,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Applicatioon ID',
-      key: 'payment_reason',
+      title: 'Agent Name',
+      key: 'agent_name',
       render: (item) => (
-        <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student?.agent?._id
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
         </div>
       ),
     },
@@ -2183,12 +2309,38 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
+
     {
-      title: 'Total Commission',
+      title: 'Payout Amount',
       key: 'payout_amount',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
           {item?.agent_commission ? item?.agent_commission : '0'} {'MYR'}
+        </div>
+      ),
+    },
+    {
+      title: 'Payment Date',
+      key: 'payment_date',
+      render: (item) => (
+        <div>{moment(item?.payment_date).format('DD-MM-YYYY') ?? '-'}</div>
+      ),
+    },
+    {
+      title: 'Auto Deduct',
+      key: 'payment_method',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?.tuition_fee_auto_deduct ? 'True' : 'False'}
+        </div>
+      ),
+    },
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2217,11 +2369,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Applicatioon ID',
-      key: 'payment_reason',
+      title: 'Agent Name',
+      key: 'agent_name',
       render: (item) => (
-        <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
+          {item?.student
+            ? item?.student?.agent?.first_name +
+              ' ' +
+              item?.student?.agent?.last_name
+            : '-'}
         </div>
       ),
     },
@@ -2293,22 +2449,29 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-
+    {
+      title: 'Applicatioon ID',
+      key: 'payment_reason',
+      render: (item) => (
+        <div className="text-uppercase fs-2 fw-medium">
+          {item?.application?._id ? item?.application?._id : '-'}
+        </div>
+      ),
+    },
     {
       title: 'Payment Status',
       key: 'payment_status',
       render: (item) => (
         <div
-          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : item?.agent_pending_payout_status === 'refund' ? 'bg-primary-subtle text-primary' : item?.agent_pending_payout_status === 'hand_cash' ? 'bg-secondary-subtle text-body' : ' bg-success-subtle text-success'}   `}
+          className={` badge fw-semibold text-center me-4 ${item?.agent_pending_payout_status === 'pending' ? 'bg-warning-subtle text-warning' : ' bg-success-subtle text-success'}   `}
         >
           <span className="text-uppercase">
-            {item?.agent_pending_payout_status.split('_').join(' ') ?? ''}
+            {item?.agent_pending_payout_status ?? ''}
           </span>
         </div>
       ),
     },
   ];
-
   const TotalProfitForSuperAdminHeadersData = [
     {
       title: 'SN',
@@ -5621,6 +5784,7 @@ const DataObjectComponent = () => {
     applicationPaymentHeadersAgent,
     applicationPaymentHeadersStudent,
     applicationHeadersForStudent,
+    TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew,
   };
 };
 
