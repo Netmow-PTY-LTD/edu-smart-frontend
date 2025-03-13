@@ -45,7 +45,7 @@ const SingleHotOfferCardComponent = ({
                   Edit
                 </div>
               </DropdownItem>
-              <DropdownItem>
+              {/* <DropdownItem>
                 <div
                   onClick={() => deleteHotOffer(data._id)}
                   className="text-primary"
@@ -53,7 +53,7 @@ const SingleHotOfferCardComponent = ({
                   <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
                   Delete
                 </div>
-              </DropdownItem>
+              </DropdownItem> */}
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
@@ -68,9 +68,20 @@ const SingleHotOfferCardComponent = ({
         >
           <div className="d-flex flex-column z-1">
             <div>
-              <h1 className="text-primary text-nowrap fw-bold text-capitalize">
-                {data?.name}
-              </h1>
+              <div
+                className="d-flex align-items-center justify-content-between"
+                style={{ gap: '75%' }}
+              >
+                <h1 className="text-primary text-nowrap fw-bold text-capitalize">
+                  {data?.name}
+                </h1>
+                <span
+                  className={`fs-3 text-capitalize badge ${data?.status === 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'}`}
+                >
+                  {data?.status}
+                </span>
+              </div>
+
               <p className="text-primary fw-semibold text-capitalize">
                 {data?.offer_duration.split('_').join(' ')}
               </p>
