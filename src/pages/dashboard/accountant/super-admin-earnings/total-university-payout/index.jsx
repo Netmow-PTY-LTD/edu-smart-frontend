@@ -13,6 +13,8 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [allPaymentData, setAllPaymentData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState('');
+
   const perPageData = 15;
 
   const { universityPaymentPayoutReportHeadersDataForSuperAdmin } =
@@ -34,6 +36,18 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
     const newData = combinedData.filter(
       (item) => item?.payment_reason === 'application_tuition_fee'
     );
+
+    const totalReceivedAmount = newData.reduce((total, item) => {
+      const tuitionFeeAmount =
+        item?.payment_reason === 'application_tuition_fee'
+          ? item?.application?.tuition_fee_amount -
+            item?.application?.incentive_amount
+          : 0;
+      return total + tuitionFeeAmount;
+    }, 0);
+
+    setTotalAmount(totalReceivedAmount.toFixed(2));
+
     setAllPaymentData(newData);
   }, [
     getAllPaymentReportData?.data?.applicationPaymentReports,
@@ -84,6 +98,7 @@ const UniversityPaymentPayoutForSuperAdmin = () => {
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
                     emptyMessage="No Data found yet."
+                    totalUniversityAmount={totalAmount}
                   />
                 </CardBody>
               </Card>
