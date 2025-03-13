@@ -242,7 +242,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
       {getSingleUserAirTicketDocumentRequestIsLoading ? (
         <LoaderSpiner />
       ) : (
-        <div>
+        <div className="mt-1">
           <Card>
             <ToastContainer />
             <CardHeader className="d-flex justify-content-between align-items-center">
@@ -290,7 +290,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
       {getSingleUserAirTicketDocSubmisionIsLoading ? (
         <LoaderSpiner />
       ) : (
-        <div>
+        <div className="mt-5">
           <Card>
             <ToastContainer />
             <CardHeader className="d-flex justify-content-between align-items-center">

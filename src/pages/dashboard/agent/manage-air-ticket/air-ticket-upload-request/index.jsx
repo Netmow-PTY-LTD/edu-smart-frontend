@@ -279,7 +279,7 @@ const DocumentSection = ({
   onPageChange,
   onSearch,
 }) => (
-  <Card>
+  <Card className="mb-5">
     <CardHeader>
       <h3 className="fs-1 fw-bold text-primary text-center py-3">{title}</h3>
       <SearchComponent
