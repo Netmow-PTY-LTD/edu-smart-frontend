@@ -75,6 +75,7 @@ export const courseCategoriesService = createApi({
         return {
           url: `/${university_id}/category/${category_id}`,
           method: 'DELETE',
+          body: { status: data?.status },
         };
       },
     }),

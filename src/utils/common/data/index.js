@@ -1192,6 +1192,19 @@ const DataObjectComponent = () => {
         </p>
       ),
     },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
+      ),
+    },
   ];
 
   // all course header
@@ -1221,6 +1234,19 @@ const DataObjectComponent = () => {
         <p className="text-wrap me-5">
           {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
         </p>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
       ),
     },
   ];
@@ -1305,6 +1331,19 @@ const DataObjectComponent = () => {
           {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
           {`${item.description.slice(0, 100)}...`}
         </p>
+      ),
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <>
+          <span
+            className={`border rounded-4 px-4 py-1 fw-medium text-capitalize ${item?.status === 'active' ? 'bg-third-color text-primary' : 'bg-fourth-color text-white'}`}
+          >
+            {item?.status ?? '-'}
+          </span>
+        </>
       ),
     },
   ];
