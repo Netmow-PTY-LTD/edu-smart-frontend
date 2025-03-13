@@ -5,6 +5,7 @@ import Layout from '@/components/layout';
 import { useAllStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import {
   useCheckApplicationIsValidQuery,
+  useDeleteApplicationMutation,
   useGetApplicationsQuery,
 } from '@/slice/services/common/applicationService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -53,12 +54,15 @@ const SingleUniversityCourse = () => {
     useAllStudentForAgentQuery();
 
   const { refetch: applicationDataRefetch } = useGetApplicationsQuery();
+  const [deleteApplication] = useDeleteApplicationMutation();
+
   const selectedIsStudent = Cookies.get('selectedStudent');
 
   const {
     data: checkApplicationIsValidData,
     error: checkApplicationIsValidError,
     isLoading: checkApplicationIsValidIsLoading,
+    refetch: checkApplicationIsValidRefetch,
   } = useCheckApplicationIsValidQuery(
     {
       course_id: course_id,
@@ -80,14 +84,29 @@ const SingleUniversityCourse = () => {
         );
         setIsButtonDisabled(false);
       } else {
-        toast.error(
-          `Application Already Exists. Current status: ${checkApplicationIsValidData.data.status}`
-        );
-        setIsButtonDisabled(true);
+        if (
+          status === 'pending' &&
+          checkApplicationIsValidData.data?.emgs_payment_status === 'pending'
+        ) {
+          deleteApplication(checkApplicationIsValidData.data?._id)
+            .then(() => {
+              checkApplicationIsValidRefetch();
+            })
+            .catch((error) => {
+              // toast.error('Failed to delete application');
+            });
+        } else {
+          toast.error(
+            `Application Already Exists. Current status: ${checkApplicationIsValidData.data.status}`
+          );
+          setIsButtonDisabled(true);
+        }
       }
     }
   }, [
     checkApplicationIsValidData,
+    checkApplicationIsValidRefetch,
+    deleteApplication,
     router?.query?.payment_status,
     router?.query?.transaction_id,
   ]);
