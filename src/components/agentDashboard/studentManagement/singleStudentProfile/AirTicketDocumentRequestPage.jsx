@@ -297,7 +297,7 @@ const AirTicketDocumentRequestPage = ({ student_id }) => {
         <LoaderSpiner />
       ) : (
         <div>
-          <Card>
+          <Card className="mt-5">
             <ToastContainer />
             <CardHeader className="d-flex justify-content-between align-items-center">
               <div>

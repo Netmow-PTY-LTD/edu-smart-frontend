@@ -42,8 +42,10 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
   });
 
   // api requested
-  const { docRequestTableHeaderDataWithoutActionForSuperAdmin = [] } =
-    DataObjectComponent();
+  const {
+    docRequestTableHeaderDataWithoutActionForSuperAdmin = [],
+    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin = [],
+  } = DataObjectComponent();
 
   const {
     data: allDocumentRequestForSuperAdminData,
@@ -284,7 +286,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               )}
             </CardBody>
           </Card>
-          <Card>
+          <Card className="mt-5">
             <CardHeader>
               <h3 className="fs-1 fw-semibold">All Submiteed Document</h3>
               <SearchComponent
@@ -300,7 +302,7 @@ const StudentDocumentUploadRquestForSuperAdmin = () => {
               ) : (
                 <CommonTableComponent
                   headers={[
-                    ...docRequestTableHeaderDataWithoutActionForSuperAdmin,
+                    ...docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
                     ...HEADER_ACTION_FOR_SUPER,
                   ]}
                   data={
