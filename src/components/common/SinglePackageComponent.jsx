@@ -1,4 +1,5 @@
 import { userDummyImage } from '@/utils/common/data';
+import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
 
@@ -10,24 +11,15 @@ const SinglePackageComponent = ({
   unselectedPackage,
   renewButton,
   renewHandler,
+  userPackagedata,
 }) => {
+  console.log(data);
   return (
     <>
       <div
         style={style}
         className="sqdk-single-pricing-table position-relative"
       >
-        {renewButton ? (
-          <button
-            onClick={renewHandler}
-            className="button px-4 py-2 position-absolute top-0 m-3"
-          >
-            Renew Now
-          </button>
-        ) : (
-          ''
-        )}
-
         <div
           style={{
             position: 'absolute',
@@ -163,8 +155,12 @@ const SinglePackageComponent = ({
             <span className="text-center">Edit Package</span>
           </div>
         ) : Object.keys(style).length > 0 ? (
-          <div className="px-3 py-1 rounded-3 fw-semibold text-primary  bg-info-subtle">
-            Currently Using This Package
+          <div className="px-3 py-1 rounded-3 fw-semibold text-primary bg-info-subtle">
+            Currently Using This Package Till (
+            {moment(userPackagedata?.agent_package?.end_date).format(
+              'DD-MM-YY'
+            )}
+            )
           </div>
         ) : unselectedPackage ? (
           <div className="bg-danger-subtle px-3 py-1 rounded-3 fw-semibold text-danger">
@@ -177,6 +173,13 @@ const SinglePackageComponent = ({
           >
             <span className="text-center fw-medium">Upgrade</span>
           </div>
+        )}
+        {renewButton ? (
+          <button onClick={renewHandler} className="button px-4 py-2 mt-4 ">
+            Renew Now
+          </button>
+        ) : (
+          ''
         )}
       </div>
     </>
