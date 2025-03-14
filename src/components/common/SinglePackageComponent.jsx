@@ -11,7 +11,6 @@ const SinglePackageComponent = ({
   renewButton,
   renewHandler,
 }) => {
-  console.log(style);
   return (
     <>
       <div

@@ -1010,7 +1010,11 @@ const DataObjectComponent = () => {
       key: 'package',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?.agent_package_new ? <span>{item?.agent_package_new?.package_name}</span> : '-'}
+          {item?.agent_package_new ? (
+            <span>{item?.agent_package_new?.package_name}</span>
+          ) : (
+            '-'
+          )}
         </span>
       ),
     },
@@ -1689,7 +1693,14 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
+      render: (item) => (
+        <div>
+          {item?.agent_package?.package?.name ?? '-'}
+          <small className="ms-2 badge bg-secondary-subtle text-secondary text-uppercase">
+            {item?.subscription_type ? `${item?.subscription_type}` : '-'}
+          </small>
+        </div>
+      ),
     },
 
     {
@@ -1697,42 +1708,30 @@ const DataObjectComponent = () => {
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(
-            item?.agent_package?.package?.price *
-            (item?.coupon_package_duration
-              ? item?.coupon_package_duration.split('_')[0]
-              : item?.agent_package?.package_duration.split('_')[0])
-          )?.toFixed(2) ?? '-'}{' '}
+          {item?.total_package_amount
+            ? item?.total_package_amount?.toFixed(2)
+            : '0.00'}{' '}
           {'MYR'}
         </div>
       ),
     },
+
     {
       title: 'Discount',
       key: 'discount',
-      render: (item) => {
-        const price = (
-          item?.agent_package?.package?.price *
-          (item?.coupon_package_duration
-            ? item?.coupon_package_duration.split('_')[0]
-            : item?.agent_package?.package_duration.split('_')[0])
-        )?.toFixed(2);
-        const paidAmount = item?.paid_amount || 0;
-        const discount = price - paidAmount;
-        const formattedDiscount = discount.toFixed(2);
-        return (
-          <div>
-            {`${formattedDiscount}`} {'MYR'}
-          </div>
-        );
-      },
+      render: (item) => (
+        <div>
+          {item?.discount ? item?.discount?.toFixed(2) : '0.00'} {'MYR'}
+        </div>
+      ),
     },
+
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {(item?.paid_amount || 0)?.toFixed(2) ?? '-'} {'MYR'}
+          {item?.paid_amount ? item?.paid_amount?.toFixed(2) : '0.00'} {'MYR'}
         </div>
       ),
     },
@@ -1782,14 +1781,21 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
+      render: (item) => (
+        <div>
+          {item?.agent_package?.package?.name ?? '-'}
+          <small className="ms-2 badge bg-secondary-subtle text-secondary text-uppercase">
+            {item?.subscription_type ? `${item?.subscription_type}` : '-'}
+          </small>
+        </div>
+      ),
     },
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {item?.paid_amount ?? '-'} {'MYR'}
+          {item?.paid_amount ? item?.paid_amount?.toFixed(2) : '0.00'} {'MYR'}
         </div>
       ),
     },
@@ -1797,6 +1803,9 @@ const DataObjectComponent = () => {
     {
       title: 'Payment Method',
       key: 'payment_method',
+      render: (item) => (
+        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
+      ),
     },
     {
       title: 'Payment Date',
