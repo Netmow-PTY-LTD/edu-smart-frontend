@@ -472,6 +472,7 @@ const UpgradePackageInAgentdashboard = () => {
                               item?.price <
                               userInfodata?.data?.agent_package?.package?.price
                             }
+                            userPackagedata={userInfodata?.data}
                           />
                         ))
                       ) : (
