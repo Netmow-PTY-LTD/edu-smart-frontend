@@ -1,4 +1,5 @@
 import { userDummyImage } from '@/utils/common/data';
+import moment from 'moment';
 import Image from 'next/image';
 import React from 'react';
 
@@ -8,7 +9,11 @@ const SinglePackageComponent = ({
   handleUpgrade,
   style,
   unselectedPackage,
+  renewButton,
+  renewHandler,
+  userPackagedata,
 }) => {
+  console.log(data);
   return (
     <>
       <div
@@ -31,6 +36,7 @@ const SinglePackageComponent = ({
             ''
           )}
         </div>
+
         <div className="d-flex align-items-center justify-content-between mt-3 gap-5">
           <h1 className="text-secondary-alt text-capitalize text-nowrap">
             {data?.name}
@@ -149,8 +155,12 @@ const SinglePackageComponent = ({
             <span className="text-center">Edit Package</span>
           </div>
         ) : Object.keys(style).length > 0 ? (
-          <div className="px-3 py-1 rounded-3 fw-semibold text-primary  bg-info-subtle">
-            Currently Using This Package
+          <div className="px-3 py-1 rounded-3 fw-semibold text-primary bg-info-subtle">
+            Currently Using This Package Till (
+            {moment(userPackagedata?.agent_package?.end_date).format(
+              'DD-MM-YY'
+            )}
+            )
           </div>
         ) : unselectedPackage ? (
           <div className="bg-danger-subtle px-3 py-1 rounded-3 fw-semibold text-danger">
@@ -163,6 +173,13 @@ const SinglePackageComponent = ({
           >
             <span className="text-center fw-medium">Upgrade</span>
           </div>
+        )}
+        {renewButton ? (
+          <button onClick={renewHandler} className="button px-4 py-2 mt-4 ">
+            Renew Now
+          </button>
+        ) : (
+          ''
         )}
       </div>
     </>

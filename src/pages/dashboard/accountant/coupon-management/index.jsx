@@ -34,6 +34,7 @@ const CouponManagementInSuperAdmin = () => {
     discount_percentage: '',
     coupon_status: '',
     package_duration: '',
+    limit_per_user: 1,
   });
 
   const { couponHeaders } = DataObjectComponent();
@@ -81,6 +82,7 @@ const CouponManagementInSuperAdmin = () => {
             offer_percentage: singleCouponData?.offer_percentage || 0,
             package_duration: singleCouponData?.package_duration || 0,
             discount_percentage: singleCouponData?.discount_percentage || '',
+            limit_per_user: singleCouponData?.limit_per_user || '',
             coupon_status:
               {
                 label: singleCouponData?.status || '',
@@ -111,7 +113,10 @@ const CouponManagementInSuperAdmin = () => {
       discount_percentage: values?.discount_percentage,
       packages: values.package_id,
       status: values?.coupon_status,
+      limit_per_user: values?.limit_per_user,
     };
+
+    console.log(finalData);
 
     try {
       const response = await addCouponInSuperAdmin(finalData).unwrap();
@@ -142,6 +147,7 @@ const CouponManagementInSuperAdmin = () => {
       start_date: startDate,
       expiry_date: endDate,
       package_duration: values?.package_duration,
+      limit_per_user: values?.limit_per_user,
       discount_percentage: values?.discount_percentage,
       packages:
         typeof values?.package_id?.[0] === 'object'
@@ -150,6 +156,8 @@ const CouponManagementInSuperAdmin = () => {
       status: values?.coupon_status?.value || values?.coupon_status,
       coupon_id: couponId,
     };
+
+    console.log(editData);
 
     try {
       const response = await updateCouponInSuperAdmin(editData).unwrap();

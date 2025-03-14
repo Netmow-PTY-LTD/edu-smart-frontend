@@ -214,7 +214,9 @@ const PackageInvoiceComponent = ({
                           <th scope="col">SL</th>
                           <th scope="col">Package Name</th>
                           <th scope="col">Package Duration</th>
-                          <th scope="col">Monthly Duration</th>
+                          <th scope="col" className="text-capitalize">
+                            {invoice_no?.subscription_type} Duration
+                          </th>
                           <th scope="col">Coupon</th>
                           <th scope="col">Package Price</th>
                           <th scope="col">Total Price</th>
@@ -239,55 +241,45 @@ const PackageInvoiceComponent = ({
                                 </td>
 
                                 <td>
-                                  <h3 className=" my-1 fw-medium text-uppercase ">
-                                    {item.createdAt &&
-                                    item?.coupon_package_duration
-                                      ? moment(item.createdAt).format(
-                                          'ddd MMM D, YYYY'
-                                        ) +
-                                        ' - ' +
-                                        moment(item.createdAt)
-                                          .add(
-                                            parseInt(
-                                              item?.coupon_package_duration.split(
-                                                '_'
-                                              )[0]
-                                            ),
-                                            'months'
-                                          )
-                                          .format('ddd MMM D, YYYY')
-                                      : item.createdAt &&
-                                          item?.agent_package?.package_duration
-                                        ? moment(item.createdAt).format(
-                                            'ddd MMM D, YYYY'
-                                          ) +
-                                          ' - ' +
-                                          moment(item.createdAt)
-                                            .add(
-                                              parseInt(
-                                                item?.agent_package?.package_duration.split(
-                                                  '_'
-                                                )[0]
-                                              ),
-                                              'months'
-                                            )
-                                            .format('ddd MMM D, YYYY')
-                                        : '-'}
+                                  <h3 className="my-1 fw-medium text-uppercase d-flex flex-column justify-content-center w-100">
+                                    {moment(
+                                      item.agent_package?.start_date
+                                    ).format('ddd MMM D, YYYY') +
+                                      ' - ' +
+                                      moment(
+                                        item.agent_package?.end_date
+                                      ).format('ddd MMM D, YYYY')}
+
+                                    <div className="d-flex justify-content-center mt-2 w-100">
+                                      {item?.agent_package
+                                        ?.previous_package_carry_days && (
+                                        <small className="badge bg-secondary-subtle text-secondary d-flex justify-content-center">
+                                          {item?.agent_package
+                                            ?.previous_package_carry_days
+                                            ? `Carry Forward ${item?.agent_package?.previous_package_carry_days} days`
+                                            : '-'}
+                                        </small>
+                                      )}
+                                    </div>
                                   </h3>
                                 </td>
+
                                 <td>
-                                  <h3 className=" my-1 fw-normal text-capitalize">
-                                    <h3>
-                                      {item?.coupon_package_duration
-                                        ? item?.coupon_package_duration
+                                  <h3 className="fw-normal text-capitalize d-flex align-items-center justify-content-center">
+                                    {item?.coupon_package_duration
+                                      ? item?.coupon_package_duration
+                                          .split('_')
+                                          .join(' ')
+                                      : item?.agent_package?.package_duration
+                                        ? item?.agent_package?.package_duration
                                             .split('_')
                                             .join(' ')
-                                        : item?.agent_package?.package_duration
-                                          ? item?.agent_package?.package_duration
-                                              .split('_')
-                                              .join(' ')
-                                          : '-'}{' '}
-                                    </h3>
+                                        : '-'}{' '}
+                                    <small className="ms-2 badge bg-secondary-subtle text-secondary">
+                                      {item?.subscription_type
+                                        ? `${item?.subscription_type}`
+                                        : '-'}
+                                    </small>
                                   </h3>
                                 </td>
                                 <td>
@@ -323,18 +315,7 @@ const PackageInvoiceComponent = ({
 
                                 <td>
                                   <h3 className="my-1 fw-normal">
-                                    {(() => {
-                                      return (
-                                        item?.agent_package?.package?.price *
-                                        (item?.coupon_package_duration
-                                          ? item?.coupon_package_duration.split(
-                                              '_'
-                                            )[0]
-                                          : item?.agent_package?.package_duration.split(
-                                              '_'
-                                            )[0])
-                                      )?.toFixed(2);
-                                    })()}{' '}
+                                    {item?.total_package_amount?.toFixed(2)}{' '}
                                     {currency}
                                   </h3>
                                 </td>
@@ -361,33 +342,7 @@ const PackageInvoiceComponent = ({
                         <tr className="border-top border-top-dashed">
                           <th scope="row">Discount :</th>
                           <th className="text-end">
-                            {(() => {
-                              const price = (
-                                paymentData?.agent_package?.package?.price *
-                                (paymentData?.coupon_package_duration
-                                  ? paymentData?.coupon_package_duration.split(
-                                      '_'
-                                    )[0]
-                                  : paymentData?.agent_package?.package_duration.split(
-                                      '_'
-                                    )[0])
-                              )?.toFixed(2);
-
-                              const paidAmount = paymentData?.paid_amount || 0;
-                              const discount = price - paidAmount;
-                              const formattedDiscount = discount.toFixed(2);
-
-                              return (
-                                <div>
-                                  {`${formattedDiscount}`} {currency}
-                                </div>
-                              );
-                            })()}
-                            {/* {(
-    (subtotal *
-      paymentData?.coupon?.discount_percentage) /
-      100 || 0
-  )?.toFixed(2)}{' '} */}
+                            {paymentData?.discount?.toFixed(2)} {currency}
                           </th>
                         </tr>
 
