@@ -460,8 +460,8 @@ const SingleCoursePageInFrontSite = () => {
                                 </li>
                               )}
 
-                            {(tuition_fee || university_price) &&
-                              scholarship_amount >= 0 && (
+                            {scholarship_on_tuition_fee === true &&
+                              scholarship_amount > 0 && (
                                 <li>
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
