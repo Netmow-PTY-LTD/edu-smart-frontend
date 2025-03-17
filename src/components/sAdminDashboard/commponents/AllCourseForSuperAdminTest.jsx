@@ -602,6 +602,8 @@ const AllCourseForSuperAdminTest = ({
       document_requirements: [...filteredData, ...documentRequirements],
     };
 
+    console.log('SHADIK', allData);
+
     try {
       const finalData = new FormData();
 

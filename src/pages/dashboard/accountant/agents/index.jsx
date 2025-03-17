@@ -6,7 +6,6 @@ import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import DataObjectComponent from '@/utils/common/data';
 
-
 import React, { useState } from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
@@ -16,8 +15,8 @@ const AllAgentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
-  
-  const { agentNameAndImageHeaderDataForSuperAdmin, agentsHeaders } =
+
+  const { agentNameAndImageHeaderDataForSuperAdmin, agentsHeaders = [] } =
     DataObjectComponent();
 
   const { data: allAgentsData, isLoading: allagentsIsloading } =
