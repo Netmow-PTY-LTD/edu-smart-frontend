@@ -10,7 +10,9 @@ import {
   useGetSingleApplicationPaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
 import DataObjectComponent, { brandlogo } from '@/utils/common/data';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import path from 'path';
+import React, { useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -30,6 +32,11 @@ const ApplicationInvoiceInSuperAdmin = () => {
   const [openInvoiceAirportPickupModal, setOpenInvoiceAirportPickupModal] =
     useState(false);
   const [applicationId, setApplicationId] = useState('');
+  const router = useRouter();
+  const app_id = router.query.app_id;
+  const emgs = router.query.emgs;
+  const tuition = router.query.tuition;
+  const pickup = router.query.pickup;
 
   const perPageData = 10;
 
@@ -49,6 +56,43 @@ const ApplicationInvoiceInSuperAdmin = () => {
     isLoading: getSingleApplicationPaymentReportDataLoading,
     refetch: getSingleApplicationPaymentReportDataRefetch,
   } = useGetSingleApplicationPaymentReportQuery(applicationId);
+
+  useEffect(() => {
+    if (app_id && !applicationId) {
+      const singlereportid =
+        getSingleApplicationPaymentReportData?.data?.length > 0 &&
+        getSingleApplicationPaymentReportData?.data.find(
+          (item) =>
+            item?.application?._id === app_id &&
+            item?.payment_reason === 'application_emgs'
+        );
+
+      if (singlereportid?._id) {
+        setApplicationId(singlereportid._id);
+        if (tuition) {
+          setOpenInvoiceModalTuition(true);
+        } else if (pickup) {
+          setOpenInvoiceAirportPickupModal(true);
+        } else if (emgs) {
+          setOpenInvoiceModal(true);
+        }
+        getSingleApplicationPaymentReportDataRefetch(singlereportid._id);
+        router.replace({
+          pathname: router.pathname,
+          query: {}, // Clears the query parameters
+        });
+      }
+    }
+  }, [
+    app_id,
+    emgs,
+    applicationId,
+    getSingleApplicationPaymentReportData?.data,
+    getSingleApplicationPaymentReportDataRefetch,
+    router,
+    tuition,
+    pickup,
+  ]);
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);

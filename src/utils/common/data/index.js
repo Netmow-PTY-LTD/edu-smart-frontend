@@ -29,7 +29,7 @@ const DataObjectComponent = () => {
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
-            href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile-for-agent/${item?._id}`}
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile-for-agent/${item?._id}`}
             className="text-reset"
           >
             <Image
@@ -44,7 +44,7 @@ const DataObjectComponent = () => {
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link
-              href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile-for-agent/${item?._id}`}
+              href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile-for-agent/${item?._id}`}
               className="text-reset"
             >
               {`${item.name} `}
@@ -95,7 +95,7 @@ const DataObjectComponent = () => {
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
-            href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile/${item?._id}`}
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile/${item?._id}`}
             className="text-reset"
           >
             <Image
@@ -110,7 +110,7 @@ const DataObjectComponent = () => {
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link
-              href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile/${item?._id}`}
+              href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile/${item?._id}`}
               className="text-reset"
             >
               {`${item.name} `}
@@ -656,7 +656,7 @@ const DataObjectComponent = () => {
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
-            href={`/dashboard/${userInfoData?.data?.role}/student-management/single-student-for-agent/${item?._id}`}
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/student-management/single-student-for-agent/${item?._id}`}
             className="text-reset"
           >
             <Image
@@ -675,7 +675,7 @@ const DataObjectComponent = () => {
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link
-              href={`/dashboard/${userInfoData?.data?.role}/student-management/single-student-for-agent/${item?._id}`}
+              href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/student-management/single-student-for-agent/${item?._id}`}
               className="text-reset"
             >
               {item?.first_name && item?.last_name
@@ -910,17 +910,6 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    // {
-    //   title: 'Student',
-    //   key: 'student_name',
-    //   render: (item) => (
-    //     <span className="d-flex flex-column text-capitalize">
-    //       {item?.student?._id
-    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
-    //         : '-'}
-    //     </span>
-    //   ),
-    // },
     {
       title: 'Application Id',
       key: 'application_id',
@@ -951,6 +940,14 @@ const DataObjectComponent = () => {
           >
             {item?.emgs_payment_status ?? '-'}
           </span>
+          <Link
+          target='_blank'
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
+            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+          >
+            {'View'}
+          </Link>
+
         </>
       ),
     },
@@ -964,6 +961,14 @@ const DataObjectComponent = () => {
           >
             {item?.tuition_fee_payment_status ?? '-'}
           </span>
+          <Link
+          target='_blank'
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
+            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+          >
+            {'View'}
+          </Link>
+
         </>
       ),
     },
@@ -975,11 +980,21 @@ const DataObjectComponent = () => {
         <>
           {item?.airport_pickup_charge > 0 &&
           item?.airport_pickup_invoice_status === 'active' ? (
+            <>
             <span
               className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
             >
               {item?.airport_pickup_charge_payment_status ?? '-'}
             </span>
+          <Link
+          target='_blank'
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
+            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+          >
+            {'View'}
+          </Link>
+</>
+
           ) : (
             <span className="text-capitalize text-primary fw-medium">
               {'Not Activated Yet'}
@@ -1453,7 +1468,7 @@ const DataObjectComponent = () => {
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 5,
@@ -1463,7 +1478,7 @@ const DataObjectComponent = () => {
       icon: 'ri-currency-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 6,
@@ -1473,7 +1488,7 @@ const DataObjectComponent = () => {
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
       id: 7,
@@ -1483,7 +1498,7 @@ const DataObjectComponent = () => {
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-pending-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-pending-payout`,
     },
 
     {
@@ -1494,7 +1509,7 @@ const DataObjectComponent = () => {
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
   ];
 
@@ -1527,7 +1542,7 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-school-fill',
       link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
     },
 
     {
@@ -1537,7 +1552,7 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-group-2-fill',
       link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents`,
     },
   ];
 
@@ -3549,7 +3564,13 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-
+    {
+      title: 'ID',
+      key: '_id',
+      render: (item) => (
+        <div className="text-uppercase">{item?._id ?? '-'}</div>
+      ),
+    },
     {
       title: 'Application ID',
       key: 'application',
