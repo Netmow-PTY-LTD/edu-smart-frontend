@@ -931,6 +931,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Date',
+      key: 'Date',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+      {item?.createdAt ? moment(item.createdAt).format("MM-DD-YYYY") : "-"}
+      </span>
+      ),
+    },
+        {
       title: 'Emgs',
       key: 'emgs_payment_status',
       render: (item) => (
