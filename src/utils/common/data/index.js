@@ -725,6 +725,10 @@ const DataObjectComponent = () => {
     ),
   };
 
+
+
+
+
   const studentsHeaders = [
     {
       title: 'Agent',
@@ -931,6 +935,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Date',
+      key: 'Date',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+      {item?.createdAt ? moment(item.createdAt).format("MM-DD-YYYY") : "-"}
+      </span>
+      ),
+    },
+        {
       title: 'Emgs',
       key: 'emgs_payment_status',
       render: (item) => (
@@ -944,9 +957,12 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
           >
-            {'View'}
-          </Link>
+            <i className="ri-receipt-fill"></i>
+            </Link>
 
         </>
       ),
@@ -965,9 +981,12 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
           >
-            {'View'}
-          </Link>
+            <i className="ri-receipt-fill"></i>
+            </Link>
 
         </>
       ),
@@ -990,10 +1009,14 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          
           >
-            {'View'}
-          </Link>
-</>
+            <i className="ri-receipt-fill"></i>
+            </Link>
+            </>
 
           ) : (
             <span className="text-capitalize text-primary fw-medium">
@@ -1030,6 +1053,15 @@ const DataObjectComponent = () => {
           ) : (
             '-'
           )}
+        </span>
+      ),
+    },
+    {
+      title: 'Date',
+      key: 'createdAt',
+      render: (item) => (
+        <span className="fw-medium text-muted">
+          {item?.createdAt ? moment(item.createdAt).format("DD-MM-YYYY HH:mm") : "-"}
         </span>
       ),
     },

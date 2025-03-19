@@ -5,12 +5,19 @@ import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Card, CardBody, CardHeader, CardTitle, Col, Row } from 'reactstrap';
+import * as Yup from 'yup';
 
 const PasswordSettings = () => {
   const [initialValues, setInitialValues] = useState({
     current_password: '',
     new_password: '',
   });
+
+  const validationSchema = Yup.object().shape({
+    current_password: Yup.string().required('Current password is required'),
+    new_password: Yup.string().required('New password is required'),
+  });
+
   const [changePassword] = useChangePasswordMutation();
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -39,7 +46,7 @@ const PasswordSettings = () => {
           <CardBody className="p-5">
             <Formik
               initialValues={initialValues}
-              // validationSchema={validationSchema}
+              validationSchema={validationSchema}
               onSubmit={handleSubmit}
               enableReinitialize={true}
             >
