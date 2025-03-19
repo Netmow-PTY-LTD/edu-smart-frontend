@@ -725,6 +725,10 @@ const DataObjectComponent = () => {
     ),
   };
 
+
+
+
+
   const studentsHeaders = [
     {
       title: 'Agent',
@@ -1049,6 +1053,15 @@ const DataObjectComponent = () => {
           ) : (
             '-'
           )}
+        </span>
+      ),
+    },
+    {
+      title: 'Date',
+      key: 'createdAt',
+      render: (item) => (
+        <span className="fw-medium text-muted">
+          {item?.createdAt ? moment(item.createdAt).format("DD-MM-YYYY HH:mm") : "-"}
         </span>
       ),
     },
