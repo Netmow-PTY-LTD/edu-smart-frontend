@@ -953,9 +953,12 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
           >
-            {'View'}
-          </Link>
+            <i className="ri-receipt-fill"></i>
+            </Link>
 
         </>
       ),
@@ -974,9 +977,12 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
           >
-            {'View'}
-          </Link>
+            <i className="ri-receipt-fill"></i>
+            </Link>
 
         </>
       ),
@@ -999,10 +1005,14 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          
           >
-            {'View'}
-          </Link>
-</>
+            <i className="ri-receipt-fill"></i>
+            </Link>
+            </>
 
           ) : (
             <span className="text-capitalize text-primary fw-medium">
