@@ -9,6 +9,7 @@ import AgentTotalPaidAmountForSuperAdmin from '@/components/sAdminDashboard/earn
 import TotalAgentPayoutInAgentForSuperAdmin from '@/components/sAdminDashboard/earning/AgentTotalPaidAmountForSuperAdmin';
 import AgentTotalPendingAmountForSuperAdmin from '@/components/sAdminDashboard/earning/AgentTotalPendingAmountForSuperAdmin';
 import AgentFamilyTripForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentFamilyTripForSuperAdmin';
+import AgentPackageHistoryForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentPackageHistoryForSuperAdmin';
 import AgentYearlyBonousForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentYearlyBonousForSuperAdmin';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import {
@@ -271,6 +272,22 @@ const SingleAgentInSuperAdminDashboard = () => {
                             </span>
                           </NavLink>
                         </NavItem>
+                        <NavItem className="fs-14">
+                          <NavLink
+                            style={{ cursor: 'pointer' }}
+                            className={classnames({
+                              active: activeTab === '6',
+                            })}
+                            onClick={() => {
+                              toggleTab('6');
+                            }}
+                          >
+                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                            <span className="d-none d-md-inline-block">
+                              Package History
+                            </span>
+                          </NavLink>
+                        </NavItem>
                       </>
                     )}
                   </Nav>
@@ -381,6 +398,11 @@ const SingleAgentInSuperAdminDashboard = () => {
                     {activeTab === '5' && (
                       <div style={{ marginTop: '30px' }}>
                         <AgentYearlyBonousForSuperAdmin agent_id={agent_id} />
+                      </div>
+                    )}
+                    {activeTab === '6' && (
+                      <div style={{ marginTop: '30px' }}>
+                        <AgentPackageHistoryForSuperAdmin agent_id={agent_id} />
                       </div>
                     )}
                   </>
