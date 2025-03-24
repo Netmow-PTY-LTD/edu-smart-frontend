@@ -36,7 +36,8 @@ const DocumentRequestPage = ({ student_id, request }) => {
     description: '',
     // notes: '',
   });
-  const { docRequestTableHeaderData = [] } = DataObjectComponent();
+  const { studentRequestDocumentsHeaderWithoutAction = [] } =
+    DataObjectComponent();
   const [rejectStatusInitialValues, setRejectStatusInitialValues] = useState({
     notes: '',
   });
@@ -214,7 +215,7 @@ const DocumentRequestPage = ({ student_id, request }) => {
     }
 
     setAllUploadDocumentsForStudentsData(() => [
-      ...docRequestTableHeaderData,
+      ...studentRequestDocumentsHeaderWithoutAction,
       ...docRequestTableHeaderDataAction,
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps

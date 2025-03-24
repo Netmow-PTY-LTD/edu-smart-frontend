@@ -29,7 +29,7 @@ const DataObjectComponent = () => {
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
-            href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile-for-agent/${item?._id}`}
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile-for-agent/${item?._id}`}
             className="text-reset"
           >
             <Image
@@ -44,7 +44,7 @@ const DataObjectComponent = () => {
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link
-              href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile-for-agent/${item?._id}`}
+              href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile-for-agent/${item?._id}`}
               className="text-reset"
             >
               {`${item.name} `}
@@ -95,7 +95,7 @@ const DataObjectComponent = () => {
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
-            href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile/${item?._id}`}
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile/${item?._id}`}
             className="text-reset"
           >
             <Image
@@ -110,7 +110,7 @@ const DataObjectComponent = () => {
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link
-              href={`/dashboard/${userInfoData?.data?.role}/university-management/single-university-profile/${item?._id}`}
+              href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/single-university-profile/${item?._id}`}
               className="text-reset"
             >
               {`${item.name} `}
@@ -656,7 +656,7 @@ const DataObjectComponent = () => {
       <div className="d-flex align-items-center me-5">
         <div className="flex-shrink-0 me-1">
           <Link
-            href={`/dashboard/${userInfoData?.data?.role}/student-management/single-student-for-agent/${item?._id}`}
+            href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/student-management/single-student-for-agent/${item?._id}`}
             className="text-reset"
           >
             <Image
@@ -675,7 +675,7 @@ const DataObjectComponent = () => {
         <div>
           <h5 className="fs-14 fw-medium text-capitalize">
             <Link
-              href={`/dashboard/${userInfoData?.data?.role}/student-management/single-student-for-agent/${item?._id}`}
+              href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/student-management/single-student-for-agent/${item?._id}`}
               className="text-reset"
             >
               {item?.first_name && item?.last_name
@@ -724,6 +724,10 @@ const DataObjectComponent = () => {
       </div>
     ),
   };
+
+
+
+
 
   const studentsHeaders = [
     {
@@ -910,17 +914,6 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-    // {
-    //   title: 'Student',
-    //   key: 'student_name',
-    //   render: (item) => (
-    //     <span className="d-flex flex-column text-capitalize">
-    //       {item?.student?._id
-    //         ? item?.student?.first_name + ' ' + item?.student?.last_name
-    //         : '-'}
-    //     </span>
-    //   ),
-    // },
     {
       title: 'Application Id',
       key: 'application_id',
@@ -942,6 +935,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Date',
+      key: 'Date',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+      {item?.createdAt ? moment(item.createdAt).format("MM-DD-YYYY") : "-"}
+      </span>
+      ),
+    },
+        {
       title: 'Emgs',
       key: 'emgs_payment_status',
       render: (item) => (
@@ -951,6 +953,17 @@ const DataObjectComponent = () => {
           >
             {item?.emgs_payment_status ?? '-'}
           </span>
+          <Link
+          target='_blank'
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
+            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          >
+            <i className="ri-receipt-fill"></i>
+            </Link>
+
         </>
       ),
     },
@@ -964,6 +977,17 @@ const DataObjectComponent = () => {
           >
             {item?.tuition_fee_payment_status ?? '-'}
           </span>
+          <Link
+          target='_blank'
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
+            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          >
+            <i className="ri-receipt-fill"></i>
+            </Link>
+
         </>
       ),
     },
@@ -975,11 +999,25 @@ const DataObjectComponent = () => {
         <>
           {item?.airport_pickup_charge > 0 &&
           item?.airport_pickup_invoice_status === 'active' ? (
+            <>
             <span
               className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
             >
               {item?.airport_pickup_charge_payment_status ?? '-'}
             </span>
+          <Link
+          target='_blank'
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
+            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          
+          >
+            <i className="ri-receipt-fill"></i>
+            </Link>
+            </>
+
           ) : (
             <span className="text-capitalize text-primary fw-medium">
               {'Not Activated Yet'}
@@ -1005,6 +1043,29 @@ const DataObjectComponent = () => {
   ];
 
   const agentsHeaders = [
+    {
+      title: 'Package',
+      key: 'package',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.agent_package_new ? (
+            <span>{item?.agent_package_new?.package_name}</span>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
+      title: 'Date',
+      key: 'createdAt',
+      render: (item) => (
+        <span className="fw-medium text-muted">
+          {item?.createdAt ? moment(item.createdAt).format("DD-MM-YYYY HH:mm") : "-"}
+        </span>
+      ),
+    },
+
     { title: 'Email', key: 'email' },
     { title: 'Phone', key: 'phone' },
     {
@@ -1439,7 +1500,7 @@ const DataObjectComponent = () => {
       icon: 'ri-wallet-3-fill',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-receive-amount`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-receive-amount`,
     },
     {
       id: 5,
@@ -1449,7 +1510,7 @@ const DataObjectComponent = () => {
       icon: 'ri-currency-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-university-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-university-payout`,
     },
     {
       id: 6,
@@ -1459,7 +1520,7 @@ const DataObjectComponent = () => {
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-paid-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-paid-payout`,
     },
     {
       id: 7,
@@ -1469,7 +1530,7 @@ const DataObjectComponent = () => {
       icon: 'ri-money-pound-box-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/total-agent-pending-payout`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/total-agent-pending-payout`,
     },
 
     {
@@ -1480,7 +1541,7 @@ const DataObjectComponent = () => {
       icon: 'ri-wallet-2-line',
       link: 'All Charges',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.data?.role}/super-admin-earnings/super-admin-profit`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/super-admin-earnings/super-admin-profit`,
     },
   ];
 
@@ -1513,7 +1574,7 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-school-fill',
       link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/university-management/all-university`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/university-management/all-university`,
     },
 
     {
@@ -1523,7 +1584,7 @@ const DataObjectComponent = () => {
       bgcolor: 'info',
       icon: 'ri-group-2-fill',
       link: 'View all',
-      pathName: `/dashboard/${userInfoData?.data?.role}/agents`,
+      pathName: `/dashboard/${userInfoData?.data?.role.split('_').join('-')}/agents`,
     },
   ];
 
@@ -1679,7 +1740,14 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
+      render: (item) => (
+        <div>
+          {item?.agent_package?.package?.name ?? '-'}
+          <small className="ms-2 badge bg-secondary-subtle text-secondary text-uppercase">
+            {item?.subscription_type ? `${item?.subscription_type}` : '-'}
+          </small>
+        </div>
+      ),
     },
 
     {
@@ -1687,42 +1755,30 @@ const DataObjectComponent = () => {
       key: 'package_amount',
       render: (item) => (
         <div>
-          {(
-            item?.agent_package?.package?.price *
-            (item?.coupon_package_duration
-              ? item?.coupon_package_duration.split('_')[0]
-              : item?.agent_package?.package_duration.split('_')[0])
-          )?.toFixed(2) ?? '-'}{' '}
+          {item?.total_package_amount
+            ? item?.total_package_amount?.toFixed(2)
+            : '0.00'}{' '}
           {'MYR'}
         </div>
       ),
     },
+
     {
       title: 'Discount',
       key: 'discount',
-      render: (item) => {
-        const price = (
-          item?.agent_package?.package?.price *
-          (item?.coupon_package_duration
-            ? item?.coupon_package_duration.split('_')[0]
-            : item?.agent_package?.package_duration.split('_')[0])
-        )?.toFixed(2);
-        const paidAmount = item?.paid_amount || 0;
-        const discount = price - paidAmount;
-        const formattedDiscount = discount.toFixed(2);
-        return (
-          <div>
-            {`${formattedDiscount}`} {'MYR'}
-          </div>
-        );
-      },
+      render: (item) => (
+        <div>
+          {item?.discount ? item?.discount?.toFixed(2) : '0.00'} {'MYR'}
+        </div>
+      ),
     },
+
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {(item?.paid_amount || 0)?.toFixed(2) ?? '-'} {'MYR'}
+          {item?.paid_amount ? item?.paid_amount?.toFixed(2) : '0.00'} {'MYR'}
         </div>
       ),
     },
@@ -1772,14 +1828,21 @@ const DataObjectComponent = () => {
     {
       title: 'Package Name',
       key: 'agent_package',
-      render: (item) => <div>{item?.agent_package?.package?.name ?? '-'}</div>,
+      render: (item) => (
+        <div>
+          {item?.agent_package?.package?.name ?? '-'}
+          <small className="ms-2 badge bg-secondary-subtle text-secondary text-uppercase">
+            {item?.subscription_type ? `${item?.subscription_type}` : '-'}
+          </small>
+        </div>
+      ),
     },
     {
       title: 'Paid',
       key: 'paid_amount',
       render: (item) => (
         <div>
-          {item?.paid_amount ?? '-'} {'MYR'}
+          {item?.paid_amount ? item?.paid_amount?.toFixed(2) : '0.00'} {'MYR'}
         </div>
       ),
     },
@@ -1787,6 +1850,9 @@ const DataObjectComponent = () => {
     {
       title: 'Payment Method',
       key: 'payment_method',
+      render: (item) => (
+        <div className="text-capitalize">{item?.payment_method ?? '-'}</div>
+      ),
     },
     {
       title: 'Payment Date',
@@ -3530,7 +3596,13 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-
+    {
+      title: 'ID',
+      key: '_id',
+      render: (item) => (
+        <div className="text-uppercase">{item?._id ?? '-'}</div>
+      ),
+    },
     {
       title: 'Application ID',
       key: 'application',
@@ -5824,6 +5896,8 @@ const DataObjectComponent = () => {
     applicationPaymentHeadersStudent,
     applicationHeadersForStudent,
     TotalAgentPendingPayoutReportHeadersDataForSuperAdminNew,
+    docRequestSubmittedTableHeaderDataWithoutActionForSuperAdmin,
+    AIRTICKET_ACCEPTED_HEADER_FOR_SUPERADMIN,
   };
 };
 
