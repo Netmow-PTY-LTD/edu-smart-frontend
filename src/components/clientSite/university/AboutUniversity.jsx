@@ -24,7 +24,6 @@ const AboutUniversity = ({ university }) => {
             university in Malaysia. From Perak, the campus then moved to Melaka
             in 1997.
           </p> */}
-          <button className="button px-4 py-3">Read More</button>
         </div>
         <div className="w-100 w-lg-50 d-flex justify-content-center align-items-center">
           <Image
