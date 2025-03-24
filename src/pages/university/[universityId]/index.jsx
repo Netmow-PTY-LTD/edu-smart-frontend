@@ -21,11 +21,11 @@ export default function SingleUniversityHome() {
   } = useGetsingleUniversityQuery(universityId);
 
   return (
-    <UniversityLayout>
+    <>
       {isSingleUniversityDataLoading ? (
-        <LoaderSpiner />
-      ) : (
-        <>
+        <LoaderSpiner /> // Show loading spinner while data is loading
+      ) : singleUniversityData?.data ? (
+        <UniversityLayout>
           <HeroHome university={singleUniversityData?.data} />
           <AboutUniversity university={singleUniversityData?.data} />
           <UniversityFaculties
@@ -44,8 +44,15 @@ export default function SingleUniversityHome() {
           <SponsorHome sponsorData={singleUniversityData?.data?.sponsors} />
           {/* <UniversityTestimonials university={university} /> */}
           <UniversityContact university={singleUniversityData?.data} />
-        </>
+        </UniversityLayout>
+      ) : (
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: '100vh' }}
+        >
+          <h1>404 | Page not Found</h1>
+        </div> // Display 404 if no data is available
       )}
-    </UniversityLayout>
+    </>
   );
 }
