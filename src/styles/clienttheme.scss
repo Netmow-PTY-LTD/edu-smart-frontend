@@ -8260,17 +8260,22 @@ img.staff-img {
   gap: 30px;
 }
 
+.university-card-heading {
+  display: flex;
+  align-items: center;
+  height: 65px;
+  margin-bottom: 15px;
+}
+
 .university-card-content h3 {
   color: var(--Black, #1c1c1c);
   font-family: Lora;
   font-size: clamp(18px, 1.5vw, 24px);
   font-weight: 700;
-  margin-bottom: 15px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   line-height: 30px;
-  height: 60px;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
