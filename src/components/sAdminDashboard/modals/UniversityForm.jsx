@@ -232,8 +232,13 @@ const UniversityForm = ({
                           <div className="">
                             {' '}
                             <NumberField
-                              name="phone"
+                              name="text"
                               label="Contact Number *"
+                              inputProps={{
+                                pattern: '[+\\-0-9]*', // This pattern allows numbers, +, and - only
+                                title:
+                                  'Phone number can only contain numbers, +, and -',
+                              }}
                             />
                           </div>
                         </Col>
@@ -254,7 +259,7 @@ const UniversityForm = ({
                             name="country"
                             label="Country *"
                             options={options}
-                            defaultCountry={defaultCountry}
+                            //defaultCountry={defaultCountry}
                           />
                         </Col>
 
