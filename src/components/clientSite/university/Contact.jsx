@@ -151,7 +151,9 @@ export default function UniversityContact({ university }) {
                       <span>
                         <b>Phone:</b>
                       </span>
-                      <Link href={university?.phone || 'tel:+60 3 9876 5432'}>
+                      <Link
+                        href={`tel:${university?.phone ? university?.phone : '+60 3 9876 5432'}`}
+                      >
                         {university?.phone || '+60 3 9876 5432'}
                       </Link>
                     </div>
@@ -173,10 +175,7 @@ export default function UniversityContact({ university }) {
                         <b>Email:</b>
                       </span>{' '}
                       <Link
-                        href={
-                          university?.email ||
-                          'mailto:info@universiti-telekom.my'
-                        }
+                        href={`mailto:${university?.email ? university?.email : 'info@universiti-telekom.my'}`}
                       >
                         {university?.email || 'info@universiti-telekom.my'}
                       </Link>

@@ -8265,18 +8265,22 @@ img.staff-img {
   font-family: Lora;
   font-size: clamp(18px, 1.5vw, 24px);
   font-weight: 700;
-  line-height: normal;
-  height: 46px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   margin-bottom: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 30px;
+  height: 60px;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  --webkit-box-align: center;
+  --webkit-box-pack: center;
 }
 
 .address {
   display: flex;
   gap: 10px;
-  height: 40px;
   margin-bottom: 18px;
 }
 
@@ -8313,6 +8317,13 @@ img.staff-img {
   font-style: normal;
   font-weight: 500;
   line-height: 140%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  height: 45px;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .university-card-content {
