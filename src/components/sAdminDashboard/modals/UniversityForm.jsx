@@ -235,9 +235,17 @@ const UniversityForm = ({
                               name="text"
                               label="Contact Number *"
                               inputProps={{
-                                pattern: '[+\\-0-9]*', // This pattern allows numbers, +, and - only
+                                pattern: '[+0-9]*', // Only allow numbers and the '+' symbol
                                 title:
-                                  'Phone number can only contain numbers, +, and -',
+                                  'Phone number can only contain numbers and +',
+                                onChange: (e) => {
+                                  // Replace anything other than numbers and "+" with an empty string
+                                  const sanitizedValue = e.target.value.replace(
+                                    /[^0-9+]/g,
+                                    ''
+                                  );
+                                  e.target.value = sanitizedValue; // Set the sanitized value to the input field
+                                },
                               }}
                             />
                           </div>
