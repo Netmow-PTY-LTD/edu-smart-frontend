@@ -31,6 +31,8 @@ const TotalAgentPayoutInAgent = () => {
       .filter(
         (item) =>
           item?.payment_reason === 'application_tuition_fee' &&
+          item?.agent_commision_by_hot_offer > 0 &&
+          item?.agent_commission > 0 &&
           item?.student?.agent
       )
       ?.map((item) => ({

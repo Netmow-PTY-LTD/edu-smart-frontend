@@ -2381,19 +2381,6 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Agent Name',
-      key: 'agent_name',
-      render: (item) => (
-        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.student?.agent?._id
-            ? item?.student?.agent?.first_name +
-              ' ' +
-              item?.student?.agent?.last_name
-            : '-'}
-        </div>
-      ),
-    },
-    {
       title: 'Student Name',
       key: 'student_name',
       render: (item) => (
