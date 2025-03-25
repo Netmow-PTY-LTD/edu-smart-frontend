@@ -29,7 +29,9 @@ export default function HomeUniversities() {
                   />
                 </div>
                 <div className="university-card-content">
-                  <h3>{item?.name}</h3>
+                  <div className="university-card-heading">
+                    <h3>{item?.name}</h3>
+                  </div>
                   <div className="address">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
