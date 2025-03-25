@@ -52,13 +52,42 @@ const DescriptionFormHandler = ({ university_id }) => {
 
   const validationSchema = Yup.object({});
 
+  // const onSubmit = async (values, { setSubmitting }) => {
+  //   console.log(values);
+  //   setSubmitting(true);
+  //   try {
+  //     const result = await updateDescription({
+  //       data: values,
+  //       university_id: university_id,
+  //     }).unwrap();
+  //     if (result) {
+  //       toast.success(result?.message);
+  //       getSingleUniversityRefetch();
+  //     }
+  //   } catch (error) {
+  //     const errorMessage = error?.data?.message;
+  //     toast.error(errorMessage);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
   const onSubmit = async (values, { setSubmitting }) => {
+    console.log(values);
+
+    // Iterate over all fields in values and replace empty strings with "&nbsp;"
+    const updatedValues = Object.keys(values).reduce((acc, key) => {
+      acc[key] = values[key] === '' ? ' ' : values[key];
+      return acc;
+    }, {});
+
     setSubmitting(true);
     try {
       const result = await updateDescription({
-        data: values,
+        data: updatedValues, // Use the updated values here
         university_id: university_id,
       }).unwrap();
+
       if (result) {
         toast.success(result?.message);
         getSingleUniversityRefetch();

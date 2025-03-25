@@ -17,12 +17,12 @@ const UniversitysliderModalForm = ({
   formSubmit,
 }) => {
   const sliderFields = [
-    { name: 'title', label: 'Title:' },
-    { name: 'sub_title', label: 'Sub Title:' },
-    { name: 'button_1_text', label: 'Button One Text:' },
-    { name: 'button_1_link', label: 'Button One Link:' },
-    { name: 'button_2_text', label: 'Button Two Text:' },
-    { name: 'button_2_link', label: 'Button Two Link:' },
+    { name: 'title', label: 'Title' },
+    { name: 'sub_title', label: 'Sub Title' },
+    // { name: 'button_1_text', label: 'Button One Text:' },
+    // { name: 'button_1_link', label: 'Button One Link:' },
+    // { name: 'button_2_text', label: 'Button Two Text:' },
+    // { name: 'button_2_link', label: 'Button Two Link:' },
   ];
 
   return (
@@ -37,7 +37,7 @@ const UniversitysliderModalForm = ({
           onSubmit={onSubmit}
           enableReinitialize
         >
-          {({ isSubmitting, setFieldValue, values }) => (
+          {({ isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form>
               <Row>
                 {sliderFields?.length > 0 &&
@@ -53,8 +53,8 @@ const UniversitysliderModalForm = ({
                 <Col lg={12}>
                   <SingleImageField
                     field={{ name: 'image' }}
-                    form={{ setFieldValue, values }}
-                    label="Uploaded Picture"
+                    form={{ setFieldValue, values, errors, touched }}
+                    label="Uploaded Picture *"
                   />
                 </Col>
               </Row>

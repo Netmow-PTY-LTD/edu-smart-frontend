@@ -1,6 +1,7 @@
 import CountrySelectFieldByIp from '@/components/common/formField/CountrySelectFieldByIp';
 import EmailField from '@/components/common/formField/EmailField';
 import ImageField from '@/components/common/formField/ImageField';
+import MobileNumberValid from '@/components/common/formField/MobileNumberValid';
 import NumberField from '@/components/common/formField/NumberField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
@@ -166,32 +167,6 @@ const UniversityForm = ({
                         label="MOE Registration Certification No *"
                       />
                     </div>
-                    {/* <h4>SSM File Upload</h4> */}
-                    {/* <div className="mb-5">
-                      {ssmFilePreview && (
-                        <div className="file-preview mb-3">
-                          <p>{ssmFilePreview}</p>
-                        </div>
-                      )}
-                      <FileUpload
-                        name="ssm_file_upload"
-                        label="Upload SSM File"
-                        handleFileChange={handleSsmFileChange}
-                      />
-                    </div> */}
-                    {/* <h4>Govt. File Upload</h4> */}
-                    {/* <div className="mb-4">
-                      {govtFilePreview && (
-                        <div className="file-preview mb-3">
-                          <p>{govtFilePreview}</p>
-                        </div>
-                      )}
-                      <FileUpload
-                        name="govt_file_upload"
-                        label="Upload Govt. File"
-                        handleFileChange={handleGovtFileChange}
-                      />
-                    </div> */}
                   </Col>
 
                   <Col lg={9}>
@@ -231,7 +206,7 @@ const UniversityForm = ({
                         <Col md={6} xl={6}>
                           <div className="">
                             {' '}
-                            <NumberField
+                            <MobileNumberValid
                               name="phone"
                               label="Contact Number *"
                             />
