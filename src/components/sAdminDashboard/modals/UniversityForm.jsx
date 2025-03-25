@@ -1,6 +1,7 @@
 import CountrySelectFieldByIp from '@/components/common/formField/CountrySelectFieldByIp';
 import EmailField from '@/components/common/formField/EmailField';
 import ImageField from '@/components/common/formField/ImageField';
+import MobileNumberValid from '@/components/common/formField/MobileNumberValid';
 import NumberField from '@/components/common/formField/NumberField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
@@ -166,32 +167,6 @@ const UniversityForm = ({
                         label="MOE Registration Certification No *"
                       />
                     </div>
-                    {/* <h4>SSM File Upload</h4> */}
-                    {/* <div className="mb-5">
-                      {ssmFilePreview && (
-                        <div className="file-preview mb-3">
-                          <p>{ssmFilePreview}</p>
-                        </div>
-                      )}
-                      <FileUpload
-                        name="ssm_file_upload"
-                        label="Upload SSM File"
-                        handleFileChange={handleSsmFileChange}
-                      />
-                    </div> */}
-                    {/* <h4>Govt. File Upload</h4> */}
-                    {/* <div className="mb-4">
-                      {govtFilePreview && (
-                        <div className="file-preview mb-3">
-                          <p>{govtFilePreview}</p>
-                        </div>
-                      )}
-                      <FileUpload
-                        name="govt_file_upload"
-                        label="Upload Govt. File"
-                        handleFileChange={handleGovtFileChange}
-                      />
-                    </div> */}
                   </Col>
 
                   <Col lg={9}>
@@ -231,22 +206,9 @@ const UniversityForm = ({
                         <Col md={6} xl={6}>
                           <div className="">
                             {' '}
-                            <NumberField
-                              name="text"
+                            <MobileNumberValid
+                              name="phone"
                               label="Contact Number *"
-                              inputProps={{
-                                pattern: '[+0-9]*', // Only allow numbers and the '+' symbol
-                                title:
-                                  'Phone number can only contain numbers and +',
-                                onChange: (e) => {
-                                  // Replace anything other than numbers and "+" with an empty string
-                                  const sanitizedValue = e.target.value.replace(
-                                    /[^0-9+]/g,
-                                    ''
-                                  );
-                                  e.target.value = sanitizedValue; // Set the sanitized value to the input field
-                                },
-                              }}
                             />
                           </div>
                         </Col>
@@ -267,7 +229,7 @@ const UniversityForm = ({
                             name="country"
                             label="Country *"
                             options={options}
-                            //defaultCountry={defaultCountry}
+                            defaultCountry={defaultCountry}
                           />
                         </Col>
 
