@@ -40,7 +40,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   const perPageData = 10;
 
-  const { superAdminData, applicationHeadersWithoutAction } =
+  const { superAdminData = [], applicationHeadersWithoutAction = [] } =
     DataObjectComponent();
 
   const {
