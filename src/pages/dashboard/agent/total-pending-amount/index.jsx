@@ -54,8 +54,6 @@ const TotalAgentPayoutInAgent = () => {
     return fullName?.includes(searchTerm.toLowerCase());
   });
 
-  console.log(allPaymentData);
-
   return (
     <Layout>
       <div className="page-content">
