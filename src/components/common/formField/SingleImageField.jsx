@@ -56,6 +56,12 @@ const SingleImageField = ({ field, form, label, ...props }) => {
     event.preventDefault();
     setPreviewImage(null);
     form.setFieldValue(field.name, null);
+
+    // Reset file input value
+    const fileInput = document.getElementById('image');
+    if (fileInput) {
+      fileInput.value = ''; // Clear the file input
+    }
   };
 
   return (
