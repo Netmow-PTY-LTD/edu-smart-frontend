@@ -429,8 +429,8 @@ const UpgradePackageInAgentdashboard = () => {
           <ToastContainer />
           <div className="h-100">
             <Row>
-              <Col xl={10}>
-                <div className=" d-flex justify-content-center my-5 gap-5">
+              <Col xl={12}>
+                <div className=" d-flex justify-content-center my-5 gap-5 flex-wrap">
                   {getAllPackageIsLoading || upgradePackageIsLoading ? (
                     <LoaderSpiner />
                   ) : (
