@@ -53,31 +53,17 @@ export default function UniversitySliderList({ university_id }) {
   const [deleteUniversitySlider] = useDeleteUniversitySliderMutation();
 
   const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required'),
-    sub_title: Yup.string().required('Sub-title is required'),
-    description: Yup.string().required('Description is required'),
-    button_1_text: Yup.string().required('Button 1 text is required'),
-    button_1_link: Yup.string()
-      .url('Button 1 link must be a valid URL')
-      .required('Button 1 link is required'),
-    button_2_text: Yup.string().required('Button 2 text is required'),
-    button_2_link: Yup.string()
-      .url('Button 2 link must be a valid URL')
-      .required('Button 2 link is required'),
-    image: Yup.mixed()
-      .test('fileSize', 'File size too large', (value) => {
-        // Example for checking image file size
-        return value ? value.size <= 5000000 : true; // 5MB size limit
-      })
-      .test('fileType', 'Unsupported file format', (value) => {
-        // Example for checking file type (only images)
-        return value
-          ? ['image/jpeg', 'image/jpeg', 'image/png', 'image/gif'].includes(
-              value.type
-            )
-          : true;
-      })
-      .required('An image is required'),
+    title: Yup.string().notRequired(), // Optional field
+    sub_title: Yup.string().notRequired(), // Optional field
+    description: Yup.string().notRequired(), // Optional field
+    // button_1_text: Yup.string().notRequired(), // Optional field
+    // button_1_link: Yup.string()
+    //   .url('Button 1 link must be a valid URL')
+    //   .notRequired(), // Optional field
+    // button_2_text: Yup.string().notRequired(), // Optional field
+    // button_2_link: Yup.string()
+    //   .url('Button 2 link must be a valid URL')
+    //   .notRequired(), // Optional field
   });
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -132,7 +118,61 @@ export default function UniversitySliderList({ university_id }) {
 
   const handleSliderSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
+    // Extract the image file from values
+    const imageFile = values.image; // Assuming 'image' is the field name for the image
+
+    console.log(imageFile);
+
+    // Validate the image before submission
+    if (imageFile) {
+      // Check file size (5MB limit)
+      if (imageFile.size > 5000000) {
+        toast.error('File size too large. Maximum allowed size is 5MB.');
+        setSubmitting(false);
+        return;
+      }
+
+      // Check file type (only images)
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!validTypes.includes(imageFile.type)) {
+        toast.error('Unsupported file format. Please upload a valid image.');
+        setSubmitting(false);
+        return;
+      }
+    } else {
+      // If no image selected, show an error toast
+      toast.error('An Uploaded Picture is required.');
+      setSubmitting(false);
+      return;
+    }
+
+    // If the image passes validation, proceed with form submission
     const updatedData = { ...values, university_id: university_id };
+
+    // try {
+    //   const finalData = new FormData();
+    //   Object.entries(updatedData).forEach(([key, value]) => {
+    //     if (value instanceof File) {
+    //       finalData.append(key, value); // Append the image file
+    //     } else {
+    //       finalData.append(key, value); // Append other form values
+    //     }
+    //   });
+
+    //   // Perform the actual submission (e.g., sending to API)
+    //   const result = await updateUniversitySlider(finalData);
+
+    //   if (result.success) {
+    //     toast.success('Form submitted successfully!');
+    //   } else {
+    //     toast.error('Failed to submit form.');
+    //   }
+    // } catch (error) {
+    //   toast.error('An error occurred during submission.');
+    // } finally {
+    //   setSubmitting(false);
+    // }
     try {
       const finalData = new FormData();
       Object.entries(updatedData).forEach(([key, value]) => {
@@ -207,6 +247,7 @@ export default function UniversitySliderList({ university_id }) {
             <Image
               width={80}
               height={80}
+              // src={item?.image?.url || userDummyImage}
               src={item?.image?.url || userDummyImage}
               alt="slider-Image"
               key={index + 1}
