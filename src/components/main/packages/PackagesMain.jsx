@@ -65,8 +65,13 @@ const PackagesMain = ({
         <div className="price">
           <p>
             <span>MYR</span>
-            <small className="ms-3 text-primary">{data?.price}</small>
-            <small className="text-capitalize">/{data?.duration.split('_').join(' ')}</small>
+            <small className="ms-3 text-primary">
+              {data?.total_package_price ||
+                data?.price * data?.duration.split('_')[0]}
+            </small>
+            <small className="text-capitalize">
+              /{data?.duration.split('_').join(' ')}
+            </small>
           </p>
         </div>
 
