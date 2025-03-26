@@ -22,6 +22,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ReactSelect from 'react-select';
 import { toast, ToastContainer } from 'react-toastify';
+import DOMPurify from 'dompurify';
+
 import {
   Accordion,
   AccordionBody,
@@ -397,7 +399,7 @@ const SingleUniversityCourse = () => {
                                 ? getSingleCourseData?.data?.name
                                 : 'Bachelor in Accounting (Hons.)'}
                             </h2>
-                            <div className="course-description">
+                            {/* <div className="course-description">
                               <b className="text-secondary-alt fw-semibold fs-18">
                                 Course Description:
                               </b>
@@ -418,7 +420,7 @@ const SingleUniversityCourse = () => {
                         with others and the environment, which is introduced in
                         the Halatuju 4 Program Perakaunan published by Malaysian
                         Institute of Accountants.`}
-                            </div>
+                            </div> */}
                             <div className="d-flex gap-4 flex-wrap">
                               <div className="available-seats course-act">
                                 <svg
@@ -581,6 +583,21 @@ const SingleUniversityCourse = () => {
                                 Download Brochure
                               </button>
                             </div>
+
+                            <div className="course-description editor-container">
+                              <b className="text-secondary-alt fw-semibold fs-18">
+                                Course Description:
+                              </b>
+                              <br />
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: DOMPurify.sanitize(
+                                    getSingleCourseData?.data?.description || ''
+                                  ),
+                                }}
+                              />
+                            </div>
+
                             <div className="document-requirements">
                               <h3>Required Documents for this course:</h3>
                               {getSingleCourseData?.data?.document_requirements
@@ -829,8 +846,8 @@ const SingleUniversityCourse = () => {
                       </Row>
                       {/* {studentsData?.length > 0 && ( */}
                       <>
-                        <div className="d-flex justify-content-center align-items-center">
-                          <div className="d-flex flex-column justify-content-center w-25">
+                        <div className="d-flex justify-content-center align-items-center student-select">
+                          <div className="d-flex flex-column justify-content-center student-select-inner">
                             <div className="mb-3">
                               <label
                                 htmlFor="studentSelect"
