@@ -10486,6 +10486,7 @@ textarea.form-control {
 /* Styling for headings */
 .editor-container .page-content {
   padding: 20px 20px 100px 20px !important;
+  min-height:auto !important;
 }
 
 
