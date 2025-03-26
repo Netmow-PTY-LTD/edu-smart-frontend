@@ -329,13 +329,13 @@ const AllCourseForSuperAdminTest = ({
       .required('Course Description is required'),
     document_requirements: Yup.array().optional(),
 
-    entry_requirements: Yup.array()
-      .of(Yup.string().required('Entry requirement is required'))
-      .min(1, 'At least one entry requirement is required'),
+    // entry_requirements: Yup.array()
+    //   .of(Yup.string().required('Entry requirement is required'))
+    //   .min(1, 'At least one entry requirement is required'),
 
-    english_requirements: Yup.array()
-      .of(Yup.string().required('English requirement is required'))
-      .min(1, 'At least one English requirement is required'),
+    // english_requirements: Yup.array()
+    //   .of(Yup.string().required('English requirement is required'))
+    //   .min(1, 'At least one English requirement is required'),
   });
 
   // Handle form submission

@@ -23,6 +23,8 @@ import {
   Row,
 } from 'reactstrap';
 import { toast } from 'react-toastify';
+import FormikQuill from '@/components/common/FormikQuill';
+import FormikTinyMCE from '@/components/common/FormikTinyMCE ';
 
 // ModalForm Component
 const CourseModalFormTest = ({
@@ -61,7 +63,15 @@ const CourseModalFormTest = ({
           validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-          {({ isSubmitting, setFieldValue, values, errors, touched }) => {
+          {({
+            isSubmitting,
+            setFieldValue,
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+          }) => {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             useEffect(() => {
               const after_emgs_fee_get = values?.tuition_fee - values?.emgs_fee;
@@ -383,10 +393,26 @@ const CourseModalFormTest = ({
                       label="Uploaded Course Picture"
                     />
                   </Col>
-                  <Col xl={12}>
+                  {/* <Col xl={12}>
                     <div className="mb-3">
                       <TextArea name="description" label="Course Description" />
                     </div>
+                  </Col> */}
+                  {/* <Col xl={12}>
+                    <FormikQuill
+                      name="description"
+                      label="Course Description"
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Col> */}
+                  <Col xl={12}>
+                    <FormikTinyMCE
+                      name="description"
+                      label="Course Description"
+                      apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
+                    />
                   </Col>
 
                   <Col xl={12}>
