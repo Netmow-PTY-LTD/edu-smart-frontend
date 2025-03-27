@@ -24,10 +24,12 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import CourseCard from '@/components/main/common/CourseCard';
 import moment from 'moment';
 import { toast, ToastContainer } from 'react-toastify';
+import CourseDescription from '@/components/university/Modal/CourseDescription';
 
 const SingleCoursePageInFrontSite = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
   const { universityId, courseId } = router.query;
@@ -78,6 +80,52 @@ const SingleCoursePageInFrontSite = () => {
 
   const token = Cookies.get('token');
 
+  // const extractAndFormatH1Sections = (htmlString) => {
+  //   if (typeof window !== 'undefined') {
+  //     const parser = new DOMParser();
+  //     const doc = parser.parseFromString(htmlString, 'text/html');
+
+  //     // Find all <h1> elements
+  //     const allH1s = [...doc.querySelectorAll('h1')];
+
+  //     if (allH1s.length === 0) {
+  //       console.log('No <h1> elements found.');
+  //       return;
+  //     }
+
+  //     allH1s.forEach((h1, index) => {
+  //       console.log(`\n======= H1 #${index + 1} =======`);
+
+  //       // Add class "accordion" to the <h1> tag directly
+  //       h1.classList.add('accordion');
+  //       console.log('Modified H1 HTML:', h1.outerHTML);
+
+  //       // Get the closest wrapping div that contains this H1
+  //       let h1Container = h1.closest('div');
+  //       if (!h1Container) return;
+
+  //       // Find the next H1’s container to define boundaries
+  //       let nextH1Container = allH1s[index + 1]?.closest('div');
+
+  //       let extractedHTML = '';
+  //       let currentNode = h1Container.nextElementSibling;
+
+  //       // Capture all content until the next H1 container is found
+  //       while (currentNode && currentNode !== nextH1Container) {
+  //         extractedHTML += currentNode.outerHTML || '';
+  //         currentNode = currentNode.nextElementSibling;
+  //       }
+
+  //       // Wrap the extracted content inside <div class="panel">
+  //       let panelModified = extractedHTML
+  //         ? `<div class="panel">${extractedHTML}</div>`
+  //         : '<div class="panel">[No content found]</div>';
+
+  //       console.log('Modified Panel HTML:', panelModified);
+  //     });
+  //   }
+  // };
+
   // Assuming 'description' contains your HTML content
   const sanitizedContent = description;
 
@@ -95,8 +143,6 @@ const SingleCoursePageInFrontSite = () => {
 
   // Combine the first <h1> tag and the first 200 characters of the first paragraph
   const shortText = firstHeading + firstParagraph.slice(0, 200);
-
-  console.log('Short Text:', shortText);
 
   useEffect(() => {
     if (token) {
@@ -326,7 +372,10 @@ const SingleCoursePageInFrontSite = () => {
                         <span
                           className="text-primary"
                           style={{ cursor: 'pointer' }}
-                          onClick={() => setIsExpanded(true)}
+                          onClick={() => {
+                            // setIsExpanded(true);
+                            setIsModalOpen(true);
+                          }}
                         >
                           Show Full Description
                         </span>
@@ -630,6 +679,14 @@ const SingleCoursePageInFrontSite = () => {
               </div>
             </section>
           )}
+
+          {
+            <CourseDescription
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              description={description}
+            />
+          }
         </Container>
       </section>
     </UniversityLayout>

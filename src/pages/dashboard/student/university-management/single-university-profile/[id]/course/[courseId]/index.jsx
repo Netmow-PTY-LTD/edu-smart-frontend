@@ -35,12 +35,15 @@ import {
 } from 'reactstrap';
 
 import AppliedCourseForm from '../course-form/applied-course-form';
+import CourseDescription from '@/components/university/Modal/CourseDescription';
 
 const SingleUniversityCourse = () => {
   const router = useRouter();
   const [open, setOpen] = useState('1');
   const [step, setStep] = useState(1);
   const [buttonType, setButtonType] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const university_id = router.query.id;
   const course_id = router.query.courseId;
 
@@ -518,13 +521,32 @@ const SingleUniversityCourse = () => {
                                 Course Description:
                               </b>
                               <br />
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: DOMPurify.sanitize(
-                                    getSingleCourseData?.data?.description || ''
-                                  ),
-                                }}
-                              />
+                              <p>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(
+                                      getSingleCourseData?.data?.description.slice(
+                                        0,
+                                        500
+                                      ) +
+                                        (getSingleCourseData?.data?.description
+                                          .length > 500
+                                          ? ' ...'
+                                          : '') || ''
+                                    ),
+                                  }}
+                                />{' '}
+                                {getSingleCourseData?.data?.description.length >
+                                  500 && (
+                                  <span
+                                    className="text-primary"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => setIsModalOpen(true)}
+                                  >
+                                    Show Full Description
+                                  </span>
+                                )}
+                              </p>
                             </div>
 
                             <div className="document-requirements">
@@ -798,6 +820,14 @@ const SingleUniversityCourse = () => {
                 )}
               </>
             )}
+
+            {
+              <CourseDescription
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                description={getSingleCourseData?.data?.description}
+              />
+            }
           </Container>
         </div>
       </div>
