@@ -4,12 +4,34 @@ import React from 'react';
 import DOMPurify from 'dompurify';
 
 const CourseCard = ({ course }) => {
+  // const truncateText = (text, maxLength) => {
+  //   const textContent = DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
+  //   return textContent.length > maxLength
+  //     ? textContent.substring(0, maxLength) + '...'
+  //     : textContent;
+  // };
+
   const truncateText = (text, maxLength) => {
     const textContent = DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
-    return textContent.length > maxLength
-      ? textContent.substring(0, maxLength) + '...'
-      : textContent;
+
+    // Check if the text is longer than maxLength
+    if (textContent.length > maxLength) {
+      // Truncate the text to maxLength
+      let truncatedText = textContent.substring(0, maxLength);
+
+      // Avoid cutting off in the middle of a word, try to find the last space
+      const lastSpaceIndex = truncatedText.lastIndexOf(' ');
+
+      if (lastSpaceIndex !== -1) {
+        truncatedText = truncatedText.substring(0, lastSpaceIndex);
+      }
+
+      return truncatedText + '...';
+    }
+
+    return textContent;
   };
+
   return (
     <div className="course-card">
       <figure className="course-card__image">
@@ -45,7 +67,7 @@ const CourseCard = ({ course }) => {
           <div className="dept-name">{course?.department?.name}</div>
         </header>
         <p className="course-card__description">
-          {truncateText(course?.description, 150)}
+          {truncateText(course?.description, 100)}
         </p>
       </div>
       <footer>
