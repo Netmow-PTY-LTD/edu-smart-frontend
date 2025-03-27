@@ -6,6 +6,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Progress } from 'reactstrap';
+import DOMPurify from 'dompurify';
 
 export const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 export const teamDummyImage = '/assets/images/users/multi-user.jpg';
@@ -1390,8 +1391,8 @@ const DataObjectComponent = () => {
       render: (item) => (
         <p className="text-wrap me-5">
           {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
-          {`${item.description.slice(0, 100)}...`}
-        </p>
+          {`${DOMPurify.sanitize(item.description).replace(/<[^>]+>/g, '').slice(0, 100)}...`}
+          </p>
       ),
     },
     {
