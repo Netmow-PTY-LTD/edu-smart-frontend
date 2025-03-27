@@ -10526,7 +10526,7 @@ textarea.form-control {
 .editor-container p {
   font-size: 16px;
   color: #333;
-  margin-bottom: 1rem; /* Margin between paragraphs */
+  margin-bottom: 1rem !important; /* Margin between paragraphs */
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
