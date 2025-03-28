@@ -47,6 +47,7 @@ const AllCourseForSuperAdminTest = ({
   const [price, setPrice] = useState(2400);
   const [checkFreeAcommodation, SetCheckFreeAcommodation] = useState(false);
   const [checkChangeStatus, setCheckChangeStatus] = useState(null);
+  const [key, setKey] = useState('quill'); // State to toggle between editors
 
   const perPageData = 10;
 
@@ -601,8 +602,6 @@ const AllCourseForSuperAdminTest = ({
 
       document_requirements: [...filteredData, ...documentRequirements],
     };
-
-    console.log('SHADIK', allData);
 
     try {
       const finalData = new FormData();

@@ -12,6 +12,8 @@ import TextField from '@/components/common/formField/TextField';
 import TimeFieldCourse from '@/components/common/formField/TimeFieldCourse';
 import { Field, FieldArray, Form, Formik } from 'formik';
 import React, { useState, useEffect } from 'react';
+import classnames from 'classnames'; // For toggling classes
+
 import {
   Button,
   Card,
@@ -20,7 +22,14 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
+  Nav,
+  NavItem,
+  NavLink,
   Row,
+  TabContent,
+  TabPane,
+  activeTab,
+  toggle,
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import FormikQuill from '@/components/common/FormikQuill';
@@ -51,6 +60,11 @@ const CourseModalFormTest = ({
     { value: 'Mouse', label: 'Mouse' },
     { value: 'Keyboard', label: 'Keyboard' },
   ];
+  const [activeTab, setActiveTab] = useState('tinyMCE'); // TinyMCE is now default
+
+  const toggle = (tab) => {
+    if (activeTab !== tab) setActiveTab(tab); // Only change if it's different
+  };
 
   return (
     <Modal isOpen={isOpen} centered size="xl">
@@ -114,7 +128,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
@@ -128,7 +141,6 @@ const CourseModalFormTest = ({
                       <NumberFieldForCourse name="emgs_fee" label="EMGS Fee" />
                     </div>
                   </Col>
-
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
@@ -138,7 +150,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
@@ -147,7 +158,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Col xl={12}>
                     <div className="mb-3">
                       <TextField
@@ -156,7 +166,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Col xl={12}>
                     <div className="mb-3">
                       <label className="form-label fs-2 mb-3 me-3">
@@ -184,7 +193,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Col xl={12}>
                     <div className="mb-3">
                       <label className="form-label fs-2 mb-3 me-3">
@@ -197,7 +205,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Col xl={12}>
                     <div className="mb-3">
                       <label className="form-label fs-2 mb-3 me-3">
@@ -210,7 +217,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Field name="scholarship_on_tuition_fee">
                     {({ field, form }) =>
                       field?.value && (
@@ -261,7 +267,6 @@ const CourseModalFormTest = ({
                       )
                     }
                   </Field>
-
                   <Col xl={12}>
                     <div className="mb-3">
                       <label className="form-label fs-2 mb-3 me-3">
@@ -279,7 +284,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   {checkFreeAcommodation ? (
                     <>
                       <Col xl={6}>
@@ -313,7 +317,6 @@ const CourseModalFormTest = ({
                   ) : (
                     ''
                   )}
-
                   <Col xl={12}>
                     <div className="mb-3">
                       <label className="form-label fs-2 mb-3 me-3">
@@ -326,7 +329,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-
                   <Field name="free_accessories">
                     {({ field, form }) =>
                       field?.value && (
@@ -371,7 +373,6 @@ const CourseModalFormTest = ({
                       )
                     }
                   </Field>
-
                   <Col xl={12}>
                     <div className="mb-5 profile-img">
                       {filePreview && (
@@ -406,15 +407,64 @@ const CourseModalFormTest = ({
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                  </Col> */}
+                  </Col>
                   <Col xl={12}>
                     <FormikTinyMCE
                       name="description"
                       label="Course Description"
                       apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
                     />
-                  </Col>
+                  </Col> */}
+                  <Col xl={12}>
+                    <Nav tabs>
+                      {/* Tab for TinyMCE Editor (First Tab) */}
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === 'tinyMCE',
+                          })}
+                          onClick={() => setActiveTab('tinyMCE')}
+                        >
+                          TinyMCE Editor
+                        </NavLink>
+                      </NavItem>
 
+                      {/* Tab for Quill Editor (Second Tab) */}
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: activeTab === 'quill',
+                          })}
+                          onClick={() => setActiveTab('quill')}
+                        >
+                          Quill Editor
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+
+                    <TabContent activeTab={activeTab}>
+                      {/* TinyMCE Editor Tab Pane (First Pane) */}
+                      <TabPane tabId="tinyMCE">
+                        <FormikTinyMCE
+                          name="description"
+                          label="Course Description"
+                          //apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
+                          apiKey="bs6v7unze8z33kcabba4eep30wlsawibimdxeiftycp"
+                        />
+                      </TabPane>
+
+                      {/* Quill Editor Tab Pane (Second Pane) */}
+                      <TabPane tabId="quill">
+                        <FormikQuill
+                          name="description"
+                          label="Course Description"
+                          value={values.description}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                        />
+                      </TabPane>
+                    </TabContent>
+                  </Col>
                   <Col xl={12}>
                     <FieldArray name="document_requirements">
                       {({ remove, push }) => (
@@ -542,7 +592,6 @@ const CourseModalFormTest = ({
                       )}
                     </FieldArray>
                   </Col>
-
                   <Col xl={12}>
                     <FieldArray name="entry_requirements">
                       {({ remove, push }) => (
