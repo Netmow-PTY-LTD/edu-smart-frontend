@@ -448,8 +448,8 @@ const CourseModalFormTest = ({
                         <FormikTinyMCE
                           name="description"
                           label="Course Description"
-                          //apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
-                          apiKey="bs6v7unze8z33kcabba4eep30wlsawibimdxeiftycp"
+                          apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
+                          //apiKey="bs6v7unze8z33kcabba4eep30wlsawibimdxeiftycp"
                         />
                       </TabPane>
 
