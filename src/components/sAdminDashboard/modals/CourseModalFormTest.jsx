@@ -415,9 +415,17 @@ const CourseModalFormTest = ({
                       apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
                     />
                   </Col> */}
+
+                  <Col xl={12}>
+                    <FormikTinyMCE
+                      name="description"
+                      label="Course Description"
+                      apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
+                    />
+                  </Col>
+                  {/* 
                   <Col xl={12}>
                     <Nav tabs>
-                      {/* Tab for TinyMCE Editor (First Tab) */}
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -429,7 +437,6 @@ const CourseModalFormTest = ({
                         </NavLink>
                       </NavItem>
 
-                      {/* Tab for Quill Editor (Second Tab) */}
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -443,7 +450,6 @@ const CourseModalFormTest = ({
                     </Nav>
 
                     <TabContent activeTab={activeTab}>
-                      {/* TinyMCE Editor Tab Pane (First Pane) */}
                       <TabPane tabId="tinyMCE">
                         <FormikTinyMCE
                           name="description"
@@ -453,7 +459,6 @@ const CourseModalFormTest = ({
                         />
                       </TabPane>
 
-                      {/* Quill Editor Tab Pane (Second Pane) */}
                       <TabPane tabId="quill">
                         <FormikQuill
                           name="description"
@@ -465,6 +470,7 @@ const CourseModalFormTest = ({
                       </TabPane>
                     </TabContent>
                   </Col>
+                   */}
                   <Col xl={12}>
                     <FieldArray name="document_requirements">
                       {({ remove, push }) => (
