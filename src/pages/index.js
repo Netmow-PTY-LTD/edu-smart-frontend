@@ -17,6 +17,15 @@ const HomePage = () => {
   const router = useRouter();
   const { query } = router;
 
+  // Extract email from the query params
+  const { email } = router.query;
+
+  const url = router.asPath;
+  // Use a regular expression to extract the email from the URL exactly as it appears
+  const emailMatch = url.match(/[?&]email=([^&]*)/);
+  const emails = emailMatch ? emailMatch[1] : '';
+  console.log(emails); 
+
   const [subscribe] = useSubscribeNewsLetterMutation();
 
   useEffect(() => {
@@ -25,7 +34,8 @@ const HomePage = () => {
         if (query.code && query.email) {
           const result = await subscribe({
             code: parseInt(query.code),
-            email: query.email,
+            //email: query.email,
+            email: emails,
           }).unwrap();
 
           if (result) {
@@ -40,7 +50,7 @@ const HomePage = () => {
     };
 
     subscribeFunction();
-  }, [query.code, query.email, subscribe, router]);
+  }, [query.code, query.email, subscribe, router, emails]);
 
   return (
     <MainLayout>
