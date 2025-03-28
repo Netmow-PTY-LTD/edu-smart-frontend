@@ -1,14 +1,18 @@
-import CountrySelectField from '@/components/common/formField/CountrySelectField';
+import CountrySelectFieldByIp from '@/components/common/formField/CountrySelectFieldByIp';
 import EmailField from '@/components/common/formField/EmailField';
 import ImageField from '@/components/common/formField/ImageField';
+import MobileNumberValid from '@/components/common/formField/MobileNumberValid';
 import NumberField from '@/components/common/formField/NumberField';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import TextArea from '@/components/common/formField/TextAreaField';
 import TextField from '@/components/common/formField/TextField';
 import DataObjectComponent, { brandlogo } from '@/utils/common/data';
+import axios from 'axios';
 import { Form, Formik } from 'formik';
 import Image from 'next/image';
-import React, { useMemo } from 'react';
+import { values } from 'pdf-lib';
+import React, { useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import countryList from 'react-select-country-list';
 import { toast } from 'react-toastify';
 import { Card, Col, Row } from 'reactstrap';
@@ -28,6 +32,34 @@ const UniversityForm = ({
 }) => {
   const options = useMemo(() => countryList().getData(), []);
   const { allowedFileTypes } = DataObjectComponent();
+
+  const [defaultCountry, setDefaultCountry] = useState('');
+
+  useEffect(() => {
+    const fetchUserCountry = async () => {
+      try {
+        const response = await axios.get('https://ipwho.is/');
+        if (response.data && response.data.country_code) {
+          const matchedCountry = options.find(
+            (country) => country.value === response.data.country_code
+          );
+
+          if (matchedCountry) {
+            setDefaultCountry(matchedCountry.value);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching IP-based country:', error);
+      }
+    };
+
+    fetchUserCountry();
+  }, [options]);
+
+  const updatedInitialValues = {
+    ...initialValues, // Spread existing initialValues
+    country: defaultCountry || initialValues.country || '', // Add or update the `country` field
+  };
 
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
@@ -89,7 +121,7 @@ const UniversityForm = ({
       <div className="">
         <Card className="p-4 p-md-5 add-university-card">
           <Formik
-            initialValues={initialValues}
+            initialValues={updatedInitialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
             enableReinitialize={true}
@@ -135,32 +167,6 @@ const UniversityForm = ({
                         label="MOE Registration Certification No *"
                       />
                     </div>
-                    {/* <h4>SSM File Upload</h4> */}
-                    {/* <div className="mb-5">
-                      {ssmFilePreview && (
-                        <div className="file-preview mb-3">
-                          <p>{ssmFilePreview}</p>
-                        </div>
-                      )}
-                      <FileUpload
-                        name="ssm_file_upload"
-                        label="Upload SSM File"
-                        handleFileChange={handleSsmFileChange}
-                      />
-                    </div> */}
-                    {/* <h4>Govt. File Upload</h4> */}
-                    {/* <div className="mb-4">
-                      {govtFilePreview && (
-                        <div className="file-preview mb-3">
-                          <p>{govtFilePreview}</p>
-                        </div>
-                      )}
-                      <FileUpload
-                        name="govt_file_upload"
-                        label="Upload Govt. File"
-                        handleFileChange={handleGovtFileChange}
-                      />
-                    </div> */}
                   </Col>
 
                   <Col lg={9}>
@@ -200,7 +206,7 @@ const UniversityForm = ({
                         <Col md={6} xl={6}>
                           <div className="">
                             {' '}
-                            <NumberField
+                            <MobileNumberValid
                               name="phone"
                               label="Contact Number *"
                             />
@@ -217,15 +223,16 @@ const UniversityForm = ({
                             <TextField name="website" label="Website *" />
                           </div>
                         </Col>
+
                         <Col md={6} xl={6}>
-                          <div className="">
-                            <CountrySelectField
-                              name="country"
-                              label="Country *"
-                              options={options}
-                            />
-                          </div>
+                          <CountrySelectFieldByIp
+                            name="country"
+                            label="Country *"
+                            options={options}
+                            defaultCountry={defaultCountry}
+                          />
                         </Col>
+
                         <Col md={4} xl={4}>
                           <div className="">
                             <TextField name="city" label="City *" />

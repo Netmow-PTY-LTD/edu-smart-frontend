@@ -13,7 +13,6 @@ const SinglePackageComponent = ({
   renewHandler,
   userPackagedata,
 }) => {
-  console.log(data);
   return (
     <>
       <div

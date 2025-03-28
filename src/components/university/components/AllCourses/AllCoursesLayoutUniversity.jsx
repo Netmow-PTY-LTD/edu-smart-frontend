@@ -4,6 +4,8 @@ import {
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
 import React, { useEffect, useState } from 'react';
+import DOMPurify from 'dompurify';
+
 import {
   Col,
   Pagination,
@@ -220,9 +222,15 @@ const AllCoursesLayoutUniversity = ({ university_id }) => {
                     />
                     <h3>{item.name}</h3>
                     <div className="fc-desc">
-                      <p className="text-wrap">
-                        {`${item.description.split(' ').slice(0, 20).join(' ')}...`}
-                      </p>
+                      <p
+                        className="text-wrap"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            DOMPurify.sanitize(item?.description)
+                              .replace(/<[^>]+>/g, '') // Remove any HTML tags
+                              .slice(0, 150) + '...', // Trim to 100 characters
+                        }}
+                      />
                     </div>
                     <Link
                       href={

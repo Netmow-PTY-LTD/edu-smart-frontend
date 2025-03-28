@@ -55,8 +55,11 @@ const AddUniversityFromSuperAdmin = () => {
   const validationSchema = Yup.object({
     name: Yup.string().required('Name is required'),
     logo: Yup.mixed().required('Logo is required'),
+    description: Yup.string().required('Description is required'),
     address_line_1: Yup.string().required('Address line 1 is required'),
+    // phone: Yup.string().required('Contact number is required'),
     phone: Yup.string().required('Contact number is required'),
+
     email: Yup.string()
       .email('Invalid email format')
       .required('Email is required'),

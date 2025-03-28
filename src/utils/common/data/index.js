@@ -6,6 +6,7 @@ import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Progress } from 'reactstrap';
+import DOMPurify from 'dompurify';
 
 export const userDummyImage = '/assets/images/users/user-dummy-img.jpg';
 export const teamDummyImage = '/assets/images/users/multi-user.jpg';
@@ -725,6 +726,10 @@ const DataObjectComponent = () => {
     ),
   };
 
+
+
+
+
   const studentsHeaders = [
     {
       title: 'Agent',
@@ -931,6 +936,15 @@ const DataObjectComponent = () => {
       ),
     },
     {
+      title: 'Date',
+      key: 'Date',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+      {item?.createdAt ? moment(item.createdAt).format("MM-DD-YYYY") : "-"}
+      </span>
+      ),
+    },
+        {
       title: 'Emgs',
       key: 'emgs_payment_status',
       render: (item) => (
@@ -944,9 +958,12 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
           >
-            {'View'}
-          </Link>
+            <i className="ri-receipt-fill"></i>
+            </Link>
 
         </>
       ),
@@ -965,9 +982,12 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
           >
-            {'View'}
-          </Link>
+            <i className="ri-receipt-fill"></i>
+            </Link>
 
         </>
       ),
@@ -990,10 +1010,14 @@ const DataObjectComponent = () => {
           target='_blank'
           href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
             className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          
           >
-            {'View'}
-          </Link>
-</>
+            <i className="ri-receipt-fill"></i>
+            </Link>
+            </>
 
           ) : (
             <span className="text-capitalize text-primary fw-medium">
@@ -1030,6 +1054,15 @@ const DataObjectComponent = () => {
           ) : (
             '-'
           )}
+        </span>
+      ),
+    },
+    {
+      title: 'Date',
+      key: 'createdAt',
+      render: (item) => (
+        <span className="fw-medium text-muted">
+          {item?.createdAt ? moment(item.createdAt).format("DD-MM-YYYY HH:mm") : "-"}
         </span>
       ),
     },
@@ -1358,8 +1391,8 @@ const DataObjectComponent = () => {
       render: (item) => (
         <p className="text-wrap me-5">
           {/* {`${item.description.split(' ').slice(0, 20).join(' ')}...`} */}
-          {`${item.description.slice(0, 100)}...`}
-        </p>
+          {`${DOMPurify.sanitize(item.description).replace(/<[^>]+>/g, '').slice(0, 100)}...`}
+          </p>
       ),
     },
     {
@@ -2349,19 +2382,6 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Agent Name',
-      key: 'agent_name',
-      render: (item) => (
-        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.student?.agent?._id
-            ? item?.student?.agent?.first_name +
-              ' ' +
-              item?.student?.agent?.last_name
-            : '-'}
-        </div>
-      ),
-    },
-    {
       title: 'Student Name',
       key: 'student_name',
       render: (item) => (
@@ -2441,19 +2461,7 @@ const DataObjectComponent = () => {
         </div>
       ),
     },
-    {
-      title: 'Agent Name',
-      key: 'agent_name',
-      render: (item) => (
-        <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
-          {item?.student
-            ? item?.student?.agent?.first_name +
-              ' ' +
-              item?.student?.agent?.last_name
-            : '-'}
-        </div>
-      ),
-    },
+
     {
       title: 'Student Name',
       key: 'student_name',

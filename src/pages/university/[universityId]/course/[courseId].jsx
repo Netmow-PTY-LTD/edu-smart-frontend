@@ -6,6 +6,8 @@ import {
 
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import * as DOMPurify from 'dompurify';
+
 import {
   Accordion,
   AccordionBody,
@@ -22,9 +24,13 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import CourseCard from '@/components/main/common/CourseCard';
 import moment from 'moment';
 import { toast, ToastContainer } from 'react-toastify';
+import CourseDescription from '@/components/university/Modal/CourseDescription';
 
 const SingleCoursePageInFrontSite = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const router = useRouter();
   const { universityId, courseId } = router.query;
   const { data, isLoading, error } = useGetSingleCourseQuery({
@@ -73,6 +79,70 @@ const SingleCoursePageInFrontSite = () => {
   } = courseDetail;
 
   const token = Cookies.get('token');
+
+  // const extractAndFormatH1Sections = (htmlString) => {
+  //   if (typeof window !== 'undefined') {
+  //     const parser = new DOMParser();
+  //     const doc = parser.parseFromString(htmlString, 'text/html');
+
+  //     // Find all <h1> elements
+  //     const allH1s = [...doc.querySelectorAll('h1')];
+
+  //     if (allH1s.length === 0) {
+  //       console.log('No <h1> elements found.');
+  //       return;
+  //     }
+
+  //     allH1s.forEach((h1, index) => {
+  //       console.log(`\n======= H1 #${index + 1} =======`);
+
+  //       // Add class "accordion" to the <h1> tag directly
+  //       h1.classList.add('accordion');
+  //       console.log('Modified H1 HTML:', h1.outerHTML);
+
+  //       // Get the closest wrapping div that contains this H1
+  //       let h1Container = h1.closest('div');
+  //       if (!h1Container) return;
+
+  //       // Find the next H1’s container to define boundaries
+  //       let nextH1Container = allH1s[index + 1]?.closest('div');
+
+  //       let extractedHTML = '';
+  //       let currentNode = h1Container.nextElementSibling;
+
+  //       // Capture all content until the next H1 container is found
+  //       while (currentNode && currentNode !== nextH1Container) {
+  //         extractedHTML += currentNode.outerHTML || '';
+  //         currentNode = currentNode.nextElementSibling;
+  //       }
+
+  //       // Wrap the extracted content inside <div class="panel">
+  //       let panelModified = extractedHTML
+  //         ? `<div class="panel">${extractedHTML}</div>`
+  //         : '<div class="panel">[No content found]</div>';
+
+  //       console.log('Modified Panel HTML:', panelModified);
+  //     });
+  //   }
+  // };
+
+  // Assuming 'description' contains your HTML content
+  const sanitizedContent = description;
+
+  // Use a regular expression to match the first <h1>...</h1> tag
+  const firstHeadingMatch = sanitizedContent?.match(/<h1.*?>.*?<\/h1>/i);
+
+  // Extract the first <h1> tag with its content
+  const firstHeading = firstHeadingMatch ? firstHeadingMatch[0] : '';
+
+  // Use a regular expression to match the content of the first <p>...</p> tag
+  const firstParagraphMatch = sanitizedContent?.match(/<p.*?>(.*?)<\/p>/i);
+
+  // Extract the text content of the first paragraph
+  const firstParagraph = firstParagraphMatch ? firstParagraphMatch[1] : '';
+
+  // Combine the first <h1> tag and the first 200 characters of the first paragraph
+  const shortText = firstHeading + firstParagraph.slice(0, 200);
 
   useEffect(() => {
     if (token) {
@@ -286,7 +356,40 @@ const SingleCoursePageInFrontSite = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="description-text">{description}</div>
+                    {/* <div className="description-text">{description}</div> */}
+
+                    <div className="description-text editor-container">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: isExpanded
+                            ? sanitizedContent
+                            : shortText + '...',
+                        }}
+                      />
+
+                      {/* Conditionally render "Show More" / "Show Less" */}
+                      {sanitizedContent?.length > 200 && !isExpanded && (
+                        <span
+                          className="text-primary"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => {
+                            // setIsExpanded(true);
+                            setIsModalOpen(true);
+                          }}
+                        >
+                          Show Full Description
+                        </span>
+                      )}
+                      {isExpanded && (
+                        <span
+                          className="text-primary"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => setIsExpanded(false)}
+                        >
+                          Show Less Description
+                        </span>
+                      )}
+                    </div>
 
                     <div className="d-flex gap-4 flex-wrap">
                       <a
@@ -314,40 +417,49 @@ const SingleCoursePageInFrontSite = () => {
                 <Col md={12} lg={6} className="mb-4">
                   <div className="course-requirements-main">
                     <Accordion flush open={open} toggle={toggle}>
-                      <AccordionItem>
-                        <AccordionHeader
-                          targetId="1"
-                          onClick={() => toggle('1')}
-                        >
-                          Entry Requirements
-                        </AccordionHeader>
-                        <AccordionBody accordionId="1">
-                          <ul>
-                            {entry_requirements?.map((req, index) => (
-                              <li key={index}>
-                                {index + 1}. {req}{' '}
-                              </li>
-                            ))}
-                          </ul>
-                        </AccordionBody>
-                      </AccordionItem>
-                      <AccordionItem>
-                        <AccordionHeader
-                          targetId="2"
-                          onClick={() => toggle('2')}
-                        >
-                          English Requirements
-                        </AccordionHeader>
-                        <AccordionBody accordionId="2">
-                          <ul>
-                            {english_requirements?.map((req, index) => (
-                              <li key={index}>
-                                {index + 1}. {req}{' '}
-                              </li>
-                            ))}
-                          </ul>
-                        </AccordionBody>
-                      </AccordionItem>
+                      {Array.isArray(entry_requirements) &&
+                        entry_requirements.some((req) => req.trim() !== '') && (
+                          <AccordionItem>
+                            <AccordionHeader
+                              targetId="1"
+                              onClick={() => toggle('1')}
+                            >
+                              Entry Requirements
+                            </AccordionHeader>
+                            <AccordionBody accordionId="1">
+                              <ul>
+                                {entry_requirements?.map((req, index) => (
+                                  <li key={index}>
+                                    {index + 1}. {req}{' '}
+                                  </li>
+                                ))}
+                              </ul>
+                            </AccordionBody>
+                          </AccordionItem>
+                        )}
+
+                      {Array.isArray(english_requirements) &&
+                        english_requirements.some(
+                          (req) => req.trim() !== ''
+                        ) && (
+                          <AccordionItem>
+                            <AccordionHeader
+                              targetId="2"
+                              onClick={() => toggle('2')}
+                            >
+                              English Requirements
+                            </AccordionHeader>
+                            <AccordionBody accordionId="2">
+                              <ul>
+                                {english_requirements?.map((req, index) => (
+                                  <li key={index}>
+                                    {index + 1}. {req}{' '}
+                                  </li>
+                                ))}
+                              </ul>
+                            </AccordionBody>
+                          </AccordionItem>
+                        )}
                     </Accordion>
                   </div>
                 </Col>
@@ -567,6 +679,14 @@ const SingleCoursePageInFrontSite = () => {
               </div>
             </section>
           )}
+
+          {
+            <CourseDescription
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              description={description}
+            />
+          }
         </Container>
       </section>
     </UniversityLayout>

@@ -19,6 +19,8 @@ import {
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import DOMPurify from 'dompurify';
+
 import {
   Accordion,
   AccordionBody,
@@ -33,12 +35,15 @@ import {
 } from 'reactstrap';
 
 import AppliedCourseForm from '../course-form/applied-course-form';
+import CourseDescription from '@/components/university/Modal/CourseDescription';
 
 const SingleUniversityCourse = () => {
   const router = useRouter();
   const [open, setOpen] = useState('1');
   const [step, setStep] = useState(1);
   const [buttonType, setButtonType] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const university_id = router.query.id;
   const course_id = router.query.courseId;
 
@@ -325,7 +330,7 @@ const SingleUniversityCourse = () => {
                                 ? getSingleCourseData?.data?.name
                                 : 'Bachelor in Accounting (Hons.)'}
                             </h2>
-                            <div className="course-description">
+                            {/* <div className="course-description">
                               <b className="text-secondary-alt fw-semibold fs-18">
                                 Course Description:
                               </b>
@@ -346,7 +351,8 @@ const SingleUniversityCourse = () => {
                         with others and the environment, which is introduced in
                         the Halatuju 4 Program Perakaunan published by Malaysian
                         Institute of Accountants.`}
-                            </div>
+                            </div> */}
+
                             <div className="d-flex gap-4 flex-wrap">
                               <div className="available-seats course-act">
                                 <svg
@@ -509,6 +515,40 @@ const SingleUniversityCourse = () => {
                                 Download Brochure
                               </button>
                             </div>
+
+                            <div className="course-description editor-container">
+                              <b className="text-secondary-alt fw-semibold fs-18">
+                                Course Description:
+                              </b>
+                              <br />
+                              <p>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: DOMPurify.sanitize(
+                                      getSingleCourseData?.data?.description.slice(
+                                        0,
+                                        500
+                                      ) +
+                                        (getSingleCourseData?.data?.description
+                                          .length > 500
+                                          ? ' ...'
+                                          : '') || ''
+                                    ),
+                                  }}
+                                />{' '}
+                                {getSingleCourseData?.data?.description.length >
+                                  500 && (
+                                  <span
+                                    className="text-primary"
+                                    style={{ cursor: 'pointer' }}
+                                    onClick={() => setIsModalOpen(true)}
+                                  >
+                                    Show Full Description
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+
                             <div className="document-requirements">
                               <h3>Required Documents for this course:</h3>
                               {getSingleCourseData?.data?.document_requirements
@@ -746,13 +786,15 @@ const SingleUniversityCourse = () => {
                           (checkApplicationIsValidError &&
                             checkApplicationIsValidError.data.message ===
                               'Application not found') ? (
-                            <div className="d-flex justify-content-center">
-                              <button
-                                onClick={() => setStep(step + 1)}
-                                className="button py-3 px-5"
-                              >
-                                Continue For Apply
-                              </button>
+                            <div className="d-flex justify-content-center student-select">
+                              <div className="student-select-inner">
+                                <button
+                                  onClick={() => setStep(step + 1)}
+                                  className="button py-3 px-5"
+                                >
+                                  Continue For Apply
+                                </button>
+                              </div>
                             </div>
                           ) : (
                             ''
@@ -778,6 +820,14 @@ const SingleUniversityCourse = () => {
                 )}
               </>
             )}
+
+            {
+              <CourseDescription
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                description={getSingleCourseData?.data?.description}
+              />
+            }
           </Container>
         </div>
       </div>
