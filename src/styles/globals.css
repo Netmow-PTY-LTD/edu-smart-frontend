@@ -10680,3 +10680,7 @@ padding-left: 70px;
   color: white;
   border-bottom: 2px solid #007bff;
 }
+
+.editor-container svg {
+  width: 10px;
+}

@@ -172,10 +172,21 @@ const FormikTinyMCE = ({ label, apiKey, ...props }) => {
             // Use paste_postprocess to remove all classes from pasted content
             paste_postprocess: (plugin, args) => {
               const pastedContent = args.node;
-              // Find and remove all classes from the pasted content
               Array.from(pastedContent.getElementsByTagName('*')).forEach(
                 (node) => {
+                  // Remove unwanted attributes
                   node.removeAttribute('class');
+                  node.removeAttribute('style');
+                  Array.from(node.attributes).forEach((attr) => {
+                    if (attr.name.startsWith('data-')) {
+                      node.removeAttribute(attr.name);
+                    }
+                  });
+
+                  // Remove unwanted elements (SVG)
+                  if (node.tagName.toLowerCase() === 'svg') {
+                    node.remove();
+                  }
                 }
               );
             },
