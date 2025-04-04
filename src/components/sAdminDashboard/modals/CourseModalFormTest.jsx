@@ -423,6 +423,7 @@ const CourseModalFormTest = ({
                       apiKey="bs6v7unze8z31f7xx3kcabba4eep30wlsawibimdxeiftycp"
                     />
                   </Col>
+
                   {/* 
                   <Col xl={12}>
                     <Nav tabs>
