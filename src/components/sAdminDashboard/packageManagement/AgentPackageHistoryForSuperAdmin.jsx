@@ -54,7 +54,7 @@ const AgentPackageHistoryForSuperAdmin = ({ agent_id }) => {
   );
 
   const filteredData =
-    agentPackageData.length > 0
+    agentPackageData?.length > 0
       ? agentPackageData?.filter((item) => deepSearch(item, searchTerm))
       : [];
 
