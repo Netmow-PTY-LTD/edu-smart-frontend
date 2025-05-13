@@ -311,6 +311,12 @@ const CreateAgentModal = ({
     state: Yup.string().required('State is required'),
     zip: Yup.string().required('Zip code is required'),
     country: Yup.string().required('Country is required'),
+    image: Yup.mixed()
+      .required('Profile image is required')
+      .test('fileType', 'Only image files are allowed', (value) => {
+        if (!value) return false;
+        return value.type.startsWith('image/');
+      }),
   });
 
   const roleOptions = [{ label: 'Agent', value: 'agent' }];
@@ -337,9 +343,24 @@ const CreateAgentModal = ({
         country: values.country?.label || values.country,
       };
 
+      // Append all fields except image
       Object.entries(payload).forEach(([key, value]) => {
-        finalData.append(key, value);
+        if (key !== 'image') {
+          finalData.append(key, value);
+        }
       });
+
+      // ✅ Append image as profile_image if it exists
+      if (values.image) {
+        finalData.append('profile_image', values.image);
+      }
+
+      // Optional: Debugging the final data
+      for (let [key, value] of finalData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      // API call
       const result = await addStaffMemberInSuperAdmin(finalData).unwrap();
       toast.success(result?.message || 'Agent created successfully');
       getAllStaffMemberRefetch?.();
