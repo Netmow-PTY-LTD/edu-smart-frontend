@@ -1078,6 +1078,27 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+{
+  title: 'status',
+  key: 'status',
+  render: (item) => (
+    <span className="text-capitalize">
+      {item?.status ? (
+        <span
+          className={`border rounded-4 px-4 py-2  fw-medium text-capitalize ${
+            item.status === 'active'
+              ? 'bg-third-color text-primary' // Style for active status
+              : 'bg-fourth-color text-white'  // Style for inactive status
+          }`}
+        >
+          {item.status}
+        </span>
+      ) : (
+        '-'
+      )}
+    </span>
+  ),
+}
   ];
 
   const couponHeaders = [

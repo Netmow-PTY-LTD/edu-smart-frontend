@@ -36,19 +36,8 @@ const AllAgentsPage = () => {
     allAgentsData?.data?.length > 0 &&
     allAgentsData?.data.filter(
       (item) =>
-        item?.status === 'active' && // Filter by status 'active'
-        (item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-
-  // Filter data for search option
-  const isFilteredInactiveData =
-    allAgentsData?.data?.length > 0 &&
-    allAgentsData?.data.filter(
-      (item) =>
-        item?.status !== 'active' && // Filter by status 'active'
-        (item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+        item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   return (
@@ -59,71 +48,39 @@ const AllAgentsPage = () => {
           {allagentsIsloading ? (
             <LoaderSpiner />
           ) : (
-            <>
-              <div className="h-100">
-                <Card>
-                  <CardHeader className="d-flex justify-content-between align-items-center">
-                    <button
-                      onClick={() => setAddModalIsOpen(true)}
-                      className="button px-3 py-2"
-                    >
-                      Add New Agent
-                    </button>
-                    <h2>All Active Agents</h2>
+            <div className="h-100">
+              <Card>
+                <CardHeader className="d-flex justify-content-between align-items-center">
+                  <button
+                    onClick={() => setAddModalIsOpen(true)}
+                    className="button px-3 py-2"
+                  >
+                    Add New Agent
+                  </button>
+                  <h2>All Agents</h2>
 
-                    <SearchComponent
-                      searchTerm={searchTerm}
-                      handleSearchChange={handleSearchChange}
-                    />
-                  </CardHeader>
-                  <CardBody className="p-4">
-                    <CommonTableComponent
-                      headers={[
-                        agentNameAndImageHeaderDataForSuperAdmin,
-                        ...agentsHeaders,
-                      ]}
-                      data={isFilteredData ? isFilteredData : []}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
-                      perPageData={perPageData}
-                      searchTerm={searchTerm}
-                      handleSearchChange={handleSearchChange}
-                      emptyMessage="No Data found yet."
-                    />
-                  </CardBody>
-                </Card>
-              </div>
-
-              <div className="h-100">
-                <Card>
-                  <CardHeader className="d-flex justify-content-between align-items-center">
-                    <h2>All Inactive Agents</h2>
-
-                    <SearchComponent
-                      searchTerm={searchTerm}
-                      handleSearchChange={handleSearchChange}
-                    />
-                  </CardHeader>
-                  <CardBody className="p-4">
-                    <CommonTableComponent
-                      headers={[
-                        agentNameAndImageHeaderDataForSuperAdmin,
-                        ...agentsHeaders,
-                      ]}
-                      data={
-                        isFilteredInactiveData ? isFilteredInactiveData : []
-                      }
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
-                      perPageData={perPageData}
-                      searchTerm={searchTerm}
-                      handleSearchChange={handleSearchChange}
-                      emptyMessage="No Data found yet."
-                    />
-                  </CardBody>
-                </Card>
-              </div>
-            </>
+                  <SearchComponent
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                  />
+                </CardHeader>
+                <CardBody className="p-4">
+                  <CommonTableComponent
+                    headers={[
+                      agentNameAndImageHeaderDataForSuperAdmin,
+                      ...agentsHeaders,
+                    ]}
+                    data={isFilteredData ? isFilteredData : []}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    perPageData={perPageData}
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                    emptyMessage="No Data found yet."
+                  />
+                </CardBody>
+              </Card>
+            </div>
           )}
         </div>
       </div>
