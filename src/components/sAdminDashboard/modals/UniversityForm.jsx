@@ -1,3 +1,4 @@
+import CountrySelectField from '@/components/common/formField/CountrySelectField';
 import CountrySelectFieldByIp from '@/components/common/formField/CountrySelectFieldByIp';
 import EmailField from '@/components/common/formField/EmailField';
 import ImageField from '@/components/common/formField/ImageField';
@@ -58,7 +59,7 @@ const UniversityForm = ({
 
   const updatedInitialValues = {
     ...initialValues, // Spread existing initialValues
-    country: defaultCountry || initialValues.country || '', // Add or update the `country` field
+    country: initialValues.country || '', // Add or update the `country` field
   };
 
   const handleImageChange = (e, setFieldValue, fieldName) => {
@@ -121,7 +122,7 @@ const UniversityForm = ({
       <div className="">
         <Card className="p-4 p-md-5 add-university-card">
           <Formik
-            initialValues={updatedInitialValues}
+            initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
             enableReinitialize={true}
@@ -225,7 +226,7 @@ const UniversityForm = ({
                         </Col>
 
                         <Col md={6} xl={6}>
-                          <CountrySelectFieldByIp
+                          <CountrySelectField
                             name="country"
                             label="Country *"
                             options={options}

@@ -19,10 +19,33 @@ export default function HeroSectionSlider() {
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [selectedCourses, setSelectedCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [universities, setUniversities] = useState(null);
 
   const router = useRouter();
 
   const { data: allCourses } = useGetAllCoursesQuery();
+
+  // Get Country based university
+
+  const handleCountryChange = (selectedOption) => {
+    if (!selectedOption) return;
+
+    const selectedCountry = selectedOption.value;
+
+    // Filter universityData based on selected country
+    const filteredUniversities = universityData?.data?.filter(
+      (item) => item.country === selectedCountry
+    );
+
+    console.log(
+      'Filtered Universities for Country:',
+      selectedCountry,
+      filteredUniversities
+    );
+
+    // You can now update local state, formik values, or trigger other logic
+    setUniversities(filteredUniversities); // Example if storing to state
+  };
 
   // Get courses based on selected university
 
@@ -63,10 +86,11 @@ export default function HeroSectionSlider() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedUniversity && !selectedCourse) {
-      toast.error('Please select a university and university course');
+    if (!universities) {
+      toast.error('Please select a country');
       return;
     }
+
     if (!selectedUniversity) {
       toast.error('Please select a university');
       return;
@@ -77,7 +101,7 @@ export default function HeroSectionSlider() {
       return;
     }
 
-    // If both values are present, navigate to the course page
+    // ✅ All required fields are present
     router.push(`/university/${selectedUniversity}/course/${selectedCourse}`);
   };
 
@@ -215,21 +239,43 @@ export default function HeroSectionSlider() {
             <form onSubmit={handleSubmit}>
               <div className="form-area">
                 <Row>
-                  <Col lg={5}>
+                  <Col lg={3}>
+                    <div className="form-group mb-3">
+                      <label htmlFor="">Select Country</label>
+                      <Select
+                        placeholder="Select Country"
+                        styles={customStyles}
+                        onChange={handleCountryChange}
+                        options={[
+                          ...new Map(
+                            universityData?.data?.map((item) => [
+                              item.country,
+                              {
+                                value: item.country,
+                                label: item.country,
+                              },
+                            ])
+                          ).values(),
+                        ]}
+                      />
+                    </div>
+                  </Col>
+                  <Col lg={3}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select University</label>
                       <Select
                         placeholder="Select University "
                         styles={customStyles}
                         onChange={handleUniversityChange}
-                        options={universityData?.data?.map((item) => ({
+                        options={universities?.map((item) => ({
                           value: item._id,
                           label: item.name,
                         }))}
+                        isDisabled={!universities}
                       />
                     </div>
                   </Col>
-                  <Col lg={5}>
+                  <Col lg={3}>
                     <div className="form-group mb-3">
                       <label htmlFor="">Select Course</label>
                       <Select
@@ -244,8 +290,7 @@ export default function HeroSectionSlider() {
                       />
                     </div>
                   </Col>
-
-                  <Col lg={2} className="d-flex align-items-end">
+                  <Col lg={3} className="d-flex align-items-end">
                     <div className="mb-3 w-100">
                       <button
                         type="submit"
