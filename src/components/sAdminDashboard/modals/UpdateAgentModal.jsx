@@ -13,8 +13,7 @@ import countryList from 'react-select-country-list';
 import { brandlogo } from '@/utils/common/data';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-// ✅ import your API call
-import { useAddStaffMemberInSuperAdminMutation } from '@/slice/services/super admin/staffMemberService';
+import { useUpdateStaffMemberInSuperAdminMutation } from '@/slice/services/super admin/staffMemberService';
 
 import {
   Card,
@@ -26,78 +25,128 @@ import {
   Row,
 } from 'reactstrap';
 import SubmitButtonCreateAgent from '@/components/common/formField/SubmitButtonCreateAgent';
+import SelectField from '@/components/common/formField/SelectField';
 
-const CreateAgentModal = ({
+const UpdateAgentModal = ({
   openModal,
   closeModal,
   isLoading,
   getAllStaffMemberRefetch,
+  agentDetails,
 }) => {
   const options = useMemo(() => countryList().getData(), []);
+
   const [imagePreview, setImagePreview] = useState('');
-  const [countryIp, setCountryIp] = useState('');
-  const [addStaffMemberInSuperAdmin] = useAddStaffMemberInSuperAdminMutation();
+  const [
+    updateStaffMemberInSuperAdmin,
+    {
+      data: updateStaffMemberData,
+      error: updateStaffMemberError,
+      isLoading: updateStaffMemberIsLoading,
+    },
+  ] = useUpdateStaffMemberInSuperAdminMutation();
+  const dataDetails = agentDetails?.data;
 
-  useEffect(() => {
-    const fetchCountry = async () => {
-      try {
-        const res = await fetch('https://ipwho.is/');
-        const data = await res.json();
-        if (data && data.success && data.country) {
-          setCountryIp(data.country); // ✅ Save country name to state
-        } else {
-          console.warn(
-            'Failed to get country from IP:',
-            data.message || 'Unknown error'
-          );
-        }
-      } catch (error) {
-        console.error('IP geolocation fetch error:', error);
-      }
-    };
+  const statusOptions = [
+    { label: 'Active', value: 'active' },
+    { label: 'Inactive', value: 'inactive' },
+  ];
 
-    fetchCountry();
-  }, []);
+  console.log('options', options);
+  console.log('statusOptions', statusOptions);
 
   const initialValues = {
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
+    first_name: dataDetails?.first_name || '',
+    last_name: dataDetails?.last_name || '',
+    email: dataDetails?.email || '',
+    phone: dataDetails?.phone || '',
     password: '',
     confirm_password: '',
-    address: '',
+    address: dataDetails?.address_line_1 || '',
     select_role: { label: 'Agent', value: 'agent' },
-    city: '',
-    state: '',
-    zip: '',
-    country: countryIp || '',
+    status:
+      statusOptions.find((opt) => opt.value === dataDetails?.status) ||
+      statusOptions[0], // default to Active
+    city: dataDetails?.city || '',
+    state: dataDetails?.state || '',
+    zip: dataDetails?.zip || '',
+    // Pre-select country using the correct value or label
+    country: dataDetails?.country || '',
     image: null,
   };
+
+  useEffect(() => {
+    if (dataDetails?.profile_image?.url) {
+      setImagePreview(dataDetails.profile_image.url); // Use the URL from the response
+    }
+  }, [dataDetails]);
 
   const validationSchema = Yup.object().shape({
     first_name: Yup.string().required('First name is required'),
     last_name: Yup.string().required('Last name is required'),
-    email: Yup.string().email('Invalid email').required('Email is required'),
     phone: Yup.string().required('Contact number is required'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(6, 'Password must be at least 6 characters'),
-    confirm_password: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Please confirm your password'),
     address: Yup.string().required('Address is required'),
     select_role: Yup.object().required('Select role is required'),
     city: Yup.string().required('City is required'),
     state: Yup.string().required('State is required'),
     zip: Yup.string().required('Zip code is required'),
     country: Yup.string().required('Country is required'),
-    image: Yup.mixed()
-      .required('Profile image is required')
-      .test('fileType', 'Only image files are allowed', (value) => {
-        if (!value) return false;
-        return value.type.startsWith('image/');
-      }),
+    image: Yup.mixed().nullable(),
+
+    password: Yup.string()
+      .nullable()
+      .transform((val) => (val === '' ? null : val))
+      .min(6, 'Password must be at least 6 characters')
+      .test(
+        'confirm-password-required-if-password-filled',
+        'Please confirm your password',
+        function (value) {
+          const { confirm_password } = this.parent;
+
+          if (value && !confirm_password) {
+            return this.createError({
+              message: 'Please Re-Enter your password Now ->',
+            });
+          }
+
+          return true;
+        }
+      ),
+
+    confirm_password: Yup.string()
+      .nullable()
+      .transform((val) => (val === '' ? null : val))
+      .test(
+        'passwords-validation',
+        'Invalid password configuration',
+        function (value) {
+          const { password } = this.parent;
+
+          if (!password && !value) return true;
+
+          if (!password && value) {
+            return this.createError({ message: 'Password is required' });
+          }
+
+          if (password && !value) {
+            return this.createError({
+              message: 'Please confirm your password',
+            });
+          }
+
+          if (password && password.length < 6) {
+            return this.createError({
+              message: 'Password must be at least 6 characters',
+            });
+          }
+
+          if (password !== value) {
+            return this.createError({ message: 'Passwords must match' });
+          }
+
+          return true;
+        }
+      ),
   });
 
   const roleOptions = [{ label: 'Agent', value: 'agent' }];
@@ -111,34 +160,41 @@ const CreateAgentModal = ({
     }
   };
 
-  // ✅ Handle form submission with API call
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
+
     try {
       const finalData = new FormData();
 
-      // Convert select_role and country fields correctly
       const payload = {
         ...values,
+        status: values.status?.value,
         select_role: values.select_role?.value,
         country: values.country?.label || values.country,
+        user_id: String(dataDetails._id), // Ensure _id is passed as a string
       };
 
-      // Append all fields except image
+      // Omit password fields if not filled
+      if (!payload.password) {
+        delete payload.password;
+        delete payload.confirm_password;
+      }
+
       Object.entries(payload).forEach(([key, value]) => {
         if (key !== 'image') {
           finalData.append(key, value);
         }
       });
 
-      // ✅ Append image as profile_image if it exists
+      // Append image if it exists
       if (values.image) {
         finalData.append('image', values.image);
       }
 
-      // API call
-      const result = await addStaffMemberInSuperAdmin(finalData).unwrap();
-      toast.success(result?.message || 'Agent created successfully');
+      finalData.append('_id', dataDetails._id); // required for update
+
+      const result = await updateStaffMemberInSuperAdmin(finalData).unwrap();
+      toast.success(result?.message || 'Agent updated successfully');
       getAllStaffMemberRefetch?.();
       setImagePreview(null);
       closeModal();
@@ -146,7 +202,7 @@ const CreateAgentModal = ({
       const errorMessage =
         error?.data?.error?._message ||
         error?.data?.message ||
-        'Failed to create agent';
+        'Failed to update agent';
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);
@@ -155,7 +211,7 @@ const CreateAgentModal = ({
 
   return (
     <Modal isOpen={openModal} toggle={closeModal} centered size="xl">
-      <ModalHeader toggle={closeModal}>Add New Agent</ModalHeader>
+      <ModalHeader toggle={closeModal}>Update Agent Details</ModalHeader>
       <ModalBody>
         {isLoading ? (
           <LoaderSpiner />
@@ -211,7 +267,11 @@ const CreateAgentModal = ({
                             <TextField name="last_name" label="Last Name" />
                           </Col>
                           <Col md={6}>
-                            <EmailField name="email" label="Email" />
+                            <EmailField
+                              name="email"
+                              label="Email"
+                              readOnly={true}
+                            />
                           </Col>
                           <Col md={6}>
                             <NumberField name="phone" label="Contact Number" />
@@ -226,7 +286,11 @@ const CreateAgentModal = ({
                             />
                           </Col>
                           <Col md={6}>
-                            <TextField name="address" label="Address" />
+                            <TextField
+                              name="address"
+                              label="Address"
+                              isDisabled
+                            />
                           </Col>
                           <Col md={6}>
                             <SingleSelectField
@@ -252,10 +316,17 @@ const CreateAgentModal = ({
                               options={options}
                             />
                           </Col>
+                          <Col md={6}>
+                            <SelectField
+                              name="status"
+                              label="Status"
+                              options={statusOptions}
+                            />
+                          </Col>
                           <Col md={12}>
                             <div className="my-4">
                               <SubmitButtonCreateAgent>
-                                Create Agent
+                                Update Agent
                               </SubmitButtonCreateAgent>
                             </div>
                           </Col>
@@ -273,4 +344,4 @@ const CreateAgentModal = ({
   );
 };
 
-export default CreateAgentModal;
+export default UpdateAgentModal;

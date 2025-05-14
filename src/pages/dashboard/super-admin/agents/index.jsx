@@ -18,13 +18,15 @@ const AllAgentsPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
-  const [selectedAgent, setSelectedAgent] = useState(null);
 
   const { agentNameAndImageHeaderDataForSuperAdmin, agentsHeaders = [] } =
     DataObjectComponent();
 
-  const { data: allAgentsData, isLoading: allagentsIsloading } =
-    useGetAllAgentQuery();
+  const {
+    data: allAgentsData,
+    isLoading: allagentsIsloading,
+    refetch,
+  } = useGetAllAgentQuery();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -34,8 +36,19 @@ const AllAgentsPage = () => {
     allAgentsData?.data?.length > 0 &&
     allAgentsData?.data.filter(
       (item) =>
-        item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase())
+        item?.status === 'active' && // Filter by status 'active'
+        (item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+  // Filter data for search option
+  const isFilteredInactiveData =
+    allAgentsData?.data?.length > 0 &&
+    allAgentsData?.data.filter(
+      (item) =>
+        item?.status !== 'active' && // Filter by status 'active'
+        (item?.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item?.last_name?.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
   return (
@@ -46,45 +59,80 @@ const AllAgentsPage = () => {
           {allagentsIsloading ? (
             <LoaderSpiner />
           ) : (
-            <div className="h-100">
-              <Card>
-                <CardHeader className="d-flex justify-content-between align-items-center">
-                  <h2>All Agents</h2>
-                  <button
-                    onClick={() => setAddModalIsOpen(true)}
-                    className="button px-3 py-2"
-                  >
-                    Add New Agent
-                  </button>
-                  <SearchComponent
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                  />
-                </CardHeader>
-                <CardBody className="p-4">
-                  <CommonTableComponent
-                    headers={[
-                      agentNameAndImageHeaderDataForSuperAdmin,
-                      ...agentsHeaders,
-                    ]}
-                    data={isFilteredData ? isFilteredData : []}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    perPageData={perPageData}
-                    searchTerm={searchTerm}
-                    handleSearchChange={handleSearchChange}
-                    emptyMessage="No Data found yet."
-                  />
-                </CardBody>
-              </Card>
-            </div>
+            <>
+              <div className="h-100">
+                <Card>
+                  <CardHeader className="d-flex justify-content-between align-items-center">
+                    <button
+                      onClick={() => setAddModalIsOpen(true)}
+                      className="button px-3 py-2"
+                    >
+                      Add New Agent
+                    </button>
+                    <h2>All Active Agents</h2>
+
+                    <SearchComponent
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                    />
+                  </CardHeader>
+                  <CardBody className="p-4">
+                    <CommonTableComponent
+                      headers={[
+                        agentNameAndImageHeaderDataForSuperAdmin,
+                        ...agentsHeaders,
+                      ]}
+                      data={isFilteredData ? isFilteredData : []}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      perPageData={perPageData}
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                      emptyMessage="No Data found yet."
+                    />
+                  </CardBody>
+                </Card>
+              </div>
+
+              <div className="h-100">
+                <Card>
+                  <CardHeader className="d-flex justify-content-between align-items-center">
+                    <h2>All Inactive Agents</h2>
+
+                    <SearchComponent
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                    />
+                  </CardHeader>
+                  <CardBody className="p-4">
+                    <CommonTableComponent
+                      headers={[
+                        agentNameAndImageHeaderDataForSuperAdmin,
+                        ...agentsHeaders,
+                      ]}
+                      data={
+                        isFilteredInactiveData ? isFilteredInactiveData : []
+                      }
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      perPageData={perPageData}
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                      emptyMessage="No Data found yet."
+                    />
+                  </CardBody>
+                </Card>
+              </div>
+            </>
           )}
         </div>
       </div>
       <CreateAgentModal
         openModal={addModalIsOpen}
-        closeModal={() => setAddModalIsOpen(false)}
-        agentDetails={selectedAgent} // pass null for create
+        closeModal={() => {
+          setAddModalIsOpen(false);
+          refetch(); // Refetch agents when modal closes
+        }}
       />
     </Layout>
   );
