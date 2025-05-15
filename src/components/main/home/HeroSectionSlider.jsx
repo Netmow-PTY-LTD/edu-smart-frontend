@@ -31,16 +31,12 @@ export default function HeroSectionSlider() {
     if (!selectedOption) return;
 
     const selectedCountry = selectedOption.value;
+    setSelectedUniversity(null);
+    setSelectedCourse(null);
 
     // Filter universityData based on selected country
     const filteredUniversities = universityData?.data?.filter(
       (item) => item.country === selectedCountry
-    );
-
-    console.log(
-      'Filtered Universities for Country:',
-      selectedCountry,
-      filteredUniversities
     );
 
     // You can now update local state, formik values, or trigger other logic
