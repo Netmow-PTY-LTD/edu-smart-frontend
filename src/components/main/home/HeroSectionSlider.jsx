@@ -27,6 +27,15 @@ export default function HeroSectionSlider() {
 
   const { data: allCourses } = useGetAllCoursesQuery();
 
+  const seen = {};
+  const countries = [];
+  universityData?.data?.forEach((item) => {
+    if (!seen[item.country]) {
+      seen[item.country] = true;
+      countries.push({ value: item.country, label: item.country });
+    }
+  });
+
   // Get Country based university
 
   const handleCountryChange = (selectedOption) => {
@@ -244,17 +253,18 @@ export default function HeroSectionSlider() {
                         placeholder="Select Country"
                         styles={customStyles}
                         onChange={handleCountryChange}
-                        options={[
-                          ...new Map(
-                            universityData?.data?.map((item) => [
-                              item.country,
-                              {
-                                value: item.country,
-                                label: item.country,
-                              },
-                            ])
-                          ).values(),
-                        ]}
+                        options={countries}
+                        // options={[
+                        //   ...new Map(
+                        //     universityData?.data?.map((item) => [
+                        //       item.country,
+                        //       {
+                        //         value: item.country,
+                        //         label: item.country,
+                        //       },
+                        //     ])
+                        //   ).values(),
+                        // ]}
                       />
                     </div>
                   </Col>
