@@ -73,8 +73,17 @@ const EditStudentForAgent = () => {
           country: student?.country || '',
           profile_image: profile_image,
         });
-        const imageUrl = URL.createObjectURL(profile_image);
-        setImagePreview(imageUrl);
+        // const imageUrl = URL.createObjectURL(profile_image);
+        // setImagePreview(imageUrl);
+
+        if (profile_image) {
+          console.log('profile_image', profile_image);
+          const imageUrl = URL.createObjectURL(profile_image);
+          setImagePreview(imageUrl);
+        } else {
+          console.warn('No profile image selected');
+          setImagePreview(null);
+        }
       }
       setIsEditLoading(false);
     };

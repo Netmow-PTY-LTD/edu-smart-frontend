@@ -2,11 +2,13 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import CreateAgentModal from '@/components/sAdminDashboard/modals/CreateAgentModal';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import DataObjectComponent from '@/utils/common/data';
 
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
@@ -15,12 +17,16 @@ const AllAgentsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
 
   const { agentNameAndImageHeaderDataForSuperAdmin, agentsHeaders = [] } =
     DataObjectComponent();
 
-  const { data: allAgentsData, isLoading: allagentsIsloading } =
-    useGetAllAgentQuery();
+  const {
+    data: allAgentsData,
+    isLoading: allagentsIsloading,
+    refetch,
+  } = useGetAllAgentQuery();
 
   // search input change function
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -36,6 +42,7 @@ const AllAgentsPage = () => {
 
   return (
     <Layout>
+      <ToastContainer></ToastContainer>
       <div className="page-content">
         <div className="container-fluid">
           {allagentsIsloading ? (
@@ -44,7 +51,14 @@ const AllAgentsPage = () => {
             <div className="h-100">
               <Card>
                 <CardHeader className="d-flex justify-content-between align-items-center">
+                  <button
+                    onClick={() => setAddModalIsOpen(true)}
+                    className="button px-3 py-2"
+                  >
+                    Add New Agent
+                  </button>
                   <h2>All Agents</h2>
+
                   <SearchComponent
                     searchTerm={searchTerm}
                     handleSearchChange={handleSearchChange}
@@ -70,6 +84,13 @@ const AllAgentsPage = () => {
           )}
         </div>
       </div>
+      <CreateAgentModal
+        openModal={addModalIsOpen}
+        closeModal={() => {
+          setAddModalIsOpen(false);
+          refetch(); // Refetch agents when modal closes
+        }}
+      />
     </Layout>
   );
 };

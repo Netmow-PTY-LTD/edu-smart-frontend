@@ -8,6 +8,7 @@ import Layout from '@/components/layout';
 import AgentTotalPaidAmountForSuperAdmin from '@/components/sAdminDashboard/earning/AgentTotalPaidAmountForSuperAdmin';
 import TotalAgentPayoutInAgentForSuperAdmin from '@/components/sAdminDashboard/earning/AgentTotalPaidAmountForSuperAdmin';
 import AgentTotalPendingAmountForSuperAdmin from '@/components/sAdminDashboard/earning/AgentTotalPendingAmountForSuperAdmin';
+import UpdateAgentModal from '@/components/sAdminDashboard/modals/UpdateAgentModal';
 import AgentFamilyTripForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentFamilyTripForSuperAdmin';
 import AgentPackageHistoryForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentPackageHistoryForSuperAdmin';
 import AgentYearlyBonousForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentYearlyBonousForSuperAdmin';
@@ -45,13 +46,14 @@ const SingleAgentInSuperAdminDashboard = () => {
   const perPageData = 9;
   const [activeTab, setActiveTab] = useState('1');
   const agent_id = router.query.agentId;
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
 
   const customData = useCustomData();
 
   const {
     studentImageAndNameHeaderDataForSuperAdmin,
     agentEarnigsHeaders,
-    studentsHeaders,
+    studentsHeaders = [],
   } = DataObjectComponent();
 
   const {
@@ -288,6 +290,15 @@ const SingleAgentInSuperAdminDashboard = () => {
                             </span>
                           </NavLink>
                         </NavItem>
+                        <button
+                          className="button p-2 ms-auto"
+                          onClick={() => {
+                            setAddModalIsOpen(true);
+                          }}
+                        >
+                          <i className="ri-edit-box-line me-1"></i>
+                          Edit Profile
+                        </button>
                       </>
                     )}
                   </Nav>
@@ -414,6 +425,15 @@ const SingleAgentInSuperAdminDashboard = () => {
           )}
         </div>
       </div>
+
+      <UpdateAgentModal
+        openModal={addModalIsOpen}
+        closeModal={() => {
+          setAddModalIsOpen(false);
+          getSingleAgentRefetch(); // This ensures fresh data is loaded after closing
+        }}
+        agentDetails={getSingleAgent}
+      />
     </Layout>
   );
 };
