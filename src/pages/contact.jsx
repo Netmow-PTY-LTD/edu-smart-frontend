@@ -49,17 +49,18 @@ export default function Contact() {
             <Col lg={6}>
               <div className="contact-text-content">
                 <h2>Get In Touch </h2>
-                <div className="contact-text">
-                  You are welcome to reach out to us using the form provided on
-                  our website for a quick and convenient way to get in touch.
-                  Alternatively, you can send us an email if you prefer a more
-                  direct and detailed mode of communication. And if you're
-                  someone who still enjoys traditional methods, feel free to
-                  give us a call—we’re happy to assist you over the phone as
-                  well! Whatever your preferred communication method, we’re here
-                  to help and ensure that your questions or concerns are
-                  addressed promptly and efficiently.
-                </div>
+                <div
+                  className="contact-text"
+                  dangerouslySetInnerHTML={{
+                    __html: `
+      You're welcome to reach out to us using the form on our website for a quick and convenient way to get in touch.
+      Alternatively, you can send us an email if you prefer a more direct and detailed method of communication.
+      If you enjoy traditional methods, feel free to give us a call—we’re happy to assist you over the phone as well.<br /><br />
+      Whatever your preferred method of communication, we're here to help and ensure your questions or concerns are addressed promptly and efficiently.
+    `,
+                  }}
+                />
+
                 <div className="contact-info-list">
                   <div className="contact-info">
                     <div className="icon">
@@ -75,11 +76,13 @@ export default function Contact() {
                         ></path>
                       </svg>
                     </div>
-                    <span>
-                      Parklane OUG Block B1 Block B2, Jalan 1/152, Taman
-                      Perindustrian Oug, 58200 Kuala Lumpur, Wilayah Persekutuan
-                      Kuala Lumpur
-                    </span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: `Parklane OUG Block B1 Block B2, Jalan 1/152,<br />
+             Taman Perindustrian Oug, 58200 Kuala Lumpur,<br />
+             Wilayah Persekutuan Kuala Lumpur`,
+                      }}
+                    />
                   </div>
 
                   <div className="contact-info">
@@ -96,7 +99,7 @@ export default function Contact() {
                         ></path>
                       </svg>
                     </div>
-                    <span>0123456789</span>
+                    <span>601136704887</span>
                   </div>
 
                   <div className="contact-info">
@@ -113,7 +116,7 @@ export default function Contact() {
                         ></path>
                       </svg>
                     </div>
-                    <span>info@edusmart.com</span>
+                    <span>info@edusmart.study</span>
                   </div>
                 </div>
               </div>

@@ -39,11 +39,12 @@ export default function SingleBlog() {
             <h2>
               {singleBlogData?.data?.title ? singleBlogData?.data?.title : ''}
             </h2>
-            <div className="single-blog-description">
-              {singleBlogData?.data?.description
-                ? singleBlogData?.data?.description
-                : ''}
-            </div>
+            <div
+              className="single-blog-description"
+              dangerouslySetInnerHTML={{
+                __html: singleBlogData?.data?.description || '',
+              }}
+            />
           </div>
         </div>
       </section>
