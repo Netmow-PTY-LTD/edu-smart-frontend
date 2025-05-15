@@ -10,8 +10,8 @@ export default function HomeUniversities() {
         <div className="section-heading">
           <h3>Who Are Here With Us?</h3>
           <h2>
-            We Are Giving Support For The Worlds Most Popular Universities Among
-            The Students
+            We provide support for some of the world’s most popular universities
+            among students.
           </h2>
         </div>
         <div className="university-grid">

@@ -76,13 +76,20 @@ export default function Contact() {
                         ></path>
                       </svg>
                     </div>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: `Parklane OUG Block B1 Block B2, Jalan 1/152,<br />
-             Taman Perindustrian Oug, 58200 Kuala Lumpur,<br />
-             Wilayah Persekutuan Kuala Lumpur`,
-                      }}
-                    />
+                    <a
+                      href="https://maps.app.goo.gl/4RvJoFdDmcLXNGFYA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: `Parklane OUG Block B1 Block B2, Jalan 1/152,<br />
+        Taman Perindustrian Oug, 58200 Kuala Lumpur,<br />
+        Wilayah Persekutuan Kuala Lumpur`,
+                        }}
+                      />
+                    </a>
                   </div>
 
                   <div className="contact-info">
@@ -99,7 +106,12 @@ export default function Contact() {
                         ></path>
                       </svg>
                     </div>
-                    <span>601136704887</span>
+                    <a
+                      href="tel:601136704887"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <span>601136704887</span>
+                    </a>
                   </div>
 
                   <div className="contact-info">
@@ -116,7 +128,12 @@ export default function Contact() {
                         ></path>
                       </svg>
                     </div>
-                    <span>info@edusmart.study</span>
+                    <a
+                      href="mailto:info@edusmart.study"
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <span>info@edusmart.study</span>
+                    </a>
                   </div>
                 </div>
               </div>

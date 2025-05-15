@@ -40,7 +40,7 @@ export default function SingleBlog() {
               {singleBlogData?.data?.title ? singleBlogData?.data?.title : ''}
             </h2>
             <div
-              className="single-blog-description"
+              className="single-blog-description editor-container"
               dangerouslySetInnerHTML={{
                 __html: singleBlogData?.data?.description || '',
               }}

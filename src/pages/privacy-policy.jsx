@@ -222,19 +222,6 @@ const PrivacyPolicy = () => {
                 We may update this policy, and changes will be reflected with a
                 revised "Effective Date."
               </p>
-
-              <h4 className="text-dark mt-4">
-                <strong>11. Contact Us</strong>
-              </h4>
-              <p>If you have any questions, contact us at:</p>
-              <ul>
-                <li>
-                  <strong>Email:</strong> support@edusmart.com
-                </li>
-                <li>
-                  <strong>Phone:</strong> 0123456789
-                </li>
-              </ul>
             </div>
           </div>
         </div>

@@ -173,10 +173,10 @@ export default function HeroSectionSlider() {
                     <span className="highlighted-text">Partnership</span>
                   </h1>
                   <p className="hero-text">
-                    EduSmart is an innovative educational admission marketplace
-                    connecting agents with top universities worldwide. Partner
-                    with us to streamline student enrollments, access exclusive
-                    opportunities, and grow your business.
+                    EduSmart is an innovative educational admissions marketplace
+                    that connects agents with top universities worldwide.
+                    Partner with us to streamline student enrollments, access
+                    exclusive opportunities, and grow your business.
                   </p>
                   <div className="hero-cta">
                     <Link
@@ -208,13 +208,13 @@ export default function HeroSectionSlider() {
                     Unleash Your{' '}
                     <span className="highlighted-text">Career</span>{' '}
                     Opportunities With EduSmart Free Study{' '}
-                    <span className="highlighted-text">Guideline</span>
+                    <span className="highlighted-text">Guide</span>
                   </h1>
                   <p className="hero-text">
-                    Edusmart is dedicated to empowering students worldwide with
-                    comprehensive guidance for studying abroad. From selecting
-                    the right course to securing your study visa, we make your
-                    journey seamless.
+                    EduSmart is committed to empowering students worldwide by
+                    providing comprehensive guidance for studying abroad. From
+                    choosing the right course to securing your study visa, we
+                    make your journey seamless.
                   </p>
                   <div className="hero-cta">
                     <Link

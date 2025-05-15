@@ -21,27 +21,26 @@ export default function About() {
                 <h2>About Edusmart</h2>
                 <div className="edu-about-text">
                   EduSmart is an advanced and dynamic online learning platform
-                  designed with the aim of empowering students throughout their
-                  educational journey. The platform offers an extensive
-                  collection of courses across various fields, ensuring that
-                  learners have access to high-quality educational resources
-                  that cater to their individual needs and learning preferences.
-                  Whether students are looking to enhance their knowledge in a
-                  specific subject area, improve their skills, or pursue
-                  entirely new fields of interest, EduSmart provides a wide
-                  array of learning opportunities to support their aspirations.{' '}
+                  designed to empower students throughout their educational
+                  journey. The platform offers an extensive collection of
+                  courses across various fields, ensuring that learners have
+                  access to high-quality educational resources tailored to their
+                  individual needs and learning preferences. Whether students
+                  aim to deepen their knowledge in a specific subject, enhance
+                  their skills, or explore entirely new areas of interest,
+                  EduSmart provides a wide array of learning opportunities to
+                  support their aspirations. <br />
                   <br />
-                  <br />
-                  The platform is built to serve a diverse student body,
-                  recognizing that every learner has different goals,
-                  backgrounds, and academic levels. It offers flexibility and
-                  convenience, enabling learners to access educational content
-                  at their own pace and according to their schedules. This
-                  adaptability ensures that EduSmart is suitable for students
-                  from various walks of life, whether they are high schoolers,
-                  university students, working professionals, or lifelong
-                  learners looking to develop new skills. EduSmart’s mission is
-                  to make learning more accessible and engaging for everyone.
+                  Built to serve a diverse student body, EduSmart recognizes
+                  that every learner has unique goals, backgrounds, and academic
+                  levels. The platform offers flexibility and convenience,
+                  allowing learners to access educational content at their own
+                  pace and on their own schedules. This adaptability makes
+                  EduSmart an ideal choice for students from all walks of
+                  life—whether they are high schoolers, university students,
+                  working professionals, or lifelong learners seeking to acquire
+                  new skills. EduSmart’s mission is to make learning more
+                  accessible, flexible, and engaging for everyone.
                 </div>
                 <Link href="/contact" className="btn-contact-main">
                   Contact Us

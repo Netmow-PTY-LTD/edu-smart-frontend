@@ -48,17 +48,25 @@ export default function Footer() {
               </Link>
               <p className="footer-text">
                 EduSmart is a comprehensive online platform designed to empower
-                students in their educational journey by providing them with
-                access to a wide variety of high-quality courses. EduSmart
-                offers a diverse range of learning opportunities. Our platform
-                is dedicated to helping students of all backgrounds and academic
-                levels to achieve their goals and reach their full potential,
-                making learning more accessible, flexible, and engaging.
+                students on their educational journey by providing access to a
+                wide variety of high-quality courses. EduSmart offers a diverse
+                range of learning opportunities and is dedicated to helping
+                students of all backgrounds and academic levels achieve their
+                goals and reach their full potential—making learning more
+                accessible, flexible, and engaging.
               </p>
               <div className="address-main">
-                <b>Address: </b> Parklane OUG Block B1 Block B2, Jalan 1/152,
-                Taman Perindustrian Oug, 58200 Kuala Lumpur, Wilayah Persekutuan
-                Kuala Lumpur
+                <b>Address: </b>
+                <a
+                  href="https://maps.app.goo.gl/4RvJoFdDmcLXNGFYA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  Parklane OUG Block B1 Block B2, Jalan 1/152, Taman
+                  Perindustrian Oug, 58200 Kuala Lumpur, Wilayah Persekutuan
+                  Kuala Lumpur
+                </a>
               </div>
             </Col>
             <Col lg={2} md={12}>
