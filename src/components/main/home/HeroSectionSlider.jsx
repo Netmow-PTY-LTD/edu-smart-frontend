@@ -5,7 +5,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import { Col, Row } from 'reactstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -22,6 +22,8 @@ export default function HeroSectionSlider() {
   const [universities, setUniversities] = useState(null);
 
   const router = useRouter();
+  const universityRef = useRef();
+  const courseRef = useRef();
 
   const { data: allCourses } = useGetAllCoursesQuery();
 
@@ -30,8 +32,13 @@ export default function HeroSectionSlider() {
   const handleCountryChange = (selectedOption) => {
     if (!selectedOption) return;
 
+    if (universityRef.current) universityRef.current.clearValue();
+    if (courseRef.current) courseRef.current.clearValue();
+
     const selectedCountry = selectedOption.value;
     setSelectedUniversity(null);
+    setSelectedUniversity(null);
+    setSelectedCourses([]);
     setSelectedCourse(null);
 
     // Filter universityData based on selected country
@@ -47,6 +54,7 @@ export default function HeroSectionSlider() {
 
   const handleUniversityChange = (selectedOption) => {
     const uniId = selectedOption?.value;
+    if (courseRef.current) courseRef.current.clearValue();
 
     if (!uniId) {
       setSelectedUniversity(null);
@@ -260,6 +268,7 @@ export default function HeroSectionSlider() {
                     <div className="form-group mb-3">
                       <label htmlFor="">Select University</label>
                       <Select
+                        ref={universityRef}
                         placeholder="Select University "
                         styles={customStyles}
                         onChange={handleUniversityChange}
@@ -275,6 +284,7 @@ export default function HeroSectionSlider() {
                     <div className="form-group mb-3">
                       <label htmlFor="">Select Course</label>
                       <Select
+                        ref={courseRef}
                         placeholder="Select University courses"
                         styles={customStyles}
                         onChange={handleCourseChange}
