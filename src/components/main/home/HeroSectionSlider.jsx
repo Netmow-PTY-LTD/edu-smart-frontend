@@ -64,12 +64,6 @@ export default function HeroSectionSlider() {
       return;
     }
 
-    // if (uniId == 'Select University') {
-    //   setSelectedUniversity(allCourses?.data);
-    //   setSelectedCourses([]);
-    //   setSelectedCourse('');
-    // }
-
     // setSelectedCourse(null);
     setSelectedUniversity(uniId);
     const foundUniversity = universityData?.data?.find(
