@@ -21,6 +21,7 @@ import Script from 'next/script';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { changeSidebarVisibility } from '../constants/utils/dashboardSidebarUtils';
+import AccessGuard from '../common/AccessGuard';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -155,6 +156,11 @@ const Header = () => {
               ) : (
                 ''
               )}
+
+              {userInfodata?.data?.role === 'super_admin' &&
+                process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development' && (
+                  <AccessGuard />
+                )}
 
               <FullScreenDropdown />
               <ProfileDropdown data={''} totalCharges={''} />

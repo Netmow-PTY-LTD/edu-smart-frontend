@@ -1,5 +1,6 @@
 import DashBoardCountOptions from '@/components/common/allDashboardHome/DashBoardCountOptions';
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
+import RouteList from '@/components/common/allDashboardHome/RouteList';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
@@ -54,6 +55,12 @@ const SuperAdminDashboard = () => {
           ) : (
             <div className="h-100">
               <WelcomingMessage data={userInfodata?.data} />
+
+              {userInfodata?.data?.role === 'super_admin' &&
+                process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development' && (
+                  <RouteList />
+                )}
+
               <Row className="pb-5">
                 <DashBoardCountOptions
                   userInfoData={userInfodata?.data}
