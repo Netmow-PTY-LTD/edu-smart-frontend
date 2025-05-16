@@ -198,17 +198,19 @@ const CommonTableComponent = ({
 
       {/* Pagination */}
       <CardFooter>
-        <Pagination
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            right: 20,
-          }}
-          data={data}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          perPageData={perPageData}
-        />
+        {data.length > perPageData && (
+          <Pagination
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 20,
+            }}
+            data={data}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            perPageData={perPageData}
+          />
+        )}
       </CardFooter>
     </div>
   );
