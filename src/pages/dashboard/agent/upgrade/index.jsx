@@ -81,6 +81,7 @@ const UpgradePackageInAgentdashboard = () => {
       const selectedPackage = getAllPackageData?.data?.find(
         (item) => item._id === userInfodata?.data?.package_choice
       );
+
       if (
         userInfodata?.data?.package_choice &&
         selectedPackage?.isDefault === false
@@ -93,20 +94,34 @@ const UpgradePackageInAgentdashboard = () => {
   }, [userInfodata?.data?.package_choice, getAllPackageData]);
 
   const handleUpgrade = (data) => {
-    setPackageDuration(data?.package_duration);
+    let durationValue = Number(data?.package_duration);
+    let fallbackDuration = parseInt(data?.duration?.match(/\d+/)?.[0]) || 1;
+    let finalDuration =
+      !isNaN(durationValue) && durationValue > 0
+        ? durationValue
+        : fallbackDuration;
+
+    setPackageDuration(finalDuration);
     setSubscriptionType('upgraded');
-    setPricePackage((data?.price * data?.package_duration).toFixed(2));
+    setPricePackage((data?.price * finalDuration).toFixed(2));
     setUpgradePackageName(data?.name);
     setUpgradePackageId(data?.id);
     setOpenPaymentModal(!openPaymentModal);
   };
 
   const handleUpgradeNew = (data, packageId) => {
+    let durationValue = Number(data?.package_duration);
+    // If not a valid number, extract number from a string like "3_months"
+    let fallbackDuration = parseInt(data?.duration?.match(/\d+/)?.[0]) || 1;
+    let finalDuration =
+      !isNaN(durationValue) && durationValue > 0
+        ? durationValue
+        : fallbackDuration;
     setUpgradePackageName(data?.name);
     setSubscriptionType('upgraded');
     setUpgradePackageId(packageId);
-    setPackageDuration(data?.package_duration);
-    setPricePackage((data?.price * data?.package_duration).toFixed(2));
+    setPackageDuration(finalDuration);
+    setPricePackage((data?.price * finalDuration).toFixed(2));
     setOpenPaymentModal(true);
   };
 
@@ -413,10 +428,17 @@ const UpgradePackageInAgentdashboard = () => {
   };
 
   const renewPackagehandler = (data) => {
+    let durationValue = Number(data?.package_duration);
+    let fallbackDuration = parseInt(data?.duration?.match(/\d+/)?.[0]) || 1;
+    let finalDuration =
+      !isNaN(durationValue) && durationValue > 0
+        ? durationValue
+        : fallbackDuration;
+
     setRenewStatus('yes');
     setSubscriptionType(data?.subscripType);
-    setPackageDuration(data?.package_duration);
-    setPricePackage((data?.price * data?.package_duration).toFixed(2));
+    setPackageDuration(finalDuration);
+    setPricePackage((data?.price * finalDuration).toFixed(2));
     setUpgradePackageName(data?.name);
     setUpgradePackageId(data?.id);
     setOpenPaymentModal(!openPaymentModal);
