@@ -164,13 +164,18 @@ const StudentSidebarData = () => {
         },
       ],
     },
-
+    {
+      id: 'student-profile',
+      label: 'My Profile',
+      icon: 'ri-list-check-3',
+      link: '/dashboard/student/student-profile',
+    },
     ...(userInfoData?.data?.agent?._id
       ? [
           {
             id: 'your_agent_profile',
             label: 'Your Partner',
-            icon: 'ri-user-line',
+            icon: 'ri-user-settings-fill',
             link: '/dashboard/student/agent-profile',
           },
         ]
