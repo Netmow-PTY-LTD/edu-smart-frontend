@@ -77,12 +77,28 @@ const PackagesMain = ({
 
         <div className="pricing-lists">
           <ul>
-            <li className="d-flex align-items-center gap-2">
-              <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-              <span className="text-primary fw-semibold">
-                Minimum Files For Monthly {data?.monthly_minimum_files}
-              </span>
-            </li>
+            {data?.monthly_minimum_files > 0 ? (
+              <li className="d-flex align-items-center gap-2">
+                <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                <span className="text-primary fw-semibold">
+                  Minimum {data?.monthly_minimum_files} files per month
+                </span>
+              </li>
+            ) : (
+              ''
+            )}
+
+            {data?.yearly_bonus_minimum_files > 0 ? (
+              <li className="d-flex align-items-center gap-2">
+                <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
+                <span className="text-primary fw-semibold">
+                  Minimum {data?.yearly_bonus_minimum_files} files per year
+                </span>
+              </li>
+            ) : (
+              ''
+            )}
+
             <li className="d-flex align-items-center gap-2">
               <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
@@ -92,60 +108,72 @@ const PackagesMain = ({
             <li className="d-flex align-items-center gap-2">
               <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
               <span className="text-primary fw-semibold">
-                Minimum Files {data?.minimum_files}
+                Commission deduction: automatic or manual
               </span>
             </li>
-            <li className="d-flex align-items-center gap-2">
-              <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-              <span className="text-primary fw-semibold">
-                Auto Commission Deduct
-              </span>
-            </li>
+
             {data?.yearly_bonus === true ? (
               <>
                 <li className="d-flex align-items-center gap-2">
                   <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-                  <span className="text-primary fw-semibold">Yearly Bonus</span>
-                </li>
-                <li className="d-flex align-items-center gap-2">
-                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
                   <span className="text-primary fw-semibold">
-                    Minimum Files For Yearly Bonus{' '}
-                    {data?.yearly_bonus_minimum_files}
+                    Annual performance bonus
                   </span>
                 </li>
               </>
             ) : (
               <li className="d-flex align-items-center gap-2">
                 <i className="ri-close-circle-fill text-danger fs-1"></i>
-                <span className="text-primary fw-semibold">Yearly Bonus</span>
+                <span className="text-primary fw-semibold">
+                  Annual performance bonus
+                </span>
               </li>
             )}
+
             {data?.family_trip === true ? (
               <>
                 <li className="d-flex align-items-center gap-2">
                   <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-                  <span className="text-primary fw-semibold">Family Trip</span>
-                </li>
-                <li className="d-flex align-items-center gap-2">
-                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
                   <span className="text-primary fw-semibold">
-                    Minimum Files For Family Trip{' '}
-                    {data?.family_trip_minimum_files}
+                    Family trip incentive
                   </span>
                 </li>
-                {/* <li className="d-flex align-items-center gap-2">
-                  <i className="ri-checkbox-circle-fill fs-1 third-color"></i>
-                  <span className="text-primary fw-semibold">
-                    {data?.family_trip_duration} Family Trip
-                  </span>
-                </li> */}
               </>
             ) : (
               <li className="d-flex align-items-center gap-2">
                 <i className="ri-close-circle-fill text-danger fs-1"></i>
-                <span className="text-primary fw-semibold">Family Trip</span>
+                <span className="text-primary fw-semibold">
+                  Family trip incentive
+                </span>
               </li>
+            )}
+
+            {/* TRIP & BONUS DETAILS SHOW HERE */}
+
+            {(data?.family_trip === true || data?.yearly_bonus === true) && (
+              <div className="p-3 mt-3 border rounded bg-light text-dark shadow-sm">
+                <h6 className="text-primary fw-bold mb-3 pt-2">
+                  📝 Terms & Conditions
+                </h6>
+                <ul className="list-unstyled mb-0">
+                  {data?.yearly_bonus === true && (
+                    <li className="d-flex align-items-start gap-2 mb-2">
+                      <i className="ri-checkbox-circle-fill fs-4 text-success mt-1"></i>
+                      <small className="fw-medium text-dark">
+                        Yearly Bonus Amount: <strong>৳1,50,000 BDT</strong>
+                      </small>
+                    </li>
+                  )}
+                  {data?.family_trip === true && (
+                    <li className="d-flex align-items-start gap-2">
+                      <i className="ri-checkbox-circle-fill fs-4 text-success mt-1"></i>
+                      <small className="fw-medium text-dark">
+                        Tour Condition: <em>{data?.family_trip_note}</em>
+                      </small>
+                    </li>
+                  )}
+                </ul>
+              </div>
             )}
           </ul>
         </div>
