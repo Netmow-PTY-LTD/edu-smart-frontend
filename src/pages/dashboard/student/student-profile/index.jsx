@@ -10,6 +10,7 @@ import Layout from '@/components/layout';
 import AllStudentApplications from '@/components/StudentDashboard/components/AllStudentApplications';
 import AllUploadDocumentsComponent from '@/components/StudentDashboard/components/AllUploadDocumentsComponent';
 import EmgsStatus from '@/components/StudentDashboard/components/EmgsStatus';
+import StudentAirTicketDocumentSection from '@/components/StudentDashboard/components/StudentAirTicketDocumentSection';
 import SubmittedDocumentsViewer from '@/components/StudentDashboard/components/SubmittedDocumentsViewer';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -207,7 +208,7 @@ const SingleStudentForAgent = () => {
 
                 {activeTab === '6' && (
                   <div style={{ marginTop: '50px' }}>
-                    <AirTicketDocumentRequestPage student_id={student_id} />
+                    <StudentAirTicketDocumentSection student_id={student_id} />
                   </div>
                 )}
               </Row>
