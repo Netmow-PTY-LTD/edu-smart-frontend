@@ -106,7 +106,7 @@ const CourseModalForm = ({
                   <div className="mb-3">
                     <NumberField
                       name="agent_commission_percentage"
-                      label="Agent Commision (%)"
+                      label="Partner Commission (%)"
                     />
                   </div>
                 </Col>

@@ -90,7 +90,7 @@ export default function HeroSection() {
                   href="/packages"
                   className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                 >
-                  Join us as agent
+                  Join us as Partner
                 </Link>
                 <Link
                   href="/auth/register?userRole=student"

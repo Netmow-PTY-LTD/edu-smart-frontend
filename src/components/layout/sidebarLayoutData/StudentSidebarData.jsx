@@ -169,7 +169,7 @@ const StudentSidebarData = () => {
       ? [
           {
             id: 'your_agent_profile',
-            label: 'Your Agent',
+            label: 'Your Partner',
             icon: 'ri-user-line',
             link: '/dashboard/student/agent-profile',
           },

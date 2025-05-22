@@ -155,7 +155,7 @@ const PackagesMain = ({
             onClick={() => handleSelectPackage(data?._id)}
             style={{ cursor: 'pointer' }}
           >
-            Select a Package
+            Get Started
           </div>
         ) : selectPackage?._id == data._id ? (
           <div className="px-3 py-1 rounded-3 fw-semibold text-primary bg-info-subtle">

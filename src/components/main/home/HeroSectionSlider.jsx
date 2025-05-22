@@ -183,7 +183,7 @@ export default function HeroSectionSlider() {
                       href="/packages"
                       className="button text-secondary-alt fs-20 fw-semibold py-2 px-5"
                     >
-                      Join as a agent
+                      Join as a partner
                     </Link>
                   </div>
                 </div>

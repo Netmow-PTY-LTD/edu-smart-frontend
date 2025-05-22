@@ -14,7 +14,7 @@ const AgentProfileInStudentDashboard = () => {
           {userInfoData?.data?.agent?._id ? (
             <>
               <CardTitle className="p-4 text-capitalize fs-2 fw-semibold">
-                Agent Information
+                Partner Information
               </CardTitle>
               <CardBody className="mb-4">
                 <div className="text-center d-flex flex-column align-items-center justify-content-center">

@@ -89,7 +89,7 @@ const SuperAdminSidebarData = () => {
     },
     {
       id: 'agents',
-      label: 'Agents',
+      label: 'Partner',
       icon: 'ri-group-2-fill',
       style: `${customeData.hideforaccountant}`,
       link: '/dashboard/' + `${paneltext}` + '/agents',

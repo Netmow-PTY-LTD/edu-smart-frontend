@@ -24,7 +24,7 @@ const AgentInformation = ({ student_id }) => {
         <Card>
           <CardBody>
             <CardTitle className="fw-semibold mb-3 text-primary">
-              Agent Information
+              Partner Information
             </CardTitle>
             <div className="table-responsive">
               <Table className="table-borderless mb-0">

@@ -326,7 +326,7 @@ const UpdateAgentModal = ({
                           <Col md={12}>
                             <div className="my-4">
                               <SubmitButtonCreateAgent>
-                                Update Agent
+                                Update Partner
                               </SubmitButtonCreateAgent>
                             </div>
                           </Col>

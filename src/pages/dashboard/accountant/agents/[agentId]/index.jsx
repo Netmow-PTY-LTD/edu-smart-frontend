@@ -329,7 +329,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                       <Col xl={12}>
                         <Card id="viewstudents">
                           <CardHeader className="text-primary fw-semibold fs-2">
-                            All Students For Agent
+                            All Students For Partner
                             <SearchComponent
                               searchTerm={searchTerm}
                               handleSearchChange={handleSearchChange}

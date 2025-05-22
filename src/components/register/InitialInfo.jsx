@@ -20,7 +20,7 @@ const InitialInfo = ({
 }) => {
   const roleOptions = [
     {
-      label: 'Agent',
+      label: 'Partner',
       value: 'Agent',
     },
     {

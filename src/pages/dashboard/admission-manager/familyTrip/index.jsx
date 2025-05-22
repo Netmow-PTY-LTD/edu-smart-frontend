@@ -77,7 +77,7 @@ export default function AgentFamilyTrip() {
                   <Col xl={12}>
                     <Card>
                       <CardHeader className="text-primary fw-semibold fs-2">
-                        Agent Family Trip
+                        Partner Family Trip
                       </CardHeader>
                       <CardBody className="mh-100">
                         <CommonTableComponent

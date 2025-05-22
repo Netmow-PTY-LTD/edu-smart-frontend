@@ -255,7 +255,7 @@ const CreateAgentModal = ({
                           <Col md={12}>
                             <div className="my-4">
                               <SubmitButtonCreateAgent>
-                                Create Agent
+                                Create Partner
                               </SubmitButtonCreateAgent>
                             </div>
                           </Col>

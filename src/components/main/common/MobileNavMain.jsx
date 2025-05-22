@@ -202,7 +202,7 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
           </li>
           <li>
             <Link href="/packages" className="nav-link">
-              <span>Join as agent</span>
+              <span>Join as partner</span>
             </Link>
           </li>
           {token ? (

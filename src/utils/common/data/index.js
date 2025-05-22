@@ -732,7 +732,7 @@ const DataObjectComponent = () => {
 
   const studentsHeaders = [
     {
-      title: 'Agent',
+      title: 'Partner',
       key: 'agent',
       render: (item) => (
         <h5 className="fs-14 fw-medium text-capitalize text-wrap">
@@ -1482,7 +1482,7 @@ const DataObjectComponent = () => {
     },
     {
       id: 6,
-      label: 'Total Agent Paid Payout',
+      label: 'Total Partner Paid Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
@@ -1492,7 +1492,7 @@ const DataObjectComponent = () => {
     },
     {
       id: 7,
-      label: 'Total Agent Pending Payout',
+      label: 'Total Partner Pending Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
@@ -1536,7 +1536,7 @@ const DataObjectComponent = () => {
     },
     {
       id: 6,
-      label: 'Total Agent Paid Payout',
+      label: 'Total Partner Paid Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
@@ -1546,7 +1546,7 @@ const DataObjectComponent = () => {
     },
     {
       id: 7,
-      label: 'Total Agent Pending Payout',
+      label: 'Total Partner Pending Payout',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-money-pound-box-line',
@@ -1748,7 +1748,7 @@ const DataObjectComponent = () => {
       render: (item) => <div className="text-uppercase">{item?._id}</div>,
     },
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent',
       render: (item) => (
         <div className="text-capitalize">
@@ -1837,7 +1837,7 @@ const DataObjectComponent = () => {
 
   const packagePaymentReportHeadersWithoutAction = [
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent',
       render: (item) => (
         <div>
@@ -2060,7 +2060,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
@@ -2153,7 +2153,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
@@ -2280,7 +2280,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent_name',
       render: (item) => (
         <div className="d-flex align-items-start flex-column justify-content-start gap-2 text-capitalize fs-2 fw-medium">
@@ -2630,7 +2630,7 @@ const DataObjectComponent = () => {
     },
 
     {
-      title: 'Agent Commission',
+      title: 'Partner Commission',
       key: 'agent_commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
@@ -2639,7 +2639,7 @@ const DataObjectComponent = () => {
       ),
     },
     {
-      title: 'Agent Hot Commission',
+      title: 'Partner Hot Commission',
       key: 'agent_hot_commission',
       render: (item) => (
         <div className="fs-2 fw-medium text-primary">
@@ -5266,7 +5266,7 @@ const DataObjectComponent = () => {
     //   ),
     // },
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent_name',
       render: (item) => {
         const firstName = item?.agent?.first_name || '';
@@ -5378,7 +5378,7 @@ const DataObjectComponent = () => {
     //   ),
     // },
     {
-      title: 'Agent Name',
+      title: 'Partner Name',
       key: 'agent_name',
       render: (item) => {
         const firstName = item?.agent?.first_name || '';

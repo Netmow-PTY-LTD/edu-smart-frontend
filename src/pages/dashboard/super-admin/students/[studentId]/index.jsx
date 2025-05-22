@@ -190,7 +190,7 @@ const SingleStudentForSuperAdmin = () => {
                           >
                             <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Agent
+                              Partner
                             </span>
                           </NavLink>
                         </NavItem>

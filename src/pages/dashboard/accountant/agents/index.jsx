@@ -55,9 +55,9 @@ const AllAgentsPage = () => {
                     onClick={() => setAddModalIsOpen(true)}
                     className="button px-3 py-2"
                   >
-                    Add New Agent
+                    Add New Partner
                   </button>
-                  <h2>All Agents</h2>
+                  <h2>All Partner</h2>
 
                   <SearchComponent
                     searchTerm={searchTerm}
