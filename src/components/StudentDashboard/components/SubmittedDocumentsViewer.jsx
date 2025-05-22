@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Card, CardBody, CardHeader } from 'reactstrap';
 
-const SubmittedDocumentsViewer = ({ studentId, title = 'Submitted Docs' }) => {
+const SubmittedDocumentsViewer = ({ student_id, title = 'Submitted Docs' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 10;
@@ -19,7 +19,7 @@ const SubmittedDocumentsViewer = ({ studentId, title = 'Submitted Docs' }) => {
   const {
     data: singleStudentAllSubmittedDoc,
     isLoading: getSingleStudentDocLoading,
-  } = useGetSingleUserSubmittedDocumentQuery({ student_id: studentId });
+  } = useGetSingleUserSubmittedDocumentQuery({ student_id: student_id });
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
