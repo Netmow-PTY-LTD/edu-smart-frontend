@@ -7,6 +7,9 @@ import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverv
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import AllStudentApplications from '@/components/StudentDashboard/components/AllStudentApplications';
+import AllUploadDocumentsComponent from '@/components/StudentDashboard/components/AllUploadDocumentsComponent';
+import EmgsStatus from '@/components/StudentDashboard/components/EmgsStatus';
 import SubmittedDocumentsViewer from '@/components/StudentDashboard/components/SubmittedDocumentsViewer';
 import { useSingleStudentForAgentQuery } from '@/slice/services/agent/studentDocRelatedServiceForAgent';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -188,17 +191,17 @@ const SingleStudentForAgent = () => {
                 )}
                 {activeTab === '3' && (
                   <div style={{ marginTop: '50px' }}>
-                    <DocumentRequestPage student_id={student_id} />
+                    <AllUploadDocumentsComponent student_id={student_id} />
                   </div>
                 )}
                 {activeTab === '4' && (
                   <div>
-                    <AppliedUniversityPage id={student_id} />
+                    <AllStudentApplications id={student_id} />
                   </div>
                 )}
                 {activeTab === '5' && (
                   <div>
-                    <ApplicationEmgsStatus student_id={student_id} />
+                    <EmgsStatus student_id={student_id} />
                   </div>
                 )}
 
