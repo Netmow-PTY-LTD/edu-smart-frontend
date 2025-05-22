@@ -280,17 +280,26 @@ const Register = () => {
     first_name: Yup.string().required('First Name is required'),
     last_name: Yup.string().required('Last Name is required'),
 
-    subdomain: Yup.string().test(
-      'subdomain-required',
-      'Subdomain is required',
-      function (value) {
-        const { user_role } = this.parent;
-        if (user_role !== 'Student' && user_role !== 'University' && !value) {
-          return false;
-        }
-        return true;
-      }
-    ),
+    // subdomain: Yup.string().test(
+    //   'subdomain-required',
+    //   'Subdomain is required',
+    //   function (value) {
+    //     const { user_role } = this.parent;
+    //     if (user_role !== 'Student' && user_role !== 'University' && !value) {
+    //       return false;
+    //     }
+    //     return true;
+    //   }
+    // ),
+
+    website: Yup.string()
+      .nullable()
+      .notRequired()
+      .test(
+        'is-url-valid',
+        'Enter a valid URL (e.g., https://example.com)',
+        (value) => !value || Yup.string().url().isValidSync(value)
+      ),
 
     phone: Yup.string().required('Phone is required'),
     address_line_1: Yup.string().required('Address Line 1 is required'),

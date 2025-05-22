@@ -8,6 +8,8 @@ import CountrySelectField from '../common/formField/CountrySelectField';
 import NumberField from '../common/formField/NumberField';
 import SubmitButton from '../common/formField/SubmitButton';
 import TextField from '../common/formField/TextField';
+import * as Yup from 'yup';
+import PhoneField from '../common/PhoneField';
 
 const DetailsInfo = ({
   formSubmit,
@@ -18,6 +20,17 @@ const DetailsInfo = ({
   const dispatch = useDispatch();
 
   const options = useMemo(() => countryList().getData(), []);
+
+  const generateRandomString = (length = 6) => {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const randomSubdomain = useMemo(() => generateRandomString(), []);
 
   return (
     <>
@@ -55,12 +68,19 @@ const DetailsInfo = ({
                       ''
                     ) : (
                       <>
-                        <Col md={6}>
+                        {/* <Col md={6}>
                           <TextField
                             name={'subdomain'}
                             label={
                               'Subdomain Name (part of URL, cannot be changed)'
                             }
+                          />
+                        </Col> */}
+
+                        <Col md={6}>
+                          <TextField
+                            name={'website'}
+                            label={'Your Website URL'}
                           />
                         </Col>
                         <Col md={6}>
@@ -79,9 +99,13 @@ const DetailsInfo = ({
                         options={options}
                       />
                     </Col>
-                    <Col md={6}>
+                    {/* <Col md={6}>
                       <NumberField name={'phone'} label={'Phone'} />
+                    </Col> */}
+                    <Col md={6}>
+                      <PhoneField name={'phone'} label={'Phone'} />
                     </Col>
+
                     <Col md={4}>
                       <TextField
                         name={'address_line_1'}
