@@ -40,7 +40,7 @@ export default function StudentApplications() {
 
   const perPageData = 9;
 
-  const { studentApplicationsHeaders=[] } = DataObjectComponent();
+  const { studentApplicationsHeaders = [] } = DataObjectComponent();
 
   const {
     data: applicationData,
