@@ -33,6 +33,7 @@ const AgentDashboard = () => {
   const router = useRouter();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [showFilterCard, setShowFilterCard] = useState(false);
 
   const {
     data: applicationData,
@@ -100,20 +101,6 @@ const AgentDashboard = () => {
   console.log('totalAgentIncentive', totalAgentIncentive);
   console.log('totalAgentHotCommission', totalAgentHotCommission);
 
-  // const totalAgentEarning = thisAgentPaymentDataByReport?.reduce(
-  //   (total, item) => total + (item.agent_payout_amount || 0),
-  //   0
-  // );
-
-  // const totalAgentIncentive = thisAgentPaymentDataByReport?.reduce(
-  //   (total, item) => total + (item.agent_commission || 0),
-  //   0
-  // );
-
-  // const totalAgentHotCommission = thisAgentPaymentDataByReport?.reduce(
-  //   (total, item) => total + (item.agent_commision_by_hot_offer || 0),
-  //   0
-  // );
   const {
     studentsImageAndNameHeaderDataInAgentDashboard,
     agentEarnigsHeaders = [],
@@ -171,31 +158,50 @@ const AgentDashboard = () => {
             <LoaderSpiner />
           ) : (
             <>
+              <Row className="align-items-center mb-4">
+                <Col md={3}>
+                  <WelcomingMessage data={userInfodata?.data} />
+                </Col>
+
+                <Col md={3}>
+                  <button
+                    className="button w-100 d-flex align-items-center justify-content-center p-3 cursor-pointer"
+                    onClick={() => setShowFilterCard((prev) => !prev)}
+                  >
+                    {showFilterCard ? 'Hide Filter' : 'Filter Card'}
+                  </button>
+                </Col>
+
+                {showFilterCard && (
+                  <>
+                    <Col md={3}>
+                      <label className="form-label fs-2 mb-3 pe-2">From:</label>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        className="form-control big-datepicker"
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select Start Date"
+                      />
+                    </Col>
+
+                    <Col md={3}>
+                      <label className="form-label fs-2 mb-3 pe-2">End:</label>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        className="form-control big-datepicker"
+                        dateFormat="yyyy-MM-dd"
+                        placeholderText="Select End Date"
+                        minDate={startDate}
+                        disabled={!startDate} // ⛔ Disabled until startDate is selected
+                      />
+                    </Col>
+                  </>
+                )}
+              </Row>
+
               <Row className="pb-5">
-                <div className="d-flex align-items-center gap-3 mb-4">
-                  <div>
-                    <label>Start Date</label>
-                    <DatePicker
-                      selected={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      className="form-control"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Select Start Date"
-                    />
-                  </div>
-
-                  <div>
-                    <label>End Date</label>
-                    <DatePicker
-                      selected={endDate}
-                      onChange={(date) => setEndDate(date)}
-                      className="form-control"
-                      dateFormat="yyyy-MM-dd"
-                      placeholderText="Select End Date"
-                    />
-                  </div>
-                </div>
-
                 <AgentDashBoardCountOptions
                   userInfoData={userInfodata?.data}
                   firstElementData={filteredApplications?.length}
@@ -223,8 +229,6 @@ const AgentDashboard = () => {
               <Row className="g-5">
                 <Col xl={10}>
                   <div className="h-100">
-                    <WelcomingMessage data={userInfodata?.data} />
-
                     <Row xxl={12} className="g-5">
                       <Col xxl={12}>
                         <LatestRegistered
