@@ -11,6 +11,7 @@ import {
   useGetApplicationsQuery,
   useGetRecentApplicationsQuery,
 } from '@/slice/services/common/applicationService';
+import { useGetApplicationPaymentReportQuery } from '@/slice/services/common/paymentReportServices';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetAllHotOfferQuery } from '@/slice/services/public/package/publicPackageService';
 import DataObjectComponent from '@/utils/common/data';
@@ -33,7 +34,39 @@ const AgentDashboard = () => {
     refetch: applicationDataRefetch,
   } = useGetRecentApplicationsQuery();
 
+  const {
+    data: getApplicationPaymentData,
+    error: getApplicationPaymentDataError,
+    isLoading: getApplicationPaymentDataLoading,
+    refetch: getApplicationPaymentDataRefetch,
+  } = useGetApplicationPaymentReportQuery();
+
+  const thisAgentPaymentDataByReport = getApplicationPaymentData?.data?.filter(
+    (item) => item?.student?.agent === userInfodata?.data?._id
+  );
+
+  const totalAgentEarning = thisAgentPaymentDataByReport?.reduce(
+    (total, item) => total + (item.agent_payout_amount || 0),
+    0
+  );
+
+  const totalAgentIncentive = thisAgentPaymentDataByReport?.reduce(
+    (total, item) => total + (item.agent_commission || 0),
+    0
+  );
+
+  const totalAgentHotCommission = thisAgentPaymentDataByReport?.reduce(
+    (total, item) => total + (item.agent_commision_by_hot_offer || 0),
+    0
+  );
+
+  console.log('AgentID', userInfodata?.data?._id);
   console.log('applicationData', applicationData);
+  console.log('getApplicationPaymentData', getApplicationPaymentData);
+  console.log('thisAgentPaymentDataByReport', thisAgentPaymentDataByReport);
+  console.log('totalAgentEarning', totalAgentEarning);
+  console.log('totalAgentIncentive', totalAgentIncentive);
+  console.log('totalAgentHotCommission', totalAgentHotCommission);
 
   const {
     studentsImageAndNameHeaderDataInAgentDashboard,
@@ -96,11 +129,9 @@ const AgentDashboard = () => {
                 <AgentDashBoardCountOptions
                   userInfoData={userInfodata?.data}
                   firstElementData={applicationData?.data?.length}
-                  // secondElementData={allAgentsData?.data?.length}
-                  // thirdElementData={allStudentsData?.data?.length}
-                  // fourthElementData={totalIncome?.data?.totalReceiveAmount?.toFixed(
-                  //   2
-                  // )}
+                  secondElementData={totalAgentEarning}
+                  thirdElementData={totalAgentIncentive}
+                  fourthElementData={totalAgentHotCommission}
                   // fithElement={totalIncome?.data?.totalUniversityPayout?.toFixed(
                   //   2
                   // )}

@@ -31,29 +31,33 @@ const AgentDashBoardCountOptions = ({
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
-      link: 'All Charges',
+      link: ['Paid Earnings', 'Unpaid Earnings'], // ✅ Array of labels
+      pathName: [
+        `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/total-paid-amount`,
+        `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/total-pending-amount`,
+      ], // ✅ Array of paths
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/super-admin-earnings/total-receive-amount`,
     },
+
     {
       id: 3,
-      label: 'Total Receive Amount',
+      label: 'Total Incentive',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
-      link: 'All Charges',
+      link: 'Report',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/super-admin-earnings/total-receive-amount`,
+      pathName: `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/payment-report/application-payment`,
     },
     {
       id: 4,
-      label: 'Total Receive Amount',
+      label: 'Total Hot Commission',
       counter: '55',
       bgcolor: 'warning',
       icon: 'ri-wallet-3-fill',
-      link: 'All Charges',
+      link: 'Report',
       decimals: '2',
-      pathName: `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/super-admin-earnings/total-receive-amount`,
+      pathName: `/dashboard/${userInfoData?.role?.split('_')?.join('-')}/payment-report/application-payment`,
     },
     {
       id: 5,
@@ -135,12 +139,34 @@ const AgentDashBoardCountOptions = ({
                           duration={4}
                         />
                       </h4>
-                      <Link
+                      {/* <Link
                         href={item?.pathName || ''}
                         className="text-decoration-underline text-black"
                       >
                         {item.link}
-                      </Link>
+                      </Link> */}
+                      {Array.isArray(item?.link) &&
+                      Array.isArray(item?.pathName) ? (
+                        <div className="d-flex gap-2 flex-wrap">
+                          {item.link.map((label, index) => (
+                            <span key={index}>
+                              <Link
+                                href={item.pathName[index]}
+                                className="text-decoration-underline text-black"
+                              >
+                                {label}
+                              </Link>
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <Link
+                          href={item?.pathName}
+                          className="text-decoration-underline text-black"
+                        >
+                          {item?.link}
+                        </Link>
+                      )}
                     </div>
                     <div className="avatar-sm flex-shrink-0">
                       <span style={{ fontSize: 35 }}>
