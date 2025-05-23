@@ -240,7 +240,10 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                                 <td>
                                   <div className="py-4">
                                     <h3 className=" my-1 fw-normal text-uppercase">
-                                      ID: {item?.application?._id ?? '-'}
+                                      ID:{' '}
+                                      {item?.application?.appId
+                                        ? item?.application?.appId
+                                        : item?.application?._id ?? '-'}
                                       <br />
                                       COURSE:{' '}
                                       {item?.application?.course?.name ?? '-'}

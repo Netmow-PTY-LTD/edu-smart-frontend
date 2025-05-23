@@ -920,7 +920,7 @@ const DataObjectComponent = () => {
       key: 'application_id',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
-          {item?._id ? item?._id : '-'}
+          {item?.appId ? item?.appId : item?._id ? item?._id : '-'}
         </span>
       ),
     },
@@ -1913,7 +1913,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id
             ? item?.application?._id
             : item?.agent_package
               ? item?.agent_package?.package?.name
@@ -2030,7 +2030,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2124,7 +2124,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2238,7 +2238,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2360,7 +2360,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2454,7 +2454,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -2556,7 +2556,7 @@ const DataObjectComponent = () => {
       key: 'payment_reason',
       render: (item) => (
         <div className="text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : '-'}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ? item?.application?._id : '-'}
         </div>
       ),
     },
@@ -3604,7 +3604,7 @@ const DataObjectComponent = () => {
       title: 'Application ID',
       key: 'application',
       render: (item) => (
-        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
+        <div className="text-uppercase">{item?.application?.appId ? item?.application?.appId : item?.application?._id ?? '-'}</div>
       ),
     },
     {
@@ -3683,7 +3683,7 @@ const DataObjectComponent = () => {
       title: 'Application ID',
       key: 'application',
       render: (item) => (
-        <div className="text-uppercase">{item?.application?._id ?? '-'}</div>
+        <div className="text-uppercase">{item?.application?.appId ? item?.application?.appId : item?.application?._id ?? '-'}</div>
       ),
     },
     {
@@ -3754,7 +3754,7 @@ const DataObjectComponent = () => {
       key: 'application_id',
       render: (item) => (
         <span className="d-flex flex-column text-uppercase fs-2 fw-medium">
-          {item?.application?._id ? item?.application?._id : ''}
+          {item?.application?.appId ? item?.application?.appId : item?.application?._id ?? '-'}
         </span>
       ),
     },
