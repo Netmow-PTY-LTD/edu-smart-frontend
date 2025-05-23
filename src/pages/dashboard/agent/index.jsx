@@ -19,6 +19,10 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Col, Row } from 'reactstrap';
+import { Button, ButtonGroup } from 'reactstrap';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import dayjs from 'dayjs';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
@@ -27,12 +31,27 @@ const AgentDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { data: userInfodata } = useGetUserInfoQuery();
   const router = useRouter();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const {
     data: applicationData,
     isLoading: applicationLoading,
     refetch: applicationDataRefetch,
   } = useGetRecentApplicationsQuery();
+
+  const filteredApplications = applicationData?.data?.filter((item) => {
+    const itemDate = dayjs(item?.createdAt);
+
+    const isAfterStart = startDate
+      ? itemDate.isAfter(dayjs(startDate).startOf('day'))
+      : true;
+    const isBeforeEnd = endDate
+      ? itemDate.isBefore(dayjs(endDate).endOf('day'))
+      : true;
+
+    return isAfterStart && isBeforeEnd;
+  });
 
   const {
     data: getApplicationPaymentData,
@@ -45,29 +64,56 @@ const AgentDashboard = () => {
     (item) => item?.student?.agent === userInfodata?.data?._id
   );
 
-  const totalAgentEarning = thisAgentPaymentDataByReport?.reduce(
+  const filteredPayments = thisAgentPaymentDataByReport?.filter((item) => {
+    const itemDate = dayjs(item?.createdAt);
+
+    const isAfterStart = startDate
+      ? itemDate.isAfter(dayjs(startDate).startOf('day'))
+      : true;
+    const isBeforeEnd = endDate
+      ? itemDate.isBefore(dayjs(endDate).endOf('day'))
+      : true;
+    return isAfterStart && isBeforeEnd;
+  });
+
+  const totalAgentEarning = filteredPayments?.reduce(
     (total, item) => total + (item.agent_payout_amount || 0),
     0
   );
 
-  const totalAgentIncentive = thisAgentPaymentDataByReport?.reduce(
+  const totalAgentIncentive = filteredPayments?.reduce(
     (total, item) => total + (item.agent_commission || 0),
     0
   );
 
-  const totalAgentHotCommission = thisAgentPaymentDataByReport?.reduce(
+  const totalAgentHotCommission = filteredPayments?.reduce(
     (total, item) => total + (item.agent_commision_by_hot_offer || 0),
     0
   );
 
   console.log('AgentID', userInfodata?.data?._id);
   console.log('applicationData', applicationData);
+  console.log('filteredApplications', filteredApplications);
   console.log('getApplicationPaymentData', getApplicationPaymentData);
   console.log('thisAgentPaymentDataByReport', thisAgentPaymentDataByReport);
   console.log('totalAgentEarning', totalAgentEarning);
   console.log('totalAgentIncentive', totalAgentIncentive);
   console.log('totalAgentHotCommission', totalAgentHotCommission);
 
+  // const totalAgentEarning = thisAgentPaymentDataByReport?.reduce(
+  //   (total, item) => total + (item.agent_payout_amount || 0),
+  //   0
+  // );
+
+  // const totalAgentIncentive = thisAgentPaymentDataByReport?.reduce(
+  //   (total, item) => total + (item.agent_commission || 0),
+  //   0
+  // );
+
+  // const totalAgentHotCommission = thisAgentPaymentDataByReport?.reduce(
+  //   (total, item) => total + (item.agent_commision_by_hot_offer || 0),
+  //   0
+  // );
   const {
     studentsImageAndNameHeaderDataInAgentDashboard,
     agentEarnigsHeaders = [],
@@ -126,9 +172,33 @@ const AgentDashboard = () => {
           ) : (
             <>
               <Row className="pb-5">
+                <div className="d-flex align-items-center gap-3 mb-4">
+                  <div>
+                    <label>Start Date</label>
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      className="form-control"
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Select Start Date"
+                    />
+                  </div>
+
+                  <div>
+                    <label>End Date</label>
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      className="form-control"
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Select End Date"
+                    />
+                  </div>
+                </div>
+
                 <AgentDashBoardCountOptions
                   userInfoData={userInfodata?.data}
-                  firstElementData={applicationData?.data?.length}
+                  firstElementData={filteredApplications?.length}
                   secondElementData={totalAgentEarning}
                   thirdElementData={totalAgentIncentive}
                   fourthElementData={totalAgentHotCommission}
