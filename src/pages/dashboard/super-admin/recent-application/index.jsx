@@ -270,7 +270,6 @@ export default function RecentApplicationForSuperAdmin() {
     }
   };
 
-
   console.log(recentApplicationData);
 
   return (
@@ -296,8 +295,7 @@ export default function RecentApplicationForSuperAdmin() {
                       <CardBody className="mh-100">
                         <CommonTableComponent
                           headers={[
-                            ...studentApplicationsHeaders,
-                            // PickupHeaderData,
+                            ...(studentApplicationsHeaders || []),
                             EmgsStatusActionData,
                           ]}
                           data={isfilteredData || []}
