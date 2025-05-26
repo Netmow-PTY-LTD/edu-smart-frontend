@@ -119,10 +119,8 @@ export default function RecentApplicationForSuperAdmin() {
   // Ensure full search even if searchTerm is empty
   const isfilteredData =
     recentApplicationData?.data?.length > 0
-      ? recentApplicationData.data.filter(
-          (item) =>
-            item?.emgs_payment_status != 'pending' &&
-            searchInItem(item, searchTerm)
+      ? recentApplicationData.data.filter((item) =>
+          searchInItem(item, searchTerm)
         )
       : [];
 
@@ -200,40 +198,80 @@ export default function RecentApplicationForSuperAdmin() {
             </div>
           </DropdownItem>
 
-          {item?.status === 'pending' ? (
-            <>
-              <DropdownItem>
-                <div
-                  onClick={() =>
-                    handleChangeApplicationStatus({
-                      id: item?._id,
-                      status: 'accepted',
-                    })
-                  }
-                  className="text-primary"
-                >
-                  <i className="ri-check-fill me-2"></i>
-                  Accepted
-                </div>
-              </DropdownItem>
-              <DropdownItem>
-                <div
-                  onClick={() =>
-                    handleChangeApplicationStatus({
-                      id: item?._id,
-                      status: 'rejected',
-                    })
-                  }
-                  className="text-primary"
-                >
-                  <i className="ri-close-fill me-2"></i>
-                  Rejected
-                </div>
-              </DropdownItem>
-            </>
-          ) : (
-            ''
-          )}
+          <>
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'pending',
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Pending
+              </div>
+            </DropdownItem>
+
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'processing',
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Processing
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'processed',
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Processed
+              </div>
+            </DropdownItem>
+
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'accepted',
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Accepted
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'rejected',
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-close-fill me-2"></i>
+                Rejected
+              </div>
+            </DropdownItem>
+          </>
         </DropdownMenu>
       </UncontrolledDropdown>
     ),

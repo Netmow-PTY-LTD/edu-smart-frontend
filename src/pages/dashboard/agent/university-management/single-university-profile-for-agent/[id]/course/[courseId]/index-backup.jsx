@@ -7,7 +7,6 @@ import {
   useCheckApplicationIsValidQuery,
   useDeleteApplicationMutation,
   useGetApplicationsQuery,
-  useLazyCheckApplicationIsValidQuery,
 } from '@/slice/services/common/applicationService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
@@ -20,7 +19,7 @@ import {
 } from '@/slice/services/public/university/publicUniveristyService';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactSelect from 'react-select';
 import { toast, ToastContainer } from 'react-toastify';
 import DOMPurify from 'dompurify';
@@ -39,7 +38,6 @@ import {
 } from 'reactstrap';
 import AppliedCourseForm from '../course-form/applied-course-form';
 import CourseDescription from '@/components/university/Modal/CourseDescription';
-import { useCustomData } from '@/utils/common/data/customeData';
 
 const SingleUniversityCourse = () => {
   const router = useRouter();
@@ -52,8 +50,6 @@ const SingleUniversityCourse = () => {
   const course_id = router.query.courseId;
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const customeData = useCustomData();
-  const paneltext = customeData.paneltext;
 
   const { data: userInfoData, isLoading: userInfoLoading } =
     useGetUserInfoQuery();
@@ -69,6 +65,7 @@ const SingleUniversityCourse = () => {
   const {
     data: checkApplicationIsValidData,
     error: checkApplicationIsValidError,
+    isLoading: checkApplicationIsValidIsLoading,
     refetch: checkApplicationIsValidRefetch,
   } = useCheckApplicationIsValidQuery(
     {
@@ -76,69 +73,58 @@ const SingleUniversityCourse = () => {
       student_id: selectedStudent,
     },
     {
-      enabled: false,
+      skip: !course_id || !selectedIsStudent || selectedIsStudent.trim() === '',
     }
   );
 
-  const timeoutRef = useRef(null);
-
-  const handleChange = (selectedOption) => {
-    const selectedValue = selectedOption?.value || null;
-
-    // Immediately clear previous timeout if any
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    // Disable button immediately
-    setIsButtonDisabled(true);
-
-    // Update selected student immediately
-    setSelectedStudent(selectedValue);
-    Cookies.set('selectedStudent', selectedValue);
-
-    // Set a timeout to delay API call by 1 second
-    timeoutRef.current = setTimeout(async () => {
-      if (!selectedValue) {
-        // No student selected, keep button disabled
-        setIsButtonDisabled(true);
-        return;
-      }
-
-      if (!course_id) {
-        setIsButtonDisabled(true);
-        return;
-      }
-
-      try {
-        const result = await checkApplicationIsValidRefetch({
-          course_id,
-          student_id: selectedValue,
-        }).unwrap();
-
-        if (result.data?.status === 'rejected') {
-          toast.success(
-            `This student is eligible to apply again. Current status: rejected`
-          );
-          setIsButtonDisabled(false);
+  useEffect(() => {
+    if (router?.query?.payment_status && router?.query?.transaction_id) {
+      ('');
+    } else if (checkApplicationIsValidData) {
+      const status = checkApplicationIsValidData.data.status;
+      if (status === 'rejected') {
+        toast.success(
+          `This student is eligible to apply again. Current status: ${checkApplicationIsValidData.data.status}`
+        );
+        setIsButtonDisabled(false);
+      } else {
+        if (
+          status === 'pending' &&
+          checkApplicationIsValidData.data?.emgs_payment_status === 'pending'
+        ) {
+          deleteApplication(checkApplicationIsValidData.data?._id)
+            .then(() => {
+              checkApplicationIsValidRefetch();
+            })
+            .catch((error) => {
+              // toast.error('Failed to delete application');
+            });
         } else {
           toast.error(
-            `Application already exists. Current status: ${result?.data?.status}`
+            `Application Already Exists. Current status: ${checkApplicationIsValidData.data.status}`
           );
           setIsButtonDisabled(true);
         }
-      } catch (err) {
-        const errorMessage = err?.data?.message || 'Something went wrong';
-        if (errorMessage === 'Application not found') {
-          // toast.success(`No existing application. Student can apply.`);
-          setIsButtonDisabled(false);
-        } else {
-          toast.error(`Error: ${errorMessage}`);
-          setIsButtonDisabled(true);
-        }
       }
-    }, 1000);
-  };
+    }
+  }, [
+    checkApplicationIsValidData,
+    checkApplicationIsValidRefetch,
+    deleteApplication,
+    router?.query?.payment_status,
+    router?.query?.transaction_id,
+  ]);
+
+  useEffect(() => {
+    if (checkApplicationIsValidError) {
+      const status =
+        checkApplicationIsValidError.data.message === 'Application not found';
+
+      if (status) {
+        setIsButtonDisabled(false);
+      }
+    }
+  }, [checkApplicationIsValidError]);
 
   const {
     data: getSingleUniversityDataForStudent,
@@ -189,20 +175,66 @@ const SingleUniversityCourse = () => {
     }
   }, [getSingleUniversityForStudentRefetch, university_id]);
 
+  // useEffect(() => {
+  //   if (router?.query?.payment_status && router?.query?.transaction_id) {
+
+  //     ('');
+  //   } else {
+  //     if (
+  //       checkApplicationIsValidError?.data?.message ===
+  //       'Invalid ObjectId. The provided id is not a valid MongoDB ObjectId.'
+  //     ) {
+  //       ('');
+  //     } else {
+  //       toast.error(checkApplicationIsValidError?.data?.message);
+  //     }
+  //   }
+  // }, [
+  //   checkApplicationIsValidError?.data?.message,
+  //   router?.query?.payment_status,
+  //   router?.query?.transaction_id,
+  // ]);
+
   useEffect(() => {
     if (updateApplicationStatusData?.success) {
       toast.success('Application Payment successfull');
       applicationDataRefetch();
-      router.push(`/dashboard/${paneltext}/applications`);
+      router.push(`/dashboard/agent/applications`);
     } else if (updateApplicationStatusData?.error) {
       toast.error('Application failed');
     }
   }, [
     applicationDataRefetch,
-    paneltext,
     router,
     updateApplicationStatusData?.error,
     updateApplicationStatusData?.success,
+  ]);
+
+  useEffect(() => {
+    if (createApplicationData?.success) {
+      //toast.success(createApplicationData?.message);
+
+      if (buttonType === 'Proceed to Payment') {
+        router.push(
+          `/dashboard/agent/university-management/single-university-profile-for-agent/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
+        );
+      } else {
+        applicationDataRefetch();
+        // router.push(`/dashboard/agent/applications`);
+        router.push(
+          `/dashboard/agent/university-management/single-university-profile-for-agent/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
+        );
+      }
+    }
+  }, [
+    applicationDataRefetch,
+    buttonType,
+    course_id,
+    createApplicationData?.data?._id,
+    createApplicationData?.message,
+    createApplicationData?.success,
+    router,
+    university_id,
   ]);
 
   useEffect(() => {
@@ -262,20 +294,9 @@ const SingleUniversityCourse = () => {
     }
 
     try {
-      const createApplicationInfo = await createApplication(finalData).unwrap();
-      console.log('CreateApplicationStatus', createApplicationInfo);
-
-      if (createApplicationInfo?.success) {
-        toast.success('Application Submitted successfully!');
-
-        // Delay the navigation by 2 seconds so user sees the toast
-        setTimeout(() => {
-          router.push('/dashboard/agent/applications');
-        }, 2000); // 2000ms = 2 seconds
-      }
+      createApplication(finalData).unwrap();
     } catch (error) {
       console.error('Error during submission:', error);
-      toast.error('Failed to create application.');
     } finally {
       setSubmitting(false);
     }
@@ -283,12 +304,21 @@ const SingleUniversityCourse = () => {
 
   const initialValues = getSingleCourseData?.data?.document_requirements.reduce(
     (acc, item) => {
-      const fieldName = item?.title?.toLowerCase().replace(/\s+/g, '_');
+      const fieldName = item.title.toLowerCase().replace(/\s+/g, '_');
       acc[fieldName] = [];
       return acc;
     },
     {}
   );
+
+  const handleChange = (selectedOption) => {
+    const selectedValue = selectedOption ? selectedOption.value : null;
+    Cookies.set('selectedStudent', selectedValue);
+    setSelectedStudent(selectedValue);
+    if (selectedValue) {
+      allStudentForAgentRefetch();
+    }
+  };
 
   const handleDownload = (fileUrl) => {
     fetch(fileUrl)
@@ -861,6 +891,7 @@ const SingleUniversityCourse = () => {
                                 onChange={handleChange}
                                 placeholder="Choose a student"
                                 isClearable
+                                // isMulti
                                 isSearchable
                               />
                             </div>
@@ -869,6 +900,7 @@ const SingleUniversityCourse = () => {
                               onClick={() => {
                                 if (selectedStudent) {
                                   setStep(step + 1);
+                                  // setSelectedStudent([]);
                                   setSelectedStudent('');
                                 } else {
                                   toast.error('Please select a student first.');
@@ -876,17 +908,6 @@ const SingleUniversityCourse = () => {
                               }}
                               className="button py-3 px-5 fs-2"
                               disabled={isButtonDisabled}
-                              style={{
-                                background: isButtonDisabled ? 'gray' : '',
-                                cursor: isButtonDisabled
-                                  ? 'not-allowed'
-                                  : 'pointer',
-                                opacity: isButtonDisabled ? 0.6 : 1,
-                                pointerEvents: isButtonDisabled
-                                  ? 'none'
-                                  : 'auto',
-                                color: isButtonDisabled ? '#fff' : '',
-                              }}
                             >
                               Continue For Apply
                             </button>
