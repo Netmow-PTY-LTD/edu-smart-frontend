@@ -3,8 +3,10 @@ import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { Formik, Form, FieldArray } from 'formik';
 import SubmitButton from '@/components/common/formField/SubmitButton';
 import { toast } from 'react-toastify';
-import { useCreateUserDocRequestForAgentMutation } from '@/slice/services/agent/agentDocumentServices';
-import { useUpdateSingleDocumentForStudentByAllUserMutation } from '@/slice/services/common/commonDocumentService';
+import {
+  useCreateUserDocRequestForAgentForAllMutation,
+  useUpdateSingleDocumentForStudentByAllUserMutation,
+} from '@/slice/services/common/commonDocumentService';
 
 const AutoAcceptedDocumentUploadModal = ({
   isOpen,
@@ -13,7 +15,8 @@ const AutoAcceptedDocumentUploadModal = ({
   formSubmit = 'Upload',
   student_id,
 }) => {
-  const [createDocumentRequest] = useCreateUserDocRequestForAgentMutation();
+  const [createDocumentRequest] =
+    useCreateUserDocRequestForAgentForAllMutation();
   const [submitSingleDocument] =
     useUpdateSingleDocumentForStudentByAllUserMutation();
 
