@@ -98,6 +98,17 @@ export const commonDocumentService = createApi({
       },
     }),
 
+     updateSingleDocumentForStudentByAllUser: builder.mutation({
+      query: (body) => {
+        const id = body?.get('id');
+        return {
+          url: `/document/${id}`,
+          method: 'PATCH',
+          body: body,
+        };
+      },
+    }),
+
     getAllUserSubmittedDocument: builder.query({
       query: () => {
         return {
@@ -172,4 +183,5 @@ export const {
   useGetAllStudentsAirticketDocumentRequestQuery,
   useGetSingleUserAirTicketDocumentRequestQuery,
   useUpdateSingleAirTicketDocumentForAgentMutation,
+  useUpdateSingleDocumentForStudentByAllUserMutation,
 } = commonDocumentService;
