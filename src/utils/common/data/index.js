@@ -454,6 +454,197 @@ const DataObjectComponent = () => {
     },
   ];
 
+    const studentSubmittedDocumentsHeaderWithoutActionWithSn = (currentPage, perPageData) => [
+    {
+      title: 'SN',
+      key: 'sn',
+      render: (item, index) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">{currentPage * perPageData + index + 1}</h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Title',
+      key: 'title',
+      render: (item) => {
+        const newTitle = item?.title?.replace(/_/g, ' ');
+
+        return (
+          <div>
+            <h5 className="fs-14 fw-medium text-capitalize">
+              {newTitle || '-'}
+            </h5>
+          </div>
+        );
+      },
+    },
+
+    {
+      title: 'Description',
+      key: 'description',
+      render: (item) => (
+        <DescriptionRenderer
+          maxWords={5}
+          description={item?.description || '-'}
+        />
+      ),
+    },
+    {
+      title: 'Notes',
+      key: 'notes',
+      render: (item) => (
+        <div>
+          <h5 className="fs-14 fw-medium text-capitalize">
+            {`${item?.notes ? item?.notes : '-'}`}
+          </h5>
+        </div>
+      ),
+    },
+    {
+      title: 'Files',
+      key: 'files',
+      render: (item) => (
+        <div>
+          <FileViewer files={item?.files && item?.files} />
+        </div>
+      ),
+    },
+
+    {
+      title: 'Req. By',
+      key: 'requested_by',
+
+      render: (item) => {
+        const firstName = item?.requested_by?.first_name;
+        const lastName = item?.requested_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.requested_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        return (
+          <div className="d-flex align-items-start ">
+            <span className="text-capitalize">{fullName ? fullName : '-'}</span>
+            <small className="ms-1 badge bg-secondary-subtle text-secondary">
+              {formattedRole?.slice(0.4)}
+            </small>
+          </div>
+        );
+      },
+    },
+    {
+      title: 'Req. Date',
+      key: 'requested_date',
+      render: (item) => {
+        const date = item?.requested_date ? moment(item.requested_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+
+    {
+      title: 'Sub. By',
+      key: 'submitted_by',
+
+      render: (item) => {
+        const firstName = item?.submitted_by?.first_name;
+        const lastName = item?.submitted_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.submitted_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.submitted_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span>- </span>;
+        }
+      },
+    },
+    {
+      title: 'Sub. Date',
+      key: 'submited_date',
+
+      render: (item) => {
+        const date = item?.submited_date ? moment(item.submited_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+    {
+      title: 'Acc. By',
+      key: 'accepted_by',
+
+      render: (item) => {
+        const firstName = item?.accepted_by?.first_name;
+        const lastName = item?.accepted_by?.last_name;
+        const fullName = `${firstName} ${lastName}`;
+        const role = item?.accepted_by?.role || '-';
+        const formattedRole = role
+          .split(/[-_]/)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        if (item.accepted_by) {
+          return (
+            <div className="d-flex align-items-start ">
+              <span className="text-capitalize">
+                {fullName ? fullName : '-'}
+              </span>
+              <small className="ms-1 badge bg-secondary-subtle text-secondary">
+                {formattedRole}
+              </small>
+            </div>
+          );
+        } else {
+          return <span> - </span>;
+        }
+      },
+    },
+
+    {
+      title: 'Acc. Date',
+      key: 'accepted_date',
+      render: (item) => {
+        const date = item?.accepted_date ? moment(item.accepted_date) : null;
+        return <div>{date?.isValid() ? date.format('DD-MM-YYYY') : '-'}</div>;
+      },
+    },
+
+    {
+      title: 'Status',
+      key: 'status',
+      render: (item) => (
+        <span
+          className={`d-flex flex-column text-capitalize fw-semibold ${
+            item?.status === 'accepted'
+              ? 'text-success'
+              : item?.status === 'rejected'
+                ? 'text-danger'
+                : item?.status === 'pending'
+                  ? 'text-warning'
+                  : item?.status === 'requested'
+                    ? 'text-primary'
+                    : item?.status === 'submitted'
+                      ? 'text-info'
+                      : ''
+          }`}
+        >
+          {item?.status ? <span>{item?.status}</span> : '-'}
+        </span>
+      ),
+    },
+  ];
+
   // student Doc upload request header
   const studentRequestDocumentsHeaderWithoutAction = [
     {
@@ -5868,6 +6059,7 @@ className={`fw-medium fs-3 text-capitalize badge
     studentsHeaders,
     studentsImageAndNameHeaderDataInAgentDashboard,
     studentSubmittedDocumentsHeaderWithoutAction,
+    studentSubmittedDocumentsHeaderWithoutActionWithSn,
     superAdminData,
     supperAdminWidgetsData,
     teamDummyImage,

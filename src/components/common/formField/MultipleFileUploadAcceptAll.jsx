@@ -90,7 +90,7 @@ const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
         {label || 'Upload Files'}
       </label>
 
-      <input
+      {/* <input
         {...props}
         type="file"
         id={field.name}
@@ -99,7 +99,35 @@ const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
         multiple
         onChange={handleFileChange}
         accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-      />
+      /> */}
+
+      <div>
+        <button
+          type="button"
+          style={{ background: 'none', border: 'none', padding: 0 }}
+          className="d-flex align-items-center gap-2"
+          onClick={() =>
+            document.getElementById(`file-upload-${field.name}`).click()
+          }
+        >
+          <i
+            className="ri-gallery-upload-fill"
+            style={{ fontSize: '4rem' }}
+          ></i>
+          <span className="fs-4 fw-medium">Choose File</span>
+        </button>
+
+        <input
+          {...props}
+          type="file"
+          id={`file-upload-${field.name}`}
+          name={field.name}
+          multiple
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+          accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        />
+      </div>
 
       <div className="my-4">
         {filePreviews.length > 0 && (

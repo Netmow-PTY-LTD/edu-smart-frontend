@@ -240,6 +240,7 @@ const DocumentRequestPage = ({ student_id, request }) => {
               >
                 Add Request
               </button>
+
               <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}
@@ -257,6 +258,7 @@ const DocumentRequestPage = ({ student_id, request }) => {
               formSubmit={'Add Document'}
               setInitialValues={setInitialValues}
             />
+
             <CardBody>
               <CommonTableComponent
                 headers={AllUploadDocumentsForStudentsData}
