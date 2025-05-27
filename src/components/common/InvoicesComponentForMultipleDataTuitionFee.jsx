@@ -350,9 +350,9 @@ const InvoicesComponentForMultipleDataTuitionFee = ({
                       <div className="table-row">
                         <div className="tc mt-3">
                           Course Fee: <br />
-                          <span style={{ fontSize: '12px' }}>
+                          {/* <span style={{ fontSize: '12px' }}>
                             (Payment is required after EMGS processing.)
-                          </span>
+                          </span> */}
                         </div>
                         <div className="tc mt-3">
                           {' '}

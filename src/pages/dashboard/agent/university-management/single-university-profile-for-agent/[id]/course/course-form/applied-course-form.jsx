@@ -60,134 +60,6 @@ const AppliedCourseForm = ({
                     <Row>
                       <Col lg={12}>
                         <div className="ps-0">
-                          {/* <Row>
-                            {Array.isArray(documentRequirements) &&
-                            documentRequirements?.length > 0 &&
-                            documentRequirements.some((item) =>
-                              item?.title?.trim()
-                            ) ? (
-                              documentRequirements
-                                .filter((item) => item && item.title) // Filter out invalid entries
-                                .map((item, index) => {
-                                  const fieldName = item?.title
-                                    ?.toLowerCase()
-                                    .replace(/\s+/g, '_');
-                                  return (
-                                    <>
-                                      <div key={index}>
-                                        <Field
-                                          name={fieldName}
-                                          component={
-                                            MultipleFileUploadAcceptAll
-                                          }
-                                          label={
-                                            <>
-                                              <span className="title">
-                                                {item?.title
-                                                  ? item.title
-                                                      .charAt(0)
-                                                      .toUpperCase() +
-                                                    item.title.slice(1)
-                                                  : ''}
-                                              </span>
-                                              {item?.description && (
-                                                <div>
-                                                  <span
-                                                    className="description"
-                                                    style={{
-                                                      fontWeight: '400',
-                                                    }}
-                                                  >
-                                                    {item.description}
-                                                  </span>
-                                                </div>
-                                              )}
-                                            </>
-                                          }
-                                          field={{
-                                            name: fieldName,
-                                          }}
-                                          form={{ values, setFieldValue }}
-                                          validate={(value) => {
-                                            if (
-                                              item.isRequired &&
-                                              (!value || value.length === 0)
-                                            ) {
-                                              toast.error(
-                                                `${item.title} - This field is required`
-                                              );
-                                              return 'This field is required';
-                                            }
-                                            return undefined;
-                                          }}
-                                        />
-                                        {item?.description && (
-                                          <Field
-                                            type="hidden"
-                                            name={`${fieldName}_description`}
-                                            value={item.description}
-                                          />
-                                        )}
-                                        {errors[fieldName] &&
-                                          touched[fieldName] && (
-                                            <div className="error-message">
-                                              {errors[fieldName]}
-                                            </div>
-                                          )}
-                                      </div>
-                                      <Col md={12} xl={12}>
-                                        <div className="d-flex align-items-center justify-content-center my-4 gap-3">
-                                          <SubmitButton
-                                            // isSubmitting={isSubmitting}
-                                            formSubmit={
-                                              'Submit Without Payment'
-                                            }
-                                            onClick={() =>
-                                              handleAddSubmit(
-                                                values,
-                                                { setSubmitting },
-                                                'Submit Without Payment'
-                                              )
-                                            }
-                                          >
-                                            {'Submit Without Payment'}
-                                          </SubmitButton>
-                                        </div>
-                                      </Col>
-                                    </>
-                                  );
-                                })
-                            ) : (
-                              <>
-                                <Col md={12} xl={12}>
-                                  <div>No document requirements available.</div>
-
-                                  <div className="d-flex align-items-center justify-content-center my-4 gap-3">
-                                    <SubmitButton
-                                      // isSubmitting={isSubmitting}
-                                      formSubmit={'Proceed to Payment'}
-                                      onClick={async (e) => {
-                                        e.preventDefault();
-                                        const formErrors = await validateForm();
-                                        if (
-                                          Object.keys(formErrors).length === 0
-                                        ) {
-                                          setSubmitting(true);
-                                          handleAddSubmit(values, {
-                                            setSubmitting,
-                                          });
-                                        } else {
-                                          //toast.error('Please fix the errors before proceeding.');
-                                        }
-                                      }}
-                                    >
-                                      {`Proceed to Payment With EMGS Fee ${emgsfee} MYR`}
-                                    </SubmitButton>
-                                  </div>
-                                </Col>
-                              </>
-                            )}
-                          </Row> */}
                           <Row>
                             {Array.isArray(documentRequirements) &&
                             documentRequirements.length > 0 &&
@@ -204,9 +76,9 @@ const AppliedCourseForm = ({
                                       .map((item) => [
                                         item.document_list_id,
                                         item,
-                                      ]) // Use Map to filter unique items by document_list_id
+                                      ])
                                   ).values(),
-                                ].map((item, index) => {
+                                ].map((item) => {
                                   const fieldName = item?.title
                                     ?.toLowerCase()
                                     .replace(/\s+/g, '_');
@@ -275,7 +147,6 @@ const AppliedCourseForm = ({
                                     <SubmitButton
                                       formSubmit={'Submit Without Payment'}
                                       onClick={() => {
-                                        // Extract unique documents by document_list_id
                                         const uniqueDocuments = [
                                           ...new Map(
                                             documentRequirements
@@ -290,18 +161,16 @@ const AppliedCourseForm = ({
                                           ).values(),
                                         ];
 
-                                        // Find required documents missing uploaded files
                                         const missingRequired =
                                           uniqueDocuments.filter((item) => {
                                             const fieldName = item.title
                                               .toLowerCase()
                                               .replace(/\s+/g, '_');
                                             const value = values[fieldName];
-                                            const isMissing =
+                                            return (
                                               item.isRequired &&
-                                              (!value || value.length === 0);
-
-                                            return isMissing;
+                                              (!value || value.length === 0)
+                                            );
                                           });
 
                                         if (missingRequired.length > 0) {
@@ -310,10 +179,9 @@ const AppliedCourseForm = ({
                                               `Document required: ${doc.title}`
                                             );
                                           });
-                                          return; // Stop form submission if missing required docs
+                                          return;
                                         }
 
-                                        // No missing required docs, submit form
                                         handleAddSubmit(
                                           values,
                                           { setSubmitting },
@@ -333,21 +201,16 @@ const AppliedCourseForm = ({
 
                                   <div className="d-flex align-items-center justify-content-center my-4 gap-3">
                                     <SubmitButton
-                                      formSubmit={'Proceed to Payment'}
-                                      onClick={async (e) => {
-                                        e.preventDefault();
-                                        const formErrors = await validateForm();
-                                        if (
-                                          Object.keys(formErrors).length === 0
-                                        ) {
-                                          setSubmitting(true);
-                                          handleAddSubmit(values, {
-                                            setSubmitting,
-                                          });
-                                        }
+                                      formSubmit={'Submit Without Payment'}
+                                      onClick={() => {
+                                        handleAddSubmit(
+                                          values,
+                                          { setSubmitting },
+                                          'Submit Application For Review'
+                                        );
                                       }}
                                     >
-                                      {`Proceed to Payment With EMGS Fee ${emgsfee} MYR`}
+                                      {'Submit Application For Review'}
                                     </SubmitButton>
                                   </div>
                                 </Col>
