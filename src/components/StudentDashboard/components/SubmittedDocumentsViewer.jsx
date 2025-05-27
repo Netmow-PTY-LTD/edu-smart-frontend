@@ -16,8 +16,12 @@ const SubmittedDocumentsViewer = ({ student_id, title = 'Submitted Docs' }) => {
   const perPageData = 10;
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
 
-  const { studentSubmittedDocumentsHeaderWithoutAction = [] } =
+  const { studentSubmittedDocumentsHeaderWithoutActionWithSn = [] } =
     DataObjectComponent();
+  const headers = studentSubmittedDocumentsHeaderWithoutActionWithSn(
+    currentPage,
+    perPageData
+  );
 
   const {
     data: singleStudentAllSubmittedDoc,
@@ -27,12 +31,21 @@ const SubmittedDocumentsViewer = ({ student_id, title = 'Submitted Docs' }) => {
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
+  // const filteredData =
+  //   singleStudentAllSubmittedDoc?.data?.filter(
+  //     (item) =>
+  //       item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  //   ) || [];
+
   const filteredData =
-    singleStudentAllSubmittedDoc?.data?.filter(
-      (item) =>
-        item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+    singleStudentAllSubmittedDoc?.data
+      ?.filter(
+        (item) =>
+          item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || [];
 
   const handleDownloadAllDocument = () => {
     if (!singleStudentAllSubmittedDoc?.data) {
@@ -102,7 +115,7 @@ const SubmittedDocumentsViewer = ({ student_id, title = 'Submitted Docs' }) => {
       </CardHeader>
       <CardBody>
         <CommonTableComponent
-          headers={studentSubmittedDocumentsHeaderWithoutAction}
+          headers={headers}
           data={filteredData}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
