@@ -31,13 +31,6 @@ const SubmittedDocumentsViewer = ({ student_id, title = 'Submitted Docs' }) => {
 
   const handleSearchChange = (e) => setSearchTerm(e.target.value);
 
-  // const filteredData =
-  //   singleStudentAllSubmittedDoc?.data?.filter(
-  //     (item) =>
-  //       item?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       item?.user?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  //   ) || [];
-
   const filteredData =
     singleStudentAllSubmittedDoc?.data
       ?.filter(
