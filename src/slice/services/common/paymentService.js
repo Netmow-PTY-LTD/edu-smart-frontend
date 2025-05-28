@@ -24,7 +24,16 @@ export const paymentService = createApi({
         };
       },
     }),
+        stripePaymentIntend: builder.mutation({
+      query: (data) => {
+        return {
+          url: '/payment/intend/stripe',
+          method: 'POST',
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useSslCommerzPaymentIntendMutation } = paymentService;
+export const { useSslCommerzPaymentIntendMutation, useStripePaymentIntendMutation } = paymentService;

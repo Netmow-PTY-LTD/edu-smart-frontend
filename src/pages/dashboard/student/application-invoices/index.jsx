@@ -287,7 +287,8 @@ const ApplicationInvoiceInSuperAdmin = () => {
     if (
       query.payment_status === 'success' &&
       (query.transaction_reason === 'application_tuition_fee' ||
-        query.transaction_reason === 'application_airport_pickup_charge')
+        query.transaction_reason === 'application_airport_pickup_charge' ||
+        query.transaction_reason === 'application_emgs')
     ) {
       updateApplicationStatus({
         transaction_id: query.transaction_id,

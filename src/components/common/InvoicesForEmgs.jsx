@@ -13,7 +13,10 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 import { userDummyImage } from '@/utils/common/data';
-import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import {
+  useSslCommerzPaymentIntendMutation,
+  useStripePaymentIntendMutation,
+} from '@/slice/services/common/paymentService';
 import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
 import { useUpdateApplicationStatusMutation } from '@/slice/services/public/application/applicationServiceNew';
@@ -50,13 +53,13 @@ const InvoicesForEmgs = ({
   const emgsFee = dataDetails?.emgs_fee_amount || 0;
   const afterEmgsFee = dataDetails?.emgs_fee_amount || 0;
   const tuitionFee = dataDetails?.tuition_fee_amount;
+  const customData = useCustomData();
 
   const printInvoice = () => {
     window.print();
   };
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
-  const customData = useCustomData();
   const sslCommerzPaymentHandler = async () => {
     const price = emgsFee;
     const application_id = dataDetails?._id;
@@ -103,6 +106,57 @@ const InvoicesForEmgs = ({
     }
   };
 
+  const [stripePaymentIntend] = useStripePaymentIntendMutation();
+
+  const stripePaymentHandler = async () => {
+    const price = emgsFee;
+    const application_id = dataDetails?._id;
+    const course_id = dataDetails?.course?._id;
+    const report_id = dataDetails?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`;
+
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
+
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_emgs';
+    const payment_method = 'stripe'; // ✅ Set this to 'stripe'
+
+    try {
+      const response = await stripePaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      // If using redirect to Stripe Checkout
+      if (response?.success && response?.data?.gatewayPageURL) {
+        window.location.href = response.data.gatewayPageURL;
+      } else {
+        toast.error('Unable to initiate Stripe payment');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
   const [
     updateApplicationStatus,
     {
@@ -114,7 +168,8 @@ const InvoicesForEmgs = ({
   useEffect(() => {
     const requestToCreateApplication = async (
       transaction_id,
-      application_id
+      application_id,
+      payment_method
     ) => {
       try {
         updateApplicationStatus({
@@ -122,7 +177,7 @@ const InvoicesForEmgs = ({
           transaction_id,
           application_id,
           transaction_reason: 'application_emgs',
-          payment_method: 'sslcommerz',
+          payment_method: payment_method,
         });
       } catch (error) {
         //
@@ -135,7 +190,12 @@ const InvoicesForEmgs = ({
     ) {
       const transaction_id = router?.query?.transaction_id;
       const application_id = router?.query?.application_id;
-      requestToCreateApplication(transaction_id, application_id);
+      const payment_method = router?.query?.payment_method;
+      requestToCreateApplication(
+        transaction_id,
+        application_id,
+        payment_method
+      );
     }
   }, [router, updateApplicationStatus]);
 
@@ -379,12 +439,29 @@ const InvoicesForEmgs = ({
                   </div>
                 </div>
 
-                {/* Buttons */}
                 <Col xl={12} className="d-print-none">
                   <div className="d-flex justify-content-between mb-5">
                     {payButton === 'yes' && (
                       <button
                         onClick={sslCommerzPaymentHandler}
+                        className="d-flex justify-content-end button mt-5 px-5 py-2"
+                      >
+                        <i className="ri-bank-card-fill me-1"></i> Pay EMGS Now
+                      </button>
+                    )}
+                    <button
+                      onClick={printInvoice}
+                      className="d-flex justify-content-end button mt-5 px-5 py-2"
+                    >
+                      <i className="ri-printer-fill me-1"></i> Print Invoice
+                    </button>
+                  </div>
+                </Col>
+                <Col xl={12} className="d-print-none">
+                  <div className="d-flex justify-content-between mb-5">
+                    {payButton === 'yes' && (
+                      <button
+                        onClick={stripePaymentHandler}
                         className="d-flex justify-content-end button mt-5 px-5 py-2"
                       >
                         <i className="ri-bank-card-fill me-1"></i> Pay EMGS Now
