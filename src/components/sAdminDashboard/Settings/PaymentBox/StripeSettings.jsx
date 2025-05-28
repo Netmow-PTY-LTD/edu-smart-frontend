@@ -57,10 +57,16 @@ const StripeSettings = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    console.log('working');
+
     const data = {
       ...values,
       mode:
         typeof values?.mode === 'object' ? values?.mode?.value : values?.mode,
+      status:
+        typeof values?.statuspost === 'object'
+          ? values?.statuspost?.value
+          : values?.statuspost,
     };
 
     try {
@@ -83,6 +89,11 @@ const StripeSettings = () => {
   const modeOptions = [
     { value: 'test', label: 'Test Mode' },
     { value: 'live', label: 'Live Mode' },
+  ];
+
+  const modeOptionsStatus = [
+    { value: 'active', label: 'Active' },
+    { value: 'inactive', label: 'Inactive' },
   ];
 
   return (
@@ -133,6 +144,14 @@ const StripeSettings = () => {
                       name={'mode'}
                       label={'Mode'}
                       options={modeOptions}
+                    />
+                  </Col>
+
+                  <Col lg={6}>
+                    <SingleSelectField
+                      name={'statuspost'}
+                      label={'Status'}
+                      options={modeOptionsStatus}
                     />
                   </Col>
 

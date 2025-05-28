@@ -15,7 +15,9 @@ import LoaderSpiner from '../constants/Loader/LoaderSpiner';
 import { userDummyImage } from '@/utils/common/data';
 import {
   useSslCommerzPaymentIntendMutation,
+  useSslCommerzSettingsQuery,
   useStripePaymentIntendMutation,
+  useStripeSettingsQuery,
 } from '@/slice/services/common/paymentService';
 import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
@@ -33,8 +35,6 @@ const InvoicesForEmgs = ({
 }) => {
   const router = useRouter();
   const customeData = useCustomData();
-
-  console.log('customeData', customeData);
 
   const address = addressData;
   const billing = dataDetails?.student;
@@ -58,6 +58,9 @@ const InvoicesForEmgs = ({
   const printInvoice = () => {
     window.print();
   };
+
+  const { data: stripeSettings } = useStripeSettingsQuery();
+  const { data: sslCommerzSettings } = useSslCommerzSettingsQuery();
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const sslCommerzPaymentHandler = async () => {
@@ -236,8 +239,11 @@ const InvoicesForEmgs = ({
                       <p className="text-muted">{address?.email}</p>
                       <p className="text-muted">{address?.phone}</p>
                       <p className="text-muted">
-                        {(address?.address || address?.address_line_1) + ' '}
-                        {(address?.address2 || address?.address_line_2) + ' '}
+                        {(address?.address || address?.address_line_1) + ' '}{' '}
+                        <br />
+                        {(address?.address2 || address?.address_line_2) +
+                          ' '}{' '}
+                        <br />
                         {address?.city} {address?.state}{' '}
                         {address?.zip !== 0 ? address?.zip : ''}{' '}
                         {address?.country !== 'undefined'
@@ -256,7 +262,9 @@ const InvoicesForEmgs = ({
                       <p className="text-muted">{billing?.phone}</p>
                       <p className="text-muted">
                         {(billing?.address || billing?.address_line_1) + ' '}
-                        {(billing?.address2 || billing?.address_line_2) + ' '}
+                        {(billing?.address2 || billing?.address_line_2) +
+                          ' '}{' '}
+                        <br />
                         {billing?.city} {billing?.state}{' '}
                         {billing?.zip !== 0 ? billing?.zip : ''}{' '}
                         {billing?.country !== 'undefined'
@@ -444,20 +452,24 @@ const InvoicesForEmgs = ({
                     {payButton === 'yes' && (
                       <>
                         <div className="d-flex gap-2">
-                          <button
-                            onClick={sslCommerzPaymentHandler}
-                            className="d-flex justify-content-end button mt-5 px-5 py-2"
-                          >
-                            <i className="ri-bank-card-fill me-1"></i> Pay BY
-                            SSLCOMMERZE
-                          </button>
-                          <button
-                            onClick={stripePaymentHandler}
-                            className="d-flex justify-content-end button mt-5 px-5 py-2"
-                          >
-                            <i className="ri-bank-card-fill me-1"></i> Pay BY
-                            STRIPE
-                          </button>
+                          {sslCommerzSettings?.data.status === 'active' && (
+                            <button
+                              onClick={sslCommerzPaymentHandler}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              <i className="ri-bank-card-fill me-1"></i> Pay BY
+                              SSLCOMMERZE
+                            </button>
+                          )}
+                          {stripeSettings?.data.status === 'active' && (
+                            <button
+                              onClick={stripePaymentHandler}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              <i className="ri-bank-card-fill me-1"></i> Pay BY
+                              STRIPE
+                            </button>
+                          )}
                         </div>
                       </>
                     )}

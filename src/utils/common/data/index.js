@@ -1420,13 +1420,13 @@ className={`fw-medium fs-3 text-capitalize badge
   const superAdminData = {
     first_name: 'Edu',
     last_name: 'Smart',
-    email: 'super@server.edusmart',
-    phone: '1724603976',
-    address_line_1: 'bima bhaban',
-    address_line_2: 'fulbari',
-    city: 'cybarjaya',
-    state: 'Wilayah Persekutuan',
-    zip: '5800',
+    email: 'info@edusmart.study',
+    phone: '601136704887',
+    address_line_1: 'Parklane OUG Block B1 Block B2, ',
+    address_line_2: 'Jalan 1/152, Taman Perindustrian OUG, ',
+    city: 'Kuala Lumpur',
+    state: 'Wilayah Persekutuan Kuala Lumpur',
+    zip: '58200',
     country: 'Malaysia',
   };
 

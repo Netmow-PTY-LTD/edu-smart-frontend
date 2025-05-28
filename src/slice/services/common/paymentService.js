@@ -33,7 +33,24 @@ export const paymentService = createApi({
         };
       },
     }),
+      stripeSettings: builder.query({
+      query: (data) => {
+        return {
+          url: '/payment/intend/stripesuper',
+          method: 'GET',
+        };
+      },
+    }),
+      sslCommerzSettings: builder.query({
+      query: (data) => {
+        return {
+          url: '/payment/intend/sslcommerzsuper',
+          method: 'GET',
+        };
+      },
+    }),
+
   }),
 });
 
-export const { useSslCommerzPaymentIntendMutation, useStripePaymentIntendMutation } = paymentService;
+export const { useSslCommerzPaymentIntendMutation, useStripePaymentIntendMutation, useStripeSettingsQuery, useSslCommerzSettingsQuery } = paymentService;

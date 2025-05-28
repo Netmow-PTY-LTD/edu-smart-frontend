@@ -12,7 +12,14 @@ import {
   Table,
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
-import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import {
+  useSslCommerzPaymentIntendMutation,
+  useSslCommerzSettingsQuery,
+  useStripePaymentIntendMutation,
+  useStripeSettingsQuery,
+} from '@/slice/services/common/paymentService';
+import { useRouter } from 'next/router';
+import { useCustomData } from '@/utils/common/data/customeData';
 
 const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
   addressData,
@@ -36,6 +43,12 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
   payment_status,
   invoice_no,
 }) => {
+  const router = useRouter();
+  const customData = useCustomData();
+
+  const { data: stripeSettings } = useStripeSettingsQuery();
+  const { data: sslCommerzSettings } = useSslCommerzSettingsQuery();
+
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
 
   const sslCommerzPaymentHandler = async () => {
@@ -52,16 +65,18 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
 
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=failed&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=faild&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`;
+
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=success&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=success&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
+
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/agent/application-invoices?payment_status=cancel&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/agent/application-invoices?payment_status=cancel&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
 
     const currency = 'MYR';
     const transaction_reason = 'application_tuition_fee';
@@ -84,6 +99,63 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
         window.location.href = response?.data?.gatewayPageURL;
       } else {
         toast.error('Payment failed');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
+  const [stripePaymentIntend] = useStripePaymentIntendMutation();
+
+  const stripePaymentHandler = async () => {
+    const price =
+      invoice_no?.application?.tuition_fee_auto_deduct === true
+        ? invoice_no?.application?.course?.after_emgs_fee -
+          (invoice_no?.application?.incentive_amount *
+            invoice_no?.application?.agent_package_parcentage) /
+            100
+        : invoice_no?.application?.course?.after_emgs_fee;
+    const application_id = invoice_no?.application?._id;
+    const course_id = invoice_no?.application?.course?._id;
+    const report_id = invoice_no?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`;
+
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
+
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_tuition_fee';
+    const payment_method = 'stripe'; // ✅ Set this to 'stripe'
+
+    try {
+      const response = await stripePaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      // If using redirect to Stripe Checkout
+      if (response?.success && response?.data?.gatewayPageURL) {
+        window.location.href = response.data.gatewayPageURL;
+      } else {
+        toast.error('Unable to initiate Stripe payment');
       }
     } catch (error) {
       toast.error(error?.data?.message || 'Something went wrong');
@@ -565,15 +637,26 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                             </div>
                           )}
 
-                          <button
-                            onClick={() => {
-                              sslCommerzPaymentHandler(); // Call the payment function
-                              //   close(); // Close the modal
-                            }}
-                            className="d-flex justify-content-end button mt-5 px-5 py-2"
-                          >
-                            Pay Tuition Fee
-                          </button>
+                          <div className="d-flex gap-2">
+                            {sslCommerzSettings?.data.status === 'active' && (
+                              <button
+                                onClick={sslCommerzPaymentHandler}
+                                className="d-flex justify-content-end button mt-5 px-5 py-2"
+                              >
+                                <i className="ri-bank-card-fill me-1"></i> Pay
+                                BY SSLCOMMERZE
+                              </button>
+                            )}
+                            {stripeSettings?.data.status === 'active' && (
+                              <button
+                                onClick={stripePaymentHandler}
+                                className="d-flex justify-content-end button mt-5 px-5 py-2"
+                              >
+                                <i className="ri-bank-card-fill me-1"></i> Pay
+                                BY STRIPE
+                              </button>
+                            )}
+                          </div>
                         </>
                       )}
                     </div>
@@ -604,13 +687,6 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                       <i className="ri-printer-line align-bottom me-2"></i>{' '}
                       Print
                     </button>
-                    {/* <button
-                      onClick={generatePDF}
-                      className="button text-light px-3 p-2 me-3 no-print"
-                    >
-                      <i className="ri-download-2-line align-bottom me-2"></i>
-                      Download
-                    </button> */}
                     <button
                       onClick={() => close()}
                       className="d-flex justify-content-end button px-5 py-2 "
