@@ -3,7 +3,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetSingleStudentApplicationQuery } from '@/slice/services/agent/agentApplicationService';
 import DataObjectComponent from '@/utils/common/data';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
 const AppliedUniversityPage = ({ id }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -15,6 +15,14 @@ const AppliedUniversityPage = ({ id }) => {
     useGetSingleStudentApplicationQuery(id, {
       skip: !id,
     });
+
+  const sortedApplications = useMemo(() => {
+    return applicationData?.data?.slice()?.sort((a, b) => {
+      const dateA = new Date(b.updatedAt || b.createdAt);
+      const dateB = new Date(a.updatedAt || a.createdAt);
+      return dateA - dateB;
+    });
+  }, [applicationData]);
 
   return (
     <>
@@ -34,7 +42,7 @@ const AppliedUniversityPage = ({ id }) => {
                       <CardBody className="mh-100">
                         <CommonTableComponent
                           headers={[...studentApplicationsHeaders]}
-                          data={applicationData?.data || []}
+                          data={sortedApplications || []}
                           currentPage={currentPage}
                           setCurrentPage={setCurrentPage}
                           perPageData={perPageData}

@@ -151,9 +151,17 @@ const AllStudentApplications = ({
     ),
   };
 
-  const filteredData = applicationData?.data?.filter(
-    (item) => item?.emgs_payment_status !== 'pending'
-  );
+  // const filteredData = applicationData?.data?.filter(
+  //   (item) => item?.emgs_payment_status !== 'pending'
+  // );
+
+  const filteredData = applicationData?.data
+    ?.slice() // clone the array to avoid mutating original data
+    ?.sort((a, b) => {
+      const dateA = new Date(b.updatedAt || b.createdAt);
+      const dateB = new Date(a.updatedAt || a.createdAt);
+      return dateA - dateB;
+    });
 
   const MainContent = (
     <>
