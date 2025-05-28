@@ -442,30 +442,24 @@ const InvoicesForEmgs = ({
                 <Col xl={12} className="d-print-none">
                   <div className="d-flex justify-content-between mb-5">
                     {payButton === 'yes' && (
-                      <button
-                        onClick={sslCommerzPaymentHandler}
-                        className="d-flex justify-content-end button mt-5 px-5 py-2"
-                      >
-                        <i className="ri-bank-card-fill me-1"></i> Pay EMGS Now
-                      </button>
-                    )}
-                    <button
-                      onClick={printInvoice}
-                      className="d-flex justify-content-end button mt-5 px-5 py-2"
-                    >
-                      <i className="ri-printer-fill me-1"></i> Print Invoice
-                    </button>
-                  </div>
-                </Col>
-                <Col xl={12} className="d-print-none">
-                  <div className="d-flex justify-content-between mb-5">
-                    {payButton === 'yes' && (
-                      <button
-                        onClick={stripePaymentHandler}
-                        className="d-flex justify-content-end button mt-5 px-5 py-2"
-                      >
-                        <i className="ri-bank-card-fill me-1"></i> Pay EMGS Now
-                      </button>
+                      <>
+                        <div className="d-flex gap-2">
+                          <button
+                            onClick={sslCommerzPaymentHandler}
+                            className="d-flex justify-content-end button mt-5 px-5 py-2"
+                          >
+                            <i className="ri-bank-card-fill me-1"></i> Pay BY
+                            SSLCOMMERZE
+                          </button>
+                          <button
+                            onClick={stripePaymentHandler}
+                            className="d-flex justify-content-end button mt-5 px-5 py-2"
+                          >
+                            <i className="ri-bank-card-fill me-1"></i> Pay BY
+                            STRIPE
+                          </button>
+                        </div>
+                      </>
                     )}
                     <button
                       onClick={printInvoice}
