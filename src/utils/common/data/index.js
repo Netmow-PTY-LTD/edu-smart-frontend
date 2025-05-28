@@ -1159,31 +1159,40 @@ const DataObjectComponent = () => {
         </>
       ),
     },
-    {
-      title: 'Tuition',
-      key: 'tuition_fee_payment_status',
-      render: (item) => (
-        <>
-          <span
-            className={` fw-medium fs-3 text-capitalize badge ${item?.tuition_fee_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.tuition_fee_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
-          >
-            {item?.tuition_fee_payment_status ?? '-'}
-          </span>
-          <Link
-          target='_blank'
-          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
-            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="View Invoice"
-          >
-            <i className="ri-receipt-fill"></i>
-            </Link>
+{
+  title: 'Tuition',
+  key: 'tuition_fee_payment_status',
+  render: (item) => (
+    <>
+      <span
+        className={`fw-medium fs-3 text-capitalize badge ${
+          item?.tuition_fee_payment_status === 'paid'
+            ? 'bg-success-subtle text-success'
+            : item?.tuition_fee_payment_status === 'pending'
+            ? 'bg-warning-subtle text-warning'
+            : ''
+        }`}
+      >
+        {item?.tuition_fee_payment_status ?? '-'}
+      </span>
 
-        </>
-      ),
-    },
-
+      {item?.emgs_payment_status === 'paid' && (
+        <Link
+          target="_blank"
+          href={`/dashboard/${userInfoData?.data?.role
+            .split('_')
+            .join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
+          className="ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          title="View Invoice"
+        >
+          <i className="ri-receipt-fill"></i>
+        </Link>
+      )}
+    </>
+  ),
+},
     {
       title: 'Pickup',
       key: 'pickup_status',

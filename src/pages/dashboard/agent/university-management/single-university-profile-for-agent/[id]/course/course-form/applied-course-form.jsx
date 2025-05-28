@@ -19,6 +19,51 @@ const AppliedCourseForm = ({
 }) => {
   console.log('documentRequirements', documentRequirements);
 
+  // const handleAddSubmit = async (values, { setSubmitting }, actionType) => {
+  //   setSubmitting(true);
+  //   setButtonType(actionType);
+
+  //   const addData = {
+  //     course_id: getSingleCourseData?.data?._id,
+  //     student_id: Cookies.get('selectedStudent') || null,
+  //     applied_by: userInfodata?.data?._id,
+  //     payment_price: getSingleCourseData?.data?.price,
+  //     payment_gst: getSingleCourseData?.data?.gst,
+  //     payment_status: 'pending',
+  //     ...values,
+  //   };
+
+  //   const finalData = new FormData();
+  //   for (const [key, value] of Object.entries(addData)) {
+  //     if (Array.isArray(value)) {
+  //       value.forEach((file, index) => {
+  //         finalData.append(`${key}[${index}]`, file);
+  //       });
+  //     } else {
+  //       finalData.append(key, value);
+  //     }
+  //   }
+
+  //   try {
+  //     const createApplicationInfo = await createApplication(finalData).unwrap();
+  //     console.log('CreateApplicationStatus', createApplicationInfo);
+
+  //     if (createApplicationInfo?.success) {
+  //       toast.success('Application Submitted successfully!');
+
+  //       // Delay the navigation by 2 seconds so user sees the toast
+  //       setTimeout(() => {
+  //         router.push('/dashboard/student/applications');
+  //       }, 2000); // 2000ms = 2 seconds
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during submission:', error);
+  //     toast.error('Failed to create application.');
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
   return (
     <Card>
       <div className="card-header">

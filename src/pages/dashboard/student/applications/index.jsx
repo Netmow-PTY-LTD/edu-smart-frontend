@@ -224,9 +224,15 @@ export default function StudentApplications() {
     ),
   };
 
-  const filteredData = applicationData?.data?.filter(
-    (item) => item?.emgs_payment_status !== 'pending'
-  );
+  // const filteredData = applicationData?.data?.filter(
+  //   (item) => item?.emgs_payment_status !== 'pending'
+  // );
+
+  const filteredData = [...(applicationData?.data || [])].sort((a, b) => {
+    const aDate = new Date(a.updatedAt || a.createdAt);
+    const bDate = new Date(b.updatedAt || b.createdAt);
+    return bDate - aDate; // Descending
+  });
 
   return (
     <Layout>

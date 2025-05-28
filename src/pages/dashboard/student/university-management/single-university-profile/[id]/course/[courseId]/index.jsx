@@ -17,7 +17,7 @@ import {
   useGetsingleUniversityQuery,
 } from '@/slice/services/public/university/publicUniveristyService';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import DOMPurify from 'dompurify';
 
@@ -41,17 +41,15 @@ const SingleUniversityCourse = () => {
   const router = useRouter();
   const [open, setOpen] = useState('1');
   const [step, setStep] = useState(1);
-  const [buttonType, setButtonType] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const university_id = router.query.id;
   const course_id = router.query.courseId;
+  const timeoutRef = useRef(null);
 
   const { data: userInfoData, isLoading: userInfoLoading } =
     useGetUserInfoQuery();
-
-  const { refetch: applicationDataRefetch } = useGetApplicationsQuery();
-  const [deleteApplication] = useDeleteApplicationMutation();
 
   const {
     data: checkApplicationIsValidData,
@@ -68,41 +66,55 @@ const SingleUniversityCourse = () => {
   );
 
   useEffect(() => {
-    if (router?.query?.payment_status && router?.query?.transaction_id) {
-      ('');
-    } else if (checkApplicationIsValidData) {
-      const status = checkApplicationIsValidData.data.status;
+    // Clear previous timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
 
-      if (status === 'rejected') {
-        toast.success(
-          `You are eligible to apply again. Current status: ${checkApplicationIsValidData.data.status}`
-        );
-      } else {
-        if (
-          status === 'pending' &&
-          checkApplicationIsValidData.data?.emgs_payment_status === 'pending'
-        ) {
-          deleteApplication(checkApplicationIsValidData.data?._id)
-            .then(() => {
-              checkApplicationIsValidRefetch();
-            })
-            .catch((error) => {
-              // toast.error('Failed to delete application');
-            });
+    // Disable the button immediately on change
+    setIsButtonDisabled(true);
+
+    // Debounce logic: wait for 1 second before API call
+    timeoutRef.current = setTimeout(async () => {
+      if (!userInfoData?.data?._id || !course_id) {
+        setIsButtonDisabled(true);
+        return;
+      }
+
+      try {
+        const result = await checkApplicationIsValidRefetch({
+          course_id,
+          student_id: userInfoData?.data?._id,
+        }).unwrap();
+
+        if (result.data?.status === 'rejected') {
+          toast.success(
+            `This student is eligible to apply again. Current status: rejected`
+          );
+          setIsButtonDisabled(false);
         } else {
           toast.error(
-            `Application Already Exists. Current status: ${checkApplicationIsValidData.data.status}`
+            `Application already exists. Current status: ${result?.data?.status}`
           );
+          setIsButtonDisabled(true);
+        }
+      } catch (err) {
+        const errorMessage = err?.data?.message || 'Something went wrong';
+        if (errorMessage === 'Application not found') {
+          // toast.success(`No existing application. Student can apply.`);
+          setIsButtonDisabled(false);
+        } else {
+          toast.error(`Error: ${errorMessage}`);
+          setIsButtonDisabled(true);
         }
       }
-    }
-  }, [
-    checkApplicationIsValidData,
-    checkApplicationIsValidRefetch,
-    deleteApplication,
-    router?.query?.payment_status,
-    router?.query?.transaction_id,
-  ]);
+    }, 1000);
+
+    // Cleanup on unmount or when selectedStudent changes
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
+  }, [course_id, userInfoData?.data?._id, checkApplicationIsValidRefetch]);
 
   const {
     data: getSingleUniversityDataForStudent,
@@ -120,96 +132,8 @@ const SingleUniversityCourse = () => {
     { data: createApplicationData, isLoading: createApplicationIsLoading },
   ] = useCreateApplicationMutation();
 
-  const [updateApplicationStatus, { data: updateApplicationStatusData }] =
-    useUpdateApplicationStatusMutation();
-
-  useEffect(() => {
-    if (router?.query?.payment_status === 'failed') {
-      toast.error('Payment Failed');
-    }
-    if (router?.query?.payment_status === 'cancel') {
-      toast.error('Payment Cancelled');
-    }
-  }, [router?.query?.payment_status]);
-
-  useEffect(() => {
-    if (university_id) {
-      getSingleUniversityForStudentRefetch(university_id);
-    }
-  }, [getSingleUniversityForStudentRefetch, university_id]);
-
-  useEffect(() => {
-    if (updateApplicationStatusData?.success) {
-      toast.success('Application Payment successful');
-      applicationDataRefetch();
-      router.push(`/dashboard/student/applications`);
-    } else if (updateApplicationStatusData?.error) {
-      toast.error('Application failed');
-    }
-  }, [
-    applicationDataRefetch,
-    router,
-    updateApplicationStatusData?.error,
-    updateApplicationStatusData?.success,
-  ]);
-
-  useEffect(() => {
-    if (createApplicationData?.success) {
-      if (buttonType === 'Proceed to Payment') {
-        router.push(
-          `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
-        );
-      } else {
-        applicationDataRefetch();
-        router.push(
-          `/dashboard/student/university-management/single-university-profile/${university_id}/course/${course_id}/payment-options?application_id=${createApplicationData?.data?._id}`
-        );
-      }
-    }
-  }, [
-    applicationDataRefetch,
-    buttonType,
-    course_id,
-    createApplicationData?.data?._id,
-    createApplicationData?.message,
-    createApplicationData?.success,
-    router,
-    university_id,
-  ]);
-
-  useEffect(() => {
-    const requestToCreateApplication = async (
-      transaction_id,
-      application_id
-    ) => {
-      try {
-        updateApplicationStatus({
-          status: 'paid',
-          transaction_id,
-          application_id,
-          transaction_reason: 'application_emgs',
-          payment_method: 'sslcommerz',
-        }).unwrap();
-      } catch (error) {
-        //
-      }
-    };
-
-    if (
-      router?.query?.payment_status === 'success' &&
-      router?.query?.transaction_id &&
-      userInfoData?.data?._id
-    ) {
-      const transaction_id = router?.query?.transaction_id;
-      const application_id = router?.query?.application_id;
-      toast.success('Payment Successfull');
-      requestToCreateApplication(transaction_id, application_id);
-    }
-  }, [router, updateApplicationStatus, userInfoData?.data?._id]);
-
   const handleAddSubmit = async (values, { setSubmitting }, actionType) => {
     setSubmitting(true);
-    setButtonType(actionType);
 
     const addData = {
       course_id: getSingleCourseData?.data?._id,
@@ -232,11 +156,21 @@ const SingleUniversityCourse = () => {
         finalData.append(key, value);
       }
     }
-
     try {
-      createApplication(finalData);
+      const createApplicationInfo = await createApplication(finalData).unwrap();
+      console.log('CreateApplicationStatus', createApplicationInfo);
+
+      if (createApplicationInfo?.success) {
+        toast.success('Application Submitted successfully!');
+
+        // Delay the navigation by 2 seconds so user sees the toast
+        setTimeout(() => {
+          router.push('/dashboard/student/applications');
+        }, 2000); // 2000ms = 2 seconds
+      }
     } catch (error) {
       console.error('Error during submission:', error);
+      toast.error('Failed to create application.');
     } finally {
       setSubmitting(false);
     }
@@ -330,29 +264,6 @@ const SingleUniversityCourse = () => {
                                 ? getSingleCourseData?.data?.name
                                 : 'Bachelor in Accounting (Hons.)'}
                             </h2>
-                            {/* <div className="course-description">
-                              <b className="text-secondary-alt fw-semibold fs-18">
-                                Course Description:
-                              </b>
-                              <br />
-                              {getSingleCourseData?.data?.description
-                                ? getSingleCourseData?.data?.description
-                                : `Accounting is the language of business, and accountants
-                        help business leaders make smart financial decisions.
-                        The Bachelor in Accounting (Hons) is a three-year
-                        programme that is recognised by the Malaysian Institute
-                        of Accountants, which will enable graduates with the
-                        relevant professional working experience to qualify as a
-                        Chartered Accountant Malaysia or C.A. (M). It provides
-                        students with the knowledge and skills required to
-                        become professional accountants, including digital and
-                        entrepreneurial skills. The programme is infused with
-                        A’adab©, or the values expected when one is dealing
-                        with others and the environment, which is introduced in
-                        the Halatuju 4 Program Perakaunan published by Malaysian
-                        Institute of Accountants.`}
-                            </div> */}
-
                             <div className="d-flex gap-4 flex-wrap">
                               <div className="available-seats course-act">
                                 <svg
@@ -780,25 +691,22 @@ const SingleUniversityCourse = () => {
                         </Col>
 
                         <Col lg={12}>
-                          {(checkApplicationIsValidData &&
-                            checkApplicationIsValidData.data.status ===
-                              'rejected') ||
-                          (checkApplicationIsValidError &&
-                            checkApplicationIsValidError.data.message ===
-                              'Application not found') ? (
-                            <div className="d-flex justify-content-center student-select">
-                              <div className="student-select-inner">
-                                <button
-                                  onClick={() => setStep(step + 1)}
-                                  className="button py-3 px-5"
-                                >
-                                  Continue For Apply
-                                </button>
-                              </div>
+                          <div className="d-flex justify-content-center student-select">
+                            <div className="student-select-inner">
+                              <button
+                                onClick={() => setStep(step + 1)}
+                                className="button py-3 px-5"
+                                disabled={isButtonDisabled} // ✅ Button is disabled based on state
+                                style={
+                                  isButtonDisabled
+                                    ? { cursor: 'not-allowed', opacity: 0.6 }
+                                    : {}
+                                }
+                              >
+                                Continue For Apply
+                              </button>
                             </div>
-                          ) : (
-                            ''
-                          )}
+                          </div>
                         </Col>
                       </Row>
                     </CardBody>

@@ -71,19 +71,19 @@ const ApplicationInvoiceInSuperAdmin = () => {
   );
 
   const {
-    data: getApplicationPaymentData,
-    error: getApplicationPaymentDataError,
-    isLoading: getApplicationPaymentDataLoading,
-    refetch: getApplicationPaymentDataRefetch,
-  } = useGetApplicationPaymentReportQuery();
-
-  const {
     data: singleGetApplicationData,
     isLoading: singleGetApplicationLoading,
     refetch: getSingleApplicationDataRefetch,
   } = useSingleGetApplicationQuery(applicationId, {
     skip: !applicationId,
   });
+
+  const {
+    data: getApplicationPaymentData,
+    error: getApplicationPaymentDataError,
+    isLoading: getApplicationPaymentDataLoading,
+    refetch: getApplicationPaymentDataRefetch,
+  } = useGetApplicationPaymentReportQuery();
 
   const {
     data: getSingleApplicationPaymentReportData,

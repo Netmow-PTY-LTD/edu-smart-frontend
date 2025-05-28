@@ -60,15 +60,29 @@ const AppliedCourseForm = ({
                         <div className="ps-0">
                           <Row>
                             {Array.isArray(documentRequirements) &&
-                            documentRequirements?.length > 0 ? (
-                              documentRequirements
-                                .filter((item) => item && item.title) // Filter out invalid entries
-                                .map((item, index) => {
+                            documentRequirements.length > 0 &&
+                            documentRequirements.some((item) =>
+                              item?.title?.trim()
+                            ) ? (
+                              <>
+                                {[
+                                  ...new Map(
+                                    documentRequirements
+                                      .filter(
+                                        (item) => item?.title?.trim() !== ''
+                                      )
+                                      .map((item) => [
+                                        item.document_list_id,
+                                        item,
+                                      ])
+                                  ).values(),
+                                ].map((item) => {
                                   const fieldName = item?.title
                                     ?.toLowerCase()
                                     .replace(/\s+/g, '_');
+
                                   return (
-                                    <div key={index}>
+                                    <div key={item._id}>
                                       <Field
                                         name={fieldName}
                                         component={MultipleFileUploadAcceptAll}
@@ -94,9 +108,7 @@ const AppliedCourseForm = ({
                                             )}
                                           </>
                                         }
-                                        field={{
-                                          name: fieldName,
-                                        }}
+                                        field={{ name: fieldName }}
                                         form={{ values, setFieldValue }}
                                         validate={(value) => {
                                           if (
@@ -126,33 +138,82 @@ const AppliedCourseForm = ({
                                         )}
                                     </div>
                                   );
-                                })
-                            ) : (
-                              <div>No document requirements available.</div>
-                            )}
+                                })}
 
-                            <Col md={12} xl={12}>
-                              <div className="d-flex align-items-center justify-content-center my-4 gap-3">
-                                <SubmitButton
-                                  // isSubmitting={isSubmitting}
-                                  formSubmit={'Proceed to Payment'}
-                                  onClick={async (e) => {
-                                    e.preventDefault();
-                                    const formErrors = await validateForm();
-                                    if (Object.keys(formErrors).length === 0) {
-                                      setSubmitting(true);
-                                      handleAddSubmit(values, {
-                                        setSubmitting,
-                                      });
-                                    } else {
-                                      //toast.error('Please fix the errors before proceeding.');
-                                    }
-                                  }}
-                                >
-                                  {`Proceed to Payment With EMGS Fee ${emgsfee} MYR`}
-                                </SubmitButton>
-                              </div>
-                            </Col>
+                                <Col md={12} xl={12}>
+                                  <div className="d-flex align-items-center justify-content-center my-4 gap-3">
+                                    <SubmitButton
+                                      formSubmit={'Submit Without Payment'}
+                                      onClick={() => {
+                                        const uniqueDocuments = [
+                                          ...new Map(
+                                            documentRequirements
+                                              .filter(
+                                                (item) =>
+                                                  item?.title?.trim() !== ''
+                                              )
+                                              .map((item) => [
+                                                item.document_list_id,
+                                                item,
+                                              ])
+                                          ).values(),
+                                        ];
+
+                                        const missingRequired =
+                                          uniqueDocuments.filter((item) => {
+                                            const fieldName = item.title
+                                              .toLowerCase()
+                                              .replace(/\s+/g, '_');
+                                            const value = values[fieldName];
+                                            return (
+                                              item.isRequired &&
+                                              (!value || value.length === 0)
+                                            );
+                                          });
+
+                                        if (missingRequired.length > 0) {
+                                          missingRequired.forEach((doc) => {
+                                            toast.error(
+                                              `Document required: ${doc.title}`
+                                            );
+                                          });
+                                          return;
+                                        }
+
+                                        handleAddSubmit(
+                                          values,
+                                          { setSubmitting },
+                                          'Submit Application For Review'
+                                        );
+                                      }}
+                                    >
+                                      {'Submit Application For Review'}
+                                    </SubmitButton>
+                                  </div>
+                                </Col>
+                              </>
+                            ) : (
+                              <>
+                                <Col md={12} xl={12}>
+                                  <div>No document requirements available.</div>
+
+                                  <div className="d-flex align-items-center justify-content-center my-4 gap-3">
+                                    <SubmitButton
+                                      formSubmit={'Submit Without Payment'}
+                                      onClick={() => {
+                                        handleAddSubmit(
+                                          values,
+                                          { setSubmitting },
+                                          'Submit Application For Review'
+                                        );
+                                      }}
+                                    >
+                                      {'Submit Application For Review'}
+                                    </SubmitButton>
+                                  </div>
+                                </Col>
+                              </>
+                            )}
                           </Row>
                         </div>
                       </Col>
