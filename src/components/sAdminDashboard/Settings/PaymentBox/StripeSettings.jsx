@@ -118,28 +118,28 @@ const StripeSettings = () => {
                   <Col lg={6}>
                     <PasswordField
                       name={'publishable_key_live'}
-                      label={'Stripe Live Publishable key'}
+                      label={' Live Publishable key'}
                       placeholder={'Enter Stripe Key '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
                       name={'secret_key_live'}
-                      label={'Stripe Live Secret Key'}
+                      label={' Live Secret Key'}
                       placeholder={'Enter Stripe Secret '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
                       name={'publishable_key_test'}
-                      label={'Stripe Test Publishable key'}
+                      label={' Test Publishable key'}
                       placeholder={'Enter Stripe Key '}
                     />
                   </Col>
                   <Col lg={6}>
                     <PasswordField
                       name={'secret_key_test'}
-                      label={'Stripe Test Secret Key'}
+                      label={'Test Secret Key'}
                       placeholder={'Enter Stripe Secret '}
                     />
                   </Col>
