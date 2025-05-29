@@ -4,7 +4,12 @@ import Loader from '@/components/constants/Loader/Loader';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useUpgradePackageForAgentMutation } from '@/slice/services/agent/agentEarningsService';
-import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import {
+  useSslCommerzPaymentIntendMutation,
+  useSslCommerzSettingsQuery,
+  useStripePaymentIntendMutation,
+  useStripeSettingsQuery,
+} from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useCheckCouponVerifyMutation,
@@ -59,6 +64,8 @@ const UpgradePackageInAgentdashboard = () => {
 
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const { data: allCouponData } = useGetAllActiveCouponQuery();
+  const { data: stripeSettings } = useStripeSettingsQuery();
+  const { data: sslCommerzSettings } = useSslCommerzSettingsQuery();
 
   const [
     upgradePackageForAgent,
@@ -273,6 +280,53 @@ const UpgradePackageInAgentdashboard = () => {
       }
     } catch (error) {
       toast.error('Something went wrong');
+    }
+  };
+
+  const [stripePaymentIntend] = useStripePaymentIntendMutation();
+
+  const stripePaymentHandler = async () => {
+    const price = couponAmount ? Number(couponAmount) : Number(pricePackage);
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=failed`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=failed`;
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}&renew=${renewStatus}&subsType=${subscriptionType}&discount=${(totalPricePackage - couponAmount).toFixed(2)}&totalPackAmount=${totalPricePackage ? totalPricePackage : pricePackage}`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=success&duration=${packagePaidDuration || packageDuration}&package_id=${upgradePackageId}&coupon_id=${couponId ? couponId : 'none'}&renew=${renewStatus}&subsType=${subscriptionType}&discount=${(totalPricePackage - couponAmount).toFixed(2)}&totalPackAmount=${totalPricePackage ? totalPricePackage : pricePackage}`;
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/agent/upgrade?payment_status=cancel`
+        : `https://edusmart.study/dashboard/agent/upgrade?payment_status=cancel`;
+
+    const transaction_reason = 'agent_package';
+    const package_id = upgradePackageId;
+    const currency = 'MYR';
+    const agent_package = null;
+    const payment_method = 'stripe'; // ✅ Set this to 'stripe'
+
+    try {
+      const response = await stripePaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        package_id,
+        transaction_reason,
+        currency,
+        payment_method,
+        agent_package,
+      }).unwrap();
+
+      // If using redirect to Stripe Checkout
+      if (response?.success && response?.data?.gatewayPageURL) {
+        window.location.href = response.data.gatewayPageURL;
+      } else {
+        toast.error('Unable to initiate Stripe payment');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
     }
   };
 
@@ -728,9 +782,10 @@ const UpgradePackageInAgentdashboard = () => {
                     <CardBody>
                       <div className="w-50 mx-auto">
                         <PaymentOption
-                          sslCommerzPaymentHandler={() =>
-                            sslCommerzPaymentHandler()
-                          }
+                          sslCommerzPaymentHandler={sslCommerzPaymentHandler}
+                          stripePaymentHandler={stripePaymentHandler}
+                          sslCommerzSettings={sslCommerzSettings}
+                          stripeSettings={stripeSettings}
                         />
                       </div>
                     </CardBody>
