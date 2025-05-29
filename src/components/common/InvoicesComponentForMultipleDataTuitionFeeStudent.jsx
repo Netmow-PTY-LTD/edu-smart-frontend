@@ -13,8 +13,14 @@ import {
   Table,
 } from 'reactstrap';
 import LoaderSpiner from '../constants/Loader/LoaderSpiner';
-import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import {
+  useSslCommerzPaymentIntendMutation,
+  useSslCommerzSettingsQuery,
+  useStripePaymentIntendMutation,
+  useStripeSettingsQuery,
+} from '@/slice/services/common/paymentService';
 import { userDummyImage } from '@/utils/common/data';
+import { useCustomData } from '@/utils/common/data/customeData';
 
 const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   addressData,
@@ -31,6 +37,10 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
   loading,
   invoice_no,
 }) => {
+  const customData = useCustomData();
+  const { data: stripeSettings } = useStripeSettingsQuery();
+  const { data: sslCommerzSettings } = useSslCommerzSettingsQuery();
+
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
 
   const sslCommerzPaymentHandler = async () => {
@@ -41,16 +51,16 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
 
     const faild_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=failed&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=faild&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=faild&report_id=${report_id}`;
     const success_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=success&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=success&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
     const cancel_url =
       process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
-        ? `http://localhost:3005/dashboard/student/application-invoices?payment_status=cancel&report_id=${report_id}`
-        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/student/application-invoices?payment_status=cancel&report_id=${report_id}`;
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
 
     const currency = 'MYR';
     const transaction_reason = 'application_tuition_fee';
@@ -78,7 +88,58 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
       toast.error(error?.data?.message || 'Something went wrong');
     }
   };
-  console.log(logoData);
+
+  const [stripePaymentIntend] = useStripePaymentIntendMutation();
+
+  const stripePaymentHandler = async () => {
+    const price = invoice_no?.application?.course?.after_emgs_fee || 0;
+    const application_id = invoice_no?.application?._id;
+    const course_id = invoice_no?.application?.course?._id;
+    const report_id = invoice_no?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`;
+
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
+
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_tuition_fee';
+    const payment_method = 'stripe'; // ✅ Set this to 'stripe'
+
+    try {
+      const response = await stripePaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      // If using redirect to Stripe Checkout
+      if (response?.success && response?.data?.gatewayPageURL) {
+        window.location.href = response.data.gatewayPageURL;
+      } else {
+        toast.error('Unable to initiate Stripe payment');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
   return (
     <>
       <Modal isOpen={open} centered fullscreen>
@@ -128,15 +189,38 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                           <p className="text-muted  mb-1">
                             {addressData ? (
                               <>
-                                {addressData?.address ||
-                                  addressData?.address_line_1}{' '}
-                                {addressData?.address2 ||
-                                  addressData?.address_line_2}{' '}
-                                {addressData?.city} {addressData?.state}{' '}
-                                {addressData?.zip === 0 ? '' : addressData?.zip}{' '}
-                                {addressData?.country !== 'undefined'
-                                  ? addressData?.country
-                                  : ''}
+                                {(addressData?.address ||
+                                  addressData?.address_line_1) && (
+                                  <>
+                                    {addressData?.address ||
+                                      addressData?.address_line_1}
+                                    <br />
+                                  </>
+                                )}
+
+                                {(addressData?.address2 ||
+                                  addressData?.address_line_2) && (
+                                  <>
+                                    {addressData?.address2 ||
+                                      addressData?.address_line_2}
+                                    <br />
+                                  </>
+                                )}
+
+                                {addressData?.city && <>{addressData?.city}</>}
+
+                                {addressData?.state && (
+                                  <>{addressData?.state}</>
+                                )}
+
+                                {addressData?.zip !== 0 && addressData?.zip && (
+                                  <>{addressData?.zip}</>
+                                )}
+
+                                {addressData?.country &&
+                                  addressData?.country !== 'undefined' && (
+                                    <>{addressData?.country}</>
+                                  )}
                               </>
                             ) : (
                               ''
@@ -163,18 +247,41 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                         <p className="text-muted  mb-1">
                           {billingAddressData ? (
                             <>
-                              {billingAddressData?.address ||
-                                billingAddressData?.address_line_1}{' '}
-                              {billingAddressData?.address2 ||
-                                billingAddressData?.address_line_2}{' '}
-                              {billingAddressData?.city}{' '}
-                              {billingAddressData?.state}{' '}
-                              {billingAddressData?.zip === 0
-                                ? ''
-                                : billingAddressData?.zip}{' '}
-                              {billingAddressData?.country !== 'undefined'
-                                ? billingAddressData?.country
-                                : ''}
+                              {(billingAddressData?.address ||
+                                billingAddressData?.address_line_1) && (
+                                <>
+                                  {billingAddressData?.address ||
+                                    billingAddressData?.address_line_1}
+                                  <br />
+                                </>
+                              )}
+
+                              {(billingAddressData?.address2 ||
+                                billingAddressData?.address_line_2) && (
+                                <>
+                                  {billingAddressData?.address2 ||
+                                    billingAddressData?.address_line_2}
+                                  <br />
+                                </>
+                              )}
+
+                              {billingAddressData?.city && (
+                                <>{billingAddressData?.city}</>
+                              )}
+
+                              {billingAddressData?.state && (
+                                <>{billingAddressData?.state}</>
+                              )}
+
+                              {billingAddressData?.zip !== 0 &&
+                                billingAddressData?.zip && (
+                                  <>{billingAddressData?.zip}</>
+                                )}
+
+                              {billingAddressData?.country &&
+                                billingAddressData?.country !== 'undefined' && (
+                                  <>{billingAddressData?.country}</>
+                                )}
                             </>
                           ) : (
                             ''
@@ -365,6 +472,7 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
 
                   <div className="border-top border-top-dashed mx-5 my-5 fs-2">
                     <div className="invoicetable">
+                      {/* Course Fee */}
                       <div className="table-row">
                         <div className="tc mt-3">
                           Course Fee: <br />
@@ -373,23 +481,26 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                           </span>
                         </div>
                         <div className="tc mt-3">
-                          {' '}
                           {invoice_no?.application?.course?.after_emgs_fee +
                             invoice_no?.application?.course?.emgs_fee}{' '}
                           {currency}
                         </div>
                       </div>
+
+                      {/* EMGS Fee */}
                       <div className="table-row">
                         <div className="tc">Emgs Fee:</div>
                         <div className="tc">
-                          {' '}
                           - {invoice_no?.application?.course?.emgs_fee}{' '}
                           {currency}
                         </div>
                       </div>
+
+                      {/* Tuition Paid */}
                       {invoice_no?.application?.tuition_fee_payment_status ===
                       'paid' ? (
                         <>
+                          {/* Balance Payable */}
                           <div className="table-row border-top border-top-dashed mt-3 fs-2">
                             <div className="tc mt-3">
                               Balance Payable: <br />
@@ -398,26 +509,21 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                               </span>
                             </div>
                             <div className="tc mt-3">
-                              {' '}
                               -{' '}
-                              {
-                                invoice_no?.application?.course?.after_emgs_fee
-                              }{' '}
+                              {invoice_no?.application?.course?.after_emgs_fee}{' '}
                               {currency}
                             </div>
                           </div>
+
+                          {/* Due Amount */}
                           <div className="table-row border-top border-top-dashed mt-3 fs-2">
-                            <div className="tc mt-3">
-                              Due Amount: <br />
-                            </div>
-                            <div className="tc mt-3 text-end">
-                              {' '}
-                              {'0'} {currency}
-                            </div>
+                            <div className="tc mt-3">Due Amount:</div>
+                            <div className="tc mt-3 text-end">0 {currency}</div>
                           </div>
                         </>
                       ) : (
                         <>
+                          {/* Balance Payable */}
                           <div className="table-row border-top border-top-dashed mt-3 fs-2">
                             <div className="tc mt-3">
                               Balance Payable: <br />
@@ -426,24 +532,33 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                               </span>
                             </div>
                             <div className="tc mt-3">
-                              {' '}
-                              {
-                                invoice_no?.application?.course?.after_emgs_fee
-                              }{' '}
+                              {invoice_no?.application?.course?.after_emgs_fee}{' '}
                               {currency}
                             </div>
                           </div>
-                          {invoice_no?.application?.status === 'rejected' ? (
-                            ''
-                          ) : (
-                            <button
-                              onClick={() => {
-                                sslCommerzPaymentHandler();
-                              }}
-                              className="d-flex justify-content-end button mt-5 px-5 py-2"
-                            >
-                              Pay Tuition Fee
-                            </button>
+
+                          {/* Payment buttons */}
+                          {invoice_no?.application?.status !== 'rejected' && (
+                            <div className="d-flex gap-2 mt-5">
+                              {sslCommerzSettings?.data.status === 'active' && (
+                                <button
+                                  onClick={sslCommerzPaymentHandler}
+                                  className="d-flex justify-content-end button px-5 py-2"
+                                >
+                                  <i className="ri-bank-card-fill me-1"></i> Pay
+                                  BY SSLCOMMERZE
+                                </button>
+                              )}
+                              {stripeSettings?.data.status === 'active' && (
+                                <button
+                                  onClick={stripePaymentHandler}
+                                  className="d-flex justify-content-end button px-5 py-2"
+                                >
+                                  <i className="ri-bank-card-fill me-1"></i> Pay
+                                  BY STRIPE
+                                </button>
+                              )}
+                            </div>
                           )}
                         </>
                       )}
@@ -455,14 +570,36 @@ const InvoicesComponentForMultipleDataTuitionFeeStudent = ({
                 <Col xl={12}>
                   <div className="d-flex align-items-center justify-content-between mb-5">
                     {payButton === 'yes' ? (
-                      <button
-                        onClick={goToPay}
-                        className="button text-light px-3 p-2 me-3 no-print"
-                        id="invoicepaynow"
-                      >
-                        <i className="ri-bank-card-fill align-bottom me-1"></i>
-                        Pay Now
-                      </button>
+                      // <button
+                      //   onClick={goToPay}
+                      //   className="button text-light px-3 p-2 me-3 no-print"
+                      //   id="invoicepaynow"
+                      // >
+                      //   <i className="ri-bank-card-fill align-bottom me-1"></i>
+                      //   Pay Now
+                      // </button>
+                      <>
+                        <div className="d-flex gap-2">
+                          {sslCommerzSettings?.data.status === 'active' && (
+                            <button
+                              onClick={sslCommerzPaymentHandler}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              <i className="ri-bank-card-fill me-1"></i> Pay BY
+                              SSLCOMMERZE
+                            </button>
+                          )}
+                          {stripeSettings?.data.status === 'active' && (
+                            <button
+                              onClick={stripePaymentHandler}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              <i className="ri-bank-card-fill me-1"></i> Pay BY
+                              STRIPE
+                            </button>
+                          )}
+                        </div>
+                      </>
                     ) : (
                       ''
                     )}

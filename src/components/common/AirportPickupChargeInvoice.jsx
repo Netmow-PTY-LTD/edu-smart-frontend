@@ -1,5 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
+import {
+  useSslCommerzPaymentIntendMutation,
+  useSslCommerzSettingsQuery,
+  useStripePaymentIntendMutation,
+  useStripeSettingsQuery,
+} from '@/slice/services/common/paymentService';
 import { useCustomData } from '@/utils/common/data/customeData';
 import Image from 'next/image';
 import React from 'react';
@@ -31,6 +36,8 @@ const AirportPickupChargeInvoice = ({
 }) => {
   const [sslCommerzPaymentIntend] = useSslCommerzPaymentIntendMutation();
   const customData = useCustomData();
+  const { data: stripeSettings } = useStripeSettingsQuery();
+  const { data: sslCommerzSettings } = useSslCommerzSettingsQuery();
 
   const sslCommerzPaymentHandler = async () => {
     const price = invoice_no?.application?.airport_pickup_charge;
@@ -72,6 +79,57 @@ const AirportPickupChargeInvoice = ({
         window.location.href = response?.data?.gatewayPageURL;
       } else {
         toast.error('Payment failed');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || 'Something went wrong');
+    }
+  };
+
+  const [stripePaymentIntend] = useStripePaymentIntendMutation();
+
+  const stripePaymentHandler = async () => {
+    const price = invoice_no?.application?.airport_pickup_charge;
+    const application_id = invoice_no?.application?._id;
+    const course_id = invoice_no?.application?.course?._id;
+    const report_id = invoice_no?._id;
+
+    const faild_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=failed&report_id=${report_id}`;
+
+    const success_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=success&report_id=${report_id}`;
+
+    const cancel_url =
+      process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development'
+        ? `http://localhost:3005/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`
+        : `https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData?.paneltext}/application-invoices?payment_status=cancel&report_id=${report_id}`;
+
+    const currency = 'MYR';
+    const transaction_reason = 'application_airport_pickup_charge';
+    const payment_method = 'stripe'; // ✅ Set this to 'stripe'
+
+    try {
+      const response = await stripePaymentIntend({
+        price,
+        faild_url,
+        success_url,
+        cancel_url,
+        course_id,
+        currency,
+        application_id,
+        transaction_reason,
+        payment_method,
+      }).unwrap();
+
+      // If using redirect to Stripe Checkout
+      if (response?.success && response?.data?.gatewayPageURL) {
+        window.location.href = response.data.gatewayPageURL;
+      } else {
+        toast.error('Unable to initiate Stripe payment');
       }
     } catch (error) {
       toast.error(error?.data?.message || 'Something went wrong');
@@ -127,15 +185,38 @@ const AirportPickupChargeInvoice = ({
                           <p className="text-muted  mb-1">
                             {addressData ? (
                               <>
-                                {addressData?.address ||
-                                  addressData?.address_line_1}{' '}
-                                {addressData?.address2 ||
-                                  addressData?.address_line_2}{' '}
-                                {addressData?.city} {addressData?.state}{' '}
-                                {addressData?.zip === 0 ? '' : addressData?.zip}{' '}
-                                {addressData?.country !== 'undefined'
-                                  ? addressData?.country
-                                  : ''}
+                                {(addressData?.address ||
+                                  addressData?.address_line_1) && (
+                                  <>
+                                    {addressData?.address ||
+                                      addressData?.address_line_1}
+                                    <br />
+                                  </>
+                                )}
+
+                                {(addressData?.address2 ||
+                                  addressData?.address_line_2) && (
+                                  <>
+                                    {addressData?.address2 ||
+                                      addressData?.address_line_2}
+                                    <br />
+                                  </>
+                                )}
+
+                                {addressData?.city && <>{addressData?.city} </>}
+
+                                {addressData?.state && (
+                                  <>{addressData?.state} </>
+                                )}
+
+                                {addressData?.zip !== 0 && addressData?.zip && (
+                                  <>{addressData?.zip}</>
+                                )}
+
+                                {addressData?.country &&
+                                  addressData?.country !== 'undefined' && (
+                                    <>{addressData?.country}</>
+                                  )}
                               </>
                             ) : (
                               ''
@@ -162,18 +243,41 @@ const AirportPickupChargeInvoice = ({
                         <p className="text-muted  mb-1">
                           {billingAddressData ? (
                             <>
-                              {billingAddressData?.address ||
-                                billingAddressData?.address_line_1}{' '}
-                              {billingAddressData?.address2 ||
-                                billingAddressData?.address_line_2}{' '}
-                              {billingAddressData?.city}{' '}
-                              {billingAddressData?.state}{' '}
-                              {billingAddressData?.zip === 0
-                                ? ''
-                                : billingAddressData?.zip}{' '}
-                              {billingAddressData?.country !== 'undefined'
-                                ? billingAddressData?.country
-                                : ''}
+                              {(billingAddressData?.address ||
+                                billingAddressData?.address_line_1) && (
+                                <>
+                                  {billingAddressData?.address ||
+                                    billingAddressData?.address_line_1}
+                                  <br />
+                                </>
+                              )}
+
+                              {(billingAddressData?.address2 ||
+                                billingAddressData?.address_line_2) && (
+                                <>
+                                  {billingAddressData?.address2 ||
+                                    billingAddressData?.address_line_2}
+                                  <br />
+                                </>
+                              )}
+
+                              {billingAddressData?.city && (
+                                <>{billingAddressData?.city} </>
+                              )}
+
+                              {billingAddressData?.state && (
+                                <>{billingAddressData?.state} </>
+                              )}
+
+                              {billingAddressData?.zip !== 0 &&
+                                billingAddressData?.zip && (
+                                  <>{billingAddressData?.zip} </>
+                                )}
+
+                              {billingAddressData?.country &&
+                                billingAddressData?.country !== 'undefined' && (
+                                  <>{billingAddressData?.country}</>
+                                )}
                             </>
                           ) : (
                             ''
@@ -364,14 +468,36 @@ const AirportPickupChargeInvoice = ({
                     customData?.paneltext === 'student') &&
                     invoice_no?.application
                       ?.airport_pickup_charge_payment_status === 'pending' && (
-                      <div className="border-top border-top-dashed mx-5 my-5 fs-2">
-                        <button
-                          onClick={sslCommerzPaymentHandler}
-                          className="d-flex justify-content-end button mt-5 px-5 py-2"
-                        >
-                          Pay Pickup Charge
-                        </button>
-                      </div>
+                      // <div className="border-top border-top-dashed mx-5 my-5 fs-2">
+                      //   <button
+                      //     onClick={sslCommerzPaymentHandler}
+                      //     className="d-flex justify-content-end button mt-5 px-5 py-2"
+                      //   >
+                      //     Pay Pickup Charge
+                      //   </button>
+                      // </div>
+                      <>
+                        <div className="d-flex gap-2">
+                          {sslCommerzSettings?.data.status === 'active' && (
+                            <button
+                              onClick={sslCommerzPaymentHandler}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              <i className="ri-bank-card-fill me-1"></i> Pay BY
+                              SSLCOMMERZE
+                            </button>
+                          )}
+                          {stripeSettings?.data.status === 'active' && (
+                            <button
+                              onClick={stripePaymentHandler}
+                              className="d-flex justify-content-end button mt-5 px-5 py-2"
+                            >
+                              <i className="ri-bank-card-fill me-1"></i> Pay BY
+                              STRIPE
+                            </button>
+                          )}
+                        </div>
+                      </>
                     )}
                 </Card>
 

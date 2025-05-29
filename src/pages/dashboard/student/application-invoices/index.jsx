@@ -298,6 +298,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
         id: query.application_id,
         paid_amount: query.paid_amount,
       });
+      applicationDataRefetch();
     }
     if (query.payment_status === 'failed') {
       toast.error('Payment Failed');
