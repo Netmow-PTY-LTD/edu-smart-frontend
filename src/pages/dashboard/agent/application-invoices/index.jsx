@@ -303,8 +303,9 @@ const ApplicationInvoiceInSuperAdmin = () => {
         id: query.application_id,
         paid_amount: query.paid_amount,
       });
+      applicationDataRefetch();
     }
-  }, [query, updateApplicationStatus]);
+  }, [applicationDataRefetch, query, updateApplicationStatus]);
 
   useEffect(() => {
     if (!toastShown && (updateApplicationStatusData || error)) {
@@ -314,6 +315,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
       if (query.transaction_reason === 'application_tuition_fee') {
         setOpenInvoiceModalTuition(true);
       }
+      applicationDataRefetch();
       getApplicationPaymentDataRefetch();
       setApplicationId(query.report_id);
 
@@ -328,6 +330,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
       setToastShown(true);
     }
   }, [
+    applicationDataRefetch,
     error,
     getApplicationPaymentDataRefetch,
     getSingleApplicationPaymentReportDataRefetch,

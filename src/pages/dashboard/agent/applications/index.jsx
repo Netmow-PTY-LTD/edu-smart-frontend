@@ -91,6 +91,9 @@ export default function StudentApplications() {
     if (router?.query?.payment_status === 'cancel') {
       toast.error('Payment Cancelled');
     }
+    if (router?.query?.application_status === 'submitted') {
+      applicationDataRefetch();
+    }
   }, [router?.query?.payment_status]);
 
   useEffect(() => {

@@ -236,15 +236,38 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                           <p className="text-muted  mb-1">
                             {addressData ? (
                               <>
-                                {addressData?.address ||
-                                  addressData?.address_line_1}{' '}
-                                {addressData?.address2 ||
-                                  addressData?.address_line_2}{' '}
-                                {addressData?.city} {addressData?.state}{' '}
-                                {addressData?.zip === 0 ? '' : addressData?.zip}{' '}
-                                {addressData?.country !== 'undefined'
-                                  ? addressData?.country
-                                  : ''}
+                                {(addressData?.address ||
+                                  addressData?.address_line_1) && (
+                                  <>
+                                    {addressData?.address ||
+                                      addressData?.address_line_1}
+                                    <br />
+                                  </>
+                                )}
+
+                                {(addressData?.address2 ||
+                                  addressData?.address_line_2) && (
+                                  <>
+                                    {addressData?.address2 ||
+                                      addressData?.address_line_2}
+                                    <br />
+                                  </>
+                                )}
+
+                                {addressData?.city && <>{addressData?.city}</>}
+
+                                {addressData?.state && (
+                                  <>{addressData?.state} </>
+                                )}
+
+                                {addressData?.zip !== 0 && addressData?.zip && (
+                                  <>{addressData?.zip} </>
+                                )}
+
+                                {addressData?.country &&
+                                  addressData?.country !== 'undefined' && (
+                                    <>{addressData?.country}</>
+                                  )}
                               </>
                             ) : (
                               ''
@@ -271,18 +294,39 @@ const InvoicesComponentForMultipleDataTuitionFeeAgent = ({
                         <p className="text-muted  mb-1">
                           {billingAddressData ? (
                             <>
-                              {billingAddressData?.address ||
-                                billingAddressData?.address_line_1}{' '}
-                              {billingAddressData?.address2 ||
-                                billingAddressData?.address_line_2}{' '}
-                              {billingAddressData?.city}{' '}
-                              {billingAddressData?.state}{' '}
-                              {billingAddressData?.zip === 0
-                                ? ''
-                                : billingAddressData?.zip}{' '}
-                              {billingAddressData?.country !== 'undefined'
-                                ? billingAddressData?.country
-                                : ''}
+                              <>
+                                {(billingAddressData?.address ||
+                                  billingAddressData?.address_line_1) && (
+                                  <>
+                                    {billingAddressData?.address ||
+                                      billingAddressData?.address_line_1}
+                                    <br />
+                                  </>
+                                )}
+                                {(billingAddressData?.address2 ||
+                                  billingAddressData?.address_line_2) && (
+                                  <>
+                                    {billingAddressData?.address2 ||
+                                      billingAddressData?.address_line_2}
+                                    <br />
+                                  </>
+                                )}
+                                {billingAddressData?.city && (
+                                  <>{billingAddressData?.city} </>
+                                )}
+                                {billingAddressData?.state && (
+                                  <>{billingAddressData?.state} </>
+                                )}
+                                {billingAddressData?.zip !== 0 &&
+                                  billingAddressData?.zip && (
+                                    <>{billingAddressData?.zip} </>
+                                  )}
+                                {billingAddressData?.country &&
+                                  billingAddressData?.country !==
+                                    'undefined' && (
+                                    <>{billingAddressData?.country}</>
+                                  )}
+                              </>
                             </>
                           ) : (
                             ''

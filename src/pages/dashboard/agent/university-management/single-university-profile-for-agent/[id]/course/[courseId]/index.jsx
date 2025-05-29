@@ -270,7 +270,9 @@ const SingleUniversityCourse = () => {
 
         // Delay the navigation by 2 seconds so user sees the toast
         setTimeout(() => {
-          router.push('/dashboard/agent/applications');
+          router.push(
+            `/dashboard/${paneltext}/applications?application_status=submitted`
+          );
         }, 2000); // 2000ms = 2 seconds
       }
     } catch (error) {
