@@ -62,6 +62,8 @@ const DocumentPage = ({ student_id }) => {
       .flatMap((item) => item.files.map((file) => file.url))
       .filter(Boolean); // Remove undefined/null values
 
+    console.log('allFileUrls', allFileUrls);
+
     // single files dwonloader
     // downloadFiles(allFileUrls, 'Downloading all documents...');
 

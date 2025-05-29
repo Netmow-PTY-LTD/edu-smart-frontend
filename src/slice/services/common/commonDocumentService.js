@@ -47,6 +47,29 @@ export const commonDocumentService = createApi({
         };
       },
     }),
+
+    uploadRequestApplicationReuploadDoc: builder.mutation({
+      query: (body) => {
+        const application_id = body.application_id;
+        return {
+          url: `/documents/application/reupload/${application_id}`,
+          method: 'POST',
+          body: body.formData,
+        };
+      },
+    }),
+
+      updateApplicationDocumentDoc: builder.mutation({
+        query: ({ document_id, data }) => {
+          return {
+            url: `/documents/application/update-document/${document_id}`,
+            method: 'PATCH',
+            body: data, // ✅ send status, description, etc.
+          };
+        },
+      }),
+
+
     getAllApplicationSubmittedDocument: builder.query({
       query: () => {
         return {
@@ -186,6 +209,7 @@ export const {
   useGetSingleUserDocRequestQuery,
   useUpdateRequestUserDocStatusMutation,
   useUploadRequestApplicationDocMutation,
+  useUploadRequestApplicationReuploadDocMutation,
   useGetAllApplicationSubmittedDocumentQuery,
   useGetAllUserSubmittedDocumentQuery,
   useGetSingleApplicationSubmittedDocumentQuery,
@@ -196,5 +220,6 @@ export const {
   useUpdateSingleAirTicketDocumentForAgentMutation,
   useUpdateSingleDocumentForStudentByAllUserMutation,
   useCreateUserDocRequestForAgentForAllMutation,
+  useUpdateApplicationDocumentDocMutation,
   
 } = commonDocumentService;
