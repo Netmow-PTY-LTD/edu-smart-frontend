@@ -43,11 +43,17 @@ const SSLCommerzSettings = () => {
             label: getSSLcommerzForSuperAdminData?.data?.mode,
             value: getSSLcommerzForSuperAdminData?.data?.mode,
           } || '',
+        statuspost:
+          {
+            label: getSSLcommerzForSuperAdminData?.data?.status,
+            value: getSSLcommerzForSuperAdminData?.data?.status,
+          } || '',
       });
     }
   }, [
     getSSLcommerzForSuperAdminData?.data?._id,
     getSSLcommerzForSuperAdminData?.data?.mode,
+    getSSLcommerzForSuperAdminData?.data?.status,
     getSSLcommerzForSuperAdminData?.data?.store_id_live,
     getSSLcommerzForSuperAdminData?.data?.store_id_test,
     getSSLcommerzForSuperAdminData?.data?.store_password_live,

@@ -36,6 +36,11 @@ const StripeSettings = () => {
             label: agentStripeData?.data?.mode,
             value: agentStripeData?.data?.mode,
           } || '',
+        statuspost:
+          {
+            label: agentStripeData?.data?.status,
+            value: agentStripeData?.data?.status,
+          } || '',
       });
     }
   }, [
@@ -45,6 +50,7 @@ const StripeSettings = () => {
     agentStripeData?.data?.publishable_key_test,
     agentStripeData?.data?.secret_key_live,
     agentStripeData?.data?.secret_key_test,
+    agentStripeData?.data?.status,
   ]);
 
   const validationSchema = Yup.object({
@@ -57,8 +63,6 @@ const StripeSettings = () => {
   });
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log('working');
-
     const data = {
       ...values,
       mode:
