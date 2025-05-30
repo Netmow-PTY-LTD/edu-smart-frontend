@@ -114,6 +114,32 @@ export default function RecentApplicationForSuperAdmin() {
         recentApplicationRefetch();
 
         // ✅ If status is 'processing', send FormData to addEmgsTimeline
+
+        if (data.status === 'pending') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'File Assessment In Progress — Under Review'
+          );
+          formData.append(
+            'description',
+            'Your application file has been submitted and is currently under review by our assessment team. You will be notified once the review is complete. Please wait for further updates before proceeding.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
         if (data.status === 'processing') {
           const formData = new FormData();
           formData.append(
@@ -133,7 +159,7 @@ export default function RecentApplicationForSuperAdmin() {
 
           const timelineResponse = await addEmgsTimeline(formData);
           if (timelineResponse?.data?.success) {
-            toast.success('EMGS timeline added successfully!');
+            // toast.success('EMGS timeline added successfully!');
           } else {
             toast.error('Failed to add EMGS timeline.');
           }
@@ -142,11 +168,11 @@ export default function RecentApplicationForSuperAdmin() {
           const formData = new FormData();
           formData.append(
             'title',
-            'Application Processed — Proceed with Tuition Fee Payment'
+            'Tuition Fee Paid — Application is Now Being Processed'
           );
           formData.append(
             'description',
-            'Your file assessment has been completed and reviewed successfully. Please proceed to pay the Tuition Fee using the invoice link below to continue your application process.'
+            'We have received your Tuition Fee payment. Your application is now being processed. You can review your Tuition Invoice using the link below.'
           );
           formData.append(
             'invoiceUrl',
@@ -157,9 +183,61 @@ export default function RecentApplicationForSuperAdmin() {
 
           const timelineResponse = await addEmgsTimeline(formData);
           if (timelineResponse?.data?.success) {
-            toast.success('Tuition fee timeline added successfully!');
+            // toast.success('Tuition fee timeline added successfully!');
           } else {
             toast.error('Failed to add Tuition fee timeline.');
+          }
+        }
+
+        if (data.status === 'accepted') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'Admission Process Completed — Air Pickup Charge Invoice Available'
+          );
+          formData.append(
+            'description',
+            'Congratulations! Your admission process is now complete. You can review and pay the Air Pickup Charge Invoice using the link below.'
+          );
+          formData.append(
+            'invoiceUrl',
+            `/application-invoices?app_id=${data?.id}&pickup=yes`
+          );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('Air Pickup charge timeline added successfully!');
+          } else {
+            toast.error('Failed to add Air Pickup charge timeline.');
+          }
+        }
+
+        if (data.status === 'rejected') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'Application Cancelled — Final Status Update'
+          );
+          formData.append(
+            'description',
+            'We regret to inform you that your application has been cancelled. If you believe this was an error or you need further clarification, please contact our support team. Thank you for your interest and understanding.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&pickup=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success(
+            //   'Application cancellation timeline added successfully!'
+            // );
+          } else {
+            toast.error('Failed to add application cancellation timeline.');
           }
         }
       } else {
