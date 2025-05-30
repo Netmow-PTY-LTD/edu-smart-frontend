@@ -1,3 +1,4 @@
+import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
@@ -198,7 +199,7 @@ const EmgsStatus = ({
           </Col>
         </Row>
       ) : (
-        <StudentApplicationEmgsStatusTimeline
+        <ApplicationEmgsStatusTimeline
           setActiveTab={setActiveTab}
           currentTimeline={currentTimeline}
         />

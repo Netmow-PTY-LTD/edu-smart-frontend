@@ -1,7 +1,7 @@
+import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
-import StudentApplicationEmgsStatusTimeline from '@/components/StudentDashboard/components/StudentApplicationEmgsStatusTimeline';
 import { useGetApplicationsQuery } from '@/slice/services/common/applicationService';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -196,7 +196,7 @@ const AllStudentApplications = ({
           </Col>
         </Row>
       ) : (
-        <StudentApplicationEmgsStatusTimeline
+        <ApplicationEmgsStatusTimeline
           setActiveTab={setActiveTab}
           currentTimeline={currentTimeline}
         />

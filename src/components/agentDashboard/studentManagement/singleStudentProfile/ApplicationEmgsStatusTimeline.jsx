@@ -45,12 +45,14 @@ export default function ApplicationEmgsStatusTimeline({
             >
               <i className="ri-refresh-line me-2"></i>
             </Button>
-            <Button
-              className="button fs-14 mt-3"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <i className="ri-add-line me-2"></i> Add New Status
-            </Button>
+            {customData.paneltext !== 'student' && (
+              <Button
+                className="button fs-14 mt-3"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <i className="ri-add-line me-2"></i> Add New Status
+              </Button>
+            )}
           </div>
           <Col lg={12}>
             <div>
