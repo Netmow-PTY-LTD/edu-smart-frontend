@@ -1,3 +1,4 @@
+import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
@@ -270,7 +271,7 @@ export default function StudentApplications() {
           <div className="h-100">
             <div className="container-fluid">
               <div>
-                <StudentApplicationEmgsStatusTimeline
+                <ApplicationEmgsStatusTimeline
                   setActiveTab={setActiveTab}
                   currentTimeline={currentTimeline}
                 />
