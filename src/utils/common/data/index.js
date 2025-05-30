@@ -1056,6 +1056,18 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
+        {
+      title: 'Application Id',
+      key: 'university',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.application?.appId
+            ? item?.application?.appId
+            : '-'}
+        </span>
+      ),
+    },
+
     {
       title: 'University',
       key: 'university',

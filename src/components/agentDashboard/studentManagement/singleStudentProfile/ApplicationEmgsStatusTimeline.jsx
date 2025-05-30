@@ -41,6 +41,12 @@ export default function ApplicationEmgsStatusTimeline({
             </Button>
             <Button
               className="button fs-14 mt-3"
+              onClick={() => timelineRefe()}
+            >
+              <i className="ri-refresh-line me-2"></i>
+            </Button>
+            <Button
+              className="button fs-14 mt-3"
               onClick={() => setIsModalOpen(true)}
             >
               <i className="ri-add-line me-2"></i> Add New Status
@@ -125,7 +131,10 @@ export default function ApplicationEmgsStatusTimeline({
       )}
       <AddEmgsModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          timelineRefe();
+          setIsModalOpen(false);
+        }}
         dataRefetch={timelineRefe}
         emgs_status_id={currentTimeline}
       />

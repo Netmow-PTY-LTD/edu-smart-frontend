@@ -32,6 +32,14 @@ const ApplicationEmgsStatus = ({ student_id }) => {
       skip: !student_id,
     });
 
+  const sortedEmgsStatusData = Array.isArray(allEmgsStatusData?.data)
+    ? [...allEmgsStatusData.data].sort((a, b) => {
+        const dateA = new Date(a.createdAt || a.updatedAt).getTime();
+        const dateB = new Date(b.createdAt || b.updatedAt).getTime();
+        return dateB - dateA; // Descending
+      })
+    : [];
+
   const handleViewEmgsStatus = (id) => {
     setCurrentTimeline(id);
     setActiveTab('2');
@@ -88,7 +96,7 @@ const ApplicationEmgsStatus = ({ student_id }) => {
                             ...EmgsStatusListHeaders,
                             EmgsStatusActionData,
                           ]}
-                          data={allEmgsStatusData?.data || []}
+                          data={sortedEmgsStatusData || []}
                           currentPage={currentPage}
                           setCurrentPage={setCurrentPage}
                           perPageData={perPageData}
