@@ -16,7 +16,6 @@ import {
 } from 'reactstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import { useCustomData } from '@/utils/common/data/customeData';
-import jsPDF from 'jspdf'; // ✨ NEW
 import { downloadFilesAsPDF } from '@/utils/dwonloadFilesAsPdf';
 
 const SingleApplicationsPage = () => {
@@ -246,26 +245,40 @@ const SingleApplicationsPage = () => {
                           </p>
                         )}
                         {item.files?.map((file, fileIndex) => (
-                          <div key={fileIndex} className="mb-3">
+                          <div
+                            key={fileIndex}
+                            className="mb-3 position-relative"
+                          >
                             {file?.url?.endsWith('.pdf') ? (
-                              <a
-                                href={file.url}
-                                download={file.public_id}
-                                className="btn btn-outline-primary btn-sm"
-                              >
-                                📥 Download PDF
-                              </a>
+                              <div className="d-flex align-items-center gap-2">
+                                <a
+                                  href={file.url}
+                                  download={file.public_id}
+                                  className="btn btn-outline-primary btn-sm"
+                                >
+                                  📥 Download PDF
+                                </a>
+                              </div>
                             ) : (
-                              <img
-                                src={file.url}
-                                alt={`preview-${fileIndex}`}
-                                className="img-fluid rounded cursor-pointer border"
-                                onClick={() => handleImageClick(file.url)}
-                                style={{
-                                  objectFit: 'contain',
-                                  maxHeight: '250px',
-                                }}
-                              />
+                              <>
+                                <img
+                                  src={file.url}
+                                  alt={`preview-${fileIndex}`}
+                                  className="img-fluid rounded cursor-pointer border"
+                                  onClick={() => handleImageClick(file.url)}
+                                  style={{
+                                    objectFit: 'contain',
+                                    maxHeight: '250px',
+                                  }}
+                                />
+                                <a
+                                  href={file.url}
+                                  download
+                                  className="btn btn-outline-primary btn-lg mt-2"
+                                >
+                                  📥
+                                </a>
+                              </>
                             )}
                           </div>
                         ))}

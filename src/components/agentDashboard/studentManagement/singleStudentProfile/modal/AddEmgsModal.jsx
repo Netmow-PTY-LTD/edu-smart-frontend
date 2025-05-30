@@ -21,6 +21,8 @@ const AddEmgsModal = ({ isOpen, onClose, dataRefetch, emgs_status_id }) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       setSubmitting(true);
+
+      console.log('values', values);
       const formData = new FormData();
 
       Object.keys(values).forEach((key) => {

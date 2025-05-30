@@ -5,6 +5,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import AirportPickupChargeModal from '@/components/sAdminDashboard/modals/AirportPickupChargeModal';
 import {
+  useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
@@ -81,14 +82,86 @@ export default function RecentApplicationForSuperAdmin() {
     setActiveTab('2');
   };
 
+  // const handleChangeApplicationStatus = async (data) => {
+  //   try {
+  //     const response = await updateApplicationStatus(data);
+  //     if (response?.data?.success) {
+  //       toast.success(
+  //         response?.data?.message || 'Application status updated successfully!'
+  //       );
+  //       recentApplicationRefetch();
+  //     } else {
+  //       toast.error(
+  //         response?.error?.data?.message ||
+  //           'Failed to update application status.'
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating application status:', error);
+  //     toast.error('An error occurred while updating the status.');
+  //   }
+  // };
+
+  const [addEmgsTimeline] = useAddEmgsTimelineMutation();
   const handleChangeApplicationStatus = async (data) => {
     try {
       const response = await updateApplicationStatus(data);
+
       if (response?.data?.success) {
         toast.success(
           response?.data?.message || 'Application status updated successfully!'
         );
         recentApplicationRefetch();
+
+        // ✅ If status is 'processing', send FormData to addEmgsTimeline
+        if (data.status === 'processing') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'File Assessment Reviewed — Proceed with EMGS Payment'
+          );
+          formData.append(
+            'description',
+            'Your file assessment has been successfully reviewed. You can now proceed to pay the EMGS fee using the invoice link below.'
+          );
+          formData.append(
+            'invoiceUrl',
+            `/application-invoices?app_id=${data?.id}&emgs=yes`
+          );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+        if (data.status === 'processed') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'Application Processed — Proceed with Tuition Fee Payment'
+          );
+          formData.append(
+            'description',
+            'Your file assessment has been completed and reviewed successfully. Please proceed to pay the Tuition Fee using the invoice link below to continue your application process.'
+          );
+          formData.append(
+            'invoiceUrl',
+            `/application-invoices?app_id=${data?.id}&tuition=yes`
+          );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            toast.success('Tuition fee timeline added successfully!');
+          } else {
+            toast.error('Failed to add Tuition fee timeline.');
+          }
+        }
       } else {
         toast.error(
           response?.error?.data?.message ||
@@ -205,6 +278,7 @@ export default function RecentApplicationForSuperAdmin() {
                   handleChangeApplicationStatus({
                     id: item?._id,
                     status: 'pending',
+                    emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
@@ -220,6 +294,7 @@ export default function RecentApplicationForSuperAdmin() {
                   handleChangeApplicationStatus({
                     id: item?._id,
                     status: 'processing',
+                    emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
@@ -234,6 +309,7 @@ export default function RecentApplicationForSuperAdmin() {
                   handleChangeApplicationStatus({
                     id: item?._id,
                     status: 'processed',
+                    emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
@@ -249,6 +325,7 @@ export default function RecentApplicationForSuperAdmin() {
                   handleChangeApplicationStatus({
                     id: item?._id,
                     status: 'accepted',
+                    emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
@@ -263,6 +340,7 @@ export default function RecentApplicationForSuperAdmin() {
                   handleChangeApplicationStatus({
                     id: item?._id,
                     status: 'rejected',
+                    emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
