@@ -12,6 +12,7 @@ const AirportPickupChargeModal = ({
   editPickupChargeData,
   isLoading,
   checkAirportPickupStatus,
+  emgsId,
 }) => {
   const [chargeAmount, setChargeAmount] = useState('');
   const [selectStatus, setSelectStatus] = useState('');
@@ -66,6 +67,15 @@ const AirportPickupChargeModal = ({
               className="form-control"
               name="application_id"
               value={applicationId}
+            />
+          </div>
+
+          <div className="mb-4" hidden>
+            <input
+              type="text"
+              className="form-control"
+              name="emgsId"
+              value={emgsId}
             />
           </div>
 

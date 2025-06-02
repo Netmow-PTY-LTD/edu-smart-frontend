@@ -39,6 +39,7 @@ export default function RecentApplicationForSuperAdmin() {
   const [pickupChargeModal, setPickupChargeModal] = useState(false);
   const [checkAirportPickupStatus, setCheckAirportPickupStatus] = useState('');
   const [applicationId, setApplicationId] = useState('');
+  const [emgsId, setEmgsId] = useState(null);
 
   const perPageData = 20;
   const customData = useCustomData();
@@ -74,8 +75,9 @@ export default function RecentApplicationForSuperAdmin() {
     if (router?.query?.application_id) {
       setPickupChargeModal(true);
       setApplicationId(router?.query?.application_id);
+      setEmgsId(router?.query?.emgs_id);
     }
-  }, [router?.query?.application_id]);
+  }, [router?.query?.application_id, router?.query?.emgs_id]);
 
   const handleViewEmgsStatus = (id) => {
     setCurrentTimeline(id);
@@ -105,6 +107,32 @@ export default function RecentApplicationForSuperAdmin() {
   const [addEmgsTimeline] = useAddEmgsTimelineMutation();
   const handleChangeApplicationStatus = async (data) => {
     try {
+      if (data.status === 'pickupGenerated') {
+        const formData = new FormData();
+        formData.append(
+          'title',
+          'Airport Pickup Charge Generated — Action Required'
+        );
+        formData.append(
+          'description',
+          'Your Airport Pickup Charge has been successfully generated. Please review and complete the payment to confirm your airport pickup arrangement. You can access the invoice using the link below.'
+        );
+        formData.append(
+          'invoiceUrl',
+          `/application-invoices?app_id=${data?.id}&pickup=yes`
+        );
+        formData.append('image', data?.image); // Ensure this is a File or Blob object
+        formData.append('id', data?.emgs_id); // emgs_status_id
+
+        const timelineResponse = await addEmgsTimeline(formData);
+        if (timelineResponse?.data?.success) {
+          // toast.success('Airport Pickup Charge timeline added successfully!');
+        } else {
+          toast.error('Failed to add Airport Pickup Charge timeline.');
+        }
+        return;
+      }
+
       const response = await updateApplicationStatus(data);
 
       if (response?.data?.success) {
@@ -168,11 +196,35 @@ export default function RecentApplicationForSuperAdmin() {
           const formData = new FormData();
           formData.append(
             'title',
-            'Tuition Fee Paid — Application is Now Being Processed'
+            'EMGS Processed — Application Now Under Review'
           );
           formData.append(
             'description',
-            'We have received your Tuition Fee payment. Your application is now being processed. You can review your Tuition Invoice using the link below.'
+            'Your EMGS application has been successfully processed. Our team is now reviewing your documents. Please review your Tuition Fee Invoice from the link below.'
+          );
+          formData.append(
+            'invoiceUrl',
+            `/application-invoices?app_id=${data?.id}&tuition=yes`
+          );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // Optional: toast.success('Timeline updated for EMGS processed status.');
+          } else {
+            toast.error('Failed to add EMGS processed timeline.');
+          }
+        }
+        if (data.status === 'accepted') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'EMGS Accepted — Tuition Fee Payment Required'
+          );
+          formData.append(
+            'description',
+            'Great news! Your EMGS application has been accepted. To proceed with your admission, please review and complete the Tuition Fee payment using the link below.'
           );
           formData.append(
             'invoiceUrl',
@@ -186,31 +238,6 @@ export default function RecentApplicationForSuperAdmin() {
             // toast.success('Tuition fee timeline added successfully!');
           } else {
             toast.error('Failed to add Tuition fee timeline.');
-          }
-        }
-
-        if (data.status === 'accepted') {
-          const formData = new FormData();
-          formData.append(
-            'title',
-            'Admission Process Completed — Air Pickup Charge Invoice Available'
-          );
-          formData.append(
-            'description',
-            'Congratulations! Your admission process is now complete. You can review and pay the Air Pickup Charge Invoice using the link below.'
-          );
-          formData.append(
-            'invoiceUrl',
-            `/application-invoices?app_id=${data?.id}&pickup=yes`
-          );
-          formData.append('image', data?.image); // Ensure this is a File or Blob object
-          formData.append('id', data?.emgs_id); // emgs_status_id
-
-          const timelineResponse = await addEmgsTimeline(formData);
-          if (timelineResponse?.data?.success) {
-            // toast.success('Air Pickup charge timeline added successfully!');
-          } else {
-            toast.error('Failed to add Air Pickup charge timeline.');
           }
         }
 
@@ -283,9 +310,10 @@ export default function RecentApplicationForSuperAdmin() {
         onClick={() => {
           setPickupChargeModal(true),
             setApplicationId(item?._id),
-            setCheckAirportPickupStatus(
-              item?.airport_pickup_charge_payment_status
-            );
+            setEmgsId(item?.emgs_status);
+          setCheckAirportPickupStatus(
+            item?.airport_pickup_charge_payment_status
+          );
         }}
         className="text-primary cursor-pointer"
       >
@@ -338,9 +366,10 @@ export default function RecentApplicationForSuperAdmin() {
               onClick={() => {
                 setPickupChargeModal(true),
                   setApplicationId(item?._id),
-                  setCheckAirportPickupStatus(
-                    item?.airport_pickup_charge_payment_status
-                  );
+                  setEmgsId(item?.emgs_status);
+                setCheckAirportPickupStatus(
+                  item?.airport_pickup_charge_payment_status
+                );
               }}
               className="text-primary"
             >
@@ -447,6 +476,8 @@ export default function RecentApplicationForSuperAdmin() {
 
     try {
       updateAirportPickupChargeInSuperAdmin(data).then((res) => {
+        console.log('updateAirportPickupChargeInSuperAdmin', data);
+
         if (res?.error) {
           toast.error(
             res?.error?.error?.data?.mesage || 'Something went wrong'
@@ -457,6 +488,11 @@ export default function RecentApplicationForSuperAdmin() {
           setApplicationId('');
           setPickupChargeModal(false);
           setCheckAirportPickupStatus('');
+          handleChangeApplicationStatus({
+            id: data?.application_id,
+            status: 'pickupGenerated',
+            emgs_id: data?.emgsId,
+          });
         }
       });
     } catch (error) {
@@ -525,6 +561,7 @@ export default function RecentApplicationForSuperAdmin() {
                 editPickupChargeData={getAirportPickupChargeInSuperAdminData}
                 isLoading={updateAirportPickupChargeInSuperAdminLoading}
                 checkAirportPickupStatus={checkAirportPickupStatus}
+                emgsId={emgsId}
               />
             </div>
           </div>

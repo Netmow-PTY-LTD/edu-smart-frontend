@@ -26,6 +26,7 @@ const AirportPickupRequestPage = () => {
       label: `${item?.student?.first_name} ${item?.student?.last_name} - ${item?._id}`,
       student_id: item?.student?._id,
       applied_by: item?.applied_by,
+      emgs_id: item?.emgs_status,
     })) || [];
 
   // Validation schema using Yup
@@ -37,13 +38,15 @@ const AirportPickupRequestPage = () => {
     setSubmitting(true);
 
     const application_id = values.application_id;
-
+    const emgs_id = values.emgs_id;
     // Redirect to the student profile page
     router.push({
       pathname: `/dashboard/${customData?.paneltext}/recent-application/`,
-      query: { application_id: application_id },
+      query: {
+        application_id,
+        emgs_id,
+      },
     });
-
     setSubmitting(false);
   };
 
@@ -64,6 +67,7 @@ const AirportPickupRequestPage = () => {
                     application_id: '',
                     student_id: '',
                     applied_by: '',
+                    emgs_id: '',
                   }}
                   validationSchema={validationSchema}
                   onSubmit={handleSubmit}
@@ -97,6 +101,10 @@ const AirportPickupRequestPage = () => {
                                 setFieldValue(
                                   'applied_by',
                                   option ? option.applied_by : ''
+                                );
+                                setFieldValue(
+                                  'emgs_id',
+                                  option ? option.emgs_id : ''
                                 );
                               }}
                               value={
