@@ -7,6 +7,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import {
+  useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
   useUpdatePaymentApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
@@ -19,7 +20,7 @@ import { useSingleGetApplicationQuery } from '@/slice/services/public/applicatio
 import DataObjectComponent, { brandlogo } from '@/utils/common/data';
 
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -306,6 +307,130 @@ const ApplicationInvoiceInSuperAdmin = () => {
       applicationDataRefetch();
     }
   }, [applicationDataRefetch, query, updateApplicationStatus]);
+
+  //Insert TimeLine By Payment Start
+
+  const [insertTimelineExist, setInsertTimelineExist] = useState(null);
+  const isInsertingRef = useRef(false); // to avoid double trigger inside effect
+  const [addEmgsTimeline] = useAddEmgsTimelineMutation();
+
+  const {
+    data: singleGetApplicationDataForEmgs,
+    isLoading: singleGetApplicationDataForEmgsLoading,
+    refetch: getSingleGetApplicationDataForEmgsRefetch,
+  } = useSingleGetApplicationQuery(query?.application_id, {
+    skip: !query?.application_id,
+  });
+
+  useEffect(() => {
+    if (!query?.application_id) return;
+
+    const localStorageKey = `${query.transaction_reason}-${query.application_id}`;
+
+    // Skip if already inserted in localStorage or already in state (prevents double calls)
+    if (
+      localStorage.getItem(localStorageKey) ||
+      insertTimelineExist === localStorageKey
+    ) {
+      return;
+    }
+
+    // Avoid duplicate calls in same render cycle
+    if (isInsertingRef.current) return;
+    isInsertingRef.current = true;
+
+    const statusInsertEmgs = async () => {
+      try {
+        const { payment_status, transaction_reason, application_id } = query;
+
+        if (
+          payment_status === 'success' &&
+          (transaction_reason === 'application_tuition_fee' ||
+            transaction_reason === 'application_airport_pickup_charge' ||
+            transaction_reason === 'application_emgs' ||
+            transaction_reason === 'application_registration_fee') // Add other valid reasons as needed
+        ) {
+          const { data: refetchedAppData } =
+            await getSingleGetApplicationDataForEmgsRefetch();
+
+          const emgsStatusId =
+            refetchedAppData?.data?.emgs_status ||
+            singleGetApplicationDataForEmgs?.data?.emgs_status;
+
+          if (!emgsStatusId) {
+            toast.error('Missing EMGS status ID.');
+            return;
+          }
+
+          let title = '';
+          let description = '';
+          let invoiceUrl = '';
+
+          switch (transaction_reason) {
+            case 'application_tuition_fee':
+              title = 'Tuition Fee Payment Received';
+              description =
+                'Thank you for your tuition payment. We will now proceed to the next step in your application.';
+              invoiceUrl = `/application-invoices?app_id=${application_id}&tuition=yes`;
+              break;
+
+            case 'application_airport_pickup_charge':
+              title = 'Airport Pickup Payment Received';
+              description =
+                'We have received your payment for airport pickup. Our support team will follow up with further instructions soon.';
+              invoiceUrl = `/application-invoices?app_id=${application_id}&pickup=yes`;
+              break;
+
+            case 'application_emgs':
+              title = 'EMGS Payment Received';
+              description =
+                'Your EMGS payment has been successfully received. Our assessment team will now review your application.';
+              invoiceUrl = `/application-invoices?app_id=${application_id}&emgs=yes`;
+              break;
+
+            case 'application_registration_fee':
+              title = 'Registration Fee Payment Received';
+              description =
+                'We have received your registration fee. Your account setup will be finalized shortly.';
+              invoiceUrl = `/application-invoices?app_id=${application_id}&registration=yes`;
+              break;
+
+            default:
+              title = 'Payment Received';
+              description =
+                'We have received your payment. Please check your dashboard for more details.';
+              invoiceUrl = `/application-invoices?app_id=${application_id}`;
+              break;
+          }
+
+          const formData = new FormData();
+          formData.append('title', title);
+          formData.append('description', description);
+          formData.append('invoiceUrl', invoiceUrl);
+          formData.append('id', emgsStatusId);
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            localStorage.setItem(localStorageKey, 'true');
+            setInsertTimelineExist(localStorageKey);
+          } else {
+            toast.error('Failed to add payment timeline.');
+          }
+        }
+      } catch (error) {
+        console.error('Error inserting payment timeline:', error);
+        toast.error('An error occurred while updating the payment status.');
+      } finally {
+        isInsertingRef.current = false;
+      }
+    };
+
+    statusInsertEmgs();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query.payment_status, query.transaction_reason, query.application_id]);
+
+  //Insert TimeLine By Payment End
 
   useEffect(() => {
     if (!toastShown && (updateApplicationStatusData || error)) {
