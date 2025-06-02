@@ -145,13 +145,10 @@ export default function RecentApplicationForSuperAdmin() {
 
         if (data.status === 'pending') {
           const formData = new FormData();
-          formData.append(
-            'title',
-            'File Assessment In Progress — Under Review'
-          );
+          formData.append('title', 'File Assessment Submitted');
           formData.append(
             'description',
-            'Your application file has been submitted and is currently under review by our assessment team. You will be notified once the review is complete. Please wait for further updates before proceeding.'
+            'Your file assessment has been submitted and will be reviewed shortly. The status will be updated once the review process begins.'
           );
           // formData.append(
           //   'invoiceUrl',
@@ -168,15 +165,56 @@ export default function RecentApplicationForSuperAdmin() {
           }
         }
 
-        if (data.status === 'processing') {
+        if (data.status === 'review_in') {
           const formData = new FormData();
-          formData.append(
-            'title',
-            'File Assessment Reviewed — Proceed with EMGS Payment'
-          );
+          formData.append('title', 'File Assessment Submitted — Under Review');
           formData.append(
             'description',
-            'Your file assessment has been successfully reviewed. You can now proceed to pay the EMGS fee using the invoice link below.'
+            'Your submitted documents are currently under review by our team. Please check back soon for updates on your application status.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'file_requested') {
+          const formData = new FormData();
+          formData.append('title', 'Additional Documents Required');
+          formData.append(
+            'description',
+            'We need additional documents to proceed with your application. Please check your application details and upload the required files as soon as possible.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'ready_for_emgs') {
+          const formData = new FormData();
+          formData.append('title', 'Ready for EMGS Submission & Payment');
+          formData.append(
+            'description',
+            'Your file has passed internal assessment and is now ready to be submitted to EMGS. The EMGS invoice is now available and ready for payment.'
           );
           formData.append(
             'invoiceUrl',
@@ -192,39 +230,78 @@ export default function RecentApplicationForSuperAdmin() {
             toast.error('Failed to add EMGS timeline.');
           }
         }
-        if (data.status === 'processed') {
+        if (data.status === 'file_under_emgs') {
           const formData = new FormData();
-          formData.append(
-            'title',
-            'EMGS Processed — Application Now Under Review'
-          );
+          formData.append('title', 'File Under EMGS Review');
           formData.append(
             'description',
-            'Your EMGS application has been successfully processed. Our team is now reviewing your documents. Please review your Tuition Fee Invoice from the link below.'
+            'Your documents have been submitted to EMGS and are currently being reviewed. We will notify you once EMGS has provided feedback.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'ready_for_tuition') {
+          const formData = new FormData();
+          formData.append('title', 'Ready for Tuition Payment');
+          formData.append(
+            'description',
+            'Your application has progressed successfully. You may now proceed with the tuition payment to continue your enrollment process.'
           );
           formData.append(
             'invoiceUrl',
             `/application-invoices?app_id=${data?.id}&tuition=yes`
           );
           formData.append('image', data?.image); // Ensure this is a File or Blob object
-          formData.append('id', data?.emgs_id); // emgs_status_id
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
 
           const timelineResponse = await addEmgsTimeline(formData);
           if (timelineResponse?.data?.success) {
-            // Optional: toast.success('Timeline updated for EMGS processed status.');
+            // toast.success('EMGS timeline added successfully!');
           } else {
-            toast.error('Failed to add EMGS processed timeline.');
+            toast.error('Failed to add EMGS timeline.');
           }
         }
-        if (data.status === 'accepted') {
+
+        if (data.status === 'tuition_under_processed') {
           const formData = new FormData();
-          formData.append(
-            'title',
-            'EMGS Accepted — Tuition Fee Payment Required'
-          );
+          formData.append('title', 'Tuition Payment is Being Processed');
           formData.append(
             'description',
-            'Great news! Your EMGS application has been accepted. To proceed with your admission, please review and complete the Tuition Fee payment using the link below.'
+            'Your tuition payment is currently under verification. We will update your status once the payment has been confirmed.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&tuition=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'accepted') {
+          const formData = new FormData();
+          formData.append('title', 'Application Accepted');
+          formData.append(
+            'description',
+            'Congratulations! Your application has been accepted. Please check your application dashboard, EMGS status, or email for further instructions and next steps.'
           );
           formData.append(
             'invoiceUrl',
@@ -406,7 +483,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-search-eye-line me-2"></i>
                 Review In
               </div>
             </DropdownItem>
@@ -421,7 +498,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-folder-received-line me-2"></i>
                 File Requested
               </div>
             </DropdownItem>
@@ -437,7 +514,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-send-plane-line me-2"></i>
                 Ready For EMGS
               </div>
             </DropdownItem>
@@ -452,7 +529,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-file-search-line me-2"></i>
                 File Under EMGS
               </div>
             </DropdownItem>
@@ -467,7 +544,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-graduation-cap-line me-2"></i>
                 Ready For Tuition
               </div>
             </DropdownItem>
@@ -482,7 +559,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-loop-right-line me-2"></i>
                 Tuition Under Processed
               </div>
             </DropdownItem>
@@ -497,7 +574,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-check-fill me-2"></i>
+                <i className="ri-check-line me-2"></i>
                 Accepted
               </div>
             </DropdownItem>
@@ -512,7 +589,7 @@ export default function RecentApplicationForSuperAdmin() {
                 }
                 className="text-primary"
               >
-                <i className="ri-close-fill me-2"></i>
+                <i className="ri-close-line me-2"></i>
                 Rejected
               </div>
             </DropdownItem>
