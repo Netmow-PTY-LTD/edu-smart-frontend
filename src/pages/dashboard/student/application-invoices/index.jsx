@@ -646,23 +646,13 @@ const ApplicationInvoiceInSuperAdmin = () => {
                 setOpenInvoiceAirportPickupModal(false);
               }}
               loading={getSingleApplicationPaymentReportDataLoading}
-              addressData={
-                // userInfoData?.data?.agent?._id
-                //   ? userInfoData?.data?.agent
-                //   :
-                superAdminData
-              }
+              addressData={superAdminData}
               billingAddressData={
                 getSingleApplicationPaymentReportData?.data?.applied_by
               }
               tableData={[getSingleApplicationPaymentReportData?.data]}
               invoice_no={getSingleApplicationPaymentReportData?.data}
-              logoData={
-                // userInfoData?.data?.agent?._id
-                //   ? userInfoData?.data?.agent
-                //   :
-                brandlogo
-              }
+              logoData={brandlogo}
               currency={'MYR'}
               printInvoice={printInvoice}
               subtotal={

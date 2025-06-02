@@ -400,14 +400,14 @@ export default function RecentApplicationForSuperAdmin() {
                 onClick={() =>
                   handleChangeApplicationStatus({
                     id: item?._id,
-                    status: 'processing',
+                    status: 'review_in',
                     emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
               >
                 <i className="ri-check-fill me-2"></i>
-                Processing
+                Review In
               </div>
             </DropdownItem>
             <DropdownItem>
@@ -415,17 +415,77 @@ export default function RecentApplicationForSuperAdmin() {
                 onClick={() =>
                   handleChangeApplicationStatus({
                     id: item?._id,
-                    status: 'processed',
+                    status: 'file_requested',
                     emgs_id: item?.emgs_status,
                   })
                 }
                 className="text-primary"
               >
                 <i className="ri-check-fill me-2"></i>
-                Processed
+                File Requested
               </div>
             </DropdownItem>
 
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'ready_for_emgs',
+                    emgs_id: item?.emgs_status,
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Ready For EMGS
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'file_under_emgs',
+                    emgs_id: item?.emgs_status,
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                File Under EMGS
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'ready_for_tuition',
+                    emgs_id: item?.emgs_status,
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Ready For Tuition
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div
+                onClick={() =>
+                  handleChangeApplicationStatus({
+                    id: item?._id,
+                    status: 'tuition_under_processed',
+                    emgs_id: item?.emgs_status,
+                  })
+                }
+                className="text-primary"
+              >
+                <i className="ri-check-fill me-2"></i>
+                Tuition Under Processed
+              </div>
+            </DropdownItem>
             <DropdownItem>
               <div
                 onClick={() =>
