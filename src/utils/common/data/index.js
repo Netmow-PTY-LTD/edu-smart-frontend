@@ -1240,25 +1240,47 @@ const DataObjectComponent = () => {
       ),
     },
 
-    {
-      title: 'Status',
-      key: 'status',
-      render: (item) => (
-        <>
-          <span
-className={`fw-medium fs-3 text-capitalize badge  
-  ${item?.status === 'accepted' ? 'bg-success-subtle text-success' : 
-    item?.status === 'rejected' ? 'bg-danger-subtle text-danger' : 
-    item?.status === 'pending' ? 'bg-warning-subtle text-warning' : 
-    item?.status === 'processing' ? 'bg-primary-subtle text-primary' : 
-    item?.status === 'processed' ? 'bg-info-subtle text-info' : 
-    ''}`}
-          >
-            {item?.status ?? '-'}
-          </span>
-        </>
-      ),
-    },
+{
+  title: 'Status',
+  key: 'status',
+  render: (item) => {
+    const statusColors = {
+      pending: 'bg-warning-subtle text-warning',
+      review_in: 'bg-info-subtle text-info',
+      file_requested: 'bg-primary-subtle text-primary',
+      ready_for_emgs: 'bg-secondary-subtle text-secondary',
+      file_under_emgs: 'bg-light-subtle text-dark',
+      ready_for_tuition: 'bg-info-subtle text-info',
+      tuition_under_processed: 'bg-primary-subtle text-primary',
+      processing: 'bg-warning-subtle text-warning',
+      processed: 'bg-success-subtle text-success',
+      accepted: 'bg-success-subtle text-success',
+      rejected: 'bg-danger-subtle text-danger',
+    };
+
+    // Capitalize and replace underscore with spaces, keep acronyms uppercase
+    const formatStatus = (status) => {
+      if (!status) return '-';
+      return status
+        .split('_')
+        .map(word => {
+          if (['emgs', 'tuition'].includes(word.toLowerCase())) {
+            return word.toUpperCase();
+          }
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
+    };
+
+    const badgeClass = statusColors[item?.status] || '';
+
+    return (
+      <span className={`fw-medium fs-3 text-capitalize badge ${badgeClass}`}>
+        {formatStatus(item?.status)}
+      </span>
+    );
+  }
+},
   ];
 
   const agentsHeaders = [

@@ -438,23 +438,6 @@ export default function RecentApplicationForSuperAdmin() {
             </div>
           </DropdownItem>
 
-          <DropdownItem>
-            <div
-              onClick={() => {
-                setPickupChargeModal(true),
-                  setApplicationId(item?._id),
-                  setEmgsId(item?.emgs_status);
-                setCheckAirportPickupStatus(
-                  item?.airport_pickup_charge_payment_status
-                );
-              }}
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              Airport Pick-up Charge
-            </div>
-          </DropdownItem>
-
           <>
             <DropdownItem>
               <div
@@ -578,6 +561,23 @@ export default function RecentApplicationForSuperAdmin() {
                 Accepted
               </div>
             </DropdownItem>
+            <DropdownItem>
+              <div
+                onClick={() => {
+                  setPickupChargeModal(true),
+                    setApplicationId(item?._id),
+                    setEmgsId(item?.emgs_status);
+                  setCheckAirportPickupStatus(
+                    item?.airport_pickup_charge_payment_status
+                  );
+                }}
+                className="text-primary"
+              >
+                <i className="ri-eye-fill me-2"></i>
+                Airport Pick-up Charge
+              </div>
+            </DropdownItem>
+
             <DropdownItem>
               <div
                 onClick={() =>
