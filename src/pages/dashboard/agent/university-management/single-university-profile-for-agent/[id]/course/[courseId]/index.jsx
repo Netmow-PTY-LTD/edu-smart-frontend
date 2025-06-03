@@ -540,9 +540,16 @@ const SingleUniversityCourse = () => {
                                   MYR
                                   <br />
                                   <span style={{ fontSize: '12px' }}>
-                                    (Payment is required after EMGS processing.)
+                                    (
+                                    {getSingleCourseData?.data?.fee_duration
+                                      ? `For ${getSingleCourseData.data.fee_duration}, `
+                                      : ''}
+                                    {getSingleCourseData?.data?.others_fee
+                                      ? `includes ${getSingleCourseData.data.others_fee} MYR for others fee, `
+                                      : ''}
+                                    Payment is required after EMGS processing. )
                                   </span>
-                                </b>{' '}
+                                </b>
                               </div>
                             </div>
                             <div className="course-btns">
