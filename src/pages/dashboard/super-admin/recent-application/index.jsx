@@ -303,10 +303,10 @@ export default function RecentApplicationForSuperAdmin() {
             'description',
             'Congratulations! Your application has been accepted. Please check your application dashboard, EMGS status, or email for further instructions and next steps.'
           );
-          formData.append(
-            'invoiceUrl',
-            `/application-invoices?app_id=${data?.id}&tuition=yes`
-          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&tuition=yes`
+          // );
           formData.append('image', data?.image); // Ensure this is a File or Blob object
           formData.append('id', data?.emgs_id); // emgs_status_id
 
