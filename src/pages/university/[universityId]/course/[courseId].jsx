@@ -74,6 +74,9 @@ const SingleCoursePageInFrontSite = () => {
     scholarship_amount,
     tuition_fee,
     after_emgs_fee,
+    others_fee,
+    fee_duration,
+    tuition_fee_put,
     status,
     university,
   } = courseDetail;
@@ -346,13 +349,13 @@ const SingleCoursePageInFrontSite = () => {
                         </svg>
                         <div className="course-act-text">
                           <b>
-                            Balance Payable:{' '}
-                            {/* {(tuition_fee || university_price) - emgs_fee || ''}{' '} */}
-                            {after_emgs_fee} MYR{' '}
+                            Balance Payable: {after_emgs_fee} MYR (
+                            {fee_duration ? `For ${fee_duration}, ` : ''}
+                            {others_fee
+                              ? `includes ${others_fee} MYR for others fee, `
+                              : ''}
+                            Payment is required after EMGS processing )
                           </b>
-                          <small>
-                            (Payment is required after EMGS processing)
-                          </small>
                         </div>
                       </div>
                     </div>
