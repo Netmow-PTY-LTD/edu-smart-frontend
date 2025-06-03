@@ -34,7 +34,6 @@ import {
 import { toast } from 'react-toastify';
 import FormikQuill from '@/components/common/FormikQuill';
 import FormikTinyMCE from '@/components/common/FormikTinyMCE ';
-import TextFieldDefault from '@/components/common/formField/TextFieldDefault';
 
 // ModalForm Component
 const CourseModalFormTest = ({
@@ -129,30 +128,14 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-                  {/* need by calculation automatic it will be everywhere calculations logic frontend/others its to minus EMGS Fee to Tuition Fee collect */}
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
                         name="tuition_fee"
-                        label="Course Fee"
-                        readOnly
+                        label="Tuition Fee"
                       />
                     </div>
                   </Col>
-                  {/* need by calculation automatic */}
-                  {/* need by calculation automatic Its will be show everywhere by text Tuitions Fee*/}
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberFieldForCourse
-                        name="after_emgs_fee"
-                        label="Total Tuition Fee"
-                        readOnly
-                      />
-                    </div>
-                  </Col>
-                  {/* need by calculation automatic */}
-
-                  {/* Its will be show as EMGS processing fee */}
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse name="emgs_fee" label="EMGS Fee" />
@@ -161,20 +144,12 @@ const CourseModalFormTest = ({
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
-                        name="tuition_fee_put"
-                        label="Tuition Fee"
+                        name="after_emgs_fee"
+                        label="After Emgs Fee"
+                        readOnly
                       />
                     </div>
                   </Col>
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberFieldForCourse
-                        name="others_fee"
-                        label="Others Fee"
-                      />
-                    </div>
-                  </Col>
-
                   <Col xl={6}>
                     <div className="mb-3">
                       <NumberFieldForCourse
@@ -183,16 +158,7 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <TextFieldDefault
-                        name="fee_duration"
-                        label="Tuition Fee For"
-                        placeholder='e.g. "1st semester", "1st year", "full course"'
-                      />
-                    </div>
-                  </Col>
-                  <Col xl={6}>
+                  <Col xl={12}>
                     <div className="mb-3">
                       <TextField
                         name="program_duration"
