@@ -235,6 +235,9 @@ const AllCourseForSuperAdminTest = ({
               getSingleCourseData?.emgs_fee || getSingleCourseData?.price || 0,
             //after_emgs_fee: getSingleCourseData?.after_emgs_fee || 0,
             incentive_amount: getSingleCourseData?.incentive_amount || 0,
+            tuition_fee_put: getSingleCourseData?.tuition_fee_put || 0,
+            others_fee: getSingleCourseData?.others_fee || 0,
+            fee_duration: getSingleCourseData?.fee_duration || 0,
             scholarship_on_tuition_fee:
               getSingleCourseData?.scholarship_on_tuition_fee || false,
             scholarship_amount: getSingleCourseData?.scholarship_amount || 0,
@@ -354,59 +357,6 @@ const AllCourseForSuperAdminTest = ({
         document_list_id: item.document_list_id,
       }));
 
-    // const allData = {
-    //   ...values,
-    //   university_id: university_id,
-    //   department_id: values?.department,
-    //   category_id: values?.category,
-    //   document_requirements: [...filteredData, ...values.document_requirements],
-    // };
-
-    // try {
-    //   const finalData = new FormData();
-
-    //   Object.entries(allData).forEach(([key, value]) => {
-    //     if (Array.isArray(value)) {
-    //       if (key === 'document_requirements' && value.length === 0) {
-    //         // Ensure an empty array by appending an empty key
-    //         finalData.append(`${key}[]`, []);
-    //       } else {
-    //         value.forEach((item, index) => {
-    //           if (
-    //             key === 'entry_requirements' ||
-    //             key === 'english_requirements'
-    //           ) {
-    //             finalData.append(`${key}[${index}]`, item);
-    //           } else if (key === 'document_requirements') {
-    //             // Only append fields that have defined (non-null and non-undefined) values
-    //             if (item.title != null)
-    //               finalData.append(`${key}[${index}][title]`, item.title);
-    //             if (item.description != null)
-    //               finalData.append(
-    //                 `${key}[${index}][description]`,
-    //                 item.description
-    //               );
-    //             if (item.isRequired != null)
-    //               finalData.append(
-    //                 `${key}[${index}][isRequired]`,
-    //                 item.isRequired
-    //               );
-
-    //             // Only append document_list_id if it is neither undefined nor null
-    //             if (item.document_list_id != null) {
-    //               finalData.append(
-    //                 `${key}[${index}][document_list_id]`,
-    //                 item.document_list_id
-    //               );
-    //             }
-    //           }
-    //         });
-    //       }
-    //     } else {
-    //       finalData.append(key, value);
-    //     }
-    //   });
-
     const allData = {
       name: values?.name,
       available_seats: values?.available_seats,
@@ -414,6 +364,9 @@ const AllCourseForSuperAdminTest = ({
       gst: values?.gst || 0,
       emgs_fee: values?.emgs_fee || values?.price,
       after_emgs_fee: values?.after_emgs_fee || 0,
+      tuition_fee_put: values?.tuition_fee_put || 0,
+      others_fee: values?.others_fee || 0,
+      fee_duration: values?.fee_duration || 0,
       agent_commission_percentage: values?.agent_commission_percentage || 0,
       description: values?.description,
       //      course_id: courseIdForEdit,
@@ -450,12 +403,54 @@ const AllCourseForSuperAdminTest = ({
       const finalData = new FormData();
 
       Object.entries(allData).forEach(([key, value]) => {
+        //   if (Array.isArray(value)) {
+        //     if (key === 'document_requirements' && value.length === 0) {
+        //       // Ensure an empty array by appending an empty key
+        //       finalData.append(`${key}[]`, []);
+        //     } else if (key === 'accessories' && value.length === 0) {
+        //       // If 'accessories' is an empty array, append an empty array
+        //       finalData.append(`${key}[]`, []);
+        //     } else {
+        //       value.forEach((item, index) => {
+        //         if (
+        //           key === 'entry_requirements' ||
+        //           key === 'english_requirements' ||
+        //           key === 'accessories'
+        //         ) {
+        //           // Append each item in the array as an indexed field
+        //           finalData.append(`${key}[${index}]`, item);
+        //         } else if (key === 'document_requirements') {
+        //           // Append only fields that are not null or undefined
+        //           if (item.title != null)
+        //             finalData.append(`${key}[${index}][title]`, item.title);
+        //           if (item.description != null)
+        //             finalData.append(
+        //               `${key}[${index}][description]`,
+        //               item.description
+        //             );
+        //           if (item.isRequired != null)
+        //             finalData.append(
+        //               `${key}[${index}][isRequired]`,
+        //               item.isRequired
+        //             );
+        //           if (item.document_list_id != null) {
+        //             finalData.append(
+        //               `${key}[${index}][document_list_id]`,
+        //               item.document_list_id
+        //             );
+        //           }
+        //         }
+        //       });
+        //     }
+        //   } else {
+        //     finalData.append(key, value);
+        //   }
+        // });
         if (Array.isArray(value)) {
-          if (key === 'document_requirements' && value.length === 0) {
-            // Ensure an empty array by appending an empty key
-            finalData.append(`${key}[]`, []);
-          } else if (key === 'accessories' && value.length === 0) {
-            // If 'accessories' is an empty array, append an empty array
+          if (
+            (key === 'document_requirements' || key === 'accessories') &&
+            value.length === 0
+          ) {
             finalData.append(`${key}[]`, []);
           } else {
             value.forEach((item, index) => {
@@ -464,10 +459,11 @@ const AllCourseForSuperAdminTest = ({
                 key === 'english_requirements' ||
                 key === 'accessories'
               ) {
-                // Append each item in the array as an indexed field
                 finalData.append(`${key}[${index}]`, item);
               } else if (key === 'document_requirements') {
-                // Append only fields that are not null or undefined
+                // Skip item if title is missing or null
+                if (!item.title) return;
+
                 if (item.title != null)
                   finalData.append(`${key}[${index}][title]`, item.title);
                 if (item.description != null)
@@ -480,12 +476,11 @@ const AllCourseForSuperAdminTest = ({
                     `${key}[${index}][isRequired]`,
                     item.isRequired
                   );
-                if (item.document_list_id != null) {
+                if (item.document_list_id != null)
                   finalData.append(
                     `${key}[${index}][document_list_id]`,
                     item.document_list_id
                   );
-                }
               }
             });
           }
@@ -524,6 +519,9 @@ const AllCourseForSuperAdminTest = ({
       university_price: '25000',
       tuition_fee: '25000',
       after_emgs_fee: '22600',
+      others_fee: '2600',
+      tuition_fee_put: '20000',
+      fee_duration: '',
       description: '',
       department: '',
       category: '',
@@ -574,6 +572,9 @@ const AllCourseForSuperAdminTest = ({
       gst: values?.gst || 0,
       emgs_fee: values?.emgs_fee || values?.price,
       after_emgs_fee: values?.after_emgs_fee || 0,
+      tuition_fee_put: values?.tuition_fee_put || 0,
+      others_fee: values?.others_fee || 0,
+      fee_duration: values?.fee_duration || 0,
       agent_commission_percentage: values?.agent_commission_percentage || 0,
       description: values?.description,
       course_id: courseIdForEdit,
@@ -610,12 +611,55 @@ const AllCourseForSuperAdminTest = ({
       const finalData = new FormData();
 
       Object.entries(allData).forEach(([key, value]) => {
+        //   if (Array.isArray(value)) {
+        //     if (key === 'document_requirements' && value.length === 0) {
+        //       // Ensure an empty array by appending an empty key
+        //       finalData.append(`${key}[]`, []);
+        //     } else if (key === 'accessories' && value.length === 0) {
+        //       // If 'accessories' is an empty array, append an empty array
+        //       finalData.append(`${key}[]`, []);
+        //     } else {
+        //       value.forEach((item, index) => {
+        //         if (
+        //           key === 'entry_requirements' ||
+        //           key === 'english_requirements' ||
+        //           key === 'accessories'
+        //         ) {
+        //           // Append each item in the array as an indexed field
+        //           finalData.append(`${key}[${index}]`, item);
+        //         } else if (key === 'document_requirements') {
+        //           // Append only fields that are not null or undefined
+        //           if (item.title != null)
+        //             finalData.append(`${key}[${index}][title]`, item.title);
+        //           if (item.description != null)
+        //             finalData.append(
+        //               `${key}[${index}][description]`,
+        //               item.description
+        //             );
+        //           if (item.isRequired != null)
+        //             finalData.append(
+        //               `${key}[${index}][isRequired]`,
+        //               item.isRequired
+        //             );
+        //           if (item.document_list_id != null) {
+        //             finalData.append(
+        //               `${key}[${index}][document_list_id]`,
+        //               item.document_list_id
+        //             );
+        //           }
+        //         }
+        //       });
+        //     }
+        //   } else {
+        //     finalData.append(key, value);
+        //   }
+        // });
+
         if (Array.isArray(value)) {
-          if (key === 'document_requirements' && value.length === 0) {
-            // Ensure an empty array by appending an empty key
-            finalData.append(`${key}[]`, []);
-          } else if (key === 'accessories' && value.length === 0) {
-            // If 'accessories' is an empty array, append an empty array
+          if (
+            (key === 'document_requirements' || key === 'accessories') &&
+            value.length === 0
+          ) {
             finalData.append(`${key}[]`, []);
           } else {
             value.forEach((item, index) => {
@@ -624,10 +668,11 @@ const AllCourseForSuperAdminTest = ({
                 key === 'english_requirements' ||
                 key === 'accessories'
               ) {
-                // Append each item in the array as an indexed field
                 finalData.append(`${key}[${index}]`, item);
               } else if (key === 'document_requirements') {
-                // Append only fields that are not null or undefined
+                // Skip item if title is missing or null
+                if (!item.title) return;
+
                 if (item.title != null)
                   finalData.append(`${key}[${index}][title]`, item.title);
                 if (item.description != null)
@@ -640,12 +685,11 @@ const AllCourseForSuperAdminTest = ({
                     `${key}[${index}][isRequired]`,
                     item.isRequired
                   );
-                if (item.document_list_id != null) {
+                if (item.document_list_id != null)
                   finalData.append(
                     `${key}[${index}][document_list_id]`,
                     item.document_list_id
                   );
-                }
               }
             });
           }
