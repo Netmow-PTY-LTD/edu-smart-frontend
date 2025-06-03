@@ -101,7 +101,7 @@ export default function ApplicationEmgsStatusTimeline({
 
                             {item?.invoiceUrl && (
                               <a
-                                href={`${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData.paneltext}${item.invoiceUrl}`}
+                                href={`https://${process.env.NEXT_PUBLIC_REDIRECT_URL}/dashboard/${customData.paneltext}${item.invoiceUrl}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn btn-sm btn-primary"
