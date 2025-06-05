@@ -22,6 +22,8 @@ const ProfileDropdown = () => {
 
   const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
 
+  console.log("userInfodata", userInfodata);
+
   useEffect(() => {
     const token = Cookies.get('token');
 
@@ -113,21 +115,21 @@ const ProfileDropdown = () => {
                   : ''}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">
-                {userInfodata?.data?.role ? userInfodata?.data?.role : '' || ''}
+              {userInfodata?.data?.role === 'agent'
+                ? `${userInfodata?.data?.agent_package?.package?.name || ''} Partner`
+                : userInfodata?.data?.role || ''}
               </span>
             </span>
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <h6 className="dropdown-header text-uppercase fs-3">
-            Welcome!{' '}
-            {userInfodata?.data?.first_name
-              ? userInfodata?.data?.first_name +
-                ' ' +
-                userInfodata?.data?.first_name
-              : ''}
-          </h6>
-          <DropdownItem className="p-0">
+        <h6 className="dropdown-header text-uppercase fs-3">
+          Welcome!{' '}
+          {userInfodata?.data?.first_name && userInfodata?.data?.last_name
+            ? userInfodata?.data?.first_name + ' ' + userInfodata?.data?.last_name
+            : ''}
+        </h6> 
+         <DropdownItem className="p-0">
             <Link
               href={`/dashboard/${userInfodata?.data?.role?.split('_').join('-')}/settings/profile`}
               className="dropdown-item"
