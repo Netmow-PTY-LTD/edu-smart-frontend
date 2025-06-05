@@ -650,7 +650,10 @@ console.log("packageInfo:", packageInfo);
               <ModalBody>
                 <Card>
                   <div className="text-center fs-1 text-primary fw-medium">
-                   Package: {upgradePackageName ?? ''}, {pricePackage ?? ''} MYR / {packageInfo?.duration?.replace('_', ' ')?.replace(/\b\w/g, char => char.toUpperCase()) ?? ''}
+                    Package: {upgradePackageName || ''}, Price: {pricePackage || ''} MYR /{' '}
+                    {packageInfo?.duration
+                      ?.replace(/_/g, ' ')
+                      ?.replace(/\b\w/g, (char) => char.toUpperCase()) || ''}
 
                    
                   </div>
@@ -804,6 +807,56 @@ console.log("packageInfo:", packageInfo);
                       </div>
                     </CardBody>
                   )}
+                    <CardBody>
+                      <Col lg={12}>
+                        {allCouponData?.data?.length > 0 && (
+                          <div className="row justify-content-center">
+                            {allCouponData.data.map((coupon, i) => (
+                              <div className="col-md-6 mb-4" key={i}>
+                                <div className="border rounded p-3 shadow-sm h-100">
+                                  <div className="mb-2">
+                                    <strong>Code:</strong> <span>{coupon?.code}</span>
+                                  </div>
+                                  <div className="mb-2">
+                                    <strong>Discount:</strong> {coupon?.discount_percentage}%
+                                  </div>
+                                  <div className="mb-2">
+                                    <strong>Packages:</strong>{' '}
+                                    {coupon?.packages?.length > 0
+                                      ? coupon.packages.map((pkg, idx) => (
+                                          <span key={idx}>
+                                            {pkg?.name}
+                                            {idx !== coupon.packages.length - 1 ? ', ' : ''}
+                                          </span>
+                                        ))
+                                      : 'N/A'}
+                                  </div>
+                                  <div className="mb-2">
+                                    <strong>Expiry Date:</strong>{' '}
+                                    {coupon?.expiry_date &&
+                                      new Date(coupon.expiry_date).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric',
+                                      })}
+                                  </div>
+                                  {coupon?.package_duration && (
+                                    <div className="mb-0">
+                                      <strong>Package Duration:</strong>{' '}
+                                      {coupon.package_duration
+                                        .replace(/_/g, ' ')
+                                        .replace(/\b\w/g, (c) => c.toUpperCase())}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </Col>
+                    </CardBody>
+
+
                   {userInfodata?.data?.package_choice && (
                     <CardBody>
                       <div className="w-full text-center d-flex gap-2 justify-content-center">
