@@ -415,8 +415,7 @@ const isStatusReached = (status) => {
 
 
 
-                        {/* {customData?.paneltext !== 'agent' && customData?.paneltext !== 'student' && ( */}
-                        {customData?.paneltext !== 'student' && (
+                       {customData?.paneltext !== 'agent' && customData?.paneltext !== 'student' && (
                           <>
                             <button
                               onClick={() =>
