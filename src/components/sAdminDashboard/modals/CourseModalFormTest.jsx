@@ -129,28 +129,6 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-                  {/* need by calculation automatic it will be everywhere calculations logic frontend/others its to minus EMGS Fee to Tuition Fee collect */}
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberFieldForCourse
-                        name="tuition_fee"
-                        label="Course Fee"
-                        readOnly
-                      />
-                    </div>
-                  </Col>
-                  {/* need by calculation automatic */}
-                  {/* need by calculation automatic Its will be show everywhere by text Tuitions Fee*/}
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <NumberFieldForCourse
-                        name="after_emgs_fee"
-                        label="Total Tuition Fee"
-                        readOnly
-                      />
-                    </div>
-                  </Col>
-                  {/* need by calculation automatic */}
 
                   {/* Its will be show as EMGS processing fee */}
                   <Col xl={6}>
@@ -183,6 +161,48 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
+
+
+                  <Col xl={6}>
+                    <div className="mb-3 disabled">
+                      <NumberFieldForCourse
+                        name="after_emgs_fee"
+                        label="Total Tuition Fee"
+                      />
+                    </div>
+                  </Col>
+                  <Col xl={6}>
+                    <div className="mb-3 disabled">
+                      <NumberFieldForCourse
+                        name="tuition_fee"
+                        label="Course Fee"
+                      />
+                    </div>
+                  </Col>
+
+
+
+                  {/* <Col xl={6}>
+                    <div className="mb-3">
+                      <NumberFieldForCourse
+                        name="tuition_fee"
+                        label="Course Fee"
+                        readOnly
+                      />
+                    </div>
+                  </Col>
+                  <Col xl={6}>
+                    <div className="mb-3">
+                      <NumberFieldForCourse
+                        name="after_emgs_fee"
+                        label="Total Tuition Fee"
+                        readOnly
+                      />
+                    </div>
+                  </Col>
+ */}
+
+
                   <Col xl={6}>
                     <div className="mb-3">
                       <TextFieldDefault

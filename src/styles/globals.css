@@ -10684,3 +10684,9 @@ padding-left: 70px;
 .editor-container svg {
   width: 10px;
 }
+.disabled input {
+  border: none !important;
+  background-color: #efefef !important;
+  pointer-events: none;
+  /* Optional: prevents user interaction */
+}
