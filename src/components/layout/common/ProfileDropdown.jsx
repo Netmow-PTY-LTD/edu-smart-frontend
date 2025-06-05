@@ -22,7 +22,6 @@ const ProfileDropdown = () => {
 
   const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
 
-  console.log("userInfodata", userInfodata);
 
   useEffect(() => {
     const token = Cookies.get('token');
