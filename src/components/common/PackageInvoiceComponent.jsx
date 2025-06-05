@@ -243,11 +243,11 @@ const PackageInvoiceComponent = ({
                                 <td>
                                   <h3 className="my-1 fw-medium text-uppercase d-flex flex-column justify-content-center w-100">
                                     {moment(
-                                      item.agent_package?.start_date
+                                      item?.agent_package?.start_date
                                     ).format('ddd MMM D, YYYY') +
                                       ' - ' +
                                       moment(
-                                        item.agent_package?.end_date
+                                        item?.agent_package?.end_date
                                       ).format('ddd MMM D, YYYY')}
 
                                     <div className="d-flex justify-content-center mt-2 w-100">

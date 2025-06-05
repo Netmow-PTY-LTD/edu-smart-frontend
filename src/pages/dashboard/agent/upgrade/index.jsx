@@ -1,9 +1,11 @@
+import PackageInvoiceComponent from '@/components/common/PackageInvoiceComponent';
 import PaymentOption from '@/components/common/PaymentOption';
 import SinglePackageComponent from '@/components/common/SinglePackageComponent';
 import Loader from '@/components/constants/Loader/Loader';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import { useUpgradePackageForAgentMutation } from '@/slice/services/agent/agentEarningsService';
+import { useGetPackagePaymentReportQuery, useGetSinglePackagePaymentReportQuery } from '@/slice/services/common/paymentReportServices';
 import {
   useSslCommerzPaymentIntendMutation,
   useSslCommerzSettingsQuery,
@@ -16,6 +18,7 @@ import {
   useGetAllActiveCouponQuery,
   useGetAllPackageQuery,
 } from '@/slice/services/public/package/publicPackageService';
+import DataObjectComponent from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -29,6 +32,8 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
+
+export const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 
 const UpgradePackageInAgentdashboard = () => {
   const [upgradePackageId, setUpgradePackageId] = useState('');
@@ -66,6 +71,35 @@ const UpgradePackageInAgentdashboard = () => {
   const { data: allCouponData } = useGetAllActiveCouponQuery();
   const { data: stripeSettings } = useStripeSettingsQuery();
   const { data: sslCommerzSettings } = useSslCommerzSettingsQuery();
+  const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
+
+  const { superAdminData } =
+    DataObjectComponent();
+
+  const printInvoice = () => {
+    window.print();
+  };
+
+  const {
+    data: packagePaymentData,
+    error: packagePaymentDataError,
+    isLoading: packagePaymentDataLoading,
+    refetch: packagePaymentDataRefetch,
+  } = useGetPackagePaymentReportQuery();
+
+let latestPackage = null;
+
+if (packagePaymentData?.data?.length > 0) {
+  latestPackage = packagePaymentData.data.reduce(
+    (latest, current) =>
+      new Date(current.createdAt) > new Date(latest.createdAt)
+        ? current
+        : latest
+  );
+}
+
+
+  console.log("latestPackage", latestPackage);
 
   const [
     upgradePackageForAgent,
@@ -86,12 +120,6 @@ const UpgradePackageInAgentdashboard = () => {
   const packageInfo = getAllPackageData?.data?.find(
   (pkg) => pkg._id === upgradePackageId
 );
-
-
-//upgradePackageId
-
-console.log("getAllPackageData", getAllPackageData);
-console.log("packageInfo:", packageInfo);
 
 
 
@@ -169,6 +197,7 @@ console.log("packageInfo:", packageInfo);
           const response = await upgradePackageForAgent(finalData).unwrap();
 
           if (response) {
+            console.log("response", response);
             toast.success(response?.message);
             setUpgradePackageId('');
             setUpgradePackageName('');
@@ -193,7 +222,18 @@ console.log("packageInfo:", packageInfo);
                 { shallow: true }
               );
             }, 3000);
+
+          setTimeout(() => {
+            setOpenInvoiceModal(true);
+            packagePaymentDataRefetch();
+          }, 1000); // 3000 milliseconds = 3 seconds
+
+
           }
+
+
+
+
         } catch (error) {
           const errorMessage = error?.data?.message || 'Something went wrong!';
           toast.error(errorMessage);
@@ -420,6 +460,7 @@ console.log("packageInfo:", packageInfo);
       const upgradeResponse = await upgradePackageForAgent(finalData).unwrap();
 
       if (upgradeResponse) {
+        console.log("response Coupon", upgradeResponse);
         toast.success(upgradeResponse?.message);
         setUpgradePackageId('');
         setUpgradePackageName('');
@@ -434,6 +475,11 @@ console.log("packageInfo:", packageInfo);
         setPackagePaidDuration('');
         userInfoRefetch();
         setOpenPaymentModal(false);
+                  setTimeout(() => {
+            setOpenInvoiceModal(true);
+            packagePaymentDataRefetch();
+          }, 1000); // 3000 milliseconds = 3 seconds
+
       }
     } catch (upgradeError) {
       const upgradeErrorMessage =
@@ -574,7 +620,7 @@ console.log("packageInfo:", packageInfo);
                   )}
                 </div>
               </Col>
-              <Col lg={10}>
+              <Col lg={12}>
                 <div className="coupon-area">
                   {allCouponData?.data?.length > 0 &&
                     allCouponData?.data?.map((coupon, i) => (
@@ -882,6 +928,44 @@ console.log("packageInfo:", packageInfo);
           )}
         </div>
       </div>
+                  {/* <div
+              onClick={() => {
+                  setOpenInvoiceModal(true);
+                  packagePaymentDataRefetch();
+              }}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Invoice
+            </div> */}
+
+          {
+            <PackageInvoiceComponent
+              open={openInvoiceModal}
+              close={() => {setOpenInvoiceModal(false);
+              }}
+              loading={packagePaymentDataLoading}
+              addressData={superAdminData}
+              billingAddressData={
+                latestPackage?.agent
+              }
+              tableData={[latestPackage]}
+              printInvoice={printInvoice}
+              subtotal={
+                latestPackage?.total_package_amount
+              }
+              total={latestPackage?.paid_amount}
+              currency={'MYR'}
+              payment_status={latestPackage?.status}
+              logoData={brandlogo}
+              invoice_no={latestPackage}
+              payment_method={
+                latestPackage?.payment_method
+              }
+              paymentData={latestPackage}
+            />
+          }
+
     </Layout>
   );
 };
