@@ -17,6 +17,7 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import { useCustomData } from '@/utils/common/data/customeData';
 import { downloadFilesAsPDF } from '@/utils/dwonloadFilesAsPdf';
+import { useAddEmgsTimelineMutation, useGetRecentApplicationsQuery, useUpdateApplicationStatusMutation } from '@/slice/services/common/applicationService';
 
 const SingleApplicationsPage = () => {
   const router = useRouter();
@@ -66,6 +67,13 @@ const SingleApplicationsPage = () => {
     }
   }, [singleGetApplicationData]);
 
+
+
+  console.log("singleGetApplicationData", singleGetApplicationData?.data?.status);
+
+
+
+
   const toggleModal = () => setModalOpen(!modalOpen);
 
   const handleImageClick = (imageUrl) => {
@@ -104,14 +112,288 @@ const SingleApplicationsPage = () => {
     );
   };
 
-  if (singleGetApplicationLoading) return <div>Loading...</div>;
+    const {
+      data: recentApplicationData,
+      isLoading: recentApplicationLoading,
+      refetch: recentApplicationRefetch,
+    } = useGetRecentApplicationsQuery();
+  
+  const [updateApplicationStatus] = useUpdateApplicationStatusMutation();
+  const [addEmgsTimeline] = useAddEmgsTimelineMutation();
+  const handleChangeApplicationStatus = async (data) => {
+    try {
+          if (data.status === 'pickupGenerated') {
+              const formData = new FormData();
+              formData.append(
+                'title',
+                'Airport Pickup Charge Generated — Action Required'
+              );
+              formData.append(
+                'description',
+                'Your Airport Pickup Charge has been successfully generated. Please review and complete the payment to confirm your airport pickup arrangement. You can access the invoice using the link below.'
+              );
+              formData.append(
+                'invoiceUrl',
+                `/application-invoices?app_id=${data?.id}&pickup=yes`
+              );
+              formData.append('image', data?.image); // Ensure this is a File or Blob object
+              formData.append('id', data?.emgs_id); // emgs_status_id
 
+              const timelineResponse = await addEmgsTimeline(formData);
+              if (timelineResponse?.data?.success) {
+                // toast.success('Airport Pickup Charge timeline added successfully!');
+              } else {
+                toast.error('Failed to add Airport Pickup Charge timeline.');
+              }
+              return;
+            }
+      const response = await updateApplicationStatus(data);
+
+      if (response?.data?.success) {
+        toast.success(
+          response?.data?.message || 'Application status updated successfully!'
+        );
+        recentApplicationRefetch();
+
+        // ✅ If status is 'processing', send FormData to addEmgsTimeline
+
+        if (data.status === 'pending') {
+          const formData = new FormData();
+          formData.append('title', 'File Assessment Submitted');
+          formData.append(
+            'description',
+            'Your file assessment has been submitted and will be reviewed shortly. The status will be updated once the review process begins.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'review_in') {
+          const formData = new FormData();
+          formData.append('title', 'File Assessment Submitted — Under Review');
+          formData.append(
+            'description',
+            'Your submitted documents are currently under review by our team. Please check back soon for updates on your application status.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'file_requested') {
+          const formData = new FormData();
+          formData.append('title', 'Additional Documents Required');
+          formData.append(
+            'description',
+            'We need additional documents to proceed with your application. Please check your application details and upload the required files as soon as possible.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'ready_for_emgs') {
+          const formData = new FormData();
+          formData.append('title', 'Ready for EMGS Submission & Payment');
+          formData.append(
+            'description',
+            'Your file has passed internal assessment and is now ready to be submitted to EMGS. The EMGS invoice is now available and ready for payment.'
+          );
+          formData.append(
+            'invoiceUrl',
+            `/application-invoices?app_id=${data?.id}&emgs=yes`
+          );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+        if (data.status === 'file_under_emgs') {
+          const formData = new FormData();
+          formData.append('title', 'File Under EMGS Review');
+          formData.append(
+            'description',
+            'Your documents have been submitted to EMGS and are currently being reviewed. We will notify you once EMGS has provided feedback.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&emgs=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'ready_for_tuition') {
+          const formData = new FormData();
+          formData.append('title', 'Ready for Tuition Payment');
+          formData.append(
+            'description',
+            'Your application has progressed successfully. You may now proceed with the tuition payment to continue your enrollment process.'
+          );
+          formData.append(
+            'invoiceUrl',
+            `/application-invoices?app_id=${data?.id}&tuition=yes`
+          );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'tuition_under_processed') {
+          const formData = new FormData();
+          formData.append('title', 'Tuition Payment is Being Processed');
+          formData.append(
+            'description',
+            'Your tuition payment is currently under verification. We will update your status once the payment has been confirmed.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&tuition=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // This is your emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('EMGS timeline added successfully!');
+          } else {
+            toast.error('Failed to add EMGS timeline.');
+          }
+        }
+
+        if (data.status === 'accepted') {
+          const formData = new FormData();
+          formData.append('title', 'Application Accepted');
+          formData.append(
+            'description',
+            'Congratulations! Your application has been accepted. Please check your application dashboard, EMGS status, or email for further instructions and next steps.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&tuition=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success('Tuition fee timeline added successfully!');
+          } else {
+            toast.error('Failed to add Tuition fee timeline.');
+          }
+        }
+
+        if (data.status === 'rejected') {
+          const formData = new FormData();
+          formData.append(
+            'title',
+            'Application Cancelled — Final Status Update'
+          );
+          formData.append(
+            'description',
+            'We regret to inform you that your application has been cancelled. If you believe this was an error or you need further clarification, please contact our support team. Thank you for your interest and understanding.'
+          );
+          // formData.append(
+          //   'invoiceUrl',
+          //   `/application-invoices?app_id=${data?.id}&pickup=yes`
+          // );
+          formData.append('image', data?.image); // Ensure this is a File or Blob object
+          formData.append('id', data?.emgs_id); // emgs_status_id
+
+          const timelineResponse = await addEmgsTimeline(formData);
+          if (timelineResponse?.data?.success) {
+            // toast.success(
+            //   'Application cancellation timeline added successfully!'
+            // );
+          } else {
+            toast.error('Failed to add application cancellation timeline.');
+          }
+        }
+
+        window.location.reload(); // ✅ Reload after timeline added
+
+
+      } else {
+        toast.error(
+          response?.error?.data?.message ||
+            'Failed to update application status.'
+        );
+      }
+    } catch (error) {
+      console.error('Error updating application status:', error);
+      toast.error('An error occurred while updating the status.');
+    }
+  };
+
+  const statusOrder = ['review_in', 'file_requested', 'ready_for_emgs'];
+const currentStatus = singleGetApplicationData?.data?.status;
+
+const isStatusReached = (status) => {
+  return statusOrder.indexOf(status) <= statusOrder.indexOf(currentStatus);
+};
+
+
+  if (singleGetApplicationLoading) return <div>Loading...</div>;
   return (
     <Layout>
       <ToastContainer />
       <div className="page-content">
         <div className="container-fluid">
           <div className="h-100">
+
+            
+
+
+
             <Card>
               <h1 className="py-4 px-3 text-capitalize text-primary fw-semibold border-bottom">
                 📄 All Submitted Documents
@@ -130,6 +412,67 @@ const SingleApplicationsPage = () => {
                       ➕ Upload Document
                     </button>
                   </div>
+
+
+
+                        {customData?.paneltext !== 'agent' && customData?.paneltext !== 'student' && (
+                          <>
+                            <button
+                              onClick={() =>
+                                handleChangeApplicationStatus({
+                                  id: singleGetApplicationData?.data?._id,
+                                  status: 'review_in',
+                                  emgs_id: singleGetApplicationData?.data?.emgs_status,
+                                })
+                              }
+                              className={`btn d-flex align-items-center ${
+                                currentStatus === 'review_in' ? 'btn-success' : 'btn-outline-primary'
+                              }`}
+                              disabled={isStatusReached('review_in')}
+                            >
+                              <i className="ri-search-eye-line me-2"></i>
+                              Review In
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                handleChangeApplicationStatus({
+                                  id: singleGetApplicationData?.data?._id,
+                                  status: 'file_requested',
+                                  emgs_id: singleGetApplicationData?.data?.emgs_status,
+                                })
+                              }
+                              className={`btn d-flex align-items-center ${
+                                currentStatus === 'file_requested' ? 'btn-success' : 'btn-outline-primary'
+                              }`}
+                              disabled={isStatusReached('file_requested')}
+                            >
+                              <i className="ri-folder-received-line me-2"></i>
+                              File Requested
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                handleChangeApplicationStatus({
+                                  id: singleGetApplicationData?.data?._id,
+                                  status: 'ready_for_emgs',
+                                  emgs_id: singleGetApplicationData?.data?.emgs_status,
+                                })
+                              }
+                              className={`btn d-flex align-items-center ${
+                                currentStatus === 'ready_for_emgs' ? 'btn-success' : 'btn-outline-primary'
+                              }`}
+                              disabled={isStatusReached('ready_for_emgs')}
+                            >
+                              <i className="ri-send-plane-line me-2"></i>
+                              Ready For EMGS
+                            </button>
+                            </>
+                        )}
+
+
+
+
                   <div>
                     <button
                       className="btn btn-lg btn-success"

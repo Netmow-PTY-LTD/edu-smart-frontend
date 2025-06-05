@@ -84,26 +84,6 @@ export default function RecentApplicationForSuperAdmin() {
     setActiveTab('2');
   };
 
-  // const handleChangeApplicationStatus = async (data) => {
-  //   try {
-  //     const response = await updateApplicationStatus(data);
-  //     if (response?.data?.success) {
-  //       toast.success(
-  //         response?.data?.message || 'Application status updated successfully!'
-  //       );
-  //       recentApplicationRefetch();
-  //     } else {
-  //       toast.error(
-  //         response?.error?.data?.message ||
-  //           'Failed to update application status.'
-  //       );
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating application status:', error);
-  //     toast.error('An error occurred while updating the status.');
-  //   }
-  // };
-
   const [addEmgsTimeline] = useAddEmgsTimelineMutation();
   const handleChangeApplicationStatus = async (data) => {
     try {
