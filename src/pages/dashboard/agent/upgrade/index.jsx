@@ -83,6 +83,18 @@ const UpgradePackageInAgentdashboard = () => {
     refetch: getAllPackageRefetch,
   } = useGetAllPackageQuery();
 
+  const packageInfo = getAllPackageData?.data?.find(
+  (pkg) => pkg._id === upgradePackageId
+);
+
+
+//upgradePackageId
+
+console.log("getAllPackageData", getAllPackageData);
+console.log("packageInfo:", packageInfo);
+
+
+
   useEffect(() => {
     if (userInfodata?.data?.package_choice) {
       const selectedPackage = getAllPackageData?.data?.find(
@@ -638,7 +650,9 @@ const UpgradePackageInAgentdashboard = () => {
               <ModalBody>
                 <Card>
                   <div className="text-center fs-1 text-primary fw-medium">
-                    {upgradePackageName ?? ''} {totalPricePackage ?? ''}
+                   Package: {upgradePackageName ?? ''}, {pricePackage ?? ''} MYR / {packageInfo?.duration?.replace('_', ' ')?.replace(/\b\w/g, char => char.toUpperCase()) ?? ''}
+
+                   
                   </div>
                   <div className="m-4">
                     <label htmlFor="couponCode" className="form-label fs-3">
