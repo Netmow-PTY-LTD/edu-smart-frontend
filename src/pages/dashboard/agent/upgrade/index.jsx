@@ -32,6 +32,8 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
+import PackageInvoiceForSuperAdmin from '../package-invoices';
+import PackageInvoiceTable from '@/components/common/PackageInvoiceTable';
 
 export const brandlogo = '/edusmart-Final-Logo-Final-Logo.png';
 
@@ -674,6 +676,12 @@ if (packagePaymentData?.data?.length > 0) {
                     ))}
                 </div>
               </Col>
+{/* 
+              <Col lg={12} className='mt-4'>
+                      <PackageInvoiceTable />
+              </Col> */}
+
+
             </Row>
           </div>
           {openPaymentModal && (
@@ -922,22 +930,17 @@ if (packagePaymentData?.data?.length > 0) {
                       </div>
                     </CardBody>
                   )}
+                  
                 </Card>
               </ModalBody>
             </Modal>
           )}
         </div>
       </div>
-                  {/* <div
-              onClick={() => {
-                  setOpenInvoiceModal(true);
-                  packagePaymentDataRefetch();
-              }}
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View Invoice
-            </div> */}
+
+
+
+
 
           {
             <PackageInvoiceComponent
