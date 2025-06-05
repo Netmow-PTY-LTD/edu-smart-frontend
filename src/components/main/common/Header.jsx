@@ -162,7 +162,7 @@ export default function Header() {
                   </li>
                   <li>
                     <Link href="/packages" className="nav-link">
-                      <span>Join as partner</span>
+                      <span>Join as Partner</span>
                     </Link>
                   </li>
                 </ul>
