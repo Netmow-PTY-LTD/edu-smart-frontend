@@ -23,6 +23,19 @@ const DataObjectComponent = () => {
   if (isLoading) return <div></div>;
   if (isError || !userInfoData?.data?.role) return <div></div>;
 
+    const statusOrder = [
+  'pending',
+  'review_in',
+  'file_requested',
+  'ready_for_emgs',
+  'file_under_emgs',
+  'ready_for_tuition',
+  'tuition_under_processed',
+  'accepted',
+  'rejected',
+];
+
+
   const universityLogoAndNameHeaderDataForAgentDashboard = {
     title: 'Logo - Name',
     key: 'logo',
@@ -1158,52 +1171,33 @@ const DataObjectComponent = () => {
       ),
     },
         {
-      title: 'Emgs',
-      key: 'emgs_payment_status',
-      render: (item) => (
-        <>
-          <span
-            className={`fw-medium fs-3 text-capitalize badge ${item?.emgs_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.emgs_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
-          >
-            {item?.emgs_payment_status ?? '-'}
-          </span>
-          <Link
-          target='_blank'
-          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
-            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            title="View Invoice"
-          >
-            <i className="ri-receipt-fill"></i>
-            </Link>
+  title: 'Emgs',
+  key: 'emgs_payment_status',
+  render: (item) => {
+    const currentIndex = statusOrder.indexOf(item?.status);
+    const emgsStartIndex = statusOrder.indexOf('ready_for_emgs');
+    const showEmgsSection = currentIndex >= emgsStartIndex;
 
-        </>
-      ),
-    },
-{
-  title: 'Tuition',
-  key: 'tuition_fee_payment_status',
-  render: (item) => (
-    <>
-      <span
-        className={`fw-medium fs-3 text-capitalize badge ${
-          item?.tuition_fee_payment_status === 'paid'
-            ? 'bg-success-subtle text-success'
-            : item?.tuition_fee_payment_status === 'pending'
-            ? 'bg-warning-subtle text-warning'
-            : ''
-        }`}
-      >
-        {item?.tuition_fee_payment_status ?? '-'}
-      </span>
+   if (!showEmgsSection) {
+      return <span className="text-muted">-</span>;
+    }
 
-      {item?.emgs_payment_status === 'paid' && (
+    return (
+      <>
+        <span
+          className={`fw-medium fs-3 text-capitalize badge ${
+            item?.emgs_payment_status === 'paid'
+              ? 'bg-success-subtle text-success'
+              : item?.emgs_payment_status === 'pending'
+              ? 'bg-warning-subtle text-warning'
+              : ''
+          }`}
+        >
+          {item?.emgs_payment_status ?? '-'}
+        </span>
         <Link
           target="_blank"
-          href={`/dashboard/${userInfoData?.data?.role
-            .split('_')
-            .join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
+          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&emgs=yes`}
           className="ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary"
           data-bs-toggle="tooltip"
           data-bs-placement="top"
@@ -1211,44 +1205,113 @@ const DataObjectComponent = () => {
         >
           <i className="ri-receipt-fill"></i>
         </Link>
-      )}
-    </>
-  ),
+      </>
+    );
+  },
 },
-    {
-      title: 'Pickup',
-      key: 'pickup_status',
-      render: (item) => (
-        <>
-          {item?.airport_pickup_charge > 0 &&
-          item?.airport_pickup_invoice_status === 'active' ? (
-            <>
-            <span
-              className={` fw-medium fs-3 text-capitalize badge ${item?.airport_pickup_charge_payment_status === 'paid' ? 'bg-success-subtle text-success' : item?.airport_pickup_charge_payment_status === 'pending' ? ' bg-warning-subtle text-warning' : ''}`}
-            >
-              {item?.airport_pickup_charge_payment_status ?? '-'}
-            </span>
+
+{
+  title: 'Tuition',
+  key: 'tuition_fee_payment_status',
+  render: (item) => {
+    const currentIndex = statusOrder.indexOf(item?.status);
+    const tuitionStartIndex = statusOrder.indexOf('ready_for_tuition');
+    const showTuitionSection = currentIndex >= tuitionStartIndex;
+
+
+
+       if (!showTuitionSection) {
+      return <span className="text-muted">-</span>;
+    }
+
+    return (
+      <>
+        <span
+          className={`fw-medium fs-3 text-capitalize badge ${
+            item?.tuition_fee_payment_status === 'paid'
+              ? 'bg-success-subtle text-success'
+              : item?.tuition_fee_payment_status === 'pending'
+              ? 'bg-warning-subtle text-warning'
+              : ''
+          }`}
+        >
+          {item?.tuition_fee_payment_status ?? '-'}
+        </span>
+
+        {item?.emgs_payment_status === 'paid' && (
           <Link
-          target='_blank'
-          href={`/dashboard/${userInfoData?.data?.role.split('_').join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
-            className={`ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary`}
+            target="_blank"
+            href={`/dashboard/${userInfoData?.data?.role
+              .split('_')
+              .join('-')}/application-invoices?app_id=${item?._id}&tuition=yes`}
+            className="ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             title="View Invoice"
-          
           >
             <i className="ri-receipt-fill"></i>
-            </Link>
-            </>
+          </Link>
+        )}
+      </>
+    );
+  },
+},
+{
+  title: 'Pickup',
+  key: 'pickup_status',
+  render: (item) => {
+    const currentIndex = statusOrder.indexOf(item?.status);
+    const pickupStartIndex = statusOrder.indexOf('accepted');
+    const showPickupSection = currentIndex >= pickupStartIndex;
 
-          ) : (
-            <span className="text-capitalize text-primary fw-medium">
-              {'Not Activated Yet'}
-            </span>
-          )}
+    if (!showPickupSection) {
+      return (
+        <span className="text-capitalize text-primary fw-medium">
+          {'Not Activated Yet'}
+        </span>
+      );
+    }
+
+    const { airport_pickup_charge, airport_pickup_invoice_status, airport_pickup_charge_payment_status } = item;
+
+    if (airport_pickup_charge > 0 && airport_pickup_invoice_status === 'active') {
+      return (
+        <>
+          <span
+            className={`fw-medium fs-3 text-capitalize badge ${
+              airport_pickup_charge_payment_status === 'paid'
+                ? 'bg-success-subtle text-success'
+                : airport_pickup_charge_payment_status === 'pending'
+                ? 'bg-warning-subtle text-warning'
+                : ''
+            }`}
+          >
+            {airport_pickup_charge_payment_status ?? '-'}
+          </span>
+
+          <Link
+            target="_blank"
+            href={`/dashboard/${userInfoData?.data?.role
+              .split('_')
+              .join('-')}/application-invoices?app_id=${item?._id}&pickup=yes`}
+            className="ms-2 fw-medium fs-3 text-capitalize badge bg-primary-subtle text-primary"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="View Invoice"
+          >
+            <i className="ri-receipt-fill"></i>
+          </Link>
         </>
-      ),
-    },
+      );
+    }
+
+    return (
+      <span className="text-capitalize text-primary fw-medium">
+        {'Not Activated Yet'}
+      </span>
+    );
+  },
+},
 
 {
   title: 'Status',
