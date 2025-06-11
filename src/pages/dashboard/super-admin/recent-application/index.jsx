@@ -11,6 +11,7 @@ import {
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import {
   useGetAirportPickupChargeInSuperAdminQuery,
   useUpdateAirportPickupChargeInSuperAdminMutation,
@@ -44,9 +45,11 @@ export default function RecentApplicationForSuperAdmin() {
   const [emgsId, setEmgsId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
+   const { data: userInfoData, isLoading, isError } = useGetUserInfoQuery();
+  const userRole = userInfoData?.data?.role;
 
 
-  const perPageData = 20;
+  const perPageData = 10;
   const customData = useCustomData();
 
   const { studentApplicationsHeaders } = DataObjectComponent();
@@ -357,12 +360,15 @@ export default function RecentApplicationForSuperAdmin() {
   };
 
   // Ensure full search even if searchTerm is empty
-  const isfilteredData =
-    recentApplicationData?.data?.length > 0
-      ? recentApplicationData.data.filter((item) =>
-          searchInItem(item, searchTerm)
-        )
-      : [];
+const isfilteredData =
+  recentApplicationData?.data?.length > 0
+    ? recentApplicationData.data
+        .filter((item) => searchInItem(item, searchTerm))
+        .sort((a, b) => {
+          if (!a.createdAt || !b.createdAt) return 0;
+          return b.createdAt.localeCompare(a.createdAt); // DESC order
+        })
+    : [];
 
   const PickupHeaderData = {
     title: 'Pickup',
@@ -451,69 +457,67 @@ const statusOptions = [
               </div>
           </DropdownItem>
 
-          <>
+          {userRole !== 'agent' && userRole !== 'student' && (
+            <>
+              {statusOptions.map((statusItem) => {
+               const currentIndex = statusOrder.indexOf(item?.status);
+                const statusIndex = statusOrder.indexOf(statusItem.value);
+                const isCurrentStatus = item?.status === statusItem.value;
 
-            {statusOptions.map((statusItem) => {
-              const currentIndex = statusOrder.indexOf(item?.status);
-              const statusIndex = statusOrder.indexOf(statusItem.value);
+                const isDisabled =
+                  item?.status === 'rejected'
+                    ? statusItem.value !== 'pending'
+                    : statusIndex <= currentIndex;
 
-              const isCurrentStatus = item?.status === statusItem.value;
+                const getTextClass = () => {
+                  if (isCurrentStatus) return 'text-success fw-bold';
+                  if (isDisabled) return 'text-muted';
+                  return 'text-primary';
+                };
 
-              const isDisabled =
-                item?.status === 'rejected'
-                  ? statusItem.value !== 'pending'
-                  : statusIndex <= currentIndex;
+                const getCursorStyle = () => (isDisabled ? 'not-allowed' : 'pointer');
 
-              const getTextClass = () => {
-                if (isCurrentStatus) return 'text-success fw-bold'; // Green & bold
-                if (isDisabled) return 'text-muted';
-                return 'text-primary';
-              };
+                return (
+                  <DropdownItem key={statusItem.value} disabled={isDisabled}>
+                    <div
+                      onClick={
+                        isDisabled
+                          ? null
+                          : () =>
+                              handleChangeApplicationStatus({
+                                id: item?._id,
+                                status: statusItem.value,
+                                emgs_id: item?.emgs_status,
+                              })
+                      }
+                      className={getTextClass()}
+                      style={{ cursor: getCursorStyle() }}
+                    >
+                      <i className={`${statusItem.icon} me-2`}></i>
+                      {statusItem.label}
+                    </div>
+                  </DropdownItem>
+                );
+              })}
 
-              const getCursorStyle = () => (isDisabled ? 'not-allowed' : 'pointer');
-
-              return (
-                <DropdownItem key={statusItem.value} disabled={isDisabled}>
-                  <div
-                    onClick={
-                      isDisabled
-                        ? null
-                        : () =>
-                            handleChangeApplicationStatus({
-                              id: item?._id,
-                              status: statusItem.value,
-                              emgs_id: item?.emgs_status,
-                            })
-                    }
-                    className={getTextClass()}
-                    style={{ cursor: getCursorStyle() }}
-                  >
-                    <i className={`${statusItem.icon} me-2`}></i>
-                    {statusItem.label}
-                  </div>
-                </DropdownItem>
-              );
-            })}
-
-            <DropdownItem>
-              <div
-                onClick={() => {
-                  setPickupChargeModal(true),
-                    setApplicationId(item?._id),
+              {/* Airport Pickup Charge */}
+              <DropdownItem>
+                <div
+                  onClick={() => {
+                    setPickupChargeModal(true);
+                    setApplicationId(item?._id);
                     setEmgsId(item?.emgs_status);
-                  setCheckAirportPickupStatus(
-                    item?.airport_pickup_charge_payment_status
-                  );
-                }}
-                className="text-primary"
-              >
-                <i className="ri-flight-takeoff-line"></i>
-                Airport Pick-up Charge
-              </div>
-            </DropdownItem>
+                    setCheckAirportPickupStatus(item?.airport_pickup_charge_payment_status);
+                  }}
+                  className="text-primary"
+                >
+                  <i className="ri-flight-takeoff-line me-2"></i>
+                  Airport Pick-up Charge
+                </div>
+              </DropdownItem>
+            </>
+          )}
 
-
-          </>
         </DropdownMenu>
       </UncontrolledDropdown>
     ),

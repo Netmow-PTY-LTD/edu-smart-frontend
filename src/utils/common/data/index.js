@@ -1439,65 +1439,65 @@ const studentApplicationsHeadersActions = [
               </div>
             </DropdownItem>
 
-            {userRole !== 'agent' && userRole !== 'student' && (
-              <>
-                {statusOptions.map((statusItem) => {
-                  const statusIndex = statusOrder.indexOf(statusItem.value);
-                  const isCurrentStatus = item?.status === statusItem.value;
+          {userRole !== 'agent' && userRole !== 'student' && (
+            <>
+              {statusOptions.map((statusItem) => {
+                const statusIndex = statusOrder.indexOf(statusItem.value);
+                const isCurrentStatus = item?.status === statusItem.value;
 
-                  const isDisabled =
-                    item?.status === 'rejected'
-                      ? statusItem.value !== 'pending'
-                      : statusIndex <= currentIndex;
+                const isDisabled =
+                  item?.status === 'rejected'
+                    ? statusItem.value !== 'pending'
+                    : statusIndex <= currentIndex;
 
-                  const getTextClass = () => {
-                    if (isCurrentStatus) return 'text-success fw-bold';
-                    if (isDisabled) return 'text-muted';
-                    return 'text-primary';
-                  };
+                const getTextClass = () => {
+                  if (isCurrentStatus) return 'text-success fw-bold';
+                  if (isDisabled) return 'text-muted';
+                  return 'text-primary';
+                };
 
-                  const getCursorStyle = () => (isDisabled ? 'not-allowed' : 'pointer');
+                const getCursorStyle = () => (isDisabled ? 'not-allowed' : 'pointer');
 
-                  return (
-                    <DropdownItem key={statusItem.value} disabled={isDisabled}>
-                      <div
-                        onClick={
-                          isDisabled
-                            ? null
-                            : () =>
-                                handleChangeApplicationStatus({
-                                  id: item?._id,
-                                  status: statusItem.value,
-                                  emgs_id: item?.emgs_status,
-                                })
-                        }
-                        className={getTextClass()}
-                        style={{ cursor: getCursorStyle() }}
-                      >
-                        <i className={`${statusItem.icon} me-2`}></i>
-                        {statusItem.label}
-                      </div>
-                    </DropdownItem>
-                  );
-                })}
+                return (
+                  <DropdownItem key={statusItem.value} disabled={isDisabled}>
+                    <div
+                      onClick={
+                        isDisabled
+                          ? null
+                          : () =>
+                              handleChangeApplicationStatus({
+                                id: item?._id,
+                                status: statusItem.value,
+                                emgs_id: item?.emgs_status,
+                              })
+                      }
+                      className={getTextClass()}
+                      style={{ cursor: getCursorStyle() }}
+                    >
+                      <i className={`${statusItem.icon} me-2`}></i>
+                      {statusItem.label}
+                    </div>
+                  </DropdownItem>
+                );
+              })}
 
-                {/* Airport Pickup Charge */}
-                <DropdownItem>
-                  <div
-                    onClick={() => {
-                      setPickupChargeModal(true);
-                      setApplicationId(item?._id);
-                      setEmgsId(item?.emgs_status);
-                      setCheckAirportPickupStatus(item?.airport_pickup_charge_payment_status);
-                    }}
-                    className="text-primary"
-                  >
-                    <i className="ri-flight-takeoff-line me-2"></i>
-                    Airport Pick-up Charge
-                  </div>
-                </DropdownItem>
-              </>
-            )}
+              {/* Airport Pickup Charge */}
+              <DropdownItem>
+                <div
+                  onClick={() => {
+                    setPickupChargeModal(true);
+                    setApplicationId(item?._id);
+                    setEmgsId(item?.emgs_status);
+                    setCheckAirportPickupStatus(item?.airport_pickup_charge_payment_status);
+                  }}
+                  className="text-primary"
+                >
+                  <i className="ri-flight-takeoff-line me-2"></i>
+                  Airport Pick-up Charge
+                </div>
+              </DropdownItem>
+            </>
+          )}
 
 
           </DropdownMenu>

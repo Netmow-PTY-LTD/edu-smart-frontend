@@ -144,7 +144,7 @@ const SingleStudentForSuperAdmin = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -159,7 +159,7 @@ const SingleStudentForSuperAdmin = () => {
                           EMGS Status
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
                     <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
