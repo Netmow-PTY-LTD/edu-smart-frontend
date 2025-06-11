@@ -2,6 +2,8 @@ import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentMa
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
+import ApplicationDocumentsModal from '@/components/sAdminDashboard/modals/ApplicationDocumentsModal';
+import ApplicationEmgsStatusTimelineModal from '@/components/sAdminDashboard/modals/ApplicationEmgsStatusTimelineModal';
 import { useGetApplicationsQuery } from '@/slice/services/common/applicationService';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -38,6 +40,9 @@ const AllStudentApplications = ({
   const [applicationId, setApplicationId] = useState('');
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [hasUpdated, setHasUpdated] = useState(false);
+    const [emgsId, setEmgsId] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
 
   const perPageData = 9;
 
@@ -131,21 +136,33 @@ const AllStudentApplications = ({
           </span>
         </DropdownToggle>
         <DropdownMenu className="ms-2">
-          {item?.payment_status === 'pending' && (
-            <DropdownItem
-              onClick={() => {
-                setApplicationId(item?._id);
-                setOpenPaymentModal(true);
-              }}
-            >
-              <i className="ri-bank-card-fill me-2 text-primary"></i>
-              Pay Now
+            <DropdownItem>
+                <div
+                  onClick={() => {
+                    setApplicationId(item?._id);
+                    setModalOpen(true);
+                  }}
+                  className="text-primary"
+                >
+                <i className="ri-eye-fill me-2"></i>
+                  View Documents
+                </div>
+  
             </DropdownItem>
-          )}
-          <DropdownItem onClick={() => handleViewEmgsStatus(item?.emgs_status)}>
-            <i className="ri-eye-fill me-2 text-primary"></i>
-            View EMGS Status
-          </DropdownItem>
+  
+            <DropdownItem>
+                <div
+                  onClick={() => {
+                    setEmgsId(item?.emgs_status);
+                    setIsTimelineModalOpen(true);
+                  }}
+                  className="text-primary"
+                >
+                <i className="ri-eye-fill me-2"></i>
+                  View EMGS Status
+                </div>
+            </DropdownItem>
+
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
@@ -169,6 +186,9 @@ const AllStudentApplications = ({
       {applicationLoading ? (
         <LoaderSpiner />
       ) : activeTab === '1' ? (
+         <div className="page-content">
+         <div className="h-100">
+          <div className="container-fluid">
         <Row>
           <Col xl={12}>
             <Card>
@@ -195,6 +215,10 @@ const AllStudentApplications = ({
             </Card>
           </Col>
         </Row>
+       </div>
+       </div>
+       </div>
+
       ) : (
         <ApplicationEmgsStatusTimeline
           setActiveTab={setActiveTab}
@@ -225,6 +249,17 @@ const AllStudentApplications = ({
           </ModalBody>
         </Modal>
       )}
+
+            <ApplicationEmgsStatusTimelineModal
+              isOpen={isTimelineModalOpen}
+              onClose={() => setIsTimelineModalOpen(false)}
+              currentTimeline={emgsId}
+            />
+            <ApplicationDocumentsModal
+              isOpen={modalOpen}
+              onClose={() => setModalOpen(false)}
+              applicationId={applicationId}
+            />
     </>
   );
 
