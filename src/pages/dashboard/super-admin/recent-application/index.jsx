@@ -44,7 +44,7 @@ export default function RecentApplicationForSuperAdmin() {
   const [emgsId, setEmgsId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
-  
+
 
   const perPageData = 20;
   const customData = useCustomData();
@@ -384,6 +384,31 @@ export default function RecentApplicationForSuperAdmin() {
     ),
   };
 
+
+  const statusOrder = [
+  'pending',
+  'review_in',
+  'file_requested',
+  'ready_for_emgs',
+  'file_under_emgs',
+  'ready_for_tuition',
+  'tuition_under_processed',
+  'accepted',
+  'rejected',
+];
+
+const statusOptions = [
+  { label: 'Submitted', value: 'pending', icon: 'ri-check-fill' },
+  { label: 'Review In', value: 'review_in', icon: 'ri-search-eye-line' },
+  { label: 'File Requested', value: 'file_requested', icon: 'ri-folder-received-line' },
+  { label: 'Ready For EMGS', value: 'ready_for_emgs', icon: 'ri-send-plane-line' },
+  { label: 'File Under EMGS', value: 'file_under_emgs', icon: 'ri-file-search-line' },
+  { label: 'Ready For Tuition', value: 'ready_for_tuition', icon: 'ri-graduation-cap-line' },
+  { label: 'Tuition Under Processed', value: 'tuition_under_processed', icon: 'ri-loop-right-line' },
+  { label: 'Accepted', value: 'accepted', icon: 'ri-check-line' },
+  { label: 'Rejected', value: 'rejected', icon: 'ri-close-line' },
+];
+
   const EmgsStatusActionData = {
     title: 'Action',
     key: 'actions',
@@ -414,14 +439,6 @@ export default function RecentApplicationForSuperAdmin() {
           </DropdownItem>
 
           <DropdownItem>
-            {/* <div
-              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
-              className="text-primary"
-            >
-              <i className="ri-eye-fill me-2"></i>
-              View EMGS Status
-            </div> */}
-
               <div
                 onClick={() => {
                   setEmgsId(item?.emgs_status);
@@ -435,165 +452,48 @@ export default function RecentApplicationForSuperAdmin() {
           </DropdownItem>
 
           <>
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'pending',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-check-fill me-2"></i>
-                Pending
-              </div>
-            </DropdownItem>
 
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'review_in',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-search-eye-line me-2"></i>
-                Review In
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'file_requested',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-folder-received-line me-2"></i>
-                File Requested
-              </div>
-            </DropdownItem>
+              {statusOptions.map((statusItem) => {
+                const currentIndex = statusOrder.indexOf(item?.status);
+                const statusIndex = statusOrder.indexOf(statusItem.value);
 
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'ready_for_emgs',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-send-plane-line me-2"></i>
-                Ready For EMGS
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'file_under_emgs',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-file-search-line me-2"></i>
-                File Under EMGS
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'ready_for_tuition',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-graduation-cap-line me-2"></i>
-                Ready For Tuition
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'tuition_under_processed',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-loop-right-line me-2"></i>
-                Tuition Under Processed
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'accepted',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-check-line me-2"></i>
-                Accepted
-              </div>
-            </DropdownItem>
-            <DropdownItem>
-              <div
-                onClick={() => {
-                  setPickupChargeModal(true),
-                    setApplicationId(item?._id),
-                    setEmgsId(item?.emgs_status);
-                  setCheckAirportPickupStatus(
-                    item?.airport_pickup_charge_payment_status
-                  );
-                }}
-                className="text-primary"
-              >
-                <i className="ri-eye-fill me-2"></i>
-                Airport Pick-up Charge
-              </div>
-            </DropdownItem>
+                const isDisabled =
+                  item?.status === 'rejected'
+                    ? statusItem.value !== 'pending' // only allow "Pending" if Rejected
+                    : statusIndex <= currentIndex;
 
-            <DropdownItem>
-              <div
-                onClick={() =>
-                  handleChangeApplicationStatus({
-                    id: item?._id,
-                    status: 'rejected',
-                    emgs_id: item?.emgs_status,
-                  })
-                }
-                className="text-primary"
-              >
-                <i className="ri-close-line me-2"></i>
-                Rejected
-              </div>
-            </DropdownItem>
+                return (
+                  <DropdownItem key={statusItem.value} disabled={isDisabled}>
+                    <div
+                      onClick={
+                        isDisabled
+                          ? null
+                          : () =>
+                              handleChangeApplicationStatus({
+                                id: item?._id,
+                                status: statusItem.value,
+                                emgs_id: item?.emgs_status,
+                              })
+                      }
+                      className={`text-primary ${isDisabled ? 'text-muted' : ''}`}
+                      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
+                    >
+                      <i className={`${statusItem.icon} me-2`}></i>
+                      {statusItem.label}
+                    </div>
+                  </DropdownItem>
+                );
+              })}
+
           </>
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
   };
+
+
+
+
 
   const handleChangeAirportPichupCharge = (e) => {
     e.preventDefault();

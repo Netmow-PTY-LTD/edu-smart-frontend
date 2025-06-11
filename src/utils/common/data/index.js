@@ -1268,28 +1268,30 @@ const DataObjectComponent = () => {
       rejected: 'bg-danger-subtle text-danger',
     };
 
-    // Capitalize and replace underscore with spaces, keep acronyms uppercase
-    const formatStatus = (status) => {
-      if (!status) return '-';
-      return status
-        .split('_')
-        .map(word => {
-          if (['emgs', 'tuition'].includes(word.toLowerCase())) {
-            return word.toUpperCase();
-          }
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(' ');
+    const statusLabels = {
+      pending: 'Submitted',
+      review_in: 'Reviewing',
+      file_requested: 'File Requested',
+      ready_for_emgs: 'Ready for EMGS',
+      file_under_emgs: 'File Under EMGS',
+      ready_for_tuition: 'Ready for Tuition',
+      tuition_under_processed: 'Tuition Being Processed',
+      processing: 'Processing',
+      processed: 'Processed',
+      accepted: 'Accepted',
+      rejected: 'Rejected',
     };
 
-    const badgeClass = statusColors[item?.status] || '';
+    const rawStatus = item?.status;
+    const badgeClass = statusColors[rawStatus] || '';
+    const displayLabel = statusLabels[rawStatus] || 'Unknown';
 
     return (
-      <span className={`fw-medium fs-3 text-capitalize badge ${badgeClass}`}>
-        {formatStatus(item?.status)}
+      <span className={`fw-medium fs-3 badge ${badgeClass}`}>
+        {displayLabel}
       </span>
     );
-  }
+  },
 },
   ];
 
