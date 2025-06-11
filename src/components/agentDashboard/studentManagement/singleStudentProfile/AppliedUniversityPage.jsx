@@ -56,8 +56,8 @@ import { useGetSingleStudentApplicationQuery } from '@/slice/services/agent/agen
   
     const { studentApplicationsHeaders } = DataObjectComponent();
   
-const path = router.asPath; 
-const id = path.split('/').pop();
+    const path = router.asPath; 
+    const id = path.split('/').pop();
 
   const {
     data: recentApplicationData,

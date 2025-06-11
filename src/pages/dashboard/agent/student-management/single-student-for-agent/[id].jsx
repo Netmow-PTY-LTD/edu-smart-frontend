@@ -129,11 +129,11 @@ const SingleStudentForAgent = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Applied University
+                          Applied University & EMGS Status
                         </span>
                       </NavLink>
                     </NavItem>
-                    <NavItem className="fs-14">
+                    {/* <NavItem className="fs-14">
                       <NavLink
                         style={{ cursor: 'pointer' }}
                         className={classnames({
@@ -148,7 +148,7 @@ const SingleStudentForAgent = () => {
                           EMGS Status
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem> */}
 
                     <NavItem className="fs-14">
                       <NavLink
