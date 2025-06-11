@@ -2,7 +2,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import { useGetEmgsStatusTimelineQuery } from '@/slice/services/common/applicationService';
 import moment from 'moment';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { userDummyImage } from '@/utils/common/data';
@@ -25,6 +25,11 @@ export default function ApplicationEmgsStatusTimelineModal({
   } = useGetEmgsStatusTimelineQuery(currentTimeline, {
     skip: !currentTimeline,
   });
+
+
+  useEffect(() => {
+  if (isOpen) timelineRefe();
+}, [isOpen]);
 
 
   return (
