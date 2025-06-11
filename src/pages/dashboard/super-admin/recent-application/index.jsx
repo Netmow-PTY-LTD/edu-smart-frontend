@@ -414,13 +414,13 @@ export default function RecentApplicationForSuperAdmin() {
           </DropdownItem>
 
           <DropdownItem>
-            <div
+            {/* <div
               onClick={() => handleViewEmgsStatus(item?.emgs_status)}
               className="text-primary"
             >
               <i className="ri-eye-fill me-2"></i>
               View EMGS Status
-            </div>
+            </div> */}
 
               <div
                 onClick={() => {
