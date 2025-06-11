@@ -3,6 +3,7 @@ import CommonTableComponent from '@/components/common/CommonTableComponent';
 import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import ApplicationDocumentsModal from '@/components/sAdminDashboard/modals/ApplicationDocumentsModal';
 import { useGetApplicationsQuery } from '@/slice/services/common/applicationService';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -37,6 +38,8 @@ export default function StudentApplications() {
   const [applicationId, setApplicationId] = useState('');
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [hasUpdated, setHasUpdated] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  
 
   const perPageData = 9;
 
@@ -200,15 +203,16 @@ export default function StudentApplications() {
           )}
 
           <DropdownItem>
-            <div
-              onClick={() =>
-                router.push(`/dashboard/student/applications/${item?._id}`)
-              }
-              className="text-primary"
-            >
+              <div
+                onClick={() => {
+                  setApplicationId(item?._id);
+                  setModalOpen(true);
+                }}
+                className="text-primary"
+              >
               <i className="ri-eye-fill me-2"></i>
-              View Documents
-            </div>
+                View Documents
+              </div>
           </DropdownItem>
           <DropdownItem>
             <div
@@ -310,6 +314,12 @@ export default function StudentApplications() {
           </ModalBody>
         </Modal>
       )}
+
+          <ApplicationDocumentsModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        applicationId={applicationId}
+      />
     </Layout>
   );
 }
