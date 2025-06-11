@@ -61,13 +61,16 @@ const ApplicationEmgsStatus = ({ student_id }) => {
         </DropdownToggle>
         <DropdownMenu className="ms-2">
           <DropdownItem>
-            <div
-              onClick={() => handleViewEmgsStatus(item._id)}
-              className="text-primary"
-            >
+              <div
+                onClick={() => {
+                  setEmgsId(item?.emgs_status);
+                  setIsTimelineModalOpen(true);
+                }}
+                className="text-primary"
+              >
               <i className="ri-eye-fill me-2"></i>
-              View EMGS Status
-            </div>
+                View EMGS Status
+              </div>
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>

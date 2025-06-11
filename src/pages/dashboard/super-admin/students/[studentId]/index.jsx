@@ -140,7 +140,7 @@ const SingleStudentForSuperAdmin = () => {
                       >
                         <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                         <span className="d-none d-md-inline-block">
-                          Applied University
+                          Applied University and EMGS Status
                         </span>
                       </NavLink>
                     </NavItem>
