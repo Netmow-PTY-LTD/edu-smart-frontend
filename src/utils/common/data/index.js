@@ -1113,15 +1113,42 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
-          {
-        title: 'Student',
-        key: 'student',
-        render: (item) => (
-          <span className="d-flex flex-column text-capitalize">
-            {item?.student?.first_name || '-' } {item?.student?.last_name || '-'}
-          </span>
-        ),
-      },
+
+{
+  title: 'Student',
+  key: 'student',
+  render: (item) => {
+    const role = userInfoData?.data?.role;
+    const studentId = item?.student?._id;
+
+    // Build URL based on role
+    let href = '#'; // fallback
+
+    if (role === 'agent') {
+      href = `/dashboard/agent/student-management/single-student-for-agent/${studentId}`;
+    } else if (role === 'student') {
+      href = `/dashboard/student/student-profile`;
+    } else {
+      href = `/dashboard/${role.split('_').join('-')}/students/${studentId}`;
+    }
+
+    return (
+      <Link
+        href={href}
+        className="text-primary"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="View Profile"
+        rel="noopener noreferrer"
+      >
+        <span className="d-flex flex-column text-capitalize">
+          {item?.student?.first_name || '-'} {item?.student?.last_name || '-'}
+        </span>
+      </Link>
+    );
+  },
+},
+
 
     {
       title: 'University',
