@@ -4,6 +4,7 @@ import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import AirportPickupChargeModal from '@/components/sAdminDashboard/modals/AirportPickupChargeModal';
+import ApplicationDocumentsModal from '@/components/sAdminDashboard/modals/ApplicationDocumentsModal';
 import {
   useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
@@ -40,6 +41,7 @@ export default function RecentApplicationForSuperAdmin() {
   const [checkAirportPickupStatus, setCheckAirportPickupStatus] = useState('');
   const [applicationId, setApplicationId] = useState('');
   const [emgsId, setEmgsId] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const perPageData = 20;
   const customData = useCustomData();
@@ -395,17 +397,17 @@ export default function RecentApplicationForSuperAdmin() {
         </DropdownToggle>
         <DropdownMenu className="me-3">
           <DropdownItem>
-            <div
-              onClick={() =>
-                router.push(
-                  `/dashboard/${customData?.paneltext}/recent-application/${item?._id}`
-                )
-              }
-              className="text-primary"
-            >
+              <div
+                onClick={() => {
+                  setApplicationId(item?._id);
+                  setModalOpen(true);
+                }}
+                className="text-primary"
+              >
               <i className="ri-eye-fill me-2"></i>
-              View Documents
-            </div>
+                View Documents
+              </div>
+
           </DropdownItem>
 
           <DropdownItem>
@@ -697,6 +699,13 @@ export default function RecentApplicationForSuperAdmin() {
           </div>
         </div>
       )}
+
+      <ApplicationDocumentsModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        applicationId={applicationId}
+      />
+
     </Layout>
   );
 }

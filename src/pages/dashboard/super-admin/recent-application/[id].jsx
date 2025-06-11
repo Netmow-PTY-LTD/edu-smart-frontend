@@ -28,6 +28,7 @@ const SingleApplicationsPage = () => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const customData = useCustomData();
 
+  
   const {
     data: singleGetApplicationData,
     isLoading: singleGetApplicationLoading,
