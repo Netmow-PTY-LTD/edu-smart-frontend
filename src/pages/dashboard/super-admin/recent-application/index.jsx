@@ -495,6 +495,24 @@ const statusOptions = [
               );
             })}
 
+            <DropdownItem>
+              <div
+                onClick={() => {
+                  setPickupChargeModal(true),
+                    setApplicationId(item?._id),
+                    setEmgsId(item?.emgs_status);
+                  setCheckAirportPickupStatus(
+                    item?.airport_pickup_charge_payment_status
+                  );
+                }}
+                className="text-primary"
+              >
+                <i className="ri-flight-takeoff-line"></i>
+                Airport Pick-up Charge
+              </div>
+            </DropdownItem>
+
+
           </>
         </DropdownMenu>
       </UncontrolledDropdown>
