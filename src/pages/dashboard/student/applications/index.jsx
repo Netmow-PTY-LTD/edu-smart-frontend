@@ -4,6 +4,7 @@ import PaymentOption from '@/components/common/PaymentOption';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import ApplicationDocumentsModal from '@/components/sAdminDashboard/modals/ApplicationDocumentsModal';
+import ApplicationEmgsStatusTimelineModal from '@/components/sAdminDashboard/modals/ApplicationEmgsStatusTimelineModal';
 import { useGetApplicationsQuery } from '@/slice/services/common/applicationService';
 import { useSslCommerzPaymentIntendMutation } from '@/slice/services/common/paymentService';
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
@@ -39,7 +40,8 @@ export default function StudentApplications() {
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [hasUpdated, setHasUpdated] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  
+    const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
+    const [emgsId, setEmgsId] = useState(null);
 
   const perPageData = 9;
 
@@ -215,13 +217,16 @@ export default function StudentApplications() {
               </div>
           </DropdownItem>
           <DropdownItem>
-            <div
-              onClick={() => handleViewEmgsStatus(item?.emgs_status)}
-              className="text-primary"
-            >
+               <div
+                onClick={() => {
+                  setEmgsId(item?.emgs_status);
+                  setIsTimelineModalOpen(true);
+                }}
+                className="text-primary"
+              >
               <i className="ri-eye-fill me-2"></i>
-              View EMGS Status
-            </div>
+                View EMGS Status
+              </div>
           </DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
@@ -314,6 +319,11 @@ export default function StudentApplications() {
           </ModalBody>
         </Modal>
       )}
+            <ApplicationEmgsStatusTimelineModal
+              isOpen={isTimelineModalOpen}
+              onClose={() => setIsTimelineModalOpen(false)}
+              currentTimeline={emgsId}
+            />
 
           <ApplicationDocumentsModal
         isOpen={modalOpen}
