@@ -5,6 +5,7 @@ import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import AirportPickupChargeModal from '@/components/sAdminDashboard/modals/AirportPickupChargeModal';
 import ApplicationDocumentsModal from '@/components/sAdminDashboard/modals/ApplicationDocumentsModal';
+import ApplicationEmgsStatusTimelineModal from '@/components/sAdminDashboard/modals/ApplicationEmgsStatusTimelineModal';
 import {
   useAddEmgsTimelineMutation,
   useGetRecentApplicationsQuery,
@@ -42,6 +43,8 @@ export default function RecentApplicationForSuperAdmin() {
   const [applicationId, setApplicationId] = useState('');
   const [emgsId, setEmgsId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
+  
 
   const perPageData = 20;
   const customData = useCustomData();
@@ -418,6 +421,17 @@ export default function RecentApplicationForSuperAdmin() {
               <i className="ri-eye-fill me-2"></i>
               View EMGS Status
             </div>
+
+              <div
+                onClick={() => {
+                  setEmgsId(item?.emgs_status);
+                  setIsTimelineModalOpen(true);
+                }}
+                className="text-primary"
+              >
+              <i className="ri-eye-fill me-2"></i>
+                View EMGS Status
+              </div>
           </DropdownItem>
 
           <>
@@ -700,6 +714,11 @@ export default function RecentApplicationForSuperAdmin() {
         </div>
       )}
 
+      <ApplicationEmgsStatusTimelineModal
+        isOpen={isTimelineModalOpen}
+        onClose={() => setIsTimelineModalOpen(false)}
+        currentTimeline={emgsId}
+      />
       <ApplicationDocumentsModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
