@@ -1100,6 +1100,16 @@ const DataObjectComponent = () => {
         <span className="d-flex flex-column text-capitalize">{index + 1}</span>
       ),
     },
+          {
+        title: 'Student',
+        key: 'student',
+        render: (item) => (
+          <span className="d-flex flex-column text-capitalize">
+            {item?.student?.first_name || '-' } {item?.student?.last_name || '-'}
+          </span>
+        ),
+      },
+
     {
       title: 'University',
       key: 'university',
@@ -1109,15 +1119,6 @@ const DataObjectComponent = () => {
         </span>
       ),
     },
-      {
-        title: 'Student',
-        key: 'student',
-        render: (item) => (
-          <span className="d-flex flex-column text-capitalize">
-            {item?.student?.first_name || '-' } {item?.student?.last_name || '-'}
-          </span>
-        ),
-      },
     {
       title: 'Course',
       key: 'course',
