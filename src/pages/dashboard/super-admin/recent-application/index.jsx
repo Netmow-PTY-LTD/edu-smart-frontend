@@ -453,37 +453,47 @@ const statusOptions = [
 
           <>
 
-              {statusOptions.map((statusItem) => {
-                const currentIndex = statusOrder.indexOf(item?.status);
-                const statusIndex = statusOrder.indexOf(statusItem.value);
+            {statusOptions.map((statusItem) => {
+              const currentIndex = statusOrder.indexOf(item?.status);
+              const statusIndex = statusOrder.indexOf(statusItem.value);
 
-                const isDisabled =
-                  item?.status === 'rejected'
-                    ? statusItem.value !== 'pending' // only allow "Pending" if Rejected
-                    : statusIndex <= currentIndex;
+              const isCurrentStatus = item?.status === statusItem.value;
 
-                return (
-                  <DropdownItem key={statusItem.value} disabled={isDisabled}>
-                    <div
-                      onClick={
-                        isDisabled
-                          ? null
-                          : () =>
-                              handleChangeApplicationStatus({
-                                id: item?._id,
-                                status: statusItem.value,
-                                emgs_id: item?.emgs_status,
-                              })
-                      }
-                      className={`text-primary ${isDisabled ? 'text-muted' : ''}`}
-                      style={{ cursor: isDisabled ? 'not-allowed' : 'pointer' }}
-                    >
-                      <i className={`${statusItem.icon} me-2`}></i>
-                      {statusItem.label}
-                    </div>
-                  </DropdownItem>
-                );
-              })}
+              const isDisabled =
+                item?.status === 'rejected'
+                  ? statusItem.value !== 'pending'
+                  : statusIndex <= currentIndex;
+
+              const getTextClass = () => {
+                if (isCurrentStatus) return 'text-success fw-bold'; // Green & bold
+                if (isDisabled) return 'text-muted';
+                return 'text-primary';
+              };
+
+              const getCursorStyle = () => (isDisabled ? 'not-allowed' : 'pointer');
+
+              return (
+                <DropdownItem key={statusItem.value} disabled={isDisabled}>
+                  <div
+                    onClick={
+                      isDisabled
+                        ? null
+                        : () =>
+                            handleChangeApplicationStatus({
+                              id: item?._id,
+                              status: statusItem.value,
+                              emgs_id: item?.emgs_status,
+                            })
+                    }
+                    className={getTextClass()}
+                    style={{ cursor: getCursorStyle() }}
+                  >
+                    <i className={`${statusItem.icon} me-2`}></i>
+                    {statusItem.label}
+                  </div>
+                </DropdownItem>
+              );
+            })}
 
           </>
         </DropdownMenu>
