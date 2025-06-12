@@ -69,28 +69,37 @@ export default function Footer() {
                 </a>
               </div>
             </Col>
-            <Col lg={2} md={12}>
-              <h3>Quick Links</h3>
-              <div className="footer-menu">
-                <ul>
-                  <li>
-                    <Link href="/courses">All Courses</Link>
-                  </li>
-                  <li>
-                    <Link href="/university">Universities</Link>
-                  </li>
-                  <li>
-                    <Link href="/blog">Blogs</Link>
-                  </li>
-                  <li>
-                    <Link href="/about">About</Link>
-                  </li>
-                  <li>
-                    <Link href="/contact">Contact</Link>
-                  </li>
-                </ul>
-              </div>
-            </Col>
+              <Col lg={2} md={12}>
+                <h3>Quick Links</h3>
+                <div className="footer-menu">
+                  <ul>
+                    <li>
+                      <Link href="/courses">All Courses</Link>
+                    </li>
+                    <li>
+                      <Link href="/university">Universities</Link>
+                    </li>
+                    <li>
+                      <Link href="/blog">Blogs</Link>
+                    </li>
+                    <li>
+                      <Link href="/about">About</Link>
+                    </li>
+                    <li>
+                      <Link href="/contact">Contact</Link>
+                    </li>
+                    <li>
+                      <a
+                        href="https://mail.zoho.com/zm/#mail"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Staff Email
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </Col>
             <Col lg={5} md={12}>
               <h3>Subscribe</h3>
 
