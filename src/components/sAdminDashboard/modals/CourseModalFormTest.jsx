@@ -616,7 +616,7 @@ const CourseModalFormTest = ({
                                           Required
                                         </label>
                                       </div>
-                                      {isManual && (
+                                      {/* {isManual && ( */}
                                         <Button
                                           type="button"
                                           onClick={() => remove(index)}
@@ -624,7 +624,7 @@ const CourseModalFormTest = ({
                                         >
                                           <i className="ri-delete-bin-line me-2"></i>
                                         </Button>
-                                      )}
+                                      {/* )} */}
                                     </Col>
                                   </Row>
                                 );
