@@ -1,3 +1,4 @@
+import DashBoardCardApplication from '@/components/common/allDashboardHome/DashBoardCardApplication';
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
@@ -71,6 +72,12 @@ const StudentDashboard = () => {
               <Col>
                 <div className="h-100">
                   <WelcomingMessage data={userInfodata?.data} />
+
+                                <Row className="pb-5">
+                                  <DashBoardCardApplication
+                                  />
+                                </Row>
+                  
 
                   <Row xxl={12} className="g-5">
                     <Col xxl={12}>

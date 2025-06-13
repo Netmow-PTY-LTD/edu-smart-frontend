@@ -40,7 +40,7 @@ const DashBoardCardApplication = () => {
 
 const isAgentOrStudent =
   customData?.paneltext === 'agent' || customData?.paneltext === 'student';
-const basePath = isAgentOrStudent ? 'application' : 'recent-application';
+const basePath = isAgentOrStudent ? 'applications' : 'recent-application';
 const statusLinks = {
   pending: `/dashboard/${customData?.paneltext}/${basePath}?search=pending`,
   review_in: `/dashboard/${customData?.paneltext}/${basePath}?search=review_in`,
