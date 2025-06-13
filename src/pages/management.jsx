@@ -28,7 +28,7 @@ const teamMembers = [
     name: 'Prof Dr Mohammad Abu Eusuf',
     designation: 'Chief Technical Advisor',
     email: 'info@psrglobal.com.bd',
-    image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/666.jpg'
+    image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Prof-Dr-Mohammad-Abu-Eusuf.webp'
   },
   {
     name: 'Assoc Prof. Md. Kalam Hossain',
