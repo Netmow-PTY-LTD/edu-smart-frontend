@@ -148,7 +148,7 @@ const SuperAdminDashboard = () => {
                   ''
                 ) : (
                   <>
-                    <Col xxl={6}>
+                    <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered Agents'}
                         headers={[
@@ -158,7 +158,7 @@ const SuperAdminDashboard = () => {
                         data={allAgentsData?.data ? allAgentsData?.data : []}
                       />
                     </Col>
-                    <Col xxl={6}>
+                    <Col xxl={12}>
                       <LatestRegistered
                         tableHead={'Latest Registered Students'}
                         headers={[
