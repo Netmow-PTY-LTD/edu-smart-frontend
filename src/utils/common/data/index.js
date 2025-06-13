@@ -158,37 +158,31 @@ const statusOptions = [
         </p>
       ),
     },
+ 
+{
+  title: 'Address',
+  key: 'address',
+  render: (item) => {
+    const parts = [
+      item?.address_line_1,
+      item?.address_line_2,
+      item?.city,
+      item?.state,
+      item?.zip,
+      item?.country,
+    ];
 
-    {
-      title: 'Address',
-      key: 'address',
-      render: (item) => (
-        <div className="d-flex gap-2">
-          <div className="text-capitalize">
-            <span className="me-2">
-              {item?.address_line_1 ? item?.address_line_1 + ',' : '' || '-'}
-            </span>
-            <span className="me-2">
-              {item?.address_line_2 ? item?.address_line_2 + ',' : '' || '-'}
-            </span>
-          </div>
-          <div className="text-capitalize">
-            <span className="me-2">
-              {item?.city ? item?.city + ',' : '' || '-'}
-            </span>
-            <span className="me-2">
-              {item?.state ? item?.state + ',' : '' || '-'}
-            </span>
-          </div>
-          <div className="text-capitalize">
-            <span className="me-2">
-              {item?.zip ? item?.zip + ',' : '' || '-'}
-            </span>
-            <span className="me-2">{item?.country || '-'}</span>
-          </div>
-        </div>
-      ),
-    },
+    // Filter out falsy or empty values and join with commas
+    const formattedAddress = parts.filter(Boolean).join(', ');
+
+    return (
+      <span className="d-flex flex-column text-capitalize">
+        {formattedAddress || '-'}
+      </span>
+    );
+  },
+},
+
     {
       title: 'Status',
       key: 'status',
