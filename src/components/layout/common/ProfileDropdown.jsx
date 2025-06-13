@@ -13,14 +13,22 @@ import { userDummyImage } from '@/utils/common/data';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useCustomData } from '@/utils/common/data/customeData';
+import { useRouter } from 'next/router';
 
 const appEnvironment = process.env.NEXT_PUBLIC_APP_ENVIRONMENT;
 
 const ProfileDropdown = () => {
   const [isAuthenticated, setIsAuthenticated] = useState('');
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
+  const [panelTextGet, setPanelTextGet] = useState('');
+  const router = useRouter();
 
   const { data: userInfodata, error, isLoading } = useGetUserInfoQuery();
+  const customeData = useCustomData();
+
+ 
+
 
 
   useEffect(() => {
@@ -38,11 +46,7 @@ const ProfileDropdown = () => {
   };
 
   const handlelogOut = () => {
-    // if (userInfoData?.role === 'super_admin') {
 
-    // window.location.assign(
-    //   `${window.location.protocol}//${domain === 'localhost' ? `localhost:3005` : domain}/auth/login`
-    // );
     if (appEnvironment === 'development') {
       Cookies.remove('token');
       Cookies.remove('subdomain');
@@ -58,25 +62,29 @@ const ProfileDropdown = () => {
         `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
       );
 
-      // const domain = process.env.NEXT_PUBLIC_REDIRECT_URL;
-      // Cookies.remove('token', { domain: domain });
-      // Cookies.remove('subdomain', { domain: domain });
-      // Cookies.remove('role', { domain: domain });
-      // window.location.assign(
-      //   `${window.location.protocol}//${process.env.NEXT_PUBLIC_REDIRECT_URL}/auth/login`
-      // );
     }
-    // } else {
-    //   document.cookie = 'token=; max-age=0; path=/';
-
-    //   window.location.assign(
-    //     `${window.location.protocol}//${subdomain}.${domain === 'localhost' ? 'localhost:3005' : `${domain}.app`}/auth/login`
-    //   );
-    // }
-    // if (window.innerWidth <= 1024) {
-    //   window.location.assign(`${window.location.protocol}//squaddeck.app`);
-    // }
   };
+
+  // Extract panelTextGet from URL path
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const pathParts = router.pathname.split('/');
+    const panel = pathParts[2] || '';
+
+    setPanelTextGet(panel);
+  }, [router.isReady, router.pathname]);
+
+  // Compare panelTextGet with customeData?.paneltext and logout if mismatch
+  useEffect(() => {
+    if (!panelTextGet) return; // wait until panelTextGet is set
+
+    if (panelTextGet !== customeData?.paneltext) {
+      handlelogOut();
+    }
+  }, [panelTextGet, customeData?.paneltext, handlelogOut]);
+
+  console.log('panelTextGet', panelTextGet);
 
   return (
     <>
