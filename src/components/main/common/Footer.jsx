@@ -89,6 +89,10 @@ export default function Footer() {
                       <Link href="/contact">Contact</Link>
                     </li>
                     <li>
+                      <Link href="/management">Management</Link>
+                    </li>                      
+
+                    <li>
                       <a
                         href="https://mail.zoho.com/zm/#mail"
                         target="_blank"
