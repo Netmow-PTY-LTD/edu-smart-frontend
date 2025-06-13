@@ -1,6 +1,7 @@
 import ApplicationEmgsStatusTimeline from '@/components/agentDashboard/studentManagement/singleStudentProfile/ApplicationEmgsStatusTimeline';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import PaymentOption from '@/components/common/PaymentOption';
+import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
 import ApplicationDocumentsModal from '@/components/sAdminDashboard/modals/ApplicationDocumentsModal';
@@ -17,6 +18,8 @@ import DataObjectComponent from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import Select from 'react-select'; // if not already imported
+
 import {
   Card,
   CardBody,
@@ -43,6 +46,7 @@ export default function StudentApplications() {
   const [modalOpen, setModalOpen] = useState(false);
   const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
   const [emgsId, setEmgsId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const perPageData = 9;
 
@@ -54,6 +58,8 @@ export default function StudentApplications() {
     refetch: applicationDataRefetch,
   } = useGetRecentApplicationsQuery();
 
+
+  
   const { data: userInfoData, isLoading: userInfoLoading } =
     useGetUserInfoQuery();
 
@@ -175,6 +181,84 @@ export default function StudentApplications() {
     setActiveTab('2');
   };
 
+  // search input change function
+  const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+  const searchInItem = (item, searchTerm) => {
+    if (!searchTerm) return true; // If no search term, return all items
+
+    if (typeof item === 'object' && item !== null) {
+      return Object.values(item).some((value) =>
+        searchInItem(value, searchTerm)
+      );
+    }
+
+    return String(item).toLowerCase().includes(searchTerm.toLowerCase());
+  };
+
+
+useEffect(() => {
+  if (router?.query?.search) {
+    setSelectedStatus({
+      label: router.query.search
+        .replace(/_/g, ' ') // make it human readable
+        .replace(/\b\w/g, (c) => c.toUpperCase()), // capitalize
+      value: router.query.search,
+    });
+  }
+}, [router?.query?.search]);
+
+
+const [selectedStatus, setSelectedStatus] = useState(null); // Add to your state
+
+const handleStatusFilterChange = (selectedOption) => {
+  setSelectedStatus(selectedOption);
+
+  const query = { ...router.query };
+  if (selectedOption) {
+    query.search = selectedOption.value;
+  } else {
+    delete query.search;
+  }
+
+  router.push({
+    pathname: router.pathname,
+    query,
+  }, undefined, { shallow: true }); // prevents full reload
+};
+
+
+const isfilteredData =
+  applicationData?.data?.length > 0
+    ? applicationData.data
+        .filter((item) => {
+          const matchesSearch = searchInItem(item, searchTerm);
+          const matchesStatus = selectedStatus ? item?.status === selectedStatus.value : true;
+          return matchesSearch && matchesStatus;
+        })
+        .sort((a, b) => {
+          if (!a.createdAt || !b.createdAt) return 0;
+          return b.createdAt.localeCompare(a.createdAt); // DESC order
+        })
+    : [];
+
+
+
+const statusOptions = [
+  { label: 'Submitted', value: 'pending', icon: 'ri-check-fill' },
+  { label: 'Review In', value: 'review_in', icon: 'ri-search-eye-line' },
+  { label: 'File Requested', value: 'file_requested', icon: 'ri-folder-received-line' },
+  { label: 'Ready For EMGS', value: 'ready_for_emgs', icon: 'ri-send-plane-line' },
+  { label: 'File Under EMGS', value: 'file_under_emgs', icon: 'ri-file-search-line' },
+  { label: 'Ready For Tuition', value: 'ready_for_tuition', icon: 'ri-graduation-cap-line' },
+  { label: 'Tuition Under Processed', value: 'tuition_under_processed', icon: 'ri-loop-right-line' },
+  { label: 'Accepted', value: 'accepted', icon: 'ri-check-line' },
+  { label: 'Rejected', value: 'rejected', icon: 'ri-close-line' },
+];
+
+
+
+
   const EmgsStatusActionData = {
     title: 'Action',
     key: 'actions',
@@ -250,9 +334,26 @@ export default function StudentApplications() {
                 <Row>
                   <Col xl={12}>
                     <Card>
-                      <CardHeader className="text-primary fw-semibold fs-2">
+                       <CardHeader className="text-primary fw-semibold fs-2">
                         Student's University Applications
+                        <SearchComponent
+                          searchTerm={searchTerm}
+                          handleSearchChange={handleSearchChange}
+                        />
+                          <div style={{ minWidth: 200 }}>
+                            <Select
+                              value={selectedStatus}
+                              onChange={handleStatusFilterChange}
+                              isClearable
+                              placeholder="Filter by Status"
+                              options={statusOptions.map((status) => ({
+                                value: status.value,
+                                label: status.label,
+                              }))}
+                            />
+                          </div>
                       </CardHeader>
+
                       <CardBody className="mh-100">
                         {updateApplicationStatusIsLoading ? (
                           <LoaderSpiner />
@@ -262,7 +363,7 @@ export default function StudentApplications() {
                               ...studentApplicationsHeaders,
                               EmgsStatusActionData,
                             ]}
-                            data={applicationData?.data || []}
+                            data={isfilteredData || []}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
                             perPageData={perPageData}

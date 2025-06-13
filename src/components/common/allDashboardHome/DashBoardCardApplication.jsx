@@ -6,8 +6,8 @@ import CountUp from 'react-countup';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 
 const DashBoardCardApplication = () => {
-    const customData = useCustomData();
-  
+  const customData = useCustomData();
+
   const {
     data: recentApplicationData,
     isLoading: recentApplicationLoading,
@@ -37,21 +37,21 @@ const DashBoardCardApplication = () => {
     rejected: 'ri-close-circle-line',
   };
 
+  const isAgentOrStudent =
+    customData?.paneltext === 'agent' || customData?.paneltext === 'student';
+  const basePath = isAgentOrStudent ? 'applications' : 'recent-application';
 
-const isAgentOrStudent =
-  customData?.paneltext === 'agent' || customData?.paneltext === 'student';
-const basePath = isAgentOrStudent ? 'applications' : 'recent-application';
-const statusLinks = {
-  pending: `/dashboard/${customData?.paneltext}/${basePath}?search=pending`,
-  review_in: `/dashboard/${customData?.paneltext}/${basePath}?search=review_in`,
-  file_requested: `/dashboard/${customData?.paneltext}/${basePath}?search=file_requested`,
-  ready_for_emgs: `/dashboard/${customData?.paneltext}/${basePath}?search=ready_for_emgs`,
-  file_under_emgs: `/dashboard/${customData?.paneltext}/${basePath}?search=file_under_emgs`,
-  ready_for_tuition: `/dashboard/${customData?.paneltext}/${basePath}?search=ready_for_tuition`,
-  tuition_under_processed: `/dashboard/${customData?.paneltext}/${basePath}?search=tuition_under_processed`,
-  accepted: `/dashboard/${customData?.paneltext}/${basePath}?search=accepted`,
-  rejected: `/dashboard/${customData?.paneltext}/${basePath}?search=rejected`,
-};
+  const statusLinks = {
+    pending: `/dashboard/${customData?.paneltext}/${basePath}?search=pending`,
+    review_in: `/dashboard/${customData?.paneltext}/${basePath}?search=review_in`,
+    file_requested: `/dashboard/${customData?.paneltext}/${basePath}?search=file_requested`,
+    ready_for_emgs: `/dashboard/${customData?.paneltext}/${basePath}?search=ready_for_emgs`,
+    file_under_emgs: `/dashboard/${customData?.paneltext}/${basePath}?search=file_under_emgs`,
+    ready_for_tuition: `/dashboard/${customData?.paneltext}/${basePath}?search=ready_for_tuition`,
+    tuition_under_processed: `/dashboard/${customData?.paneltext}/${basePath}?search=tuition_under_processed`,
+    accepted: `/dashboard/${customData?.paneltext}/${basePath}?search=accepted`,
+    rejected: `/dashboard/${customData?.paneltext}/${basePath}?search=rejected`,
+  };
 
   const statusCounts =
     recentApplicationData?.data?.reduce((acc, item) => {
@@ -65,8 +65,10 @@ const statusLinks = {
     normalizedCounts[status] = statusCounts[status] || 0;
   });
 
-  const formatLabel = (status) =>
-    status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const formatLabel = (status) => {
+    if (status === 'pending') return 'Submitted'; // special case label for pending
+    return status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  };
 
   if (recentApplicationLoading) return <p>Loading...</p>;
 
