@@ -1082,7 +1082,7 @@ const statusOptions = [
       ),
     },
         {
-      title: 'Application Id',
+      title: 'App ID',
       key: 'university',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -1181,7 +1181,7 @@ const statusOptions = [
       ),
     },
     {
-      title: 'Application Id',
+      title: 'App ID',
       key: 'application_id',
       render: (item) => (
         <span className="d-flex flex-column text-capitalize">
@@ -4215,7 +4215,7 @@ const studentApplicationsHeadersActions = [
       ),
     },
     {
-      title: 'Application Id',
+      title: 'App ID',
       key: 'application_id',
       render: (item) => (
         <span className="d-flex flex-column text-uppercase fs-2 fw-medium">
