@@ -3,7 +3,7 @@ import { CardFooter } from 'reactstrap';
 import PaginationNew from './PaginationNew';
 
 const CommonTableComponent = ({
-  headers,
+  headers: initialHeaders,
   data,
   perPageData,
   emptyMessage,
@@ -14,13 +14,27 @@ const CommonTableComponent = ({
   SupperProfitAmount,
   totalAgentPaidPayoutAmountNew,
 }) => {
-  // Local page state that listens to PaginationNew's page changes
+  // State for current page (zero-based index)
   const [currentPage, setCurrentPage] = useState(0);
 
-  // Slice data for the current page
+  // Calculate start and end indexes for slicing data per page
   const startIdx = currentPage * perPageData;
   const endIdx = Math.min((currentPage + 1) * perPageData, data?.length);
   const paginatedData = data?.length > 0 ? data.slice(startIdx, endIdx) : [];
+
+  // Override the SN column render function to include continuous SN across pages
+  const headers = initialHeaders.map((header) => {
+    if (header.key === 'sn') {
+      return {
+        ...header,
+        render: (item, index) => {
+          const sn = currentPage * perPageData + (index + 1);
+          return <span className="d-flex flex-column text-capitalize">{sn}</span>;
+        },
+      };
+    }
+    return header;
+  });
 
   return (
     <div>
@@ -29,12 +43,11 @@ const CommonTableComponent = ({
           {/* Table Headers */}
           <thead className="fs-2 bg-light">
             <tr>
-              {headers?.length > 0 &&
-                headers?.map((header, index) => (
-                  <th key={index} scope="col">
-                    {header?.title}
-                  </th>
-                ))}
+              {headers.map((header, index) => (
+                <th key={index} scope="col">
+                  {header.title}
+                </th>
+              ))}
             </tr>
           </thead>
 
@@ -43,35 +56,32 @@ const CommonTableComponent = ({
             {paginatedData.length > 0 ? (
               paginatedData.map((item, rowIndex) => (
                 <tr key={rowIndex}>
-                  {headers?.length > 0 &&
-                    headers?.map((header) => (
-                      <td key={header?.key}>
-                        {header?.render
-                          ? header?.render(item, rowIndex)
-                          : header?.key in item
-                            ? item[header?.key]
-                            : '-'}
-                      </td>
-                    ))}
+                  {headers.map((header) => (
+                    <td key={header.key}>
+                      {header.render
+                        ? header.render(item, rowIndex)
+                        : header.key in item
+                        ? item[header.key]
+                        : '-'}
+                    </td>
+                  ))}
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={headers?.length} className="text-center">
+                <td colSpan={headers.length} className="text-center">
                   {emptyMessage}
                 </td>
               </tr>
             )}
           </tbody>
 
-          {/* Total rows (conditionally rendered) */}
+          {/* Conditional total rows */}
           {totalAmount && (
             <thead className="fs-2">
               <tr>
                 <th colSpan={2}></th>
-                <th className="text-uppercase text-end">
-                  Total Received Amount :
-                </th>
+                <th className="text-uppercase text-end">Total Received Amount :</th>
                 <th>{totalAmount} MYR</th>
                 <th></th>
                 <th></th>
@@ -83,9 +93,7 @@ const CommonTableComponent = ({
             <thead className="fs-2">
               <tr>
                 <th colSpan={3}></th>
-                <th className="text-uppercase text-end">
-                  Total Payout Amount :
-                </th>
+                <th className="text-uppercase text-end">Total Payout Amount :</th>
                 <th>{totalUniversityAmount} MYR</th>
                 <th></th>
                 <th></th>
@@ -97,9 +105,7 @@ const CommonTableComponent = ({
             <thead className="fs-2">
               <tr>
                 <th colSpan={4}></th>
-                <th className="text-uppercase text-end">
-                  Total Payout Amount :
-                </th>
+                <th className="text-uppercase text-end">Total Payout Amount :</th>
                 <th>{totalAgentPaidPayoutAmount} MYR</th>
                 <th></th>
                 <th></th>
@@ -111,9 +117,7 @@ const CommonTableComponent = ({
           {totalAgentPendingPayoutAmount && (
             <thead className="fs-2">
               <tr>
-                <th colSpan={8} className="text-uppercase text-end">
-                  Total Payout Amount :
-                </th>
+                <th colSpan={8} className="text-uppercase text-end">Total Payout Amount :</th>
                 <th>{totalAgentPendingPayoutAmount} MYR</th>
                 <th></th>
                 <th></th>
@@ -124,9 +128,7 @@ const CommonTableComponent = ({
           {totalAgentPaidPayoutAmountNew && (
             <thead className="fs-2">
               <tr>
-                <th colSpan={8} className="text-uppercase text-end">
-                  Total Payout Amount :
-                </th>
+                <th colSpan={8} className="text-uppercase text-end">Total Payout Amount :</th>
                 <th>{totalAgentPaidPayoutAmountNew} MYR</th>
                 <th></th>
                 <th></th>
@@ -137,9 +139,7 @@ const CommonTableComponent = ({
           {SupperProfitAmount && (
             <thead className="fs-2">
               <tr>
-                <th colSpan={9} className="text-uppercase text-end">
-                  Total Profit Amount :
-                </th>
+                <th colSpan={9} className="text-uppercase text-end">Total Profit Amount :</th>
                 <th colSpan={3}>{SupperProfitAmount} MYR</th>
                 <th></th>
                 <th></th>
@@ -153,14 +153,10 @@ const CommonTableComponent = ({
       <CardFooter>
         {data.length > perPageData && (
           <PaginationNew
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 20,
-            }}
+            style={{ position: 'absolute', bottom: 0, right: 20 }}
             data={data}
             perPageData={perPageData}
-            onPageChange={setCurrentPage} // update local currentPage on page change
+            onPageChange={setCurrentPage} // update current page on pagination
           />
         )}
       </CardFooter>
@@ -169,6 +165,7 @@ const CommonTableComponent = ({
 };
 
 export default CommonTableComponent;
+
 
 // import React from 'react';
 // import { CardFooter } from 'reactstrap';
