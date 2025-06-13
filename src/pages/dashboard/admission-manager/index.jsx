@@ -1,5 +1,7 @@
+import DashBoardCardApplication from '@/components/common/allDashboardHome/DashBoardCardApplication';
 import DashBoardCountOptions from '@/components/common/allDashboardHome/DashBoardCountOptions';
 import LatestRegistered from '@/components/common/allDashboardHome/LatestRegistered';
+import RouteList from '@/components/common/allDashboardHome/RouteList';
 import WelcomingMessage from '@/components/common/allDashboardHome/WelcomingMessage';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
@@ -54,7 +56,16 @@ const SuperAdminDashboard = () => {
           ) : (
             <div className="h-100">
               <WelcomingMessage data={userInfodata?.data} />
-              <Row className="pb-5">
+
+              {userInfodata?.data?.role === 'super_admin' &&
+                process.env.NEXT_PUBLIC_APP_ENVIRONMENT === 'development' && (
+                  <RouteList />
+                )}
+
+              {/* <Row className="pb-5">
+                <DashBoardCardApplication>
+
+                </DashBoardCardApplication>
                 <DashBoardCountOptions
                   userInfoData={userInfodata?.data}
                   firstElementData={getUniversityData?.data?.length}
@@ -79,7 +90,39 @@ const SuperAdminDashboard = () => {
                   paidSum={''}
                   unPaidSum={''}
                 />
+              </Row> */}
+
+              <Row className="pb-5">
+                <h1 className='p-3'>Applications Overview</h1>
+                <Col xs={12} className="mb-4">
+                  <DashBoardCardApplication />
+                </Col>
+               </Row>
+
+              <Row className="pb-5">
+                 <h1 className='p-3'>Registration & Financial Overview </h1>
+                <Col xs={12}>
+                  <DashBoardCountOptions
+                    userInfoData={userInfodata?.data}
+                    firstElementData={getUniversityData?.data?.length}
+                    secondElementData={allAgentsData?.data?.length}
+                    thirdElementData={allStudentsData?.data?.length}
+                    fourthElementData={totalIncome?.data?.totalReceiveAmount?.toFixed(2)}
+                    fithElement={totalIncome?.data?.totalUniversityPayout?.toFixed(2)}
+                    sixthElement={totalIncome?.data?.totalPaidAgentPayout?.toFixed(2)}
+                    sevenElement={totalIncome?.data?.totalPendingAgentPayout?.toFixed(2)}
+                    eightElement={totalIncome?.data?.totalSuperAdminProfit?.toFixed(2)}
+                    gstAndCurrencyData={''}
+                    paidSum={''}
+                    unPaidSum={''}
+                  />
+                </Col>
               </Row>
+
+
+
+
+
 
               <Row xxl={12} className="g-5">
                 {customData.showInSuperAdmin ? (

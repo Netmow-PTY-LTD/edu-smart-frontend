@@ -364,7 +364,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                           <Col xl={12}>
                             <Card>
                               <CardHeader className="text-primary fw-semibold fs-2">
-                                Agent's Earnings
+                                Partner's Earnings
                               </CardHeader>
                               <CardBody className="mh-100">
                                 <CommonTableComponent

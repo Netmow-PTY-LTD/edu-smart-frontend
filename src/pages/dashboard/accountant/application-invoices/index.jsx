@@ -2,13 +2,16 @@ import AirportPickupChargeInvoice from '@/components/common/AirportPickupChargeI
 import CommonTableComponent from '@/components/common/CommonTableComponent';
 import InvoicesComponentForMultipleData from '@/components/common/InvoicesComponentForMultipleData';
 import InvoicesComponentForMultipleDataTuitionFee from '@/components/common/InvoicesComponentForMultipleDataTuitionFee';
+import InvoicesForEmgs from '@/components/common/InvoicesForEmgs';
 import SearchComponent from '@/components/common/SearchComponent';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import Layout from '@/components/layout';
+import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
 import {
   useGetApplicationPaymentReportQuery,
   useGetSingleApplicationPaymentReportQuery,
 } from '@/slice/services/common/paymentReportServices';
+import { useSingleGetApplicationQuery } from '@/slice/services/public/application/applicationServiceNew';
 import DataObjectComponent, { brandlogo } from '@/utils/common/data';
 import { useRouter } from 'next/router';
 import path from 'path';
@@ -28,6 +31,7 @@ const ApplicationInvoiceInSuperAdmin = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
   const [openInvoiceModal, setOpenInvoiceModal] = useState(false);
+  const [openInvoiceEmgsModal, setOpenInvoiceEmgsModal] = useState(false);
   const [openInvoiceModalTuition, setOpenInvoiceModalTuition] = useState(false);
   const [openInvoiceAirportPickupModal, setOpenInvoiceAirportPickupModal] =
     useState(false);
@@ -42,6 +46,31 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
   const { superAdminData = [], applicationHeadersWithoutAction = [] } =
     DataObjectComponent();
+  const {
+    data: applicationData,
+    isLoading: applicationLoading,
+    refetch: applicationDataRefetch,
+  } = useGetRecentApplicationsQuery();
+
+  const pendingApplications =
+    applicationData?.data?.filter(
+      (app) => app.status === 'pending' && app.emgs_payment_status === 'pending'
+    ) || [];
+
+  const { studentApplicationsHeaders = [] } = DataObjectComponent();
+  const filteredStudentApplicationsHeaders = studentApplicationsHeaders.filter(
+    (header) =>
+      header.key !== 'tuition_fee_payment_status' &&
+      header.key !== 'pickup_status'
+  );
+
+  const {
+    data: singleGetApplicationData,
+    isLoading: singleGetApplicationLoading,
+    refetch: getSingleApplicationDataRefetch,
+  } = useSingleGetApplicationQuery(applicationId, {
+    skip: !applicationId,
+  });
 
   const {
     data: getApplicationPaymentData,
@@ -92,6 +121,30 @@ const ApplicationInvoiceInSuperAdmin = () => {
     router,
     tuition,
     pickup,
+  ]);
+
+  useEffect(() => {
+    if (app_id && emgs === 'yes' && !openInvoiceEmgsModal) {
+      setApplicationId(app_id);
+      setOpenInvoiceEmgsModal(true);
+      getSingleApplicationPaymentReportDataRefetch(app_id);
+
+      // Clear query params so it doesn’t reopen on every render
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {},
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [
+    app_id,
+    emgs,
+    openInvoiceEmgsModal,
+    router,
+    getSingleApplicationPaymentReportDataRefetch,
   ]);
 
   // search input change function
@@ -177,6 +230,41 @@ const ApplicationInvoiceInSuperAdmin = () => {
     ),
   };
 
+  const ActionDataInvoicePending = {
+    title: 'Action',
+    key: 'actions',
+    render: (item) => (
+      <UncontrolledDropdown direction="end">
+        <DropdownToggle
+          tag="a"
+          className="text-reset dropdown-btn"
+          role="button"
+        >
+          <span className="button px-3">
+            <i className="ri-more-fill align-middle"></i>
+          </span>
+        </DropdownToggle>
+        <DropdownMenu className="ms-2">
+          <DropdownItem>
+            <div
+              onClick={() => {
+                if (item?._id) {
+                  setApplicationId(item?._id);
+                  setOpenInvoiceEmgsModal(true);
+                  getApplicationPaymentDataRefetch(item?._id);
+                }
+              }}
+              className="text-primary"
+            >
+              <i className="ri-eye-fill me-2"></i>
+              View Emgs Invoice
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    ),
+  };
+
   const printInvoice = () => {
     window.print();
   };
@@ -203,6 +291,32 @@ const ApplicationInvoiceInSuperAdmin = () => {
 
                 <CardBody>
                   <CommonTableComponent
+                    headers={[
+                      ...filteredStudentApplicationsHeaders,
+                      ActionDataInvoicePending,
+                    ]}
+                    data={pendingApplications ? pendingApplications : []}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    perPageData={perPageData}
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                    emptyMessage="No Data found yet."
+                  />
+                </CardBody>
+
+                <CardHeader className="d-flex justify-content-between align-items-center">
+                  <div className="text-primary fw-semibold fs-2">
+                    Application Invoice
+                  </div>
+                  <SearchComponent
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                  />
+                </CardHeader>
+
+                <CardBody>
+                  <CommonTableComponent
                     headers={[...applicationHeadersWithoutAction, ActionData]}
                     data={filteredData ? filteredData : []}
                     currentPage={currentPage}
@@ -216,6 +330,18 @@ const ApplicationInvoiceInSuperAdmin = () => {
               </Card>
             )}
           </div>
+
+          {
+            <InvoicesForEmgs
+              open={openInvoiceEmgsModal}
+              close={() => {
+                setApplicationId(''), setOpenInvoiceEmgsModal(false);
+              }}
+              dataDetails={singleGetApplicationData?.data}
+              addressData={superAdminData}
+              logoData={brandlogo}
+            />
+          }
 
           {
             <InvoicesComponentForMultipleData

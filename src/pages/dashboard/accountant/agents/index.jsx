@@ -57,7 +57,7 @@ const AllAgentsPage = () => {
                   >
                     Add New Partner
                   </button>
-                  <h2>All Partner</h2>
+                  <h2>All Partner's</h2>
 
                   <SearchComponent
                     searchTerm={searchTerm}
