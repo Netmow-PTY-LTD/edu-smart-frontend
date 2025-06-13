@@ -483,7 +483,7 @@ const SingleCoursePageInFrontSite = () => {
                   </div>
                 </Col>
                 {(free_air_ticket ||
-                  tuition_fee ||
+                  scholarship_on_tuition_fee ||
                   free_accommodation ||
                   free_accessories) && (
                   <>
