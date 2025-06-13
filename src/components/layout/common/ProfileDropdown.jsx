@@ -114,10 +114,13 @@ const ProfileDropdown = () => {
                   : ''}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted text-uppercase user-name-sub-text">
-              {userInfodata?.data?.role === 'agent'
-                ? `${userInfodata?.data?.agent_package?.package?.name || ''} Partner`
-                : userInfodata?.data?.role || ''}
-              </span>
+                  {userInfodata?.data?.role === 'agent'
+                    ? `${userInfodata?.data?.agent_package?.package?.name || ''} Partner`
+                    : userInfodata?.data?.role
+                        ?.replace(/_/g, ' ') // Replace underscores with spaces
+                        ?.replace(/\b\w/g, char => char.toUpperCase()) || ''}
+                </span>
+
             </span>
           </span>
         </DropdownToggle>
