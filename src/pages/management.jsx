@@ -57,25 +57,13 @@ const teamMembers = [
     email: 'info@psrglobal.com.bd',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-19-at-6.26.14-PM.jpeg'
   },
-  {
-    name: 'Ashraful Islam',
-    designation: 'Asst Director (Marketing)',
-    email: 'info@psrglobal.com.bd',
-    image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Ashraful-Islam.webp'
-  },
+
   {
     name: 'Hasna Parvin',
     designation: 'Admin/Manager',
     contact: '+88 01771899752',
     email: 'psrglobaladmission@gmail.com',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Hasna-Parvin-Boishakhi-275x300-1.png'
-  },
-  {
-    name: 'Rotna Akter, MSS',
-    designation: 'Counselor',
-    contact: '+88 01771899850',
-    email: 'info@psrglobal.com.bd',
-    image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Rotna-Akter.webp'
   },
   {
     name: 'Nusrat Nurani Priya',
@@ -101,16 +89,31 @@ const teamMembers = [
     designation: 'Int Std Affairs, Malaysia',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/07/WhatsApp-Image-2024-07-09-at-11.28.53_21c4ae9e.webp'
   },
+    {
+    name: 'Sharmin Eti',
+    designation: 'Int Std Affairs, Malaysia',
+    contact: '',
+    email: '',
+    image: ''
+  },
+ {
+    name: 'Shamera Mubashira',
+    contact: '+8801750818414',
+    designation: 'Counselor (European Study)',
+    email: 'shamiramubershira123@gmail.com',
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shamera-mubashira.png'
+  },
+   {
+    name: 'Shabrina Mamun Tania',
+    designation: 'Information Officer',
+    contact: '+601826-337901',
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shabrina_mamun_tania.png'
+  },
   {
     name: 'Shohag Ahmed',
     designation: 'Office Assistant',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Shohag-Ali-image-240x300-1.jpg'
   },
-  {
-    name: 'Md Bashir',
-    designation: 'Driver',
-    image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/WhatsApp-Image-2023-01-06-at-12.13.02-PM-1-768x1152-1.jpeg'
-  }
 ];
 
 export default function About() {
