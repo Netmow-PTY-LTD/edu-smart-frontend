@@ -1,10 +1,13 @@
 import { useGetRecentApplicationsQuery } from '@/slice/services/common/applicationService';
+import { useCustomData } from '@/utils/common/data/customeData';
 import Link from 'next/link';
 import React from 'react';
 import CountUp from 'react-countup';
 import { Card, CardBody, Col, Row } from 'reactstrap';
 
 const DashBoardCardApplication = () => {
+    const customData = useCustomData();
+  
   const {
     data: recentApplicationData,
     isLoading: recentApplicationLoading,
@@ -34,17 +37,21 @@ const DashBoardCardApplication = () => {
     rejected: 'ri-close-circle-line',
   };
 
-  const statusLinks = {
-    pending: '/dashboard/super-admin/recent-application?search=pending',
-    review_in: '/dashboard/super-admin/recent-application?search=review_in',
-    file_requested: '/dashboard/super-admin/recent-application?search=file_requested',
-    ready_for_emgs: '/dashboard/super-admin/recent-application?search=ready_for_emgs',
-    file_under_emgs: '/dashboard/super-admin/recent-application?search=file_under_emgs',
-    ready_for_tuition: '/dashboard/super-admin/recent-application?search=ready_for_tuition',
-    tuition_under_processed: '/dashboard/super-admin/recent-application?search=tuition_under_processed',
-    accepted: '/dashboard/super-admin/recent-application?search=accepted',
-    rejected: '/dashboard/super-admin/recent-application?search=rejected',
-  };
+
+const isAgentOrStudent =
+  customData?.paneltext === 'agent' || customData?.paneltext === 'student';
+const basePath = isAgentOrStudent ? 'application' : 'recent-application';
+const statusLinks = {
+  pending: `/dashboard/${customData?.paneltext}/${basePath}?search=pending`,
+  review_in: `/dashboard/${customData?.paneltext}/${basePath}?search=review_in`,
+  file_requested: `/dashboard/${customData?.paneltext}/${basePath}?search=file_requested`,
+  ready_for_emgs: `/dashboard/${customData?.paneltext}/${basePath}?search=ready_for_emgs`,
+  file_under_emgs: `/dashboard/${customData?.paneltext}/${basePath}?search=file_under_emgs`,
+  ready_for_tuition: `/dashboard/${customData?.paneltext}/${basePath}?search=ready_for_tuition`,
+  tuition_under_processed: `/dashboard/${customData?.paneltext}/${basePath}?search=tuition_under_processed`,
+  accepted: `/dashboard/${customData?.paneltext}/${basePath}?search=accepted`,
+  rejected: `/dashboard/${customData?.paneltext}/${basePath}?search=rejected`,
+};
 
   const statusCounts =
     recentApplicationData?.data?.reduce((acc, item) => {

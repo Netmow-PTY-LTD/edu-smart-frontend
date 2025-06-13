@@ -23,6 +23,7 @@ import { Button, ButtonGroup } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import dayjs from 'dayjs';
+import DashBoardCardApplication from '@/components/common/allDashboardHome/DashBoardCardApplication';
 
 // import ProtectedRoute from '@/components/protectedRoutes';
 
@@ -200,7 +201,10 @@ const AgentDashboard = () => {
                   </>
                 )}
               </Row>
-
+              <Row className="pb-5">
+                <DashBoardCardApplication
+                />
+              </Row>
               <Row className="pb-5">
                 <AgentDashBoardCountOptions
                   userInfoData={userInfodata?.data}
