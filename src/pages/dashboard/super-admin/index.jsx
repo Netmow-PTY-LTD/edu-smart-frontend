@@ -92,13 +92,15 @@ const SuperAdminDashboard = () => {
                 />
               </Row> */}
 
-              <Row className="pb-5">
-                <h1 className='p-3'>Applications Overview</h1>
-                <Col xs={12} className="mb-4">
-                  <DashBoardCardApplication />
-                </Col>
-               </Row>
-
+                {(userInfodata?.data?.role === 'super_admin' || userInfodata?.data?.role === 'admission_manager') && (
+                  <Row className="pb-5">
+                    <h1 className="p-3">Applications Overview</h1>
+                    <Col xs={12} className="mb-4">
+                      <DashBoardCardApplication />
+                    </Col>
+                  </Row>
+                )}
+                              
               <Row className="pb-5">
                  <h1 className='p-3'>Registration & Financial Overview </h1>
                 <Col xs={12}>
