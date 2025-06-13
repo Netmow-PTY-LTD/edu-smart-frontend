@@ -324,9 +324,8 @@ const AllCourseForSuperAdminTest = ({
       .typeError('Available Seats must be a number')
       .min(1, 'At least 1 seat is required')
       .required('Available Seats is required'),
-    department: Yup.string().required('Department selection is required'),
-    category: Yup.string().required('Course Category selection is required'),
-
+    department: Yup.mixed().required('Department selection is required'),
+    category: Yup.mixed().required('Course Category selection is required'),
     program_duration: Yup.string().required('Program Duration is required'),
     brochure: Yup.mixed().required('Brochure file is required'),
     image: Yup.mixed().required('Course Picture is required'),
@@ -334,7 +333,23 @@ const AllCourseForSuperAdminTest = ({
     description: Yup.string()
       .min(20, 'Description must be at least 20 characters')
       .required('Course Description is required'),
-    document_requirements: Yup.array().optional(),
+    // document_requirements: Yup.array().optional(),
+
+  document_requirements: Yup.array()
+    .of(
+      Yup.object().shape({
+        title: Yup.string().required('Title is required'),
+        description: Yup.string().required('Description is required'),
+        isRequired: Yup.boolean(),
+        document_list_id: Yup.string(),
+      })
+    )
+    .min(1, 'At least one document requirement is required')
+    .test(
+      'at-least-one-required',
+      'At least one document must be marked as required',
+      (value) => Array.isArray(value) && value.some((doc) => doc?.isRequired)
+    ),
 
     // entry_requirements: Yup.array()
     //   .of(Yup.string().required('Entry requirement is required'))
@@ -825,6 +840,8 @@ const AllCourseForSuperAdminTest = ({
         setFilePreview={setFilePreview}
         SetCheckFreeAcommodation={SetCheckFreeAcommodation}
         checkFreeAcommodation={checkFreeAcommodation}
+        validationSchema={validationSchema}
+
       />
 
       {/* Delete Course */}

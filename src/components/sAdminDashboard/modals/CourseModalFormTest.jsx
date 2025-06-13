@@ -630,6 +630,14 @@ const CourseModalFormTest = ({
                                 );
                               })}
 
+                            {/* ❗ Array-level validation error (custom test or min count) */}
+                                        {typeof errors.document_requirements === 'string' && (
+                                          <div className="text-danger fw-bold mb-3">
+                                            {errors.document_requirements}
+                                          </div>
+                                        )}
+
+
                           {/* Add Document Manually Button */}
                           <div className="d-flex justify-content-center mt-4">
                             <Button
