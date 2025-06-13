@@ -73,10 +73,12 @@ const StudentDashboard = () => {
                 <div className="h-100">
                   <WelcomingMessage data={userInfodata?.data} />
 
-                                <Row className="pb-5">
-                                  <DashBoardCardApplication
-                                  />
-                                </Row>
+                     <Row className="pb-5">
+                    <h1 className="p-3">Applications Overview</h1>
+                    <Col xs={12} className="mb-4">
+                      <DashBoardCardApplication />
+                    </Col>
+                  </Row>
                   
 
                   <Row xxl={12} className="g-5">

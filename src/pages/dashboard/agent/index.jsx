@@ -201,11 +201,14 @@ const AgentDashboard = () => {
                   </>
                 )}
               </Row>
+                  <Row className="pb-5">
+                    <h1 className="p-3">Applications Overview</h1>
+                    <Col xs={12} className="mb-4">
+                      <DashBoardCardApplication />
+                    </Col>
+                  </Row>
               <Row className="pb-5">
-                <DashBoardCardApplication
-                />
-              </Row>
-              <Row className="pb-5">
+                <h1 className='p-3'>Financial Overview </h1>
                 <AgentDashBoardCountOptions
                   userInfoData={userInfodata?.data}
                   firstElementData={filteredApplications?.length}
