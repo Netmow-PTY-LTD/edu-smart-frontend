@@ -90,11 +90,25 @@ const teamMembers = [
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/07/WhatsApp-Image-2024-07-09-at-11.28.53_21c4ae9e.webp'
   },
     {
-    name: 'Sharmin Eti',
-    designation: 'Int Std Affairs, Malaysia',
+    name: 'Indah',
+    designation: 'Marketing Executive',
     contact: '',
     email: '',
-    image: ''
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/indah.jpg'
+  },
+      {
+    name: 'Amalia',
+    designation: 'Marketing Executive',
+    contact: '',
+    email: '',
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Amalia%20.png'
+  },
+      {
+    name: 'Sharmin Eti',
+    designation: 'Marketing Executive',
+    contact: '',
+    email: '',
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/sharmin_eti.jpg'
   },
  {
     name: 'Shamera Mubashira',
@@ -115,6 +129,7 @@ const teamMembers = [
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Shohag-Ali-image-240x300-1.jpg'
   },
 ];
+
 
 export default function About() {
   const cardStyle = {
