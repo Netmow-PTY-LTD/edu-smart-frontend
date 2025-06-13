@@ -21,6 +21,8 @@ import { useCustomData } from '@/utils/common/data/customeData';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import Select from 'react-select'; // if not already imported
+
 import {
   Card,
   CardBody,
@@ -359,16 +361,64 @@ export default function RecentApplicationForSuperAdmin() {
     return String(item).toLowerCase().includes(searchTerm.toLowerCase());
   };
 
-  // Ensure full search even if searchTerm is empty
+//   // Ensure full search even if searchTerm is empty
+// const isfilteredData =
+//   recentApplicationData?.data?.length > 0
+//     ? recentApplicationData.data
+//         .filter((item) => searchInItem(item, searchTerm))
+//         .sort((a, b) => {
+//           if (!a.createdAt || !b.createdAt) return 0;
+//           return b.createdAt.localeCompare(a.createdAt); // DESC order
+//         })
+//     : [];
+
+useEffect(() => {
+  if (router?.query?.search) {
+    setSelectedStatus({
+      label: router.query.search
+        .replace(/_/g, ' ') // make it human readable
+        .replace(/\b\w/g, (c) => c.toUpperCase()), // capitalize
+      value: router.query.search,
+    });
+  }
+}, [router?.query?.search]);
+
+
+const [selectedStatus, setSelectedStatus] = useState(null); // Add to your state
+
+const handleStatusFilterChange = (selectedOption) => {
+  setSelectedStatus(selectedOption);
+
+  const query = { ...router.query };
+  if (selectedOption) {
+    query.search = selectedOption.value;
+  } else {
+    delete query.search;
+  }
+
+  router.push({
+    pathname: router.pathname,
+    query,
+  }, undefined, { shallow: true }); // prevents full reload
+};
+
+
 const isfilteredData =
   recentApplicationData?.data?.length > 0
     ? recentApplicationData.data
-        .filter((item) => searchInItem(item, searchTerm))
+        .filter((item) => {
+          const matchesSearch = searchInItem(item, searchTerm);
+          const matchesStatus = selectedStatus ? item?.status === selectedStatus.value : true;
+          return matchesSearch && matchesStatus;
+        })
         .sort((a, b) => {
           if (!a.createdAt || !b.createdAt) return 0;
           return b.createdAt.localeCompare(a.createdAt); // DESC order
         })
     : [];
+
+
+
 
   const PickupHeaderData = {
     title: 'Pickup',
@@ -585,7 +635,21 @@ const statusOptions = [
                           searchTerm={searchTerm}
                           handleSearchChange={handleSearchChange}
                         />
+                          <div style={{ minWidth: 200 }}>
+                            <Select
+                              value={selectedStatus}
+                              onChange={handleStatusFilterChange}
+                              isClearable
+                              placeholder="Filter by Status"
+                              options={statusOptions.map((status) => ({
+                                value: status.value,
+                                label: status.label,
+                              }))}
+                            />
+                          </div>
                       </CardHeader>
+
+
                       <CardBody className="mh-100">
                         <CommonTableComponent
                           headers={[
@@ -603,6 +667,10 @@ const statusOptions = [
                   </Col>
                 </Row>
               </div>
+
+
+
+
 
               {/* for add */}
               <AirportPickupChargeModal

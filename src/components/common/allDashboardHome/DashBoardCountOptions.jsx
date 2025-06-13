@@ -53,14 +53,7 @@ const DashBoardCountOptions = ({
                   <div className="d-flex align-items-end justify-content-between mt-4">
                     <div>
                       <h4 className="fs-18 fw-semibold ff-secondary my-3 text-black">
-                        {/* {item?.id === 4 &&
-                          !allEarningManagementCommonData &&
-                          (userInfoData?.role === 'admin' ||
-                            userInfoData?.role === 'super_admin') && (
-                            <span>Total: &nbsp;</span>
-                          )} */}
-
-                        <span className="counter-value">
+                          <span className="counter-value">
                           {item?.id === 1 ? (
                             <CountUp
                               start={0}
@@ -158,78 +151,8 @@ const DashBoardCountOptions = ({
                           ) : (
                             ''
                           )}
-
-                          {/* {item?.id === 4 ? (
-                            <CountUp
-                              start={0}
-                              prefix={item?.prefix}
-                              suffix={
-                                userInfoData?.role === 'admin'
-                                  ? ` ${gstAndCurrencyData?.currency ? gstAndCurrencyData?.currency : ''}`
-                                  : userInfoData?.role === 'super_admin'
-                                    ? ` ${item?.suffix}`
-                                    : ` ${item?.suffix ? item?.suffix : ''}`
-                              }
-                              end={fourthElementData}
-                              decimals={item?.decimals}
-                              duration={2}
-                            />
-                          ) : (
-                            ''
-                          )} */}
                         </span>
                       </h4>
-
-                      {/* {item?.id === 4 &&
-                        !allEarningManagementCommonData &&
-                        (userInfoData?.role === 'admin' ||
-                          userInfoData?.role === 'super_admin') && (
-                          <h4 className="fs-14 fw-medium ff-secondary text-black">
-                            <span>Paid: </span>
-                            <span className="counter-value">
-                              <CountUp
-                                start={0}
-                                prefix={item?.prefix}
-                                suffix={
-                                  userInfoData?.role === 'admin'
-                                    ? ` ${gstAndCurrencyData?.currency ? gstAndCurrencyData?.currency : ''}`
-                                    : userInfoData?.role === 'super_admin'
-                                      ? ` ${item?.suffix}`
-                                      : ''
-                                }
-                                end={paidSum}
-                                decimals={item?.decimals}
-                                duration={2}
-                              />
-                            </span>
-                          </h4>
-                        )} */}
-
-                      {/* {item?.id === 4 &&
-                        !allEarningManagementCommonData &&
-                        (userInfoData?.role === 'admin' ||
-                          userInfoData?.role === 'super_admin') && (
-                          <h4 className="fs-14 fw-medium ff-secondary text-black">
-                            <span>Unpaid: &nbsp;</span>
-                            <span className="counter-value">
-                              <CountUp
-                                start={0}
-                                prefix={item?.prefix}
-                                suffix={
-                                  userInfoData?.role === 'admin'
-                                    ? `${gstAndCurrencyData?.currency && gstAndCurrencyData?.currency !== undefined ? gstAndCurrencyData?.currency : 'USD'}`
-                                    : userInfoData?.role === 'super_admin'
-                                      ? ` ${item?.suffix}`
-                                      : ''
-                                }
-                                end={unPaidSum}
-                                decimals={item?.decimals}
-                                duration={2}
-                              />
-                            </span>
-                          </h4>
-                        )} */}
-
                       <Link
                         href={item?.pathName ? item?.pathName : ''}
                         className="text-decoration-underline text-black"
