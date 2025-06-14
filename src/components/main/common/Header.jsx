@@ -66,11 +66,42 @@ export default function Header() {
                   <li>
                     <Link href="/">Home</Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link href="/about" className="nav-link">
                       <span>About</span>
                     </Link>
-                  </li>
+                  </li> */}
+                    <li className="menu-item-has-children">
+                      <Link href="#" className="nav-link">
+                        <span>About</span>
+                        <svg
+                          width="11"
+                          height="6"
+                          viewBox="0 0 11 6"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
+                            stroke="var(--color--secondary)"
+                            strokeWidth="1.10198"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </Link>
+
+                      <div className="sub-menu">
+                        <ul>
+                          <li>
+                            <Link href="/about">About</Link>
+                          </li>
+                          <li>
+                            <Link href="/management">Management</Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
                   <li className=" menu-item-has-children">
                     <Link href="#" className="nav-link">
                       <span>Courses</span>
