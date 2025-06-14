@@ -60,7 +60,7 @@ const teamMembers = [
 
   {
     name: 'Hasna Parvin',
-    designation: 'Admission Manager',
+    designation: 'Admin Manager',
     contact: '+88 01771899752',
     email: 'admission@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Hasna-Parvin-Boishakhi-275x300-1.png'
