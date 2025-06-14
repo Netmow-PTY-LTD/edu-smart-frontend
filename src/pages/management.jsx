@@ -62,14 +62,14 @@ const teamMembers = [
     name: 'Hasna Parvin',
     designation: 'Admission Manager',
     contact: '+88 01771899752',
-    email: 'info@edusmart.study',
+    email: 'admission@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Hasna-Parvin-Boishakhi-275x300-1.png'
   },
     {
     name: 'Shakhoat Hossen',
     designation: 'Graphics Designer',
     contact: '+88 01713273757',
-    email: 'info@edusmart.study',
+    email: 'support@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shakhoat-hossen.png'
   },
   {
@@ -102,14 +102,14 @@ const teamMembers = [
     name: 'Ms Indah (Asian Market)',
     designation: 'Marketing Research Executive',
     contact: '',
-    email: 'info@edusmart.study',
+    email: 'indah@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/indah.jpg'
   },
       {
     name: `Ms Amalia (Int Affair's)`,
     designation: 'Influencer',
     contact: '',
-    email: 'support@edusmart.study',
+    email: 'amalia@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Amalia%20.png'
   },
       {
