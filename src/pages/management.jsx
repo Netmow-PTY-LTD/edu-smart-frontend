@@ -9,123 +9,134 @@ const teamMembers = [
     name: 'Ms Torzoma Khatun (Toma)',
     designation: 'Director Admin',
     contact: '+88 01842111721',
-    email: 'toma_karim@yahoo.com',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Ms.-Torzoma-Khatun-Toma-270x300-1.jpg'
   },
   {
     name: 'Mr M A Haque',
     designation: 'Chief Operating Officer',
-    email: 'info@psrglobal.com.bd',
+    email: 'admin@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/07/WhatsApp-Image-2024-07-09-at-11.00.57_027f0f72.jpg'
   },
   {
     name: 'Mrs Nahid Akter',
     designation: 'Advisor (Research & Training)',
-    email: 'info@psrglobal.com.bd',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/07/Screenshot_5.png'
   },
   {
     name: 'Prof Dr Mohammad Abu Eusuf',
     designation: 'Chief Technical Advisor',
-    email: 'info@psrglobal.com.bd',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Prof-Dr-Mohammad-Abu-Eusuf.webp'
   },
   {
     name: 'Assoc Prof. Md. Kalam Hossain',
     designation: 'Director (Finance)',
     contact: '+88 01712617156',
-    email: 'psrglobaladmission@gmail.com',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/666.jpg'
   },
   {
     name: 'Leorona Chowdhury, PhD Scholar',
-    designation: 'Director (Intl. Marketing), President, Malaysia',
+    designation: 'Director of Marketing',
     contact: '+6 0147051337',
-    email: 'info@psrglobal.com.bd',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Leorona-Chowdhury-176x300-1.jpg'
   },
   {
     name: 'Assoc Prof. G M Aminul Islam',
     designation: 'Advisor (Public Admin)',
     contact: '+88 01711177030',
-    email: 'khlaminul@gmail.com',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/G-M-Aminul-Islam-227x300-1.jpg'
   },
   {
     name: 'Eng Mujibur Rahman',
     designation: 'Advisor (Int’l Collaboration)',
-    email: 'info@psrglobal.com.bd',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-19-at-6.26.14-PM.jpeg'
   },
 
   {
     name: 'Hasna Parvin',
-    designation: 'Admin/Manager',
+    designation: 'Admission Manager',
     contact: '+88 01771899752',
-    email: 'psrglobaladmission@gmail.com',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Hasna-Parvin-Boishakhi-275x300-1.png'
+  },
+    {
+    name: 'Shakhoat Hossen',
+    designation: 'Graphics Designer',
+    contact: '+88 01713273757',
+    email: 'info@edusmart.study',
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shakhoat-hossen.png'
   },
   {
     name: 'Nusrat Nurani Priya',
     designation: '(Account & Logistic)',
     contact: '+88 01771899851',
-    email: 'info@psrglobal.com.bd',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/11/Untitled-600-x-600-px-6.jpg'
   },
   {
     name: 'MD MAHBUBER RAHMAN (DOLAR)',
     designation: 'Counselor, Malaysia',
     contact: '+601136704887',
-    email: 'info.malaysia@psrglobal.com.bd',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/WhatsApp-Image-2023-10-15-at-1.27.22-PM.jpeg'
   },
   {
     name: 'Md. Safiul Bashar, MBA',
     designation: 'Sr Executive (Work Permit)',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/11/WhatsApp-Image-2023-11-13-at-14.01.11_4b2a9fb1.jpg'
   },
   {
-    name: 'Riku Datta',
+    name: 'Riku Datta (Sr. Counselor)',
     designation: 'Int Std Affairs, Malaysia',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2024/07/WhatsApp-Image-2024-07-09-at-11.28.53_21c4ae9e.webp'
   },
     {
-    name: 'Indah',
-    designation: 'Marketing Executive',
+    name: 'Ms Indah (Asian Market)',
+    designation: 'Marketing Research Executive',
     contact: '',
-    email: '',
+    email: 'info@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/indah.jpg'
   },
       {
-    name: 'Amalia',
-    designation: 'Marketing Executive',
+    name: `Ms Amalia (Int Affair's)`,
+    designation: 'Influencer',
     contact: '',
-    email: '',
+    email: 'support@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Amalia%20.png'
   },
       {
     name: 'Sharmin Eti',
     designation: 'Marketing Executive',
     contact: '',
-    email: '',
+    email: 'info@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/sharmin_eti.jpg'
   },
  {
     name: 'Shamera Mubashira',
     contact: '+8801750818414',
     designation: 'Counselor (European Study)',
-    email: 'shamiramubershira123@gmail.com',
+    email: 'info@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shamera-mubashira.png'
   },
    {
     name: 'Shabrina Mamun Tania',
     designation: 'Information Officer',
     contact: '+601826-337901',
+    email: 'info@edusmart.study',
     image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shabrina_mamun_tania.png'
   },
   {
     name: 'Shohag Ahmed',
     designation: 'Office Assistant',
+    email: 'info@edusmart.study',
     image: 'https://psrglobal.com.bd/wp-content/uploads/2023/10/Shohag-Ali-image-240x300-1.jpg'
   },
 ];
@@ -321,4 +332,3 @@ const handleMouseLeave = (e) => {
     </MainLayout>
   );
 }
-``
