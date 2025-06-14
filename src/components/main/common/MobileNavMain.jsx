@@ -89,11 +89,46 @@ const MobileNavMain = ({ showMobileNav, setShowMobileNav, token }) => {
               <span>Home</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/about" className="nav-link">
               <span>About</span>
             </Link>
+          </li> */}
+          <li className={`menu-item-has-children`}>
+            <Link
+              href="#"
+              className="nav-link"
+              onClick={() => toggleSubmenu('about')}
+            >
+              <span>About Us</span>
+              <svg
+                width="11"
+                height="6"
+                viewBox="0 0 11 6"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.878632 0.602997L5.28656 5.01092L9.69449 0.602997"
+                  stroke="#fff"
+                  strokeWidth="1.10198"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+            {showSubmenu && activeMenuItem === 'about' && (
+              <ul className={`sub-menu ${showSubmenu ? 'open' : ''}`}>
+                <li>
+                  <Link href="/about">About</Link>
+                </li>
+                <li>
+                  <Link href="/management">Management</Link>
+                </li>
+              </ul>
+            )}
           </li>
+
           <li className={`menu-item-has-children`}>
             <Link
               href="#"

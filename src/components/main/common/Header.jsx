@@ -73,7 +73,7 @@ export default function Header() {
                   </li> */}
                     <li className="menu-item-has-children">
                       <Link href="#" className="nav-link">
-                        <span>About</span>
+                        <span>About Us</span>
                         <svg
                           width="11"
                           height="6"
