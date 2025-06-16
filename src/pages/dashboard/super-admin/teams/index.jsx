@@ -1,21 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/components/layout';
-import { Card, CardBody, CardHeader, Button } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import AddTeamModal from '@/components/sAdminDashboard/modals/AddTeamModal';
+import Cookies from 'js-cookie';
+import EditTeamModal from '@/components/sAdminDashboard/modals/EditTeamModal';
+import { List } from 'react-movable';
 
 const Teams = () => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(null);
+
+  const toggleDropdown = (id) => {
+    setDropdownOpen(dropdownOpen === id ? null : id);
+  };
+
+  const token = Cookies.get('token');
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL_PROD || '';
 
   const fetchMembers = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/team');
-      const data = await res.json();
-      setMembers(data);
+      const res = await fetch(`${baseUrl}/api/v1/team`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error('Failed to fetch');
+
+      const result = await res.json();
+
+      const fixedMembers = (result?.data || []).map((m) => ({
+        ...m,
+        image: m.image?.startsWith('http') ? m.image : `${baseUrl}${m.image}`,
+      }));
+
+      setMembers(fixedMembers);
     } catch (error) {
       toast.error('Failed to fetch members');
     }
@@ -26,6 +62,53 @@ const Teams = () => {
     fetchMembers();
   }, []);
 
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this member?')) return;
+    try {
+      const res = await fetch(`${baseUrl}/api/v1/team/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        toast.success('Member deleted');
+        fetchMembers();
+      } else {
+        toast.error('Failed to delete member');
+      }
+    } catch {
+      toast.error('Server error on delete');
+    }
+  };
+
+  const updateMembersOrder = async (updatedMembers) => {
+    try {
+      const res = await fetch(`${baseUrl}/api/v1/team/update-order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ members: updatedMembers }),
+      });
+
+      if (!res.ok) throw new Error('Failed to update order');
+      toast.success('Order updated successfully');
+    } catch {
+      toast.error('Error updating order');
+    }
+  };
+
+  const handleDragEnd = ({ oldIndex, newIndex }) => {
+    const updated = [...members];
+    const [moved] = updated.splice(oldIndex, 1);
+    updated.splice(newIndex, 0, moved);
+    setMembers(updated);
+    updateMembersOrder(updated);
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -34,38 +117,103 @@ const Teams = () => {
           {loading ? (
             <LoaderSpiner />
           ) : (
-            <Card>
-              <CardHeader className="d-flex justify-content-between align-items-center">
-                <h1 className="mb-0">Team Members</h1>
-                <Button color="primary" onClick={() => setShowModal(true)}>
+            <Card className="shadow-sm">
+              <CardHeader className="d-flex justify-content-between align-items-center bg-light border-bottom">
+                <h3 className="mb-0 text-primary">Team Members</h3>
+                <Button color="primary" onClick={() => setShowAddModal(true)}>
                   + Add Team Member
                 </Button>
               </CardHeader>
 
-              <CardBody>
+              <CardBody className="p-0">
                 <div className="table-responsive">
-                  <table className="table table-bordered table-hover">
-                    <thead>
-                      <tr>
+                <List
+                values={members}
+                onChange={handleDragEnd}
+                renderList={({ children, props }) => (
+                    <table className="table table-hover mb-0 align-middle" {...props}>
+                    <thead className="table-secondary text-muted text-uppercase small">
+                        <tr>
+                        <th style={{ width: '50px' }}>#</th>
+                        <th style={{ width: '70px' }}>Image</th>
                         <th>Name</th>
                         <th>Designation</th>
                         <th>Contact</th>
                         <th>Email</th>
                         <th>Country</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {members.map((member, index) => (
-                        <tr key={index}>
-                          <td>{member.name}</td>
-                          <td>{member.designation}</td>
-                          <td>{member.contact || '-'}</td>
-                          <td>{member.email}</td>
-                          <td>{member.country}</td>
+                        <th style={{ width: '120px' }}>Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                    </thead>
+                    <tbody>{children}</tbody>
+                    </table>
+                )}
+                renderItem={({ value: member, props, isDragged, index }) => (
+                    <tr
+                    {...props}
+                    key={member._id}
+                    className={`${isDragged ? 'bg-light text-muted' : ''}`}
+                    >
+                    <td className="align-middle">{index + 1}</td>
+                    <td className="align-middle">
+                        {member.image ? (
+                        <img
+                            src={member.image}
+                            alt={member.name}
+                            className="rounded-circle"
+                            style={{
+                            width: '50px',
+                            height: '50px',
+                            objectFit: 'cover',
+                            border: '1px solid #dee2e6',
+                            }}
+                        />
+                        ) : (
+                        <div
+                            className="d-flex justify-content-center align-items-center bg-light text-muted rounded-circle"
+                            style={{ width: '50px', height: '50px' }}
+                        >
+                            N/A
+                        </div>
+                        )}
+                    </td>
+                    <td className="align-middle fw-semibold">{member.name}</td>
+                    <td className="align-middle">{member.designation}</td>
+                    <td className="align-middle">{member.contact || '-'}</td>
+                    <td className="align-middle">{member.email}</td>
+                    <td className="align-middle">{member.country}</td>
+                    <td className="align-middle">
+                        <Dropdown
+                        isOpen={dropdownOpen === member._id}
+                        toggle={() => toggleDropdown(member._id)}
+                        >
+                        <DropdownToggle caret color="secondary" size="sm" className="px-3">
+                            Actions
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem
+                            onClick={() => {
+                                setSelectedMember(member);
+                                setShowEditModal(true);
+                                setDropdownOpen(null);
+                            }}
+                            >
+                            Edit
+                            </DropdownItem>
+                            <DropdownItem
+                            onClick={() => {
+                                setDropdownOpen(null);
+                                handleDelete(member._id);
+                            }}
+                            >
+                            Delete
+                            </DropdownItem>
+                        </DropdownMenu>
+                        </Dropdown>
+                    </td>
+                    </tr>
+                )}
+                />
+
                 </div>
               </CardBody>
             </Card>
@@ -74,10 +222,19 @@ const Teams = () => {
       </div>
 
       <AddTeamModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
+        show={showAddModal}
+        handleClose={() => setShowAddModal(false)}
         onMemberAdded={fetchMembers}
       />
+
+      {selectedMember && (
+        <EditTeamModal
+          show={showEditModal}
+          handleClose={() => setShowEditModal(false)}
+          member={selectedMember}
+          onMemberUpdated={fetchMembers}
+        />
+      )}
     </Layout>
   );
 };
