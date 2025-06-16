@@ -28,28 +28,31 @@ const AddTeamModal = ({ show, handleClose, onMemberAdded }) => {
   const token = Cookies.get('token');
   
 
-  const validate = () => {
-    const newErrors = {};
-    const phoneRegex = /^\+?\d{10,15}$/; // supports +880, 880, or just digits (10 to 15 digits)
+const validate = () => {
+  const newErrors = {};
+  const phoneRegex = /^\+?\d{10,15}$/; // supports +880, 880, or just digits (10 to 15 digits)
 
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.designation) newErrors.designation = 'Designation is required';
-    
-    if (!formData.contact) {
-      newErrors.contact = 'Contact number is required';
-    } else if (!phoneRegex.test(formData.contact)) {
+  if (!formData.name) newErrors.name = 'Name is required';
+  if (!formData.designation) newErrors.designation = 'Designation is required';
+
+  // ✅ Optional contact, but validate if present
+  if (formData.contact) {
+    if (!phoneRegex.test(formData.contact)) {
       newErrors.contact = 'Invalid phone number (10–15 digits)';
     }
+  }
 
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+  // ✅ Optional email, but validate if present
+  if (formData.email) {
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Invalid email format';
     }
+  }
 
-    if (!formData.image) newErrors.image = 'Image is required';
-    return newErrors;
-  };
+  if (!formData.image) newErrors.image = 'Image is required';
+  return newErrors;
+};
+
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;

@@ -48,29 +48,27 @@ const EditTeamModal = ({ show, handleClose, member, onMemberUpdated }) => {
   }, [member, show]);
 
   // Validate form fields
-  const validate = () => {
-    const newErrors = {};
-    const phoneRegex = /^\+?\d{10,15}$/;
+const validate = () => {
+  const newErrors = {};
+  const phoneRegex = /^\+?\d{10,15}$/;
 
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.designation) newErrors.designation = 'Designation is required';
+  if (!formData.name) newErrors.name = 'Name is required';
+  if (!formData.designation) newErrors.designation = 'Designation is required';
 
-    if (!formData.contact) {
-      newErrors.contact = 'Contact number is required';
-    } else if (!phoneRegex.test(formData.contact)) {
-      newErrors.contact = 'Invalid phone number (10–15 digits)';
-    }
+  // ✅ Optional contact, validate only if present
+  if (formData.contact && !phoneRegex.test(formData.contact)) {
+    newErrors.contact = 'Invalid phone number (10–15 digits)';
+  }
 
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Invalid email format';
-    }
+  // ✅ Optional email, validate only if present
+  if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+    newErrors.email = 'Invalid email format';
+  }
 
-    return newErrors;
-  };
+  return newErrors;
+};
 
-  // Handle input changes
+// Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
