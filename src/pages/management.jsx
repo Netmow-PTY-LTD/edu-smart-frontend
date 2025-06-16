@@ -70,14 +70,14 @@ const teamMembers = [
     designation: 'Graphics Designer',
     contact: '+88 01713273757',
     email: 'support@edusmart.study',
-    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/shakhoat-hossen.png'
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Shakhoat%20Hossen.jpg'
   },
   {
     name: 'Nusrat Nurani Priya',
     designation: '(Account & Logistic)',
     contact: '+88 01771899851',
     email: 'info@edusmart.study',
-    image: 'https://psrglobal.com.bd/wp-content/uploads/2024/11/Untitled-600-x-600-px-6.jpg'
+    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Nusrat%20Nurani%20Priya.jpg'
   },
   {
     name: 'MD MAHBUBER RAHMAN (DOLAR)',
@@ -110,7 +110,7 @@ const teamMembers = [
     designation: 'Influencer',
     contact: '',
     email: 'amalia@edusmart.study',
-    image: 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Amalia%20.png'
+    image: `https://edu-smart.sgp1.cdn.digitaloceanspaces.com/Ms%20Amalia%20(Int%20Affair's).jpg`
   },
       {
     name: 'Sharmin Eti',
