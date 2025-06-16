@@ -127,93 +127,98 @@ const Teams = () => {
 
               <CardBody className="p-0">
                 <div className="table-responsive">
-                <List
-                values={members}
-                onChange={handleDragEnd}
-                renderList={({ children, props }) => (
-                    <table className="table table-hover mb-0 align-middle" {...props}>
-                    <thead className="table-secondary text-muted text-uppercase small">
-                        <tr>
-                        <th style={{ width: '50px' }}>#</th>
-                        <th style={{ width: '70px' }}>Image</th>
-                        <th>Name</th>
-                        <th>Designation</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Country</th>
-                        <th style={{ width: '120px' }}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>{children}</tbody>
-                    </table>
-                )}
-                renderItem={({ value: member, props, isDragged, index }) => (
-                    <tr
-                    {...props}
-                    key={member._id}
-                    className={`${isDragged ? 'bg-light text-muted' : ''}`}
-                    >
-                    <td className="align-middle">{index + 1}</td>
-                    <td className="align-middle">
-                        {member.image ? (
-                        <img
-                            src={member.image}
-                            alt={member.name}
-                            className="rounded-circle"
-                            style={{
-                            width: '50px',
-                            height: '50px',
-                            objectFit: 'cover',
-                            border: '1px solid #dee2e6',
-                            }}
-                        />
-                        ) : (
-                        <div
-                            className="d-flex justify-content-center align-items-center bg-light text-muted rounded-circle"
-                            style={{ width: '50px', height: '50px' }}
-                        >
-                            N/A
-                        </div>
-                        )}
-                    </td>
-                    <td className="align-middle fw-semibold">{member.name}</td>
-                    <td className="align-middle">{member.designation}</td>
-                    <td className="align-middle">{member.contact || '-'}</td>
-                    <td className="align-middle">{member.email}</td>
-                    <td className="align-middle">{member.country}</td>
-                    <td className="align-middle">
-                        <Dropdown
-                        isOpen={dropdownOpen === member._id}
-                        toggle={() => toggleDropdown(member._id)}
-                        >
-                        <DropdownToggle caret color="secondary" size="sm" className="px-3">
-                            Actions
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem
-                            onClick={() => {
-                                setSelectedMember(member);
-                                setShowEditModal(true);
-                                setDropdownOpen(null);
-                            }}
+                  <List
+                    values={members}
+                    onChange={handleDragEnd}
+                    renderList={({ children, props }) => (
+                      <table className="table table-hover mb-0 align-middle" {...props}>
+                        <thead className="table-secondary text-muted text-uppercase small">
+                          <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Country</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>{children}</tbody>
+                      </table>
+                    )}
+                    renderItem={({ value: member, props, isDragged, index }) => (
+                      <tr
+                        {...props}
+                        key={member._id}
+                        className={`team-row ${isDragged ? 'dragged' : ''}`}
+                        style={{
+                          ...props.style,
+                          height: '65px',
+                        }}
+                      >
+                        <td className="align-middle">{index + 1}</td>
+                        <td className="align-middle">
+                          {member.image ? (
+                            <img
+                              src={member.image}
+                              alt={member.name}
+                              className="rounded-circle"
+                              style={{
+                                width: '50px',
+                                height: '50px',
+                                objectFit: 'cover',
+                                border: '1px solid #dee2e6',
+                              }}
+                            />
+                          ) : (
+                            <div
+                              className="d-flex justify-content-center align-items-center bg-light text-muted rounded-circle"
+                              style={{ width: '50px', height: '50px' }}
                             >
-                            Edit
-                            </DropdownItem>
-                            <DropdownItem
-                            onClick={() => {
-                                setDropdownOpen(null);
-                                handleDelete(member._id);
-                            }}
-                            >
-                            Delete
-                            </DropdownItem>
-                        </DropdownMenu>
-                        </Dropdown>
-                    </td>
-                    </tr>
-                )}
-                />
-
+                              N/A
+                            </div>
+                          )}
+                        </td>
+                        <td className="align-middle fw-semibold">{member.name}</td>
+                        <td className="align-middle">{member.designation}</td>
+                        <td className="align-middle">{member.contact || '-'}</td>
+                        <td className="align-middle">{member.email}</td>
+                        <td className="align-middle">{member.country}</td>
+                        <td className="align-middle">
+                          <Dropdown
+                            isOpen={dropdownOpen === member._id}
+                            toggle={() => toggleDropdown(member._id)}
+                          >
+                            <DropdownToggle caret color="secondary" size="sm" className="px-3">
+                              Actions
+                            </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem
+                                onClick={() => {
+                                  setSelectedMember(member);
+                                  setShowEditModal(true);
+                                  setDropdownOpen(null);
+                                }}
+                              >
+                                Edit
+                              </DropdownItem>
+                              <DropdownItem
+                                onClick={() => {
+                                  setDropdownOpen(null);
+                                  handleDelete(member._id);
+                                }}
+                              >
+                                Delete
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </td>
+                      </tr>
+                    )}
+                  />
+                  {/* Fix spacing issue when dragging to the last row */}
+                  <div style={{ height: '80px' }} />
                 </div>
               </CardBody>
             </Card>
