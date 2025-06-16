@@ -69,7 +69,9 @@ const DashBoardLayout = (props) => {
           '/dashboard/admission-manager/agents',
           '/dashboard/admission-manager/students',
           '/dashboard/admission-manager/settings/profile',
-          '/dashboard/admission-manager/university-management',
+          '/dashboard/admission-manager/university-management/all-university',
+          '/dashboard/admission-manager/university-management/single-university-profile/',
+          '/dashboard/admission-manager/university-management/edit-university/',
           '/dashboard/admission-manager/university-management/add-university',
         ];
 
