@@ -39,7 +39,7 @@ const SuperAdminSidebarData = () => {
       id: 'universities',
       label: 'Universities',
       icon: 'ri-school-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      style: `${customeData.hideforaccountant}`,
       link: '/#',
       click: function (e) {
         e.preventDefault();

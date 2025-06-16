@@ -68,6 +68,8 @@ const DashBoardLayout = (props) => {
           '/dashboard/admission-manager/agents',
           '/dashboard/admission-manager/students',
           '/dashboard/admission-manager/settings/profile',
+          '/dashboard/super-admin/university-management/all-university',
+          '/dashboard/super-admin/university-management/add-university',
         ];
 
         const dynamicPath = [
