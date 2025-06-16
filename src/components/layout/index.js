@@ -59,6 +59,7 @@ const DashBoardLayout = (props) => {
         }
       }
 
+      
       if (userInfodata.data.role === 'admission_manager') {
         const allowedPathsForAdmissionManager = [
           '/dashboard/admission-manager',
