@@ -175,9 +175,9 @@ const SinglePackageComponent = ({
         {updatePackage ? (
           <div
             onClick={() => updatePackage(data?._id)}
-            className="d-flex align-items-center justify-content-center button hstack py-2"
+            className="d-flex align-items-center justify-content-center button hstack py-2" style={{cursor:'pointer'}}
           >
-            <span className="text-center">Edit Package</span>
+            Edit Package
           </div>
         ) : Object.keys(style).length > 0 ? (
           <div className="px-3 py-1 rounded-3 fw-semibold text-primary bg-info-subtle">

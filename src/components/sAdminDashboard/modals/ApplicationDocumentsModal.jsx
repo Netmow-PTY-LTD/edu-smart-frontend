@@ -20,6 +20,7 @@ import {
   useGetRecentApplicationsQuery,
   useUpdateApplicationStatusMutation,
 } from '@/slice/services/common/applicationService';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -393,19 +394,19 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
         <ModalBody>
           <Card>
             <h1 className="py-4 px-3 text-capitalize text-primary fw-semibold border-bottom">
-              📄 All Submitted Documents
+             <i className="bi bi-file-earmark-fill"></i> All Submitted Documents
             </h1>
             <CardBody>
               <div className="d-flex justify-content-between align-items-center my-4 flex-wrap gap-3">
                 <div className="text-center">
-                  <h5 className="text-primary fw-bold mb-3">
+                  <h4 className="text-primary fw-bold mb-3">
                     Upload New Documents
-                  </h5>
+                  </h4>
                   <button
                     className="btn btn-lg btn-outline-primary"
                     onClick={() => setUploadModalOpen(true)}
                   >
-                    ➕ Upload Document
+                    <i className="bi bi-plus-lg"></i> Upload Document
                   </button>
                 </div>
 
@@ -445,7 +446,7 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                     className="btn btn-lg btn-success"
                     onClick={handleDownloadAllDocument}
                   >
-                    📥 Download All Files as PDF
+                    <i className="bi bi-download"></i> Download All Files as PDF
                   </button>
                 </div>
               </div>
@@ -455,9 +456,9 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                   <div key={index} className="col-md-6 col-lg-4 mb-5">
                     <div className="p-3 border rounded shadow-sm h-100">
                       <div className="mb-3">
-                        <h5 className="text-primary fw-semibold text-capitalize">
+                        <h4 className="text-primary fw-semibold text-capitalize">
                           {item?.title?.split('[')[0]?.replace(/[_/]/g, ' ')}
-                        </h5>
+                        </h4>
                       </div>
 
                       {editingIndex === index ? (
@@ -492,14 +493,47 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                             <button
                               className="btn btn-success w-100"
                               onClick={() => handleSubmitChange(index)}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                              }}
                             >
-                              ✅ Submit
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                id="Layer_1"
+                                width="15"
+                                height="15"
+                                fill="#008000"
+                                data-name="Layer 1"
+                                viewBox="0 0 200 200"
+                              >
+                                <path d="M177.6 80.43a10 10 0 1 0-19.5 4.5 60.76 60.76 0 0 1-6 44.5c-16.5 28.5-53.5 38.5-82 22-28.5-16-38.5-53-22-81.5s53.5-38.5 82-22a9.86 9.86 0 1 0 10-17c-38.5-22.5-87-9.5-109.5 29a80.19 80.19 0 1 0 147 20.5m-109.5 11a10.12 10.12 0 0 0-11 17l40 25a10.1 10.1 0 0 0 5.5 1.5 10.44 10.44 0 0 0 8-4l52.5-67.5c3.5-4.5 2.5-10.5-2-14s-10.5-2.5-14 2l-47 60Z"></path>
+                              </svg>
+                              Submit
                             </button>
                             <button
-                              className="btn btn-outline-secondary w-100"
+                              className="btn btn-outline-danger w-100"
                               onClick={() => setEditingIndex(null)}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '3px',
+                              }}
                             >
-                              ❌ Cancel
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlSpace="preserve"
+                                id="Capa_1"
+                                width="10"
+                                height="10"
+                                fill="#FF0000"
+                                version="1.1"
+                                viewBox="0 0 208.891 208.891"
+                              >
+                                <path d="m0 170 65.555-65.555L0 38.891 38.891 0l65.555 65.555L170 0l38.891 38.891-65.555 65.555L208.891 170 170 208.891l-65.555-65.555-65.555 65.555z"></path>
+                              </svg>
+                              Cancel
                             </button>
                           </div>
                         </>
@@ -511,7 +545,7 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                                 className="btn btn-outline-dark"
                                 onClick={() => setEditingIndex(index)}
                               >
-                                ✏️ Request Change
+                                <i className="bi bi-pencil-square"></i> Request Change
                               </button>
                               <span
                                 className={`badge rounded-pill px-3 py-2 fs-6 ${
@@ -531,7 +565,7 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                             (item.status === 'requested' ||
                               item.status !== 'pending') && (
                               <span
-                                className={`badge rounded-pill px-3 py-2 fs-6 ${
+                                className={`badge rounded-pill px-3 py-2 fs-4 ${
                                   item.status === 'approved'
                                     ? 'bg-success'
                                     : item.status === 'requested'
@@ -546,11 +580,13 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                         </>
                       )}
 
-                      {item.description && (
-                        <p className="text-muted small mt-2">
-                          📌 {item.description}
-                        </p>
-                      )}
+                      {item.description ? (
+                          <p className="text-muted small mt-5 mb-2">
+                            <i className="bi bi-info-square"></i> {item.description}
+                          </p>
+                        ) : (
+                          <div style={{marginBottom:'30px'}}></div>
+                        )}
                       {item.files?.map((file, fileIndex) => (
                         <div key={fileIndex} className="mb-3 position-relative">
                           {file?.url?.endsWith('.pdf') ? (
@@ -560,7 +596,7 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                                 download={file.public_id}
                                 className="btn btn-outline-primary btn-sm"
                               >
-                                📥 Download PDF
+                                <i className="bi bi-box-arrow-down"></i> Download PDF
                               </a>
                             </div>
                           ) : (
@@ -578,9 +614,9 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                               <a
                                 href={file.url}
                                 download
-                                className="btn btn-outline-primary btn-lg mt-2"
+                                className="btn btn-primary btn-lg mt-2 position-absolute top-0 end-0"
                               >
-                                📥
+                                <i className="bi bi-download" style={{fontSize:'16px'}}></i>
                               </a>
                             </>
                           )}

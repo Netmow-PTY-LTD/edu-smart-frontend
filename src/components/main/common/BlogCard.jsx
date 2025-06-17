@@ -24,7 +24,7 @@ const BlogCard = ({ blog }) => {
           height={300}
         />
       </figure>
-      <div className="blog-card__body">
+      <div className="blog-card__body" style={{minHeight:'120px'}}>
         <header>
           <h5 className="blog-card__title">
             {blog?.title ? blog?.title : 'Blog Image'}
