@@ -113,6 +113,7 @@ const ApplicationDocumentUpload = ({
                           type="file"
                           multiple
                           hidden
+                          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,image/*"
                           onChange={(e) => {
                             const files = Array.from(e.target.files);
                             const newDocs = files.map((file) => ({
