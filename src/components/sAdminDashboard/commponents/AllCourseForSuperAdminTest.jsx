@@ -350,14 +350,6 @@ const AllCourseForSuperAdminTest = ({
       'At least one document must be marked as required',
       (value) => Array.isArray(value) && value.some((doc) => doc?.isRequired)
     ),
-
-    // entry_requirements: Yup.array()
-    //   .of(Yup.string().required('Entry requirement is required'))
-    //   .min(1, 'At least one entry requirement is required'),
-
-    // english_requirements: Yup.array()
-    //   .of(Yup.string().required('English requirement is required'))
-    //   .min(1, 'At least one English requirement is required'),
   });
 
   // Handle form submission
@@ -801,6 +793,7 @@ const AllCourseForSuperAdminTest = ({
               setFilePreview={setFilePreview}
               SetCheckFreeAcommodation={SetCheckFreeAcommodation}
               checkFreeAcommodation={checkFreeAcommodation}
+              allDepartmentData={allDepartmentData}
             />
             <SearchComponent
               searchTerm={searchTerm}

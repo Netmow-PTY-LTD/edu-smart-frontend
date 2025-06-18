@@ -35,6 +35,7 @@ import { toast } from 'react-toastify';
 import FormikQuill from '@/components/common/FormikQuill';
 import FormikTinyMCE from '@/components/common/FormikTinyMCE ';
 import TextFieldDefault from '@/components/common/formField/TextFieldDefault';
+import SingleSelectFieldDepartment from '@/components/common/formField/SingleSelectFieldDepartment';
 
 // ModalForm Component
 const CourseModalFormTest = ({
@@ -52,6 +53,7 @@ const CourseModalFormTest = ({
   SelectOption,
   SetCheckFreeAcommodation,
   checkFreeAcommodation,
+  allDepartmentData,
 }) => {
   const accessoryOptions = [
     { value: 'Laptop', label: 'Laptop' },
@@ -62,6 +64,32 @@ const CourseModalFormTest = ({
     { value: 'Keyboard', label: 'Keyboard' },
   ];
   const [activeTab, setActiveTab] = useState('tinyMCE'); // TinyMCE is now default
+const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
+const [categoryName, setCategoryName] = useState([]);
+
+const handleDepartmentChange = (selectedOption) => {
+  const deptId = selectedOption?.value || '';
+
+  console.log("deptId", deptId);
+  setSelectedDepartmentId(deptId);
+
+  const selectedDept = allDepartmentData.find(
+    (dept) => dept._id === deptId
+  );
+
+  const categories = selectedDept?.categories?.map((cat) => ({
+    label: cat.name,
+    value: cat._id,
+  })) || [];
+
+  setCategoryName(categories);
+};
+
+
+console.log("allDepartmentData", allDepartmentData);
+console.log("categoryName", categoryName);
+
+
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab); // Only change if it's different
@@ -109,26 +137,59 @@ const CourseModalFormTest = ({
                       />
                     </div>
                   </Col>
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <SingleSelectField
-                        name="department"
-                        label="Select Department"
-                        options={allDepartmentName}
-                        setInitialValues={setInitialValues}
-                      />
-                    </div>
-                  </Col>
-                  <Col xl={6}>
-                    <div className="mb-3">
-                      <SingleSelectField
-                        name="category"
-                        label="Select Course Category"
-                        options={allCategoryName}
-                        setInitialValues={setInitialValues}
-                      />
-                    </div>
-                  </Col>
+
+                      {formSubmit === 'Update' && (
+                        <>
+                          <Col xl={6}>
+                            <div className="mb-3 disableddiaprtmentcourse">
+                              <SingleSelectField
+                                name="department"
+                                label="Select Department"
+                                options={allDepartmentName}
+                                setInitialValues={setInitialValues}
+                              />
+                            </div>
+                          </Col>
+                          <Col xl={6}>
+                            <div className="mb-3 disableddiaprtmentcourse">
+                              <SingleSelectField
+                                name="category"
+                                label="Select Course Category"
+                                options={allCategoryName}
+                                setInitialValues={setInitialValues}
+                              />
+                            </div>
+                          </Col>
+                        </>
+                      )}
+
+                        {formSubmit === 'Submit' && (
+                          <>
+                            <Col xl={6}>
+                              <div className="mb-3">
+                                <SingleSelectFieldDepartment
+                                  name="department"
+                                  label="Select Department"
+                                  options={allDepartmentName}
+                                  setInitialValues={setInitialValues}
+                                  onChange={handleDepartmentChange}
+                                />
+                              </div>
+                            </Col>
+
+                            <Col xl={6}>
+                              <div className="mb-3">
+                                <SingleSelectFieldDepartment
+                                  name="category"
+                                  label="Select Course Category"
+                                  options={categoryName}
+                                  setInitialValues={setInitialValues}
+                                />
+                              </div>
+                            </Col>
+                          </>
+                        )}
+
 
                   {/* Its will be show as EMGS processing fee */}
                   <Col xl={6}>
@@ -637,6 +698,21 @@ const CourseModalFormTest = ({
                                           </div>
                                         )}
 
+                                    {Array.isArray(errors.document_requirements) &&
+                                      errors.document_requirements.map((item, index) => (
+                                        <div key={index}>
+                                          {item?.title && (
+                                            <div className="text-danger fw-bold">
+                                              Document {index + 1} Title: {item.title}
+                                            </div>
+                                          )}
+                                          {item?.description && (
+                                            <div className="text-danger fw-bold">
+                                              Document {index + 1} Description: {item.description}
+                                            </div>
+                                          )}
+                                        </div>
+                                      ))}
 
                           {/* Add Document Manually Button */}
                           <div className="d-flex justify-content-center mt-4">
