@@ -1,5 +1,8 @@
+
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useCustomData } from '@/utils/common/data/customeData';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const SuperAdminSidebarData = () => {
   const [isUniversities, setIsUniversities] = useState(false);
@@ -11,29 +14,56 @@ const SuperAdminSidebarData = () => {
   const [isBlogs, setIsBlogs] = useState(false);
   const [earnings, setEarnings] = useState(false);
   const [isManageDocument, setIsManageDocument] = useState(false);
+  const router = useRouter();
+
+
+      const storedMenu = localStorage.getItem('simplifiedMenu');
+      let menuObj;
+      if (storedMenu) {
+        menuObj = JSON.parse(storedMenu);
+      }
+    
   const customeData = useCustomData();
   const paneltext = customeData.paneltext;
+  const { data: userInfoData } = useGetUserInfoQuery();
+  const userRole = userInfoData?.data?.role;
+  //const userRole = 'agent';
 
-  function updateIconSidebar(e) {
-    if (e && e.target && e.target.getAttribute('subitems')) {
+  const getRoleBasedAccess = (role) => {
+    const accessData = localStorage.getItem('accessibleUrlForUser');
+    if (!accessData) return [];
+    const parsed = JSON.parse(accessData);
+    return parsed[role] || [];
+  };
+
+  const isAllowed = (item, allowedAccess) => {
+    return allowedAccess.some(
+      (access) => access.label === item.label && access.link === item.link
+    );
+  };
+
+  const updateIconSidebar = (e) => {
+    if (e?.target?.getAttribute('subitems')) {
       const ul = document.getElementById('two-column-menu');
-      const iconItems = ul.querySelectorAll('.nav-icon.active');
-      let activeIconItems = [...iconItems];
-      activeIconItems.forEach((item) => {
+      const iconItems = ul?.querySelectorAll('.nav-icon.active') || [];
+      [...iconItems].forEach((item) => {
         item.classList.remove('active');
-        var id = item.getAttribute('subitems');
-        if (document.getElementById(id))
-          document.getElementById(id).classList.remove('show');
+        const id = item.getAttribute('subitems');
+        document.getElementById(id)?.classList.remove('show');
       });
     }
-  }
+  };
+
+
+
+  
 
   const menuItems = [
     {
       id: 'dashboard',
       label: 'Dashboard',
       icon: 'ri-dashboard-2-line',
-      link: '/dashboard/' + `${paneltext}` + '',
+      link: '/dashboard/' + paneltext,
     },
     {
       id: 'universities',
@@ -41,7 +71,7 @@ const SuperAdminSidebarData = () => {
       icon: 'ri-school-fill',
       style: `${customeData.hideforaccountant}`,
       link: '/#',
-      click: function (e) {
+      click: (e) => {
         e.preventDefault();
         setIsUniversities(!isUniversities);
         updateIconSidebar(e);
@@ -52,54 +82,24 @@ const SuperAdminSidebarData = () => {
           id: 'alluniversity',
           label: 'All University',
           icon: 'ri-school-fill',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/university-management/all-university',
+          link: '/dashboard/' + paneltext + '/university-management/all-university',
           parentId: 'universities',
         },
         {
           id: 'adduniversity',
           label: 'Add University',
           icon: 'ri-school-fill',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/university-management/add-university',
+          link: '/dashboard/' + paneltext + '/university-management/add-university',
           parentId: 'universities',
         },
       ],
-    },
-    {
-      id: 'allpermittedusers',
-      label: 'Roles & Permissions',
-      icon: 'ri-user-star-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link:
-        '/dashboard/' +
-        `${paneltext}` +
-        '/super-admin-panel/all-permitted-users',
-    },
-    {
-      id: 'recent-application',
-      label: 'Recent Application',
-      icon: 'ri-article-fill',
-      style: `${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/recent-application',
-    },
-    {
-      id: 'agents',
-      label: 'Partner',
-      icon: 'ri-group-2-fill',
-      style: `${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/agents',
     },
     {
       id: 'students',
       label: 'Students',
       icon: 'ri-group-fill',
       style: `${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/students',
+      link: '/dashboard/' + paneltext + '/students',
     },
     {
       id: 'package-management',
@@ -107,7 +107,7 @@ const SuperAdminSidebarData = () => {
       icon: 'ri-red-packet-fill',
       style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
-      click: function (e) {
+      click: (e) => {
         e.preventDefault();
         setIsPackageManagement(!isPackageManagement);
         updateIconSidebar(e);
@@ -118,54 +118,22 @@ const SuperAdminSidebarData = () => {
           id: 'package',
           label: 'Packages',
           icon: 'ri-price-tag-2-fill',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/packages',
+          link: '/dashboard/' + paneltext + '/packages',
           parentId: 'package-management',
         },
         {
           id: 'coupon',
           label: 'Coupon Management',
           icon: 'ri-coupon-3-fill',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/coupon-management',
+          link: '/dashboard/' + paneltext + '/coupon-management',
           parentId: 'package-management',
         },
         {
           id: 'hotoffer',
           label: 'Hot Offers',
           icon: 'ri-fire-fill',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/hot-offer',
+          link: '/dashboard/' + paneltext + '/hot-offer',
           parentId: 'package-management',
-        },
-      ],
-    },
-    {
-      id: 'invoices',
-      label: 'Invoices',
-      icon: 'ri-receipt-fill',
-      style: `${customeData.hideforadmissionmanger} `,
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsInvoices(!isInvoices);
-        updateIconSidebar(e);
-      },
-      stateVariables: isInvoices,
-      subItems: [
-        {
-          id: 'package-invoice',
-          label: 'Package Invoices',
-          icon: 'ri-receipt-fill',
-          link: '/dashboard/' + `${paneltext}` + '/package-invoices',
-          parentId: 'invoices',
-        },
-        {
-          id: 'application-invoice',
-          label: 'Application Invoices',
-          icon: 'ri-receipt-fill',
-          link: '/dashboard/' + `${paneltext}` + '/application-invoices',
-          parentId: 'invoices',
         },
       ],
     },
@@ -175,7 +143,7 @@ const SuperAdminSidebarData = () => {
       icon: 'ri-coins-line',
       style: `${customeData.hideforadmissionmanger}`,
       link: '/#',
-      click: function (e) {
+      click: (e) => {
         e.preventDefault();
         setEarnings(!earnings);
       },
@@ -185,90 +153,32 @@ const SuperAdminSidebarData = () => {
           id: 'total-receive-amount',
           label: 'Total Receive Amount',
           icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-receive-amount',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-receive-amount',
-          parentId: 'super-admin-earnings',
-        },
-        {
-          id: 'total-university-payout',
-          label: 'Total University Payout',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-university-payout',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-university-payout',
-          parentId: 'super-admin-earnings',
-        },
-        {
-          id: 'total-agent-paid-payout',
-          label: 'Total Agent Paid Payout',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-agent-paid-payout',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-agent-paid-payout',
-          parentId: 'super-admin-earnings',
-        },
-        {
-          id: 'total-agent-pending-payout',
-          label: 'Total Agent Pending Payout',
-          icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-agent-pending-payout',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/total-agent-pending-payout',
+          link: '/dashboard/' + paneltext + '/super-admin-earnings/total-receive-amount',
           parentId: 'super-admin-earnings',
         },
         {
           id: 'super-admin-profit',
           label: 'Super Admin Profit',
           icon: 'ri-money-rupee-circle-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/super-admin-profit',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/super-admin-earnings/super-admin-profit',
+          link: '/dashboard/' + paneltext + '/super-admin-earnings/super-admin-profit',
           parentId: 'super-admin-earnings',
         },
       ],
     },
-
     {
       id: 'alldocuments',
       label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
       style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/all-documents',
+      link: '/dashboard/' + paneltext + '/all-documents',
     },
-
     {
       id: 'managedocument',
       label: 'Manage Documents',
       icon: 'ri-article-fill',
       style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
-      click: function (e) {
+      click: (e) => {
         e.preventDefault();
         setIsManageDocument(!isManageDocument);
       },
@@ -277,246 +187,113 @@ const SuperAdminSidebarData = () => {
         {
           id: 'alldocument',
           label: 'Accepted Documents',
-
           icon: 'ri-file-fill',
-
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/manage-documents/all-document-for-superAdmin',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/manage-documents/all-document-for-superAdmin',
-
+          link: '/dashboard/' + paneltext + '/manage-documents/all-document-for-superAdmin',
           parentId: 'managedocument',
         },
         {
           id: 'documentuploadrequest',
           label: 'Requested & Submitted',
           icon: 'ri-file-list-3-fill',
-
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/manage-documents/document-upload-request',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/manage-documents/document-upload-request',
-
-          parentId: 'managedocument',
-        },
-        {
-          id: 'newRequest',
-          label: 'New Requests',
-          icon: 'ri-file-list-3-fill',
-
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/manage-documents/new-document-request',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/manage-documents/new-document-request',
-
+          link: '/dashboard/' + paneltext + '/manage-documents/document-upload-request',
           parentId: 'managedocument',
         },
       ],
     },
-
-    {
-      id: 'airTicketDocumentuploadrequest',
-      label: 'Air Ticket Request',
-      icon: 'ri-ticket-2-line',
-      style: `${customeData.hideforaccountant}`,
-      link:
-        '/dashboard/' +
-        `${paneltext}` +
-        '/manage-air-ticket/air-ticket-upload-request',
-    },
-
-    {
-      id: 'airportpickupchargerequest',
-      label: 'Airport Pickup Request',
-      icon: 'ri-flight-takeoff-line',
-      style: `${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/airport-pickup-request',
-    },
-
-    {
-      id: 'report',
-      label: 'Report',
-      icon: 'ri-bank-card-line',
-      style: `${customeData.hideforadmissionmanger}`,
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsPaymentReport(!isPaymentReport);
-      },
-      stateVariables: isPaymentReport,
-      subItems: [
-        {
-          id: 'package-payment',
-          label: 'Package Payment',
-          icon: 'ri-red-packet-line',
-          link:
-            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
-          pathName:
-            '/dashboard/' + `${paneltext}` + '/payment-report/package-payment',
-          parentId: 'report',
-        },
-
-        {
-          id: 'application-payment',
-          label: 'Application Payment',
-          icon: 'ri-box-1-line',
-          link:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/payment-report/application-payment',
-          pathName:
-            '/dashboard/' +
-            `${paneltext}` +
-            '/payment-report/application-payment',
-          parentId: 'report',
-        },
-        {
-          id: 'familyTrip',
-          label: 'Family Trip',
-          icon: 'ri-gift-line',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/familyTrip',
-          parentId: 'report',
-        },
-        {
-          id: 'yearlyBonous',
-          label: 'Yearly Bonus',
-          icon: 'ri-percent-line',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/yearlyBonous',
-          parentId: 'report',
-        },
-      ],
-    },
-    {
-      id: 'blogs',
-      label: 'Blogs',
-      icon: 'ri-school-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsBlogs(!isBlogs);
-        updateIconSidebar(e);
-      },
-      stateVariables: isBlogs,
-      subItems: [
-        {
-          id: 'addblog',
-          label: 'Add Blog',
-          icon: 'ri-school-fill',
-          link: '/dashboard/' + `${paneltext}` + '/blog/add-blog',
-          parentId: 'blogs',
-        },
-
-        {
-          id: 'allblogs',
-          label: 'Blogs List',
-          icon: 'ri-school-fill',
-          link: '/dashboard/' + `${paneltext}` + '/blog/blog-list',
-          parentId: 'blogs',
-        },
-      ],
-    },
-    {
-      id: 'contact-messages',
-      label: 'Contact Messages',
-      icon: 'ri-group-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/contact-messages',
-    },
-    {
-      id: 'subscription',
-      label: 'Subscription',
-      icon: 'ri-rss-line',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setSubscriptionManagement(!isSubscriptionManagement);
-      },
-      stateVariables: isSubscriptionManagement,
-      subItems: [
-        {
-          id: 'subscriptionList',
-          label: 'Subscription List',
-          icon: 'ri-rss-line',
-          link:
-            '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
-          pathName:
-            '/dashboard/' + `${paneltext}` + '/subscription/subscription-list',
-          parentId: 'subscription',
-        },
-      ],
-    },
-        {
-      id: 'management',
-      label: 'Team Management',
-      icon: 'ri-group-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-      link: '/dashboard/' + `${paneltext}` + '/teams',
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: 'ri-settings-3-line',
-      link: '/#',
-      click: function (e) {
-        e.preventDefault();
-        setIsSettings(!isSettings);
-      },
-      stateVariables: isSettings,
-      subItems: [
-        {
-          id: 'paymentsettings',
-          label: 'Payment Settings',
-          icon: 'ri-refund-2-fill',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/settings/payment',
-          pathName: '/dashboard/' + `${paneltext}` + '/settings/payment',
-          parentId: 'settings',
-        },
-        {
-          id: 'profilesettings',
-          label: 'Profile Settings',
-          icon: 'ri-user-settings-fill',
-          link: '/dashboard/' + `${paneltext}` + '/settings/profile',
-          pathName: '/dashboard/' + `${paneltext}` + '/settings/profile',
-          parentId: 'settings',
-        },
-        {
-          id: 'changeemail',
-          label: 'Change Email',
-          icon: 'ri-mail-add-fill',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/settings/email',
-          pathName: '/dashboard/' + `${paneltext}` + '/settings/email',
-          parentId: 'settings',
-        },
-        {
-          id: 'changepassword',
-          label: 'Change Password',
-          icon: 'ri-lock-password-fill',
-          style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
-          link: '/dashboard/' + `${paneltext}` + '/settings/password',
-          pathName: '/dashboard/' + `${paneltext}` + '/settings/password',
-          parentId: 'settings',
-        },
-      ],
-    },
+{
+  id: 'access-management',
+  label: 'Access Management',
+  icon: 'ri-shield-keyhole-fill',
+  link: `/dashboard/${paneltext}/access-management?userRole=admission_manager}`,
+  rolesAllowed: ['super_admin'], // Optional: restrict to super admins
+},
   ];
-  return <React.Fragment>{menuItems}</React.Fragment>;
+
+  const filteredMenuItems = React.useMemo(() => {
+    if (userRole === 'super_admin') return menuItems;
+    const allowedAccess = getRoleBasedAccess(userRole);
+    // Normalize current path (ignore query params/hash)
+    const currentPath = router.pathname.toLowerCase();
+      // Check if current path is in allowedAccess links
+    // check if current path matches any allowed link
+    const isAllowedUrl = allowedAccess.some(access =>
+      access.link.toLowerCase() === currentPath
+    );
+
+    if (!isAllowedUrl) {
+      alert("You can't access this page.");
+      // redirect to a safe page
+      router.replace(`/dashboard/${paneltext}`);
+    }
+
+
+    const filterItems = (items) => {
+      return items
+        .map((item) => {
+          const isItemAllowed = isAllowed(item, allowedAccess);
+          const filteredSubItems = item.subItems?.filter((sub) => isAllowed(sub, allowedAccess)) || [];
+
+          if (!isItemAllowed && filteredSubItems.length === 0) return null;
+
+          const newItem = {
+            ...item,
+            subItems: filteredSubItems.length > 0 ? filteredSubItems : undefined,
+          };
+
+          const originalItem = menuItems.find((m) => m.id === item.id);
+          if (originalItem?.stateVariables !== undefined) {
+            newItem.stateVariables = originalItem.stateVariables;
+          }
+          if (originalItem?.click) {
+            newItem.click = originalItem.click;
+          }
+
+          return newItem;
+        })
+        .filter(Boolean);
+    };
+
+    return filterItems(menuItems);
+  }, [
+    userRole,
+    paneltext,
+    isUniversities,
+    isInvoices,
+    isSubscriptionManagement,
+    isPackageManagement,
+    isPaymentReport,
+    isSettings,
+    isBlogs,
+    earnings,
+    isManageDocument,
+  ]);
+
+  // ✅ Console log label & link only
+  useEffect(() => {
+    if (!filteredMenuItems || filteredMenuItems.length === 0) return;
+
+    const extractLabelAndLink = (items) => {
+      return items.map((item) => {
+        const base = {
+          label: item.label,
+          link: item.link,
+        };
+
+        if (item.subItems) {
+          base.subItems = extractLabelAndLink(item.subItems);
+        }
+
+        return base;
+      });
+    };
+
+    const simplifiedMenu = extractLabelAndLink(filteredMenuItems);
+    localStorage.setItem('simplifiedMenu', JSON.stringify(simplifiedMenu));
+  }, [filteredMenuItems]);
+
+
+
+  return <React.Fragment>{filteredMenuItems}</React.Fragment>;
 };
+
 export default SuperAdminSidebarData;
