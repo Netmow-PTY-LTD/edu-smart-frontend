@@ -10690,3 +10690,9 @@ padding-left: 70px;
   pointer-events: none;
   /* Optional: prevents user interaction */
 }
+.disableddiaprtmentcourse {
+  pointer-events: none !important;
+  /* Prevent interaction */
+  opacity: 0.6 !important;
+  /* Visually gray out */
+}

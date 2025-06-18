@@ -461,6 +461,13 @@ const SuperAdminSidebarData = () => {
         },
       ],
     },
+        {
+      id: 'management',
+      label: 'Team Management',
+      icon: 'ri-group-fill',
+      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
+      link: '/dashboard/' + `${paneltext}` + '/teams',
+    },
     {
       id: 'settings',
       label: 'Settings',

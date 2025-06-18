@@ -35,7 +35,7 @@ const CourseCategoryModalForm = ({
                 <Col xl={6}>
                   <TextField name="name" label="Course Category Name" />
                 </Col>
-                <Col xl={6}>
+                <Col xl={6} className={`${formSubmit === 'Update' ? 'disableddiaprtmentcourse' : ''}`}>
                   <SingleSelectField
                     name="department"
                     label="Select Department"
