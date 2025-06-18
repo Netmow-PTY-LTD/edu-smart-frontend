@@ -21,10 +21,10 @@ const PasswordField = ({ label, name, placeholder = 'Enter password' }) => {
           placeholder={placeholder}
         />
         <button
-          className="position-absolute end-0 top-0 fs-2 text-decoration-none text-muted password-addon px-4"
+          className="position-absolute end-0 fs-2 text-decoration-none text-muted password-addon px-4"
           type="button"
           onClick={handlePasswordVisibilityToggle}
-          style={{ backgroundColor: 'transparent', height: '48px' }}
+          style={{ backgroundColor: 'transparent',top:'50%',transform:'translateY(-50%)'}}
         >
           <i
             className={`${

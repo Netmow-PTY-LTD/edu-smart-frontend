@@ -190,9 +190,9 @@ export default function Contact() {
                         rows={5}
                         cols={10}
                         onChange={handleChange}
+                        placeholder='Write your message'
                         required
                       >
-                        Write your message
                       </textarea>
                     </div>
                     <div className="form-group text-center">
