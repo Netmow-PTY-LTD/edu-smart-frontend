@@ -23,6 +23,7 @@ export default function Blog() {
             </h4>
           </div>
 
+
           <article className="blog-content">
             {allBlogs?.data?.length > 0 &&
               allBlogs?.data?.map((item, i) => (
