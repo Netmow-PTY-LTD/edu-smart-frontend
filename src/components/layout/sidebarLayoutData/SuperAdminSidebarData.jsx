@@ -69,7 +69,6 @@ const SuperAdminSidebarData = () => {
       id: 'universities',
       label: 'Universities',
       icon: 'ri-school-fill',
-      style: `${customeData.hideforaccountant}`,
       link: '/#',
       click: (e) => {
         e.preventDefault();
@@ -98,14 +97,12 @@ const SuperAdminSidebarData = () => {
       id: 'students',
       label: 'Students',
       icon: 'ri-group-fill',
-      style: `${customeData.hideforaccountant}`,
       link: '/dashboard/' + paneltext + '/students',
     },
     {
       id: 'package-management',
       label: 'Package Management',
       icon: 'ri-red-packet-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: (e) => {
         e.preventDefault();
@@ -141,7 +138,6 @@ const SuperAdminSidebarData = () => {
       id: 'super-admin-earnings',
       label: 'Earnings',
       icon: 'ri-coins-line',
-      style: `${customeData.hideforadmissionmanger}`,
       link: '/#',
       click: (e) => {
         e.preventDefault();
@@ -169,14 +165,12 @@ const SuperAdminSidebarData = () => {
       id: 'alldocuments',
       label: 'Document Required List',
       icon: 'ri-file-copy-2-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/dashboard/' + paneltext + '/all-documents',
     },
     {
       id: 'managedocument',
       label: 'Manage Documents',
       icon: 'ri-article-fill',
-      style: `${customeData.hideforadmissionmanger} ${customeData.hideforaccountant}`,
       link: '/#',
       click: (e) => {
         e.preventDefault();
