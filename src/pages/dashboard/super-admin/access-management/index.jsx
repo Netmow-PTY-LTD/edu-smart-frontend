@@ -58,18 +58,32 @@ const AccessManagementPage = () => {
     setSelectedAccess(updated);
   };
 
-  // Save updated access to localStorage under 'accessibleUrlForUser'
-  const handleSave = () => {
-    const accessData = localStorage.getItem('accessibleUrlForUser');
-    let parsed = {};
-    if (accessData) {
-      parsed = JSON.parse(accessData);
+const handleSave = () => {
+  const accessData = localStorage.getItem('accessibleUrlForUser');
+  let parsed = {};
+  if (accessData) {
+    parsed = JSON.parse(accessData);
+  }
+  // You set this manually before saving
+  const panelText = 'admission-manager'; // or 'agent', 'super-admin', etc.
+  // Update all links to use the selected panelText
+  const updatedAccess = selectedAccess.map((item) => {
+    const updatedItem = { ...item };
+    if (updatedItem.link && updatedItem.link.startsWith('/dashboard/')) {
+      updatedItem.link = updatedItem.link.replace(
+        /\/dashboard\/[^/]+/,
+        `/dashboard/${panelText}`
+      );
     }
-    parsed[userRole] = selectedAccess;
-    localStorage.setItem('accessibleUrlForUser', JSON.stringify(parsed));
-    console.log('Saved accessibleUrlForUser:', parsed);
-    alert('Access updated successfully!');
-  };
+    return updatedItem;
+  });
+
+  parsed[userRole] = updatedAccess;
+  localStorage.setItem('accessibleUrlForUser', JSON.stringify(parsed));
+
+  console.log('Saved accessibleUrlForUser:', parsed);
+  alert('Access updated successfully!');
+};
 
   // Render nested menu items recursively
   const renderMenu = (items) => {
