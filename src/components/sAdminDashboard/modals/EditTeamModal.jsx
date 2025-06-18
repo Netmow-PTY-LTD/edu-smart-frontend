@@ -327,10 +327,10 @@ const validate = () => {
       </ModalBody>
 
       <ModalFooter>
-        <Button color="secondary" onClick={handleClose}>
+        <Button className='btn btn-danger px-3 py-2 fw-semibold' onClick={handleClose}>
           Cancel
         </Button>
-        <Button color="primary" onClick={handleSubmit}>
+        <Button className='button px-3 py-2 fw-semibold' onClick={handleSubmit}>
           Update
         </Button>
       </ModalFooter>

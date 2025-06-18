@@ -10696,3 +10696,20 @@ padding-left: 70px;
   opacity: 0.6 !important;
   /* Visually gray out */
 }
+
+.team-row{
+  z-index: auto !important;
+}
+
+.drag-handle {
+  cursor: grab;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.team-row tr:hover {
+    box-shadow: 0 0px 6px rgba(0,0,0,0.1);
+    transform: scale(1.01);
+    transition: all 0.2s ease-in-out;
+}
