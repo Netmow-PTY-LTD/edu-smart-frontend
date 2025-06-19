@@ -101,6 +101,18 @@ export default function Footer() {
                         Staff Email
                       </a>
                     </li>
+                      <li>
+                      <a
+                        href="https://edu-smart.sgp1.cdn.digitaloceanspaces.com/companyProfile/EduSmartCompanyProfile.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                      >
+                        <i className="ri-file-download-line" style={{ marginRight: '6px' }}></i>
+                        Company Profile
+                      </a>
+                    </li>
+
                   </ul>
                 </div>
               </Col>
