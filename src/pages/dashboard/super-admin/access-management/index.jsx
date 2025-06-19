@@ -12,6 +12,8 @@ const AccessManagementPage = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [selectedAccess, setSelectedAccess] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [allChecked, setAllChecked] = useState(false);
+
 
   const {
     data: getAllStaffMemberData,
@@ -83,6 +85,22 @@ const AccessManagementPage = () => {
           return item;
         });
 
+        // ✅ Ensure "Dashboard" is present
+        const dashboardItem = menuWithParents.find(
+          (item) => item.label.toLowerCase() === 'dashboard'
+        );
+        if (dashboardItem) {
+          const exists = transformedAccess.some(
+            (a) => a.label === dashboardItem.label && a.link === dashboardItem.link
+          );
+          if (!exists) {
+            transformedAccess.push({
+              label: dashboardItem.label,
+              link: dashboardItem.link,
+            });
+          }
+        }
+
         console.log('Transformed Accessible:', transformedAccess);
         setSelectedAccess(transformedAccess);
 
@@ -143,6 +161,43 @@ const AccessManagementPage = () => {
     setSelectedAccess(updated);
   };
 
+    const handleSelectAllToggle = () => {
+    const flattenItems = (items) => {
+      let flat = [];
+      items.forEach((item) => {
+        flat.push({ label: item.label, link: item.link });
+        if (item.subItems) {
+          flat = flat.concat(flattenItems(item.subItems));
+        }
+      });
+      return flat;
+    };
+
+    const allItems = flattenItems(menuItems);
+
+    // Exclude 'dashboard' from toggling
+    const filteredItems = allItems.filter(
+      (item) => item.label.toLowerCase() !== 'dashboard'
+    );
+
+    if (!allChecked) {
+      // ✅ Select all (and keep dashboard included)
+      const dashboardItem = selectedAccess.find(
+        (a) => a.label.toLowerCase() === 'dashboard'
+      );
+      setSelectedAccess([...filteredItems, ...(dashboardItem ? [dashboardItem] : [])]);
+    } else {
+      // ❌ Deselect all (but keep dashboard included)
+      const dashboardItem = selectedAccess.find(
+        (a) => a.label.toLowerCase() === 'dashboard'
+      );
+      setSelectedAccess(dashboardItem ? [dashboardItem] : []);
+    }
+
+    setAllChecked(!allChecked);
+  };
+
+
   const handleSave = async () => {
     try {
       const accessData = localStorage.getItem('accessibleUrlForUser');
@@ -185,9 +240,18 @@ const AccessManagementPage = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              checked={isChecked(item)}
-              onChange={() => handleToggle(item)}
+              checked={
+                item.label.toLowerCase() === 'dashboard'
+                  ? true
+                  : isChecked(item)
+              }
+              onChange={() => {
+                if (item.label.toLowerCase() !== 'dashboard') {
+                  handleToggle(item);
+                }
+              }}
               id={itemId}
+              disabled={item.label.toLowerCase() === 'dashboard'} // ❌ Can't uncheck
             />
             <label className="form-check-label fw-medium fs-12" htmlFor={itemId}>
               {item.label}
@@ -277,7 +341,22 @@ const AccessManagementPage = () => {
                 <div className="row">
                   <div className="col-md-5">
                     <div className="card shadow-sm border-0 mb-4">
-                      <div className="card-header bg-light fw-bold">Permissions Menu</div>
+                      <div className="card-header bg-light d-flex justify-content-between align-items-center fw-bold">
+                        <span>Permissions Menu</span>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="selectAllCheckbox"
+                            checked={allChecked}
+                            onChange={handleSelectAllToggle}
+                          />
+                          <label className="form-check-label fs-12" htmlFor="selectAllCheckbox">
+                            Select All
+                          </label>
+                        </div>
+                      </div>
+
                       <div className="card-body">
                         <div className="permission-tree overflow-auto" style={{ maxHeight: '500px' }}>
                           {renderMenu(menuItems)}
