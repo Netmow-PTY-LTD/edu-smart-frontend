@@ -10696,3 +10696,11 @@ padding-left: 70px;
   opacity: 0.6 !important;
   /* Visually gray out */
 }
+
+.allUser-wrapper .permitted-user-name{
+  max-width: 100px;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
