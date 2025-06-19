@@ -1,6 +1,6 @@
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useCustomData } from '@/utils/common/data/customeData';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 const SuperAdminSidebarData = () => {
@@ -19,6 +19,7 @@ const SuperAdminSidebarData = () => {
   const paneltext = customeData.paneltext;
 
   const userRole = userInfoData?.data?.role;
+  const alertShownRef = useRef(false); // ✅ Prevent repeated alerts
 
   // ✅ Step 1: Parse accessible data
   let accessibleData = [];
@@ -360,10 +361,27 @@ const filterMenuItemsByAccess = (items, accessList) => {
 
     const isAllowedUrl = accessibleData.some((access) => access.link.toLowerCase() === currentPath);
 
-      if (!isAllowedUrl && paneltext !== 'student' && paneltext !== 'agent') {
-        router.replace(`/dashboard/${paneltext}`);
-        return [];
-      }
+      // if (!isAllowedUrl && paneltext !== 'student' && paneltext !== 'agent') {
+      //   router.replace(`/dashboard/${paneltext}`);
+      //   return [];
+      // }
+ // ✅ Alert + redirect (only once)
+  useEffect(() => {
+    if (
+      !isAllowedUrl &&
+      paneltext !== 'student' &&
+      paneltext !== 'agent' &&
+      !alertShownRef.current
+    ) {
+      alertShownRef.current = true;
+      alert("Please ask the superadmin for this access.");
+      router.replace(`/dashboard/${paneltext}`);
+    }
+  }, [isAllowedUrl, paneltext, router]);
+
+
+
+
     return filterMenuItemsByAccess(menuItems, accessibleData);
   }, [userRole, accessibleData, router.pathname, paneltext, isUniversities]);
 
