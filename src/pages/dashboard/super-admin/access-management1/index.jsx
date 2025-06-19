@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import {
   useGetStaffMemberInSuperAdminQuery,
+  useUpdateStaffMemberInSuperAdminMutation,
 } from '@/slice/services/super admin/staffMemberService';
 
 const AccessManagementPage = () => {
   const router = useRouter();
-  const { userRole } = router.query;
+  // const { userRole } = router.query;
 
   const [menuItems, setMenuItems] = useState([]);
   const [selectedAccess, setSelectedAccess] = useState([]);
@@ -19,11 +20,26 @@ const AccessManagementPage = () => {
     isLoading: getAllStaffMemberIsLoading,
   } = useGetStaffMemberInSuperAdminQuery();
 
-  console.log("data",getAllStaffMemberData);
+    const [
+      updateStaffMemberInSuperAdmin,
+      {
+        data: updateStaffMemberData,
+        error: updateStaffMemberError,
+        isLoading: updateStaffMemberIsLoading,
+      },
+    ] = useUpdateStaffMemberInSuperAdminMutation();
+
+  const userRole = selectedUser?.role;
+  const  panelTextPut = selectedUser?.role?.split('_').join('-'); // e.g., "SUPER_ADMIN" => "SUPER-ADMIN"
+  const  userRoleShow = selectedUser?.role?.split('_').join(' '); // e.g., "SUPER_ADMIN" => "SUPER-ADMIN"
+
+console.log("data",getAllStaffMemberData);
+    console.log("selectedUser", selectedUser);
+    console.log("panelText", panelTextPut);
+
 
   useEffect(() => {
-    if (!userRole) return;
-
+   if (!userRole) return;
     const storedMenu = localStorage.getItem('simplifiedMenu');
     if (storedMenu) {
       const parsedMenu = JSON.parse(storedMenu);
@@ -38,10 +54,16 @@ const AccessManagementPage = () => {
         });
       };
 
+       console.log("storedMenu", storedMenu);
+
+
       const menuWithParents = addParentReferences(parsedMenu);
       setMenuItems(menuWithParents);
 
-      const existingAccess = localStorage.getItem('accessibleUrlForUser');
+      // const existingAccess = localStorage.getItem('accessibleUrlForUser');
+       const existingAccess = selectedUser?.accessible;
+
+       console.log("existingAccess", existingAccess);
       if (existingAccess) {
         const parsed = JSON.parse(existingAccess);
         const roleAccess = parsed[userRole] || [];
@@ -100,16 +122,49 @@ const AccessManagementPage = () => {
     setSelectedAccess(updated);
   };
 
-  const handleSave = () => {
+const handleSave = async () => {
+  try {
+    // Get access data from localStorage
     const accessData = localStorage.getItem('accessibleUrlForUser');
     let parsed = {};
+
     if (accessData) {
       parsed = JSON.parse(accessData);
     }
-    parsed[userRole] = selectedAccess;
+
+    // Update links with selected panel text
+    const updatedAccess = selectedAccess.map((item) => {
+      if (item.link?.startsWith('/dashboard/')) {
+        return {
+          ...item,
+          link: item.link.replace(/\/dashboard\/[^/]+/, `/dashboard/${panelTextPut}`),
+        };
+      }
+      return item;
+    });
+
+    // Convert updated data to FormData
+    const formData = new FormData();
+    formData.append('accessible', JSON.stringify(updatedAccess));
+    formData.append('user_id', selectedUser?.value ?? '');
+
+    // Call API to update
+    const result = await updateStaffMemberInSuperAdmin(formData).unwrap();
+
+    // Update localStorage with new access info
+    parsed[userRole] = updatedAccess;
     localStorage.setItem('accessibleUrlForUser', JSON.stringify(parsed));
+
+    console.log('Saved accessibleUrlForUser:', parsed);
     alert('Access updated successfully!');
-  };
+  } catch (error) {
+    console.error('Failed to save access:', error);
+    alert('Failed to update access. Please try again.');
+  }
+};
+
+
+
 
   const renderMenu = (items, level = 0) => {
     return items.map((item, index) => {
@@ -188,6 +243,7 @@ const AccessManagementPage = () => {
       label: `${user.first_name} ${user.last_name}`,
       value: user._id, // Fix this line
       role: user.role,
+      accsible: user.accessible,
     })) || []
   }
   value={selectedUser} // Now this works properly
@@ -203,7 +259,7 @@ const AccessManagementPage = () => {
 
           <div className="mb-4">
             <h2 className="fw-bold text-primary">
-              Access Management for <span className="text-dark">{userRole}</span>
+              Access Management for <span className="text-dark text-capitalize">{userRoleShow}</span>
             </h2>
             <p className="text-muted">Please select the permissions you want to allow for this role.</p>
           </div>
