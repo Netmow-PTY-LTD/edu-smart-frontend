@@ -1,7 +1,6 @@
-
 import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useCustomData } from '@/utils/common/data/customeData';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 const SuperAdminSidebarData = () => {
@@ -15,50 +14,27 @@ const SuperAdminSidebarData = () => {
   const [earnings, setEarnings] = useState(false);
   const [isManageDocument, setIsManageDocument] = useState(false);
   const router = useRouter();
-
-
-      const storedMenu = localStorage.getItem('simplifiedMenu');
-      let menuObj;
-      if (storedMenu) {
-        menuObj = JSON.parse(storedMenu);
-      }
-    
+  const { data: userInfoData } = useGetUserInfoQuery();
   const customeData = useCustomData();
   const paneltext = customeData.paneltext;
-  const { data: userInfoData } = useGetUserInfoQuery();
+
   const userRole = userInfoData?.data?.role;
-  //const userRole = 'agent';
 
-  const getRoleBasedAccess = (role) => {
-    const accessData = localStorage.getItem('accessibleUrlForUser');
-    if (!accessData) return [];
-    const parsed = JSON.parse(accessData);
-    return parsed[role] || [];
-  };
+  // ✅ Step 1: Parse accessible data
+  let accessibleData = [];
+  try {
+    const rawData = userInfoData?.data?.accessible;
+    accessibleData = typeof rawData === 'string' ? JSON.parse(rawData) : rawData || [];
+  } catch (err) {
+    console.error('Failed to parse accessible data:', err);
+  }
 
-  const isAllowed = (item, allowedAccess) => {
-    return allowedAccess.some(
-      (access) => access.label === item.label && access.link === item.link
-    );
-  };
-
-  const updateIconSidebar = (e) => {
-    if (e?.target?.getAttribute('subitems')) {
-      const ul = document.getElementById('two-column-menu');
-      const iconItems = ul?.querySelectorAll('.nav-icon.active') || [];
-      [...iconItems].forEach((item) => {
-        item.classList.remove('active');
-        const id = item.getAttribute('subitems');
-        document.getElementById(id)?.classList.remove('show');
-      });
-    }
-  };
+  console.log("serInfoData?.data?.accessible", userInfoData?.data?.accessible);
+  console.log("accessibleData", accessibleData);
 
 
-
-  
-
-  const menuItems = [
+  // ✅ Step 2: Menu definition
+   const menuItems = [
    {
     id: 'dashboard',
     label: 'Dashboard',
@@ -325,95 +301,92 @@ const SuperAdminSidebarData = () => {
   id: 'access-management',
   label: 'Access Management',
   icon: 'ri-shield-keyhole-fill',
-  link: `/dashboard/${paneltext}/access-management?userRole=admission_manager}`,
+  link: `/dashboard/${paneltext}/access-management`,
   rolesAllowed: ['super_admin'], // Optional: restrict to super admins
 },
   ];
 
-  const filteredMenuItems = React.useMemo(() => {
-    if (userRole === 'super_admin') return menuItems;
-    const allowedAccess = getRoleBasedAccess(userRole);
-    // Normalize current path (ignore query params/hash)
-    const currentPath = router.pathname.toLowerCase();
-      // Check if current path is in allowedAccess links
-    // check if current path matches any allowed link
-    const isAllowedUrl = allowedAccess.some(access =>
-      access.link.toLowerCase() === currentPath
-    );
 
-    if (!isAllowedUrl) {
-      alert("You can't access this page.");
-      // redirect to a safe page
-      router.replace(`/dashboard/${paneltext}`);
-    }
+  // ✅ Step 3: Access checking helpers
+  const isItemAllowed = (item, accessList) => {
+    return accessList?.some((access) => access.link === item.link);
+  };
 
+const filterMenuItemsByAccess = (items, accessList) => {
+  return items
+    .map((item) => {
+      const allowedSubItems = item.subItems
+        ? item.subItems.filter((sub) => isItemAllowed(sub, accessList))
+        : [];
 
-    const filterItems = (items) => {
-      return items
-        .map((item) => {
-          const isItemAllowed = isAllowed(item, allowedAccess);
-          const filteredSubItems = item.subItems?.filter((sub) => isAllowed(sub, allowedAccess)) || [];
+      const isMainItemAllowed = isItemAllowed(item, accessList);
 
-          if (!isItemAllowed && filteredSubItems.length === 0) return null;
+      // ✅ If it's a parent with subItems and none are allowed, skip it
+      const isPlaceholderParent = item.link === '/#' && allowedSubItems.length === 0;
+      if (isPlaceholderParent) return null;
 
-          const newItem = {
-            ...item,
-            subItems: filteredSubItems.length > 0 ? filteredSubItems : undefined,
-          };
+      // ✅ If it's a real link and not allowed, and no allowed subItems, skip it
+      if (!isMainItemAllowed && allowedSubItems.length === 0) return null;
 
-          const originalItem = menuItems.find((m) => m.id === item.id);
-          if (originalItem?.stateVariables !== undefined) {
-            newItem.stateVariables = originalItem.stateVariables;
-          }
-          if (originalItem?.click) {
-            newItem.click = originalItem.click;
-          }
+      return {
+        ...item,
+        subItems: allowedSubItems.length > 0 ? allowedSubItems : undefined,
+        ...(item.click ? { click: item.click } : {}),
+        ...(item.stateVariables !== undefined ? { stateVariables: item.stateVariables } : {}),
+      };
+    })
+    .filter(Boolean);
+};
 
-          return newItem;
-        })
-        .filter(Boolean);
-    };
-
-    return filterItems(menuItems);
-  }, [
-    userRole,
-    paneltext,
-    isUniversities,
-    isInvoices,
-    isSubscriptionManagement,
-    isPackageManagement,
-    isPaymentReport,
-    isSettings,
-    isBlogs,
-    earnings,
-    isManageDocument,
-  ]);
-
-  // ✅ Console log label & link only
-  useEffect(() => {
-    if (!filteredMenuItems || filteredMenuItems.length === 0) return;
-
-    const extractLabelAndLink = (items) => {
-      return items.map((item) => {
-        const base = {
-          label: item.label,
-          link: item.link,
-        };
-
-        if (item.subItems) {
-          base.subItems = extractLabelAndLink(item.subItems);
-        }
-
-        return base;
+  const updateIconSidebar = (e) => {
+    if (e?.target?.getAttribute('subitems')) {
+      const ul = document.getElementById('two-column-menu');
+      const iconItems = ul?.querySelectorAll('.nav-icon.active') || [];
+      [...iconItems].forEach((item) => {
+        item.classList.remove('active');
+        const id = item.getAttribute('subitems');
+        document.getElementById(id)?.classList.remove('show');
       });
-    };
+    }
+  };
 
-    const simplifiedMenu = extractLabelAndLink(filteredMenuItems);
-    localStorage.setItem('simplifiedMenu', JSON.stringify(simplifiedMenu));
+  // ✅ Step 4: Final filtered menu
+  const filteredMenuItems = useMemo(() => {
+    if (userRole === 'super_admin') return menuItems;
+
+    if (!Array.isArray(accessibleData)) return [];
+
+    const currentPath = router.pathname.toLowerCase().split('?')[0];
+
+    const isAllowedUrl = accessibleData.some((access) => access.link.toLowerCase() === currentPath);
+
+      if (!isAllowedUrl && paneltext !== 'student' && paneltext !== 'agent') {
+        router.replace(`/dashboard/${paneltext}`);
+        return [];
+      }
+    return filterMenuItemsByAccess(menuItems, accessibleData);
+  }, [userRole, accessibleData, router.pathname, paneltext, isUniversities]);
+
+  // ✅ Step 5: Store simplified menu
+  useEffect(() => {
+    if (!filteredMenuItems.length) return;
+
+    const simplified = filteredMenuItems.map((item) => ({
+      label: item.label,
+      link: item.link,
+      ...(item.subItems && {
+        subItems: item.subItems.map((sub) => ({
+          label: sub.label,
+          link: sub.link,
+        })),
+      }),
+    }));
+
+    localStorage.setItem('simplifiedMenu', JSON.stringify(simplified));
+    console.log('Simplified Menu saved to localStorage:', simplified);
   }, [filteredMenuItems]);
 
-
-
+  // ✅ Output
   return <React.Fragment>{filteredMenuItems}</React.Fragment>;
 };
 
