@@ -16,6 +16,7 @@ import AddTeamModal from '@/components/sAdminDashboard/modals/AddTeamModal';
 import Cookies from 'js-cookie';
 import EditTeamModal from '@/components/sAdminDashboard/modals/EditTeamModal';
 import { List } from 'react-movable';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Teams = () => {
   const [members, setMembers] = useState([]);
@@ -119,12 +120,15 @@ const Teams = () => {
           ) : (
             <Card className="shadow-sm">
               <CardHeader className="d-flex justify-content-between align-items-center bg-light border-bottom">
-                <h3 className="mb-0 text-primary">Team Members</h3>
-                <Button color="primary" onClick={() => setShowAddModal(true)}>
-                  + Add Team Member
-                </Button>
+                <h1 className="text-secondary-alt fw-semibold">
+                  Team Members
+                </h1>
+                <button className="button px-4 py-2" onClick={() => setShowAddModal(true)}>
+                  Add Team Member <i className="ri-add-line fw-bolder"></i>
+                </button>
               </CardHeader>
 
+{/* card body */}
               <CardBody className="p-0">
                 <div className="table-responsive">
                     <List
@@ -134,6 +138,7 @@ const Teams = () => {
                         <table className="table table-hover mb-0 align-middle">
                         <thead className="table-secondary text-muted text-uppercase small">
                             <tr>
+                            <th></th>
                             <th>#</th>
                             <th>Image</th>
                             <th>Name</th>
@@ -151,12 +156,15 @@ const Teams = () => {
                         <tr
                         {...props}
                         key={member._id}
-                        className={`team-row ${isDragged ? 'dragged' : ''}`}
+                        className={`team-row drag-handle ${isDragged ? 'dragged' : ''}`}
                         style={{
                             ...props.style,
                             height: '65px',
                         }}
                         >
+                        <td>
+                          <i class="bi bi-grip-vertical fs-2"></i>
+                        </td>
                         <td className="align-middle">{index + 1}</td>
                         <td className="align-middle">
                             {member.image ? (
@@ -190,8 +198,14 @@ const Teams = () => {
                             isOpen={dropdownOpen === member._id}
                             toggle={() => toggleDropdown(member._id)}
                             >
-                            <DropdownToggle caret color="secondary" size="sm" className="px-3">
-                                Actions
+                            <DropdownToggle
+                              tag="a"
+                              className="text-reset dropdown-btn"
+                              role="button"
+                            >
+                              <span className="button px-3">
+                                <i className="ri-more-fill align-middle"></i>
+                              </span>
                             </DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem
@@ -201,7 +215,8 @@ const Teams = () => {
                                     setDropdownOpen(null);
                                 }}
                                 >
-                                Edit
+                                  <i className="ri-pencil-fill align-start me-2 text-muted"></i>
+                                  Edit
                                 </DropdownItem>
                                 <DropdownItem
                                 onClick={() => {
@@ -209,6 +224,7 @@ const Teams = () => {
                                     handleDelete(member._id);
                                 }}
                                 >
+                                  <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
                                 Delete
                                 </DropdownItem>
                             </DropdownMenu>
