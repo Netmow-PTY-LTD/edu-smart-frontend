@@ -54,11 +54,11 @@ export default function ApplicationEmgsStatusTimelineModal({
             <>
               {/* Sticky top bar */}
               <div
-                className="d-flex justify-content-between my-3 sticky-top bg-white py-3 px-3 border-bottom"
+                className="d-flex justify-content-between sticky-top bg-white pb-3 px-3 border-bottom"
                 style={{ zIndex: 10 }}
               >
-                <Button className="button fs-14" onClick={onClose}>
-                  <i className="ri-arrow-left-line me-2"></i> Close
+                <Button className="btn btn-danger fs-14" onClick={onClose}>
+                  <i className="ri-close-line me-2"></i> Close
                 </Button>
                 <Button className="button fs-14" onClick={timelineRefe}>
                   <i className="ri-refresh-line me-2"></i> Refresh

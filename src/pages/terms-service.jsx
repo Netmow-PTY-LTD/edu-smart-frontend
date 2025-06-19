@@ -68,8 +68,92 @@ const TermsAndConditions = () => {
             }
             
           `}</style>
+          
+          <div className="container my-5">
+            <div className="text-center mb-4">
+              <h1 className="fw-bold">Terms and Conditions</h1>
+              <p className="text-muted">
+                Effective Date: <strong>12 February 2025</strong>
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">1. Overview</h3>
+              <p className="text-muted mb-0">
+                Edusmart provides students worldwide with comprehensive guidance on
+                studying abroad, from selecting the right course to securing a study visa.
+                Our platform offers resources, articles, blog posts, and expert advice to
+                make the application process easier and more efficient.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">2. Eligibility</h3>
+              <p className="text-muted mb-0">
+                To use Edusmart, you must be at least 18 years old or have the consent of
+                a legal guardian. By using our services, you confirm that you meet the
+                eligibility requirements.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">3. User Account</h3>
+              <p className="text-muted mb-0">
+                To access certain features of Edusmart, you may be required to create a
+                user account. You agree to provide accurate, current, and complete
+                information during the registration process and maintain the security of
+                your login credentials.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">4. Use of Services</h3>
+              <p className="text-muted mb-0">
+                Edusmart’s services are intended solely for individuals seeking guidance
+                on studying abroad. You agree not to use our platform for any unlawful,
+                harmful, or unauthorized purpose.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">5. Content</h3>
+              <p className="text-muted mb-0">
+                All content on the Edusmart platform, including articles, blogs,
+                resources, and advice, is for informational purposes only. While we strive
+                to provide accurate and up-to-date information, Edusmart does not
+                guarantee the completeness, accuracy, or reliability of any content
+                provided.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">6. Third-Party Links</h3>
+              <p className="text-muted mb-0">
+                Edusmart may contain links to third-party websites or services that are
+                not owned or controlled by us. We are not responsible for the content,
+                privacy practices, or services provided by third-party websites.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">7. Privacy Policy</h3>
+              <p className="text-muted mb-0">
+                Your use of Edusmart is also governed by our Privacy Policy, which
+                outlines how we collect, use, and protect your personal data.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm mb-4">
+              <h3 className="fw-semibold mb-2 fs-15">8. Fees and Payments</h3>
+              <p className="text-muted mb-0">
+                Some services provided by Edusmart may involve fees. If you choose to
+                subscribe to premium features or services, you agree to pay the applicable
+                fees and comply with the payment terms.
+              </p>
+            </div>
+            <div className="bg-white p-4 rounded shadow-sm">
+              <h3 className="fw-semibold mb-2 fs-15">9. Disclaimer of Warranties</h3>
+              <p className="text-muted mb-0">
+                Edusmart provides its services "as-is" without any warranties, express or
+                implied. We do not guarantee that the platform will be error-free or
+                uninterrupted.
+              </p>
+            </div>
+          </div>
 
-          <div className="terms_and_policy">
+          {/* <div className="terms_and_policy">
             <div className="container my-5">
               <h3
                 className="code-line border-bottom pb-4"
@@ -314,7 +398,7 @@ const TermsAndConditions = () => {
                 damages.
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
       <Footer />

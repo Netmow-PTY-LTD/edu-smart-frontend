@@ -104,15 +104,14 @@ const MultipleFileUploadAcceptAll = ({ field, form, label, ...props }) => {
       <div>
         <button
           type="button"
-          style={{ background: 'none', border: 'none', padding: 0 }}
-          className="d-flex align-items-center gap-2"
+          style={{padding: '7px 10px' }}
+          className="btn btn-primary d-flex align-items-center gap-2"
           onClick={() =>
             document.getElementById(`file-upload-${field.name}`).click()
           }
         >
           <i
             className="ri-gallery-upload-fill"
-            style={{ fontSize: '4rem' }}
           ></i>
           <span className="fs-4 fw-medium">Choose File</span>
         </button>

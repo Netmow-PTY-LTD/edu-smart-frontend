@@ -25,7 +25,7 @@ const AppliedCourseForm = ({
         </h5>
         <h5
           onClick={() => setStep(step - 1)}
-          className="button px-4 py-2 fs-20 text-secondary-alt fw-semibold mb-0 cursor-pointer"
+          className="button px-4 py-2 fs-12 text-secondary-alt fw-semibold mb-0 cursor-pointer"
         >
           <i className="ri-arrow-left-double-line"></i>
           Previous

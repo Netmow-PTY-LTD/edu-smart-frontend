@@ -197,12 +197,12 @@ const handleSubmit = async () => {
       </ModalBody>
 
       <ModalFooter>
-        <Button color="secondary" onClick={handleClose}>
+        <button className='btn btn-danger px-3 py-2' onClick={handleClose}>
           Cancel
-        </Button>
-        <Button color="primary" onClick={handleSubmit}>
-          Save
-        </Button>
+        </button>
+        <button className='button px-3 py-2' onClick={handleSubmit}>
+          Add Member
+        </button>
       </ModalFooter>
     </Modal>
   );
