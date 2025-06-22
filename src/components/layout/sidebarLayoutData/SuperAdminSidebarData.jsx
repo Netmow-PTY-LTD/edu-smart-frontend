@@ -359,13 +359,22 @@ const filterMenuItemsByAccess = (items, accessList) => {
 
     const currentPath = router.pathname.toLowerCase().split('?')[0];
 
-    const isAllowedUrl = accessibleData.some((access) => access.link.toLowerCase() === currentPath);
+    //Direct Url Allow
+   // const isAllowedUrl = accessibleData.some((access) => access.link.toLowerCase() === currentPath);
+    // It checks if the current path starts with any allowed base route.
+          const isAllowedUrl = accessibleData.some((access) => {
+        const baseLink = access.link.toLowerCase();
+        return currentPath.startsWith(baseLink);
+      });
 
-      // if (!isAllowedUrl && paneltext !== 'student' && paneltext !== 'agent') {
-      //   router.replace(`/dashboard/${paneltext}`);
-      //   return [];
-      // }
- // ✅ Alert + redirect (only once)
+
+// const isAllowedUrl = accessibleData.some((access) => {
+//   const baseLink = access.link.toLowerCase();
+
+//   // Allow both exact match and nested paths
+//   return currentPath === baseLink || currentPath.startsWith(`${baseLink}/`);
+// });
+
   useEffect(() => {
     if (
       !isAllowedUrl &&
