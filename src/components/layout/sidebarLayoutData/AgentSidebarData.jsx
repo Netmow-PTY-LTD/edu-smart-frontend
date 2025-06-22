@@ -132,6 +132,12 @@ const AgentSidebarData = () => {
       ],
     },
     {
+      id: 'agreementForB2bPartner',
+      label: 'Agreement For B2B Partner',
+      icon: 'ri-bank-card-fill',
+      link: '/dashboard/agent/agreement-b2b-partner',
+    },
+    {
       id: 'studentmanagement',
       label: 'Student',
       icon: 'ri-group-fill',
