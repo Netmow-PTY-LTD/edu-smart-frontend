@@ -1,6 +1,6 @@
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Select from 'react-select';
 import {
   useGetStaffMemberInSuperAdminQuery,
@@ -9,12 +9,11 @@ import {
 
 const AccessManagementPage = () => {
   const router = useRouter();
-  const { id } = router.query; // ✅ Get ID from URL
+  const { id } = router.query;
 
   const [menuItems, setMenuItems] = useState([]);
   const [selectedAccess, setSelectedAccess] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [allChecked, setAllChecked] = useState(false);
 
   const {
     data: getAllStaffMemberData,
@@ -24,21 +23,20 @@ const AccessManagementPage = () => {
 
   const [updateStaffMemberInSuperAdmin] = useUpdateStaffMemberInSuperAdminMutation();
 
-  const userRole = selectedUser?.role;
-  const panelTextPut = selectedUser?.role?.split('_').join('-');
-  const userRoleShow = selectedUser?.role?.split('_').join(' ');
+  const selectAllCheckboxRef = useRef(null);
 
-  // ✅ Auto-select user by ID from URL
+  const userRole = selectedUser?.role;
+  const panelTextPut = userRole?.split('_').join('-');
+  const userRoleShow = userRole?.split('_').join(' ');
+
   useEffect(() => {
     if (!getAllStaffMemberData?.data) return;
 
     if (!id) {
-      // ✅ No ID in URL — reset selected user (if any)
       setSelectedUser(null);
       return;
     }
 
-    // ✅ Try to find the user by ID
     const user = getAllStaffMemberData.data.find((u) => u._id === id);
     if (user) {
       setSelectedUser({
@@ -48,13 +46,10 @@ const AccessManagementPage = () => {
         accessible: user.accessible,
       });
     } else {
-      // ❌ If ID not found in list, optionally reset
       setSelectedUser(null);
     }
   }, [id, getAllStaffMemberData]);
 
-
-  // ✅ Handle access setup on selectedUser change
   useEffect(() => {
     const storedMenu = localStorage.getItem('simplifiedMenu');
     if (!storedMenu || !selectedUser?.role) return;
@@ -83,9 +78,8 @@ const AccessManagementPage = () => {
         return newItem;
       });
 
-    const menuWithUpdatedLinks = updateLinks(parsedMenu);
-    const menuWithParents = addParentReferences(menuWithUpdatedLinks);
-    setMenuItems(menuWithParents);
+    const menuWithUpdatedLinks = addParentReferences(updateLinks(parsedMenu));
+    setMenuItems(menuWithUpdatedLinks);
 
     let accessList = [];
     try {
@@ -104,28 +98,64 @@ const AccessManagementPage = () => {
         : item
     );
 
-    const dashboardItem = menuWithParents.find((item) => item.label.toLowerCase() === 'dashboard');
+    const dashboardItem = menuWithUpdatedLinks.find((item) => item.label.toLowerCase() === 'dashboard');
     if (dashboardItem) {
       const exists = transformedAccess.some((a) => a.label === dashboardItem.label && a.link === dashboardItem.link);
       if (!exists) {
-        transformedAccess.push({
-          label: dashboardItem.label,
-          link: dashboardItem.link,
-        });
+        transformedAccess.push({ label: dashboardItem.label, link: dashboardItem.link });
       }
     }
 
     setSelectedAccess(transformedAccess);
   }, [selectedUser]);
 
-  const isChecked = (item) =>
-    selectedAccess.some((a) => a.label === item.label && a.link === item.link);
+  const flattenItems = (items) => {
+    let flat = [];
+    items.forEach((item) => {
+      if (item.label.toLowerCase() !== 'dashboard') {
+        flat.push({ label: item.label, link: item.link });
+      }
+      if (item.subItems) {
+        flat = flat.concat(flattenItems(item.subItems));
+      }
+    });
+    return flat;
+  };
+
+  const allPermissionItems = useMemo(() => flattenItems(menuItems), [menuItems]);
+
+  const dashboardItem = selectedAccess.find((a) => a.label.toLowerCase() === 'dashboard');
+
+  const allChecked = useMemo(() => {
+    return allPermissionItems.every((item) =>
+      selectedAccess.some((a) => a.label === item.label && a.link === item.link)
+    );
+  }, [selectedAccess, allPermissionItems]);
+
+  const isPartiallyChecked = useMemo(() => {
+    return (
+      selectedAccess.length > 0 &&
+      !allChecked &&
+      allPermissionItems.some((item) =>
+        selectedAccess.some((a) => a.label === item.label && a.link === item.link)
+      )
+    );
+  }, [selectedAccess, allChecked, allPermissionItems]);
+
+  useEffect(() => {
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = isPartiallyChecked;
+    }
+  }, [isPartiallyChecked]);
 
   const formatRole = (role) => {
     if (!role) return '';
     const formatted = role.replace(/_/g, '-');
     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
   };
+
+  const isChecked = (item) =>
+    selectedAccess.some((a) => a.label === item.label && a.link === item.link);
 
   const handleToggle = (item) => {
     const exists = isChecked(item);
@@ -134,9 +164,7 @@ const AccessManagementPage = () => {
     const collectChildren = (node) => {
       const items = [{ label: node.label, link: node.link }];
       if (node.subItems) {
-        node.subItems.forEach((sub) => {
-          items.push(...collectChildren(sub));
-        });
+        node.subItems.forEach((sub) => items.push(...collectChildren(sub)));
       }
       return items;
     };
@@ -170,30 +198,11 @@ const AccessManagementPage = () => {
   };
 
   const handleSelectAllToggle = () => {
-    const flattenItems = (items) => {
-      let flat = [];
-      items.forEach((item) => {
-        flat.push({ label: item.label, link: item.link });
-        if (item.subItems) {
-          flat = flat.concat(flattenItems(item.subItems));
-        }
-      });
-      return flat;
-    };
-
-    const allItems = flattenItems(menuItems);
-    const filteredItems = allItems.filter((item) => item.label.toLowerCase() !== 'dashboard');
-
-    const dashboardItem = selectedAccess.find((a) => a.label.toLowerCase() === 'dashboard');
-    setSelectedAccess(
-      !allChecked
-        ? [...filteredItems, ...(dashboardItem ? [dashboardItem] : [])]
-        : dashboardItem
-        ? [dashboardItem]
-        : []
-    );
-
-    setAllChecked(!allChecked);
+    if (!allChecked) {
+      setSelectedAccess([...allPermissionItems, ...(dashboardItem ? [dashboardItem] : [])]);
+    } else {
+      setSelectedAccess(dashboardItem ? [dashboardItem] : []);
+    }
   };
 
   const handleSave = async () => {
@@ -225,7 +234,6 @@ const AccessManagementPage = () => {
 
   const renderMenu = (items, level = 0) =>
     items.map((item, index) => {
-      const hasSubItems = item.subItems && item.subItems.length > 0;
       const itemId = `access-${item.label}-${index}`;
       return (
         <div key={itemId} className="mb-3">
@@ -233,22 +241,18 @@ const AccessManagementPage = () => {
             <input
               className="form-check-input"
               type="checkbox"
-              checked={
-                item.label.toLowerCase() === 'dashboard'
-                  ? true
-                  : isChecked(item)
-              }
+              id={itemId}
+              checked={item.label.toLowerCase() === 'dashboard' ? true : isChecked(item)}
+              disabled={item.label.toLowerCase() === 'dashboard'}
               onChange={() => {
                 if (item.label.toLowerCase() !== 'dashboard') handleToggle(item);
               }}
-              id={itemId}
-              disabled={item.label.toLowerCase() === 'dashboard'}
             />
             <label className="form-check-label fw-medium fs-12" htmlFor={itemId}>
               {item.label}
             </label>
           </div>
-          {hasSubItems && (
+          {item.subItems?.length > 0 && (
             <div className={`ms-${(level + 1) * 2} mt-1`}>
               {renderMenu(item.subItems, level + 1)}
             </div>
@@ -312,7 +316,7 @@ const AccessManagementPage = () => {
                         query: { id: selectedOption.value },
                       },
                       undefined,
-                      { shallow: true } // avoid full reload
+                      { shallow: true }
                     );
                   }}
                   isLoading={getAllStaffMemberIsLoading}
@@ -325,8 +329,7 @@ const AccessManagementPage = () => {
             <>
               <div className="mb-4">
                 <h2 className="fw-bold text-primary">
-                  Access Management for{' '}
-                  <span className="text-dark text-capitalize">{userRoleShow}</span>
+                  Access Management for <span className="text-dark text-capitalize">{userRoleShow}</span>
                 </h2>
                 <p className="text-muted">Please select the permissions you want to allow for this role.</p>
               </div>
@@ -341,6 +344,7 @@ const AccessManagementPage = () => {
                         <span>Permissions Menu</span>
                         <div className="form-check">
                           <input
+                            ref={selectAllCheckboxRef}
                             className="form-check-input"
                             type="checkbox"
                             id="selectAllCheckbox"
@@ -352,7 +356,6 @@ const AccessManagementPage = () => {
                           </label>
                         </div>
                       </div>
-
                       <div className="card-body">
                         <div className="permission-tree overflow-auto" style={{ maxHeight: '500px' }}>
                           {renderMenu(menuItems)}
@@ -379,7 +382,6 @@ const AccessManagementPage = () => {
                         )}
                       </div>
                     </div>
-
                     <div className="text-end mt-3">
                       <button onClick={handleSave} className="btn btn-success px-4">
                         Save Access
