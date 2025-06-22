@@ -19,6 +19,7 @@ const AccessManagementPage = () => {
   const {
     data: getAllStaffMemberData,
     isLoading: getAllStaffMemberIsLoading,
+    refetch: refetchStaffMembers,
   } = useGetStaffMemberInSuperAdminQuery();
 
   const [updateStaffMemberInSuperAdmin] = useUpdateStaffMemberInSuperAdminMutation();
@@ -214,7 +215,7 @@ const AccessManagementPage = () => {
 
       parsed[selectedUser.role] = updatedAccess;
       localStorage.setItem('accessibleUrlForUser', JSON.stringify(parsed));
-
+      refetchStaffMembers();
       alert('Access updated successfully!');
     } catch (error) {
       console.error('Failed to save access:', error);
