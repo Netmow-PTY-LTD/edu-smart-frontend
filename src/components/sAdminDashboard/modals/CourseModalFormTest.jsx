@@ -336,7 +336,7 @@ console.log("categoryName", categoryName);
                     {({ field, form }) =>
                       field?.value && (
                         <>
-                          <Col xl={6}>
+                          <Col xl={12}>
                             <div className="mb-3">
                               <label className="form-label fs-2 mb-3 me-3">
                                 Scholarship Auto Deduct
@@ -369,7 +369,6 @@ console.log("categoryName", categoryName);
                               />
                             </div>
                           </Col>
-
                           <Col xl={6}>
                             <div className="mb-3">
                               <NumberFieldForCourse
