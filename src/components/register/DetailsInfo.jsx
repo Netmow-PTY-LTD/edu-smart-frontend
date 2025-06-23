@@ -86,7 +86,7 @@ const DetailsInfo = ({
                         <Col md={6}>
                           <TextField
                             name={'organization_name'}
-                            label={'Organization Name )'}
+                            label={'Organization Name'}
                           />
                         </Col>
                       </>
