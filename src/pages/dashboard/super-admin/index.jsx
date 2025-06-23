@@ -127,7 +127,6 @@ const SuperAdminDashboard = () => {
 
 
               <Row xxl={12} className="g-5">
-                {customData.showInSuperAdmin ? (
                   <Col xxl={12}>
                     <LatestRegistered
                       tableHead={'Latest Registered University'}
@@ -140,9 +139,6 @@ const SuperAdminDashboard = () => {
                       }
                     />
                   </Col>
-                ) : (
-                  ''
-                )}
                   <>
                     <Col xxl={12}>
                       <LatestRegistered

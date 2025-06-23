@@ -335,37 +335,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                   </div>
                 )}
 
-                {customData.showInSuperAdmin ? (
                   <>
-                    {/* {activeTab === '2' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <Row>
-                          <Col xl={12}>
-                            <Card>
-                              <CardHeader className="text-primary fw-semibold fs-2">
-                                Partner's Earnings
-                              </CardHeader>
-                              <CardBody className="mh-100">
-                                <CommonTableComponent
-                                  headers={[
-                                    ...agentEarnigsHeaders,
-                                    agentEarningsHeaderAction,
-                                  ]}
-                                  data={agentEarningsData?.data || []}
-                                  currentPage={currentPage}
-                                  setCurrentPage={setCurrentPage}
-                                  perPageData={perPageData}
-                                  searchTerm={searchTerm}
-                                  handleSearchChange={handleSearchChange}
-                                  emptyMessage="No Data found yet."
-                                />
-                              </CardBody>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </div>
-                    )} */}
-
                     {activeTab === '2' && (
                       <div style={{ marginTop: '30px' }}>
                         <AgentTotalPaidAmountForSuperAdmin
@@ -396,9 +366,6 @@ const SingleAgentInSuperAdminDashboard = () => {
                       </div>
                     )}
                   </>
-                ) : (
-                  ''
-                )}
               </Row>
             </div>
           )}
