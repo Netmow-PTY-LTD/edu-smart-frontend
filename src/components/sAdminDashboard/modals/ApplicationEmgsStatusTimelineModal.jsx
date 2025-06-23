@@ -47,14 +47,14 @@ export default function ApplicationEmgsStatusTimelineModal({
       <ToastContainer />
       <Modal isOpen={isOpen} toggle={onClose} size="xl" centered scrollable>
         <ModalHeader toggle={onClose}>  EMGS & Application Timeline Status</ModalHeader>
-        <ModalBody style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+        <ModalBody style={{ maxHeight: '70vh', overflowY: 'auto',paddingTop:'0' }}>
           {timelineLoading ? (
             <LoaderSpiner />
           ) : (
             <>
               {/* Sticky top bar */}
               <div
-                className="d-flex justify-content-between sticky-top bg-white pb-3 px-3 border-bottom"
+                className="d-flex justify-content-between sticky-top bg-white py-3 px-3 border-bottom"
                 style={{ zIndex: 10 }}
               >
                 <Button className="btn btn-danger fs-14" onClick={onClose}>
