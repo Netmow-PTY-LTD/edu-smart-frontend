@@ -63,7 +63,7 @@ const UpdateAgentModal = ({
     password: '',
     confirm_password: '',
     address: dataDetails?.address_line_1 || '',
-    select_role: { label: 'Agent', value: 'agent' },
+    select_role: { label: 'Partner', value: 'agent' },
     status:
       statusOptions.find((opt) => opt.value === dataDetails?.status) ||
       statusOptions[0], // default to Active
@@ -149,7 +149,7 @@ const UpdateAgentModal = ({
       ),
   });
 
-  const roleOptions = [{ label: 'Agent', value: 'agent' }];
+  const roleOptions = [{ label: 'Partner', value: 'agent' }];
 
   const handleImageChange = (e, setFieldValue) => {
     const file = e.target.files[0];
@@ -194,7 +194,7 @@ const UpdateAgentModal = ({
       finalData.append('_id', dataDetails._id); // required for update
 
       const result = await updateStaffMemberInSuperAdmin(finalData).unwrap();
-      toast.success(result?.message || 'Agent updated successfully');
+      toast.success(result?.message || 'Partner updated successfully');
       getAllStaffMemberRefetch?.();
       setImagePreview(null);
       closeModal();
@@ -202,7 +202,7 @@ const UpdateAgentModal = ({
       const errorMessage =
         error?.data?.error?._message ||
         error?.data?.message ||
-        'Failed to update agent';
+        'Failed to update partner';
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);
@@ -211,7 +211,7 @@ const UpdateAgentModal = ({
 
   return (
     <Modal isOpen={openModal} toggle={closeModal} centered size="xl">
-      <ModalHeader toggle={closeModal}>Update Agent Details</ModalHeader>
+      <ModalHeader toggle={closeModal}>Update Partner Details</ModalHeader>
       <ModalBody>
         {isLoading ? (
           <LoaderSpiner />

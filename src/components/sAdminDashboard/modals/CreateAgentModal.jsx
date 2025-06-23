@@ -67,7 +67,7 @@ const CreateAgentModal = ({
     password: '',
     confirm_password: '',
     address: '',
-    select_role: { label: 'Agent', value: 'agent' },
+    select_role: { label: 'Partner', value: 'agent' },
     city: '',
     state: '',
     zip: '',
@@ -100,7 +100,7 @@ const CreateAgentModal = ({
       }),
   });
 
-  const roleOptions = [{ label: 'Agent', value: 'agent' }];
+  const roleOptions = [{ label: 'Partner', value: 'agent' }];
 
   const handleImageChange = (e, setFieldValue) => {
     const file = e.target.files[0];
@@ -138,7 +138,7 @@ const CreateAgentModal = ({
 
       // API call
       const result = await addStaffMemberInSuperAdmin(finalData).unwrap();
-      toast.success(result?.message || 'Agent created successfully');
+      toast.success(result?.message || 'Partner created successfully');
       getAllStaffMemberRefetch?.();
       setImagePreview(null);
       closeModal();
@@ -146,7 +146,7 @@ const CreateAgentModal = ({
       const errorMessage =
         error?.data?.error?._message ||
         error?.data?.message ||
-        'Failed to create agent';
+        'Failed to create partner';
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);
@@ -155,7 +155,7 @@ const CreateAgentModal = ({
 
   return (
     <Modal isOpen={openModal} toggle={closeModal} centered size="xl">
-      <ModalHeader toggle={closeModal}>Add New Agent</ModalHeader>
+      <ModalHeader toggle={closeModal}>Add New Partner</ModalHeader>
       <ModalBody>
         {isLoading ? (
           <LoaderSpiner />
