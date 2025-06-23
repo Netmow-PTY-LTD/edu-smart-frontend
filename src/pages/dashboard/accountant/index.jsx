@@ -143,10 +143,6 @@ const SuperAdminDashboard = () => {
                 ) : (
                   ''
                 )}
-
-                {customData.hideInAccountant ? (
-                  ''
-                ) : (
                   <>
                     <Col xxl={12}>
                       <LatestRegistered
@@ -171,7 +167,6 @@ const SuperAdminDashboard = () => {
                       />
                     </Col>
                   </>
-                )}
               </Row>
             </div>
           )}

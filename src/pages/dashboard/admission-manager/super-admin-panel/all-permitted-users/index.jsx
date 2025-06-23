@@ -17,6 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import { useCustomData } from '@/utils/common/data/customeData';
 import {
   Card,
   CardBody,
@@ -40,6 +41,8 @@ const AllPermittedUserForSuperAdmin = () => {
   const [userIdForUpdate, setUserIdForUpdate] = useState('');
   const [editFormIsLoading, setEditFormIsLoading] = useState(false);
   const perPageData = 10;
+
+  const customData = useCustomData();
 
   const [initialValues, setInitialValues] = useState({
     image: null,
@@ -281,6 +284,17 @@ const AllPermittedUserForSuperAdmin = () => {
           </span>
         </DropdownToggle>
         <DropdownMenu className="me-2 ">
+          {item?.status === 'active' && (
+            <DropdownItem>
+              <Link
+                href={`/dashboard/${customData?.paneltext}/access-management?id=${item?._id}`}
+                className="text-primary d-flex align-items-center fw-medium"
+              >
+                <i className="ri-shield-keyhole-fill align-start me-2 fs-1 text-primary"></i>
+                Access Management
+              </Link>
+            </DropdownItem>
+          )}
           <DropdownItem>
             <div
               onClick={() => {
@@ -355,8 +369,8 @@ const AllPermittedUserForSuperAdmin = () => {
               />
             </Link>
           </div>
-          <div>
-            <h5 className="fs-14 fw-medium text-capitalize">
+          <div style={{width: '120px'}}>
+            <h5 className="fs-14 fw-medium text-capitalize permitted-user-name">
               <Link href={``} className="text-reset">
                 {`${item.first_name ? item.first_name : ''} ${item.last_name ? item.last_name : ''}`}
               </Link>
@@ -437,7 +451,7 @@ const AllPermittedUserForSuperAdmin = () => {
 
   return (
     <Layout>
-      <div className="page-content">
+      <div className="page-content allUser-wrapper">
         <div className="container-fluid">
           <div className="h-100">
             <ToastContainer />
