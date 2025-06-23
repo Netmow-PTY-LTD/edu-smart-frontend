@@ -73,9 +73,6 @@ const AllStudentsPage = () => {
             </Link>
           </DropdownItem>
 
-          {customData.hideforadmissionmanger ? (
-            ''
-          ) : (
             <>
               <DropdownItem>
                 <Link
@@ -96,7 +93,6 @@ const AllStudentsPage = () => {
                 </div>
               </DropdownItem> */}
             </>
-          )}
         </DropdownMenu>
       </UncontrolledDropdown>
     ),
