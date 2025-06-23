@@ -13,6 +13,7 @@ import UpdateAgentModal from '@/components/sAdminDashboard/modals/UpdateAgentMod
 import AgentFamilyTripForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentFamilyTripForSuperAdmin';
 import AgentPackageHistoryForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentPackageHistoryForSuperAdmin';
 import AgentYearlyBonousForSuperAdmin from '@/components/sAdminDashboard/packageManagement/AgentYearlyBonousForSuperAdmin';
+import { useGetUserInfoQuery } from '@/slice/services/common/userInfoService';
 import { useGetSingleAgentQuery } from '@/slice/services/public/agent/publicAgentService';
 import {
   useGetAgentEarningsQuery,
@@ -46,10 +47,18 @@ const SingleAgentInSuperAdminDashboard = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const perPageData = 9;
   const [activeTab, setActiveTab] = useState('1');
-  const agent_id = router.query.agentId;
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
 
+
   const customData = useCustomData();
+
+  const {
+      data: userInfodata,
+      isLoading: userInfoIsLoading,
+      refetch: getUserInfoRefetch,
+    } = useGetUserInfoQuery();
+
+const agent_id = userInfodata?.data?._id;
 
   const {
     studentImageAndNameHeaderDataForSuperAdmin,
@@ -168,165 +177,21 @@ const SingleAgentInSuperAdminDashboard = () => {
               <ProfileBgCover profileData={getSingleAgent?.data} />
               <Row>
                 <div style={{ marginTop: '10rem' }} className="d-flex">
-                  <Nav
-                    pills
-                    className="animation-nav profile-nav gap-4 gap-lg-4 flex-grow-1"
-                    role="tablist"
-                  >
-                    <NavItem className="fs-14">
-                      <NavLink
-                        style={{ cursor: 'pointer' }}
-                        className={classnames({
-                          active: activeTab === '1',
-                        })}
-                        onClick={() => {
-                          toggleTab('1');
-                        }}
-                      >
-                        <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                        <span className="d-none d-md-inline-block">
-                          Overview
-                        </span>
-                      </NavLink>
-                    </NavItem>
-                    {customData.hideforadmissionmanger ? (
-                      ''
-                    ) : (
-                      <>
-                        {/* <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '2',
-                            })}
-                            onClick={() => {
-                              toggleTab('2');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Earnings
-                            </span>
-                          </NavLink>
-                        </NavItem> */}
+                    
 
-                        <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '2',
-                            })}
-                            onClick={() => {
-                              toggleTab('2');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Earning Paid Payout
-                            </span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '3',
-                            })}
-                            onClick={() => {
-                              toggleTab('3');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Earning Pending Payout
-                            </span>
-                          </NavLink>
-                        </NavItem>
-
-                        <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '4',
-                            })}
-                            onClick={() => {
-                              toggleTab('4');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Family Trip
-                            </span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '5',
-                            })}
-                            onClick={() => {
-                              toggleTab('5');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Yearly Bonous
-                            </span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '6',
-                            })}
-                            onClick={() => {
-                              toggleTab('6');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Package History
-                            </span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem className="fs-14">
-                          <NavLink
-                            style={{ cursor: 'pointer' }}
-                            className={classnames({
-                              active: activeTab === '7',
-                            })}
-                            onClick={() => {
-                              toggleTab('7');
-                            }}
-                          >
-                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
-                            <span className="d-none d-md-inline-block">
-                              Documents
-                            </span>
-                          </NavLink>
-                        </NavItem>
-                        <button
-                          className="button p-2 ms-auto"
-                          onClick={() => {
-                            setAddModalIsOpen(true);
-                          }}
-                        >
-                          <i className="ri-edit-box-line me-1"></i>
-                          Edit Profile
-                        </button>
-                      </>
-                    )}
-                  </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
 
                 {activeTab === '1' && (
                   <div style={{ marginTop: '30px' }}>
                     <Row>
-                      <Col xl={6}>
-                        <AllOverviewInfoCard data={getSingleAgent?.data} />
+                      <Col xl={12}>
+                    <DocumentPage
+                      student_id={agent_id}
+                      getSingleStudent={getSingleAgent}
+                      refetchSingleStudent={getSingleAgentRefetch}
+                      sigleStudentIsLoading={getSingleAgentIsLoading}
+                    />
                       </Col>
 
                       <Col xl={6}>
@@ -435,12 +300,6 @@ const SingleAgentInSuperAdminDashboard = () => {
                     )}
                       {activeTab === '7' && (
                   <div style={{ marginTop: '50px' }}>
-                    <DocumentPage
-                      student_id={agent_id}
-                      getSingleStudent={getSingleAgent}
-                      refetchSingleStudent={getSingleAgentRefetch}
-                      sigleStudentIsLoading={getSingleAgentIsLoading}
-                    />
                   </div>
                     )}
                   </>

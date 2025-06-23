@@ -33,7 +33,8 @@ const AutoAcceptedDocumentUploadModal = ({
         const created = await createDocumentRequest({
           title: doc.title,
           description: '',
-          student_id,
+          // student_id,
+          student_id:'67d2a2d425eb11e4e222b774',
           status: 'submitted',
           submited_date,
         }).unwrap();
@@ -165,6 +166,7 @@ const AutoAcceptedDocumentUploadModal = ({
                           type="file"
                           multiple
                           hidden
+                           accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.rtf,.odt"
                           onChange={(e) => {
                             const files = Array.from(e.target.files);
                             const newDocs = files.map((file) => ({
