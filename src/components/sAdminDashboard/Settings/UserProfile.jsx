@@ -1,4 +1,5 @@
 import { convertImageUrlToFile } from '@/components/common/helperFunctions/ConvertImgUrlToFile';
+import * as Yup from 'yup';
 import Profile from '@/components/common/Profile';
 import LoaderSpiner from '@/components/constants/Loader/LoaderSpiner';
 import {
@@ -66,26 +67,30 @@ const UserProfile = () => {
     fetchStudentData();
   }, [userInfodata?.data]);
 
-  // const validationSchema = Yup.object({
-  //   fullName: Yup.string().required('Full Name is required'),
-  //   email: Yup.string()
-  //     .email('Invalid email address')
-  //     .required('Email is required'),
-  //   phone: Yup.string().required('Phone is required'),
-  //   address_line_1: Yup.string().required('Address Line 1 is required'),
-  //   address_line_2: Yup.string().nullable(),
-  //   city: Yup.string().required('City is required'),
-  //   state: Yup.string().required('State is required'),
-  //   zip: Yup.string().required('ZIP Code is required'),
-  //   country: Yup.string().required('Country is required'),
-  //   profile_image: Yup.mixed()
-  //     .required('Profile Image is required')
-  //     .test(
-  //       'fileSize',
-  //       'File size is too large',
-  //       (value) => value && value.size <= 5000000
-  //     ),
-  // });
+  const validationSchema = Yup.object().shape({
+    first_name: Yup.string().required('First Name is required'),
+    last_name: Yup.string().required('Last Name is required'),
+    email: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required'),
+    country: Yup.string().required('Country is required'),
+    phone: Yup.string()
+      .matches(/^[0-9]+$/, 'Phone must be a number')
+      .min(7, 'Phone must be at least 7 digits')
+      .max(15, 'Phone must be at most 15 digits')
+      .required('Phone number is required'),
+    address_line_1: Yup.string().required('Address Line 1 is required'),
+    address_line_2: Yup.string(), // optional
+    city: Yup.string().required('City is required'),
+    state: Yup.string().required('State is required'),
+    zip: Yup.string()
+      .matches(/^[0-9]+$/, 'Zip Code must be numeric')
+      .min(4, 'Zip Code must be at least 4 digits')
+      .required('Zip Code is required'),
+    profile_image: Yup.mixed()
+      .required('Profile image is required'),
+  });
+
 
   const handleImageChange = (e, setFieldValue, fieldName) => {
     const file = e.target.files[0];
@@ -133,6 +138,7 @@ const UserProfile = () => {
       ) : (
         <Profile
           initialValues={initialValues}
+          validationSchema={validationSchema}
           handleSubmit={handleSubmit}
           imagePreview={imagePreview}
           handleImageChange={handleImageChange}

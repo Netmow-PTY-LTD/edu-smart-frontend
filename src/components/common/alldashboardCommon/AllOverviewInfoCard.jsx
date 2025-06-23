@@ -20,7 +20,7 @@ const AllOverviewInfoCard = ({ data }) => {
                   <th className="ps-0" scope="row">
                     Name
                   </th>
-                  <td className="text-muted text-wrap d-flex">
+                  <td className="text-muted fw-bold text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block text-capitalize">
                       {data?.name
@@ -35,7 +35,7 @@ const AllOverviewInfoCard = ({ data }) => {
                   <th className="ps-0" scope="row">
                     Phone
                   </th>
-                  <td className="text-muted text-wrap d-flex">
+                  <td className="text-muted fw-bold text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block">{data?.phone ?? ''}</span>
                   </td>
@@ -45,7 +45,7 @@ const AllOverviewInfoCard = ({ data }) => {
                   <th className="ps-0" scope="row">
                     E-mail
                   </th>
-                  <td className="text-muted text-wrap d-flex">
+                  <td className="text-muted fw-bold text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block">{data?.email}</span>
                   </td>
@@ -54,7 +54,7 @@ const AllOverviewInfoCard = ({ data }) => {
                   <th className="ps-0" scope="row">
                     Location
                   </th>
-                  <td className="text-muted text-wrap d-flex">
+                  <td className="text-muted fw-bold text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block">
                       {data?.address_line_1?.trim() !== ''
@@ -115,7 +115,7 @@ const AllOverviewInfoCard = ({ data }) => {
                   <th className="ps-0" scope="row">
                     Short Description
                   </th>
-                  <td className="text-muted text-wrap d-flex">
+                  <td className="text-muted fw-bold text-wrap d-flex">
                     <span className="d-inline-block me-2">:</span>
                     <span className="d-inline-block">
                       {

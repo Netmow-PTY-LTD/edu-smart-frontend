@@ -900,7 +900,7 @@ const statusOptions = [
   };
 
   const agentNameAndImageHeaderDataForSuperAdmin = {
-    title: 'Name',
+    title: 'Owner Namer',
     key: 'profile_image',
     render: (item) => (
       <div className="d-flex align-items-center">
@@ -1504,6 +1504,19 @@ const studentApplicationsHeadersActions = [
 
   const agentsHeaders = [
     {
+      title: 'Company Name',
+      key: 'company',
+      render: (item) => (
+        <span className="d-flex flex-column text-capitalize">
+          {item?.agent_package_new ? (
+            <span>{item?.business?.name}</span>
+          ) : (
+            '-'
+          )}
+        </span>
+      ),
+    },
+    {
       title: 'Package',
       key: 'package',
       render: (item) => (
@@ -1538,7 +1551,7 @@ const studentApplicationsHeadersActions = [
       ),
     },
 {
-  title: 'status',
+  title: 'Status',
   key: 'status',
   render: (item) => (
     <span className="text-capitalize">
