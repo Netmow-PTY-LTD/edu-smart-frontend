@@ -188,11 +188,8 @@ const SingleAgentInSuperAdminDashboard = () => {
                         </span>
                       </NavLink>
                     </NavItem>
-                    {customData.hideforadmissionmanger ? (
-                      ''
-                    ) : (
                       <>
-                       <NavItem className="fs-14">
+                        <NavItem className="fs-14">
                           <NavLink
                             style={{ cursor: 'pointer' }}
                             className={classnames({
@@ -283,7 +280,6 @@ const SingleAgentInSuperAdminDashboard = () => {
                           Edit Profile
                         </button>
                       </>
-                    )}
                   </Nav>
                   <div className="d-flex gap-3 flex-shrink-1 "></div>
                 </div>
@@ -339,7 +335,6 @@ const SingleAgentInSuperAdminDashboard = () => {
                   </div>
                 )}
 
-                {customData.showInSuperAdmin ? (
                   <>
                     {activeTab === '2' && (
                       <div style={{ marginTop: '30px' }}>
@@ -371,9 +366,6 @@ const SingleAgentInSuperAdminDashboard = () => {
                       </div>
                     )}
                   </>
-                ) : (
-                  ''
-                )}
               </Row>
             </div>
           )}
