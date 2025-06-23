@@ -1,6 +1,7 @@
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Tooltip } from 'react-tooltip';
 import Select from 'react-select';
 import {
   useGetStaffMemberInSuperAdminQuery,
@@ -9,22 +10,46 @@ import {
 
 const AccessManagementPage = () => {
   const router = useRouter();
+  const { id } = router.query;
+
   const [menuItems, setMenuItems] = useState([]);
   const [selectedAccess, setSelectedAccess] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [allChecked, setAllChecked] = useState(false);
-
 
   const {
     data: getAllStaffMemberData,
     isLoading: getAllStaffMemberIsLoading,
+    refetch: refetchStaffMembers,
   } = useGetStaffMemberInSuperAdminQuery();
 
   const [updateStaffMemberInSuperAdmin] = useUpdateStaffMemberInSuperAdminMutation();
 
+  const selectAllCheckboxRef = useRef(null);
+
   const userRole = selectedUser?.role;
-  const panelTextPut = selectedUser?.role?.split('_').join('-');
-  const userRoleShow = selectedUser?.role?.split('_').join(' ');
+  const panelTextPut = userRole?.split('_').join('-');
+  const userRoleShow = userRole?.split('_').join(' ');
+
+  useEffect(() => {
+    if (!getAllStaffMemberData?.data) return;
+
+    if (!id) {
+      setSelectedUser(null);
+      return;
+    }
+
+    const user = getAllStaffMemberData.data.find((u) => u._id === id);
+    if (user) {
+      setSelectedUser({
+        label: `${user.first_name} ${user.last_name} (${formatRole(user.role)})`,
+        value: user._id,
+        role: user.role,
+        accessible: user.accessible,
+      });
+    } else {
+      setSelectedUser(null);
+    }
+  }, [id, getAllStaffMemberData]);
 
   useEffect(() => {
     const storedMenu = localStorage.getItem('simplifiedMenu');
@@ -33,11 +58,8 @@ const AccessManagementPage = () => {
     const parsedMenu = JSON.parse(storedMenu);
     const panelText = selectedUser.role.split('_').join('-');
 
-    console.log('Selected User:', selectedUser);
-    console.log('Original Accessible:', selectedUser.accessible);
-
-    const updateLinks = (items) => {
-      return items.map((item) => {
+    const updateLinks = (items) =>
+      items.map((item) => {
         const updatedItem = { ...item };
         if (updatedItem.link?.startsWith('/dashboard/')) {
           updatedItem.link = updatedItem.link.replace(/\/dashboard\/[^/]+/, `/dashboard/${panelText}`);
@@ -47,84 +69,103 @@ const AccessManagementPage = () => {
         }
         return updatedItem;
       });
-    };
 
-    const addParentReferences = (items, parent = null) => {
-      return items.map((item) => {
+    const addParentReferences = (items, parent = null) =>
+      items.map((item) => {
         const newItem = { ...item, parent };
         if (item.subItems) {
           newItem.subItems = addParentReferences(item.subItems, newItem);
         }
         return newItem;
       });
-    };
 
-    const menuWithUpdatedLinks = updateLinks(parsedMenu);
-    const menuWithParents = addParentReferences(menuWithUpdatedLinks);
-    setMenuItems(menuWithParents);
+    const menuWithUpdatedLinks = addParentReferences(updateLinks(parsedMenu));
+    setMenuItems(menuWithUpdatedLinks);
 
-        // ✅ Parse and normalize accessible links
-        let accessList = [];
-        try {
-          accessList = typeof selectedUser.accessible === 'string'
-            ? JSON.parse(selectedUser.accessible)
-            : Array.isArray(selectedUser.accessible)
-              ? selectedUser.accessible
-              : [];
-        } catch (err) {
-          console.error('Failed to parse accessible field:', err);
-        }
+    let accessList = [];
+    try {
+      accessList = typeof selectedUser.accessible === 'string'
+        ? JSON.parse(selectedUser.accessible)
+        : Array.isArray(selectedUser.accessible)
+          ? selectedUser.accessible
+          : [];
+    } catch (err) {
+      console.error('Failed to parse accessible field:', err);
+    }
 
-        const transformedAccess = accessList.map((item) => {
-          if (item.link?.startsWith('/dashboard/')) {
-            return {
-              ...item,
-              link: item.link.replace(/\/dashboard\/[^/]+/, `/dashboard/${panelText}`),
-            };
-          }
-          return item;
-        });
+    const transformedAccess = accessList.map((item) =>
+      item.link?.startsWith('/dashboard/')
+        ? { ...item, link: item.link.replace(/\/dashboard\/[^/]+/, `/dashboard/${panelText}`) }
+        : item
+    );
 
-        // ✅ Ensure "Dashboard" is present
-        const dashboardItem = menuWithParents.find(
-          (item) => item.label.toLowerCase() === 'dashboard'
-        );
-        if (dashboardItem) {
-          const exists = transformedAccess.some(
-            (a) => a.label === dashboardItem.label && a.link === dashboardItem.link
-          );
-          if (!exists) {
-            transformedAccess.push({
-              label: dashboardItem.label,
-              link: dashboardItem.link,
-            });
-          }
-        }
+    const dashboardItem = menuWithUpdatedLinks.find((item) => item.label.toLowerCase() === 'dashboard');
+    if (dashboardItem) {
+      const exists = transformedAccess.some((a) => a.label === dashboardItem.label && a.link === dashboardItem.link);
+      if (!exists) {
+        transformedAccess.push({ label: dashboardItem.label, link: dashboardItem.link });
+      }
+    }
 
-        console.log('Transformed Accessible:', transformedAccess);
-        setSelectedAccess(transformedAccess);
-
-
+    setSelectedAccess(transformedAccess);
   }, [selectedUser]);
 
-  const isChecked = (item) => {
-    return selectedAccess.some(
-      (a) => a.label === item.label && a.link === item.link
-    );
+  const flattenItems = (items) => {
+    let flat = [];
+    items.forEach((item) => {
+      if (item.label.toLowerCase() !== 'dashboard') {
+        flat.push({ label: item.label, link: item.link });
+      }
+      if (item.subItems) {
+        flat = flat.concat(flattenItems(item.subItems));
+      }
+    });
+    return flat;
   };
+
+  const allPermissionItems = useMemo(() => flattenItems(menuItems), [menuItems]);
+
+  const dashboardItem = selectedAccess.find((a) => a.label.toLowerCase() === 'dashboard');
+
+  const allChecked = useMemo(() => {
+    return allPermissionItems.every((item) =>
+      selectedAccess.some((a) => a.label === item.label && a.link === item.link)
+    );
+  }, [selectedAccess, allPermissionItems]);
+
+  const isPartiallyChecked = useMemo(() => {
+    return (
+      selectedAccess.length > 0 &&
+      !allChecked &&
+      allPermissionItems.some((item) =>
+        selectedAccess.some((a) => a.label === item.label && a.link === item.link)
+      )
+    );
+  }, [selectedAccess, allChecked, allPermissionItems]);
+
+  useEffect(() => {
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = isPartiallyChecked;
+    }
+  }, [isPartiallyChecked]);
+
+  const formatRole = (role) => {
+    if (!role) return '';
+    const formatted = role.replace(/_/g, '-');
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+  };
+
+  const isChecked = (item) =>
+    selectedAccess.some((a) => a.label === item.label && a.link === item.link);
 
   const handleToggle = (item) => {
     const exists = isChecked(item);
-    console.log(`Toggling: ${item.label} | Exists: ${exists}`);
-
     let updated = [...selectedAccess];
 
     const collectChildren = (node) => {
       const items = [{ label: node.label, link: node.link }];
       if (node.subItems) {
-        node.subItems.forEach((sub) => {
-          items.push(...collectChildren(sub));
-        });
+        node.subItems.forEach((sub) => items.push(...collectChildren(sub)));
       }
       return items;
     };
@@ -142,9 +183,6 @@ const AccessManagementPage = () => {
     const allChildren = collectChildren(item);
     const allParents = collectParents(item);
 
-    console.log('Children:', allChildren);
-    console.log('Parents:', allParents);
-
     if (exists) {
       updated = updated.filter(
         (a) => !allChildren.some((b) => b.label === a.label && b.link === a.link)
@@ -157,61 +195,27 @@ const AccessManagementPage = () => {
       });
     }
 
-    console.log('Updated Selected Access:', updated);
     setSelectedAccess(updated);
   };
 
-    const handleSelectAllToggle = () => {
-    const flattenItems = (items) => {
-      let flat = [];
-      items.forEach((item) => {
-        flat.push({ label: item.label, link: item.link });
-        if (item.subItems) {
-          flat = flat.concat(flattenItems(item.subItems));
-        }
-      });
-      return flat;
-    };
-
-    const allItems = flattenItems(menuItems);
-
-    // Exclude 'dashboard' from toggling
-    const filteredItems = allItems.filter(
-      (item) => item.label.toLowerCase() !== 'dashboard'
-    );
-
+  const handleSelectAllToggle = () => {
     if (!allChecked) {
-      // ✅ Select all (and keep dashboard included)
-      const dashboardItem = selectedAccess.find(
-        (a) => a.label.toLowerCase() === 'dashboard'
-      );
-      setSelectedAccess([...filteredItems, ...(dashboardItem ? [dashboardItem] : [])]);
+      setSelectedAccess([...allPermissionItems, ...(dashboardItem ? [dashboardItem] : [])]);
     } else {
-      // ❌ Deselect all (but keep dashboard included)
-      const dashboardItem = selectedAccess.find(
-        (a) => a.label.toLowerCase() === 'dashboard'
-      );
       setSelectedAccess(dashboardItem ? [dashboardItem] : []);
     }
-
-    setAllChecked(!allChecked);
   };
-
 
   const handleSave = async () => {
     try {
       const accessData = localStorage.getItem('accessibleUrlForUser');
       let parsed = accessData ? JSON.parse(accessData) : {};
 
-      const updatedAccess = selectedAccess.map((item) => {
-        if (item.link?.startsWith('/dashboard/')) {
-          return {
-            ...item,
-            link: item.link.replace(/\/dashboard\/[^/]+/, `/dashboard/${panelTextPut}`),
-          };
-        }
-        return item;
-      });
+      const updatedAccess = selectedAccess.map((item) =>
+        item.link?.startsWith('/dashboard/')
+          ? { ...item, link: item.link.replace(/\/dashboard\/[^/]+/, `/dashboard/${panelTextPut}`) }
+          : item
+      );
 
       const formData = new FormData();
       formData.append('accessible', JSON.stringify(updatedAccess));
@@ -221,7 +225,7 @@ const AccessManagementPage = () => {
 
       parsed[selectedUser.role] = updatedAccess;
       localStorage.setItem('accessibleUrlForUser', JSON.stringify(parsed));
-
+      refetchStaffMembers();
       alert('Access updated successfully!');
     } catch (error) {
       console.error('Failed to save access:', error);
@@ -229,36 +233,27 @@ const AccessManagementPage = () => {
     }
   };
 
-  const renderMenu = (items, level = 0) => {
-    return items.map((item, index) => {
-      const hasSubItems = item.subItems && item.subItems.length > 0;
+  const renderMenu = (items, level = 0) =>
+    items.map((item, index) => {
       const itemId = `access-${item.label}-${index}`;
-
       return (
         <div key={itemId} className="mb-3">
           <div className={`form-check ms-${level * 2}`}>
             <input
               className="form-check-input"
               type="checkbox"
-              checked={
-                item.label.toLowerCase() === 'dashboard'
-                  ? true
-                  : isChecked(item)
-              }
-              onChange={() => {
-                if (item.label.toLowerCase() !== 'dashboard') {
-                  handleToggle(item);
-                }
-              }}
               id={itemId}
-              disabled={item.label.toLowerCase() === 'dashboard'} // ❌ Can't uncheck
+              checked={item.label.toLowerCase() === 'dashboard' ? true : isChecked(item)}
+              disabled={item.label.toLowerCase() === 'dashboard'}
+              onChange={() => {
+                if (item.label.toLowerCase() !== 'dashboard') handleToggle(item);
+              }}
             />
             <label className="form-check-label fw-medium fs-12" htmlFor={itemId}>
               {item.label}
             </label>
           </div>
-
-          {hasSubItems && (
+          {item.subItems?.length > 0 && (
             <div className={`ms-${(level + 1) * 2} mt-1`}>
               {renderMenu(item.subItems, level + 1)}
             </div>
@@ -266,7 +261,6 @@ const AccessManagementPage = () => {
         </div>
       );
     });
-  };
 
   const customStyles = {
     control: (base, state) => ({
@@ -276,9 +270,7 @@ const AccessManagementPage = () => {
       borderRadius: '8px',
       padding: '5px',
       boxShadow: state.isFocused ? '0 0 5px rgba(76, 175, 80, 0.5)' : 'none',
-      '&:hover': {
-        borderColor: '#4CAF50',
-      },
+      '&:hover': { borderColor: '#4CAF50' },
     }),
     option: (base, state) => ({
       ...base,
@@ -310,15 +302,23 @@ const AccessManagementPage = () => {
                   styles={customStyles}
                   options={
                     getAllStaffMemberData?.data?.map((user) => ({
-                      label: `${user.first_name} ${user.last_name}`,
+                      label: `${user.first_name} ${user.last_name} (${formatRole(user.role)})`,
                       value: user._id,
                       role: user.role,
-                      accessible: user.accessible, // ✅ fixed key name
+                      accessible: user.accessible,
                     })) || []
                   }
                   value={selectedUser}
                   onChange={(selectedOption) => {
                     setSelectedUser(selectedOption);
+                    router.push(
+                      {
+                        pathname: router.pathname,
+                        query: { id: selectedOption.value },
+                      },
+                      undefined,
+                      { shallow: true }
+                    );
                   }}
                   isLoading={getAllStaffMemberIsLoading}
                 />
@@ -345,6 +345,7 @@ const AccessManagementPage = () => {
                         <span>Permissions Menu</span>
                         <div className="form-check">
                           <input
+                            ref={selectAllCheckboxRef}
                             className="form-check-input"
                             type="checkbox"
                             id="selectAllCheckbox"
@@ -356,7 +357,6 @@ const AccessManagementPage = () => {
                           </label>
                         </div>
                       </div>
-
                       <div className="card-body">
                         <div className="permission-tree overflow-auto" style={{ maxHeight: '500px' }}>
                           {renderMenu(menuItems)}
@@ -367,7 +367,32 @@ const AccessManagementPage = () => {
 
                   <div className="col-md-7">
                     <div className="card shadow-sm border-0 mb-4">
-                      <div className="card-header bg-light fw-bold">Allowed Access</div>
+                      <div className="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+                        <span>Allowed Access</span>
+                        <div className="ms-auto" style={{ position: 'relative' }}>
+                          <button
+                            onClick={handleSave}
+                            data-tooltip-id="save-tooltip"
+                            data-tooltip-content="Save access permissions"
+                            className="btn btn-success px-3 py-1"
+                          >
+                            <i className="ri ri-save-fill fs-15"></i>
+                          </button>
+
+                          <Tooltip
+                            id="save-tooltip"
+                            place="top"
+                            style={{
+                              backgroundColor: '#198754',
+                              color: '#fff',
+                              borderRadius: '6px',
+                              padding: '6px 12px',
+                              fontSize: '13px',
+                            }}
+                          />
+                        </div>
+
+                      </div>
                       <div className="card-body">
                         {selectedAccess.length === 0 ? (
                           <p className="text-muted">No access selected yet.</p>
@@ -383,7 +408,6 @@ const AccessManagementPage = () => {
                         )}
                       </div>
                     </div>
-
                     <div className="text-end mt-3">
                       <button onClick={handleSave} className="btn btn-success px-4">
                         Save Access
