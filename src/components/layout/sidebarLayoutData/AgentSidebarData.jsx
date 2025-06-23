@@ -134,7 +134,7 @@ const AgentSidebarData = () => {
     {
       id: 'my-documents',
       label: 'My Documents',
-      icon: 'ri-bank-card-fill',
+      icon: 'ri-article-fill',
       link: '/dashboard/agent/documents',
     },
     {

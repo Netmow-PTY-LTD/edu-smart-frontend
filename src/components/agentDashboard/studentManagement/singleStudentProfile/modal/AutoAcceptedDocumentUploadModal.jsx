@@ -33,8 +33,7 @@ const AutoAcceptedDocumentUploadModal = ({
         const created = await createDocumentRequest({
           title: doc.title,
           description: '',
-          // student_id,
-          student_id:'67d2a2d425eb11e4e222b774',
+          student_id,
           status: 'submitted',
           submited_date,
         }).unwrap();

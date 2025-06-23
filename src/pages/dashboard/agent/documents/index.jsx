@@ -58,7 +58,7 @@ const SingleAgentInSuperAdminDashboard = () => {
       refetch: getUserInfoRefetch,
     } = useGetUserInfoQuery();
 
-const agent_id = userInfodata?.data?._id;
+  const agent_id = userInfodata?.data?._id;
 
   const {
     studentImageAndNameHeaderDataForSuperAdmin,
@@ -118,52 +118,52 @@ const agent_id = userInfodata?.data?._id;
     }
   };
 
-  const agentEarningsHeaderAction = {
-    title: 'Action',
-    key: 'actions',
-    render: (item) => (
-      <UncontrolledDropdown direction="end">
-        <DropdownToggle
-          tag="a"
-          className="text-reset dropdown-btn"
-          role="button"
-        >
-          <span className="button px-3">
-            <i className="ri-more-fill align-middle"></i>
-          </span>
-        </DropdownToggle>
-        <DropdownMenu className="ms-2">
-          <DropdownItem>
-            <div
-              onClick={() => handleEarningStatusUpdate(item._id, 'paid')}
-              className="text-primary"
-            >
-              <i className="ri-check-double-fill align-start me-2 text-success"></i>
-              Mark as Paid
-            </div>
-          </DropdownItem>
-          <DropdownItem>
-            <div
-              onClick={() => handleEarningStatusUpdate(item._id, 'unpaid')}
-              className="text-primary"
-            >
-              <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
-              Mark as Unpaid
-            </div>
-          </DropdownItem>
-          <DropdownItem>
-            <div
-              onClick={() => handleEarningStatusUpdate(item._id, 'pending')}
-              className="text-primary"
-            >
-              <i className="ri-loader-2-fill align-start me-2 text-muted"></i>
-              Mark as Pending
-            </div>
-          </DropdownItem>
-        </DropdownMenu>
-      </UncontrolledDropdown>
-    ),
-  };
+  // const agentEarningsHeaderAction = {
+  //   title: 'Action',
+  //   key: 'actions',
+  //   render: (item) => (
+  //     <UncontrolledDropdown direction="end">
+  //       <DropdownToggle
+  //         tag="a"
+  //         className="text-reset dropdown-btn"
+  //         role="button"
+  //       >
+  //         <span className="button px-3">
+  //           <i className="ri-more-fill align-middle"></i>
+  //         </span>
+  //       </DropdownToggle>
+  //       <DropdownMenu className="ms-2">
+  //         <DropdownItem>
+  //           <div
+  //             onClick={() => handleEarningStatusUpdate(item._id, 'paid')}
+  //             className="text-primary"
+  //           >
+  //             <i className="ri-check-double-fill align-start me-2 text-success"></i>
+  //             Mark as Paid
+  //           </div>
+  //         </DropdownItem>
+  //         <DropdownItem>
+  //           <div
+  //             onClick={() => handleEarningStatusUpdate(item._id, 'unpaid')}
+  //             className="text-primary"
+  //           >
+  //             <i className="ri-close-circle-fill align-start me-2 text-danger"></i>
+  //             Mark as Unpaid
+  //           </div>
+  //         </DropdownItem>
+  //         <DropdownItem>
+  //           <div
+  //             onClick={() => handleEarningStatusUpdate(item._id, 'pending')}
+  //             className="text-primary"
+  //           >
+  //             <i className="ri-loader-2-fill align-start me-2 text-muted"></i>
+  //             Mark as Pending
+  //           </div>
+  //         </DropdownItem>
+  //       </DropdownMenu>
+  //     </UncontrolledDropdown>
+  //   ),
+  // };
 
   return (
     <Layout>
@@ -175,151 +175,22 @@ const agent_id = userInfodata?.data?._id;
           ) : (
             <div className="container-fluid">
               <ProfileBgCover profileData={getSingleAgent?.data} />
-              <Row>
-                <div style={{ marginTop: '10rem' }} className="d-flex">
-                    
-
-                  <div className="d-flex gap-3 flex-shrink-1 "></div>
-                </div>
-
-                {activeTab === '1' && (
-                  <div style={{ marginTop: '30px' }}>
-                    <Row>
-                      <Col xl={12}>
-                    <DocumentPage
-                      student_id={agent_id}
-                      getSingleStudent={getSingleAgent}
-                      refetchSingleStudent={getSingleAgentRefetch}
-                      sigleStudentIsLoading={getSingleAgentIsLoading}
-                    />
-                      </Col>
-
-                      <Col xl={6}>
-                        <SingleCountCard
-                          data={{
-                            start: `${0}`,
-                            end: `${getSingleAgent?.data?.students?.length || 0}`,
-                            label: 'Registered Students',
-                            counter: '4',
-                            bgcolor: 'info',
-                            icon: 'ri-group-fill',
-                            link: 'View all',
-                            pathName: '',
-                          }}
-                        />
-                      </Col>
-                      <Col xl={12}>
-                        <Card id="viewstudents">
-                          <CardHeader className="text-primary fw-semibold fs-2">
-                            All Students For Partner
-                            <SearchComponent
-                              searchTerm={searchTerm}
-                              handleSearchChange={handleSearchChange}
-                            />
-                          </CardHeader>
-                          <CardBody>
-                            <CommonTableComponent
-                              headers={[
-                                studentImageAndNameHeaderDataForSuperAdmin,
-                                ...studentsHeaders,
-                              ]}
-                              data={isFilteredData || []}
-                              currentPage={currentPage}
-                              setCurrentPage={setCurrentPage}
-                              perPageData={perPageData}
-                              searchTerm={searchTerm}
-                              handleSearchChange={handleSearchChange}
-                              emptyMessage="No Data found yet."
-                            />
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    </Row>
-                  </div>
-                )}
-
-                {customData.showInSuperAdmin ? (
-                  <>
-                    {/* {activeTab === '2' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <Row>
-                          <Col xl={12}>
-                            <Card>
-                              <CardHeader className="text-primary fw-semibold fs-2">
-                                Partner's Earnings
-                              </CardHeader>
-                              <CardBody className="mh-100">
-                                <CommonTableComponent
-                                  headers={[
-                                    ...agentEarnigsHeaders,
-                                    agentEarningsHeaderAction,
-                                  ]}
-                                  data={agentEarningsData?.data || []}
-                                  currentPage={currentPage}
-                                  setCurrentPage={setCurrentPage}
-                                  perPageData={perPageData}
-                                  searchTerm={searchTerm}
-                                  handleSearchChange={handleSearchChange}
-                                  emptyMessage="No Data found yet."
-                                />
-                              </CardBody>
-                            </Card>
-                          </Col>
-                        </Row>
-                      </div>
-                    )} */}
-
-                    {activeTab === '2' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <AgentTotalPaidAmountForSuperAdmin
-                          agent_id={agent_id}
-                        />
-                      </div>
-                    )}
-                    {activeTab === '3' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <AgentTotalPendingAmountForSuperAdmin
-                          agent_id={agent_id}
-                        />
-                      </div>
-                    )}
-                    {activeTab === '4' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <AgentFamilyTripForSuperAdmin agent_id={agent_id} />
-                      </div>
-                    )}
-                    {activeTab === '5' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <AgentYearlyBonousForSuperAdmin agent_id={agent_id} />
-                      </div>
-                    )}
-                    {activeTab === '6' && (
-                      <div style={{ marginTop: '30px' }}>
-                        <AgentPackageHistoryForSuperAdmin agent_id={agent_id} />
-                      </div>
-                    )}
-                      {activeTab === '7' && (
-                  <div style={{ marginTop: '50px' }}>
-                  </div>
-                    )}
-                  </>
-                ) : (
-                  ''
-                )}
+              <div style={{marginTop:'100px'}}>
+              <Row >
+                <Col xl={12}>
+                  <DocumentPage
+                    student_id={agent_id}
+                    getSingleStudent={getSingleAgent}
+                    refetchSingleStudent={getSingleAgentRefetch}
+                    sigleStudentIsLoading={getSingleAgentIsLoading}
+                  />
+                </Col>
               </Row>
+              </div>
             </div>
           )}
         </div>
       </div>
-
-      <UpdateAgentModal
-        openModal={addModalIsOpen}
-        closeModal={() => {
-          setAddModalIsOpen(false);
-          getSingleAgentRefetch(); // This ensures fresh data is loaded after closing
-        }}
-        agentDetails={getSingleAgent}
-      />
     </Layout>
   );
 };
