@@ -1,6 +1,7 @@
 import Layout from '@/components/layout';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Tooltip } from 'react-tooltip';
 import Select from 'react-select';
 import {
   useGetStaffMemberInSuperAdminQuery,
@@ -366,7 +367,32 @@ const AccessManagementPage = () => {
 
                   <div className="col-md-7">
                     <div className="card shadow-sm border-0 mb-4">
-                      <div className="card-header bg-light fw-bold">Allowed Access</div>
+                      <div className="card-header bg-light fw-bold d-flex justify-content-between align-items-center">
+                        <span>Allowed Access</span>
+                        <div className="ms-auto" style={{ position: 'relative' }}>
+                          <button
+                            onClick={handleSave}
+                            data-tooltip-id="save-tooltip"
+                            data-tooltip-content="Save access permissions"
+                            className="btn btn-success px-3 py-1"
+                          >
+                            <i className="ri ri-save-fill fs-15"></i>
+                          </button>
+
+                          <Tooltip
+                            id="save-tooltip"
+                            place="top"
+                            style={{
+                              backgroundColor: '#198754',
+                              color: '#fff',
+                              borderRadius: '6px',
+                              padding: '6px 12px',
+                              fontSize: '13px',
+                            }}
+                          />
+                        </div>
+
+                      </div>
                       <div className="card-body">
                         {selectedAccess.length === 0 ? (
                           <p className="text-muted">No access selected yet.</p>
