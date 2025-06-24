@@ -95,7 +95,7 @@ const UniversityGalleryFormHandler = ({ university_id }) => {
         <LoaderSpiner />
       ) : (
         <GalleryFormCard
-          className="m-5 p-4 p-md-5"
+          className="m-0 m-md-5 p-4 p-md-5"
           cardTitle="Gallery"
           initialValues={initialValues}
           validationSchema={validationSchema}

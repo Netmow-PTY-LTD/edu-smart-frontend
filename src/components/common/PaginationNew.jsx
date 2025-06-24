@@ -52,7 +52,7 @@ const PaginationNew = ({
 
   /* ---------- markup ---------- */
   return (
-    <div className="d-flex align-items-center gap-2 flex-wrap" style={style}>
+    <div className="d-flex align-items-center justify-content-end gap-2 flex-wrap" style={style}>
       <button
         className="button-primary button-sm px-3 py-2"
         disabled={currentPage === 0}

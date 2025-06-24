@@ -178,7 +178,7 @@ const AllUniversityForSuperAdmin = () => {
             ) : (
               <div className=" d-flex flex-column gap-5">
                 <Card>
-                  <CardHeader className="d-flex justify-content-between align-items-center">
+                  <CardHeader className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0">
                     <Link
                       href={`/dashboard/${customData?.paneltext}/university-management/add-university`}
                       className="button px-3 py-2"

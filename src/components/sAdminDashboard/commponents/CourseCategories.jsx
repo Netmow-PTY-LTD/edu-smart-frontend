@@ -310,7 +310,7 @@ const AllCategoriesForSuperAdmin = ({ university_id, allDepartmentData }) => {
             <LoaderSpiner />
           ) : (
             <Card>
-              <CardHeader className="d-flex justify-content-between align-items-center">
+              <CardHeader className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0">
                 <button
                   className="button px-3 py-2 "
                   onClick={() => setAddModalIsOpen(!addModalIsOpen)}

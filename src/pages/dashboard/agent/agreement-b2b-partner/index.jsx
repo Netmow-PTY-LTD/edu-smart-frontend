@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { Button} from 'reactstrap';
 
 const AgreementB2bPartner = () => {
-  const pdfUrl = 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/B2B%20Agreement-Final%20without%20University%20(PSR%20GLOBAL)-23032025.pdf';
+  const pdfUrl = 'https://edu-smart.sgp1.cdn.digitaloceanspaces.com/B2B%20Agreement-Final%20without%20University%20(PSR%20GLOBAL)-2406-2025.pdf';
 
   const handleDownload = async () => {
   const response = await fetch(pdfUrl);

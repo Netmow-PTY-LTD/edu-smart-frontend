@@ -79,7 +79,7 @@ const SingleUniversityProfile = () => {
               <Row className="mt-5 px-3">
                 <Col lg={12} className="mt-5">
                   <div>
-                    <div className="d-flex mb-5">
+                    <div className="d-flex mb-5 flex-column flex-md-row gap-2 gap-md-0 align-items-center align-items-md-stretch">
                       <Nav
                         pills
                         className="animation-nav profile-nav gap-4 gap-lg-4 flex-grow-1"

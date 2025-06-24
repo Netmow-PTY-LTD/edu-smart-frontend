@@ -303,7 +303,7 @@ export default function UniversitySponsorsList({ university_id }) {
         <LoaderSpiner />
       ) : (
         <>
-          <div className="align-items-center d-flex fw-semibold card-header">
+          <div className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0 card-header">
             <div className="d-flex align-items-center gap-4">
               <button
                 className="button px-4 py-3"

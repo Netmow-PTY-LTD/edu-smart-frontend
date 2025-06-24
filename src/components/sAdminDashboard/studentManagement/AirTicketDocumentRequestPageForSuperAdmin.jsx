@@ -245,7 +245,7 @@ const AirTicketDocumentRequestPageForSuperAdmin = ({ student_id }) => {
         <div className="mt-1">
           <Card>
             <ToastContainer />
-            <CardHeader className="d-flex justify-content-between align-items-center">
+            <CardHeader className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0">
               <button
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}

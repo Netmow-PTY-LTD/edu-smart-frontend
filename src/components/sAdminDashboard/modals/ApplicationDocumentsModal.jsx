@@ -614,7 +614,7 @@ const ApplicationDocumentsModal = ({ isOpen, onClose, applicationId }) => {
                               <a
                                 href={file.url}
                                 download
-                                className="btn btn-primary btn-lg mt-2 position-absolute top-0 end-0"
+                                className="btn btn-primary btn-lg mt-2 top-0 end-0 application-document-modal"
                               >
                                 <i className="bi bi-download" style={{fontSize:'16px'}}></i>
                               </a>

@@ -40,8 +40,8 @@ const CommonTableComponent = ({
 
   return (
     <div>
-      <div className="mb-5">
-        <table className="table table-hover table-centered align-middle table-responsive">
+      <div className="mb-5 table-responsive">
+        <table className="table table-hover table-centered align-middle" style={{minWidth:'1200px'}}>
           <thead className="fs-2 bg-light">
             <tr>
               {headers.map((h, i) => <th key={i}>{h.title}</th>)}
@@ -80,7 +80,6 @@ const CommonTableComponent = ({
             data={data}
             perPageData={perPageData}
             onPageChange={setCurrentPage}
-            style={{ position: 'absolute', bottom: 0, right: 20 }}
           />
         </CardFooter>
       )}

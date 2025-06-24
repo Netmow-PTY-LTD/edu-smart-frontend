@@ -629,7 +629,7 @@ const statusOptions = [
                 <Row>
                   <Col xl={12}>
                     <Card>
-                      <CardHeader className="text-primary fw-semibold fs-2">
+                      <CardHeader className="text-primary fw-semibold fs-2 d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0">
                         Student's University Applications
                         <SearchComponent
                           searchTerm={searchTerm}

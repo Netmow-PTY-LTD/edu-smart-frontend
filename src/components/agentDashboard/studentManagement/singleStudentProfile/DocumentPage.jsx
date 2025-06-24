@@ -82,7 +82,7 @@ const DocumentPage = ({ student_id }) => {
         <div>
           <Card>
             <ToastContainer />
-            <CardHeader className="d-flex justify-content-between align-items-center">
+            <CardHeader className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0">
               <div className="d-flex gap-4">
                 <Button
                   className="button px-4 py-3 fw-bold"
