@@ -303,7 +303,7 @@ const SingleAgentInSuperAdminDashboard = () => {
                           >
                             <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
                             <span className="d-none d-md-inline-block">
-                              Documents
+                             Company Documents
                             </span>
                           </NavLink>
                         </NavItem>
