@@ -132,6 +132,12 @@ const AgentSidebarData = () => {
       ],
     },
     {
+      id: 'company-documents',
+      label: 'Company Documents',
+      icon: 'ri-article-fill',
+      link: '/dashboard/agent/documents',
+    },
+    {
       id: 'agreementForB2bPartner',
       label: 'Agreement For B2B Partner',
       icon: 'ri-bank-card-fill',

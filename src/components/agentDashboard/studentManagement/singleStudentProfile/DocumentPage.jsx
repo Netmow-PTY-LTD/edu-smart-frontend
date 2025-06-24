@@ -100,7 +100,7 @@ const DocumentPage = ({ student_id }) => {
                 </Button>
               </div>
 
-              <h1> Student Submitted Docs</h1>
+              <h1>Submitted Docs</h1>
               <SearchComponent
                 searchTerm={searchTerm}
                 handleSearchChange={handleSearchChange}

@@ -165,6 +165,7 @@ const AutoAcceptedDocumentUploadModal = ({
                           type="file"
                           multiple
                           hidden
+                           accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.rtf,.odt"
                           onChange={(e) => {
                             const files = Array.from(e.target.files);
                             const newDocs = files.map((file) => ({
