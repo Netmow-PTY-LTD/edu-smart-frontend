@@ -1,3 +1,4 @@
+import DocumentPage from '@/components/agentDashboard/studentManagement/singleStudentProfile/DocumentPage';
 import AllOverviewInfoCard from '@/components/common/alldashboardCommon/AllOverviewInfoCard';
 import ProfileBgCover from '@/components/common/alldashboardCommon/ProfileBgCover';
 import CommonTableComponent from '@/components/common/CommonTableComponent';
@@ -290,6 +291,22 @@ const SingleAgentInSuperAdminDashboard = () => {
                             </span>
                           </NavLink>
                         </NavItem>
+                        <NavItem className="fs-14">
+                          <NavLink
+                            style={{ cursor: 'pointer' }}
+                            className={classnames({
+                              active: activeTab === '7',
+                            })}
+                            onClick={() => {
+                              toggleTab('7');
+                            }}
+                          >
+                            <i className="ri-airplay-fill d-inline-block d-md-none"></i>{' '}
+                            <span className="d-none d-md-inline-block">
+                             Company Documents
+                            </span>
+                          </NavLink>
+                        </NavItem>
                         <button
                           className="button p-2 ms-auto"
                           onClick={() => {
@@ -415,6 +432,16 @@ const SingleAgentInSuperAdminDashboard = () => {
                       <div style={{ marginTop: '30px' }}>
                         <AgentPackageHistoryForSuperAdmin agent_id={agent_id} />
                       </div>
+                    )}
+                      {activeTab === '7' && (
+                  <div style={{ marginTop: '50px' }}>
+                    <DocumentPage
+                      student_id={agent_id}
+                      getSingleStudent={getSingleAgent}
+                      refetchSingleStudent={getSingleAgentRefetch}
+                      sigleStudentIsLoading={getSingleAgentIsLoading}
+                    />
+                  </div>
                     )}
                   </>
                 ) : (
