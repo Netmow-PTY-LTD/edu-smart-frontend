@@ -119,7 +119,7 @@ const Teams = () => {
             <LoaderSpiner />
           ) : (
             <Card className="shadow-sm">
-              <CardHeader className="d-flex justify-content-between align-items-center bg-light border-bottom">
+              <CardHeader className="d-flex justify-content-between flex-column flex-md-row gap-2 gap-md-0 mb-4 bg-light border-bottom ">
                 <h1 className="text-secondary-alt fw-semibold">
                   Team Members
                 </h1>

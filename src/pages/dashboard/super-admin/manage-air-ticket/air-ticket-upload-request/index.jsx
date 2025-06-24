@@ -259,7 +259,7 @@ const StudentAirtTicketDocumentUploadRquestForSuperAdmin = () => {
         <div className="h-100">
           {/* reqested doc */}
           <Card>
-            <CardHeader>
+            <CardHeader className='d-flex justify-content-between flex-column flex-md-row gap-2 gap-md-0 mb-4'>
               <button
                 className="button py-3 px-4"
                 onClick={() => setAddModalIsOpen(!addModalIsOpen)}

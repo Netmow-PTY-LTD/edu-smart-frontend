@@ -253,8 +253,8 @@ const PackagePageInSuperAdmin = () => {
         <div className="container-fluid">
           <ToastContainer />
           <div className="h-100">
-            <div className="d-flex align-items-center justify-content-between mb-4">
-              <div>
+            <div className="d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 gap-md-0 mb-4">
+              <div className='d-flex flex-column align-items-center align-items-md-stretch'>
                 <h1 className="text-secondary-alt fw-semibold d-flex align-items-center">
                   Our Popular Package
                 </h1>

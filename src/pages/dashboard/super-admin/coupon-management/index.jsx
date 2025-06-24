@@ -260,7 +260,7 @@ const CouponManagementInSuperAdmin = () => {
                   />
                 </CardHeader>
                 <CardBody>
-                  <div className="sqdk-pricing-table">
+                  <div>
                     {getCouponIsLoading ? (
                       <LoaderSpiner />
                     ) : (

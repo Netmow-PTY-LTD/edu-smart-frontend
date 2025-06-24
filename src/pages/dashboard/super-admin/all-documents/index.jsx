@@ -208,7 +208,7 @@ const AllDocumentsInSuperAdminDashboard = () => {
                   />
                 </CardHeader>
                 <CardBody>
-                  <div className="sqdk-pricing-table">
+                  <div>
                     {/* {getDocumentIsLoading ? (
                       <LoaderSpiner />
                     ) : ( */}

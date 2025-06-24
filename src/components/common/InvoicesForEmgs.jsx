@@ -228,7 +228,7 @@ const InvoicesForEmgs = ({
 
                 {/* Address Section */}
                 <CardHeader className="border-bottom-dashed">
-                  <div className="d-flex justify-content-between w-100">
+                  <div className="d-flex justify-content-between flex-column flex-md-row gap-2 gap-md-0 mb-4 w-100">
                     <div>
                       <h6 className="text-muted text-uppercase fs-2 fw-semibold">
                         Address

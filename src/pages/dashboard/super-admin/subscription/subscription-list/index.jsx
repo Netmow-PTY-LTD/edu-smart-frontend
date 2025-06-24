@@ -68,7 +68,7 @@ const AllSubscriptionForSuperAdmin = () => {
   // };
   const subscriptionHeadersWithoutAction = [
     {
-      title: 'email',
+      title: 'Email',
       key: 'email',
     },
     {

@@ -53,13 +53,13 @@ const PasswordSettings = () => {
               {({ isSubmitting, setFieldValue, values, resetForm }) => (
                 <Form>
                   <Row>
-                    <Col>
+                    <Col xs={12} md={6}>
                       <PasswordField
                         name={'current_password'}
                         label={'Current Password'}
                       />
                     </Col>
-                    <Col>
+                    <Col xs={12} md={6}>
                       <PasswordField
                         name={'new_password'}
                         label={'New Password'}

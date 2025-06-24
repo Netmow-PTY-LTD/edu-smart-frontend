@@ -165,7 +165,7 @@ const AirportPickupChargeInvoice = ({
                     />
                   </div>
                   <CardHeader className="border-bottom-dashed ">
-                    <div className="d-flex align-items-center justify-content-between w-100">
+                    <div className="d-flex justify-content-between flex-column flex-md-row gap-2 gap-md-0 mb-4 w-100">
                       <div className="flex-grow-1">
                         <div className="mt-3">
                           <h6 className="text-muted text-uppercase fs-2 fw-semibold">
@@ -287,8 +287,8 @@ const AirportPickupChargeInvoice = ({
                     </div>
                   </CardHeader>
 
-                  <Row className=" d-flex align-items-center justify-content-between text-center g-3 my-5">
-                    <Col lg={3} xs={3}>
+                  <Row className="text-center gap-2 gap-md-0 g-3 my-5">
+                    <Col md={3} xs={12}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Invoice No
                       </p>
@@ -296,7 +296,7 @@ const AirportPickupChargeInvoice = ({
                         {invoice_no?._id?.slice(0, -2)}
                       </p>
                     </Col>
-                    <Col lg={3} xs={3}>
+                    <Col md={3} xs={12}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Date
                       </p>
@@ -319,7 +319,7 @@ const AirportPickupChargeInvoice = ({
                         </p>
                       </p>
                     </Col>
-                    <Col lg={3} xs={3}>
+                    <Col md={3} xs={12}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         Payment Status
                       </p>
@@ -332,7 +332,7 @@ const AirportPickupChargeInvoice = ({
                         </span>
                       </p>
                     </Col>
-                    <Col lg={3} xs={3}>
+                    <Col md={3} xs={12}>
                       <p className="text-muted  mb-2 text-uppercase fw-semibold">
                         INVOICE TYPE
                       </p>
@@ -502,7 +502,7 @@ const AirportPickupChargeInvoice = ({
                 </Card>
 
                 <Col xl={12}>
-                  <div className="d-flex align-items-center justify-content-between mb-5">
+                  <div className="d-flex align-items-center justify-content-between my-5">
                     <button
                       onClick={printInvoice}
                       className="button px-5 py-2 no-print"
@@ -514,7 +514,7 @@ const AirportPickupChargeInvoice = ({
 
                     <button
                       onClick={close}
-                      className="d-flex justify-content-end button px-5 py-2 "
+                      className="d-flex justify-content-end btn btn-danger px-5 py-2 "
                     >
                       Close
                     </button>
