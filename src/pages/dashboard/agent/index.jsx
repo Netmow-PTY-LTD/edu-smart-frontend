@@ -124,10 +124,10 @@ const AgentDashboard = () => {
   const { data: earningData, isLoading: earningLoading } =
     useGetEarningsQuery();
 
-  if (userInfodata?.data?.package_choice) {
-    router.push('/dashboard/agent/upgrade');
-    return;
-  }
+  // if (userInfodata?.data?.package_choice) {
+  //   router.push('/dashboard/agent/upgrade');
+  //   return;
+  // }
 
   const course_choice = Cookies.get('course_choice');
   const universityId = Cookies.get('universityId');
@@ -153,30 +153,33 @@ const AgentDashboard = () => {
 
   return (
     <Layout>
-      <div className="page-content">
+      <div className="page-content agent-dashboard-wrapper">
         <div className="container-fluid">
           {allStudentForAgentIsLoading || earningLoading ? (
             <LoaderSpiner />
           ) : (
             <>
               <Row className="align-items-center mb-4">
-                <Col md={3}>
+                <Col md={6}>
                   <WelcomingMessage data={userInfodata?.data} />
                 </Col>
 
-                <Col md={3}>
-                  <button
-                    className="button w-100 d-flex align-items-center justify-content-center p-3 cursor-pointer"
-                    onClick={() => setShowFilterCard((prev) => !prev)}
-                  >
-                    {showFilterCard ? 'Hide Filter' : 'Filter Card'}
-                  </button>
+                <Col md={6}>
+                  <div className="d-flex justify-content-end">
+                    <button
+                      className="button p-3 cursor-pointer"
+                      onClick={() => setShowFilterCard((prev) => !prev)}
+                    >
+                      {showFilterCard ? 'Hide Filter' : 'Filter Card'}
+                    </button>
+                  </div>
                 </Col>
-
+              </Row>
+              <Row className='justify-content-end'>
                 {showFilterCard && (
                   <>
-                    <Col md={3}>
-                      <label className="form-label fs-2 mb-3 pe-2">From:</label>
+                    <Col md={3} className='d-flex align-items-center justify-content-end gap-1'>
+                      <label className="form-label fs-2 pe-2 mb-0">From:</label>
                       <DatePicker
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
@@ -186,8 +189,8 @@ const AgentDashboard = () => {
                       />
                     </Col>
 
-                    <Col md={3}>
-                      <label className="form-label fs-2 mb-3 pe-2">End:</label>
+                    <Col md={3} className='d-flex align-items-center justify-content-end gap-1'>
+                      <label className="form-label fs-2 pe-2 mb-0">End:</label>
                       <DatePicker
                         selected={endDate}
                         onChange={(date) => setEndDate(date)}
@@ -201,12 +204,13 @@ const AgentDashboard = () => {
                   </>
                 )}
               </Row>
-                  <Row className="pb-5">
-                    <h1 className="p-3">Applications Overview</h1>
-                    <Col xs={12} className="mb-4">
-                      <DashBoardCardApplication />
-                    </Col>
-                  </Row>
+              
+              <Row className="pb-5">
+                <h1 className="p-3">Applications Overview</h1>
+                <Col xs={12} className="mb-4">
+                  <DashBoardCardApplication />
+                </Col>
+              </Row>
               <Row className="pb-5">
                 <h1 className='p-3'>Financial Overview </h1>
                 <AgentDashBoardCountOptions

@@ -10713,3 +10713,50 @@ padding-left: 70px;
     transform: scale(1.01);
     transition: all 0.2s ease-in-out;
 }
+
+/* Make calendar popup bigger */
+.agent-dashboard-wrapper .react-datepicker {
+  width: 260px !important;
+  font-size: 1.1rem !important;
+  padding: 1rem !important;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Adjust header */
+.agent-dashboard-wrapper .react-datepicker__header {
+  background-color: #f0f2f5;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.8rem 1rem;
+}
+
+/* Enlarge day buttons */
+.agent-dashboard-wrapper .react-datepicker__day {
+  line-height: 2.5rem !important;
+  margin: 0.2rem !important;
+}
+
+/* Input styling */
+.agent-dashboard-wrapper .big-datepicker {
+  font-size: 1.05rem;
+  height: 48px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+}
+
+.agent-dashboard-wrapper .react-datepicker__month-container {
+    float: none !important;
+}
+
+.agent-dashboard-wrapper .react-datepicker__navigation {
+    top: 12px !important;
+}
+
+.agent-dashboard-wrapper .react-datepicker__current-month, .react-datepicker-time__header, .react-datepicker-year-header {
+    font-size: 12px !important;
+}
+
+.agent-dashboard-wrapper .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+    font-size: 11px !important;
+    width: 21px !important;
+}
