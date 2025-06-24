@@ -124,10 +124,10 @@ const AgentDashboard = () => {
   const { data: earningData, isLoading: earningLoading } =
     useGetEarningsQuery();
 
-  // if (userInfodata?.data?.package_choice) {
-  //   router.push('/dashboard/agent/upgrade');
-  //   return;
-  // }
+  if (userInfodata?.data?.package_choice) {
+    router.push('/dashboard/agent/upgrade');
+    return;
+  }
 
   const course_choice = Cookies.get('course_choice');
   const universityId = Cookies.get('universityId');
