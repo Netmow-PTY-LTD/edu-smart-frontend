@@ -17,7 +17,7 @@ export default function About() {
   const fetchMembers = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${baseUrl}/api/v1/team`, {
+      const res = await fetch(`${baseUrl}/api/v1/public/team`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
